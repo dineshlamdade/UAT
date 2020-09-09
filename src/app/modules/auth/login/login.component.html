@@ -65,4 +65,16 @@
             </slide>
         </carousel>
     </div>
+    <div class="language-select">
+        <!-- <h3>{{ 'HOME.passwordErrorText' | transloco }}</h3> -->
+        <mat-form-field>
+            <!-- <mat-label>Favorite food</mat-label> -->
+            <mat-select [(ngModel)]="selectedLanguage">
+                <!-- <mat-select-trigger>{{selectedLanguage}}</mat-select-trigger> -->
+                <mat-option *ngFor="let l of locales" [value]="l.value" (click)="updateLocale(l.value)">
+                    {{ l.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 </div>

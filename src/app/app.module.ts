@@ -34,6 +34,21 @@ import { ProfileComponent } from './modules/profile/profile.component';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { InvestmentComponent } from './modules/investment/investment.component';
 
+// transloco
+import { translocoLoader } from './core/strategies/transloco.loader';
+import { TranslocoModule, TRANSLOCO_CONFIG, TranslocoConfig } from '@ngneat/transloco';
+// import your locales
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import localeGb from '@angular/common/locales/en-GB';
+
+
+registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeGb, 'en-GB');
+
+import { DemoMaterialModule } from './app.material.module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,9 +97,23 @@ import { InvestmentComponent } from './modules/investment/investment.component';
     CarouselModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
-    })
+    }),
+    TranslocoModule,
+    DemoMaterialModule
   ],
-  providers: [BsDatepickerModule],
+  providers: [BsDatepickerModule,
+    translocoLoader, {
+      provide: TRANSLOCO_CONFIG,
+      useValue: {
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        listenToLangChange: true,
+        reRenderOnLangChange: true,
+        defaultLang: 'en',
+        fallbackLang: 'fr',
+  
+        prodMode: false
+      } as TranslocoConfig
+    },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

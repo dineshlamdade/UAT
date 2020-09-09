@@ -2,6 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
+import { TranslocoService } from '@ngneat/transloco';
+
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,9 +20,29 @@ export class AppComponent implements OnInit {
   timberClass: boolean;
   blueClass: boolean;
   amethystClass: boolean;
+  selectedLanguage: any;
+  locales = [
+    { label: '🇺🇸 English (US)', value: 'en-US' },
+    // { label: '🇬🇧 English (UK)', value: 'en-GB' },
+    { label: '🇫🇷 Français', value: 'fr' }
+  ];
+  locale = this.locales[0].value;
+
+
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
-    private titleService: Title) { }
+    private titleService: Title,
+    private translocoService: TranslocoService) {
+      this.selectedLanguage = localStorage.getItem("selectedLanguage");
+      // generate a regex from the locales we support
+      if(this.selectedLanguage){
+        const supportedRegex = new RegExp('^' + this.locales.map(l => l.value.substring(0, 2)).join('|^'));
+        // check if the user's preferred language is supported and if so, use it.
+        if (this.selectedLanguage.match(supportedRegex)) {
+          this.updateLocale(this.selectedLanguage);
+        }
+      }
+     }
   ngOnInit(): void {
     const body = document.getElementsByTagName('body')[0];
     body.classList.add("offcanvas-active");
@@ -76,4 +100,15 @@ export class AppComponent implements OnInit {
     document.getElementsByClassName('user_div')[0].classList.remove("open");
     document.getElementsByClassName('overlay')[0].classList.remove("open");
   }
+
+    // change locale/language at runtime
+    updateLocale(locale) {
+      localStorage.setItem("selectedLanguage", locale);
+  
+      if (this.locales.some(l => l.value === locale)) {
+        this.locale = locale;
+      }
+      const lang = locale.substring(0, 2);
+      this.translocoService.setActiveLang(lang);
+    }
 }
