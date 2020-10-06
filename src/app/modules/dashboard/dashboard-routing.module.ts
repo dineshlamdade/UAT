@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    data: { title: ':: Delzia-HR :: Home' },
+    data: { title: ':: Delizia-HR :: Home' },
   },
 
 ];

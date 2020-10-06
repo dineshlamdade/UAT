@@ -14,7 +14,7 @@
       "experimentalDecorators": true,
       "skipLibCheck": true,
       "target": "es5",
-      "types": [ "node" ],
+      //"types": [ "node" ],
       "typeRoots": [
           "node_modules/@types"
       ],
