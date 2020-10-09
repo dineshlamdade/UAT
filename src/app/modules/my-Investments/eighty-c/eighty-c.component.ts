@@ -95,6 +95,9 @@ export class EightyCComponent implements OnInit {
         greaterDateValidations: boolean;
         policyMinDate: Date;
         paymentDetailMinDate: Date;
+        paymentDetailMaxDate: Date;
+        minFormDate:Date;
+        maxFromDate:Date;
         financialYearStart: Date;
         employeeJoiningDate: Date;
         windowScrolled: boolean;
@@ -304,7 +307,12 @@ export class EightyCComponent implements OnInit {
                 if(policyStart > policyEnd) {
                     this.form.controls['policyEndDate'].reset()
                 }
-            }
+                this.form.patchValue({
+                    fromDate:this.form.value.policyStartDate
+                });
+                this.minFormDate = this.form.value.policyStartDate;
+                this.setPaymentDetailToDate();
+             }
 
             // Policy End Date Validations with Current Finanacial Year
             checkFinancialYearStartDateWithPolicyEnd() {
@@ -313,6 +321,11 @@ export class EightyCComponent implements OnInit {
                 if(policyEnd < financialYearStartDate) {
                     this.sweetalertWarning("Policy End Date should be greater than or equal to Current Financial Year : "+this.financialYearStart);
                     this.form.controls['policyEndDate'].reset();
+                } else {
+                    this.form.patchValue({
+                        toDate:this.form.value.policyEndDate
+                    });
+                    this.maxFromDate = this.form.value.policyEndDate;
                 }
             }
 
@@ -750,12 +763,6 @@ export class EightyCComponent implements OnInit {
                 this.displayUploadFile = true;
             }
 
-            UploadedDocumentModal(template1: TemplateRef<any>) {
-              this.modalRef = this.modalService.show(
-                  template1,
-                  Object.assign({}, { class: 'gray modal-md' })
-              );
-          }
 
             onUpload(event) {
                 console.log(event);
@@ -909,6 +916,12 @@ export class EightyCComponent implements OnInit {
                 })
             }
 
+            UploadedDocumentModal(template1: TemplateRef<any>) {
+              this.modalRef = this.modalService.show(
+                  template1,
+                  Object.assign({}, { class: 'gray modal-md' })
+              );
+          }
             UploadModal(template: TemplateRef<any>) {
                 this.modalRef = this.modalService.show(
                     template,
