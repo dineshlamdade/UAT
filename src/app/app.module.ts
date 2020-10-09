@@ -74,6 +74,9 @@ import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.mod
     TranslocoModule,
     DemoMaterialModule,
     AppRoutingModule,
+    DashboardModule,
+    MyInvestmentsModule,
+    PayrollModule
   ],
   providers: [BsDatepickerModule,
     translocoLoader, {
