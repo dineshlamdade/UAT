@@ -750,6 +750,12 @@ export class EightyCComponent implements OnInit {
                 this.displayUploadFile = true;
             }
 
+            UploadedDocumentModal(template1: TemplateRef<any>) {
+              this.modalRef = this.modalService.show(
+                  template1,
+                  Object.assign({}, { class: 'gray modal-md' })
+              );
+          }
 
             onUpload(event) {
                 console.log(event);
