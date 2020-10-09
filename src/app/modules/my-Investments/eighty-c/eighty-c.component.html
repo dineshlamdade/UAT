@@ -525,7 +525,8 @@
                                                   <span class="custom-control-label"></span>
                                                </label>
                                                                     </th>
-                                                                    <th rowspan="2" class="wd-10 font700">Previous Employer Name</th>
+                                                                    
+                                                                    <th *ngIf="!previousEmployeeList?.length" rowspan="2" class="wd-10 font700">Previous Employer Name</th>
                                                                     <th rowspan="2" class="wd-4 font700">ECS</th>
                                                                     <th rowspan="2" class="wd-11 font700">Due Date</th>
                                                                     <th rowspan="2" class="wd-9 font700">Declared</th>
