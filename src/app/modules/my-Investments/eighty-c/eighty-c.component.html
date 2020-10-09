@@ -259,6 +259,8 @@
                                                          formControlName="fromDate" data-provide="datepicker"
                                                          data-date-autoclose="true" class="form-control"
                                                          (bsValueChange)="setPaymentDetailToDate()"
+                                                         [minDate]="minFormDate"
+                                                         [maxDate]="maxFromDate"
                                                          placeholder="From Date" bsDatepicker
                                                          >
                                                    </div>
@@ -274,7 +276,9 @@
                                                       </div>
                                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                          (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
-                                                         [minDate]="paymentDetailMinDate" [ngModel]="toDate"
+                                                         [minDate]="paymentDetailMinDate" 
+                                                         [maxDate]="maxFromDate"
+                                                         [ngModel]="toDate"
                                                          formControlName="toDate" data-provide="datepicker"
                                                          data-date-autoclose="true" class="form-control"
                                                          placeholder="To Date" bsDatepicker
@@ -598,7 +602,7 @@
                                                             <span class="custom-control-label"></span>
                                                          </label>
                                                    </th>
-                                                   <th rowspan="2" class="wd-1 font700">Previous Employer Name</th>
+                                                   <th *ngIf="!previousEmployeeList?.length" rowspan="2" class="wd-1 font700">Previous Employer Name</th>
                                                    <th rowspan="2" class="wd-13 font700">Due Date</th>
                                                    <th rowspan="2" class="wd-11 font700">Declared</th>
                                                    <th rowspan="2" class="wd-13 font700">Date of Payment</th>
@@ -649,7 +653,7 @@
                                                          <span class="custom-control-label"></span>
                                                       </label>
                                                    </td>
-                                                   <td>
+                                                   <td *ngIf="!previousEmployeeList?.length">
                                                       <!-- <p-dropdown [options]="previousEmployeName" *ngIf="!((enableEditRow == i) && (enablePolicyTable == j))" [disabled]="!((enableEditRow == i) && (enablePolicyTable == j))" [(ngModel)]="summary.previousEmployerName" placeholder="Select a Option" editable="true"
                                                       appendTo="body">
                                                       </p-dropdown>
@@ -728,7 +732,7 @@
                                                    <td>
                                                       {{summary.remark}}
                                                    </td>
-                                                   <td class="text-gray font700" tooltip="Pending for Approval">Pending for Approval</td>
+                                                   <td class="text-gray font700" tooltip="Pending">Pending</td>
                                                    <!-- <td><i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-plus-circle font-16 text-green cursor-pointer" tooltip="Add Row"></i></td> -->
                                                 </tr>
                                                 <tr *ngIf="(addRow1 &&(addRow2 ==j))">
@@ -802,7 +806,7 @@
                                                 </td>
                                                 </tr> -->
                                                 <tr *ngIf="!isDisabled">
-                                                   <td colspan="10"
+                                                   <td colspan="9"
                                                       class="align-right font700 font-16 text-light-green cursor-pointer">
                                                       <!-- <i class="fa fa-plus-circle font-20"
                                                          ></i> -->
@@ -849,7 +853,7 @@
                                                      </span>
                                                    </td>
                                                    <td class="bg-lightgray font-18 font700"></td>
-                                                   <td class="bg-lightgray font-18 font700"></td>
+                                                   <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700"></td>
                                                </tr>
                                              </tbody>
                                           </table>
@@ -903,7 +907,7 @@
                                                   </span>
                                                 </td>
                                                 <td class="bg-gray font-18 font700 wd-10"></td>
-                                                <td class="bg-gray font-18 font700 wd-10"></td>
+                                                <td *ngIf="!previousEmployeeList?.length" class="bg-gray font-18 font700 wd-10"></td>
                                             </tr>
                                           </tbody>
                                        </table>
