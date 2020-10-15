@@ -777,19 +777,15 @@ export class EightyCComponent implements OnInit {
                 // console.log(this.declarationTotal);
             }
 
-  deleteRow(j: number ,i: number) {
+  deleteRow(j: number) {
     // tslint:disable-next-line: triple-equals
     const rowCount = this.transactionDetail[j].lictransactionList.length - 1 ;
     console.log('rowcount::', rowCount);
     console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
-
         return false;
     } else if ( this.initialArrayIndex <= rowCount  ){
-
-
       this.transactionDetail[j].lictransactionList.splice(rowCount, 1);
-
       return true;
     }
 }
