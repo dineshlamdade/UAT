@@ -1,18 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ 
+@Pipe({
     name: 'numberFormat'
  })
 export class NumberFormatPipe implements PipeTransform {
     transform(value: number | string, minFractionDigits: number = 2, maxFractionDigits: number = 2, locale: string = 'en-IN'): string {
         // value = value.toString().replace(/\D/g, "");
          value = value.toString().replace(',', "");
-        //console.log(`value:`, value)        
+        //console.log(`value:`, value)
         let formatedvalue= new Intl.NumberFormat(locale, {
             minimumFractionDigits: minFractionDigits,
             maximumFractionDigits: maxFractionDigits
         }).format(Number(value));
-        //console.log(`formatedvalue:`, formatedvalue)    
+        //console.log(`formatedvalue:`, formatedvalue)
         return formatedvalue;
     }
 }
