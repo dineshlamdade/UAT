@@ -707,11 +707,11 @@ export class EightyCComponent implements OnInit {
                     console.log(element.declaredAmount.toString().replace(',', ""));
                     this.declarationTotal+=Number(element.declaredAmount.toString().replace(',', ""));
                     console.log(this.declarationTotal);
-                    this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
+                    //this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
                 });
-                this.transactionDetail[j].declarationTotal=this.declarationTotal;
-                this.transactionDetail[j].actualAmount=this.declaredAmount;
-                console.log(this.declarationTotal);
+                this.transactionDetail[j].declarationTotal = this.declarationTotal;
+                //this.transactionDetail[j].actualAmount = this.declaredAmount;
+                console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
             }
 
             onDueDateChange(summary: { previousEmployerName: any; declaredAmount: number;
@@ -777,15 +777,18 @@ export class EightyCComponent implements OnInit {
                 // console.log(this.declarationTotal);
             }
 
-  deleteRow(j: number) {
+  deleteRow(j: number ,i: number) {
     // tslint:disable-next-line: triple-equals
+    const rowCount = this.transactionDetail[j].lictransactionList.length - 1 ;
+    console.log('rowcount::', rowCount);
+    console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
 
         return false;
-    } else {
-      const rowCount = this.transactionDetail[j].lictransactionList.length;
-      console.log('count::', j);
-      this.transactionDetail[j].lictransactionList.splice(j, -1);
+    } else if ( this.initialArrayIndex <= rowCount  ){
+
+
+      this.transactionDetail[j].lictransactionList.splice(rowCount, 1);
 
       return true;
     }
