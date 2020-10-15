@@ -220,7 +220,7 @@ export class EightyCComponent implements OnInit {
 
                 // Get API call for All previous employee Names
                 this.Service.getpreviousEmployeName().subscribe(res => {
-                        console.log(res);
+                        console.log('previousEmployeeList-->',res);
                         if (!res.data.results[0]) {
                                 return ;
                         }

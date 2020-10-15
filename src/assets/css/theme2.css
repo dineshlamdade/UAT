@@ -831,9 +831,10 @@ strong {
 }
 
 .bg-color-lightgray {
-    background-color: #f2f2f2!important;
-    color: #999!important;
-    border: 1px solid #999!important;
+  background-color: #f2f2f2!important;
+  color: #000!important;
+  font-weight: 600;
+  border: 1px solid #999!important;
 }
 
 
