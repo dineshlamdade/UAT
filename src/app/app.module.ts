@@ -33,6 +33,9 @@ registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
 
 import { DemoMaterialModule } from './app.material.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
+import { PayrollModule } from './modules/payroll/payroll.module';
 
 
 @NgModule({

@@ -18,6 +18,8 @@ export class MyInvestmentsService {
     }));
   }
 
+ 
+
   getNPSMaster() {
     return this._HTTP.get(this.url + 'npsmaster-detail/3')
     .pipe(map((res: any) => {

@@ -646,45 +646,49 @@
                                                          <input type="checkbox" [ngModel]="enableSelectAll" [disabled]="isDisabled"
                                                             (change)="onSelectUpload(summary, $event,i,j, item);enableCheckboxFlag = j" class="custom-control-input"
                                                             value="option{{summary.licTransactionId}}">
+
                                                          <span class="custom-control-label"></span>
                                                       </label>
                                                    </td>
                                                    <td>
-                                                      <!-- <p-dropdown [options]="previousEmployeName" *ngIf="!((enableEditRow == i) && (enablePolicyTable == j))" [disabled]="!((enableEditRow == i) && (enablePolicyTable == j))" [(ngModel)]="summary.previousEmployerName" placeholder="Select a Option" editable="true"
-                                                      appendTo="body">
-                                                      </p-dropdown>
-                                                      <p-dropdown [options]="previousEmployeName" *ngIf="((enableEditRow == i) && (enablePolicyTable == j))" [(ngModel)]="declarationService.previousEmployerName" placeholder="Select a Option" editable="true" appendTo="body">
-                                                      </p-dropdown> -->
                                                       <select name="Previous Employer Name"
                                                          class="form-control custom-select" *ngIf="summary.active">
+                                                         <option [ngValue]="null"> select Previous Emp... </option>
                                                          <option *ngFor="let previousEmployee of previousEmployeeList"
                                                             [value]="previousEmployee.value">
                                                             {{previousEmployee.label}}
                                                          </option>
-                                                         <!-- <option value="Select">Select</option>
-                                                         <option value="Jhon">Jhon</option>
-                                                         <option value="Thor">Thor </option>
-                                                         <option value="Thomson">Thomson</option>
-                                                         <option value="Jack">Jack</option> -->
+
                                                       </select>
-                                                      <!-- <p-dropdown [options]="PreviousEmpDDL" [(ngModel)]="selectedPreviousEmp" placeholder="Select a Option" editable="true" appendTo="body">
-                                                      </p-dropdown> -->
+
                                                    </td>
                                                    <td>
+                                                    <div class="custom_icon_badge">
                                                       <input type="text" class="form-control"
-                                                         [ngModel]="summary.dueDate | date :'dd-MMM-yyyy'" disabled>
+                                                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                                                         [ngModel]="summary.dueDate | date :'dd-MMM-yyyy'" [disabled]="initialArrayIndex > i"
+                                                         (ngModelChange)="summary.dueDate = $event.toLocaleDateString() ; onDueDateChange(summary, i, j )"
+                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker>
+
+                                                         <span  *ngIf = "hideCopytoActualDate" class="clone_Icon" tooltip="Copy to Actual"
+                                                            (click)="summary.dateOfPayment=summary.dueDate "><i
+                                                               class=" fa fa-files-o cursor-pointer"></i> </span>
+                                                              </div>
                                                    </td>
+
                                                    <td>
                                                       <div class="custom_icon_badge">
-                                                         <input type="text"
-                                                            id="declaredAmount{{summary.licTransactionId}}"
-                                                            name="declaredAmount{{summary.licTransactionId}}"
+                                                         <input   type="text"
+                                                         id="declaredAmount{{summary.licTransactionId}}"
+                                                         name="declaredAmount{{summary.licTransactionId}}"
+
                                                             [(ngModel)]="summary.declaredAmount"
                                                             class="form-control align-right"
-                                                            (change)="onDeclaredAmountChange(summary,i,j)"
-                                                            disabled>
+                                                            (change)="onDeclaredAmountChange(summary, i, j)"
+                                                            [disabled]="initialArrayIndex > i">
+
                                                          <span class="clone_Icon" tooltip="Copy to Actual"
-                                                            (click)="summary.actualAmount = summary.declaredAmount"><i
+                                                            (click)="summary.actualAmount = summary.declaredAmount ; summary.dateOfPayment=summary.dueDate ; onActualAmountChange(summary, i, j)"><i
                                                                class=" fa fa-files-o cursor-pointer"></i> </span>
                                                          <!-- <span *ngIf="((enableEditRow == i) && (enablePolicyTable == j))" class="clone_Icon" tooltip="Copy to Actual" (click)="declarationService.actualAmount = summary.declaredAmount"><i class=" fa fa-files-o cursor-pointer"></i> </span> -->
                                                       </div>
@@ -697,8 +701,12 @@
                                                           </div> -->
                                                       <!-- <label *ngIf="!((enableEditRow == i) && (enablePolicyTable == j))" class="disabled_label">{{summary.dateOfPayment| date :"dd-MMM-yyyy"}}</label> -->
                                                       <!-- <p-calendar *ngIf="((enableEditRow == i) && (enablePolicyTable == j))" [(ngModel)]="declarationService.dateOfPayment" dateFormat="dd-M-yy" [showIcon]="true" appendTo="body"></p-calendar> -->
-                                                      <input [ngModel]="summary.dateOfPayment"
-                                                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                      <input
+                                                      type="text"
+                                                      [ngModel]="summary.dateOfPayment | date :'dd-MMM-yyyy'"
+                                                      [disabled]="initialArrayIndex > i"
+                                                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                          data-provide="datepicker" data-date-autoclose="true"
                                                          class="form-control" bsDatepicker>
                                                       <!-- <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDate()" [minDate]="minDate" [ngModel]="endDate" formControlName="endDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="End Date" bsDatepicker> -->
@@ -707,9 +715,11 @@
                                                    </td>
                                                    <td>
                                                       <input type="text"
-                                                         *ngIf="!((enableEditRow == i) && (enablePolicyTable == j))"
-
-                                                         [ngModel]="summary.actualAmount"
+                                                      id="actualAmount{{summary.licTransactionId}}"
+                                                      name="actualAmount{{summary.licTransactionId}}"
+                                                         [disabled]="initialArrayIndex > i"
+                                                         [(ngModel)]="summary.actualAmount"
+                                                         (change)="onActualAmountChange(summary, i, j)"
                                                          class="form-control align-right">
                                                       <!-- <input type="number" *ngIf="((enableEditRow == i) && (enablePolicyTable == j))" [(ngModel)]="declarationService.actualAmount" class="form-control align-right"> -->
                                                       <!-- <input type="text" *ngIf="!((enableEditRow == i) && (enablePolicyTable == j))" [disabled]="!((enableEditRow == i) && (enablePolicyTable == j))" [(ngModel)]="summary.actualAmount" class="form-control align-right">
@@ -728,32 +738,20 @@
                                                    <td>
                                                       {{summary.remark}}
                                                    </td>
-                                                   <td class="text-gray font700" tooltip="Pending for Approval">Pending for Approval</td>
+                                                   <td class="text-gray font700" tooltip="Pending">Pending</td>
                                                    <!-- <td><i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-plus-circle font-16 text-green cursor-pointer" tooltip="Add Row"></i></td> -->
                                                 </tr>
-                                                <tr *ngIf="(addRow1 &&(addRow2 ==j))">
+                                                <!-- <tr *ngIf="(addRow1 &&(addRow2 ==j))">
                                                    <td scope="row">
-                                                   </td>
-                                                   <td>
-                                                      <!-- <p-dropdown [options]="PreviousEmpDDL" [(ngModel)]="declarationService.previousEmployerName" placeholder="Select a Option" editable="true" appendTo="body">
-                                                      </p-dropdown> -->
-                                                      <!-- <select name="Previous Employer Name"
-                                                         class="form-control custom-select">
-                                                         <option value="Select">Select</option>
-                                                         <option value="Jhon">Jhon</option>
-                                                         <option value="Thor">Thor </option>
-                                                         <option value="Thomson">Thomson</option>
-                                                         <option value="Jack">Jack</option>
-                                                      </select> -->
-                                                      <!-- <p-dropdown [options]="PreviousEmpDDL" [(ngModel)]="selectedPreviousEmp" placeholder="Select a Option" editable="true" appendTo="body">
-                                                      </p-dropdown> -->
+                                                   </td >
+                                                   <td scope="row">
+
                                                    </td>
                                                    <td>
                                                       <input data-provide="datepicker" data-date-autoclose="true"
                                                          [(ngModel)]="declarationService.dueDate" [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                          class="form-control" placeholder="Select Date" bsDatepicker>
-                                                      <!-- <input type="text" class="form-control"
-                                                      [ngModel]="declarationService.dueDate | date :'dd-MMM-yyyy'"> -->
+
                                                    </td>
                                                    <td>
                                                       <div class="custom_icon_badge">
@@ -782,48 +780,23 @@
                                                    <td>
                                                    </td>
                                                    <td>
-                                                      <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService,i,j)"></i>&nbsp;&nbsp;
-                                                         <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                         tooltip="Cancel"></i>
+
                                                    </td>
-                                                   <!-- <td><i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-plus-circle font-16 text-green cursor-pointer" tooltip="Add Row"></i></td> -->
-                                                </tr>
-                                                <!-- <tr *ngIf="(addRow1 &&(addRow2 ==j))">
-                                                   <td colspan="10"
-                                                      class="align-right font700 font-16 text-light-green cursor-pointer">
-                                                       <i class="fa fa-save font-20"
-                                                         (click)="SaveDeclrationRow(j);addRow1 = !addRow1"
-                                                         tooltip="Save"></i> Save
-                                                   </td>
+
                                                 </tr> -->
-                                                <!-- <tr *ngFor="let i = index; count as c;">
-                                                <td colspan="10" class="align-right font700 font-16 text-light-green cursor-pointer">
-                                                   <i class="fa fa-plus-circle font-20" *ngIf="(i == (c-1)) && !(addRow1 &&(addRow2 ==j)) && (!((enableEditRow == i) && (enablePolicyTable == j)))" (click)="addRow1 = !addRow1;addRow2 =j " tooltip="Add Row"></i>                                                                        Add Row
-                                                </td>
-                                                </tr> -->
+
                                                 <tr *ngIf="!isDisabled">
                                                    <td colspan="10"
                                                       class="align-right font700 font-16 text-light-green cursor-pointer">
-                                                      <!-- <i class="fa fa-plus-circle font-20"
-                                                         ></i> -->
-                                                      <span (click)="addRow1 = !addRow1;addRow2 =j " tooltip="Add Row">Add Row</span>
+
+                                                         <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService ,j)"></i>
+                                                       <span tooltip="Add Row" >Add</span>&nbsp;&nbsp;
+
+                                                       <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                         tooltip="Cancel" (click)="deleteRow(j)" ></i>
                                                    </td>
                                                 </tr>
-                                                <!-- <tr>
-                                                   <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
-                                                   <td class="bg-lightgray font-18 font700 align-right"></td>
-                                                   <td class="bg-lightgray font-18 font700 align-right">
-                                                      {{item.declarationTotal | number:'1.2-2'}}</td>
-                                                   <td class="bg-lightgray font-18 font700 align-right"></td>
-                                                   <td class="bg-lightgray font-18 font700 align-right">
-                                                      {{item.actualTotal | number:'1.2-2'}}</td>
-                                                   <td class="bg-lightgray font-18 font700 align-right">
-                                                      {{item.totalRejectedAmount | number:'1.2-2'}}</td>
-                                                   <td class="bg-lightgray font-18 font700 align-right">
-                                                      {{item.totalApprovedAmount | number:'1.2-2'}}</td>
-                                                   <td class="bg-lightgray font-18 font700"></td>
-                                                   <td class="bg-lightgray font-18 font700"></td>
-                                                </tr> -->
+
                                                 <tr>
                                                    <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                                                    <td class="bg-lightgray font-18 font700 align-right"></td>
@@ -931,6 +904,7 @@
                                                          <th scope="col" class="font700 wd-8">Sr No.</th>
                                                          <th scope="col" class="font700 wd-40">Document Name</th>
                                                          <th scope="col" class="font700 wd-20">Attachment</th>
+                                                         <th scope="col" class="font700 wd-12">Total Selected Amount</th>
                                                          <th scope="col" class="font700 wd-20">Amount</th>
                                                          <th scope="col" class="font700 wd-12">Action</th>
                                                       </tr>
@@ -945,6 +919,14 @@
                                                          <td><span class="text-orange" tooltip="{{currentFileUpload!=null?currentFileUpload.name:''}}"><i
                                                                   class="fa fa-paperclip"
                                                                   aria-hidden="true"></i>&nbsp;{{currentFileUpload!=null?currentFileUpload.name:''}}</span></td>
+                                                                  <td>
+                                                                    <span>
+                                                                       <input type="text"
+                                                                          class="form-control align-right"
+                                                                          (change)='changeSelectedAmountFormat()'
+                                                                          [(ngModel)]="receiptAmount">
+                                                                    </span>
+                                                                 </td>
                                                          <td>
                                                             <span>
                                                                <input type="text"
