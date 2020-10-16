@@ -3,3 +3,8 @@
 @import 'assets/plugins/charts-c3/c3.min.css';
 @import 'assets/css/main.css';
 @import 'assets/css/theme2.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.disabled-btn-bg-green{
+    background-color: #94c1c1!important;
+}

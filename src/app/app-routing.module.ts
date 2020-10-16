@@ -11,6 +11,8 @@ const routes: Routes = [
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
   { path: 'investment',
   loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' },
+  { path: 'employee-master',
+  loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule' },
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', redirectTo: '/dashboard' },
 ];

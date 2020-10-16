@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: 'http://localhost:8080/hrms/v1',
+  baseUrl8082: 'http://localhost:8082/hrms/v1',
+  baseUrl8083: 'http://localhost:8083/hrms/v1',
 };
 
 /*
