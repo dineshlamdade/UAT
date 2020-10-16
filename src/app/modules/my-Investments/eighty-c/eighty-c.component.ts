@@ -14,10 +14,8 @@ import { from } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from './../my-Investments.dialogBox';
+import {ConfirmDialogComponent} from './declarationEditUpload';
 import { startOfYear } from 'date-fns';
-
-
 
 @Component({
     selector: 'app-eighty-c',
@@ -26,272 +24,283 @@ import { startOfYear } from 'date-fns';
 })
 
 export class EightyCComponent implements OnInit {
-         public summarynew: any = {};
-        summaryGridData: Array<any> = [];
-        summaryComputationGridDate: any;
-        masterGridData: Array<any> = [];
-        paymentDetailGridData: Array<any> = [];
-        declarationGridData: Array<any> = [];
-        familyMemberGroup: Array<any> = [];
-        frequencyOfPaymentList: Array<any> = [];
-        institutionNameList: Array<any> = [];
-        transactionDetail: Array<any> = [];
-        documentDetailList: Array<any> = [];
-        uploadGridData: Array<any> = [];
-        transactionInstitutionNames: Array<any> = [];
-        familyMemberName: Array<any> = [];
 
-        form: FormGroup;
-        Index: number;
-        showUpdateButton: boolean;
-        tabIndex = 0;
-        radioSelected: string;
-        familyRelationSame: boolean;
-        enableEditRow: number;
-        enableAddRow: number;
-        enablePolicyTable: number;
-        enableCheckbox: number;
-        enableCheckboxFlag: number;
-        enableCheckboxFlag3: boolean;
-        addRow1: boolean;
-        addRow2: number;
-        previousEmployeeList: Array<any> = [];
-        totalDeclaredAmount: any;
-        totalActualAmount: any;
-        futureNewPolicyDeclaredAmount: number;
-        grandTotalDeclaredAmount: number;
-        grandTotalActualAmount: number;
-        grandDeclarationTotal: number;
-        grandActualTotal: number;
-        grandRejectedTotal: number;
-        grandApprovedTotal: number;
-        grandTabStatus: boolean;
-        isCheckAll: boolean;
-        isDisabled: boolean;
-        enableSelectAll: boolean;
-        enableFileUpload: boolean;
-        documentRemark:any;
-        isECS = true;
-        hideCopytoActualDate  = false;
-        shownewRow = false;
-        initialArray =  true;
-        initialArrayIndex : number;
-        ////// ---------service
-        declarationService: DeclarationService;
-        displayUploadFile = false;
-        uploadedFiles: any[] = [];
-        // msgs2: Message[];
+  public summarynew: any = {};
+  summaryGridData: Array<any> = [];
+  summaryComputationGridDate: any;
+  masterGridData: Array<any> = [];
+  paymentDetailGridData: Array<any> = [];
+  declarationGridData: Array<any> = [];
+  familyMemberGroup: Array<any> = [];
+  frequencyOfPaymentList: Array<any> = [];
+  institutionNameList: Array<any> = [];
+  transactionDetail: Array<any> = [];
+  documentDetailList: Array<any> = [];
+  uploadGridData: Array<any> = [];
+  transactionInstitutionNames: Array<any> = [];
+  transactionPolicyList: Array<any> = [];
+  familyMemberName: Array<any> = [];
 
-        dueDate : Date;
-        dateOfPayment : Date;
-        date3: Date;
-        loaded = 0;
-        selectedFiles: FileList;
-        currentFileUpload: File;
-        receiptNumber: number;
-        receiptAmount: string;
-        receiptDate: Date;
-        selectedInstitution: string;
-        policyDuplicate: string;
-        sumDeclared: any;
-        enableCheckboxFlag2: any;
-        greaterDateValidations: boolean;
-        policyMinDate: Date;
-        paymentDetailMinDate: Date;
-        financialYearStart: Date;
-        employeeJoiningDate: Date;
-        windowScrolled: boolean;
-        addNewRowId:number;
-        declarationTotal:number;
-        declaredAmount:number;
-        actualTotal:number
-        actualAmount:number
-        hideRemarkDiv:boolean;
-        isClear:boolean;
-        isCancel:boolean;
-         financialYear : any;
-         financialYearStartDate: Date;
-         financialYearEndDate:Date;
-         today = new Date();
+  form: FormGroup;
+  Index: number;
+  showUpdateButton: boolean;
+  tabIndex = 0;
+  radioSelected: string;
+  familyRelationSame: boolean;
+  enableEditRow: number;
+  enableAddRow: number;
+  enablePolicyTable: number;
+  enableCheckbox: number;
+  enableCheckboxFlag: number;
+  enableCheckboxFlag3: boolean;
+  addRow1: boolean;
+  addRow2: number;
+  previousEmployeeList: Array<any> = [];
+  totalDeclaredAmount: any;
+  totalActualAmount: any;
+  futureNewPolicyDeclaredAmount: number;
+  grandTotalDeclaredAmount: number;
+  grandTotalActualAmount: number;
+  grandDeclarationTotal: number;
+  grandActualTotal: number;
+  grandRejectedTotal: number;
+  grandApprovedTotal: number;
+  grandTabStatus: boolean;
+  isCheckAll: boolean;
+  isDisabled: boolean;
+  enableSelectAll: boolean;
+  enableFileUpload: boolean;
+  documentRemark:any;
+  isECS = true;
+  hideCopytoActualDate  = false;
+  shownewRow = false;
+  initialArray =  true;
+  initialArrayIndex : number;
+  ////// ---------service
+  declarationService: DeclarationService;
+  displayUploadFile = false;
+  uploadedFiles: any[] = [];
+  // msgs2: Message[];
 
-        // ---------------------------
+  dueDate : Date;
+  dateOfPayment : Date;
+  date3: Date;
+  loaded = 0;
+  selectedFiles: FileList;
+  currentFileUpload: File;
+  receiptNumber: number;
+  receiptAmount: string;
+  receiptDate: Date;
+  selectedInstitution: string;
+  policyDuplicate: string;
+  sumDeclared: any;
+  enableCheckboxFlag2: any;
+  greaterDateValidations: boolean;
+  policyMinDate: Date;
+  paymentDetailMinDate: Date;
+  financialYearStart: Date;
+  employeeJoiningDate: Date;
+  windowScrolled: boolean;
+  addNewRowId:number;
+  declarationTotal:number;
+  declaredAmount:number;
+  actualTotal:number
+  actualAmount:number
+  hideRemarkDiv:boolean;
+  isClear:boolean;
+  isCancel:boolean;
+  financialYear : any;
+  financialYearStartDate: Date;
+  financialYearEndDate:Date;
+  today = new Date();
 
-        constructor(
-                private formBuilder: FormBuilder,
-                private Service: MyInvestmentsService,
-                private datePipe: DatePipe,
-                // private messageService: MessageService,
-                private http: HttpClient,
-                private fileService: FileService,
-                private numberFormat: NumberFormatPipe,
-                public dialog: MatDialog,
-                private modalService: BsModalService,
-                @Inject(DOCUMENT) private document: Document,
-                @Optional() @Inject(MAT_DIALOG_DATA) public data: any)
-        {
-                // this.minDate = new Date();
-                this.form = this.formBuilder.group({
-                        institutionName: new FormControl(null, Validators.required),
-                        policyNo: new FormControl(null, Validators.required),
-                        policyholdername: new FormControl(null, Validators.required),
-                        relationship: new FormControl({value: null, disabled: true}),
-                        policyStartDate: new FormControl(null, Validators.required),
-                        policyEndDate: new FormControl(null, Validators.required),
-                        familyMemberInfoId: new FormControl(null, Validators.required),
-                        active: new FormControl(true, Validators.required),
-                        remark: new FormControl(null),
-                        frequencyOfPayment: new FormControl(null, Validators.required),
-                        premiumAmount: new FormControl(null, Validators.required),
-                        annualAmount: new FormControl({value: null, disabled: true}, Validators.required),
-                        fromDate: new FormControl(null, Validators.required),
-                        toDate: new FormControl(null, Validators.required),
-                        ecs: new FormControl('0'),
-                        licMasterPaymentDetailsId: new FormControl(0),
-                        licMasterId: new FormControl(0),
-                });
+  transactionStatustList:any;
 
-                // ----------------sneha-----------------
-                this.frequencyOfPaymentList = [
-                        {label: 'Monthly', value: 'Monthly'},
-                        {label: 'Quarterly', value: 'Quarterly'},
-                        {label: 'Half-Yearly', value: 'Halfyearly'},
-                        {label: 'Yearly', value: 'Yearly'},
-                ];
+  constructor(
+    private formBuilder: FormBuilder,
+    private Service: MyInvestmentsService,
+    private datePipe: DatePipe,
+    // private messageService: MessageService,
+    private http: HttpClient,
+    private fileService: FileService,
+    private numberFormat: NumberFormatPipe,
+    public dialog: MatDialog,
+    private modalService: BsModalService,
+    @Inject(DOCUMENT) private document: Document,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any)
+  {
+      // this.minDate = new Date();
+      this.form = this.formBuilder.group({
+        institutionName: new FormControl(null, Validators.required),
+        policyNo: new FormControl(null, Validators.required),
+        policyholdername: new FormControl(null, Validators.required),
+        relationship: new FormControl({value: null, disabled: true}),
+        policyStartDate: new FormControl(null, Validators.required),
+        policyEndDate: new FormControl(null, Validators.required),
+        familyMemberInfoId: new FormControl(null, Validators.required),
+        active: new FormControl(true, Validators.required),
+        remark: new FormControl(null),
+        frequencyOfPayment: new FormControl(null, Validators.required),
+        premiumAmount: new FormControl(null, Validators.required),
+        annualAmount: new FormControl({value: null, disabled: true}, Validators.required),
+        fromDate: new FormControl(null, Validators.required),
+        toDate: new FormControl(null, Validators.required),
+        ecs: new FormControl('0'),
+        licMasterPaymentDetailsId: new FormControl(0),
+        licMasterId: new FormControl(0),
+      });
 
-                this.grandTabStatus=false;
-                this.isCheckAll=false;
-                this.isDisabled=true;
-                this.enableSelectAll=false;
-                this.enableFileUpload=false;
-                this.addNewRowId=0;
-                this.hideRemarkDiv = false;
-                this.isClear= false;
-                this.isCancel= false;;
-                this.receiptAmount='0';
-            }
+      // ----------------sneha-----------------
+      this.frequencyOfPaymentList = [
+        {label: 'Monthly', value: 'Monthly'},
+        {label: 'Quarterly', value: 'Quarterly'},
+        {label: 'Half-Yearly', value: 'Halfyearly'},
+        {label: 'Yearly', value: 'Yearly'},
+      ];
+
+      // ---------------- Transaction status List -----------------
+      this.transactionStatustList = [
+        {label: 'All', value: 'All'},
+        {label: 'Pending', value: 'Pending'},
+        {label: 'Submitted', value: 'Submitted'},
+        {label: 'Approved', value: 'Approved'},
+        {label: 'Send back', value: 'Send back'},
+      ];
+
+      this.grandTabStatus=false;
+      this.isCheckAll=false;
+      this.isDisabled=true;
+      this.enableSelectAll=false;
+      this.enableFileUpload=false;
+      this.addNewRowId=0;
+      this.hideRemarkDiv = false;
+      this.isClear= false;
+      this.isCancel= false;;
+      this.receiptAmount='0';
+  }
 
 
-        modalRef: BsModalRef;
+  modalRef: BsModalRef;
 
-        @HostListener("window:scroll", [])
-        onWindowScroll() {
-                if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
-                        this.windowScrolled = true;
-                } else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop ||
-                  document.body.scrollTop < 10) {
-                        this.windowScrolled = false;
-                }
-        }
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+    if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
+      this.windowScrolled = true;
+    } else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop ||
+    document.body.scrollTop < 10) {
+      this.windowScrolled = false;
+    }
+  }
 
-        scrollToTop() {
-                (function smoothscroll() {
-                    var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-                    if (currentScroll > 0) {
-                            window.requestAnimationFrame(smoothscroll);
-                            window.scrollTo(0, currentScroll - (currentScroll / 8));
-                    }
-                })();
-        }
+  scrollToTop() {
+          (function smoothscroll() {
+              var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+              if (currentScroll > 0) {
+                      window.requestAnimationFrame(smoothscroll);
+                      window.scrollTo(0, currentScroll - (currentScroll / 8));
+              }
+          })();
+  }
 
-        addUpload(summary,i): void {
-          const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-            width: '90%',
-            height: '40em',
-            data: 'asasas',
+  addUpload(summary,i): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '90%',
+      height: '40em',
+      data: 'asasas',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.documentDetailList = result;
+    });
+  }
+
+  ngOnInit(): void {
+
+    this.enableAddRow = 0;
+    this.enableCheckboxFlag = 1;
+    this.enableCheckboxFlag3 = false;
+    this.declarationService = new DeclarationService();
+
+    // Business Financial Year API Call
+    this.Service.getBusinessFinancialYear().subscribe(res => {
+      this.financialYearStart = res.data.results[0].fromDate;
+    });
+
+    // Family Member List API call
+    this.Service.getFamilyInfo().subscribe(res => {
+      this.familyMemberGroup = res.data.results;
+      res.data.results.forEach(element => {
+        const obj = {
+          label: element.familyMemberName,
+          value: element.familyMemberName,
+        };
+        this.familyMemberName.push(obj);
+      });
+    });
+
+          this.deactivateRemark();
+          this.deactiveCopytoActualDate();
+
+          // Summary get Call on Page Load
+          this.Service.getEightyCSummary().subscribe(res => {
+                  //console.log("DATA" +res.data);
+                  this.summaryGridData = res.data.results[0].licMasterList;
+                  this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+                  this.totalActualAmount = res.data.results[0].totalActualAmount;
+                  this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+                  this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+                  this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+
+
           });
 
-          dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
-            this.documentDetailList = result;
+          // Get API call for All previous employee Names
+          this.Service.getpreviousEmployeName().subscribe(res => {
+                  console.log(res);
+                  if (!res.data.results[0]) {
+                          return ;
+                  }
+                  res.data.results.forEach(element => {
+                          const obj = {
+                              label: element.name,
+                              value: element.previousEmployerId
+                          };
+                          this.previousEmployeeList.push(obj);
+                  });
           });
-        }
 
-        ngOnInit(): void {
+          // Get All Institutes From Global Table
+          this.Service.getAllInstitutesFromGlobal().subscribe(res => {
+                  //console.log(res);
+                  res.data.results.forEach(element => {
+                          const obj = {
+                                  label: element.insurerName,
+                                  value: element.insurerName,
+                          };
+                          this.institutionNameList.push(obj);
+                  });
+          });
 
-                this.enableAddRow = 0;
-                this.enableCheckboxFlag = 1;
-                this.enableCheckboxFlag3 = false;
-                this.declarationService = new DeclarationService();
+          // Get All Previous Employer
+          this.Service.getAllPreviousEmployer().subscribe(res => {
+              console.log(res.data.results);
+              this.employeeJoiningDate = res.data.results[0].joiningDate;
+              console.log('employeeJoiningDate::',this.employeeJoiningDate);
+          });
 
-                // Business Financial Year API Call
-                this.Service.getBusinessFinancialYear().subscribe(res => {
-                        this.financialYearStart = res.data.results[0].fromDate;
-                });
+          if ((this.today.getMonth() + 1) <= 3) {
+            this.financialYear = (this.today.getFullYear() - 1) + "-" + this.today.getFullYear();
+          } else {
+            this.financialYear = this.today.getFullYear() + "-" + (this.today.getFullYear() + 1);
+          }
 
-                // Family Member List API call
-                this.Service.getFamilyInfo().subscribe(res => {
-                        this.familyMemberGroup = res.data.results;
-                        res.data.results.forEach(element => {
-                                const obj = {
-                                        label: element.familyMemberName,
-                                        value: element.familyMemberName,
-                                };
-                                this.familyMemberName.push(obj);
-                        });
-                });
+          let splitYear = this.financialYear .split("-", 2);
 
-                this.deactivateRemark();
-                this.deactiveCopytoActualDate();
+          this.financialYearStartDate = new Date("01-Apr-" + splitYear[0]);
+          this.financialYearEndDate = new Date("31-Mar-" + splitYear[1]);
 
-                // Summary get Call on Page Load
-                this.Service.getEightyCSummary().subscribe(res => {
-                        //console.log("DATA" +res.data);
-                        this.summaryGridData = res.data.results[0].licMasterList;
-                        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-                        this.totalActualAmount = res.data.results[0].totalActualAmount;
-                        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-                        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-                        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-
-
-                });
-
-                // Get API call for All previous employee Names
-                this.Service.getpreviousEmployeName().subscribe(res => {
-                        console.log(res);
-                        if (!res.data.results[0]) {
-                                return ;
-                        }
-                        res.data.results.forEach(element => {
-                                const obj = {
-                                    label: element.name,
-                                    value: element.previousEmployerId
-                                };
-                                this.previousEmployeeList.push(obj);
-                        });
-                });
-
-                // Get All Institutes From Global Table
-                this.Service.getAllInstitutesFromGlobal().subscribe(res => {
-                        //console.log(res);
-                        res.data.results.forEach(element => {
-                                const obj = {
-                                        label: element.insurerName,
-                                        value: element.insurerName,
-                                };
-                                this.institutionNameList.push(obj);
-                        });
-                });
-
-                // Get All Previous Employer
-                this.Service.getAllPreviousEmployer().subscribe(res => {
-                    console.log(res.data.results);
-                    this.employeeJoiningDate = res.data.results[0].joiningDate;
-                    console.log('employeeJoiningDate::',this.employeeJoiningDate);
-                });
-
-                if ((this.today.getMonth() + 1) <= 3) {
-                  this.financialYear = (this.today.getFullYear() - 1) + "-" + this.today.getFullYear();
-                } else {
-                  this.financialYear = this.today.getFullYear() + "-" + (this.today.getFullYear() + 1);
-                }
-
-                let splitYear = this.financialYear .split("-", 2);
-
-                this.financialYearStartDate = new Date("01-Apr-" + splitYear[0]);
-                this.financialYearEndDate = new Date("31-Mar-" + splitYear[1]);
-
-        }
+  }
 
         // ---------------------Summary ----------------------
 
@@ -581,16 +590,26 @@ export class EightyCComponent implements OnInit {
                 //console.log(data);
                 this.transactionInstitutionNames.push(data);
                 //console.log(this.transactionInstitutionNames);
-                this.Service.getEightyCDeclarationInstitutions().subscribe(res => {
-                    res.data.results[0].forEach(element => {
-                        const obj = {
-                            label: element,
-                            value: element,
-                        };
-                        this.transactionInstitutionNames.push(obj);
-                    });
-                    //console.log(res);
-                });
+                // this.Service.getEightyCDeclarationInstitutions().subscribe(res => {
+                //     res.data.results[0].forEach(element => {
+                //         const obj = {
+                //             label: element,
+                //             value: element,
+                //         };
+                //         this.transactionInstitutionNames.push(obj);
+                //     });
+                //     //console.log(res);
+                // });
+                this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe(res => {
+                  res.data.results.forEach(element => {
+                      const obj = {
+                          label: element.institution,
+                          value: element.institution,
+                      };
+                      this.transactionInstitutionNames.push(obj);
+                  });
+                  //console.log(res);
+              });
                 this.resetAll();
                 this.selectedTransactionInstName('All');
             }
@@ -1018,6 +1037,19 @@ export class EightyCComponent implements OnInit {
                 );
             }
 
+            declarationEditUpload(summary,i): void {
+              const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+                width: '90%',
+                height: '40em',
+                data: 'asasas',
+              });
+
+              dialogRef.afterClosed().subscribe(result => {
+                console.log('The dialog was closed');
+                this.documentDetailList = result;
+              });
+            }
+
             // private processData() {
             //   const statesSeen = {};
             //   const countiesSeen = {};
@@ -1054,3 +1086,6 @@ class DeclarationService {
                 Object.assign(this, obj);
         }
 }
+
+
+

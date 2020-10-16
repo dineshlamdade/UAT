@@ -485,31 +485,28 @@
                                  </option>
                                  </select>
                               </div>
-
-
                               <div class="col-2">
-                                <label class="form-label mt-2 pl-10">Policy No.</label>
+                                 <label class="form-label mt-2 pl-10">Policy No.</label>
                               </div>
                               <div class="col-2">
-                                <select name="Institution" class="form-control custom-select" (change)="selectedTransactionInstName($event.target.value)">
-                                <option *ngFor="let InstitutionName of transactionInstitutionNames"
-                                [value]="InstitutionName.value">
-                                {{InstitutionName.label}}
-                                </option>
-                                </select>
-                             </div>
-                             <div class="col-1 pr-0 mr-0">
-                              <label class="form-label mt-2">Status</label>
-                             </div>
-                             <div class="col-2">
-                              <select name="Institution" class="form-control custom-select" (change)="selectedTransactionInstName($event.target.value)">
-                              <option *ngFor="let InstitutionName of transactionInstitutionNames"
-                              [value]="InstitutionName.value">
-                              {{InstitutionName.label}}
-                              </option>
-                              </select>
-                            </div>
-
+                                 <select name="policyNo" class="form-control custom-select" (change)="selectedTransactionInstName($event.target.value)">
+                                 <option *ngFor="let InstitutionName of transactionInstitutionNames"
+                                 [value]="InstitutionName.value">
+                                 {{InstitutionName.label}}
+                                 </option>
+                                 </select>
+                              </div>
+                              <div class="col-1 pr-0 mr-0">
+                                 <label class="form-label mt-2">Status</label>
+                              </div>
+                              <div class="col-2">
+                                 <select name="transactionStatus" class="form-control custom-select" (change)="selectedTransactionInstName($event.target.value)">
+                                  <option *ngFor="let transactionStatus of transactionStatustList"
+                                 [value]="transactionStatus.value">
+                                 {{transactionStatus.label}}
+                                 </option>
+                                 </select>
+                              </div>
                            </div>
                            <div *ngFor="let item of transactionDetail;  let j = index;">
                               <div class="row mt-25">
@@ -543,7 +540,6 @@
                                              <tr>
                                                 <th rowspan="2" class="wd-4">
                                                    <label class="custom-control custom-checkbox checkbox-center">
-                                                      <!-- <input type="checkbox" class="custom-control-input" name="select"  value="isCheckAll"> -->
                                                       <input type="checkbox" class="custom-control-input"
                                                       [ngModel]="isCheckAll" [disabled]="isDisabled" name="select"
                                                       value="isCheckAll{{j}}"
@@ -584,10 +580,9 @@
                                                    </label>
                                                 </td>
                                                 <td >
-
                                                    <select name="Previous Employer Name" class="form-control custom-select" *ngIf="summary.active">
-                                                    <option [ngValue]="null"> select Previous Emp... </option>
-                                                    <option *ngFor="let previousEmployee of previousEmployeeList"
+                                                      <option [ngValue]="null"> select Previous Emp... </option>
+                                                      <option *ngFor="let previousEmployee of previousEmployeeList"
                                                       [value]="previousEmployee.value">
                                                       {{previousEmployee.label}}
                                                       </option>
@@ -597,58 +592,50 @@
                                                    <span>Yes</span>
                                                 </td>
                                                 <td>
-                                                  <div class="custom_icon_badge">
-                                                    <input type="text" class="form-control"
-                                                    [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
-                                                       [ngModel]="summary.dueDate | date :'dd-MMM-yyyy'" [disabled]="initialArrayIndex > i"
-                                                       (ngModelChange)="summary.dueDate = $event.toLocaleDateString() ; onDueDateChange(summary, i, j )"
-                                                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker>
-
-                                                       <span  *ngIf = "hideCopytoActualDate" class="clone_Icon" tooltip="Copy to Actual"
-                                                          (click)="summary.dateOfPayment=summary.dueDate "><i
-                                                             class=" fa fa-files-o cursor-pointer"></i> </span>
-                                                            </div>
-                                                 </td>
-
-                                                 <td>
-                                                    <div class="custom_icon_badge">
-                                                       <input   type="text"
-                                                       id="declaredAmount{{summary.licTransactionId}}"
-                                                       name="declaredAmount{{summary.licTransactionId}}"
-
-                                                          [(ngModel)]="summary.declaredAmount"
-                                                          class="form-control align-right"
-                                                          (change)="onDeclaredAmountChange(summary, i, j)"
-                                                          [disabled]="initialArrayIndex > i">
-
-                                                       <span class="clone_Icon" tooltip="Copy to Actual"
-                                                          (click)="summary.actualAmount = summary.declaredAmount ; summary.dateOfPayment=summary.dueDate ; onActualAmountChange(summary, i, j)"><i
-                                                             class=" fa fa-files-o cursor-pointer"></i> </span>
-                                                    </div>
-                                                 </td>
-
-
-                                                 <td>
-                                                  <input
-                                                  type="text"
-                                                  [ngModel]="summary.dateOfPayment | date :'dd-MMM-yyyy'"
-                                                  [disabled]="initialArrayIndex > i"
-                                                  [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
-                                                  [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                     data-provide="datepicker" data-date-autoclose="true"
-                                                     class="form-control" bsDatepicker>
-
-                                               </td>
-                                               <td>
-                                                  <input type="text"
-                                                  id="actualAmount{{summary.licTransactionId}}"
-                                                  name="actualAmount{{summary.licTransactionId}}"
-                                                     [disabled]="initialArrayIndex > i"
-                                                     [(ngModel)]="summary.actualAmount"
-                                                     (change)="onActualAmountChange(summary, i, j)"
-                                                     class="form-control align-right">
-
-                                               </td>
+                                                   <div class="custom_icon_badge">
+                                                      <input type="text" class="form-control"
+                                                      [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                                                      [ngModel]="summary.dueDate | date :'dd-MMM-yyyy'" [disabled]="initialArrayIndex > i"
+                                                      (ngModelChange)="summary.dueDate = $event.toLocaleDateString() ; onDueDateChange(summary, i, j )"
+                                                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker>
+                                                      <span  *ngIf = "hideCopytoActualDate" class="clone_Icon" tooltip="Copy to Actual"
+                                                      (click)="summary.dateOfPayment=summary.dueDate "><i
+                                                         class=" fa fa-files-o cursor-pointer"></i> </span>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <div class="custom_icon_badge">
+                                                      <input   type="text"
+                                                      id="declaredAmount{{summary.licTransactionId}}"
+                                                      name="declaredAmount{{summary.licTransactionId}}"
+                                                      [(ngModel)]="summary.declaredAmount"
+                                                      class="form-control align-right"
+                                                      (change)="onDeclaredAmountChange(summary, i, j)"
+                                                      [disabled]="initialArrayIndex > i">
+                                                      <span class="clone_Icon" tooltip="Copy to Actual"
+                                                         (click)="summary.actualAmount = summary.declaredAmount ; summary.dateOfPayment=summary.dueDate ; onActualAmountChange(summary, i, j)"><i
+                                                         class=" fa fa-files-o cursor-pointer"></i> </span>
+                                                   </div>
+                                                </td>
+                                                <td>
+                                                   <input
+                                                   type="text"
+                                                   [ngModel]="summary.dateOfPayment | date :'dd-MMM-yyyy'"
+                                                   [disabled]="initialArrayIndex > i"
+                                                   [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
+                                                   [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                   data-provide="datepicker" data-date-autoclose="true"
+                                                   class="form-control" bsDatepicker>
+                                                </td>
+                                                <td>
+                                                   <input type="text"
+                                                   id="actualAmount{{summary.licTransactionId}}"
+                                                   name="actualAmount{{summary.licTransactionId}}"
+                                                   [disabled]="initialArrayIndex > i"
+                                                   [(ngModel)]="summary.actualAmount"
+                                                   (change)="onActualAmountChange(summary, i, j)"
+                                                   class="form-control align-right">
+                                                </td>
                                                 <td>
                                                    <input type="text" [ngModel]="summary.amountRejected | number:'1.2-2'" class="form-control align-right" disabled>
                                                 </td>
@@ -663,20 +650,15 @@
                                                 </td>
                                                 <td class="text-orange font700"><span tooltip="{{summary.transactionStatus}}">{{summary.transactionStatus}}</span></td>
                                              </tr>
-
-
                                              <tr *ngIf="!isDisabled">
-                                              <td colspan="12"
-                                                 class="align-right font700 font-16 text-light-green cursor-pointer">
-
-                                                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService ,j)"></i>
-                                                  <span tooltip="Add Row" >Add</span>&nbsp;&nbsp;
-
-                                                  <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                    tooltip="Cancel" (click)="deleteRow(j)" ></i>
-                                              </td>
-                                           </tr>
-
+                                                <td colspan="12"
+                                                   class="align-right font700 font-16 text-light-green cursor-pointer">
+                                                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService ,j)"></i>
+                                                   <span tooltip="Add Row" >Add</span>&nbsp;&nbsp;
+                                                   <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                      tooltip="Cancel" (click)="deleteRow(j)" ></i>
+                                                </td>
+                                             </tr>
                                              <tr>
                                                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                                                 <td class="bg-lightgray font-18 font700 align-right"></td>
@@ -747,7 +729,6 @@
                                              <td class="bg-gray font-18 font700 wd-7"></td>
                                              <td  class="bg-gray font-18 font700 wd-10"></td>
                                           </tr>
-
                                        </tbody>
                                     </table>
                                  </div>
@@ -785,15 +766,15 @@
                                                       <td><span class="text-orange" tooltip="{{currentFileUpload!=null?currentFileUpload.name:''}}"><i
                                                          class="fa fa-paperclip"
                                                          aria-hidden="true"></i>&nbsp;{{currentFileUpload!=null?currentFileUpload.name:''}}</span></td>
-                                                         <td>
-                                                          <span>
-                                                             <input type="text"
-                                                                class="form-control align-right"
-                                                                (change)='changeSelectedAmountFormat()'
-                                                                [(ngModel)]="receiptAmount">
-                                                          </span>
-                                                       </td>
-                                                         <td>
+                                                      <td>
+                                                         <span>
+                                                         <input type="text"
+                                                         class="form-control align-right"
+                                                         (change)='changeSelectedAmountFormat()'
+                                                         [(ngModel)]="receiptAmount">
+                                                         </span>
+                                                      </td>
+                                                      <td>
                                                          <span>
                                                          <input type="text"
                                                          class="form-control align-right"
@@ -801,7 +782,6 @@
                                                          [(ngModel)]="receiptAmount">
                                                          </span>
                                                       </td>
-
                                                       <td><i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="!enableFileUpload?sweetalertWarning('Please select transaction to Upload Document'):UploadModal(template)"></i>&nbsp;&nbsp;
                                                          <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i>
                                                       </td>
@@ -817,7 +797,6 @@
                            <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
                               <div class="col-12">
                                  <div class="float-right mb-15">
-
                                     <button type="button" (click)="upload()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
                                        class="fa fa-floppy-o"></i></b> Save</button>
                                  </div>
@@ -893,6 +872,10 @@
                                                       <a href="{{documentSummary.blobURI}}"><i
                                                          class="fa fa-download font-16 text-blue cursor-pointer"
                                                          tooltip="Download"></i></a>
+
+                                                         &nbsp;&nbsp;
+                                                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="declarationEditUpload(i)" tooltip="Edit"></i>
+
                                                    </td>
                                                 </tr>
                                              </tbody>

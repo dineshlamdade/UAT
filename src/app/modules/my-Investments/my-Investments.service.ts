@@ -18,7 +18,7 @@ export class MyInvestmentsService {
     }));
   }
 
- 
+
 
   getNPSMaster() {
     return this._HTTP.get(this.url + 'npsmaster-detail/3')
@@ -223,6 +223,14 @@ export class MyInvestmentsService {
 
   getEightyCDeclarationInstitutions() {
     return this._HTTP.get(this.url + 'lic-transaction/institutions')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  getEightyCDeclarationInstitutionListWithPolicyNo() {
+    return this._HTTP.get(this.url + 'lic-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
     }
