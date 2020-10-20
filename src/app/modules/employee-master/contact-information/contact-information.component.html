@@ -26,11 +26,10 @@
                                                             class="form-label">{{ 'ContactInformationForm.officialMobileNumber' | transloco }}</label>
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
-                                                                <select class="form-control" placeholder="Select ISD"
+                                                                <select class="form-control selectpicker" placeholder="Select ISD"
                                                                     formControlName="officialCountryCode"
                                                                     [(ngModel)]="ngOfficialCountryCode">
-                                                                    <option value="" selected disabled>Enter ISD
-                                                                    </option>
+                                                                    <option value="" data-hidden="true">Please select</option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
                                                                         {{code}}
@@ -157,7 +156,7 @@
                                                     <legend>{{ 'ContactInformationForm.localAddressTitle' | transloco }}
                                                     </legend>
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-sm-6 col-md-12">
                                                             <label
                                                                 class="form-label">{{ 'ContactInformationForm.Address1' | transloco }}</label>
                                                             <input type="text" class="form-control"
@@ -168,7 +167,7 @@
                                                                 matTooltip="{{localAddressInformation.address1}}"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
                                                         </div>
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-sm-6 col-md-6 mt-10">
                                                             <label
                                                                 class="form-label">{{ 'ContactInformationForm.Address2' | transloco }}</label>
                                                             <input type="text" class="form-control"
@@ -272,7 +271,7 @@
                                                     </legend>
 
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-sm-6 col-md-12">
                                                             <label
                                                                 class="form-label">{{ 'ContactInformationForm.Address1' | transloco }}</label>
                                                             <input type="text" class="form-control"
@@ -283,7 +282,7 @@
                                                                 matTooltip="{{permanentAddressInformation.address1}}"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
                                                         </div>
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-sm-6 col-md-6 mt-10">
                                                             <label
                                                                 class="form-label">{{ 'ContactInformationForm.Address2' | transloco }}</label>
                                                             <input type="text" class="form-control"

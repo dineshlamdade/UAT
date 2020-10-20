@@ -1,12 +1,12 @@
 .code-line{
-    margin-top: 31px;
+  margin-top: 44px;
 
 }
 
 .thumbnail {
     // position: absolute;
     width: 123px;
-    height: 152px;
+    height: 100%;
     overflow: hidden;
     cursor: pointer;
     // border: ridge 3px #e7deec;
@@ -26,9 +26,13 @@
   }
 
   .image-size-info{
-    font-size: 10px;
+    font-size: 11px;
     text-align: center;
   }
   .disabled-btn-bg-green{
     background-color: #94c1c1!important;
+}
+
+.small-size{
+  font-size: 7px;
 }

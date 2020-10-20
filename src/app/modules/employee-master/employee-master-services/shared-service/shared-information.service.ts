@@ -27,4 +27,12 @@ export class SharedInformationService {
         return res;
       }))
   }
+
+  getGlobalLabels() {
+
+    return this.httpClient.get(environment.baseUrl8083 + '/custom-labelsettings/1', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
 }

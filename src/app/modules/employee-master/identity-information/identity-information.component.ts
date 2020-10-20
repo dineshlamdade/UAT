@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { IdentityInformation, VisaInformation } from './../dto-models/identity-information.model';
 // import * as wjcGrid from '@grapecity/wijmo.grid';
@@ -9,10 +9,11 @@ import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../employee-master-services/event-emitter/event-emitter.service';
 // import * as wjcInput from '@grapecity/wijmo.input';
 import { SharedInformationService } from './../employee-master-services/shared-service/shared-information.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { CopyFromConfirmationModal } from '../contact-information/contact-information.component';
 import { ConfirmationModalComponent } from './../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 
@@ -32,7 +33,7 @@ export class IdentityInformationComponent implements OnInit {
   selectedItem: string;
   fullName: any;
   item: any;
-
+  modalRef: BsModalRef;
   // references FlexGrid named 'flex' in the view
   // @ViewChild('flex') flex: wjcGrid.FlexGrid;
   // @ViewChild('editcell') editcell: wjcInput.Popup;
@@ -70,14 +71,29 @@ export class IdentityInformationComponent implements OnInit {
   newData: Array<any> = [];
   autoCompleteControl;
   confirmDeleteSubscription: Subscription;
+  public today = new Date();
+  editVisaDialogFlag: any;
+  visaItem: any;
 
   constructor(private formBuilder: FormBuilder,
     public datepipe: DatePipe,
     private IdentityInformationService: IdentityInformationService,
     private EventEmitterService: EventEmitterService,
     private SharedInformationService: SharedInformationService,
-    public dialog: MatDialog) {
-    // this.date.dateOfIssue.setDate(this.tomorrow.getDate());
+    private modalService: BsModalService,
+    public dialog: MatDialog,
+    @Optional() @Inject(MAT_DIALOG_DATA) public VisaDialog: any,) {
+      debugger
+    if (VisaDialog?.VisaDialog) {
+      this.editVisaDialogFlag = VisaDialog.VisaDialog;
+      if (this.editVisaDialogFlag == 'editVisaDialog') {
+
+        this.countryList = VisaDialog.countryList
+        this.VisaInformation = VisaDialog.visa;
+      }
+
+    }
+
     this.tomorrow.setDate(this.tomorrow.getDate());
     this.yesterday.setDate(this.yesterday.getDate() - 1);
 
@@ -149,6 +165,8 @@ export class IdentityInformationComponent implements OnInit {
     //   }
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(res => {
+      debugger
+     
       // (<wjcCore.CollectionView>this.flex.collectionView).remove(this.item);
       this.deleteInternationalWorkerID.push(this.item.employeeVisaDetailId);
       this.IdentityInfoForm.markAsTouched();
@@ -184,7 +202,7 @@ export class IdentityInformationComponent implements OnInit {
     delete IdentityInformation.employeePersonalInfoRequestDTO.imageResponseDTO;
     delete IdentityInformation.employeePersonalInfoRequestDTO.internationalWorkerResponseDTO;
     IdentityInformation.employeeVisaDetailRequestDTOList.forEach(data => {
-      if(data.id == 0){
+      if (data.id == 0) {
         delete data.id;
       }
     })
@@ -217,7 +235,7 @@ export class IdentityInformationComponent implements OnInit {
     })
   }
   dataBinding(res) {
-debugger
+    debugger
     if (res.data.results[0].employeeESICDTOResponseDTO) {
       this.IdentityInformation.employeeESICDTORequestDTO = res.data.results[0].employeeESICDTOResponseDTO;
     }
@@ -367,6 +385,29 @@ debugger
   //     this.flex.invalidate();
   //   }
   // }
+  editVisaInfo(visa) {
+    debugger
+    // this.modalRef = this.modalService.show(template);
+    const dialogRef = this.dialog.open(IdentityInformationComponent, {
+      disableClose: true,
+      width: '100%', height: '92%', maxWidth: '83vw',
+      data: {
+        VisaDialog: 'editVisaDialog', visa: visa,
+        countryList: this.countryList
+      }
+    });
+  }
+
+  removeVisaItem(visa){
+    this.visaItem = visa;
+    // this.modalRef = this.modalService.show(template);
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '664px', height: '241px',
+      data: { pageValue: 'IdentityForm', info: 'Do you really want to delete?' }
+    });
+  }
+
+
 
   pushToGrid() {
     let data = [];
@@ -389,7 +430,7 @@ debugger
     this.VisaInformation.countryName = '';
     this.VisaInformation.visaType = '';
 
-    if (this.data.length > 0) {
+    if (this.data) {
       let newData = data.concat(this.data);
       this.data = newData;
 

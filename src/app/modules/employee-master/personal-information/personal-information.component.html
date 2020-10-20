@@ -20,7 +20,10 @@
                                                 [(ngModel)]="selectedImg" formControlName="image" />
                                         </div>
                                         <img [src]="imageUrl" alt="">
-                                        <p class="image-size-info">Selected Image size should be less than 1 MB</p>
+                                        <h4 class="image-size-info" tooltip="Size should be
+                                        less than 1 MB">Select Image <p class="small-size">(Size should be
+                                                less than 1 MB)</p>
+                                        </h4>
                                     </div>
                                     <!-- <h6 class="mt-3 mb-0">Michelle Green</h6>
                                     <span>jason-porter@info.com</span>
@@ -35,14 +38,15 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="col-sm-6 col-md-3 code-line">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.empCode' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.employeeCode }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Employee Code"
                                             formControlName="employeeCode"
-                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.employeeCode">
+                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.employeeCode"
+                                            [ngClass]="{'is-invalid' : BasicInfoForm.get('employeeCode').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 code-line">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.alternateCode' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.alternateEmployeeCode }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Alternate Code"
                                             formControlName="alternateCode"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.alternateEmployeeCode">
@@ -53,29 +57,29 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3 mt-10">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.title' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.title }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Title"
                                             formControlName="title" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.firstName' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.firstName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter First Name"
                                             formControlName="firstName" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.firstName"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('firstName').status == 'INVALID'}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-10" [hidden]="PersonalInfoLabels.middleName== ''">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.middleName' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.middleName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Middle Name"
                                             formControlName="middleName" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.middleName">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.lastName' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.lastName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Last Name"
                                             formControlName="lastName" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.lastName">
@@ -86,14 +90,14 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3  mt-10">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.fullName' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.fullName }}</label>
                                         <input type="text" class="form-control" placeholder="Full Name"
                                             formControlName="fullName"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.fullName">
                                     </div>
                                     <div class="col-sm-6 col-md-3  mt-10">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.displayName' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.displayName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Display Name"
                                             formControlName="displayName"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.displayName">
@@ -102,13 +106,14 @@
 
                                     <!-- <br> -->
                                     <!-- <div class="row"> -->
-                                    <div class="col-sm-6 col-md-3  mt-10">
+                                    <div class="col-sm-6 col-md-3  mt-10" [hidden]="PersonalInfoLabels.gender == ''">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.gender' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.gender }}</label>
                                         <select class="form-control" placeholder="Select Gender"
                                             formControlName="gender"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.gender"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('gender').status == 'INVALID'}">
+                                            <option value="" selected disabled>Select Gender</option>
                                             <option *ngFor="let gender of allGenders" [value]="gender">
                                                 {{gender}}
                                             </option>
@@ -116,7 +121,7 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3  mt-10">
                                         <label
-                                            class="form-label">{{ 'PersonalInformationForm.birthDate' | transloco }}</label>
+                                            class="form-label">{{ PersonalInfoLabels.dateOfBirth }}</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -125,7 +130,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="Select Birth Date" bsDatepicker
-                                                    formControlName="birthDate"
+                                                    [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     (bsValueChange)="birthDateValidation(); birthD();"
                                                     [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}">
@@ -138,6 +143,7 @@
                                         <select class="form-control" formControlName="bloodGroup"
                                             [(ngModel)]="personalInformationModel.bloodGroup"
                                             placeholder="Select Blood Group">
+                                            <option value="" selected disabled>Select Blood Group</option>
                                             <option *ngFor="let bloodGroup of bloodGroups" [value]="bloodGroup">
                                                 {{bloodGroup}}
                                             </option>
@@ -149,6 +155,7 @@
                                         <select class="form-control" formControlName="nationality"
                                             [(ngModel)]="personalInformationModel.nationality"
                                             (change)="validateNationalty(country)" placeholder="Select Nationality">
+                                            <option value="" selected disabled>Select Nationality</option>
                                             <option *ngFor="let country of countryList" [value]="country">
                                                 {{country}}
                                             </option>
@@ -160,6 +167,7 @@
                                         <select class="form-control" formControlName="maritalStatus"
                                             [(ngModel)]="personalInformationModel.maritialStatus"
                                             (change)="clearMarriageDate(status)" placeholder="Select Marital Status">
+                                            <option value="" selected disabled>Select Marital Status</option>
                                             <option *ngFor="let status of maritalStatus" [value]="status">
                                                 {{status}}
                                             </option>
@@ -176,7 +184,7 @@
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
-                                                    [max]="tomorrow" class="form-control"
+                                                    class="form-control" [maxDate]="today"
                                                     placeholder="Select Marriage Date" bsDatepicker
                                                     formControlName="marriageDate"
                                                     [(ngModel)]="personalInformationModel.anniversaryDate">
@@ -186,9 +194,10 @@
                                     <div class="col-sm-6 col-md-3 mt-10">
                                         <label
                                             class="form-label">{{ 'PersonalInformationForm.physicallyChallengedBoolean' | transloco }}</label>
-                                        <select class="form-control"
-                                            formControlName="physicallyChallengedBoolean" [(ngModel)]="Physically"
-                                            placeholder="Select Option" (change)="validatePhysically(option)">
+                                        <select class="form-control" formControlName="physicallyChallengedBoolean"
+                                            [(ngModel)]="Physically" placeholder="Select Option"
+                                            (change)="validatePhysically(option)">
+                                            <option value="" selected disabled>Select Option</option>
                                             <option *ngFor="let option of physicallyChallengedBoolean" [value]="option">
                                                 {{option}}
                                             </option>
@@ -197,10 +206,10 @@
                                     <div class="col-sm-6 col-md-3 mt-10" *ngIf="Physically == 'Yes'">
                                         <label
                                             class="form-label">{{ 'PersonalInformationForm.physicallyChallengedDropdown' | transloco }}</label>
-                                        <select class="form-control"
-                                            formControlName="physicallyChallengedOption"
+                                        <select class="form-control" formControlName="physicallyChallengedOption"
                                             [(ngModel)]="personalInformationModel.disabilityType"
                                             placeholder="Select Disability Type">
+                                            <option value="" selected disabled>Select Disability Type</option>
                                             <option *ngFor="let physically of physicallyChallengedDropdown"
                                                 [value]="physically">
                                                 {{physically}}
@@ -218,8 +227,9 @@
                                         <label
                                             class="form-label">{{ 'PersonalInformationForm.expat' | transloco }}</label>
                                         <select class="form-control" formControlName="isExpatWorker"
-                                            [(ngModel)]="expatBoolean1" placeholder="Select Disability Type"
+                                            [(ngModel)]="expatBoolean1" placeholder="Select Option"
                                             (change)="validateExpatBoolean(expatBoolean1)">
+                                            <option value="" selected disabled>Select Option1</option>
                                             <option *ngFor="let expat of expatBooleanOptions" [value]="expat">
                                                 {{expat}}
                                             </option>
@@ -230,6 +240,7 @@
                                             class="form-label">{{ 'PersonalInformationForm.countryOfOrigin' | transloco }}</label>
                                         <select class="form-control" formControlName="countryOfOrigin"
                                             [(ngModel)]="internationalWorkerRequestDTO.countryOfOrigin">
+                                            <option value="" selected disabled>Select Country Of Origin</option>
                                             <option *ngFor="let originCountry of countryList" [value]="originCountry">
                                                 {{originCountry}}
                                             </option>
@@ -240,6 +251,7 @@
                                             class="form-label">{{ 'PersonalInformationForm.weatherOnCOC' | transloco }}</label>
                                         <select class="form-control" formControlName="isOnCOC"
                                             [(ngModel)]="weatherOnCOC1" (change)="validateWeatherOnCOC(whetherOption)">
+                                            <option value="" selected disabled>Select Option</option>
                                             <option *ngFor="let whetherOption of weatherOnCOCOptions"
                                                 [value]="whetherOption">
                                                 {{whetherOption}}

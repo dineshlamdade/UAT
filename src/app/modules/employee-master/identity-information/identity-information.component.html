@@ -90,7 +90,7 @@
                                             <div class="col-sm-6 col-md-3 mt-10">
                                                 <label
                                                     class="form-label">{{ 'IdentityInformationForm.nationalPopulationRegNumber' | transloco }}</label>
-                                                <input type="text" class="form-control" placeholder="Enter NPR Nummber"
+                                                <input type="text" class="form-control" placeholder="Enter NPR Number"
                                                     formControlName="nationalPopulationRegNumber"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nprNumber"
                                                     (keyup)="updateNPRName(IdentityInformation.employeePersonalInfoRequestDTO.nprNumber)">
@@ -151,7 +151,8 @@
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
                                                             [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate"
-                                                            formControlName="drivingLicenceExpiryDate">
+                                                            formControlName="drivingLicenceExpiryDate"
+                                                            [minDate]="today">
                                                     </div>
                                                 </div>
                                             </div>
@@ -168,7 +169,7 @@
                                             <div class="col-sm-6 col-md-3">
                                                 <label
                                                     class="form-label">{{ 'IdentityInformationForm.passportNo' | transloco }}</label>
-                                                <input type="text" class="form-control" placeholder="Enter No."
+                                                <input type="text" class="form-control" placeholder="Enter Number"
                                                     formControlName="passportNo"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportNo"
                                                     (keyup)="updatePassportName(IdentityInformation.employeePersonalInfoRequestDTO.passportNo)">
@@ -198,8 +199,8 @@
                                             <div class="col-sm-6 col-md-3">
                                                 <label
                                                     class="form-label">{{ 'IdentityInformationForm.placeOfIssue' | transloco }}</label>
-                                                <input type="text" class="form-control" placeholder="Enter Name"
-                                                    formControlName="placeOfIssue"
+                                                <input type="text" class="form-control"
+                                                    placeholder="Enter place of issue" formControlName="placeOfIssue"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportPlaceOfIssue">
                                             </div>
 
@@ -215,7 +216,7 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
-                                                            formControlName="dateOfIssue" [max]="tomorrow"
+                                                            formControlName="dateOfIssue" [maxDate]="today"
                                                             [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportValidFrom">
                                                     </div>
                                                 </div>
@@ -233,8 +234,7 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
-                                                            formControlName="expiryDate" [min]="pastportExpiryDate1"
-                                                            [max]="pastportExpiryDate2"
+                                                            formControlName="expiryDate" [minDate]="today"
                                                             [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportExpiryDate">
                                                     </div>
                                                 </div>
@@ -277,7 +277,7 @@
 
                                             <div class="col-sm-6 col-md-3">
                                                 <label
-                                                    class="form-label">{{ 'IdentityInformationForm.expiryDate' | transloco }}</label>
+                                                    class="form-label">{{ 'IdentityInformationForm.validTill' | transloco }}</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -287,17 +287,17 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
-                                                            formControlName="validTill" [min]="visaValidTill1"
-                                                            [max]="visaValidTill2"
+                                                            formControlName="validTill" [minDate]="today"
                                                             [(ngModel)]="VisaInformation.validTill">
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <i class="icon-plus add-icon" [ngClass]="{'disable':!VisaInformation.countryName || !VisaInformation.visaType
                                             || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName 
                                             || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName 
-                                            || VisaInformation.visaType || VisaInformation.validTill}" (click)="pushToGrid()"></i>
+                                            || VisaInformation.visaType || VisaInformation.validTill}"
+                                                (click)="pushToGrid()"></i>
                                             <!-- <mat-icon [ngClass]="{'disable':!VisaInformation.countryName || !VisaInformation.visaType
                                             || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName 
                                             || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName 
@@ -323,11 +323,11 @@
                                                                 <td><span>{{visa.visaType}}</span></td>
                                                                 <td><span>{{visa.validTill}}</span></td>
 
-                                                                <td><i class="fa fa-upload font-16 text-blue cursor-pointer"
-                                                                        tooltip="Upload"
-                                                                        (click)="!enableFileUpload?sweetalertWarning('Please select transaction to Upload Document'):UploadModal(template)"></i>&nbsp;&nbsp;
+                                                                <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
+                                                                        tooltip="Edit"
+                                                                        (click)="editVisaInfo(visa)"></i>&nbsp;&nbsp;
                                                                     <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                                        tooltip="Cancel" (click)="removeDocument()"></i>
+                                                                        tooltip="Delete" (click)="removeVisaItem(visa)"></i>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
