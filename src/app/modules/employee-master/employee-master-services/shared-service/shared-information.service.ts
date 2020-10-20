@@ -28,6 +28,14 @@ export class SharedInformationService {
       }))
   }
 
+  getAddressFromPIN(postalCode) {
+
+    return this.httpClient.get(environment.baseUrl8082 + '/pincode-details-check/' + postalCode, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
   getGlobalLabels() {
 
     return this.httpClient.get(environment.baseUrl8083 + '/custom-labelsettings/1', { headers: { 'X-TenantId': 'PaysquareDefault' } })
