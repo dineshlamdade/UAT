@@ -33,6 +33,30 @@ export class FileService {
       });
   }
 
+  // Upload Multiple Files in LIC Transaction
+  uploadMultipleFiles(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('licDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('licTransactionWithDocumentBeanJson', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
+    return this.http.post<any>(
+      'http://localhost:8085/hrms/v1/lic-transaction/uploadLICTransactionDocuments',
+      formData,
+      {
+
+      });
+  }
+
   // Fetches the names of files to be displayed in the downloads list.
   fetchFileNames() {
     return this.http

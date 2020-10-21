@@ -244,16 +244,30 @@ export class MyInvestmentsService {
     }));
   }
 
-  postEightyCDeclarationInstitutions(data) {
+  getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
+    return this._HTTP.get(this.url + 'lic-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
+  getTransactionByProofSubmissionId(proofSubmissionId: String) {
+    return this._HTTP.get(this.url + 'lic-transaction/psid/' + proofSubmissionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  postEightyCDeclarationInstitutions(data) {
     return this._HTTP.post(this.url + '/lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  postEightyCDeclarationTransaction(data) {
 
+
+  postEightyCDeclarationTransaction(data) {
     return this._HTTP.post(this.url + 'lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
