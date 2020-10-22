@@ -43,4 +43,12 @@ export class SharedInformationService {
         return res;
       }))
   }
+
+  getAdditionalFields() {
+
+    return this.httpClient.get(environment.baseUrl8083 + '/additional-fieldsettings/PersonalInfo/1', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
 }

@@ -31,7 +31,7 @@ export class PersonalInformationComponent implements OnInit {
   // personalInformationModel: Array<PersonalInformationModel> =[];
   personalInformationModel = new PersonalInformationModel('', '', '', '', '', '', '', '', '', '', '');
   internationalWorkerRequestDTO = new internationalWorkerRequestDTO('', '', '', '', '', '')
-  PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '')
+  PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '','','')
   bloodGroups = 'A+,A-,B+,B-,AB+,AB-,O+,O-'.split(',');
   maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
   physicallyChallengedDropdown = 'Visual,Hearing,Locomotive'.split(',');
@@ -95,16 +95,18 @@ export class PersonalInformationComponent implements OnInit {
       maritalStatus: [''],
       nationality: [''],
       marriageDate: [this.tomorrow],
-      severityLevel: [''],
+      severityLevel: [{ value: '', disabled: true },],
       physicallyChallengedBoolean: [''],
       physicallyChallengedOption: [''],
       gender: ['', Validators.required],
       image: [''],
       isExpatWorker: [''],
       countryOfOrigin: [''],
-      isOnCOC: [''],
+      isOnCOC: [{ value: null, disabled: true },],
       cocNo: [''],
-      cocValidTill: ['']
+      cocValidTill: [''],
+      PersonalAdditional1: [''],
+      PersonalAdditional2: ['']
     });
 
 
@@ -139,10 +141,12 @@ export class PersonalInformationComponent implements OnInit {
     })
 
     this.SharedInformationService.getGlobalLabels().subscribe(res => {
-      debugger
 
       this.changesLabelArray = res.data.results.filter(item => {
         // Change Label's name as per Company setting
+        if (item.isDisplay == true && item.defaultLabelName == 'Title') {
+          this.PersonalInfoLabels.title = item.customLabelName;
+        }
         if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
           this.PersonalInfoLabels.firstName = item.customLabelName;
         }
@@ -158,6 +162,9 @@ export class PersonalInformationComponent implements OnInit {
         
         
         // Hide Labels As per Company setting
+        if (item.isDisplay == false && item.defaultLabelName == 'Title') {
+          this.PersonalInfoLabels.title = '';
+        }
         if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
           this.PersonalInfoLabels.gender = '';
         }
@@ -174,8 +181,18 @@ export class PersonalInformationComponent implements OnInit {
           this.PersonalInfoLabels.lastName = '';
         }
       })
-      console.log(this.changesLabelArray);
+    })
 
+    this.SharedInformationService.getAdditionalFields().subscribe(res=>{
+      debugger
+      res.data.results.filter(item => {
+        if(item.fieldName == 'PersonalAdditional1'){
+          this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
+        }
+        if(item.fieldName == 'PersonalAdditional2'){
+          this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
+        }
+      })
     })
   }
 
@@ -379,6 +396,7 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   concateFullName() {
+    
     this.personalInformationModel.employeeMasterRequestDTO.fullName =
       this.personalInformationModel.employeeMasterRequestDTO.title + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
@@ -396,6 +414,15 @@ export class PersonalInformationComponent implements OnInit {
   resetForm() {
     this.BasicInfoForm.reset();
     this.imageUrl = "./assets/emp-master-images/empIcon5.png";
+    const severityLevel = this.BasicInfoForm.get('severityLevel');
+    severityLevel.disable();
+    const isOnCOC = this.BasicInfoForm.get('isOnCOC');
+      isOnCOC.disable();
+      this.personalInformationModel.employeeMasterRequestDTO.title = '';
+      this.personalInformationModel.employeeMasterRequestDTO.firstName = '';
+      this.personalInformationModel.employeeMasterRequestDTO.middleName = '';
+      this.personalInformationModel.employeeMasterRequestDTO.lastName = '';
+
   }
   clearMarriageDate(maritalStatusBoolean) {
     if (maritalStatusBoolean.text !== 'Married') {
@@ -440,6 +467,19 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
+  enableSeverity(){
+    if(this.personalInformationModel.disabilityType){
+      const severityLevel = this.BasicInfoForm.get('severityLevel');
+      severityLevel.enable();
+    }
+  }
+
+  enableWhetherOnCOC(){
+    if(this.internationalWorkerRequestDTO.countryOfOrigin){
+      const isOnCOC = this.BasicInfoForm.get('isOnCOC');
+      isOnCOC.enable();
+    }
+  }
   sweetalertMasterSuccess(message: any, text: any) {
     Swal.fire({
       title: message,

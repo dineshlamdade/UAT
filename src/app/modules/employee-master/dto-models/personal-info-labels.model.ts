@@ -25,6 +25,8 @@ export class PersonalInfoLabels {
         public companyId: any,
         public employeeMasterId: any,
         public isActive: any,
+        public PersonalAdditional1: any,
+        public PersonalAdditional2: any,
     ){}
 
  }

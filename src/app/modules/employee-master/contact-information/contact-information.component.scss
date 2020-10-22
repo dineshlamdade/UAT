@@ -48,3 +48,7 @@ select.empty {
 select option[disabled]:first-child {
 	display: none;
 }
+
+.form-control.is-invalid {
+  background-image: none!important;
+}
