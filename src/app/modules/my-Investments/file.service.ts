@@ -67,6 +67,10 @@ export class FileService {
     formData.append('licMasterRequestDTO', JSON.stringify(data));
 
     console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
     //return null;
     return this.http.post<any>(
       'http://localhost:8085/hrms/v1/licmaster-detail',

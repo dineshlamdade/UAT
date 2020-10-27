@@ -14,7 +14,6 @@ export class HeaderComponent implements OnInit {
   title: any
   constructor(private route: Router) {
     this.title = route.url;
-    //debugger
     this.title = this.title.replace(/\//g, '');
     this.title = this.title.toUpperCase();
   }

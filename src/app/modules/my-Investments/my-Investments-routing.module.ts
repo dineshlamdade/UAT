@@ -13,7 +13,7 @@ const routes: Routes = [
       data: { title: ':: DelziaHR :: 80-C' },
       },
 
-    ]
+    ],
   },
   // { path: '', pathMatch: 'full', redirectTo: '/investment' },
       ];
