@@ -1,17 +1,17 @@
 import { Component, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { IdentityInformation, VisaInformation } from './../dto-models/identity-information.model';
+import { IdentityInformation, VisaInformation } from './../../dto-models/identity-information.model';
 // import * as wjcGrid from '@grapecity/wijmo.grid';
 // import * as wjcCore from '@grapecity/wijmo';
 import { DatePipe } from '@angular/common';
-import { IdentityInformationService } from './../employee-master-services/identity-informmation/identity-information.service';
+import { IdentityInformationService } from './../../employee-master-services/identity-informmation/identity-information.service';
 import { Subscription } from 'rxjs';
-import { EventEmitterService } from './../employee-master-services/event-emitter/event-emitter.service';
+import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 // import * as wjcInput from '@grapecity/wijmo.input';
-import { SharedInformationService } from './../employee-master-services/shared-service/shared-information.service';
+import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { CopyFromConfirmationModal } from '../contact-information/contact-information.component';
-import { ConfirmationModalComponent } from './../shared modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 

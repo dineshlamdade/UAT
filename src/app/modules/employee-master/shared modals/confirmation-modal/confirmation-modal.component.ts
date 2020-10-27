@@ -12,7 +12,7 @@ export class ConfirmationModalComponent implements OnInit {
   confirmMsg: any;
   info: any;
   payrollEditItem: any;
-
+  employee: any;
 
   constructor(public dialogRef: MatDialogRef<ConfirmationModalComponent>,
     private EventEmitterService: EventEmitterService,
@@ -20,6 +20,7 @@ export class ConfirmationModalComponent implements OnInit {
     this.confirmMsg = data.pageValue;
     this.info = data.info;
     this.payrollEditItem = data.payrollEditItem;
+    this.employee = data.employee;
   }
 
   ngOnInit() {
@@ -33,7 +34,7 @@ export class ConfirmationModalComponent implements OnInit {
       this.EventEmitterService.getConfirmDeleteIdentityForm();
     }
     if(this.confirmMsg == 'PreviousEmpForm'){
-      this.EventEmitterService.getConfirmDeletePreviousEmpForm();
+      this.EventEmitterService.getConfirmDeletePreviousEmpForm(this.employee);
     }
     if(this.confirmMsg == 'educationItemDelete'){
       this.EventEmitterService.getConfirmDeleteEducationSkills(this.confirmMsg)

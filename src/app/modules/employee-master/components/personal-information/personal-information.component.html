@@ -276,17 +276,18 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-6 col-md-3 mt-10" [hidden]="PersonalInfoLabels.PersonalAdditional1 == ''">
-                                        <label
-                                            class="form-label">{{ PersonalInfoLabels.PersonalAdditional1 }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter {{ PersonalInfoLabels.PersonalAdditional1 }}"
-                                            formControlName="PersonalAdditional1" 
+                                    <div class="col-sm-6 col-md-3 mt-10"
+                                        [hidden]="PersonalInfoLabels.PersonalAdditional1 == ''">
+                                        <label class="form-label">{{ PersonalInfoLabels.PersonalAdditional1 }}</label>
+                                        <input type="text" class="form-control"
+                                            placeholder="Enter {{ PersonalInfoLabels.PersonalAdditional1 }}"
+                                            formControlName="PersonalAdditional1"
                                             [(ngModel)]="personalInformationModel.PersonalAdditional1">
                                     </div>
 
-                                    <div class="col-sm-6 col-md-3 mt-10" [hidden]="PersonalInfoLabels.PersonalAdditional2 == ''">
-                                        <label
-                                            class="form-label">{{ PersonalInfoLabels.PersonalAdditional2 }}</label>
+                                    <div class="col-sm-6 col-md-3 mt-10"
+                                        [hidden]="PersonalInfoLabels.PersonalAdditional2 == ''">
+                                        <label class="form-label">{{ PersonalInfoLabels.PersonalAdditional2 }}</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -294,7 +295,8 @@
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
-                                                    class="form-control" placeholder="Select {{PersonalInfoLabels.PersonalAdditional2}}"
+                                                    class="form-control"
+                                                    placeholder="Select {{PersonalInfoLabels.PersonalAdditional2}}"
                                                     bsDatepicker formControlName="PersonalAdditional2"
                                                     [(ngModel)]="personalInformationModel.PersonalAdditional2">
                                             </div>
@@ -314,7 +316,7 @@
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-times"></i></b> Reset</button>
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                              tooltip="Cancel"><b><i class="fa fa-times-circle" ></i></b> Cancel</button> -->

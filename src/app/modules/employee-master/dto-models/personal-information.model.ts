@@ -35,6 +35,7 @@ export class PersonalInformationModel {
         public createdBy:any,
         public lastModifiedBy:any,
         public isDraft:any,
+        
     ){}
 
  }

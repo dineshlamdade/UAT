@@ -327,7 +327,8 @@
                                                                         tooltip="Edit"
                                                                         (click)="editVisaInfo(visa)"></i>&nbsp;&nbsp;
                                                                     <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                                        tooltip="Delete" (click)="removeVisaItem(visa)"></i>
+                                                                        tooltip="Delete"
+                                                                        (click)="removeVisaItem(visa)"></i>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -352,7 +353,7 @@
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-times"></i></b> Reset</button>
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                              tooltip="Cancel"><b><i class="fa fa-times-circle" ></i></b> Cancel</button> -->

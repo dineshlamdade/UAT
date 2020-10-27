@@ -366,10 +366,10 @@
 
             <!-- Employee master Tabs -->
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                <a href="javascript:void(0)" (click)="isEmployeeMaster = !isEmployeeMaster" [attr.aria-expanded]="!isCollapsed"
                     aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
                         class="icon-credit-card"></i><span>{{ 'EmployeeMaster.employeeMaster' | transloco }}</span></a>
-                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+                <ul class="collapse" id="collapseBasic" [collapse]="isEmployeeMaster" [isAnimated]="true">
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/employee-master/personal-information']"><span>{{ 'EmployeeMaster.personalInformation' | transloco }}</span></a>
                     </li>
@@ -381,6 +381,14 @@
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/employee-master/identity-information']"><span>{{ 'EmployeeMaster.identityInformation' | transloco }}</span></a>
                     </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/previous-employment-information']"><span>{{ 'EmployeeMaster.previousEmploymentInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                        [routerLink]="['/employee-master/bank-information']"><span>{{ 'EmployeeMaster.bankInformation' | transloco }}</span></a>
+                </li>
                 </ul>
             </li>
         </ul>

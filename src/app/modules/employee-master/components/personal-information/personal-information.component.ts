@@ -2,9 +2,9 @@ import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef, Vie
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 'use strict';
 // import * as input from '@grapecity/wijmo.input';
-import { PersonalInformationModel, internationalWorkerRequestDTO } from './../dto-models/personal-information.model';
-import { PersonalInformationService } from './../employee-master-services/personal-information/personal-information.service';
-import { EventEmitterService } from './../employee-master-services/event-emitter/event-emitter.service';
+import { PersonalInformationModel, internationalWorkerRequestDTO } from './../../dto-models/personal-information.model';
+import { PersonalInformationService } from './../../employee-master-services/personal-information/personal-information.service';
+import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 // import { DomSanitizer } from '@angular/platform-browser';
 // import { NotificationsService } from '@src/app/core/services/notifications.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,9 +12,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
-import { ConfirmationModalComponent } from '../shared modals/confirmation-modal/confirmation-modal.component';
-import { SharedInformationService } from './../employee-master-services/shared-service/shared-information.service';
-import { PersonalInfoLabels } from '../dto-models/personal-info-labels.model';
+import { ConfirmationModalComponent } from '../../shared modals/confirmation-modal/confirmation-modal.component';
+import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
+import { PersonalInfoLabels } from '../../dto-models/personal-info-labels.model';
 
 // import { CommonDataService } from './../../core/services/common-data-service/common-data.service';
 

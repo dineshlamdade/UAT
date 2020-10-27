@@ -1,0 +1,224 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form [formGroup]="previousEmploymentInfoForm" class="tabview-contents"
+                                (ngSubmit)="previousEmploymentInfoSubmit(previousEmploymentInformation)">
+                                <!-- <div class="tabview"> -->
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-3">
+                                        <label
+                                            class="form-label">{{ 'PreviousEmploymentInfo.companyName' | transloco }}</label>
+                                        <input type="text" class="form-control" placeholder="Enter Employer Name"
+                                            formControlName="companyName"
+                                            [(ngModel)]="previousEmploymentInformation.previousEmployerName"
+                                            (keyup)="checkValidations()"
+                                            matTooltip="{{previousEmploymentInformation.previousEmployerName}}"
+                                            [ngClass]="{'is-invalid' : previousEmploymentInfoForm.get('companyName').status == 'INVALID'}">
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">Joining Date</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    class="form-control" placeholder="Select Joining Date" bsDatepicker
+                                                    [maxDate]="today" formControlName="joiningDate"
+                                                    [(ngModel)]="previousEmploymentInformation.dateOfJoining">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">Leaving Date</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    class="form-control" placeholder="Select Leaving Date" bsDatepicker
+                                                    [minDate]="previousEmploymentInformation.dateOfJoining"
+                                                    formControlName="leaveDate" [maxDate]="today"
+                                                    [(ngModel)]="previousEmploymentInformation.dateOfRelieving">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">Remark</label>
+                                        <input type="text" class="form-control" placeholder="Enter Remark">
+                                    </div>
+                                </div>
+
+                                <br>
+                                <fieldset>
+                                    <legend>Details At The Time Of Leaving</legend>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <label class="form-label">Designation</label>
+                                            <input type="text" class="form-control" placeholder="Enter Designation"
+                                                formControlName="designation"
+                                                [(ngModel)]="previousEmploymentInformation.previousDesignation"
+                                                matTooltip="{{previousEmploymentInformation.previousDesignation}}">
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-4">
+                                            <label class="form-label">Job Profile</label>
+                                            <input type="text" class="form-control" placeholder="Enter Job Profile"
+                                                formControlName="jobProfile"
+                                                [(ngModel)]="previousEmploymentInformation.previousJobProfile"
+                                                matTooltip="{{previousEmploymentInformation.previousJobProfile}}">
+                                        </div>
+
+                                        <div class="col-sm-3 col-md-4">
+                                            <label class="form-label">CTC - Per Annum</label>
+                                            <div class="row">
+                                                <div class="col-sm-3 col-md-5 country-code">
+                                                    <select class="form-control selectpicker"
+                                                        placeholder="Select Currency" formControlName="currency"
+                                                        [(ngModel)]="previousEmploymentInformation.currency">
+                                                        <option value="" data-hidden="true">select</option>
+                                                        <option *ngFor="let currency of currencyArray"
+                                                            [value]="currency">
+                                                            {{currency}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3 col-md-7">
+                                                    <input type="text" class="form-control" placeholder="Enter CTC"
+                                                        formControlName="ctsPerAnum"
+                                                        [(ngModel)]="previousEmploymentInformation.lastCTCPerAnnum"
+                                                        (keydown)="commaNumberCheck($event)"
+                                                        (keyup)="CTCCommaFormatted($event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <br>
+                                <fieldset>
+                                    <legend>Exempt Amount Received (₹)</legend>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <label class="form-label">Gratuity</label>
+                                            <input type="text" class="form-control" placeholder="Enter Amount"
+                                                formControlName="gratuity"
+                                                [(ngModel)]="previousEmploymentInformation.exemptGratuityReceived"
+                                                (keydown)="commaNumberCheck($event)"
+                                                (keyup)="GratuityCommaFormatted($event)">
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-4">
+                                            <label class="form-label">Leave Encashment</label>
+                                            <input type="text" class="form-control" placeholder="Enter Amount"
+                                                formControlName="leaveEncashment"
+                                                [(ngModel)]="previousEmploymentInformation.exemptLeaveSalaryReceived"
+                                                (keydown)="commaNumberCheck($event)"
+                                                (keyup)="leaveEncashmentCommaFormatted($event)">
+                                        </div>
+
+                                        <div class="col-sm-3 col-md-4">
+                                            <label class="form-label">Vouluntary Retirement Scheme</label>
+                                            <input type="text" class="form-control" placeholder="Enter Amount"
+                                                formControlName="vouluntaryRetirement"
+                                                [(ngModel)]="previousEmploymentInformation.exemptVRSReceived"
+                                                (keydown)="commaNumberCheck($event)"
+                                                (keyup)="vouluntaryRetirementCommaFormatted($event)">
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <div class="row mt-15">
+                                    <div class="col-12">
+                                        <div class="float-right mb-15">
+                                            <button type="button"
+                                                [hidden]="previousEmploymentInformation.employeePreviousEmploymentId"
+                                                [disabled]="!previousEmploymentInformation.previousEmployerName"
+                                                [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
+                                        'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
+                                                (click)="addPush=true;pushToGrid(previousEmploymentInformation);"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+
+                                            <button type="button"
+                                                *ngIf="previousEmploymentInformation.employeePreviousEmploymentId"
+                                                [disabled]="!previousEmploymentInformation.previousEmployerName"
+                                                [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
+                                        'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
+                                                (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                            <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <legend>Summary</legend>
+                            <div class="row mt-20">
+                                <div class="col-md-12">
+                                    <div class="table-responsive Custom_Table">
+                                        <table class="table table-striped table-hover table-bordered m-b-0">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col" class="font700 wd-30">Employer Name</th>
+                                                    <th scope="col" class="font700 wd-30">Designation</th>
+                                                    <th scope="col" class="font700 wd-30">Joining Date</th>
+                                                    <th scope="col" class="font700 wd-20">Leaving Date</th>
+                                                    <th scope="col" class="font700 wd-20">CTC Per Annum</th>
+                                                    <th scope="col" class="font700 wd-20">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let employee of previousSmmaryGridData">
+                                                    <td><span>{{employee.previousEmployerName}}</span></td>
+                                                    <td><span>{{employee.previousDesignation}}</span></td>
+                                                    <td><span>{{employee.dateOfJoining}}</span></td>
+                                                    <td><span>{{employee.dateOfRelieving}}</span></td>
+                                                    <td><span>{{employee.lastCTCPerAnnumNew}}</span></td>
+
+                                                    <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
+                                                            tooltip="Edit"
+                                                            (click)="editEmpGridRow(employee)"></i>&nbsp;&nbsp;
+                                                        <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                            tooltip="Delete"
+                                                            (click)="deleteEmpGridRowDiaglog(employee)"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row mt-15">
+                                    <div class="col-12">
+                                        <div class="float-right mb-15">
+                                            <button type="button" [disabled]="!EmptyGridTrue" [ngClass]="{'disabled-btn-bg-green' : !EmptyGridTrue,
+                                               'btn-bg-green': EmptyGridTrue}"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                        </div>
+                                    </div>
+                                </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

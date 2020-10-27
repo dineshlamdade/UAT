@@ -105,8 +105,8 @@ export class EventEmitterService {
     return this.ConfirmDeleteIdentityForm.asObservable();
   }
 
-  getConfirmDeletePreviousEmpForm() {
-    this.ConfirmDeletePreviousEmpForm.next();
+  getConfirmDeletePreviousEmpForm(employee) {
+    this.ConfirmDeletePreviousEmpForm.next(employee);
   }
   setConfirmDeletePreviousEmpForm() {
     return this.ConfirmDeletePreviousEmpForm.asObservable();

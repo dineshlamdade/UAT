@@ -151,12 +151,12 @@
     "saveAsDraftButton": "Save",
     "resetForm": "Reset"
   },
-  "PreviousEmploymentInfoForm": {
+  "PreviousEmploymentInfo": {
     "PreviousEmploymentTitle": "Previous Employment Information",
     "companyName": "Employer Name",
-    "joiningDate": "Joining Date",
-    "leavingDate": "Leaving Date",
-    "remark": "Remark",
+    "JoiningDate": "Joining Date",
+    "LeavingDate": "Leaving Date",
+    "Remark": "Remark",
     "designation": "Designation",
     "jobProfile": "Job Profile",
     "ctsPerAnum": "CTC - Per Annum",

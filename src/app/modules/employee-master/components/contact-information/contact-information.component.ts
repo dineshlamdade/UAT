@@ -2,17 +2,17 @@ import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef, Vie
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // import { AuthenticationService } from '@src/app/core/services/authentication/authentication.service';
 'use strict';
-import { ContactInformation, LocalAddressInformation, PermanentAddressInformation, CountryCode } from './../dto-models/contact-information.model';
+import { ContactInformation, LocalAddressInformation, PermanentAddressInformation, CountryCode } from './../../dto-models/contact-information.model';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EventEmitterService } from './../employee-master-services/event-emitter/event-emitter.service';
-import { ContactInformationService } from './../employee-master-services/contact-information/contact-information.service';
+import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
+import { ContactInformationService } from './../../employee-master-services/contact-information/contact-information.service';
 // import * as CountryCodes from './../../../assets/JSON files/CountryCodes.json';
 // import * as city from './../../../assets/JSON files/city.json';
 import { Subscription } from 'rxjs';
 // import { NotificationsService } from '@src/app/core/services/notifications.service';
 // import { DataService } from '@src/app/core/services/share-data/share-data.service';
-import { ConfirmationModalComponent } from './../shared modals/confirmation-modal/confirmation-modal.component';
-import { SharedInformationService } from './../employee-master-services/shared-service/shared-information.service';
+import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
+import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
 import Swal from 'sweetalert2';
 
 

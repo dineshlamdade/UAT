@@ -26,10 +26,12 @@
                                                             class="form-label">{{ 'ContactInformationForm.officialMobileNumber' | transloco }}</label>
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
-                                                                <select class="form-control selectpicker" placeholder="Select ISD"
+                                                                <select class="form-control selectpicker"
+                                                                    placeholder="Select ISD"
                                                                     formControlName="officialCountryCode"
                                                                     [(ngModel)]="ngOfficialCountryCode">
-                                                                    <option value="" data-hidden="true">Please select</option>
+                                                                    <option value="" data-hidden="true">Please select
+                                                                    </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
                                                                         {{code}}
@@ -427,7 +429,7 @@
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-times"></i></b> Reset</button>
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                              tooltip="Cancel"><b><i class="fa fa-times-circle" ></i></b> Cancel</button> -->

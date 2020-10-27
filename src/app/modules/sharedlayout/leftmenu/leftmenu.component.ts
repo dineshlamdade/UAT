@@ -8,6 +8,7 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class LeftmenuComponent implements OnInit {
   public isCollapsed = true;
+  public isEmployeeMaster = true;
   public isProjectCollapsed = true;
   public isJobportalCollapsed = true;
   public isAuthCollapsed = true;

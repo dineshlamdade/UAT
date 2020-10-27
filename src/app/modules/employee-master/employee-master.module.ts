@@ -21,11 +21,13 @@ import { translocoLoader } from './../../core/strategies/transloco.loader';
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
-import { PersonalInformationComponent } from './personal-information/personal-information.component';
+import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
 import { ConfirmationModalComponent } from './shared modals/confirmation-modal/confirmation-modal.component';
-import { ContactInformationComponent } from './contact-information/contact-information.component';
-import { IdentityInformationComponent } from './identity-information/identity-information.component';
+import { ContactInformationComponent } from './components/contact-information/contact-information.component';
+import { IdentityInformationComponent } from './components/identity-information/identity-information.component';
 import { DemoMaterialModule } from './../../app.material.module';
+import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
+import { BankInformationComponent } from './components/bank-information/bank-information.component';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
@@ -36,7 +38,9 @@ registerLocaleData(localeGb, 'en-GB');
         PersonalInformationComponent,
         ConfirmationModalComponent,
         ContactInformationComponent,
-        IdentityInformationComponent
+        IdentityInformationComponent,
+        PreviousEmploymentInformationComponent,
+        BankInformationComponent
     ],
     imports: [
         CommonModule,
