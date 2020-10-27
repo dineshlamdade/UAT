@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EightyCComponent } from './eighty-c/eighty-c.component';
-import { MyInvestmentsComponent } from './my-investments.component';
 
 const routes: Routes = [
 
