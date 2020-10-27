@@ -66,7 +66,7 @@ export class EightyCComponent implements OnInit {
   previousEmployeeList: Array<any> = [];
   totalDeclaredAmount: any;
   totalActualAmount: any;
-  futureNewPolicyDeclaredAmount: number;
+  futureNewPolicyDeclaredAmount: string;
   grandTotalDeclaredAmount: number;
   grandTotalActualAmount: number;
   grandDeclarationTotal: number;
@@ -253,7 +253,7 @@ export class EightyCComponent implements OnInit {
       this.summaryGridData = res.data.results[0].licMasterList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
     });
@@ -316,35 +316,43 @@ export class EightyCComponent implements OnInit {
 
   // ---------------------Summary ----------------------
 
-            // Summary get Call
-            summaryPage() {
-            this.Service.getEightyCSummary().subscribe(res => {
-                this.summaryGridData = res.data.results[0].licMasterList;
-                this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-                this.totalActualAmount = res.data.results[0].totalActualAmount;
-                this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-                this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-                this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-                //console.log(res);
-            });
-            }
+    // Summary get Call
+      summaryPage() {
+        this.Service.getEightyCSummary().subscribe(res => {
+          this.summaryGridData = res.data.results[0].licMasterList;
+          this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+          this.totalActualAmount = res.data.results[0].totalActualAmount;
+          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+          this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+          this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+          //console.log(res);
+        });
+      }
 
-            // Post New Future Policy Data API call
-            addFuturePolicy(): void {
-                const data = {
-                    futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount
-                }
-                //console.log(data);
-                this.Service.postEightyCSummaryFuturePolicy(data).subscribe(res => {
-                    //console.log(res);
-                    this.summaryGridData = res.data.results[0].licMasterList;
-                    this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-                    this.totalActualAmount = res.data.results[0].totalActualAmount;
-                    this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-                    this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-                    this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-                });
-            }
+    // Post New Future Policy Data API call
+      addFuturePolicy(): void {
+
+        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',','');
+
+        const data = {
+            futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount
+        }
+        console.log(data);
+        this.Service.postEightyCSummaryFuturePolicy(data).subscribe(res => {
+            console.log(res);
+            this.summaryGridData = res.data.results[0].licMasterList;
+            this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+            this.totalActualAmount = res.data.results[0].totalActualAmount;
+            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+            this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+            this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+        });
+      }
+
+    // On Change Future New Policy Declared Amount with formate
+      onChangeFutureNewPolicyDeclaredAmount() {
+        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
+      }
 
             jumpToMasterPage(n :number) {
                 console.log(n);
