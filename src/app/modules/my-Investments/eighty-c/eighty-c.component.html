@@ -48,7 +48,7 @@
                                                 {{summary.actualAmount | number:'1.2-2'}}
                                                 </span>
                                              </td>
-                                             <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="jumpToDeclarationPage(summary.institutionName)" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-eye font-16 text-blue cursor-pointer"
+                                             <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="jumpToDeclarationPage(summary.institutionName, summary.policyNo)" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-eye font-16 text-blue cursor-pointer"
                                                 tooltip="View"></i></td>
                                           </tr>
                                           <tr *ngIf="!summaryGridData?.length">
@@ -77,8 +77,8 @@
                                              </td>
                                              <td>
                                                 <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                                                  (change)='onChangeFutureNewPolicyDeclaredAmount()'
-                                                  class="form-control width120 inline_center align-right">
+                                                (change)='onChangeFutureNewPolicyDeclaredAmount()'
+                                                class="form-control width120 inline_center align-right">
                                              </td>
                                              <td></td>
                                              <td><i class="fa fa-floppy-o font-16 text-dark-green cursor-pointer" (click)="addFuturePolicy()" tooltip="Save"></i></td>
@@ -118,38 +118,64 @@
                            <div class="row">
                               <div class="col-sm-6 col-md-3">
                                  <label class="form-label">Institution</label>
-                                 <select name="beast" id="Institution" class="form-control custom-select" formControlName="institutionName">
-                                 <option *ngFor="let institutionName of institutionNameList"
-                                 [value]="institutionName.value">
-                                 {{institutionName.label}}
-                                 </option>
+                                 <select name="beast" id="Institution" class="form-control custom-select"
+                                    formControlName="institutionName"
+                                    [ngClass]="{ 'is-invalid': submitted && masterForm.institutionName.errors }">
+                                      <option *ngFor="let institutionName of institutionNameList"
+                                        [value]="institutionName.value">
+                                          {{institutionName.label}}
+                                      </option>
                                  </select>
+                                 <div *ngIf="submitted && masterForm.institutionName.errors" class="invalid-feedback">
+                                    <div *ngIf="masterForm.institutionName.errors.required">Institution is required</div>
+                                 </div>
                               </div>
                               <div class="col-sm-6 col-md-3">
                                  <label class="form-label">Policy No.</label>
-                                 <input type="text" formControlName="policyNo" class="form-control" placeholder="Enter Policy No.">
+                                 <input type="text" formControlName="policyNo" class="form-control"
+                                    placeholder="Enter Policy No."
+                                    [ngClass]="{ 'is-invalid': submitted && masterForm.policyNo.errors }"  >
+                                  <div *ngIf="submitted && masterForm.policyNo.errors" class="invalid-feedback">
+                                    <div *ngIf="masterForm.policyNo.errors.required">Policy No. is required</div>
+                                  </div>
                               </div>
                               <div class="col-sm-6 col-md-3">
                                  <label class="form-label">Policy Holder Name</label>
-                                 <select name="Policy_Holder_Name" id="PolicyHolderName" class="form-control custom-select" formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'>
+                                 <select name="Policy_Holder_Name" id="PolicyHolderName" class="form-control custom-select"
+                                  formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'
+                                  [ngClass]="{ 'is-invalid': submitted && masterForm.policyholdername.errors }">
                                  <option *ngFor="let familyMember of familyMemberName"
                                  [value]="familyMember.value">
                                  {{familyMember.label}}
                                  </option>
                                  </select>
+                                 <div *ngIf="submitted && masterForm.policyholdername.errors" class="invalid-feedback">
+                                  <div *ngIf="masterForm.policyholdername.errors.required">Policy Holder Name is required</div>
+                               </div>
                               </div>
                               <div class="col-sm-6 col-md-3">
                                  <label class="form-label">Relationship</label>
-                                 <input type="text" formControlName="relationship" class="form-control" disabled>
+                                 <input type="text" formControlName="relationship" class="form-control" disabled
+                                  [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
+                                  <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
+                                    <div *ngIf="masterForm.relationship.errors.required">Relationship is required</div>
+                                 </div>
                               </div>
                               <div class="col-sm-6 col-md-3 mt-10">
-                                 <label class="form-label">Policy Start Date:</label>
+                                 <label class="form-label">Policy Start Date</label>
                                  <div class="form-group">
                                     <div class="input-group">
                                        <div class="input-group-prepend">
                                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                        </div>
-                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="Policy Start Date" bsDatepicker>
+                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate"
+                                        data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                        (bsValueChange)="setPolicyEndDate()" placeholder="Policy Start Date" bsDatepicker
+                                        [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }"
+                                        [maxDate]="today">
+                                        <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
+                                          <div *ngIf="masterForm.policyStartDate.errors.required">Policy Start Date is required</div>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -160,8 +186,13 @@
                                        <div class="input-group-prepend">
                                           <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                        </div>
-                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()" [minDate]="policyMinDate" [ngModel]="policyEndDate"
-                                       placeholder="Policy End Date" bsDatepicker>
+                                       <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate" data-provide="datepicker"
+                                          data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()"
+                                          [minDate]="policyMinDate"
+                                          placeholder="Policy End Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
+                                        <div *ngIf="submitted && masterForm.policyEndDate.errors" class="invalid-feedback">
+                                          <div *ngIf="masterForm.policyEndDate.errors.required">Policy End Date is required</div>
+                                        </div>
                                     </div>
                                  </div>
                               </div>
@@ -173,23 +204,36 @@
                                     <div class="row">
                                        <div class="col-sm-6 col-md-3">
                                           <label class="form-label">Frequency of Payment</label>
-                                          <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()' formControlName="frequencyOfPayment" class="form-control custom-select">
-                                          <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
-                                          [value]="frequencyOfPayment.value">
-                                          {{frequencyOfPayment.label}}
-                                          </option>
+                                          <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
+                                            formControlName="frequencyOfPayment" class="form-control custom-select"
+                                            [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                                                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                                [value]="frequencyOfPayment.value">
+                                                {{frequencyOfPayment.label}}
+                                                </option>
                                           </select>
+                                          <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
+                                            <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is required</div>
+                                         </div>
                                        </div>
                                        <div class="col-sm-6 col-md-3">
                                           <label class="form-label">Premium Amount</label>
-                                          <input type="text" formControlName="premiumAmount" class="form-control align-right" (change)='calculateAnnualAmount()' name="Premium Amount">
+                                          <input type="text" formControlName="premiumAmount" class="form-control align-right" (change)='calculateAnnualAmount()'
+                                            name="Premium Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }">
+                                            <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
+                                              <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is required</div>
+                                           </div>
                                        </div>
                                        <div class="col-sm-6 col-md-3">
                                           <label class="form-label">Annual Amount</label>
-                                          <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'" formControlName="annualAmount" class="form-control align-right" name="Annual Amount">
-                                       </div>
+                                          <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'" formControlName="annualAmount"
+                                            class="form-control align-right" name="Annual Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }">
+                                            <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
+                                              <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is required</div>
+                                           </div>
+                                        </div>
                                        <div class="col-sm-6 col-md-3">
-                                          <label class="form-label ml-15">ECS ?</label>
+                                          <label class="form-label ml-15" tooltip="Electronic Clearing Service">ECS ?</label>
                                           <div class="custom-controls-stacked ml-15 mt-10">
                                              <label class="custom-control custom-radio custom-control-inline">
                                              <input formControlName="ecs" type="radio"
@@ -213,8 +257,14 @@
                                                    <span class="input-group-text"><i
                                                       class="fa fa-calendar"></i></span>
                                                 </div>
-                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate" [maxDate]="maxFromDate" placeholder="From Date"
-                                                bsDatepicker>
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker"
+                                                  data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()"
+                                                  [minDate]="minFormDate"
+                                                  [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
+                                                  [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
+                                                <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
+                                                  <div *ngIf="masterForm.fromDate.errors.required">From Date is required</div>
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
@@ -226,8 +276,13 @@
                                                    <span class="input-group-text"><i
                                                       class="fa fa-calendar"></i></span>
                                                 </div>
-                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()" [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" [ngModel]="toDate" formControlName="toDate" data-provide="datepicker"
-                                                data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker>
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                                                  [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate" data-provide="datepicker"
+                                                  data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker
+                                                  [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }">
+                                                <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
+                                                  <div *ngIf="masterForm.toDate.errors.required">To Date is required</div>
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
@@ -244,7 +299,7 @@
                                                       <th scope="col" class="wd-20">Frequency</th>
                                                       <th scope="col" class="wd-19">Premium Amount</th>
                                                       <th scope="col" class="wd-14">Annual Amount</th>
-                                                      <th scope="col" class="wd-10">ECS</th>
+                                                      <th scope="col" class="wd-10" tooltip="Electronic Clearing Service">ECS</th>
                                                    </tr>
                                                 </thead>
                                                 <tbody>
@@ -296,9 +351,6 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <!-- <div class="float-right mt-10 mb-15">
-                                       <button type="button" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i class="fa fa-plus"></i></b> Add</button>
-                                       </div> -->
                                  </fieldset>
                               </div>
                            </div>
@@ -332,9 +384,8 @@
                                                       <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
                                                          class="fa fa-paperclip"
                                                          aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
-                                                      <td><i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                                         <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel"></i>&nbsp;&nbsp;
-                                                         <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View Uploaded Document"></i> -->
+                                                      <td>
+                                                         <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
                                                       </td>
                                                    </tr>
                                                 </tbody>
@@ -444,7 +495,11 @@
                      <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="declarationPage()" [checked]="tabIndex==2" />
                      <div class="tabs about-page">
                         <div class="tabview-contents">
+
                            <div class="row">
+                            <div class="col-12 mr-0 pr-0" *ngIf="isDisabled">
+                              <label class="form-label mt-2"><span class = "text-red">*</span>  Select institution for proof submission </label>
+                           </div>
                               <div class="col-2 mr-0 pr-0">
                                  <label class="form-label mt-2">Institution</label>
                               </div>
@@ -519,7 +574,7 @@
                                                    </label>
                                                 </th>
                                                 <th rowspan="2" class="wd-10 font700">Previous Employer Name</th>
-                                                <th rowspan="2" class="wd-4 font700">ECS</th>
+                                                <th rowspan="2" class="wd-4 font700" tooltip="Electronic Clearing Service">ECS</th>
                                                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                                                 <th rowspan="2" class="wd-9 font700">Declared</th>
                                                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -542,23 +597,24 @@
                                              <tr *ngFor="let summary of item.lictransactionList;  let i = index; count as c;">
                                                 <td scope="row">
                                                    <label class="custom-control custom-checkbox checkbox-center">
-                                                   <input type="checkbox" [ngModel]="enableSelectAll" [disabled]="isDisabled || summary.actualAmount !== summary.declaredAmount ||summary.proofSubmissionId"
-                                                   (change)="onSelectCheckBox(summary, $event, item);enableCheckboxFlag = j" class="custom-control-input"
-                                                   value="option{{summary.licTransactionId}}">
+                                                   <input type="checkbox" [ngModel]="enableSelectAll"
+                                                      [disabled]="isDisabled || summary.proofSubmissionId"
+                                                      (change)="onSelectCheckBox(summary, $event, i, j);enableCheckboxFlag = j"
+                                                      class="custom-control-input" #checkBox{{summary.licTransactionId}}
+                                                      value="option{{summary.licTransactionId}}">
                                                    <span class="custom-control-label"></span>
                                                    </label>
                                                 </td>
                                                 <td>
-                                                  <select *ngIf="previousEmployeeList.length < 0" name="Previous Employer Name" class="form-control custom-select"
-                                                  (change)='updatePreviousEmpId($event, i, j)' >
-                                                <option [ngValue]="0"> Select Previous Emp.</option>
-                                                <option *ngFor="let previousEmployee of previousEmployeeList"
-                                                  [value]="previousEmployee.value"
-                                                  [selected]="previousEmployee.value==summary.previousEmployerId">
-                                                  {{previousEmployee.label}}
-                                                </option>
-                                             </select>
-
+                                                   <select *ngIf="previousEmployeeList.length < 0" name="Previous Employer Name" class="form-control custom-select"
+                                                   (change)='updatePreviousEmpId($event, i, j)' >
+                                                   <option [ngValue]="0"> Select Previous Emp.</option>
+                                                   <option *ngFor="let previousEmployee of previousEmployeeList"
+                                                   [value]="previousEmployee.value"
+                                                   [selected]="previousEmployee.value==summary.previousEmployerId">
+                                                   {{previousEmployee.label}}
+                                                   </option>
+                                                   </select>
                                                 </td>
                                                 <td>
                                                    <span>{{summary.isECS===1 ? 'Yes' : 'No' }}</span>
@@ -570,9 +626,6 @@
                                                       [ngModel]="summary.dueDate | date :'dd-MMM-yyyy'" [disabled]="initialArrayIndex[j] > i || summary.isECS===1"
                                                       (ngModelChange)="summary.dueDate = $event.toLocaleDateString() ; onDueDateChange(summary, i, j )"
                                                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker>
-                                                      <span *ngIf = "hideCopytoActualDate" class="clone_Icon" tooltip="Copy to Actual"
-                                                      (click)="summary.dateOfPayment=summary.dueDate "><i
-                                                         class=" fa fa-files-o cursor-pointer"></i> </span>
                                                    </div>
                                                 </td>
                                                 <td>
@@ -584,21 +637,18 @@
                                                       class="form-control align-right"
                                                       (change)="onDeclaredAmountChange(summary, i, j)"
                                                       [disabled]="initialArrayIndex[j] > i">
-                                                      <span class="clone_Icon" tooltip="Copy to Actual"
+                                                      <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                                                          (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
-                                                         class=" fa fa-files-o cursor-pointer"></i> </span>
+                                                         class=" fa fa-files-o cursor-pointer"></i> </span> -->
                                                    </div>
                                                 </td>
                                                 <td>
-                                                  <!-- (bsValueChange)="setDateOfPayment($event, i, j)" -->
-                                                   <input
-                                                   type="text"
+                                                   <input type="text"
                                                    [ngModel]="summary.dateOfPayment | date :'dd-MMM-yyyy'"
-                                                   [disabled]="summary.isECS===1"
+                                                   [disabled] = "isDisabled"
                                                    [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                                                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                    data-provide="datepicker" data-date-autoclose="true"
-
                                                    (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString() ; setDateOfPayment(summary, i, j )"
                                                    class="form-control" bsDatepicker>
                                                 </td>
@@ -612,10 +662,12 @@
                                                    class="form-control align-right">
                                                 </td>
                                                 <td>
-                                                   <input type="text" [ngModel]="summary.amountRejected | number:'1.2-2'" class="form-control align-right" disabled>
+                                                   <input type="text" [ngModel]="summary.amountRejected | number:'1.2-2'"
+                                                      class="form-control align-right" disabled>
                                                 </td>
                                                 <td>
-                                                   <input type="text" [ngModel]="summary.amountApproved | number:'1.2-2'" class="form-control align-right" disabled>
+                                                   <input type="text" [ngModel]="summary.amountApproved | number:'1.2-2'"
+                                                      class="form-control align-right" disabled>
                                                 </td>
                                                 <td>
                                                    <span tooltip="{{summary.remark}}">{{summary.remark}}</span>
@@ -623,14 +675,16 @@
                                                 <td>
                                                    <span tooltip="{{summary.proofSubmissionId}}">{{summary.proofSubmissionId}}</span>
                                                 </td>
-                                                <td class="text-orange font700"><span tooltip="{{summary.transactionStatus}}">{{summary.transactionStatus}}</span></td>
+                                                <td class="text-orange font700"><span tooltip="{{summary.transactionStatus}}">
+                                                    {{summary.transactionStatus}}</span></td>
                                              </tr>
                                              <tr *ngIf="!isDisabled">
-                                                <td colspan="12"
+                                              <td colspan="12"
                                                    class="align-right font700 font-16 text-light-green cursor-pointer">
                                                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
-                                                   <span tooltip="Add Row" >Add</span>&nbsp;&nbsp;
+                                                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                                                    <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                      *ngIf="initialArrayIndex[j] > i"
                                                       tooltip="Cancel" (click)="deleteRow(j)" ></i>
                                                 </td>
                                              </tr>
@@ -670,7 +724,7 @@
                               </div>
                               <hr />
                            </div>
-                           <div class="row mt-15" *ngIf="transactionDetail?.length && grandTabStatus">
+                           <div class="row mt-15" *ngIf="transactionDetail?.length">
                               <div class="col-12">
                                  <div class="table-responsive Custom_Table">
                                     <table class="table table-striped table-hover table-bordered m-b-0">
@@ -811,16 +865,17 @@
                                                 </tr>
                                              </thead>
                                              <tbody>
-                                                <tr *ngFor="let documentSummary of documentDetailList; let i = index;">
-                                                   <td scope="row"><span tooltip="{{i+1}}">{{i+1}}</span></td>
-                                                   <td>
-                                                      <span tooltip="{{documentSummary.institutionName}}">
-                                                      {{documentSummary.institutionName}}
+                                                <tr *ngFor="let documentSummary of documentDetailList; let documentIndex = index;">
+                                                   <td scope="row"><span tooltip="{{documentIndex+1}}">{{documentIndex+1}}</span></td>
+                                                   <td >
+
+                                                      <span *ngFor = "let policyNo of documentSummary.licMasterList" tooltip="{{policyNo.institution}} : {{policyNo.policyNo}}">
+                                                      {{policyNo.institution}} : {{policyNo.policyNo}} <br>
                                                       </span>
                                                    </td>
                                                    <td>
                                                       <div class="custom_Label_badge">
-                                                         <button class="btn bg-color-lightgray text-000" (click)="UploadedDocumentModal(template1)">Documents</button>
+                                                         <button class="btn bg-color-lightgray text-000" (click)="UploadedDocumentModal1(template1, documentIndex)">Documents</button>
                                                          <span class="Label_badge">{{documentSummary.documentDetailList.length}}</span>
                                                       </div>
                                                       <!-- <span tooltip="{{documentSummary.fileName}}">
@@ -852,12 +907,12 @@
                                                       <i (click)="downloadTransaction(documentSummary.proofSubmissionId)"
                                                          class="fa fa-download font-16 text-blue cursor-pointer"
                                                          tooltip="Download"></i>
-                                                         <div *ngFor="let doc of urlArray" hidden>
-                                                          <iframe style="height: 100vh; width:100%; display: block;" [src]="doc.blobURI" provider="google"></iframe>
-                                                         </div>
+                                                      <div *ngFor="let doc of urlArray" hidden>
+                                                         <iframe style="height: 100vh; width:100%; display: block;" [src]="doc.blobURI" provider="google"></iframe>
+                                                      </div>
                                                       &nbsp;&nbsp;
                                                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="declarationEditUpload(template2,documentSummary.proofSubmissionId);viewDocumentDetail= true" tooltip="Edit"></i>
-                                                       <!-- <button type="button" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)' class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                                                      <!-- <button type="button" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)' class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
                                                          class="fa fa-eye"></i></b> View</button>  -->
                                                    </td>
                                                 </tr>
@@ -898,9 +953,9 @@
       <div class="card">
          <div class="card-body">
             <div class="row clearfix">
-               <div class="col-md-12">
+               <!-- <div class="col-md-12">
                   <label class="form-label">Upload File here :</label>
-               </div>
+               </div> -->
                <div class="col-md-12">
                   <div class="fileuploadbox bg-color-lightgray">
                      <label class="filelabel">
@@ -909,10 +964,12 @@
                      <span class="title">
                      Choose file
                      </span>
-                     <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);" accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple/>
+                     <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);" accept=".jpg , .jpeg, .pdf , .png"
+                        id="FileInput" type="file" multiple/>
                      </label>
                   </div>
                   <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+                    Selected files
                      <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
                         <div class="text-ellipsis"><i class="fa fa-paperclip">
                            </i>
@@ -927,7 +984,7 @@
                   </div>
                </div>
                <div class="col-md-12 mt-10">
-                  <label class="form-label">Remark :</label>
+                  <label class="form-label">Remark</label>
                </div>
                <div class="col-md-12">
                   <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
@@ -937,7 +994,6 @@
       </div>
    </div>
    <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
    </div>
 </ng-template>
@@ -950,40 +1006,10 @@
    <div class="modal-body">
       <div class="card">
          <div class="card-body pb-0 mt-0 mb-0">
-            <div class="row clearfix">
+            <div class="row clearfix" *ngFor="let proofSubmissionFile of proofSubmissionFileList;">
                <div class="col-md-11">
                   <div class="labelbox" tooltip="Document 1">
-                     <i class="fa fa-paperclip text-orange"></i> &nbsp; Document 1
-                  </div>
-               </div>
-               <div class="col-md-1">
-                  <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document"></i>
-               </div>
-            </div>
-            <div class="row clearfix">
-               <div class="col-md-11">
-                  <div class="labelbox" tooltip="Very very Long Document Very very Long Document 2">
-                     <i class="fa fa-paperclip text-orange "></i> &nbsp; Very very Long Document Very very Long Document 2
-                  </div>
-               </div>
-               <div class="col-md-1">
-                  <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document"></i>
-               </div>
-            </div>
-            <div class="row clearfix">
-               <div class="col-md-11">
-                  <div class="labelbox" tooltip="Document 3">
-                     <i class="fa fa-paperclip text-orange"></i> &nbsp; Document 3
-                  </div>
-               </div>
-               <div class="col-md-1">
-                  <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document"></i>
-               </div>
-            </div>
-            <div class="row clearfix">
-               <div class="col-md-11">
-                  <div class="labelbox" tooltip="Document 4">
-                     <i class="fa fa-paperclip text-orange"></i> &nbsp; Document 4
+                     <i class="fa fa-paperclip text-orange"></i> &nbsp; {{proofSubmissionFile.fileName}}
                   </div>
                </div>
                <div class="col-md-1">
@@ -994,311 +1020,310 @@
       </div>
    </div>
    <div class="modal-footer">
-      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
    </div>
 </ng-template>
 <ng-template #template2>
-  <div class="modal-header">
-     <h5 class="modal-title" id="jasdjgh" *ngIf=viewDocumentDetail>Edit Document Details</h5>
-     <h5 class="modal-title" id="jasdjgh" *ngIf=!viewDocumentDetail>View Document Details</h5>
-     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-        aria-hidden="true">×</span></button>
-  </div>
-  <div class="card-body Box-Spacing">
-     <div *ngFor="let item of editTransactionUpload;  let j = index;">
-        <div class="row mt-25">
-           <div class="col-2 mr-0 pr-0">
-              <label class="form-label mt-1">Institution & Policy No.</label>
-           </div>
-           <div class="col-3 pr-0">
-              <label class="font-12 text-ellipsis mt-1" tooltip="{{item.policyNo}}">
-              {{item.policyNo}}</label>
-           </div>
-           <div class="col-2">
-              <label class="form-label  mt-1 pl-10">Policy Holder Name</label>
-           </div>
-           <div class="col-2">
-              <label class="font-12 text-ellipsis mt-1" tooltip="{{item.policyholdername}}">
-              {{item.policyholdername}}</label>
-           </div>
-           <div class="col-1 pr-0 mr-0">
-              <label class="form-label  mt-1">Frequency</label>
-           </div>
-           <div class="col-2">
-              <label class="font-12 text-ellipsis mt-1" tooltip="{{item.frequency}}">
-              {{item.frequency}}</label>
-           </div>
-        </div>
-        <div class="row mt-15">
-           <div class="col-12">
-              <div class="table-responsive Custom_Table">
-                 <table class="table table-striped table-hover table-bordered m-b-0">
-                    <thead class="thead-dark">
-                       <tr>
-                          <th rowspan="2" class="wd-10 font700">Previous Employer Name</th>
-                          <th rowspan="2" class="wd-4 font700">ECS</th>
-                          <th rowspan="2" class="wd-11 font700">Due Date</th>
-                          <th rowspan="2" class="wd-9 font700">Declared</th>
-                          <th rowspan="2" class="wd-11 font700">Date of Payment</th>
-                          <th rowspan="2" class="wd-9 font700">Actual</th>
-                          <th colspan="2" class="wd-17 font700">Amount</th>
-                          <th rowspan="2" class="wd-7 font700">Remark</th>
-                          <th rowspan="2" class="wd-8">Proof Submission ID</th>
-                          <th rowspan="2" class="wd-10 font700">Transaction Status</th>
-                       </tr>
-                       <tr>
-                          <th>
-                             Rejected
-                          </th>
-                          <th>
-                             Approved
-                          </th>
-                       </tr>
-                    </thead>
-                    <tbody>
-                       <tr *ngFor="let summary of item.lictransactionList;  let i = index; count as c;">
-                          <td>
-                             {{summary.PreviousEmpDDL}}
-                          </td>
-                          <td>
-                             {{summary.isECS===1?'Yes':'No'}}
-                          </td>
-                          <td>
-                             {{summary.dueDate | date :'dd-MMM-yyyy'}}
-                          </td>
-                          <td class="align-right">
-                             {{summary.declaredAmount | number:'1.2-2'}}
-                          </td>
-                          <td>
-                             {{summary.dateOfPayment | date :'dd-MMM-yyyy'}}
-                          </td>
-                          <td class="align-right">
-                             {{summary.actualAmount | number:'1.2-2'}}
-                          </td>
-                          <td class="align-right">
-                             {{summary.amountRejected | number:'1.2-2'}}
-                          </td>
-                          <td  class="align-right">
-                             {{summary.amountApproved | number:'1.2-2'}}
-                          </td>
-                          <td>
-                             {{summary.remark}}
-                          </td>
-                          <td> {{summary.proofSubmissionId}}</td>
-                          <td class="text-orange font700" tooltip="{{summary.transactionStatus}}">{{summary.transactionStatus}}</td>
-                       </tr>
-                       <tr>
-                         <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
-                         <td class="bg-lightgray font-18 font700 align-right"></td>
-                         <td class="bg-lightgray font-18 font700 align-right">
-                            <span tooltip=" {{item.declarationTotal | number:'1.2-2'}}">
-                            {{item.declarationTotal | number:'1.2-2'}}
-                            </span>
-                         </td>
-                         <td class="bg-lightgray font-18 font700 align-right"></td>
-                         <td class="bg-lightgray font-18 font700 align-right">
-                            <span tooltip="{{item.actualTotal | number:'1.2-2'}}">
-                            {{item.actualTotal | number:'1.2-2'}}
-                            </span>
-                         </td>
-                         <td class="bg-lightgray font-18 font700 align-right">
-                            <span tooltip=" {{item.totalRejectedAmount | number:'1.2-2'}}">
-                            {{item.totalRejectedAmount | number:'1.2-2'}}
-                            </span>
-                         </td>
-                         <td class="bg-lightgray font-18 font700 align-right">
-                            <span tooltip="{{item.totalApprovedAmount | number:'1.2-2'}}">
-                            {{item.totalApprovedAmount | number:'1.2-2'}}
-                            </span>
-                         </td>
-                         <td class="bg-lightgray font-18 font700"></td>
-                         <td class="bg-lightgray font-18 font700"></td>
-                         <td class="bg-lightgray font-18 font700"></td>
-                      </tr>
-                    </tbody>
-                 </table>
-              </div>
-           </div>
-        </div>
-        <hr />
-     </div>
-     <hr/>
-     <div class="row" *ngIf=viewDocumentDetail>
-        <div class="col-12">
-           <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">Upload Documents</h3>
-        </div>
-     </div>
-     <div class="row clearfix mt-10" *ngIf=viewDocumentDetail>
-        <div class="col-md-12">
-           <div class="row clearfix">
-              <div class="col-md-12">
-                 <label class="form-label">Upload File here :</label>
-              </div>
-              <div class="col-md-3">
-                <div class="fileuploadbox bg-color-lightgray">
-                  <label class="filelabel">
-       <i class="fa fa-upload">
-       </i>
-       <span class="title">
-       Choose file
-       </span>
-       <input class="FileUpload1" class="dropify" (change)="onUpload($event);" accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple/>
-       </label>
-              </div>
-                 <!-- <div class="fileuploadbox bg-color-lightgray">
-                    <label class="filelabel">
-                    <i class="fa fa-upload">
-                    </i>
-                    <span class="title">
-                    Choose file
-                    </span>
-                    <input class="FileUpload1" class="dropify" (change)="onUpload($event);" accept=".jpg , .jpeg, .pdf , .png" id="FileInput1" type="file" multiple/>
-                    </label>
-                 </div> -->
-                 <div *ngIf="filesArray.length > 0 " class="fileuploadbox">
-                    <label *ngFor="let item of filesArray;  let index = index;" class="filelabeldisplay">
-                       <div class="text-ellipsis"><i class="fa fa-paperclip">
-                          </i>
-                          <span class="title">
-                          {{ item.name }}
-                          </span>
-                       </div>
-                       <div>
-                          <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
-                       </div>
-                    </label>
-                 </div>
-              </div>
-              <div class="col-md-12 mt-6">
-                 <label class="form-label">Remark :</label>
-              </div>
-              <div class="col-md-6">
-                 <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-              </div>
-           </div>
-        </div>
-     </div>
-     <hr class="mt-20" />
-     <div class="row mt-20">
-        <div class="col-12">
-           <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">Uploaded Documents</h3>
-        </div>
-     </div>
-     <div class="row">
-        <div class="col-md-12">
-           <div class="row clearfix mt-10">
-              <div class="col-md-12" *ngFor="let doc of urlArray">
-                 <div class="labelbox" tooltip="{{doc.fileName}}">
-                    <i class="fa fa-paperclip text-orange"></i> &nbsp; {{doc.fileName}}
-                 </div>
-              </div>
-              <!-- <div class="col-md-1">
-                 <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
-                 </div> -->
-           </div>
-           <div class="row mt-10 mb-10">
-              <div class="col-md-12">
-                 <div class="float-right">
-                    <button type="button" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)' class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
-                       class="fa fa-eye"></i></b> View</button>  &nbsp;&nbsp;
-                       <button *ngIf="viewDocumentDetail" type="button" tooltip="View Document" (click)='modalRef.hide(); uploadUpdateTransaction()' class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+   <div class="modal-header">
+      <h5 class="modal-title" id="jasdjgh" *ngIf=viewDocumentDetail>Edit Document Details</h5>
+      <h5 class="modal-title" id="jasdjgh" *ngIf=!viewDocumentDetail>View Document Details</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+         aria-hidden="true">×</span></button>
+   </div>
+   <div class="card-body Box-Spacing">
+      <div *ngFor="let item of editTransactionUpload;  let j = index;">
+         <div class="row mt-25">
+            <div class="col-2 mr-0 pr-0">
+               <label class="form-label mt-1">Institution & Policy No.</label>
+            </div>
+            <div class="col-3 pr-0">
+               <label class="font-12 text-ellipsis mt-1" tooltip="{{item.policyNo}}">
+               {{item.policyNo}}</label>
+            </div>
+            <div class="col-2">
+               <label class="form-label  mt-1 pl-10">Policy Holder Name</label>
+            </div>
+            <div class="col-2">
+               <label class="font-12 text-ellipsis mt-1" tooltip="{{item.policyholdername}}">
+               {{item.policyholdername}}</label>
+            </div>
+            <div class="col-1 pr-0 mr-0">
+               <label class="form-label  mt-1">Frequency</label>
+            </div>
+            <div class="col-2">
+               <label class="font-12 text-ellipsis mt-1" tooltip="{{item.frequency}}">
+               {{item.frequency}}</label>
+            </div>
+         </div>
+         <div class="row mt-15">
+            <div class="col-12">
+               <div class="table-responsive Custom_Table">
+                  <table class="table table-striped table-hover table-bordered m-b-0">
+                     <thead class="thead-dark">
+                        <tr>
+                           <th rowspan="2" class="wd-10 font700">Previous Employer Name</th>
+                           <th rowspan="2" class="wd-4 font700" tooltip="Electronic Clearing Service">ECS</th>
+                           <th rowspan="2" class="wd-11 font700">Due Date</th>
+                           <th rowspan="2" class="wd-9 font700">Declared</th>
+                           <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                           <th rowspan="2" class="wd-9 font700">Actual</th>
+                           <th colspan="2" class="wd-17 font700">Amount</th>
+                           <th rowspan="2" class="wd-7 font700">Remark</th>
+                           <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                           <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                        </tr>
+                        <tr>
+                           <th>
+                              Rejected
+                           </th>
+                           <th>
+                              Approved
+                           </th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngFor="let summary of item.lictransactionList;  let i = index; count as c;">
+                           <td>
+                              {{summary.PreviousEmpDDL}}
+                           </td>
+                           <td>
+                              {{summary.isECS===1?'Yes':'No'}}
+                           </td>
+                           <td>
+                              {{summary.dueDate | date :'dd-MMM-yyyy'}}
+                           </td>
+                           <td class="align-right">
+                              {{summary.declaredAmount | number:'1.2-2'}}
+                           </td>
+                           <td>
+                              {{summary.dateOfPayment | date :'dd-MMM-yyyy'}}
+                           </td>
+                           <td class="align-right">
+                              {{summary.actualAmount | number:'1.2-2'}}
+                           </td>
+                           <td class="align-right">
+                              {{summary.amountRejected | number:'1.2-2'}}
+                           </td>
+                           <td  class="align-right">
+                              {{summary.amountApproved | number:'1.2-2'}}
+                           </td>
+                           <td>
+                              {{summary.remark}}
+                           </td>
+                           <td> {{summary.proofSubmissionId}}</td>
+                           <td class="text-orange font700" tooltip="{{summary.transactionStatus}}">{{summary.transactionStatus}}</td>
+                        </tr>
+                        <tr>
+                           <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
+                           <td class="bg-lightgray font-18 font700 align-right"></td>
+                           <td class="bg-lightgray font-18 font700 align-right">
+                              <span tooltip=" {{item.declarationTotal | number:'1.2-2'}}">
+                              {{item.declarationTotal | number:'1.2-2'}}
+                              </span>
+                           </td>
+                           <td class="bg-lightgray font-18 font700 align-right"></td>
+                           <td class="bg-lightgray font-18 font700 align-right">
+                              <span tooltip="{{item.actualTotal | number:'1.2-2'}}">
+                              {{item.actualTotal | number:'1.2-2'}}
+                              </span>
+                           </td>
+                           <td class="bg-lightgray font-18 font700 align-right">
+                              <span tooltip=" {{item.totalRejectedAmount | number:'1.2-2'}}">
+                              {{item.totalRejectedAmount | number:'1.2-2'}}
+                              </span>
+                           </td>
+                           <td class="bg-lightgray font-18 font700 align-right">
+                              <span tooltip="{{item.totalApprovedAmount | number:'1.2-2'}}">
+                              {{item.totalApprovedAmount | number:'1.2-2'}}
+                              </span>
+                           </td>
+                           <td class="bg-lightgray font-18 font700"></td>
+                           <td class="bg-lightgray font-18 font700"></td>
+                           <td class="bg-lightgray font-18 font700"></td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+         <hr />
+      </div>
+      <hr/>
+      <div class="row" *ngIf=viewDocumentDetail>
+         <div class="col-12">
+            <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">Upload Documents</h3>
+         </div>
+      </div>
+      <div class="row clearfix mt-10" *ngIf=viewDocumentDetail>
+         <div class="col-md-12">
+            <div class="row clearfix">
+               <!-- <div class="col-md-12">
+                  <label class="form-label">Upload File here :</label>
+               </div> -->
+               <div class="col-md-3">
+                  <div class="fileuploadbox bg-color-lightgray">
+                     <label class="filelabel">
+                     <i class="fa fa-upload">
+                     </i>
+                     <span class="title">
+                     Choose file
+                     </span>
+                     <input class="FileUpload1" class="dropify" (change)="onUpload($event);" accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple/>
+                     </label>
+                  </div>
+                  <!-- <div class="fileuploadbox bg-color-lightgray">
+                     <label class="filelabel">
+                     <i class="fa fa-upload">
+                     </i>
+                     <span class="title">
+                     Choose file
+                     </span>
+                     <input class="FileUpload1" class="dropify" (change)="onUpload($event);" accept=".jpg , .jpeg, .pdf , .png" id="FileInput1" type="file" multiple/>
+                     </label>
+                     </div> -->
+                  <div *ngIf="filesArray.length > 0 " class="fileuploadbox">Selected Files
+                     <label *ngFor="let item of filesArray;  let index = index;" class="filelabeldisplay">
+                        <div class="text-ellipsis"><i class="fa fa-paperclip">
+                           </i>
+                           <span class="title">
+                           {{ item.name }}
+                           </span>
+                        </div>
+                        <div>
+                           <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
+                        </div>
+                     </label>
+                  </div>
+               </div>
+               <div class="col-md-12 mt-6">
+                  <label class="form-label">Remark</label>
+               </div>
+               <div class="col-md-6">
+                  <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+               </div>
+            </div>
+         </div>
+      </div>
+      <hr class="mt-20" />
+      <div class="row mt-20">
+         <div class="col-12">
+            <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">Uploaded Documents</h3>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-12">
+            <div class="row clearfix mt-10">
+               <div class="col-md-12" *ngFor="let doc of urlArray">
+                  <div class="labelbox" tooltip="{{doc.fileName}}">
+                     <i class="fa fa-paperclip text-orange"></i> &nbsp; {{doc.fileName}}
+                  </div>
+               </div>
+               <!-- <div class="col-md-1">
+                  <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
+                  </div> -->
+            </div>
+            <div class="row mt-10 mb-10">
+               <div class="col-md-12">
+                  <div class="float-right">
+                     <button type="button" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)' class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+                        class="fa fa-eye"></i></b> View</button>  &nbsp;&nbsp;
+                     <button *ngIf="viewDocumentDetail" type="button" tooltip="View Document" (click)='modalRef.hide(); uploadUpdateTransaction()' class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
                         class="fa fa-copy"></i></b> Save</button>
-
-                 </div>
-              </div>
-           </div>
-        </div>
-     </div>
-  </div>
-  <!-- <div class="modal-footer">
-     <button type="button" class="btn btn-primary">Save</button>
-     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-     <button type="button" (click)="modalRef.hide()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
-        class="fa fa-save"></i></b> Save</button>
-  </div> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+      <button type="button" (click)="modalRef.hide()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+         class="fa fa-save"></i></b> Save</button>
+      </div> -->
 </ng-template>
 <ng-template #template3>
-  <div class="modal-header">
-     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-        aria-hidden="true">×</span></button>
-  </div>
-  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
-     <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
-  <div class="card-body">
-     <div class="row">
-        <div class="col-md-1">
-           <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewer()" [disabled]="urlIndex == 0">
-           <i class="fa fa-angle-left text-white font-30 p-10"></i>
-           </button>
-        </div>
-        <div class="col-md-10">
-           <iframe style="height: 100vh; width:100%; display: block;" [src]="urlSafe" provider="google"></iframe>
-        </div>
-        <div class="col-md-1">
-           <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">
-           <i class="fa fa-angle-right text-white font-30 p-10"></i>
-           </button>
-        </div>
-     </div>
-  </div>
-  <div class="modal-footer">
-     <!-- <button type="button" class="btn btn-primary">Save</button>  -->
-     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-  </div>
+   <div class="modal-header">
+      <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+         aria-hidden="true">×</span></button>
+   </div>
+   <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+      <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
+   <div class="card-body">
+      <div class="row">
+         <div class="col-md-1">
+            <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document" (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+            <i class="fa fa-angle-left text-white font-30 p-10"></i>
+            </button>
+         </div>
+         <div class="col-md-10">
+            <iframe style="height: 100vh; width:100%; display: block;" [src]="urlSafe" provider="google"></iframe>
+         </div>
+         <div class="col-md-1">
+            <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">
+            <i class="fa fa-angle-right text-white font-30 p-10"></i>
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+   </div>
 </ng-template>
-
 <ng-template #template4>
-  <div class="modal-header">
-     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-        aria-hidden="true">×</span></button>
-  </div>
-  <div class="modal-body">
-     <div class="card">
-        <div class="card-body">
-           <div class="row clearfix">
-              <div class="col-md-12">
-                 <label class="form-label">Upload File here :</label>
-              </div>
-              <div class="col-md-12">
-                 <div class="fileuploadbox bg-color-lightgray">
-                    <label class="filelabel">
-                    <i class="fa fa-upload">
-                    </i>
-                    <span class="title">
-                    Choose file
-                    </span>
-                    <input class="FileUpload1" class="dropify" (change)="onUpload($event);" accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple/>
-                    </label>
-                 </div>
-                 <div *ngIf="filesArray.length > 0 " class="fileuploadbox">
-                    <label *ngFor="let item of filesArray;  let index = index;" class="filelabeldisplay">
-                       <div class="text-ellipsis"><i class="fa fa-paperclip">
-                          </i>
-                          <span class="title">
-                          {{ item.name }}
-                          </span>
-                       </div>
-                       <div>
-                          <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
-                       </div>
-                    </label>
-                 </div>
-              </div>
-              <div class="col-md-12 mt-10">
-                 <label class="form-label">Remark :</label>
-              </div>
-              <div class="col-md-12">
-                 <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-              </div>
-           </div>
-        </div>
-     </div>
-  </div>
-  <div class="modal-footer">
-     <!-- <button type="button" class="btn btn-primary">Save</button>  -->
-     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-  </div>
+   <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+         aria-hidden="true">×</span></button>
+   </div>
+   <div class="modal-body">
+      <div class="card">
+         <div class="card-body">
+            <div class="row clearfix">
+               <!-- <div class="col-md-12">
+                  <label class="form-label">Upload File here :</label>
+               </div> -->
+               <div class="col-md-12">
+                  <div class="fileuploadbox bg-color-lightgray">
+                     <label class="filelabel">
+                     <i class="fa fa-upload">
+                     </i>
+                     <span class="title">
+                     Choose file
+                     </span>
+                     <input class="FileUpload1" class="dropify" (change)="onUpload($event);" accept=".jpg , .jpeg, .pdf , .png"
+                        id="FileInput" type="file" multiple/>
+                     </label>
+                  </div>
+                  <div *ngIf="filesArray.length > 0 " class="fileuploadbox">
+                    Selected Files
+                     <label *ngFor="let item of filesArray;  let index = index;" class="filelabeldisplay">
+                        <div class="text-ellipsis"><i class="fa fa-paperclip">
+                           </i>
+                           <span class="title">
+                           {{ item.name }}
+                           </span>
+                        </div>
+                        <div>
+                           <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
+                        </div>
+                     </label>
+                  </div>
+               </div>
+               <div class="col-md-12 mt-10">
+                  <label class="form-label">Remark</label>
+               </div>
+               <div class="col-md-12">
+                  <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+   </div>
 </ng-template>
