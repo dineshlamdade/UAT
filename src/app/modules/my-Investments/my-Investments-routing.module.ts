@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-      path:   '80C',
+      path:   '80C-LIC',
       component:  EightyCComponent,
       data: { title: ':: DelziaHR :: 80-C' },
       },

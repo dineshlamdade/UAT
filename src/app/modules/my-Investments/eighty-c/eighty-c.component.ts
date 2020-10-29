@@ -364,10 +364,10 @@ export class EightyCComponent implements OnInit {
                 this.editMaster(3);
             }
 
-            jumpToDeclarationPage(institutionName:string, policyNo:string) {
+            jumpToDeclarationPage(data) {
                 this.tabIndex = 2;
-                this.selectedInstitution = institutionName;
-                this.selectedTransactionInstName(institutionName);
+                this.selectedInstitution = data;
+                this.selectedTransactionInstName(data);
             }
 
   // ------------------------------------Master----------------------------
