@@ -57,7 +57,7 @@ export class FileService {
       });
   }
 
-  uploadMultipleMasterFiles(files: File[], data: any): Observable<any> {
+  uploadMultipleMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {

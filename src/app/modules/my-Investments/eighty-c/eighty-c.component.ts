@@ -25,6 +25,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 export class EightyCComponent implements OnInit {
 
+  submitted = false;
   pdfSrc = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
   name = 'Set iframe source';
@@ -64,6 +65,8 @@ export class EightyCComponent implements OnInit {
   addRow1: boolean;
   addRow2: number;
   previousEmployeeList: Array<any> = [];
+  proofSubmissionFileList: Array<any> = [];
+  proofSubmissionPolicyNoList: Array<any> = [];
   totalDeclaredAmount: any;
   totalActualAmount: any;
   futureNewPolicyDeclaredAmount: string;
@@ -91,7 +94,8 @@ export class EightyCComponent implements OnInit {
   viewDocumentDetail: boolean = true;
   masterUploadFlag: boolean = true;
   // msgs2: Message[];
-
+  dateOfPaymentGlobal :Date;
+  actualAmountGlobal  : Number;
   dueDate : Date;
   dateOfPayment : Date;
   date3: Date;
@@ -122,6 +126,7 @@ export class EightyCComponent implements OnInit {
   actualTotal:number
   actualAmount:number
   hideRemarkDiv:boolean;
+  hideRemoveRow:boolean;
   isClear:boolean;
   isCancel:boolean;
   financialYear : any;
@@ -155,7 +160,7 @@ export class EightyCComponent implements OnInit {
         institutionName: new FormControl(null, Validators.required),
         policyNo: new FormControl(null, Validators.required),
         policyholdername: new FormControl(null, Validators.required),
-        relationship: new FormControl({value: null, disabled: true}),
+        relationship: new FormControl({value: null, disabled: true}, Validators.required),
         policyStartDate: new FormControl(null, Validators.required),
         policyEndDate: new FormControl(null, Validators.required),
         familyMemberInfoId: new FormControl(null, Validators.required),
@@ -189,11 +194,12 @@ export class EightyCComponent implements OnInit {
       this.enableFileUpload=false;
       this.addNewRowId=0;
       this.hideRemarkDiv = false;
+      this.hideRemoveRow =false;
       this.isClear= false;
       this.isCancel= false;;
-      this.receiptAmount='0';
+      this.receiptAmount = this.numberFormat.transform(0);
       this.globalAddRowIndex = 0;
-      this.globalSelectedAmount='0';
+      this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
 
@@ -368,18 +374,22 @@ export class EightyCComponent implements OnInit {
 
   // ------------------------------------Master----------------------------
 
+    // convenience getter for easy access to form fields
+    get masterForm() { return this.form.controls; }
+
     // Policy End Date Validations with Policy Start Date
       setPolicyEndDate() {
         this.policyMinDate = this.form.value.policyStartDate;
         const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
         const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
+        this.minFormDate = this.policyMinDate;
         if(policyStart > policyEnd) {
             this.form.controls['policyEndDate'].reset()
         }
         this.form.patchValue({
             fromDate:this.policyMinDate
         });
-        this.minFormDate = this.form.value.policyStartDate;
+
         this.setPaymentDetailToDate();
       }
 
@@ -436,63 +446,60 @@ export class EightyCComponent implements OnInit {
     // Post Master Page Data API call
       addMaster(formData: any, formDirective: FormGroupDirective): void {
 
+        this.submitted = true;
+
         if (this.form.invalid) {
           return;
         }
 
-        const from = this.datePipe.transform(this.form.get('fromDate').value, 'yyyy-MM-dd');
-        const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
-        const data = this.form.getRawValue();
+        if (this.masterfilesArray.length === 0) {
+          this.sweetalertWarning("LIC Document needed to Create Master.");
+          return;
+        } else {
+          const from = this.datePipe.transform(this.form.get('fromDate').value, 'yyyy-MM-dd');
+          const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
+          const data = this.form.getRawValue();
 
-        data.fromDate = from;
-        data.toDate = to;
-        data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+          data.fromDate = from;
+          data.toDate = to;
+          data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-        console.log('LICdata::', data);
+          console.log('LICdata::', data);
 
-        this.fileService.uploadMultipleMasterFiles(this.masterfilesArray, data)
-          .subscribe(res => {
-            console.log(res);
-            if(res.data.results.length > 0) {
-              this.masterGridData = res.data.results;
-              this.masterGridData.forEach(element => {
-                element.policyStartDate = new Date(element.policyStartDate);
-                element.policyEndDate = new Date(element.policyEndDate);
-                element.fromDate = new Date(element.fromDate);
-                element.toDate = new Date(element.toDate);
-              });
-              this.sweetalertMasterSuccess('Record saved Successfully.', 'Go to Declaration & Actual Page to see Schedule.');
-            } else {
-              this.sweetalertWarning(res.status.messsage);
-            }
+          this.fileService.uploadMultipleMasterFiles(this.masterfilesArray, data)
+            .subscribe(res => {
+              console.log(res);
+              if(res) {
+                if(res.data.results.length > 0) {
+                  this.masterGridData = res.data.results;
+                  this.masterGridData.forEach(element => {
+                    element.policyStartDate = new Date(element.policyStartDate);
+                    element.policyEndDate = new Date(element.policyEndDate);
+                    element.fromDate = new Date(element.fromDate);
+                    element.toDate = new Date(element.toDate);
+                  });
+                  this.sweetalertMasterSuccess('Record saved Successfully.', 'Go to "Declaration & Actual" Page to see Schedule.');
+                } else {
+                  this.sweetalertWarning(res.status.messsage);
+                }
+              } else {
+                this.sweetalertError("Something went wrong. Please try again.");
+              }
+            });
 
-          });
+          this.Index = -1;
+          formDirective.resetForm();
+          this.form.reset();
+          this.form.get('active').setValue(true);
+          this.form.get('ecs').setValue(0);
+          this.showUpdateButton = false;
+          this.paymentDetailGridData = [];
+          this.masterfilesArray = [];
+          this.documentRemark = null;
+          this.submitted = false;
+        }
 
-        // this.Service.postEightyCMaster(data).subscribe(res => {
-        //     console.log(res);
-        //     if(res.data.results.length > 0) {
-        //         this.masterGridData = res.data.results;
-        //         this.masterGridData.forEach(element => {
-        //             element.policyStartDate = new Date(element.policyStartDate);
-        //             element.policyEndDate = new Date(element.policyEndDate);
-        //             element.fromDate = new Date(element.fromDate);
-        //             element.toDate = new Date(element.toDate);
-        //         });
-        //         this.sweetalertMasterSuccess('Record saved Successfully.', 'Go to Declaration & Actual Page to see Schedule.');
-        //     } else {
-        //         this.sweetalertWarning(res.status.messsage);
-        //     }
-        // });
 
-        this.Index = -1;
-        formDirective.resetForm();
-        this.form.reset();
-        this.form.get('active').setValue(true);
-        this.form.get('ecs').setValue(0);
-        this.showUpdateButton = false;
-        this.paymentDetailGridData = [];
-        this.masterfilesArray = [];
-        this.documentRemark = null;
       }
 
       // Calculate annual amount on basis of premium and frquency
@@ -662,9 +669,9 @@ export class EightyCComponent implements OnInit {
     //--------- On institution selection show all transactions list accordingly all policies--------
       selectedTransactionInstName(institutionName:any) {
 
-        this.globalInstitution=institutionName;
+        this.globalInstitution = institutionName;
         this.getTransactionFilterData(this.globalInstitution, null, null);
-
+        this.globalSelectedAmount = this.numberFormat.transform(0);
         const data = {
           label: 'All',
           value: 'All',
@@ -717,47 +724,69 @@ export class EightyCComponent implements OnInit {
       }
 
     //-------- ON select to check input boxex--------
-      onSelectCheckBox(data: any, event: { target: { checked: any; }; }, item:any) {
-        const checked = event.target.checked;
+    public onSelectCheckBox(data: any, event: { target: { checked: any; }; },  i:number, j:number) {
+      const checked = event.target.checked;
 
-        let formatedGlobalSelectedValue = Number(this.globalSelectedAmount=='0' ? this.globalSelectedAmount
-                                                                                : this.globalSelectedAmount.toString().replace(',', ''));
-        //console.log('formatedGlobalSelectedValue::', formatedGlobalSelectedValue);
+      let formatedGlobalSelectedValue = Number(this.globalSelectedAmount=='0' ? this.globalSelectedAmount
+      : this.globalSelectedAmount.toString().replace(',', ''));
 
-        let formatedActualAmount = Number(data.actualAmount.toString().replace(',', ''));
-        //console.log('formatedActualAmount::', formatedActualAmount);
+      let formatedActualAmount : number = 0;
+      let formatedSelectedAmount: string;
+      console.log('in IS ECS::', this.transactionDetail[j].lictransactionList[i].isECS);
+      if (checked) {
+        if ( this.transactionDetail[j].lictransactionList[i].isECS === 1){
 
-        let formatedSelectedAmount: string;
 
-        if (checked) {
-          formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
-          //console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-          this.uploadGridData.push(data.licTransactionId);
-        } else {
-          formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue - formatedActualAmount);
-          //console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-          const index = this.uploadGridData.indexOf(data.licTransactionId);
-          this.uploadGridData.splice(index, 1);
+        this.transactionDetail[j].lictransactionList[i].actualAmount =  data.declaredAmount;
+        this.transactionDetail[j].lictransactionList[i].dateOfPayment =  new Date (data.dueDate);
+        console.log('in IS actualAmount::', this.transactionDetail[j].lictransactionList[i].actualAmount);
+        console.log('in IS dateOfPayment::', this.transactionDetail[j].lictransactionList[i].dateOfPayment);
+        } else
+        {
+          this.transactionDetail[j].lictransactionList[i].actualAmount =  data.declaredAmount;
+
         }
 
-        this.globalSelectedAmount = formatedSelectedAmount;
-        //console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+        formatedActualAmount =  Number(this.transactionDetail[j].lictransactionList[i].actualAmount.toString().replace(',', ''));
+        formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
+        console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
+        this.uploadGridData.push(data.licTransactionId);
 
-        if (this.uploadGridData.length) {
-            this.enableFileUpload = true;
-        }
-        console.log(this.uploadGridData);
-        console.log(this.uploadGridData.length);
-        console.log(item.lictransactionList.length);
+        // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
+        // this.actualAmountGlobal = Number(data.declaredAmount);
 
-        // if (this.uploadGridData.length===item.lictransactionList.length) {
-        //   this.isCheckAll = true;
-        //   //this.enableSelectAll = true;
-        // } else {
-        //   this.isCheckAll = false;
-        //   //if(this.enableSelectAll)
-        // }
+      } else {
+        formatedActualAmount =  Number(this.transactionDetail[j].lictransactionList[i].actualAmount.toString().replace(',', ''));
+        this.transactionDetail[j].lictransactionList[i].actualAmount  =  this.numberFormat.transform(0);
+        this.transactionDetail[j].lictransactionList[i].dateOfPayment  = null;
+
+
+        formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue - formatedActualAmount);
+        //console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+        const index = this.uploadGridData.indexOf(data.licTransactionId);
+        this.uploadGridData.splice(index, 1);
+
+
       }
+
+      this.globalSelectedAmount = formatedSelectedAmount;
+      console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+      this.actualTotal = 0;
+      this.transactionDetail[j].lictransactionList.forEach(element => {
+        //console.log(element.actualAmount.toString().replace(',', ""));
+        this.actualTotal += Number(element.actualAmount.toString().replace(',', ''));
+      });
+      this.transactionDetail[j].actualTotal = this.actualTotal;
+
+
+      if (this.uploadGridData.length) {
+          this.enableFileUpload = true;
+      }
+      console.log(this.uploadGridData);
+      console.log(this.uploadGridData.length);
+
+
+    }
 
     //------------ To Check / Uncheck All  Checkboxes-------------
       checkUncheckAll(item: any) {
@@ -857,8 +886,14 @@ export class EightyCComponent implements OnInit {
       //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
       addRowInList( summarynew: { licTransactionId:number; licMasterPaymentDetailsId:number;
         previousEmployerId:number; dueDate: Date; declaredAmount: any;
-        dateOfPayment: Date; actualAmount: any; isECS:number }, j: number) {
+        dateOfPayment: Date; actualAmount: any; isECS:number }, j: number ,i: number) {
         //console.log('summary::',  summarynew);
+        if (this.initialArrayIndex[j] > i)
+        {
+          this.hideRemoveRow = false;
+        } else{
+          this.hideRemoveRow  =true;
+        }
         this.declarationService = new DeclarationService(summarynew);
         //console.log('declarationService::', this.declarationService);
         this.globalAddRowIndex -= 1;
@@ -870,13 +905,15 @@ export class EightyCComponent implements OnInit {
         this.declarationService.actualAmount = null;
         this.declarationService.dateOfPayment = null;
         this.declarationService.isECS = 0;
+        this.declarationService.transactionStatus = 'Pending';
         this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[j].lictransactionList[0].licMasterPaymentDetailsId;
         this.transactionDetail[j].lictransactionList.push(this.declarationService);
         console.log('addRow::', this.transactionDetail[j].lictransactionList);
       }
 
     //-------- Delete Row--------------
-      deleteRow(j: number) {
+      deleteRow(j: number , i: number) {
+         
       const rowCount = this.transactionDetail[j].lictransactionList.length - 1 ;
       //console.log('rowcount::', rowCount);
       //console.log('initialArrayIndex::', this.initialArrayIndex);
@@ -1002,7 +1039,11 @@ export class EightyCComponent implements OnInit {
       //     receiptDate: this.receiptDate,
       // };
       //this.uploadGridData = [3,4]
-
+      if (this.filesArray.length === 0 )
+      {
+        this.sweetalertError("Please attach Premium Receipt / Premium Statement");
+        return;
+      }
       console.log('this.transactionDetail::', this.transactionDetail);
 
       this.transactionDetail.forEach(element=>{
@@ -1087,10 +1128,6 @@ export class EightyCComponent implements OnInit {
       console.log('receiptAmount::', this.receiptAmount);
     }
 
-    download() {
-
-    }
-
     sweetalert7(message:any) {
         Swal.fire({
         text: message,
@@ -1167,6 +1204,14 @@ export class EightyCComponent implements OnInit {
           template1,
           Object.assign({}, { class: 'gray modal-md' })
       );
+    }
+
+    UploadedDocumentModal1(template1: TemplateRef<any>, documentIndex:number) {
+      this.modalRef = this.modalService.show(
+          template1,
+          Object.assign({}, { class: 'gray modal-md' })
+      );
+      this.proofSubmissionFileList = this.documentDetailList[documentIndex].documentDetailList;
     }
 
     declarationEditUpload(template2: TemplateRef<any>, proofSubmissionId) {
@@ -1314,6 +1359,7 @@ class DeclarationService {
   dateOfPayment: Date;
   actualAmount: number;
   isECS: 0;
+  transactionStatus : 'Pending';
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
