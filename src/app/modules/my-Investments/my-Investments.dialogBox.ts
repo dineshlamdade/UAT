@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 export interface DialogData {
   animal: string;
@@ -8,19 +8,19 @@ export interface DialogData {
 
 @Component({
   selector: 'app-confirm-dialog',
-  templateUrl: './my-Investments.dialogBox.html'
+  templateUrl: './my-Investments.dialogBox.html',
  // styleUrls: [' ']
 })
 export class ConfirmDialogComponent implements OnInit {
-  currentFileUpload: File;
+  public currentFileUpload: File;
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-  ngOnInit(): void {
+  public ngOnInit(): void {
     throw new Error('Method not implemented.');
   }
 
-  onNoClick(): void {
+  public onNoClick(): void {
     this.dialogRef.close();
   }
   onUpload(event) {
@@ -35,6 +35,6 @@ export class ConfirmDialogComponent implements OnInit {
 
     // }
     // this.SuccessMessage();
-    //this.upload();
+    // this.upload();
 }
 }
