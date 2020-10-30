@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyInvestmentsService {
-  url = 'http://localhost:8085/hrms/v1/';
+apiUrl = environment.apiBaseUrl;
 
 
   constructor(private _HTTP: HttpClient) { }
 
   getNPSSummary() {
-    return this._HTTP.get(this.url + 'npsmaster-detail/npsMasterSummary/1')
+    return this._HTTP.get(this.apiUrl + 'npsmaster-detail/npsMasterSummary/1')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -21,14 +23,14 @@ export class MyInvestmentsService {
 
 
   getNPSMaster() {
-    return this._HTTP.get(this.url + 'npsmaster-detail/3')
+    return this._HTTP.get(this.apiUrl + 'npsmaster-detail/3')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getNPSDeclaration() {
-    return this._HTTP.get(this.url + 'npsmaster-detail/npsTransactionSchedule/1')
+    return this._HTTP.get(this.apiUrl + 'npsmaster-detail/npsTransactionSchedule/1')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -36,7 +38,7 @@ export class MyInvestmentsService {
 
   postNPSMaster(data) {
 
-    return this._HTTP.post(this.url + 'npsmaster-detail', data)
+    return this._HTTP.post(this.apiUrl + 'npsmaster-detail', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -44,7 +46,7 @@ export class MyInvestmentsService {
 
   puttNPSMaster(data) {
 
-    return this._HTTP.put(this.url + 'npsmaster-detail/1', data)
+    return this._HTTP.put(this.apiUrl + 'npsmaster-detail/1', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -52,28 +54,28 @@ export class MyInvestmentsService {
 
   putNPSDeclaration(data) {
 
-    return this._HTTP.put(this.url + 'npsmaster-detail/npsTransactionSchedule/1', data)
+    return this._HTTP.put(this.apiUrl + 'npsmaster-detail/npsTransactionSchedule/1', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getEducationalLoanSummary() {
-    return this._HTTP.get(this.url + 'educationalloan-transaction/summary')
+    return this._HTTP.get(this.apiUrl + 'educationalloan-transaction/summary')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getEducationalLoanMaster() {
-    return this._HTTP.get(this.url + 'educationloan-master')
+    return this._HTTP.get(this.apiUrl + 'educationloan-master')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getEducationalLoanDeclaration() {
-    return this._HTTP.get(this.url + 'educationalloan-transaction')
+    return this._HTTP.get(this.apiUrl + 'educationalloan-transaction')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -81,7 +83,7 @@ export class MyInvestmentsService {
 
   postEducationalLoanMaster(data) {
 
-    return this._HTTP.post(this.url + 'educationloan-master', data)
+    return this._HTTP.post(this.apiUrl + 'educationloan-master', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -89,28 +91,28 @@ export class MyInvestmentsService {
 
   postEducationalLoanDeclaration(data) {
 
-    return this._HTTP.post(this.url + 'educationalloan-transaction', data)
+    return this._HTTP.post(this.apiUrl + 'educationalloan-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getSavingAccountSummary() {
-    return this._HTTP.get(this.url + 'educationalloan-transaction/summary')
+    return this._HTTP.get(this.apiUrl + 'educationalloan-transaction/summary')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getSavingAccountMaster() {
-    return this._HTTP.get(this.url + 'educationloan-master')
+    return this._HTTP.get(this.apiUrl + 'educationloan-master')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getSavingAccountDeclaration() {
-    return this._HTTP.get(this.url + 'educationalloan-transaction')
+    return this._HTTP.get(this.apiUrl + 'educationalloan-transaction')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -118,14 +120,14 @@ export class MyInvestmentsService {
 
   postSavingAccountMaster(data) {
 
-    return this._HTTP.post(this.url + 'educationloan-master', data)
+    return this._HTTP.post(this.apiUrl + 'educationloan-master', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getPHandicapped() {
-    return this._HTTP.get(this.url + 'physicallyhandicapped-detail/summary/3')
+    return this._HTTP.get(this.apiUrl + 'physicallyhandicapped-detail/summary/3')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -139,7 +141,7 @@ export class MyInvestmentsService {
   // }
 
   getFamilyInfo() {
-    return this._HTTP.get(this.url + '/licmaster-detail/familyMemberList')
+    return this._HTTP.get(this.apiUrl + '/licmaster-detail/familyMemberList')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -153,7 +155,7 @@ export class MyInvestmentsService {
   // }
 
   getHandicapped() {
-    return this._HTTP.get(this.url + 'handicappeddependent-detail/summary/3')
+    return this._HTTP.get(this.apiUrl + 'handicappeddependent-detail/summary/3')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -161,7 +163,7 @@ export class MyInvestmentsService {
 
   postPHandicappedForm(data) {
 
-    return this._HTTP.post(this.url + 'houserentmaster-detail/houserentmaster_agreement', data)
+    return this._HTTP.post(this.apiUrl + 'houserentmaster-detail/houserentmaster_agreement', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -169,28 +171,28 @@ export class MyInvestmentsService {
 
   postHandicappedForm(data) {
 
-    return this._HTTP.post(this.url + 'handicappeddependent-detail', data)
+    return this._HTTP.post(this.apiUrl + 'handicappeddependent-detail', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getSpecifiedDiseaseSummary() {
-    return this._HTTP.get(this.url + 'specifiedDiseaseMaster-detail/specifiedDiseaseMasterSummary/1')
+    return this._HTTP.get(this.apiUrl + 'specifiedDiseaseMaster-detail/specifiedDiseaseMasterSummary/1')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getSpecifiedDiseaseMaster() {
-    return this._HTTP.get(this.url + 'specifiedDiseaseMaster-detail/1')
+    return this._HTTP.get(this.apiUrl + 'specifiedDiseaseMaster-detail/1')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  getEightyCMaster() {
-    return this._HTTP.get(this.url + 'licmaster-detail')
+  getEightyCMaster() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail')
     .pipe(map((res: any) => {
       return res;
     }
@@ -198,7 +200,7 @@ export class MyInvestmentsService {
   }
 
   getEightyCSummary() {
-    return this._HTTP.get(this.url + 'licmaster-detail/licMasterSummary')
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail/licMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -207,7 +209,7 @@ export class MyInvestmentsService {
 
   postEightyCMaster(data) {
 
-    return this._HTTP.post(this.url + 'licmaster-detail', data)
+    return this._HTTP.post(this.apiUrl + 'licmaster-detail', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -215,14 +217,14 @@ export class MyInvestmentsService {
 
   postEightyCSummaryFuturePolicy(data) {
 
-    return this._HTTP.post(this.url + 'licmaster-detail/licMasterSummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'licmaster-detail/licMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getEightyCDeclarationInstitutions() {
-    return this._HTTP.get(this.url + 'lic-transaction/institutions')
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/institutions')
     .pipe(map((res: any) => {
       return res;
     }
@@ -230,7 +232,7 @@ export class MyInvestmentsService {
   }
 
   getEightyCDeclarationInstitutionListWithPolicyNo() {
-    return this._HTTP.get(this.url + 'lic-transaction/institutionListWithPolicyNo')
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
     }
@@ -238,28 +240,28 @@ export class MyInvestmentsService {
   }
 
   getTransactionInstName(data) {
-    return this._HTTP.get(this.url + 'lic-transaction/' + data)
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/' + data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-    return this._HTTP.get(this.url + 'lic-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.url + 'lic-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   postEightyCDeclarationInstitutions(data) {
-    return this._HTTP.post(this.url + '/lic-transaction', data)
+    return this._HTTP.post(this.apiUrl + '/lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -268,7 +270,7 @@ export class MyInvestmentsService {
 
 
   postEightyCDeclarationTransaction(data) {
-    return this._HTTP.post(this.url + 'lic-transaction', data)
+    return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -276,28 +278,28 @@ export class MyInvestmentsService {
 
   getpreviousEmployeName() {
 
-    return this._HTTP.get(this.url + 'previousEmployer-detail')
+    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getAllInstitutesFromGlobal() {
-    return this._HTTP.get(this.url + 'institution')
+    return this._HTTP.get(this.apiUrl + 'institution')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getBusinessFinancialYear() {
-    return this._HTTP.get(this.url + 'licmaster-detail/businessFinancialYear')
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail/businessFinancialYear')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getAllPreviousEmployer() {
-    return this._HTTP.get(this.url + 'lic-transaction/previousemployer')
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
     .pipe(map((res: any) => {
       return res;
     }));

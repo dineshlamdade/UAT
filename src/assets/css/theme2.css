@@ -17,7 +17,8 @@ a,
 .mail-star.active,
 .page-title {
     /* color: #5a5278 !important */
-    color: #ddd!important;
+    /* color: #ddd!important; */
+    color: #ffffff !important;
 }
 
 .badge-default {

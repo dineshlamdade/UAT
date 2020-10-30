@@ -36,6 +36,7 @@ import { DemoMaterialModule } from './app.material.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
+import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.mod
     DashboardModule,
     PayrollModule,
     MyInvestmentsModule,
+    EightyCModule,
     ProfileModule ,
     SettingsModule,
     HttpClientModule,
