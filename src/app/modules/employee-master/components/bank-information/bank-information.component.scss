@@ -9,3 +9,55 @@
   .disabled-btn-bg-green{
     background-color: #94c1c1!important;
 }
+
+.field-icon {
+    float: right;
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+    color: #662d8c !important;
+    cursor: pointer;
+  }
+
+  .p-inputtext {
+    font-family: "Montserrat", sans-serif!important;
+    font-size: 12px;
+    color: #495057;
+    background: #fff;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    border: 1px solid #E8E9E9;
+    border-radius: .25rem;
+    transition: background-color .2s,color .2s,border-color .2s,box-shadow .2s;
+    appearance: none;
+    border-radius: 3px;
+}
+
+.p-component {
+    font-family: "Montserrat", sans-serif!important;;
+    // font-size: 7rem;
+    font-weight: 400;
+    width: 100%;
+}
+
+.p-inputtext:disabled, .form-control[readonly] {
+    /* background-color: #f4f4f4!important; */
+    border: 1px solid #ddd!important;
+    opacity: 1;
+    color: #000!important;
+    background: #f1f1f1!important;
+    cursor: no-drop!important;
+}
+
+.down-arrow-icon {
+    float: right;
+    margin-left: -16px;
+    margin-top: 9px;
+    position: absolute;
+    /* margin-right: 233px; */
+    z-index: 2;
+    font-size: smaller;
+    /* color: #662d8c !important; */
+    cursor: pointer;
+}

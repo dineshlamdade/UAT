@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { BankInformationModel } from './../../dto-models/bank-information.model';
-import { Subscription, Subject, Observable } from 'rxjs';
+import { Subscription, Subject, Observable, of } from 'rxjs';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 // import * as wjcGrid from '@grapecity/wijmo.grid';
 // import * as wjcCore from '@grapecity/wijmo';
@@ -16,18 +16,21 @@ import { SharedInformationService } from './../../employee-master-services/share
 @Component({
   selector: 'app-bank-information',
   templateUrl: './bank-information.component.html',
-  styleUrls: ['./bank-information.component.scss']
+  styleUrls: ['./bank-information.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BankInformationComponent implements OnInit {
 
   bankInfoForm: FormGroup;
   GridBankInfoForm: FormGroup;
-  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '')
+  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '', '')
   BankInformationArray: Array<any> = [];
   shareCountryDataSubcription: Subscription;
   countryList: Array<any> = [];
+  filteredCountries: Array<any> = [];
   initiateBankForm: Subscription;
   summaryGridData: Array<any> = [];
+  bankSummaryGridData: Array<any> = [];
   employeeMasterId: number;
   IFSCcodeList: Array<any> = [];
   GridIFSCcodeList: Array<any> = [];
@@ -43,6 +46,7 @@ export class BankInformationComponent implements OnInit {
   myControl = new FormControl();
   never: boolean = false;
   states: Array<any> = [];
+  filteredStates: Array<any> = [];
   editstates: Array<any> = [];
   Totalstates: Array<any> = [];
   stateModel: any;
@@ -50,26 +54,7 @@ export class BankInformationComponent implements OnInit {
   employeeBankInfoId: number;
   confirmAccountNumber: any;
   accountNumberCountError: any;
-  // hide = true;
-  // @ViewChild('flex') flex: wjcGrid.FlexGrid;
-  // @ViewChild('viewPopUp') viewPopUp: wjcInput.Popup;
-  // @ViewChild('editcell') editcell: wjcInput.Popup;
-
-  // @ViewChild('gridEditCountry') gridEditCountry: wjcInput.ComboBox;
-  // @ViewChild('gridEditIfsc') gridEditIfsc: wjcInput.InputNumber;
-  // @ViewChild('gridEditBankName') gridEditBankName: wjcInput.InputNumber;
-  // @ViewChild('gridEditBranchName') gridEditBranchName: wjcInput.InputNumber;
-  // @ViewChild('gridEditBranchAddress') gridEditBranchAddress: wjcInput.InputNumber;
-  // @ViewChild('gridEditNameAsPerBank') gridEditNameAsPerBank: wjcInput.InputNumber;
-  // @ViewChild('gridEditAccountNumber') gridEditAccountNumber: wjcInput.ComboBox;
-
-  // @ViewChild('gridViewCountry') gridViewCountry: wjcInput.ComboBox;
-  // @ViewChild('gridViewIfsc') gridViewIfsc: wjcInput.InputNumber;
-  // @ViewChild('gridViewBankName') gridViewBankName: wjcInput.InputNumber;
-  // @ViewChild('gridViewBranchName') gridViewBranchName: wjcInput.InputNumber;
-  // @ViewChild('gridViewBranchAddress') gridViewBranchAddress: wjcInput.InputNumber;
-  // @ViewChild('gridViewNameAsPerBank') gridViewNameAsPerBank: wjcInput.InputNumber;
-  // @ViewChild('gridViewAccountNumber') gridViewAccountNumber: wjcInput.ComboBox;
+  viewBankForm: boolean = false;
   gridViewAccountNumber: any
   gridEditAccountNumber: any;
   gridEditConfirmAccountNumber: any;
@@ -131,19 +116,17 @@ export class BankInformationComponent implements OnInit {
 
 
 
-    this.BankInformationService.getBankInformation(this.employeeMasterId).subscribe(res => {
+    this.getBankAccounts();
 
-      this.summaryGridData = res.data.results[0];
-      this.employeeBankInfoId = res.data.results[0][0].employeeBankInfoId;
-    });
     this.getStates();
 
     this.CommonDataService.getLocationInformation().subscribe(res => {
+
       this.countryList = res.data.results;
-      
+
       setTimeout(() => {
-      this.BankInformationModel.country = 'India';
-      this.bankInfoForm.get('country').setValue('India');
+        this.BankInformationModel.country = 'India';
+        this.bankInfoForm.get('country').setValue('India');
       })
     })
     // this.initiateBankForm = this.EventEmitterService.setBankFormInitiate().subscribe(res => {
@@ -157,6 +140,44 @@ export class BankInformationComponent implements OnInit {
 
   }
 
+  getBankAccounts() {
+    this.BankInformationService.getBankInformation(this.employeeMasterId).subscribe(res => {
+      debugger
+      this.bankSummaryGridData = res.data.results[0];
+      this.employeeBankInfoId = res.data.results[0][0].employeeBankInfoId;
+    });
+  }
+
+
+  filterCountry(event) {
+
+    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+    let filtered: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < this.countryList.length; i++) {
+      let country = this.countryList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+
+    this.filteredCountries = filtered;
+  }
+
+  filterStates(event) {
+
+    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+    let filtered: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < this.states.length; i++) {
+      let state = this.states[i];
+      if (state.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(state);
+      }
+    }
+
+    this.filteredStates = filtered;
+  }
   getStates() {
     this.BankInformationService.getStates().subscribe(res => {
       this.states = res.data.results;
@@ -168,7 +189,7 @@ export class BankInformationComponent implements OnInit {
 
   searchIFSC(searchTerm, bankIFSC) {
 
-    if (searchTerm.length < 2) {
+    if (searchTerm.query.length < 2) {
       this.IFSCcodeList = []
       this.TotalIFSCcodeList = []
     }
@@ -180,13 +201,13 @@ export class BankInformationComponent implements OnInit {
       this.BankInformationModel.accountNo = '';
       this.BankInformationModel.nameAsPerBank = '';
     }
-    if (searchTerm.length == 2) {
+    if (searchTerm.query.length == 2) {
       // setTimeout(() => {
-      this.BankInformationService.searchIFSC(searchTerm, this.stateModel).subscribe(res => {
+      this.BankInformationService.searchIFSC(searchTerm.query, this.stateModel).subscribe(res => {
         this.IFSCcodeList = res.data.results[0];
         this.TotalIFSCcodeList = res.data.results[0];
         if (this.TotalIFSCcodeList.length > 0) {
-          this.filterIFSCCodes(searchTerm);
+          this.filterIFSCCodes(searchTerm.query);
         } else {
           this.CommonDataService.sweetalertError('Recordnot found');
           // this.notifyService.showError ('Recordnot found', "Error..!!")
@@ -194,62 +215,63 @@ export class BankInformationComponent implements OnInit {
       })
       // }, 1500)
     }
-    this.filterIFSCCodes(searchTerm);
+    this.filterIFSCCodes(searchTerm.query);
 
     if (bankIFSC.length == 11) {
       const ifsc = this.TotalIFSCcodeList.filter((item) => {
-        return item == searchTerm;
+        return item == searchTerm.query;
       });
-      if (ifsc == searchTerm) {
-        this.IFSCDetails(searchTerm);
+      if (ifsc == searchTerm.query) {
+        this.IFSCDetails(searchTerm.query);
       }
     }
   }
-  GridSearchIFSC(searchTerm, bankIFSC) {
-    if (searchTerm.length < 2) {
-      this.showOptios = false;
-      this.GridIFSCcodeList = []
-      this.TotalIFSCcodeList = []
-    }
-    if (bankIFSC.length < 11) {
-      // this.showOptios = false;
-      // this.gridEditBankName.text = '';
-      // this.gridEditBranchName.text = '';
-      // this.gridEditBranchAddress.text = '';
-      // this.gridEditAccountNumber = '';
-      // this.gridEditConfirmAccountNumber = '';
-      // this.gridEditNameAsPerBank.text = '';
 
-    }
-    if (searchTerm.length == 2) {
-      // setTimeout(() => {
-      this.BankInformationService.searchIFSC(searchTerm, this.editstateModel).subscribe(res => {
-        this.GridIFSCcodeList = res.data.results[0];
-        this.TotalIFSCcodeList = res.data.results[0];
+  // GridSearchIFSC(searchTerm, bankIFSC) {
+  //   if (searchTerm.length < 2) {
+  //     this.showOptios = false;
+  //     this.GridIFSCcodeList = []
+  //     this.TotalIFSCcodeList = []
+  //   }
+  //   if (bankIFSC.length < 11) {
+  //     // this.showOptios = false;
+  //     // this.gridEditBankName.text = '';
+  //     // this.gridEditBranchName.text = '';
+  //     // this.gridEditBranchAddress.text = '';
+  //     // this.gridEditAccountNumber = '';
+  //     // this.gridEditConfirmAccountNumber = '';
+  //     // this.gridEditNameAsPerBank.text = '';
 
-        if (this.TotalIFSCcodeList.length > 0) {
-          this.filterGridIFSCCodes(searchTerm);
-          this.showOptios = true;
-        } else {
-          this.showOptios = false;
-          this.CommonDataService.sweetalertError('Record not found');
-        }
-      }, (error: any) => {
-        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-        // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
-      })
-      // }, 1500)
-    }
-    this.filterGridIFSCCodes(searchTerm);
-    if (bankIFSC.length == 11) {
-      const ifsc = this.TotalIFSCcodeList.filter((item) => {
-        return item == searchTerm;
-      });
-      if (ifsc == searchTerm) {
-        this.IFSCGridDetails(searchTerm);
-      }
-    }
-  }
+  //   }
+  //   if (searchTerm.length == 2) {
+  //     // setTimeout(() => {
+  //     this.BankInformationService.searchIFSC(searchTerm, this.editstateModel).subscribe(res => {
+  //       this.GridIFSCcodeList = res.data.results[0];
+  //       this.TotalIFSCcodeList = res.data.results[0];
+
+  //       if (this.TotalIFSCcodeList.length > 0) {
+  //         this.filterGridIFSCCodes(searchTerm);
+  //         this.showOptios = true;
+  //       } else {
+  //         this.showOptios = false;
+  //         this.CommonDataService.sweetalertError('Record not found');
+  //       }
+  //     }, (error: any) => {
+  //       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+  //       // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
+  //     })
+  //     // }, 1500)
+  //   }
+  //   this.filterGridIFSCCodes(searchTerm);
+  //   if (bankIFSC.length == 11) {
+  //     const ifsc = this.TotalIFSCcodeList.filter((item) => {
+  //       return item == searchTerm;
+  //     });
+  //     if (ifsc == searchTerm) {
+  //       this.IFSCGridDetails(searchTerm);
+  //     }
+  //   }
+  // }
   filterIFSCCodes(searchTerm) {
     if (searchTerm.length > 2) {
       searchTerm = searchTerm.toLowerCase();
@@ -290,13 +312,15 @@ export class BankInformationComponent implements OnInit {
   }
 
   getDataFromIFSC(bankIFSC) {
-    if (this.BankInformationModel.bankIFSC) {
+    if (bankIFSC.length < 11) {
       this.BankInformationModel.bankName = '';
       this.BankInformationModel.branchName = '';
       this.BankInformationModel.branchAddress = '';
       this.confirmAccountNumber = '';
       this.BankInformationModel.accountNo = '';
       this.BankInformationModel.nameAsPerBank = '';
+    }
+    if (bankIFSC.length == 11) {
       this.IFSCDetails(bankIFSC);
     }
     if (bankIFSC) {
@@ -305,6 +329,7 @@ export class BankInformationComponent implements OnInit {
     }
   }
   IFSCDetails(bankIFSC) {
+
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
 
       this.maxAccNumber = res.data.results[0].limit
@@ -335,31 +360,44 @@ export class BankInformationComponent implements OnInit {
   bankInfoSubmit() {
 
     this.summaryGridData.forEach(data => {
-      return data.employeeMasterId = this.employeeMasterId;
-    })
-    this.summaryGridData.forEach(data => {
+      data.employeeMasterId = this.employeeMasterId;
       delete data.confirmAccountNo;
+      if (data.employeeBankInfoId) {
+        this.BankInformationService.putBankInfoForm(this.summaryGridData).subscribe(res => {
+          // this.summaryGridData = res.data.results;
+          this.getBankAccounts();
+          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+          this.summaryGridData = [];
+          // this.BankInformationModel.country = '';
+          this.BankInformationModel.bankIFSC = '';
+          this.BankInformationModel.bankName = '';
+          this.BankInformationModel.branchName = '';
+          this.BankInformationModel.branchAddress = '';
+          this.BankInformationModel.nameAsPerBank = '';
+          this.BankInformationModel.accountNo = '';
+          this.stateModel = '';
+          this.confirmAccountNumber = '';
+          this.BankInformationModel.employeeBankInfoId = '';
+        })
+      } else {
+        this.BankInformationService.postBankInfoForm(this.summaryGridData).subscribe(res => {
+          // this.summaryGridData = res.data.results;
+          this.summaryGridData = [];
+          this.getBankAccounts();
+          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+          // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
+        })
+      }
     })
-    this.BankInformationArray = this.summaryGridData;
-    let nonBankInformationArray = this.BankInformationArray.filter(data => {
-      return !data.employeeBankInfoId;
-    })
-    if (nonBankInformationArray.length > 0) {
-      this.BankInformationService.postBankInfoForm(this.BankInformationArray).subscribe(res => {
-        this.summaryGridData = res.data.results;
-        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
-      })
-    } else {
-      this.BankInformationArray.forEach(data => {
-        delete data.confirmAccountNo;
-      })
-      this.BankInformationService.putBankInfoForm(this.BankInformationArray).subscribe(res => {
-        this.summaryGridData = res.data.results;
-        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
-      })
-    }
+
+    // let nonBankInformationArray = this.BankInformationArray.filter(data => {
+    //   return !data.employeeBankInfoId;
+    // })
+    // if (nonBankInformationArray.length > 0) {
+
+    // } else {
+
+    // }
   }
   pushDataToGrid() {
     let data = [];
@@ -392,7 +430,7 @@ export class BankInformationComponent implements OnInit {
         state: this.stateList[i]
       });
     }
-    this.BankInformationModel.country = '';
+    // this.BankInformationModel.country = '';
     this.BankInformationModel.bankIFSC = '';
     this.BankInformationModel.bankName = '';
     this.BankInformationModel.branchName = '';
@@ -402,18 +440,115 @@ export class BankInformationComponent implements OnInit {
     this.stateModel = '';
     this.confirmAccountNumber = '';
 
-    if (this.summaryGridData.length > 0) {
-      let newData = data.concat(this.summaryGridData);
-      this.summaryGridData = newData;
-      this.addButton = false;
-    } else {
-      this.summaryGridData = data;
-      this.addButton = false;
-    }
+    this.summaryGridData = data;
+    this.bankInfoSubmit();
+    // if (this.summaryGridData.length > 0) {
+    //   let newData = data.concat(this.summaryGridData);
+    //   this.summaryGridData = newData;
+    //   this.addButton = false;
+    // } else {
+    //   this.summaryGridData = data;
+    //   this.addButton = false;
+    // }
   }
 
-  editBankGridRow(employee){
-    
+  editBankGridRow(bank) {
+    this.BankInformationModel.country = bank.country;
+    this.BankInformationModel.bankIFSC = bank.bankIFSC;
+    this.BankInformationModel.bankName = bank.bankName;
+    this.BankInformationModel.branchName = bank.branchName;
+    this.BankInformationModel.branchAddress = bank.branchAddress;
+    this.BankInformationModel.nameAsPerBank = bank.nameAsPerBank;
+    this.BankInformationModel.accountNo = bank.accountNo;
+    this.BankInformationModel.employeeBankInfoId = bank.employeeBankInfoId
+
+    const temp1 = this.bankInfoForm.get('country');
+    temp1.enable();
+    const temp2 = this.bankInfoForm.get('state');
+    temp2.enable();
+    const temp3 = this.bankInfoForm.get('bankIFSC');
+    temp3.enable();
+    const temp4 = this.bankInfoForm.get('bankName');
+    temp4.enable();
+    const temp5 = this.bankInfoForm.get('branchName');
+    temp5.enable();
+    const temp6 = this.bankInfoForm.get('branchAddress');
+    temp6.enable();
+    const temp7 = this.bankInfoForm.get('nameAsPerBank');
+    temp7.enable();
+    const temp8 = this.bankInfoForm.get('accountNumber');
+    temp8.enable();
+    const temp9 = this.bankInfoForm.get('confirmAccountNo');
+    temp9.enable();
+  }
+
+  viewBankGridRow(bank) {
+    this.viewBankForm = true;
+    this.BankInformationModel.country = bank.country;
+    this.BankInformationModel.bankIFSC = bank.bankIFSC;
+    this.BankInformationModel.bankName = bank.bankName;
+    this.BankInformationModel.branchName = bank.branchName;
+    this.BankInformationModel.branchAddress = bank.branchAddress;
+    this.BankInformationModel.nameAsPerBank = bank.nameAsPerBank;
+    this.BankInformationModel.accountNo = bank.accountNo;
+    this.BankInformationModel.employeeBankInfoId = bank.employeeBankInfoId
+
+    const temp1 = this.bankInfoForm.get('country');
+    temp1.disable();
+    const temp2 = this.bankInfoForm.get('state');
+    temp2.disable();
+    const temp3 = this.bankInfoForm.get('bankIFSC');
+    temp3.disable();
+    const temp4 = this.bankInfoForm.get('bankName');
+    temp4.disable();
+    const temp5 = this.bankInfoForm.get('branchName');
+    temp5.disable();
+    const temp6 = this.bankInfoForm.get('branchAddress');
+    temp6.disable();
+    const temp7 = this.bankInfoForm.get('nameAsPerBank');
+    temp7.disable();
+    const temp8 = this.bankInfoForm.get('accountNumber');
+    temp8.disable();
+    const temp9 = this.bankInfoForm.get('confirmAccountNo');
+    temp9.disable();
+  }
+
+  updateBankGridRow(BankInformationModel) {
+    this.summaryGridData.push(BankInformationModel);
+    this.bankInfoSubmit();
+  }
+
+  closeBankGridRow(BankInformationModel) {
+    this.viewBankForm = false;
+    // this.BankInformationModel.country = '';
+    this.BankInformationModel.bankIFSC = '';
+    this.BankInformationModel.bankName = '';
+    this.BankInformationModel.branchName = '';
+    this.BankInformationModel.branchAddress = '';
+    this.BankInformationModel.nameAsPerBank = '';
+    this.BankInformationModel.accountNo = '';
+    this.stateModel = '';
+    this.confirmAccountNumber = '';
+    this.BankInformationModel.employeeBankInfoId = '';
+
+    const temp1 = this.bankInfoForm.get('country');
+    temp1.enable();
+    const temp2 = this.bankInfoForm.get('state');
+    temp2.enable();
+    const temp3 = this.bankInfoForm.get('bankIFSC');
+    temp3.enable();
+    const temp4 = this.bankInfoForm.get('bankName');
+    temp4.enable();
+    const temp5 = this.bankInfoForm.get('branchName');
+    temp5.enable();
+    const temp6 = this.bankInfoForm.get('branchAddress');
+    temp6.enable();
+    const temp7 = this.bankInfoForm.get('nameAsPerBank');
+    temp7.enable();
+    const temp8 = this.bankInfoForm.get('accountNumber');
+    temp8.enable();
+    const temp9 = this.bankInfoForm.get('confirmAccountNo');
+    temp9.enable();
   }
   // public initializeGrid(flex: wjcGrid.FlexGrid) {
   //   this.flexNew = flex;
@@ -607,10 +742,10 @@ export class BankInformationComponent implements OnInit {
 
       this.BankInformationService.accountNoVerification(confirmPassword, 0).subscribe(res => {
         DelayNode
-        debugger
+
         this.CommonDataService.sweetalertMasterSuccess(res.status.result, res.status.messsage);
         // this.notifyService.showSuccess(res.status.messsage, res.status.result);
-        if(res.status.messsage == 'Account Number  Already Exists '){
+        if (res.status.messsage == 'Account Number  Already Exists ') {
           this.BankInformationModel.accountNo = '';
           this.confirmAccountNumber = '';
         }
@@ -661,7 +796,7 @@ export class BankInformationComponent implements OnInit {
     this.confirmAccountNumber = '';
     this.BankInformationModel.accountNo = '';
     this.BankInformationModel.nameAsPerBank = '';
-
+    this.BankInformationModel.employeeBankInfoId = '';
     // this.gridEditBankName.text = '';
     // this.gridEditBranchName.text = '';
     // this.gridEditBranchAddress.text = '';

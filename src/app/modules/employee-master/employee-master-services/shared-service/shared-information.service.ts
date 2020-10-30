@@ -63,7 +63,7 @@ export class SharedInformationService {
       position: 'top-end',
       showConfirmButton: false,
       icon: 'success',
-      timer: 15000,
+      timer: 10000,
       timerProgressBar: true,
     })
   }
@@ -77,7 +77,7 @@ export class SharedInformationService {
       position: 'top-end',
       showConfirmButton: false,
       icon: 'error',
-      timer: 15000,
+      timer: 10000,
       timerProgressBar: true,
     })
   }

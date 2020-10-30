@@ -10,10 +10,11 @@ import { translocoLoader } from './../../core/strategies/transloco.loader';
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
-
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
-
+import { PrimeNGModule } from './../../app.primeNG.module';
 
 @NgModule({
   declarations: [FooterComponent, HeaderComponent, LeftmenuComponent],
@@ -22,7 +23,9 @@ registerLocaleData(localeGb, 'en-GB');
     FormsModule,
     RouterModule,
     CollapseModule.forRoot(),
-    TranslocoModule
+    TranslocoModule,
+    AccordionModule,
+    PrimeNGModule
   ],
   exports: [
     CommonModule,
@@ -31,18 +34,18 @@ registerLocaleData(localeGb, 'en-GB');
     HeaderComponent,
     FooterComponent,
   ],
-  providers:[
+  providers: [
     translocoLoader, {
-        provide: TRANSLOCO_CONFIG,
-        useValue: {
-          availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
-          listenToLangChange: true,
-          reRenderOnLangChange: true,
-          defaultLang: 'en',
-          fallbackLang: 'fr',
-  
-          prodMode: false
-        } as TranslocoConfig
-      }],
+      provide: TRANSLOCO_CONFIG,
+      useValue: {
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        listenToLangChange: true,
+        reRenderOnLangChange: true,
+        defaultLang: 'en',
+        fallbackLang: 'fr',
+
+        prodMode: false
+      } as TranslocoConfig
+    }],
 })
 export class SharedlayoutModule { }

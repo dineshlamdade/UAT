@@ -8,5 +8,6 @@ export class BankInformationModel {
         public nameAsPerBank: any,
         public accountNo:any,
         public employeeMasterId:any,
+        public employeeBankInfoId: any
     ){}  
 }

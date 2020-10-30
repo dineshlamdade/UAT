@@ -31,7 +31,9 @@ import { BankInformationComponent } from './components/bank-information/bank-inf
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
-
+import { PrimeNGModule } from './../../app.primeNG.module';
+// import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
 
 @NgModule({
     declarations: [
@@ -66,7 +68,8 @@ registerLocaleData(localeGb, 'en-GB');
         SharedlayoutModule,
         EmployeeMasterRoutingModule,
         TranslocoModule,
-        DemoMaterialModule
+        DemoMaterialModule,
+        PrimeNGModule,
     ],
 
     providers: [DatePipe, NumberFormatPipe,

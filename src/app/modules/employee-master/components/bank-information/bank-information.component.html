@@ -13,41 +13,95 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.Country' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <p-autoComplete [(ngModel)]="BankInformationModel.country"
+                                            [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"
+                                            formControlName="country" placeholder="Select Country">
+                                        </p-autoComplete>
+                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.state' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <p-autoComplete [(ngModel)]="stateModel" [suggestions]="filteredStates"
+                                            placeholder="Select State" (completeMethod)="filterStates($event)"
+                                            formControlName="state">
+                                        </p-autoComplete>
+                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <p-autoComplete [(ngModel)]="BankInformationModel.bankIFSC"
+                                            [suggestions]="IFSCcodeList" placeholder="Search IFSC"
+                                            (completeMethod)="searchIFSC($event, BankInformationModel.bankIFSC)"
+                                            formControlName="bankIFSC" (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();
+                                            getDataFromIFSC(BankInformationModel.bankIFSC)">
+                                            <ng-template let-ifsc pTemplate="item">
+                                                <div class="country-item">
+                                                    <div>
+                                                        {{ifsc}}</div>
+                                                </div>
+                                            </ng-template>
+                                        </p-autoComplete>
+                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.bankName' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <input type="text" class="form-control" placeholder="Bank Name"
+                                            formControlName="bankName" [(ngModel)]="BankInformationModel.bankName"
+                                            matTooltip="{{BankInformationModel.bankName}}">
                                     </div>
 
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.branchName' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <input type="text" class="form-control" placeholder="Branch"
+                                            formControlName="branchName" [(ngModel)]="BankInformationModel.branchName"
+                                            matTooltip="{{BankInformationModel.branchName}}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.branchAddress' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <input type="text" class="form-control" placeholder="Branch Address"
+                                            formControlName="branchAddress"
+                                            [(ngModel)]="BankInformationModel.branchAddress"
+                                            matTooltip="{{BankInformationModel.branchAddress}}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.nameAsPerBank' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <input type="text" class="form-control"
+                                            placeholder="Enter Name As per Bank Account" formControlName="nameAsPerBank"
+                                            [(ngModel)]="BankInformationModel.nameAsPerBank"
+                                            matTooltip="{{BankInformationModel.nameAsPerBank}}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.accountNumber' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <input id="password" class="form-control" placeholder="Enter Account No."
+                                            formControlName="accountNumber" [(ngModel)]="BankInformationModel.accountNo"
+                                            minlength="1" maxlength="{{maxAccNumber}}"
+                                            [type]="accountNo ? 'number' : 'password'"
+                                            (keyup)="validateAccountNo(BankInformationModel.accountNo)">
+                                        <mat-icon matSuffix (click)="accountNo = !accountNo" class="field-icon">
+                                            {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
+                                        <mat-error style="font-size: 11px;">
+                                            {{accountNumberCountError}}</mat-error>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-15">
                                         <label
                                             class="form-label">{{ 'BankInfoForm.confirmAccountNumber' | transloco }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Employer Name">
+                                        <input class="form-control" placeholder="Re-Enter Account no." #confirmPassword
+                                            formControlName="confirmAccountNo"
+                                            (change)="matchAccountNo(confirmPassword.value)" minlength="1"
+                                            maxlength="{{maxAccNumber}}"
+                                            [type]="confirmAccountNo1 ? 'number' : 'password'"
+                                            [(ngModel)]="confirmAccountNumber">
+                                        <mat-icon matSuffix (click)="confirmAccountNo1 = !confirmAccountNo1"
+                                            class="field-icon">
+                                            {{confirmAccountNo1 ? 'visibility' : 'visibility_off'}}
+                                        </mat-icon>
+
+                                        <mat-error style="font-size: 11px;"
+                                            *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch') && confirmAccountNumber?.length>0">
+                                            {{ 'BankInfoForm.accountNoMatchError' | transloco }}</mat-error>
+                                        <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo
+                && BankInformationModel.accountNo.length>0" class="match-accountNo">
+                                            {{ 'BankInfoForm.accountNoMatchSuccessMsg' | transloco }}</p>
                                     </div>
                                 </div>
 
@@ -57,13 +111,22 @@
                                         <div class="float-right mb-15">
                                             <button type="button"
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                                [hidden]="BankInformationModel.employeeBankInfoId || viewBankForm"
+                                                tooltip="Save" (click)="pushDataToGrid()"><b><i
+                                                        class="fa fa-floppy-o"></i></b>Save</button>
 
-                                            <!-- <button type="button"
+                                            <button type="button" (click)="updateBankGridRow(BankInformationModel);"
+                                                *ngIf="BankInformationModel.employeeBankInfoId" [hidden]="viewBankForm"
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button> -->
+                                                tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                            <button type="button" (click)="closeBankGridRow(BankInformationModel);"
+                                                *ngIf="viewBankForm"
+                                                class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
+                                                tooltip="Cancel"><b><i class="fa fa-floppy-o"></i></b>Cancel</button>
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                [hidden]="viewBankForm"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-refresh" aria-hidden="true"></i></b>
                                                 Reset</button>
@@ -80,21 +143,24 @@
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th scope="col" class="font700 wd-30">Country</th>
-                                                    <th scope="col" class="font700 wd-30">Bank Code</th>
+                                                    <th scope="col" class="font700 wd-30">IFSC Code</th>
                                                     <th scope="col" class="font700 wd-30">Bank Name</th>
-                                                    <th scope="col" class="font700 wd-20">Branch Name</th>
-                                                    <th scope="col" class="font700 wd-20">Actions</th>
+                                                    <th scope="col" class="font700 wd-20">Branch</th>
+                                                    <th scope="col" class="font700 wd-20">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><span>India</span></td>
-                                                    <td><span>SBIN0023542</span></td>
-                                                    <td><span>SBI</span></td>
-                                                    <td><span>Wasanwadi</span></td>
+                                                <tr *ngFor="let bank of bankSummaryGridData">
+                                                    <td><span>{{bank.country}}</span></td>
+                                                    <td><span>{{bank.bankIFSC}}</span></td>
+                                                    <td><span>{{bank.bankName}}</span></td>
+                                                    <td><span>{{bank.branchName}}</span></td>
 
-                                                    <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
-                                                            tooltip="Edit" (click)="editBankGridRow(employee)"></i>
+                                                    <td><i class="fa fa-pencil font-16 text-blue cursor-pointer  mr-10"
+                                                            tooltip="Edit" (click)="editBankGridRow(bank)"></i>
+
+                                                        <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                                                            tooltip="View" (click)="viewBankGridRow(bank)"></i>
                                                     </td>
                                                 </tr>
                                             </tbody>

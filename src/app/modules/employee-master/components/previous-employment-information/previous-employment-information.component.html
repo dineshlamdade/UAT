@@ -55,7 +55,9 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">Remark</label>
-                                        <input type="text" class="form-control" placeholder="Enter Remark">
+                                        <input type="text" class="form-control" placeholder="Enter Remark"
+                                            formControlName="remark" [(ngModel)]="previousEmploymentInformation.remark"
+                                            matTooltip="{{previousEmploymentInformation.remark}}">
                                     </div>
                                 </div>
 
@@ -87,7 +89,7 @@
                                                     <select class="form-control selectpicker"
                                                         placeholder="Select Currency" formControlName="currency"
                                                         [(ngModel)]="previousEmploymentInformation.currency">
-                                                        <option value="" data-hidden="true">select</option>
+                                                        <option value="" data-hidden="true">Select Curr</option>
                                                         <option *ngFor="let currency of currencyArray"
                                                             [value]="currency">
                                                             {{currency}}
@@ -129,7 +131,7 @@
                                         </div>
 
                                         <div class="col-sm-3 col-md-4">
-                                            <label class="form-label">Vouluntary Retirement Scheme</label>
+                                            <label class="form-label">Voluntary Retirement Scheme</label>
                                             <input type="text" class="form-control" placeholder="Enter Amount"
                                                 formControlName="vouluntaryRetirement"
                                                 [(ngModel)]="previousEmploymentInformation.exemptVRSReceived"

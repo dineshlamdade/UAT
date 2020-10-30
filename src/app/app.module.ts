@@ -37,7 +37,9 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { EmployeeMasterModule } from './modules/employee-master/employee-master.
     DashboardModule,
     MyInvestmentsModule,
     PayrollModule,
-    EmployeeMasterModule
+    EmployeeMasterModule,
+    PrimeNGModule,
+    AccordionModule
   ],
   providers: [BsDatepickerModule,
     translocoLoader, {

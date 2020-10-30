@@ -105,7 +105,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     // this.initiatePreviousEmploymentInfoForm = this.EventEmitterService.setPreviousEmploymentInfoInitiate().subscribe(res => {
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePreviousEmpForm().subscribe(res => {
-      debugger
+      
       this.deleteEmpGridRow(res);
       this.previousEmploymentInfoForm.markAsTouched();
       this.EmptyGridTrue = true;
@@ -114,7 +114,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
 
   getPreviousEmployees() {
     this.PreviousEmpInformationService.getPreviousEmpInformation(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.previousSmmaryGridData = res.data.results[0];
       // this.pushToGrid(this.summaryGridData);
       if (this.previousSmmaryGridData.length > 0) {
@@ -124,14 +124,13 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   }
 
   previousEmploymentInfoSubmit() {
-    debugger
+    
     this.summaryGridData.forEach(data => {
-      debugger
       data.employeeMasterId = this.employeeMasterId;
 
       if (data.employeePreviousEmploymentId) {
         this.PreviousEmpInformationService.putPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-          debugger
+          
           // this.previousSmmaryGridData = res.data.results[0];
           this.getPreviousEmployees();
 
@@ -157,10 +156,10 @@ export class PreviousEmploymentInformationComponent implements OnInit {
         })
       } else {
         this.PreviousEmpInformationService.postPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-          debugger
+          
           // this.previousSmmaryGridData = res.data.results[0];
           this.getPreviousEmployees();
-
+          this.summaryGridData = [];
           if (this.previousSmmaryGridData.length > 0) {
             this.EmptyGridTrue = true;
           }
@@ -255,7 +254,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
 
 
   deleteEmpGridRowDiaglog(employee) {
-    debugger
+    
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       width: '664px', height: '241px',
       data: {
