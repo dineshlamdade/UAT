@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PPFComponent } from './80C/ppf/ppf.component';
-import { EightyCComponent } from './eighty-c/eighty-c.component';
+import { LicComponent } from './80C/lic/lic.component';
 
 
 const routes: Routes = [
@@ -11,8 +11,8 @@ const routes: Routes = [
     children: [
       {
       path:   '80C-LIC',
-      component:  EightyCComponent,
-      data: { title: ':: DelziaHR :: 80-C' },
+      component:  LicComponent,
+      data: { title: ':: DelziaHR :: LIC' },
       },
       {
         path:   '80C-PPF',

@@ -21,6 +21,10 @@ import { PPFComponent } from './ppf/ppf.component';
 import { PPFDeclarationComponent } from './ppf/ppfdeclaration/ppfdeclaration.component';
 import { PPFMasterComponent } from './ppf/ppfmaster/ppfmaster.component';
 import { PPFSummaryComponent } from './ppf/ppfsummary/ppfsummary.component';
+import { LicComponent } from './lic/lic.component';
+import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
+import { LicmasterComponent } from './lic/licmaster/licmaster.component';
+import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,10 @@ import { PPFSummaryComponent } from './ppf/ppfsummary/ppfsummary.component';
     PPFSummaryComponent,
     PPFMasterComponent,
     PPFDeclarationComponent,
+    LicComponent,
+    LicsummaryComponent,
+    LicmasterComponent,
+    LicdeclarationComponent,
 
   ],
   imports: [

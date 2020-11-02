@@ -1,0 +1,57 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+<app-header></app-header>
+<div class="section-body mt-3">
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-12">
+            <div class="card">
+               <div class="card-body">
+                  <div class="tabview">
+
+                     <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)" [checked]="tabIndex==0"/>
+                     <div class="tabs about-page">
+                      <app-licsummary *ngIf = "tabIndex==0" ></app-licsummary>
+                     </div>
+                     <label class="nav" for="summary">
+                     <span>
+                     Summary
+                     </span>
+                     </label>
+
+                     <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)" [checked]="tabIndex==1"/>
+                     <div class="tabs about-page">
+                      <app-licmaster  *ngIf = "tabIndex== 1" > </app-licmaster>
+                       </div>
+
+
+                     <label class="nav" for="Master">
+                     <span>
+                     Master
+                     </span>
+                     </label>
+
+                     <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)" [checked]="tabIndex==2" />
+                     <div class="tabs about-page">
+                      <app-licdeclaration *ngIf = "tabIndex==2" ></app-licdeclaration>
+                      </div>
+
+                     <label class="nav" for="Declaration">
+                     <span>
+                     Declaration & Actual
+                     </span>
+                     </label>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="scroll-to-top" [ngClass]="{'show-scrollTop': windowScrolled}">
+            <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top" (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+            </button>
+         </div>
+      </div>
+   </div>
+   <app-footer></app-footer>
+</div>
