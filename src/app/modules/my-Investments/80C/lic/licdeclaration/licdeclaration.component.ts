@@ -1,34 +1,47 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Optional, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { MatDialog} from '@angular/material/dialog';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Inject,
+  Input,
+  OnInit,
+  Optional,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import {FileService} from '../../../file.service';
+import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 
 @Component({
   selector: 'app-licdeclaration',
   templateUrl: './licdeclaration.component.html',
-  styleUrls: ['./licdeclaration.component.scss']
+  styleUrls: ['./licdeclaration.component.scss'],
 })
 export class LicdeclarationComponent implements OnInit {
-
   @Input() institution: string;
   @Input() policyNo: string;
-
   @Input() data: any;
-
-
-
 
   public modalRef: BsModalRef;
   public submitted = false;
-  public pdfSrc = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+  public pdfSrc =
+    'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
@@ -45,7 +58,9 @@ export class LicdeclarationComponent implements OnInit {
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
+
   public editTransactionUpload: Array<any> = [];
+
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
   public familyMemberName: Array<any> = [];
@@ -72,12 +87,17 @@ export class LicdeclarationComponent implements OnInit {
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
-  public grandTotalDeclaredAmount: number;
-  public grandTotalActualAmount: number;
+
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
+
+  public grandDeclarationTotalEditModal: number;
+  public grandActualTotalEditModal: number;
+  public grandRejectedTotalEditModal: number;
+  public grandApprovedTotalEditModal: number;
+
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
   public isDisabled: boolean;
@@ -85,17 +105,17 @@ export class LicdeclarationComponent implements OnInit {
   public enableFileUpload: boolean;
   public documentRemark: any;
   public isECS = true;
-  public hideCopytoActualDate  = false;
+  public hideCopytoActualDate = false;
   public shownewRow = false;
-  public initialArray =  true;
+  public initialArray = true;
   public initialArrayIndex: number[] = [];
-  ////// ---------service
+
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
   public viewDocumentDetail = true;
   public masterUploadFlag = true;
-  // msgs2: Message[];
+
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
   public dueDate: Date;
@@ -155,123 +175,58 @@ export class LicdeclarationComponent implements OnInit {
     private modalService: BsModalService,
     private alertService: AlertServiceService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer) {
-      // this.minDate = new Date();
-      this.form = this.formBuilder.group({
-        institutionName: new FormControl(null, Validators.required),
-        policyNo: new FormControl(null, Validators.required),
-        policyholdername: new FormControl(null, Validators.required),
-        relationship: new FormControl({value: null, disabled: true}, Validators.required),
-        policyStartDate: new FormControl(null, Validators.required),
-        policyEndDate: new FormControl(null, Validators.required),
-        familyMemberInfoId: new FormControl(null, Validators.required),
-        active: new FormControl(true, Validators.required),
-        remark: new FormControl(null),
-        frequencyOfPayment: new FormControl(null, Validators.required),
-        premiumAmount: new FormControl(null, Validators.required),
-        annualAmount: new FormControl({value: null, disabled: true}, Validators.required),
-        fromDate: new FormControl(null, Validators.required),
-        toDate: new FormControl(null, Validators.required),
-        ecs: new FormControl('0'),
-        licMasterPaymentDetailsId: new FormControl(0),
-        licMasterId: new FormControl(0),
-      });
+    public sanitizer: DomSanitizer
+  ) {
+    // ---------------- Transaction status List -----------------
+    this.refreshTransactionStatustList();
 
-      // ----------------sneha-----------------
-      this.frequencyOfPaymentList = [
-        {label: 'Monthly', value: 'Monthly'},
-        {label: 'Quarterly', value: 'Quarterly'},
-        {label: 'Half-Yearly', value: 'Halfyearly'},
-        {label: 'Yearly', value: 'Yearly'},
-      ];
-
-      // ---------------- Transaction status List -----------------
-      this.refreshTransactionStatustList();
-
-      this.grandTabStatus = false;
-      this.isCheckAll = false;
-      this.isDisabled = true;
-      this.enableSelectAll = false;
-      this.enableFileUpload = false;
-      this.addNewRowId = 0;
-      this.hideRemarkDiv = false;
-      this.hideRemoveRow = false;
-      this.isClear = false;
-      this.isCancel = false; ;
-      this.receiptAmount = this.numberFormat.transform(0);
-      this.globalAddRowIndex = 0;
-      this.globalSelectedAmount = this.numberFormat.transform(0);
-      //this.declarationPage();
+    this.grandTabStatus = false;
+    this.isCheckAll = false;
+    this.isDisabled = true;
+    this.enableSelectAll = false;
+    this.enableFileUpload = false;
+    this.addNewRowId = 0;
+    this.hideRemarkDiv = false;
+    this.hideRemoveRow = false;
+    this.isClear = false;
+    this.isCancel = false;
+    this.receiptAmount = this.numberFormat.transform(0);
+    this.globalAddRowIndex = 0;
+    this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
   public ngOnInit(): void {
-
     console.log('data::', this.data);
-    const input = this.data;
-    //this.globalInstitution = input.institution;
-    //this.globalPolicy = input.policyNo;
-    this.getTransactionFilterData(input.institution, input.policyNo, 'All');
-    //console.log('policyNo::', this.data.policyNo);
+    if (this.data === undefined || this.data === null) {
+      this.declarationPage();
+    } else {
+      const input = this.data;
+      this.globalInstitution = input.institution;
+      this.globalPolicy = input.policyNo;
+      this.getInstitutionListWithPolicyNo();
+      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+    }
+
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.enableAddRow = 0;
     this.enableCheckboxFlag = 1;
     this.enableCheckboxFlag3 = false;
     this.declarationService = new DeclarationService();
 
-    // Business Financial Year API Call
-    this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
-    });
-
-    // Family Member List API call
-    this.Service.getFamilyInfo().subscribe((res) => {
-      this.familyMemberGroup = res.data.results;
-      res.data.results.forEach((element) => {
-        const obj = {
-          label: element.familyMemberName,
-          value: element.familyMemberName,
-        };
-        this.familyMemberName.push(obj);
-      });
-    });
-
     this.deactiveCopytoActualDate();
-
-    // Summary get Call on Page Load
-    this.Service.getEightyCSummary().subscribe((res) => {
-      // console.log("DATA" +res.data);
-      this.summaryGridData = res.data.results[0].licMasterList;
-      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-      this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
-      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-    });
 
     // Get API call for All previous employee Names
     this.Service.getpreviousEmployeName().subscribe((res) => {
       console.log('previousEmployeeList::', res);
       if (!res.data.results[0]) {
-        return ;
+        return;
       }
       res.data.results.forEach((element) => {
         const obj = {
-            label: element.name,
-            value: element.previousEmployerId,
+          label: element.name,
+          value: element.previousEmployerId,
         };
         this.previousEmployeeList.push(obj);
-      });
-    });
-
-    // Get All Institutes From Global Table
-    this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
-      // console.log(res);
-      res.data.results.forEach((element) => {
-        const obj = {
-          label: element.insurerName,
-          value: element.insurerName,
-        };
-        this.institutionNameList.push(obj);
       });
     });
 
@@ -284,55 +239,66 @@ export class LicdeclarationComponent implements OnInit {
       }
     });
 
-    if ((this.today.getMonth() + 1) <= 3) {
-      this.financialYear = (this.today.getFullYear() - 1) + '-' + this.today.getFullYear();
+    if (this.today.getMonth() + 1 <= 3) {
+      this.financialYear =
+        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
     } else {
-      this.financialYear = this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+      this.financialYear =
+        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
     }
 
-    const splitYear = this.financialYear .split('-', 2);
+    const splitYear = this.financialYear.split('-', 2);
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
-
   }
 
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].lictransactionList[i].previousEmployerId = event.target.value;
-    console.log('previous emp id::', this.transactionDetail[j].lictransactionList[i].previousEmployerId);
+    this.transactionDetail[j].lictransactionList[i].previousEmployerId =
+      event.target.value;
+    console.log(
+      'previous emp id::',
+      this.transactionDetail[j].lictransactionList[i].previousEmployerId
+    );
   }
   // ----------------------------------------------- Declaration --------------------------------------
 
-    // -----------on Page referesh transactionStatustList------------
-    refreshTransactionStatustList() {
-      this.transactionStatustList = [
-        {label: 'All', value: 'All'},
-        {label: 'Pending', value: 'Pending'},
-        {label: 'Submitted', value: 'Submitted'},
-        {label: 'Approved', value: 'Approved'},
-        {label: 'Send back', value: 'Send back'},
-      ];
-    }
+  // -----------on Page referesh transactionStatustList------------
+  refreshTransactionStatustList() {
+    this.transactionStatustList = [
+      { label: 'All', value: 'All' },
+      { label: 'Pending', value: 'Pending' },
+      { label: 'Submitted', value: 'Submitted' },
+      { label: 'Approved', value: 'Approved' },
+      { label: 'Send back', value: 'Send back' },
+    ];
+  }
 
   // ------- On declaration page get API call for All Institutions added into Master-------
-    declarationPage() {
+  declarationPage() {
+    this.transactionInstitutionNames = [];
+    this.transactionPolicyList = [];
+    this.transactionStatustList = [];
 
-      this.transactionInstitutionNames = [];
-      this.transactionPolicyList = [];
-      this.transactionStatustList = [];
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
 
-      const data = {
-          label: 'All',
-          value: 'All',
-      };
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+    this.refreshTransactionStatustList();
 
-      this.transactionInstitutionNames.push(data);
-      this.transactionPolicyList.push(data);
-      this.refreshTransactionStatustList();
+    this.getInstitutionListWithPolicyNo();
 
-      this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe((res) => {
+    this.resetAll();
+    this.selectedTransactionInstName('All');
+  }
 
+  public getInstitutionListWithPolicyNo() {
+    this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe(
+      (res) => {
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -350,109 +316,143 @@ export class LicdeclarationComponent implements OnInit {
             this.transactionPolicyList.push(policyObj);
           });
         });
-      });
-
-      this.resetAll();
-      this.selectedTransactionInstName('All');
-    }
-
-  // --------- On institution selection show all transactions list accordingly all policies--------
-    selectedTransactionInstName(institutionName: any) {
-
-      this.globalInstitution = institutionName;
-      this.getTransactionFilterData(this.globalInstitution, null, null);
-      this.globalSelectedAmount = this.numberFormat.transform(0);
-      const data = {
-        label: 'All',
-        value: 'All',
-      };
-
-      this.transactionPolicyList = [];
-      this.transactionPolicyList.push(data);
-
-      this.transactionInstitutionListWithPolicies.forEach((element) => {
-
-        if (institutionName === element.institution) {
-          element.policies.forEach((policy) => {
-            const policyObj = {
-              label: policy,
-              value: policy,
-            };
-            this.transactionPolicyList.push(policyObj);
-          });
-        } else if (institutionName === 'All') {
-          element.policies.forEach((policy) => {
-            const policyObj = {
-              label: policy,
-              value: policy,
-            };
-            this.transactionPolicyList.push(policyObj);
-          });
-        }
-      });
-
-      if (institutionName == 'All') {
-        this.grandTabStatus = true;
-        this.isDisabled = true;
-      } else {
-        this.grandTabStatus = false;
-        this.isDisabled = false;
       }
+    );
+  }
+  // --------- On institution selection show all transactions list accordingly all policies--------
+  selectedTransactionInstName(institutionName: any) {
+    this.globalInstitution = institutionName;
+    this.getTransactionFilterData(this.globalInstitution, null, null);
+    this.globalSelectedAmount = this.numberFormat.transform(0);
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
 
-      this.resetAll();
+    this.transactionPolicyList = [];
+    this.transactionPolicyList.push(data);
+
+    this.transactionInstitutionListWithPolicies.forEach((element) => {
+      if (institutionName === element.institution) {
+        element.policies.forEach((policy) => {
+          const policyObj = {
+            label: policy,
+            value: policy,
+          };
+          this.transactionPolicyList.push(policyObj);
+        });
+      } else if (institutionName === 'All') {
+        element.policies.forEach((policy) => {
+          const policyObj = {
+            label: policy,
+            value: policy,
+          };
+          this.transactionPolicyList.push(policyObj);
+        });
+      }
+    });
+
+    if (institutionName == 'All') {
+      this.grandTabStatus = true;
+      this.isDisabled = true;
+    } else {
+      this.grandTabStatus = false;
+      this.isDisabled = false;
     }
+
+    this.resetAll();
+  }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
-    selectedPolicy(policy: any) {
-      this.globalPolicy = policy;
-      this.getTransactionFilterData(this.globalInstitution, this.globalPolicy, null);
-    }
+  selectedPolicy(policy: any) {
+    this.globalPolicy = policy;
+    this.getTransactionFilterData(
+      this.globalInstitution,
+      this.globalPolicy,
+      null
+    );
+  }
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
-    selectedTransactionStatus(transactionStatus: any) {
-      this.getTransactionFilterData(this.globalInstitution, this.globalPolicy, transactionStatus);
-    }
+  selectedTransactionStatus(transactionStatus: any) {
+    this.getTransactionFilterData(
+      this.globalInstitution,
+      this.globalPolicy,
+      transactionStatus
+    );
+  }
 
   // -------- ON select to check input boxex--------
-  public onSelectCheckBox(data: any, event: { target: { checked: any; }; },  i: number, j: number) {
+  public onSelectCheckBox(
+    data: any,
+    event: { target: { checked: any } },
+    i: number,
+    j: number
+  ) {
     const checked = event.target.checked;
 
-    const formatedGlobalSelectedValue = Number(this.globalSelectedAmount == '0' ? this.globalSelectedAmount
-    : this.globalSelectedAmount.toString().replace(',', ''));
+    const formatedGlobalSelectedValue = Number(
+      this.globalSelectedAmount == '0'
+        ? this.globalSelectedAmount
+        : this.globalSelectedAmount.toString().replace(',', '')
+    );
 
     let formatedActualAmount: number = 0;
     let formatedSelectedAmount: string;
-    console.log('in IS ECS::', this.transactionDetail[j].lictransactionList[i].isECS);
+    console.log(
+      'in IS ECS::',
+      this.transactionDetail[j].lictransactionList[i].isECS
+    );
     if (checked) {
-      if ( this.transactionDetail[j].lictransactionList[i].isECS === 1) {
-
-      this.transactionDetail[j].lictransactionList[i].actualAmount =  data.declaredAmount;
-      this.transactionDetail[j].lictransactionList[i].dateOfPayment =  new Date (data.dueDate);
-      console.log('in IS actualAmount::', this.transactionDetail[j].lictransactionList[i].actualAmount);
-      console.log('in IS dateOfPayment::', this.transactionDetail[j].lictransactionList[i].dateOfPayment);
+      if (this.transactionDetail[j].lictransactionList[i].isECS === 1) {
+        this.transactionDetail[j].lictransactionList[i].actualAmount =
+          data.declaredAmount;
+        this.transactionDetail[j].lictransactionList[
+          i
+        ].dateOfPayment = new Date(data.dueDate);
+        console.log(
+          'in IS actualAmount::',
+          this.transactionDetail[j].lictransactionList[i].actualAmount
+        );
+        console.log(
+          'in IS dateOfPayment::',
+          this.transactionDetail[j].lictransactionList[i].dateOfPayment
+        );
       } else {
-        this.transactionDetail[j].lictransactionList[i].actualAmount =  data.declaredAmount;
-
+        this.transactionDetail[j].lictransactionList[i].actualAmount =
+          data.declaredAmount;
       }
 
-      formatedActualAmount =  Number(this.transactionDetail[j].lictransactionList[i].actualAmount.toString().replace(',', ''));
-      formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
+      formatedActualAmount = Number(
+        this.transactionDetail[j].lictransactionList[i].actualAmount
+          .toString()
+          .replace(',', '')
+      );
+      formatedSelectedAmount = this.numberFormat.transform(
+        formatedGlobalSelectedValue + formatedActualAmount
+      );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.licTransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
-
     } else {
-      formatedActualAmount =  Number(this.transactionDetail[j].lictransactionList[i].actualAmount.toString().replace(',', ''));
-      this.transactionDetail[j].lictransactionList[i].actualAmount  =  this.numberFormat.transform(0);
-      this.transactionDetail[j].lictransactionList[i].dateOfPayment  = null;
+      formatedActualAmount = Number(
+        this.transactionDetail[j].lictransactionList[i].actualAmount
+          .toString()
+          .replace(',', '')
+      );
+      this.transactionDetail[j].lictransactionList[
+        i
+      ].actualAmount = this.numberFormat.transform(0);
+      this.transactionDetail[j].lictransactionList[i].dateOfPayment = null;
 
-      formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue - formatedActualAmount);
+      formatedSelectedAmount = this.numberFormat.transform(
+        formatedGlobalSelectedValue - formatedActualAmount
+      );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(data.licTransactionId);
       this.uploadGridData.splice(index, 1);
-
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
@@ -460,170 +460,252 @@ export class LicdeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.transactionDetail[j].lictransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(element.actualAmount.toString().replace(',', ''));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(',', '')
+      );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
     if (this.uploadGridData.length) {
-        this.enableFileUpload = true;
+      this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
-
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
-    checkUncheckAll(item: any) {
-      // console.log(this.isCheckAll);
-      if (this.isCheckAll) {
-        // console.log('CHECK ALL IS FALSE ');
-        this.isCheckAll = false;
-        this.enableSelectAll = false;
-        this.enableCheckboxFlag2 = null;
-        this.uploadGridData = [];
-      } else {
-        // console.log('CHECK ALL IS TRUE ');
-        this.isCheckAll = true;
-        this.enableSelectAll = true;
-        this.enableCheckboxFlag2 = item.institutionName;
-        item.lictransactionList.forEach((element) => {
-            this.uploadGridData.push(element.licTransactionId);
-        });
-        this.enableFileUpload = true;
-      }
-      // console.log('enableSelectAll...',  this.enableSelectAll);
-      // console.log('uploadGridData...',  this.uploadGridData);
+  checkUncheckAll(item: any) {
+    // console.log(this.isCheckAll);
+    if (this.isCheckAll) {
+      // console.log('CHECK ALL IS FALSE ');
+      this.isCheckAll = false;
+      this.enableSelectAll = false;
+      this.enableCheckboxFlag2 = null;
+      this.uploadGridData = [];
+    } else {
+      // console.log('CHECK ALL IS TRUE ');
+      this.isCheckAll = true;
+      this.enableSelectAll = true;
+      this.enableCheckboxFlag2 = item.institutionName;
+      item.lictransactionList.forEach((element) => {
+        this.uploadGridData.push(element.licTransactionId);
+      });
+      this.enableFileUpload = true;
     }
+    // console.log('enableSelectAll...',  this.enableSelectAll);
+    // console.log('uploadGridData...',  this.uploadGridData);
+  }
 
   // --------------- ON change of declared Amount in line-------------
-    onDeclaredAmountChange(summary: { previousEmployerName: any; declaredAmount: number;
-      dateOfPayment: Date; actualAmount: any;  dueDate: Date}, i: number, j: number) {
+  onDeclaredAmountChange(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: any;
+      dueDate: Date;
+    },
+    i: number,
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summary);
+    // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-      this.declarationService = new DeclarationService(summary);
-      // console.log("Ondeclaration Amount change" + summary.declaredAmount);
+    this.transactionDetail[j].lictransactionList[
+      i
+    ].declaredAmount = this.declarationService.declaredAmount;
+    const formatedDeclaredAmount = this.numberFormat.transform(
+      this.transactionDetail[j].lictransactionList[i].declaredAmount
+    );
+    // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
+    this.transactionDetail[j].lictransactionList[
+      i
+    ].declaredAmount = formatedDeclaredAmount;
 
-      this.transactionDetail[j].lictransactionList[i].declaredAmount =  this.declarationService.declaredAmount;
-      const formatedDeclaredAmount = this.numberFormat.transform(this.transactionDetail[j].lictransactionList[i].declaredAmount);
-      // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-      this.transactionDetail[j].lictransactionList[i].declaredAmount = formatedDeclaredAmount;
+    this.declarationTotal = 0;
+    // this.declaredAmount=0;
 
-      this.declarationTotal = 0;
-      // this.declaredAmount=0;
+    this.transactionDetail[j].lictransactionList.forEach((element) => {
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declaredAmount.toString().replace(',', '')
+      );
+      // console.log(this.declarationTotal);
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
+    });
 
-      this.transactionDetail[j].lictransactionList.forEach((element) => {
-        // console.log(element.declaredAmount.toString().replace(',', ""));
-        this.declarationTotal += Number(element.declaredAmount.toString().replace(',', ''));
-        // console.log(this.declarationTotal);
-        // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
-      });
-
-      this.transactionDetail[j].declarationTotal = this.declarationTotal;
-      // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
-    }
+    this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+  }
 
   // ------------ ON change of DueDate in line----------
-    onDueDateChange(summary: { previousEmployerName: any; declaredAmount: number;
-      dateOfPayment: Date; actualAmount: number;  dueDate: any}, i: number, j: number ) {
-      this.transactionDetail[j].lictransactionList[i].dueDate = summary.dueDate;
-    }
+  onDueDateChange(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: number;
+      dueDate: any;
+    },
+    i: number,
+    j: number
+  ) {
+    this.transactionDetail[j].lictransactionList[i].dueDate = summary.dueDate;
+  }
 
   // ------------Actual Amount change-----------
-    onActualAmountChange(summary: { previousEmployerName: any; declaredAmount: number;
-      dateOfPayment: Date; actualAmount: number;  dueDate: Date}, i: number, j: number) {
-      this.declarationService = new DeclarationService(summary);
-      // console.log("Actual Amount change::" , summary);
+  onActualAmountChange(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: number;
+      dueDate: Date;
+    },
+    i: number,
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summary);
+    // console.log("Actual Amount change::" , summary);
 
-      this.transactionDetail[j].lictransactionList[i].actualAmount =  this.declarationService.actualAmount;
-      // console.log("Actual Amount changed::" , this.transactionDetail[j].lictransactionList[i].actualAmount);
-      const formatedActualAmount = this.numberFormat.transform(this.transactionDetail[j].lictransactionList[i].actualAmount);
-      // console.log(`formatedActualAmount::`,formatedActualAmount);
-      this.transactionDetail[j].lictransactionList[i].actualAmount = formatedActualAmount;
+    this.transactionDetail[j].lictransactionList[
+      i
+    ].actualAmount = this.declarationService.actualAmount;
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].lictransactionList[i].actualAmount);
+    const formatedActualAmount = this.numberFormat.transform(
+      this.transactionDetail[j].lictransactionList[i].actualAmount
+    );
+    // console.log(`formatedActualAmount::`,formatedActualAmount);
+    this.transactionDetail[j].lictransactionList[
+      i
+    ].actualAmount = formatedActualAmount;
 
-      if (this.transactionDetail[j].lictransactionList[i].actualAmount !== Number(0)
-        || this.transactionDetail[j].lictransactionList[i].actualAmount !== null  ) {
-          // console.log(`in if::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
-          this.isDisabled = false;
-      } else {
-          // console.log(`in else::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
-          this.isDisabled = true;
-      }
-
-      this.actualTotal = 0;
-      this.actualAmount = 0;
-      this.transactionDetail[j].lictransactionList.forEach((element) => {
-        // console.log(element.actualAmount.toString().replace(',', ""));
-        this.actualTotal += Number(element.actualAmount.toString().replace(',', ''));
-        // console.log(this.actualTotal);
-        // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-      });
-
-      this.transactionDetail[j].actualTotal = this.actualTotal;
-      // this.transactionDetail[j].actualAmount = this.actualAmount;
-      // console.log(this.transactionDetail[j]);
-      // console.log(this.actualTotal);
+    if (
+      this.transactionDetail[j].lictransactionList[i].actualAmount !==
+        Number(0) ||
+      this.transactionDetail[j].lictransactionList[i].actualAmount !== null
+    ) {
+      // console.log(`in if::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
+      this.isDisabled = false;
+    } else {
+      // console.log(`in else::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
+      this.isDisabled = true;
     }
+
+    this.actualTotal = 0;
+    this.actualAmount = 0;
+    this.transactionDetail[j].lictransactionList.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(',', '')
+      );
+      // console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.transactionDetail[j].actualTotal = this.actualTotal;
+    // this.transactionDetail[j].actualAmount = this.actualAmount;
+    // console.log(this.transactionDetail[j]);
+    // console.log(this.actualTotal);
+  }
 
   // --------Add New ROw Function---------
-    // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
-    //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-    addRowInList( summarynew: { licTransactionId: number; licMasterPaymentDetailsId: number;
-      previousEmployerId: number; dueDate: Date; declaredAmount: any;
-      dateOfPayment: Date; actualAmount: any; isECS: number }, j: number , i: number) {
-      // console.log('summary::',  summarynew);
-      if (this.initialArrayIndex[j] > i) {
-        this.hideRemoveRow = false;
-      } else {
-        this.hideRemoveRow  = true;
-      }
-      this.declarationService = new DeclarationService(summarynew);
-      // console.log('declarationService::', this.declarationService);
-      this.globalAddRowIndex -= 1;
-      console.log(' in add this.globalAddRowIndex::',  this.globalAddRowIndex);
-      this.shownewRow = true;
-      this.declarationService.licTransactionId = this.globalAddRowIndex;
-      this.declarationService.declaredAmount = null;
-      this.declarationService.dueDate = null;
-      this.declarationService.actualAmount = null;
-      this.declarationService.dateOfPayment = null;
-      this.declarationService.isECS = 0;
-      this.declarationService.transactionStatus = 'Pending';
-      this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[j].lictransactionList[0].licMasterPaymentDetailsId;
-      this.transactionDetail[j].lictransactionList.push(this.declarationService);
-      console.log('addRow::', this.transactionDetail[j].lictransactionList);
-    }
+  // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
+  //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
+  addRowInList(
+    summarynew: {
+      licTransactionId: number;
+      licMasterPaymentDetailsId: number;
+      previousEmployerId: number;
+      dueDate: Date;
+      declaredAmount: any;
+      dateOfPayment: Date;
+      actualAmount: any;
+      isECS: number;
+    },
+    j: number
+  ) {
+    // console.log('summary::',  summarynew);
+    // if (this.initialArrayIndex[j] > i) {
+    //   this.hideRemoveRow = false;
+    // } else {
+    //   this.hideRemoveRow  = true;
+    // }
+    this.declarationService = new DeclarationService(summarynew);
+    // console.log('declarationService::', this.declarationService);
+    this.globalAddRowIndex -= 1;
+    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.shownewRow = true;
+    this.declarationService.licTransactionId = this.globalAddRowIndex;
+    this.declarationService.declaredAmount = null;
+    this.declarationService.dueDate = null;
+    this.declarationService.actualAmount = null;
+    this.declarationService.dateOfPayment = null;
+    this.declarationService.isECS = 0;
+    this.declarationService.transactionStatus = 'Pending';
+    this.declarationService.amountRejected = 0.0;
+    this.declarationService.amountApproved = 0.0;
+    this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[
+      j
+    ].lictransactionList[0].licMasterPaymentDetailsId;
+    this.transactionDetail[j].lictransactionList.push(this.declarationService);
+    console.log('addRow::', this.transactionDetail[j].lictransactionList);
+  }
+
+  sweetalertWarning(msg: string) {
+    this.alertService.sweetalertWarning(msg);
+  }
+
+  sweetalertError(msg: string) {
+    this.alertService.sweetalertError(msg);
+  }
 
   // -------- Delete Row--------------
-    deleteRow(j: number , i: number) {
-
-    const rowCount = this.transactionDetail[j].lictransactionList.length - 1 ;
+  deleteRow(j: number) {
+    const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
       return false;
-    } else if ( this.initialArrayIndex[j] <= rowCount  ) {
+    } else if (this.initialArrayIndex[j] <= rowCount) {
       this.transactionDetail[j].lictransactionList.splice(rowCount, 1);
       return true;
     }
   }
 
-  editDeclrationRow(summary: { previousEmployerName: any; declaredAmount: any;
-    dateOfPayment: any; dueDate: any; actualAmount: any; }, i: any, j: any) {
-      this.declarationService = new DeclarationService(summary);
+  editDeclrationRow(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: any;
+      dateOfPayment: any;
+      dueDate: any;
+      actualAmount: any;
+    },
+    i: any,
+    j: any
+  ) {
+    this.declarationService = new DeclarationService(summary);
   }
 
   updateDeclrationRow(i: string | number, j: string | number) {
     // tslint:disable-next-line: max-line-length
-    this.transactionDetail[j].actualTotal += this.declarationService.actualAmount - this.transactionDetail[j].lictransactionList[i].actualAmount;
-    this.transactionDetail[j].lictransactionList[i] =  this.declarationService;
+    this.transactionDetail[j].actualTotal +=
+      this.declarationService.actualAmount -
+      this.transactionDetail[j].lictransactionList[i].actualAmount;
+    this.transactionDetail[j].lictransactionList[i] = this.declarationService;
     this.declarationService = new DeclarationService();
   }
 
   SaveDeclrationRow(j) {
     if (!this.declarationService) {
-        return;
+      return;
     }
-    this.transactionDetail[j].declarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].actualTotal +=  this.declarationService.actualAmount;
+    this.transactionDetail[
+      j
+    ].declarationTotal += this.declarationService.declaredAmount;
+    this.transactionDetail[
+      j
+    ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
     this.transactionDetail[j].lictransactionList.push(this.declarationService);
@@ -631,16 +713,19 @@ export class LicdeclarationComponent implements OnInit {
   }
 
   submitDeclaration() {
-  // this.tabIndex = 0;
-      console.log(this.transactionDetail);
-      this.tabIndex = 0;
-      this.transactionDetail.forEach((element) => {
-      element.lictransactionList.forEach(element => {
-          element.dateOfPayment = this.datePipe.transform(element.dateOfPayment, 'yyyy-MM-dd');
+    // this.tabIndex = 0;
+    console.log(this.transactionDetail);
+    this.tabIndex = 0;
+    this.transactionDetail.forEach((element) => {
+      element.lictransactionList.forEach((element) => {
+        element.dateOfPayment = this.datePipe.transform(
+          element.dateOfPayment,
+          'yyyy-MM-dd'
+        );
       });
-      });
-      const data = this.transactionDetail;
-      this.Service.postEightyCDeclarationTransaction(data).subscribe((res) => {
+    });
+    const data = this.transactionDetail;
+    this.Service.postEightyCDeclarationTransaction(data).subscribe((res) => {
       console.log(res);
       this.transactionDetail = res.data.results[0].licTransactionDetail;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
@@ -648,40 +733,38 @@ export class LicdeclarationComponent implements OnInit {
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
       this.transactionDetail.forEach((element) => {
-          element.lictransactionList.forEach(element => {
+        element.lictransactionList.forEach((element) => {
           element.dateOfPayment = new Date(element.dateOfPayment);
-          });
+        });
       });
-      });
-      this.resetAll();
+    });
+    this.resetAll();
   }
 
   // Reset All
-    resetAll() {
-      this.enableEditRow = this.enablePolicyTable = this.addRow2 = -1;
-      this.uploadGridData = [];
-      this.enableCheckboxFlag3 = false;
-      this.enableCheckboxFlag2 = null;
-      this.declarationService = new DeclarationService();
-    }
+  resetAll() {
+    this.enableEditRow = this.enablePolicyTable = this.addRow2 = -1;
+    this.uploadGridData = [];
+    this.enableCheckboxFlag3 = false;
+    this.enableCheckboxFlag2 = null;
+    this.declarationService = new DeclarationService();
+  }
 
-///// --------------------------------rahul-------------
+  ///// --------------------------------rahul-------------
 
   UploadFilePopUp() {
-      this.displayUploadFile = true;
+    this.displayUploadFile = true;
   }
 
   onUpload(event) {
-      console.log('event::', event);
-      if (event.target.files.length > 0) {
-          for (const file of event.target.files) {
-            this.filesArray.push(file);
-          }
+    console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.filesArray.push(file);
       }
-      console.log(this.filesArray);
+    }
+    console.log(this.filesArray);
   }
-
-
 
   removeDocument() {
     this.currentFileUpload = null;
@@ -694,8 +777,6 @@ export class LicdeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-
-
   upload() {
     // this.currentFileUpload = this.selectedFiles.item(0);
     // const data = {
@@ -705,76 +786,96 @@ export class LicdeclarationComponent implements OnInit {
     //     receiptDate: this.receiptDate,
     // };
     // this.uploadGridData = [3,4]
-    if (this.filesArray.length === 0 ) {
-      this.alertService.sweetalertError('Please attach Premium Receipt / Premium Statement');
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
       return;
     }
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
-      element.lictransactionList.forEach( (innerElement) => {
+      element.lictransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
-          innerElement.declaredAmount = innerElement.declaredAmount.toString().replace(',', '');
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(',', '');
         } else {
-          innerElement.declaredAmount = 0.00;
+          innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
-          innerElement.actualAmount = innerElement.actualAmount.toString().replace(',', '');
+          innerElement.actualAmount = innerElement.actualAmount
+            .toString()
+            .replace(',', '');
         } else {
-          innerElement.actualAmount = 0.00;
+          innerElement.actualAmount = 0.0;
         }
 
-        const dateOfPaymnet = this.datePipe.transform(innerElement.dateOfPayment, 'yyyy-MM-dd');
-        const dueDate = this.datePipe.transform(innerElement.dueDate, 'yyyy-MM-dd');
+        const dateOfPaymnet = this.datePipe.transform(
+          innerElement.dateOfPayment,
+          'yyyy-MM-dd'
+        );
+        const dueDate = this.datePipe.transform(
+          innerElement.dueDate,
+          'yyyy-MM-dd'
+        );
 
         innerElement.dateOfPayment = dateOfPaymnet;
         innerElement.dueDate = dueDate;
-
       });
     });
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-          licTransactionDetail: this.transactionDetail,
-          licTransactionIDs: this.uploadGridData,
-          receiptAmount: this.receiptAmount,
-          documentRemark: this.documentRemark,
-      };
+      licTransactionDetail: this.transactionDetail,
+      licTransactionIDs: this.uploadGridData,
+      receiptAmount: this.receiptAmount,
+      documentRemark: this.documentRemark,
+    };
     console.log('data::', data);
 
-      // this.fileService.uploadSingleFile(this.currentFileUpload, data)
-          // .pipe(tap(event => {
-          //     if (event.type === HttpEventType.UploadProgress) {
-          //         this.loaded = Math.round(100 * event.loaded / event.total);
-          //     }
-          // }))
-    this.fileService.uploadMultipleFiles(this.filesArray, data)
-          .subscribe((res) => {
-              console.log(res);
-              if (res.data.results.length > 0) {
-                  this.transactionDetail = res.data.results[0].licTransactionDetail;
-                  this.documentDetailList = res.data.results[0].documentInformation;
-                  this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-                  this.grandActualTotal = res.data.results[0].grandActualTotal;
-                  this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-                  this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-                  this.transactionDetail.forEach((element) => {
-                          element.lictransactionList.forEach((innerElement) => {
-                          if (innerElement.dateOfPayment !== null) {
-                                innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-                          }
-                          if (this.employeeJoiningDate < innerElement.dueDate) {
-                              innerElement.active = false;
-                          }
-                          innerElement.declaredAmount = this.numberFormat.transform(innerElement.declaredAmount);
-                          // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
-                      });
-                  });
-                  this.alertService.sweetalertMasterSuccess('Transaction Saved Successfully.', '');
-              } else {
-                  this.alertService.sweetalertWarning(res.status.messsage);
+    // this.fileService.uploadSingleFile(this.currentFileUpload, data)
+    // .pipe(tap(event => {
+    //     if (event.type === HttpEventType.UploadProgress) {
+    //         this.loaded = Math.round(100 * event.loaded / event.total);
+    //     }
+    // }))
+    this.fileService
+      .uploadMultipleFiles(this.filesArray, data)
+      .subscribe((res) => {
+        console.log(res);
+        if (res.data.results.length > 0) {
+          this.transactionDetail = res.data.results[0].licTransactionDetail;
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal =
+            res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          this.transactionDetail.forEach((element) => {
+            element.lictransactionList.forEach((innerElement) => {
+              if (innerElement.dateOfPayment !== null) {
+                innerElement.dateOfPayment = new Date(
+                  innerElement.dateOfPayment
+                );
               }
+              if (this.employeeJoiningDate < innerElement.dueDate) {
+                innerElement.active = false;
+              }
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+            });
           });
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      });
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
@@ -786,28 +887,39 @@ export class LicdeclarationComponent implements OnInit {
     // this.receiptAmount = formatedReceiptAmount;
     this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
     if (this.receiptAmount < this.globalSelectedAmount) {
-      this.alertService.sweetalertWarning('Receipt Amount should be greater than Selected line Actual Amount.');
+      this.alertService.sweetalertError(
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+      );
     } else if (this.receiptAmount > this.globalSelectedAmount) {
-      this.alertService.sweetalertInfo('Receipt Amount is greater than Selected line Actual Amount.');
+      this.alertService.sweetalertWarning(
+        'Receipt Amount is greater than Selected line Actual Amount'
+      );
     }
     console.log('receiptAmount::', this.receiptAmount);
   }
 
-
+  UploadModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
 
   UploadedDocumentModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
-        template1,
-        Object.assign({}, { class: 'gray modal-md' }),
+      template1,
+      Object.assign({}, { class: 'gray modal-md' })
     );
   }
 
   UploadedDocumentModal1(template1: TemplateRef<any>, documentIndex: number) {
     this.modalRef = this.modalService.show(
-        template1,
-        Object.assign({}, { class: 'gray modal-md' }),
+      template1,
+      Object.assign({}, { class: 'gray modal-md' })
     );
-    this.proofSubmissionFileList = this.documentDetailList[documentIndex].documentDetailList;
+    this.proofSubmissionFileList = this.documentDetailList[
+      documentIndex
+    ].documentDetailList;
   }
 
   deactiveCopytoActualDate() {
@@ -817,65 +929,86 @@ export class LicdeclarationComponent implements OnInit {
       this.hideCopytoActualDate = false;
     }
   }
-  copytoActualDate(dueDate: Date , j: number , i: number , item: any) {
+  copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
     dueDate = new Date(dueDate);
     // item.lictransactionList.dateOfPayment = dueDate;
     this.transactionDetail[0].lictransactionList[i].dateOfPayment = dueDate;
-    this.declarationService.dateOfPayment = this.transactionDetail[0].lictransactionList[i].dateOfPayment ;
+    this.declarationService.dateOfPayment = this.transactionDetail[0].lictransactionList[
+      i
+    ].dateOfPayment;
     // this.dateOfPayment = dueDate;
     alert('hiiii');
-    console.log('Date OF PAyment' +   this.declarationService.dateOfPayment );
+    console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
   }
 
-  declarationEditUpload(template2: TemplateRef<any>, proofSubmissionId) {
-    console.log(proofSubmissionId);
+  // When Edit of Document Details
+  declarationEditUpload(template2: TemplateRef<any>, proofSubmissionId: string) {
+
+    console.log('proofSubmissionId::', proofSubmissionId);
+
     this.modalRef = this.modalService.show(
-        template2,
-        Object.assign({}, { class: 'gray modal-xl' }),
+      template2,
+      Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe((res) => {
-      console.log('edit Data:: ', res);
-      this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-      this.editTransactionUpload = res.data.results[0].licTransactionDetail;
-      console.log(this.urlArray);
-      this.urlArray.forEach((element) => {
-       // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-       element.blobURI = 'data:image/image;base64,' + element.blobURI;
+    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
+      (res) => {
+        console.log('edit Data:: ', res);
+        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
+        this.editTransactionUpload = res.data.results[0].licTransactionDetail;
+        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
+        //console.log(this.urlArray);
+        this.urlArray.forEach((element) => {
+          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+          element.blobURI = 'data:image/image;base64,' + element.blobURI;
+          // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        });
+        //console.log('converted:: ', this.urlArray);
+      }
+    );
+  }
 
-       // new Blob([element.blobURI], { type: 'application/octet-stream' });
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
 
-      });
-      console.log('converted:: ', this.urlArray);
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
 
-    });
-}
-
-nextDocViewer() {
-  this.urlIndex = this.urlIndex + 1;
-  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.urlArray[this.urlIndex].blobURI);
-}
-
-previousDocViewer() {
-  this.urlIndex = this.urlIndex - 1;
-  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.urlArray[this.urlIndex].blobURI);
-}
-
-docViewer(template3: TemplateRef<any>) {
-  this.urlIndex = 0;
-  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.urlArray[this.urlIndex].blobURI);
-  console.log(this.urlSafe);
-  this.modalRef = this.modalService.show(
+  docViewer(template3: TemplateRef<any>) {
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
       template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
-  );
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
-}
-
-// Common Function for filter to call API
-  getTransactionFilterData(institution: String, policyNo: String, transactionStatus: String) {
+  // Common Function for filter to call API
+  getTransactionFilterData(
+    institution: String,
+    policyNo: String,
+    transactionStatus: String
+  ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.Service.getTransactionFilterData(institution, policyNo, transactionStatus).subscribe((res) => {
+    this.Service.getTransactionFilterData(
+      institution,
+      policyNo,
+      transactionStatus
+    ).subscribe((res) => {
       console.log(res);
       this.transactionDetail = res.data.results[0].licTransactionDetail;
       this.documentDetailList = res.data.results[0].documentInformation;
@@ -888,11 +1021,9 @@ docViewer(template3: TemplateRef<any>) {
       this.initialArrayIndex = [];
 
       this.transactionDetail.forEach((element) => {
-
         this.initialArrayIndex.push(element.lictransactionList.length);
 
         element.lictransactionList.forEach((innerElement) => {
-
           if (innerElement.dateOfPayment !== null) {
             innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
           }
@@ -907,8 +1038,12 @@ docViewer(template3: TemplateRef<any>) {
           } else {
             this.glbalECS == 0;
           }
-          innerElement.declaredAmount = this.numberFormat.transform(innerElement.declaredAmount);
-          innerElement.actualAmount =  this.numberFormat.transform(innerElement.actualAmount);
+          innerElement.declaredAmount = this.numberFormat.transform(
+            innerElement.declaredAmount
+          );
+          innerElement.actualAmount = this.numberFormat.transform(
+            innerElement.actualAmount
+          );
         });
       });
     });
@@ -918,44 +1053,60 @@ docViewer(template3: TemplateRef<any>) {
   public uploadUpdateTransaction() {
     this.editTransactionUpload.forEach((element) => {
       this.uploadGridData.push(element.licTransactionId);
-  });
+    });
     const data = {
-          licTransactionDetail: this.editTransactionUpload,
-          licTransactionIDs: this.uploadGridData,
-          documentRemark: this.documentRemark,
-      };
+      licTransactionDetail: this.editTransactionUpload,
+      licTransactionIDs: this.uploadGridData,
+      documentRemark: this.documentRemark,
+    };
     console.log('data::', data);
-    this.fileService.uploadMultipleFiles(this.filesArray, data)
-          .subscribe((res) => {
-              console.log(res);
-              if (res.data.results.length > 0) {
-
-                  this.alertService.sweetalertMasterSuccess('Transaction Saved Successfully.', '');
-              } else {
-                  this.alertService.sweetalertWarning(res.status.messsage);
-              }
-          });
+    this.fileService
+      .uploadMultipleFiles(this.filesArray, data)
+      .subscribe((res) => {
+        console.log(res);
+        if (res.data.results.length > 0) {
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      });
     this.currentFileUpload = null;
   }
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe((res) => {
-      console.log('edit Data:: ', res);
-      this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-      this.urlArray.forEach((element) => {
-      element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(element.blobURI);
-    });
-      console.log(this.urlArray);
-    });
+    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
+      (res) => {
+        console.log('edit Data:: ', res);
+        this.urlArray =
+          res.data.results[0].documentInformation[0].documentDetailList;
+        this.urlArray.forEach((element) => {
+          element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
+            element.blobURI
+          );
+        });
+        console.log(this.urlArray);
+      }
+    );
   }
 
-  setDateOfPayment(summary: { previousEmployerName: any; declaredAmount: number;
-    dateOfPayment: Date; actualAmount: number;  dueDate: any}, i: number, j: number ) {
-
-    this.transactionDetail[j].lictransactionList[i].dateOfPayment = summary.dateOfPayment;
+  setDateOfPayment(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: number;
+      dueDate: any;
+    },
+    i: number,
+    j: number
+  ) {
+    this.transactionDetail[j].lictransactionList[i].dateOfPayment =
+      summary.dateOfPayment;
     console.log(this.transactionDetail[j].lictransactionList[i].dateOfPayment);
-
   }
 }
 
@@ -969,8 +1120,9 @@ class DeclarationService {
   public actualAmount: number;
   public isECS: 0;
   public transactionStatus: 'Pending';
+  public amountRejected: number;
+  public amountApproved: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
 }
-

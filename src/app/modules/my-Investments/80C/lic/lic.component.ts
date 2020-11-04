@@ -23,13 +23,18 @@ export class LicComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  changeTabIndexForRedirect(event:any) {
+
+  changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
     console.log('data::',this.data);
   }
-  changeTabIndex(index:number)
+
+  changeTabIndex(index: number)
   {
+    if(index !== 2) {
+      this.data = undefined;
+    }
     this.tabIndex = index;
   }
 

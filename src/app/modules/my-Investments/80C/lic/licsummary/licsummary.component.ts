@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 
 @Component({
   selector: 'app-licsummary',
@@ -12,7 +13,6 @@ export class LicsummaryComponent implements OnInit {
 
   @Input() institution: string;
   @Input() policyNo: string;
-
   @Output() myEvent = new EventEmitter<any>();
 
   onEditSummary(institution: string, policyNo: string) {
@@ -45,7 +45,9 @@ export class LicsummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private numberFormat: NumberFormatPipe) { }
+    private numberFormat: NumberFormatPipe,
+    private alertService: AlertServiceService,
+    ) { }
 
   public ngOnInit(): void {
     // Summary get Call on Page Load
@@ -86,13 +88,15 @@ export class LicsummaryComponent implements OnInit {
             this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         });
+
+        this.alertService.sweetalertMasterSuccess("Future Amount was saved","");
       }
 
-    // On Change Future New Policy Declared Amount with formate
-      onChangeFutureNewPolicyDeclaredAmount() {
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
-        this.addFuturePolicy();
-      }
+  // On Change Future New Policy Declared Amount with formate
+    onChangeFutureNewPolicyDeclaredAmount() {
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
+      this.addFuturePolicy();
+    }
 
     jumpToMasterPage(n: number) {
         //console.log(n);
