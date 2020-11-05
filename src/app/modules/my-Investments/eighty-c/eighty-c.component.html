@@ -1238,7 +1238,7 @@
    <!-- <div class="modal-footer">
       <button type="button" class="btn btn-primary">Save</button>
       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-      <button type="button" (click)="modalRef.hide()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"><b><i
+      <button type="button" (click)="modalRef.hide()" class="custom_button custom_btn btn-bg-ssgreen btn-labeled btn-labeled-left"><b><i
          class="fa fa-save"></i></b> Save</button>
       </div> -->
 </ng-template>
@@ -1258,7 +1258,7 @@
             </button>
          </div>
          <div class="col-md-10">
-            <iframe style="height: 100vh; width:100%; display: block;" [src]="urlSafe" provider="google"></iframe>
+            <iframe style="height: 100vh; width:100%; display: block;"      [src]="urlSafe" type="application/pdf" provider="google"></iframe>
          </div>
          <div class="col-md-1">
             <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">

@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MyInvestmentsService {
 apiUrl = environment.apiBaseUrl;
 
 
   constructor(private _HTTP: HttpClient) { }
+
+
+  public getBlobSASUrl(): Observable<any> {
+    return this._HTTP.get('https://devstoragefile1.blob.core.windows.net/paysquarecontainer/Abbott/Abbott1/Employees/Investment/2020-2021/3/FlexGrid.pdf'
+     , {headers : new HttpHeaders({ 'Content-Type': 'application/pdf' })})
+    .pipe(map((res: any) => {
+         return res.tokenUrl;
+
+        }));
+      }
 
   getNPSSummary() {
     return this._HTTP.get(this.apiUrl + 'npsmaster-detail/npsMasterSummary/1')

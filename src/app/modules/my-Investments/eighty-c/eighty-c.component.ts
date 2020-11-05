@@ -21,6 +21,7 @@ export class EightyCComponent implements OnInit {
 
   public submitted = false;
   public pdfSrc = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
@@ -1160,12 +1161,18 @@ export class EightyCComponent implements OnInit {
 
   previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.urlArray[this.urlIndex].blobURI);
-  }
+    //this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.urlArray[this.urlIndex].blobURI);
+   }
 
   docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.urlArray[this.urlIndex].blobURI);
+  //   this.Service.getBlobSASUrl().subscribe((res) => {
+  //    console.log('ResultsURL' , res);
+
+
+    this.urlSafe  = this.sanitizer.bypassSecurityTrustResourceUrl('https://view.officeapps.live.com/op/embed.aspx?src='
+      + 'https://devstoragefile1.blob.core.windows.net/paysquarecontainer/Abbott/Abbott1/Employees/Investment/2020-2021/3/FlexGrid.pdf'
+      +'&embedded=true');
+    //});
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
         template3,
@@ -1173,6 +1180,7 @@ export class EightyCComponent implements OnInit {
     );
 
   }
+
 
   // Common Function for filter to call API
     getTransactionFilterData(institution: String, policyNo: String, transactionStatus: String) {

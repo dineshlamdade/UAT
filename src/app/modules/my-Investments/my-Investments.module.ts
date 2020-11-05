@@ -25,6 +25,8 @@ import { EightyCModule } from './80C/eighty-c.module';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
+    EightyCComponent,
+
 
 
   ],

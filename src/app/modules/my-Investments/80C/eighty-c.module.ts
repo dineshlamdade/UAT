@@ -16,10 +16,10 @@ import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 
 import { MatSliderModule } from '@angular/material/slider';
+import { PPFMasterComponent } from '../80C/ppf/ppfmaster/ppfmaster.component';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
 import { PPFComponent } from './ppf/ppf.component';
 import { PPFDeclarationComponent } from './ppf/ppfdeclaration/ppfdeclaration.component';
-import { PPFMasterComponent } from './ppf/ppfmaster/ppfmaster.component';
 import { PPFSummaryComponent } from './ppf/ppfsummary/ppfsummary.component';
 
 @NgModule({
