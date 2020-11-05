@@ -26,9 +26,6 @@ import { EightyCModule } from './80C/eighty-c.module';
   declarations: [
     MyInvestmentsComponent,
     EightyCComponent,
-
-
-
   ],
   imports: [
     CommonModule,

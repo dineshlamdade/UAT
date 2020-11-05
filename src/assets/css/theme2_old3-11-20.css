@@ -541,9 +541,6 @@ body {
     cursor: pointer;
     /* border-bottom: 2px solid #acbe0e; */
     border-bottom: 2px solid #38b449;
-    border-right: 1px solid #999;
-    /* border-left: 1px solid #38b449;
-    border-top: 2px solid #38b449; */
     background: #ecf0f1;
     user-select: none;
     transition: background 0.4s, padding-left 0.2s;
@@ -652,61 +649,11 @@ fieldset {
     position: relative;
 }
 
-.ripple {
-    position: relative;
-    overflow: hidden;
-}
-
-.ripple:before {
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.3);
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-}
-
-.ripple:focus:before {
-    /* transition: all 0.9s ease-out; */
-    /* animation-iteration-count: infinite; */
-    animation: circleGrow 0.6s linear;
-    opacity: 0;
-    width: 160px;
-    height: 160px;
-    margin-top: -80px;
-    margin-left: -80px;
-}
-
-@keyframes circleGrow {
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    20% {
-        opacity: 1;
-    }
-    100% {
-        transform: scale(5);
-        opacity: 0;
-    }
-}
-
-.custom_btn:hover {
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.3);
-}
-
-.custom_btn:focus {
-    outline: 0;
-}
-
 .custom_btn {
     display: inline-block;
     font-weight: 400;
     color: #333;
     text-align: center;
-    cursor: pointer;
     vertical-align: middle;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -890,19 +837,6 @@ strong {
     border: 1px solid #999!important;
 }
 
-.bg-color-light_gray {
-    background-color: #f2f2f2!important;
-    color: #000!important;
-}
-
-.padding-right-12 {
-    padding-right: 12px!important;
-}
-
-.d-flex {
-    display: flex!important;
-}
-
 
 /* custom text color css end */
 
@@ -991,10 +925,6 @@ strong {
 
 .wd-16 {
     width: 16%!important;
-}
-
-.wd-18 {
-    width: 18%!important;
 }
 
 .wd-17 {
@@ -1170,7 +1100,6 @@ strong {
 .theme-green .bs-datepicker-body table td span[class*="select-"]:after,
 .theme-green .bs-datepicker-body table td[class*="select-"] span:after {
     background-color: #006666!important;
-    font-weight: bold;
 }
 
 
@@ -1449,72 +1378,4 @@ button:focus {
     position: absolute;
     top: 50%;
     left: 20%;
-}
-
-.highlightlabel {
-    -webkit-animation: color-change 1s infinite;
-    -moz-animation: color-change 1s infinite;
-    -o-animation: color-change 1s infinite;
-    -ms-animation: color-change 1s infinite;
-    animation: color-change 1s infinite;
-}
-
-@-webkit-keyframes color-change {
-    0% {
-        color: #38b449;
-    }
-    50% {
-        color: blue;
-    }
-    100% {
-        color: orangered;
-    }
-}
-
-@-moz-keyframes color-change {
-    0% {
-        color: #38b449;
-    }
-    50% {
-        color: blue;
-    }
-    100% {
-        color: orangered;
-    }
-}
-
-@-ms-keyframes color-change {
-    0% {
-        color: #38b449;
-    }
-    50% {
-        color: blue;
-    }
-    100% {
-        color: orangered;
-    }
-}
-
-@-o-keyframes color-change {
-    0% {
-        color: #38b449;
-    }
-    50% {
-        color: blue;
-    }
-    100% {
-        color: orangered;
-    }
-}
-
-@keyframes color-change {
-    0% {
-        color: #38b449;
-    }
-    50% {
-        color: blue;
-    }
-    100% {
-        color: orangered;
-    }
 }

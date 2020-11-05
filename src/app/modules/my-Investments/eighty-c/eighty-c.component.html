@@ -48,7 +48,7 @@
                                                 {{summary.actualAmount | number:'1.2-2'}}
                                                 </span>
                                              </td>
-                                             <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="jumpToDeclarationPage(summary.institutionName)" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-eye font-16 text-blue cursor-pointer"
+                                             <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="jumpToDeclarationPage(summary.institutionName, summary.policyNo)" tooltip="Edit"></i>&nbsp;&nbsp;<i class="fa fa-eye font-16 text-blue cursor-pointer"
                                                 tooltip="View"></i></td>
                                           </tr>
                                           <tr *ngIf="!summaryGridData?.length">
@@ -1313,7 +1313,7 @@
                   </div>
                </div>
                <div class="col-md-12 mt-10">
-                  <label class="form-label">Remark :</label>
+                  <label class="form-label">Remark</label>
                </div>
                <div class="col-md-12">
                   <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
