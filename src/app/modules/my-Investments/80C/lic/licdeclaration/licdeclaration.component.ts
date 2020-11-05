@@ -205,6 +205,7 @@ export class LicdeclarationComponent implements OnInit {
       this.globalPolicy = input.policyNo;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.isDisabled = false;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
