@@ -16,11 +16,9 @@ import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
 import { MatSliderModule } from '@angular/material/slider';
-import { PPFComponent } from './80C/ppf/ppf.component';
 import { EightyCComponent } from './eighty-c/eighty-c.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { EightyCModule } from './80C/eighty-c.module';
 
 @NgModule({
   declarations: [
