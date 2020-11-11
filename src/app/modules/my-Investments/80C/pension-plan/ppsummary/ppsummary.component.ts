@@ -2,15 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+import { PensionPlanService } from '../pension-plan.service';
 
 @Component({
-  selector: 'app-licsummary',
-  templateUrl: './licsummary.component.html',
-  styleUrls: ['./licsummary.component.scss']
+  selector: 'app-ppsummary',
+  templateUrl: './ppsummary.component.html',
+  styleUrls: ['./ppsummary.component.scss']
 })
-
-export class LicsummaryComponent implements OnInit {
-
+export class PpsummaryComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -44,7 +43,8 @@ export class LicsummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   constructor(
-    private service: MyInvestmentsService,
+    private service : MyInvestmentsService,
+    private pensionPlanService : PensionPlanService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService,
     ) { }
@@ -58,7 +58,7 @@ export class LicsummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
     // Summary get Call
       summaryPage() {
-        this.service.getEightyCSummary().subscribe((res) => {
+        this.pensionPlanService.getEightyCSummary().subscribe((res) => {
           this.summaryGridData = res.data.results[0].licMasterList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -79,7 +79,7 @@ export class LicsummaryComponent implements OnInit {
         };
 
         //console.log('addFuturePolicy Data..', data);
-        this.service.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
+        this.pensionPlanService.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
             //console.log('addFuturePolicy Res..', res);
             this.summaryGridData = res.data.results[0].licMasterList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;

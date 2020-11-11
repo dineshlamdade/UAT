@@ -261,13 +261,11 @@ apiUrl = environment.apiBaseUrl;
   }
 
   postEightyCDeclarationInstitutions(data) {
-    return this._HTTP.post(this.apiUrl + '/lic-transaction', data)
+    return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
-
-
 
   postEightyCDeclarationTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'lic-transaction', data)

@@ -52,7 +52,7 @@ export class LeftmenuComponent implements OnInit {
   ngAfterViewInit() {
     let pThis: any = this;
     setTimeout(() => {
-      debugger
+      // debugger
       if (sessionStorage.getItem("Font2") != "" && sessionStorage.getItem("Font2") != null) {
         this.fontSelect = sessionStorage.getItem("Font2");
       }
@@ -203,7 +203,7 @@ export class LeftmenuComponent implements OnInit {
   }
 
   onSubMenuIcon(type) {
-    debugger
+    // debugger
     const submenuIconclass = document.getElementsByClassName('submenu');
     for (let index = 0; index < submenuIconclass.length; index++) {
       const element = submenuIconclass[index];

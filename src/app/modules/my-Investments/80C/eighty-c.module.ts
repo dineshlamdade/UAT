@@ -25,8 +25,10 @@ import { LicComponent } from './lic/lic.component';
 import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
 import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
 import { LicmasterComponent } from './lic/licmaster/licmaster.component';
-
-
+import { PensionPlanComponent } from './pension-plan/pension-plan.component';
+import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
+import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
+import { PpsummaryComponent } from './pension-plan/ppsummary/ppsummary.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,10 @@ import { LicmasterComponent } from './lic/licmaster/licmaster.component';
     LicsummaryComponent,
     LicmasterComponent,
     LicdeclarationComponent,
+    PensionPlanComponent,
+    PpdeclarationComponent,
+    PpmasterComponent,
+    PpsummaryComponent
   ],
   imports: [
     CommonModule,

@@ -316,7 +316,8 @@ export class EightyCComponent implements OnInit {
       summaryPage() {
         this.Service.getEightyCSummary().subscribe((res) => {
           this.summaryGridData = res.data.results[0].licMasterList;
-          this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+          this.totalDeclaredAmount =
+          res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
           this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
