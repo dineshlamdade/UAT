@@ -78,9 +78,9 @@ export class LicsummaryComponent implements OnInit {
             futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
         };
 
-        //console.log('addFuturePolicy Data..', data);
+        console.log('addFuturePolicy Data..', data);
         this.service.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
-            //console.log('addFuturePolicy Res..', res);
+            console.log('addFuturePolicy Res..', res);
             this.summaryGridData = res.data.results[0].licMasterList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
