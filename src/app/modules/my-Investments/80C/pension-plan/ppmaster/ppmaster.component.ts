@@ -4,20 +4,22 @@ import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChi
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
+import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import {FileService} from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-
+import { PensionPlanService } from '../../../PP Component  html file/pension-plan/pension-plan.service';
 
 @Component({
-  selector: 'app-ppfmaster',
-  templateUrl: './ppfmaster.component.html',
-  styleUrls: ['./ppfmaster.component.scss']
+  selector: 'app-ppmaster',
+  templateUrl: './ppmaster.component.html',
+  styleUrls: ['./ppmaster.component.scss']
 })
-export class PPFMasterComponent implements OnInit {
+export class PpmasterComponent implements OnInit {
+
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
@@ -65,7 +67,6 @@ export class PPFMasterComponent implements OnInit {
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
   public policyMinDate: Date;
- public policyMaxDatePPF: Date;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
   public minFormDate: Date;
@@ -98,6 +99,7 @@ export class PPFMasterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
+    private pensionPlanService : PensionPlanService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -209,13 +211,10 @@ this.masterPage();
 
     // Policy End Date Validations with Policy Start Date
       setPolicyEndDate() {
-        console.log('PPF START DATE', this.form.value.policyStartDate);
         this.policyMinDate = this.form.value.policyStartDate;
         const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
         const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
         this.minFormDate = this.policyMinDate;
-
-        console.log('PPF MIN DATE', this.form.value.policyStartDate);
         if (policyStart > policyEnd) {
             this.form.controls.policyEndDate.reset();
         }
@@ -224,29 +223,15 @@ this.masterPage();
         });
 
         this.setPaymentDetailToDate();
-        //this.setAccountMaxDatePPF(this.policyMinDate);
       }
 
     // Policy End Date Validations with Current Finanacial Year
       checkFinancialYearStartDateWithPolicyEnd() {
         const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
         const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
-        const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
-
-         console.log(policyStart);
         if (policyEnd < financialYearStartDate) {
           this.alertService.sweetalertWarning('Policy End Date should be greater than or equal to Current Financial Year : '
           + this.financialYearStart);
-          this.form.controls.policyEndDate.reset();
-        } else {
-          this.form.patchValue({
-            toDate: this.form.value.policyEndDate,
-          });
-          this.maxFromDate = this.form.value.policyEndDate;
-        }
-
-        if (policyEnd < policyStart) {
-          this.alertService.sweetalertWarning('Policy End Date should be greater than Policy Start Date : ');
           this.form.controls.policyEndDate.reset();
         } else {
           this.form.patchValue({
@@ -266,17 +251,6 @@ this.masterPage();
         }
       }
 
-      setAccountMaxDatePPF(policyMinDate : Date) {
-        console.log('PPFMinDATE' ,  policyMinDate );
-        const maxppfAccountDate = policyMinDate;
-        if (maxppfAccountDate !== null || maxppfAccountDate === undefined ) {
-        this.policyMaxDatePPF = new Date (maxppfAccountDate.setFullYear(maxppfAccountDate.getFullYear() + 21));
-        }
-
-
-        console.log('PPFMAXDATE' ,   this.policyMaxDatePPF );
-      }
-
     // Payment Detail To Date Validations with Current Finanacial Year
       checkFinancialYearStartDateWithPaymentDetailToDate() {
         const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
@@ -290,7 +264,7 @@ this.masterPage();
 
     // Get Master Page Data API call
       masterPage() {
-        this.Service.getPPFMaster().subscribe((res) => {
+        this.pensionPlanService.getEightyCMaster().subscribe((res) => {
           console.log('masterGridData::', res);
           this.masterGridData = res.data.results;
           this.masterGridData.forEach((element) => {
@@ -325,7 +299,7 @@ this.masterPage();
 
           console.log('LICdata::', data);
 
-          this.Service.submitPPFMasterData(this.masterfilesArray, data)
+          this.fileService.uploadMultiplepensionPlanMasterFiles(this.masterfilesArray, data)
             .subscribe((res) => {
               console.log(res);
               if (res) {
@@ -379,25 +353,30 @@ this.masterPage();
 
       // Calculate annual amount on basis of premium and frquency
         calculateAnnualAmount() {
-          let installment = this.form.value.premiumAmount;
-          installment = installment.toString().replace(',', '');
-          // console.log(installment);
-          if (!this.form.value.frequencyOfPayment) {
-              installment = 0;
+          if(this.form.value.premiumAmount != null && this.form.value.frequencyOfPayment != null ) {
+            let installment = this.form.value.premiumAmount;
+
+              installment = installment.toString().replace(',', '');
+
+
+            // console.log(installment);
+            if (!this.form.value.frequencyOfPayment) {
+                installment = 0;
+            }
+            if (this.form.value.frequencyOfPayment === 'Monthly') {
+                installment = installment * 12;
+            } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+                installment = installment * 4;
+            } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+                installment = installment * 2;
+            } else {
+                installment = installment * 1;
+            }
+            const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
+            // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+            this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+            this.form.get('annualAmount').setValue(installment);
           }
-          if (this.form.value.frequencyOfPayment === 'Monthly') {
-              installment = installment * 12;
-          } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-              installment = installment * 4;
-          } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-              installment = installment * 2;
-          } else {
-              installment = installment * 1;
-          }
-          const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
-          // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-          this.form.get('annualAmount').setValue(installment);
         }
 
       // Family relationship shown on Policyholder selection
@@ -474,5 +453,4 @@ this.masterPage();
               Object.assign({}, { class: 'gray modal-md' }),
           );
       }
-
 }

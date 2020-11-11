@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PPFComponent } from './80C/ppf/ppf.component';
 import { LicComponent } from './80C/lic/lic.component';
+import { PensionPlanComponent } from './80C/pension-plan/pension-plan.component';
 
 
 const routes: Routes = [
@@ -19,6 +20,12 @@ const routes: Routes = [
         component:  PPFComponent,
         data: { title: ':: DelziaHR :: PPF' },
         },
+        {
+          path:   '80C-PensionPlan',
+          component:  PensionPlanComponent,
+          data: { title: ':: DelziaHR :: PensionPlan' },
+        }
+
 
     ],
   },
