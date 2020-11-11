@@ -34,6 +34,7 @@ registerLocaleData(localeGb, 'en-GB');
 import { PrimeNGModule } from './../../app.primeNG.module';
 // import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
+import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { MenuItem } from 'primeng/api';
         ContactInformationComponent,
         IdentityInformationComponent,
         PreviousEmploymentInformationComponent,
-        BankInformationComponent
+        BankInformationComponent,
+        PayrollAreaInformationComponent
     ],
     imports: [
         CommonModule,

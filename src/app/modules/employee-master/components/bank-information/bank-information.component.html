@@ -112,6 +112,9 @@
                                             <button type="button"
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
                                                 [hidden]="BankInformationModel.employeeBankInfoId || viewBankForm"
+                                                [disabled]="addButton == false || accountNoMatched ==false"
+                                                [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false,
+                                                'btn-bg-green':addButton == true || accountNoMatched == true}"
                                                 tooltip="Save" (click)="pushDataToGrid()"><b><i
                                                         class="fa fa-floppy-o"></i></b>Save</button>
 

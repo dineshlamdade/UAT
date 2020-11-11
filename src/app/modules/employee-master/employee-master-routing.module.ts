@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BankInformationComponent } from './components/bank-information/bank-information.component';
 import { ContactInformationComponent } from './components/contact-information/contact-information.component';
 import { IdentityInformationComponent } from './components/identity-information/identity-information.component';
+import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
 import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
 
@@ -40,6 +41,11 @@ const routes: Routes = [
         path: 'bank-information',
         component: BankInformationComponent,
         data: { title: ':: DelziaHR :: bank-information' },
+      },
+      {
+        path: 'payroll-area-information',
+        component: PayrollAreaInformationComponent,
+        data: { title: ':: DelziaHR :: payroll-area-information' },
       },
 
 
