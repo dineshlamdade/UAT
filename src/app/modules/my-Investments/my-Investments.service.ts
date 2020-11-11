@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MyInvestmentsService {
-apiUrl = environment.apiBaseUrl;
+public apiUrl = environment.apiBaseUrl;
 
 
   constructor(private _HTTP: HttpClient) { }
+
+
+  public getBlobSASUrl(): Observable<any> {
+    return this._HTTP.get('https://devstoragefile1.blob.core.windows.net/paysquarecontainer/Abbott/Abbott1/Employees/Investment/2020-2021/3/FlexGrid.pdf'
+     , {headers : new HttpHeaders({ 'Content-Type': 'application/pdf' })})
+    .pipe(map((res: any) => {
+         return res.tokenUrl;
+
+        }));
+      }
 
   getNPSSummary() {
     return this._HTTP.get(this.apiUrl + 'npsmaster-detail/npsMasterSummary/1')
@@ -191,7 +201,7 @@ apiUrl = environment.apiBaseUrl;
     }));
   }
 
-  getEightyCMaster() : Observable<any> {
+  public getEightyCMaster() : Observable<any> {
     return this._HTTP.get(this.apiUrl + 'licmaster-detail')
     .pipe(map((res: any) => {
       return res;
@@ -301,6 +311,139 @@ apiUrl = environment.apiBaseUrl;
     .pipe(map((res: any) => {
       return res;
     }));
+  }
+
+  // -----------------PPF-API---------------------
+  public getPPFMaster() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppfmaster-detail')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  public submitPPFMasterData(files: File[], data: any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('group1MasterDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('investmentGroup1MasterRequestDTO', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key, ' ', value);
+    });
+    //return null;
+    return this._HTTP.post<any>(
+      'http://localhost:8085/hrms/v1/ppfmaster-detail',
+      formData,
+      {
+
+      });
+  }
+
+  public getPPFSummary(): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppfmaster-detail/ppfMasterSummary')
+    .pipe(map((res: any) => {
+      return res;
+
+    }
+    ));
+  }
+
+  public submitPPFMaster(data) : Observable<any> {
+
+    return this._HTTP.post(this.apiUrl + 'ppfmaster-detail', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public submitPPFSummaryFuturePolicy(data) : Observable<any> {
+
+    return this._HTTP.post(this.apiUrl + 'ppfmaster-detail/ppfMasterSummaryFuturePolicy', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getPPFDeclarationInstitutions() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/ppfinstitution')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  public getPPFDeclarationInstitutionListWithPolicyNo() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/institutionListWithPolicyNo')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
+  public getPPFTransactionInstName(data): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/' + data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getPPFTransactionFilterData(institution: String, policyNo: String, transactionStatus:String) : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getPPFTransactionByProofSubmissionId(proofSubmissionId: String) : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/psid/' + proofSubmissionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public submitPPFDeclarationInstitutions(data)  : Observable<any> {
+    return this._HTTP.post(this.apiUrl + '/ppf-transaction', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+
+  public submitPPFDeclarationTransaction(data) : Observable<any> {
+    return this._HTTP.post(this.apiUrl + 'ppf-transaction', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  uploadPPFTransactionwithDocument(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('transactionDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('transactionWithDocumentBeanJson', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
+    return this._HTTP.post<any>(
+      'http://localhost:8085/hrms/v1/ppf-transaction/uploadTransactionDocuments',
+      formData,
+      {
+
+      });
   }
 
 }
