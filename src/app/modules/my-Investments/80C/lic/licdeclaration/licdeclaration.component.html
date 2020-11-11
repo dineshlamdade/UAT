@@ -831,9 +831,8 @@
                       }}</span
                     >
                   </td>
-                  <td class="padding-0">
-                    <div
-                      class="pd-5"
+                  <td class="padding-0"  *ngIf = "documentSummary.licMasterList.length > 1">
+                    <div class="pd-5"
                       *ngFor="let policyNo of documentSummary.licMasterList"
                       tooltip="{{ policyNo.policyNo }}"
                     >
@@ -842,6 +841,20 @@
                       </div>
                     </div>
                   </td>
+                  <td class="padding-0"  *ngIf = "documentSummary.licMasterList.length == 1">
+
+                    <span
+                    tooltip="{{
+                      documentSummary.licMasterList[0].policyNo
+                    }}"
+                  >
+                        {{ documentSummary.licMasterList[0].policyNo }}
+                    </span>
+
+                  </td>
+                  <td>
+                    {{ documentSummary.licMasterList[0].institution }}
+                  </td>
                   <td>
                     <span
                       tooltip="{{
@@ -859,6 +872,21 @@
                     >
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
+                  </td>
+                  <td>
+                    <div class="custom_Label_badge">
+                      <button
+                        class="btn bg-color-lightgray text-000"
+                        (click)="
+                          UploadedDocumentModal1(template1, documentIndex)
+                        "
+                      >
+                        Documents
+                      </button>
+                      <span class="Label_badge">{{
+                        documentSummary.documentDetailList.length
+                      }}</span>
+                    </div>
                   </td>
                   <td>
                     <div class="custom_Label_badge">

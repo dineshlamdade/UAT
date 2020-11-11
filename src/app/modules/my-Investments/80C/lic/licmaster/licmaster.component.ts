@@ -226,8 +226,7 @@ this.masterPage();
         const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
         const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
         if (policyEnd < financialYearStartDate) {
-          this.alertService.sweetalertWarning('Policy End Date should be greater than or equal to Current Financial Year : '
-          + this.financialYearStart);
+          this.alertService.sweetalertWarning("Policy End Date can't be earlier that start of the Current Financial Year");
           this.form.controls.policyEndDate.reset();
         } else {
           this.form.patchValue({
@@ -252,8 +251,8 @@ this.masterPage();
         const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
         const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
         if (to < financialYearStartDate) {
-          this.alertService.sweetalertWarning('To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart);
+          //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
+          this.alertService.sweetalertWarning("Policy End Date can't be earlier that start of the Current Financial Year");
           this.form.controls.toDate.reset();
         }
       }
@@ -308,7 +307,7 @@ this.masterPage();
                     element.toDate = new Date(element.toDate);
                   });
                   this.alertService.sweetalertMasterSuccess('Record saved Successfully.',
-                  'Go to "Declaration & Actual" Page to see Schedule.');
+                  'Go to "Transaction" Page to see Schedule.');
                 } else {
                   this.alertService.sweetalertWarning(res.status.messsage);
                 }

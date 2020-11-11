@@ -299,7 +299,7 @@ this.masterPage();
 
           console.log('LICdata::', data);
 
-          this.fileService.uploadMultiplepensionPlanMasterFiles(this.masterfilesArray, data)
+          this.Service.uploadMultiplepensionPlanMasterFiles(this.masterfilesArray, data)
             .subscribe((res) => {
               console.log(res);
               if (res) {
