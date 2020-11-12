@@ -27,11 +27,12 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+import { PensionPlanService } from '../pension-plan.service';
 
 @Component({
   selector: 'app-ppdeclaration',
   templateUrl: './ppdeclaration.component.html',
-  styleUrls: ['./ppdeclaration.component.scss']
+  styleUrls: ['./ppdeclaration.component.scss'],
 })
 export class PpdeclarationComponent implements OnInit {
   @Input() institution: string;
@@ -87,17 +88,14 @@ export class PpdeclarationComponent implements OnInit {
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
-
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
-
   public grandDeclarationTotalEditModal: number;
   public grandActualTotalEditModal: number;
   public grandRejectedTotalEditModal: number;
   public grandApprovedTotalEditModal: number;
-
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
   public isDisabled: boolean;
@@ -109,13 +107,11 @@ export class PpdeclarationComponent implements OnInit {
   public shownewRow = false;
   public initialArray = true;
   public initialArrayIndex: number[] = [];
-
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
   public viewDocumentDetail = true;
   public masterUploadFlag = true;
-
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
   public dueDate: Date;
@@ -155,18 +151,17 @@ export class PpdeclarationComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
-
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
+    private pensionPlanService: PensionPlanService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -196,7 +191,7 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    console.log('data::', this.data);
+    // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
     } else {
@@ -214,7 +209,6 @@ export class PpdeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService();
 
     this.deactiveCopytoActualDate();
-
     // Get API call for All previous employee Names
     this.Service.getpreviousEmployeName().subscribe((res) => {
       console.log('previousEmployeeList::', res);
@@ -262,8 +256,6 @@ export class PpdeclarationComponent implements OnInit {
       this.transactionDetail[j].lictransactionList[i].previousEmployerId
     );
   }
-  // ----------------------------------------------- Declaration --------------------------------------
-
   // -----------on Page referesh transactionStatustList------------
   refreshTransactionStatustList() {
     this.transactionStatustList = [
@@ -297,8 +289,10 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe(
-      (res) => {
+    this.pensionPlanService
+      .getEightyCDeclarationInstitutionListWithPolicyNo()
+      .subscribe((res) => {
+        console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -316,8 +310,7 @@ export class PpdeclarationComponent implements OnInit {
             this.transactionPolicyList.push(policyObj);
           });
         });
-      }
-    );
+      });
   }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
@@ -725,19 +718,22 @@ export class PpdeclarationComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.Service.postEightyCDeclarationTransaction(data).subscribe((res) => {
-      console.log(res);
-      this.transactionDetail = res.data.results[0].licTransactionDetail;
-      this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-      this.grandActualTotal = res.data.results[0].grandActualTotal;
-      this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-      this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      this.transactionDetail.forEach((element) => {
-        element.lictransactionList.forEach((element) => {
-          element.dateOfPayment = new Date(element.dateOfPayment);
+    this.pensionPlanService
+      .postEightyCDeclarationTransaction(data)
+      .subscribe((res) => {
+        console.log(res);
+        this.transactionDetail =
+          res.data.results[0].investmentGroupTransactionDetail;
+        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        this.transactionDetail.forEach((element) => {
+          element.lictransactionList.forEach((element) => {
+            element.dateOfPayment = new Date(element.dateOfPayment);
+          });
         });
       });
-    });
     this.resetAll();
   }
 
@@ -827,7 +823,7 @@ export class PpdeclarationComponent implements OnInit {
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-      licTransactionDetail: this.transactionDetail,
+      investmentGroupTransactionDetail: this.transactionDetail,
       licTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
@@ -845,7 +841,8 @@ export class PpdeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail = res.data.results[0].licTransactionDetail;
+          this.transactionDetail =
+            res.data.results[0].investmentGroupTransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -942,8 +939,10 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(template2: TemplateRef<any>, proofSubmissionId: string) {
-
+  declarationEditUpload(
+    template2: TemplateRef<any>,
+    proofSubmissionId: string
+  ) {
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
@@ -951,15 +950,21 @@ export class PpdeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
-      (res) => {
+    this.pensionPlanService
+      .getTransactionByProofSubmissionId(proofSubmissionId)
+      .subscribe((res) => {
         console.log('edit Data:: ', res);
-        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].licTransactionDetail;
-        this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
+        this.urlArray =
+          res.data.results[0].documentInformation[0].documentDetailList;
+        this.editTransactionUpload =
+          res.data.results[0].investmentGroupTransactionDetail;
+        this.grandDeclarationTotalEditModal =
+          res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotalEditModal = res.data.results[0].grandApprovedTotal;
+        this.grandRejectedTotalEditModal =
+          res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotalEditModal =
+          res.data.results[0].grandApprovedTotal;
         //console.log(this.urlArray);
         this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -967,8 +972,7 @@ export class PpdeclarationComponent implements OnInit {
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
         });
         //console.log('converted:: ', this.urlArray);
-      }
-    );
+      });
   }
 
   nextDocViewer() {
@@ -1004,49 +1008,48 @@ export class PpdeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.Service.getTransactionFilterData(
-      institution,
-      policyNo,
-      transactionStatus
-    ).subscribe((res) => {
-      console.log(res);
-      this.transactionDetail = res.data.results[0].licTransactionDetail;
-      this.documentDetailList = res.data.results[0].documentInformation;
-      this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-      this.grandActualTotal = res.data.results[0].grandActualTotal;
-      this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-      this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].lictransactionList.length;
+    this.pensionPlanService
+      .getTransactionFilterData(institution, policyNo, transactionStatus)
+      .subscribe((res) => {
+        console.log('getTransactionFilterData', res);
+        this.transactionDetail =
+          res.data.results[0].investmentGroupTransactionDetail;
+        this.documentDetailList = res.data.results[0].documentInformation;
+        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].lictransactionList.length;
 
-      this.initialArrayIndex = [];
+        this.initialArrayIndex = [];
 
-      this.transactionDetail.forEach((element) => {
-        this.initialArrayIndex.push(element.lictransactionList.length);
+        this.transactionDetail.forEach((element) => {
+          this.initialArrayIndex.push(element.lictransactionList.length);
 
-        element.lictransactionList.forEach((innerElement) => {
-          if (innerElement.dateOfPayment !== null) {
-            innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-          }
+          element.lictransactionList.forEach((innerElement) => {
+            if (innerElement.dateOfPayment !== null) {
+              innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
+            }
 
-          // if(this.employeeJoiningDate < innerElement.dueDate) {
-          //   innerElement.active = false;
-          // }
-          if (innerElement.isECS === 0) {
-            this.glbalECS == 0;
-          } else if (innerElement.isECS === 1) {
-            this.glbalECS == 1;
-          } else {
-            this.glbalECS == 0;
-          }
-          innerElement.declaredAmount = this.numberFormat.transform(
-            innerElement.declaredAmount
-          );
-          innerElement.actualAmount = this.numberFormat.transform(
-            innerElement.actualAmount
-          );
+            // if(this.employeeJoiningDate < innerElement.dueDate) {
+            //   innerElement.active = false;
+            // }
+            if (innerElement.isECS === 0) {
+              this.glbalECS == 0;
+            } else if (innerElement.isECS === 1) {
+              this.glbalECS == 1;
+            } else {
+              this.glbalECS == 0;
+            }
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          });
         });
       });
-    });
   }
 
   // tslint:disable-next-line: typedef
@@ -1055,7 +1058,7 @@ export class PpdeclarationComponent implements OnInit {
       this.uploadGridData.push(element.licTransactionId);
     });
     const data = {
-      licTransactionDetail: this.editTransactionUpload,
+      investmentGroupTransactionDetail: this.editTransactionUpload,
       licTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
     };
@@ -1078,8 +1081,9 @@ export class PpdeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
-      (res) => {
+    this.pensionPlanService
+      .getTransactionByProofSubmissionId(proofSubmissionId)
+      .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
@@ -1089,8 +1093,7 @@ export class PpdeclarationComponent implements OnInit {
           );
         });
         console.log(this.urlArray);
-      }
-    );
+      });
   }
 
   setDateOfPayment(
