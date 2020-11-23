@@ -18,13 +18,19 @@ import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 import { MatSliderModule } from '@angular/material/slider';
 import { PPFMasterComponent } from '../80C/ppf/ppfmaster/ppfmaster.component';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
+import { LicComponent } from './lic/lic.component';
+import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
+import { LicmasterComponent } from './lic/licmaster/licmaster.component';
+import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
+import { NscComponent } from './nsc/nsc.component';
 import { PPFComponent } from './ppf/ppf.component';
 import { PPFDeclarationComponent } from './ppf/ppfdeclaration/ppfdeclaration.component';
 import { PPFSummaryComponent } from './ppf/ppfsummary/ppfsummary.component';
-import { LicComponent } from './lic/lic.component';
-import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
-import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
-import { LicmasterComponent } from './lic/licmaster/licmaster.component';
+import { TaxsavingMutualFundsComponent } from './taxsaving-mutual-funds/taxsaving-mutual-funds.component';
+
+import { TaxsavingMfDeclarationComponent } from './taxsaving-mutual-funds/taxsaving-mf-declaration/taxsaving-mf-declaration.component';
+import { TaxsavingMfMasterComponent } from './taxsaving-mutual-funds/taxsaving-mf-master/taxsaving-mf-master.component';
+import { TaxsavingMfSummaryComponent } from './taxsaving-mutual-funds/taxsaving-mf-summary/taxsaving-mf-summary.component';
 
 
 
@@ -38,6 +44,11 @@ import { LicmasterComponent } from './lic/licmaster/licmaster.component';
     LicsummaryComponent,
     LicmasterComponent,
     LicdeclarationComponent,
+    NscComponent,
+    TaxsavingMutualFundsComponent,
+    TaxsavingMfDeclarationComponent,
+    TaxsavingMfSummaryComponent,
+    TaxsavingMfMasterComponent,
   ],
   imports: [
     CommonModule,

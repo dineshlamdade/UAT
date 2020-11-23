@@ -1,23 +1,10 @@
+import { Component , Inject, Input, OnInit, TemplateRef} from '@angular/core';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Inject,
-  Input,
-  OnInit,
-  Optional,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
-  FormGroupDirective,
-  Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -28,12 +15,14 @@ import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormat
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 
+
 @Component({
-  selector: 'app-ppdeclaration',
-  templateUrl: './ppdeclaration.component.html',
-  styleUrls: ['./ppdeclaration.component.scss']
+  selector: 'app-taxsaving-mf-declaration',
+  templateUrl: './taxsaving-mf-declaration.component.html',
+  styleUrls: ['./taxsaving-mf-declaration.component.scss']
 })
-export class PpdeclarationComponent implements OnInit {
+export class TaxsavingMfDeclarationComponent implements OnInit {
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -255,11 +244,11 @@ export class PpdeclarationComponent implements OnInit {
 
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].lictransactionList[i].previousEmployerId =
+    this.transactionDetail[j].groupTransactionList[i].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].lictransactionList[i].previousEmployerId
+      this.transactionDetail[j].groupTransactionList[i].previousEmployerId,
     );
   }
   // ----------------------------------------------- Declaration --------------------------------------
@@ -297,8 +286,9 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe(
+    this.Service.getPPFDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
+        console.log('getinstitution' , res);
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -387,12 +377,13 @@ export class PpdeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+    j: number,
+
   ) {
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
-      this.globalSelectedAmount == '0'
+      this.globalSelectedAmount === '0'
         ? this.globalSelectedAmount
         : this.globalSelectedAmount.toString().replace(',', '')
     );
@@ -401,66 +392,69 @@ export class PpdeclarationComponent implements OnInit {
     let formatedSelectedAmount: string;
     console.log(
       'in IS ECS::',
-      this.transactionDetail[j].lictransactionList[i].isECS
+      this.transactionDetail[j].groupTransactionList[i].isECS
     );
     if (checked) {
-      if (this.transactionDetail[j].lictransactionList[i].isECS === 1) {
-        this.transactionDetail[j].lictransactionList[i].actualAmount =
+          //console.log('item' ,item);
+          if (this.transactionDetail[j].frequency !== 'As & When') {
+      if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
+        this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].lictransactionList[
-          i
-        ].dateOfPayment = new Date(data.dueDate);
+        this.transactionDetail[j].groupTransactionList[i].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
-          this.transactionDetail[j].lictransactionList[i].actualAmount
+          this.transactionDetail[j].groupTransactionList[i].actualAmount
         );
         console.log(
           'in IS dateOfPayment::',
-          this.transactionDetail[j].lictransactionList[i].dateOfPayment
+          this.transactionDetail[j].groupTransactionList[i].dateOfPayment
         );
       } else {
-        this.transactionDetail[j].lictransactionList[i].actualAmount =
+        console.log('in else actualamount')
+        this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
+     }
 
-      formatedActualAmount = Number(
-        this.transactionDetail[j].lictransactionList[i].actualAmount
+          formatedActualAmount = Number(
+        this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
-      );
-      formatedSelectedAmount = this.numberFormat.transform(
+          .replace(',', ''),
+           );
+          formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.licTransactionId);
+      this.uploadGridData.push(data.investmentGroup1TransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
+
     } else {
       formatedActualAmount = Number(
-        this.transactionDetail[j].lictransactionList[i].actualAmount
+        this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
-      this.transactionDetail[j].lictransactionList[
+      this.transactionDetail[j].groupTransactionList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-      this.transactionDetail[j].lictransactionList[i].dateOfPayment = null;
+      this.transactionDetail[j].groupTransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(data.licTransactionId);
+      const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
       this.uploadGridData.splice(index, 1);
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].lictransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
+    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    console.log(element.actualAmount.toString().replace(',', ""));
+    this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
     });
@@ -487,8 +481,8 @@ export class PpdeclarationComponent implements OnInit {
       this.isCheckAll = true;
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
-      item.lictransactionList.forEach((element) => {
-        this.uploadGridData.push(element.licTransactionId);
+      item.groupTransactionList.forEach((element) => {
+        this.uploadGridData.push(element.investmentGroup1TransactionId);
       });
       this.enableFileUpload = true;
     }
@@ -511,21 +505,21 @@ export class PpdeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].lictransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].lictransactionList[i].declaredAmount
+      this.transactionDetail[j].groupTransactionList[i].declaredAmount
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].lictransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.transactionDetail[j].lictransactionList.forEach((element) => {
+    this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -550,7 +544,7 @@ export class PpdeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].lictransactionList[i].dueDate = summary.dueDate;
+    this.transactionDetail[j].groupTransactionList[i].dueDate = summary.dueDate;
   }
 
   // ------------Actual Amount change-----------
@@ -568,33 +562,33 @@ export class PpdeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
 
-    this.transactionDetail[j].lictransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].lictransactionList[i].actualAmount);
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].groupTransactionList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].lictransactionList[i].actualAmount
+      this.transactionDetail[j].groupTransactionList[i].actualAmount
     );
     // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].lictransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].actualAmount = formatedActualAmount;
 
     if (
-      this.transactionDetail[j].lictransactionList[i].actualAmount !==
+      this.transactionDetail[j].groupTransactionList[i].actualAmount !==
         Number(0) ||
-      this.transactionDetail[j].lictransactionList[i].actualAmount !== null
+      this.transactionDetail[j].groupTransactionList[i].actualAmount !== null
     ) {
-      // console.log(`in if::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
+      // console.log(`in if::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.transactionDetail[j].lictransactionList[i].actualAmount);
+      // console.log(`in else::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
       this.isDisabled = true;
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.transactionDetail[j].lictransactionList.forEach((element) => {
+    this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -614,7 +608,7 @@ export class PpdeclarationComponent implements OnInit {
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   addRowInList(
     summarynew: {
-      licTransactionId: number;
+      investmentGroup1TransactionId: number;
       licMasterPaymentDetailsId: number;
       previousEmployerId: number;
       dueDate: Date;
@@ -636,7 +630,7 @@ export class PpdeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.declarationService.licTransactionId = this.globalAddRowIndex;
+    this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -647,9 +641,9 @@ export class PpdeclarationComponent implements OnInit {
     this.declarationService.amountApproved = 0.0;
     this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[
       j
-    ].lictransactionList[0].licMasterPaymentDetailsId;
-    this.transactionDetail[j].lictransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].lictransactionList);
+    ].groupTransactionList[0].licMasterPaymentDetailsId;
+    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
+    console.log('addRow::', this.transactionDetail[j].groupTransactionList);
   }
 
   sweetalertWarning(msg: string) {
@@ -662,13 +656,13 @@ export class PpdeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
+    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].lictransactionList.length == 1) {
+    if (this.transactionDetail[j].groupTransactionList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].lictransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].groupTransactionList.splice(rowCount, 1);
       return true;
     }
   }
@@ -691,8 +685,8 @@ export class PpdeclarationComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.declarationService.actualAmount -
-      this.transactionDetail[j].lictransactionList[i].actualAmount;
-    this.transactionDetail[j].lictransactionList[i] = this.declarationService;
+      this.transactionDetail[j].groupTransactionList[i].actualAmount;
+    this.transactionDetail[j].groupTransactionList[i] = this.declarationService;
     this.declarationService = new DeclarationService();
   }
 
@@ -708,7 +702,7 @@ export class PpdeclarationComponent implements OnInit {
     ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].lictransactionList.push(this.declarationService);
+    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
     this.declarationService = new DeclarationService();
   }
 
@@ -717,7 +711,7 @@ export class PpdeclarationComponent implements OnInit {
     console.log(this.transactionDetail);
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
-      element.lictransactionList.forEach((element) => {
+      element.groupTransactionList.forEach((element) => {
         element.dateOfPayment = this.datePipe.transform(
           element.dateOfPayment,
           'yyyy-MM-dd'
@@ -725,15 +719,15 @@ export class PpdeclarationComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.Service.postEightyCDeclarationTransaction(data).subscribe((res) => {
+    this.Service.submitPPFDeclarationTransaction(data).subscribe((res) => {
       console.log(res);
-      this.transactionDetail = res.data.results[0].licTransactionDetail;
+      this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
       this.transactionDetail.forEach((element) => {
-        element.lictransactionList.forEach((element) => {
+        element.groupTransactionList.forEach((element) => {
           element.dateOfPayment = new Date(element.dateOfPayment);
         });
       });
@@ -795,7 +789,7 @@ export class PpdeclarationComponent implements OnInit {
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
-      element.lictransactionList.forEach((innerElement) => {
+      element.groupTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -827,8 +821,8 @@ export class PpdeclarationComponent implements OnInit {
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-      licTransactionDetail: this.transactionDetail,
-      licTransactionIDs: this.uploadGridData,
+      investmentGroupTransactionDetail: this.transactionDetail,
+      groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
     };
@@ -840,12 +834,12 @@ export class PpdeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.fileService
-      .uploadMultipleFiles(this.filesArray, data)
+    this.Service
+      .uploadPPFTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail = res.data.results[0].licTransactionDetail;
+          this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -853,7 +847,7 @@ export class PpdeclarationComponent implements OnInit {
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
           this.transactionDetail.forEach((element) => {
-            element.lictransactionList.forEach((innerElement) => {
+            element.groupTransactionList.forEach((innerElement) => {
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(
                   innerElement.dateOfPayment
@@ -931,9 +925,9 @@ export class PpdeclarationComponent implements OnInit {
   }
   copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
     dueDate = new Date(dueDate);
-    // item.lictransactionList.dateOfPayment = dueDate;
-    this.transactionDetail[0].lictransactionList[i].dateOfPayment = dueDate;
-    this.declarationService.dateOfPayment = this.transactionDetail[0].lictransactionList[
+    // item.groupTransactionList.dateOfPayment = dueDate;
+    this.transactionDetail[0].groupTransactionList[i].dateOfPayment = dueDate;
+    this.declarationService.dateOfPayment = this.transactionDetail[0].groupTransactionList[
       i
     ].dateOfPayment;
     // this.dateOfPayment = dueDate;
@@ -951,11 +945,11 @@ export class PpdeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
+    this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
-        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].licTransactionDetail;
+        //this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
+        this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
         this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
@@ -1004,26 +998,26 @@ export class PpdeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.Service.getTransactionFilterData(
+    this.Service.getPPFTransactionFilterData(
       institution,
       policyNo,
       transactionStatus
     ).subscribe((res) => {
       console.log(res);
-      this.transactionDetail = res.data.results[0].licTransactionDetail;
+      this.transactionDetail = res.data.results[0].investmentGroupTransactionDetail;
       this.documentDetailList = res.data.results[0].documentInformation;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-      // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].lictransactionList.length;
+      // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
 
       this.initialArrayIndex = [];
 
       this.transactionDetail.forEach((element) => {
-        this.initialArrayIndex.push(element.lictransactionList.length);
+        this.initialArrayIndex.push(element.groupTransactionList.length);
 
-        element.lictransactionList.forEach((innerElement) => {
+        element.groupTransactionList.forEach((innerElement) => {
           if (innerElement.dateOfPayment !== null) {
             innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
           }
@@ -1052,22 +1046,22 @@ export class PpdeclarationComponent implements OnInit {
   // tslint:disable-next-line: typedef
   public uploadUpdateTransaction() {
     this.editTransactionUpload.forEach((element) => {
-      this.uploadGridData.push(element.licTransactionId);
+      this.uploadGridData.push(element.investmentGroup1TransactionId);
     });
     const data = {
-      licTransactionDetail: this.editTransactionUpload,
-      licTransactionIDs: this.uploadGridData,
+      investmentGroupTransactionDetail: this.editTransactionUpload,
+      groupTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
     };
     console.log('data::', data);
-    this.fileService
-      .uploadMultipleFiles(this.filesArray, data)
+    this.Service
+      .uploadPPFTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
-            ''
+            '',
           );
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
@@ -1078,7 +1072,7 @@ export class PpdeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
+    this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
@@ -1104,14 +1098,14 @@ export class PpdeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].lictransactionList[i].dateOfPayment =
+    this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(this.transactionDetail[j].lictransactionList[i].dateOfPayment);
+    console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
   }
 }
 
 class DeclarationService {
-  public licTransactionId = 0;
+  public investmentGroup1TransactionId = 0;
   public licMasterPaymentDetailsId: number;
   public previousEmployerId = 0;
   public dueDate: Date;
@@ -1125,4 +1119,5 @@ class DeclarationService {
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
+
 }

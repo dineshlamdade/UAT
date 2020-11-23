@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PpdeclarationComponent } from './ppdeclaration.component';
+import { TaxsavingMfSummaryComponent } from './taxsaving-mf-summary.component';
 
-describe('PpdeclarationComponent', () => {
-  let component: PpdeclarationComponent;
-  let fixture: ComponentFixture<PpdeclarationComponent>;
+describe('TaxsavingMfSummaryComponent', () => {
+  let component: TaxsavingMfSummaryComponent;
+  let fixture: ComponentFixture<TaxsavingMfSummaryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PpdeclarationComponent ]
+      declarations: [ TaxsavingMfSummaryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PpdeclarationComponent);
+    fixture = TestBed.createComponent(TaxsavingMfSummaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

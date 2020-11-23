@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PensionPlanComponent } from './pension-plan.component';
+import { TaxsavingMfMasterComponent } from './taxsaving-mf-master.component';
 
-describe('PensionPlanComponent', () => {
-  let component: PensionPlanComponent;
-  let fixture: ComponentFixture<PensionPlanComponent>;
+describe('TaxsavingMfMasterComponent', () => {
+  let component: TaxsavingMfMasterComponent;
+  let fixture: ComponentFixture<TaxsavingMfMasterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PensionPlanComponent ]
+      declarations: [ TaxsavingMfMasterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PensionPlanComponent);
+    fixture = TestBed.createComponent(TaxsavingMfMasterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

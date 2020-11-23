@@ -18,7 +18,7 @@
                   [checked]="tabIndex == 0"
                 />
                 <div class="tabs about-page">
-                  <app-ppsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-ppsummary>
+                  <app-taxsaving-mf-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-taxsaving-mf-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -33,7 +33,7 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-ppmaster  *ngIf = "tabIndex== 1" > </app-ppmaster>
+                  <app-taxsaving-mf-master *ngIf="tabIndex == 1"> </app-taxsaving-mf-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>
@@ -48,11 +48,11 @@
                   [checked]="tabIndex == 2"
                 />
                 <div class="tabs about-page">
-                  <app-ppdeclaration #licdeclaration
+                  <app-taxsaving-mf-declaration #taxsavingmfdeclaration
                   [data] =  "data"
 
                   *ngIf="tabIndex == 2"
-                  ></app-ppdeclaration>
+                  ></app-taxsaving-mf-declaration>
                 </div>
 
                 <label class="nav" for="Declaration">
@@ -82,3 +82,4 @@
     <app-footer></app-footer>
   </div>
 </div>
+

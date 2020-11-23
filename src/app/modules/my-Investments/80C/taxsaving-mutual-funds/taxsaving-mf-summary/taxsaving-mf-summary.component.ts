@@ -2,14 +2,15 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PensionPlanService } from '../../../PP Component  html file/pension-plan/pension-plan.service';
+
 
 @Component({
-  selector: 'app-ppsummary',
-  templateUrl: './ppsummary.component.html',
-  styleUrls: ['./ppsummary.component.scss']
+  selector: 'app-taxsaving-mf-summary',
+  templateUrl: './taxsaving-mf-summary.component.html',
+  styleUrls: ['./taxsaving-mf-summary.component.scss']
 })
-export class PpsummaryComponent implements OnInit {
+export class TaxsavingMfSummaryComponent implements OnInit {
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -43,8 +44,7 @@ export class PpsummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   constructor(
-    private service : MyInvestmentsService,
-    private pensionPlanService : PensionPlanService,
+    private service: MyInvestmentsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService,
     ) { }
@@ -58,14 +58,14 @@ export class PpsummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
     // Summary get Call
       summaryPage() {
-        this.pensionPlanService.getEightyCSummary().subscribe((res) => {
-          this.summaryGridData = res.data.results[0].licMasterList;
+        this.service.getPPFSummary().subscribe((res) => {
+          this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
           this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-          // console.log(res);
+           console.log(res);
         });
       }
 
@@ -79,7 +79,7 @@ export class PpsummaryComponent implements OnInit {
         };
 
         //console.log('addFuturePolicy Data..', data);
-        this.pensionPlanService.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
+        this.service.submitPPFSummaryFuturePolicy(data).subscribe((res) => {
             //console.log('addFuturePolicy Res..', res);
             this.summaryGridData = res.data.results[0].licMasterList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
@@ -112,4 +112,5 @@ export class PpsummaryComponent implements OnInit {
       console.log('institution::', institution);
       console.log('policyNo::', policyNo);
     }
+
 }

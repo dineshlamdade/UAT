@@ -199,7 +199,7 @@
                       [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId"
                       (change)="
-                        onSelectCheckBox(summary, $event, i, j);
+                        onSelectCheckBox( summary, $event,   i, j);
                         enableCheckboxFlag = j
                       "
                       class="custom-control-input"
@@ -252,27 +252,32 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input
+                    *ngIf = "item.frequency !=='As & When'"
                       type="text"
                       class="form-control"
                       [minDate]="financialYearStartDate"
                       [maxDate]="financialYearEndDate"
                       [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
-                      [disabled]="
-                        initialArrayIndex[j] > i || summary.isECS === 1
-                      "
-                      (ngModelChange)="
-                        summary.dueDate = $event.toLocaleDateString();
-                        onDueDateChange(summary, i, j)
-                      "
+                      [disabled]="initialArrayIndex[j] > i || summary.isECS === 1 "
+                      (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
+                        onDueDateChange(summary, i, j)"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       bsDatepicker
+                    />
+                    <input
+                    *ngIf = "item.frequency ==='As & When'"
+                      type="text"
+                      class="form-control"
+                     placeholder="NA"
+                     disabled
                     />
                   </div>
                 </td>
                 <td>
                   <div class="custom_icon_badge">
                     <input
+                    *ngIf = "item.frequency !=='As & When'"
                       type="text"
                       id="declaredAmount{{ summary.licTransactionId }}"
                       name="declaredAmount{{ summary.licTransactionId }}"
@@ -280,6 +285,13 @@
                       class="form-control align-right"
                       (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i"
+                       />
+                      <input
+                     *ngIf = "item.frequency ==='As & When'"
+                      type="text"
+                      class="form-control"
+                     placeholder="NA"
+                     disabled
                     />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
@@ -308,10 +320,11 @@
                 </td>
                 <td>
                   <input
+
                     type="text"
                     id="actualAmount{{ summary.licTransactionId }}"
                     name="actualAmount{{ summary.licTransactionId }}"
-                    [disabled]="initialArrayIndex[j] > i"
+                    [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
                     [(ngModel)]="summary.actualAmount"
                     (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right"
@@ -964,11 +977,12 @@
                     </select>
                   </td>
                   <td>
-                    <span>{{ summary.isECS === 1 ? "Yes" : "No" }} {{summary.declaredAmount}}</span>
+                    <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
                   </td>
                   <td>
                     <div class="custom_icon_badge">
                       <input
+
                         type="text"
                         class="form-control"
                         [minDate]="financialYearStartDate"
@@ -980,6 +994,7 @@
                         data-provide="datepicker"
                         bsDatepicker
                       />
+
                     </div>
                   </td>
                   <td>
@@ -1056,7 +1071,7 @@
                     </span>
                   </td>
                 </tr>
-                <tr *ngIf="!isDisabled">
+                <!-- <tr *ngIf="!isDisabled">
                   <td
                     *ngIf="previousEmployeeList?.length"
                     colspan="12"
@@ -1093,7 +1108,7 @@
                       (click)="deleteRow(j)"
                     ></i>
                   </td>
-                </tr>
+                </tr> -->
                 <tr>
                   <td colspan="1" class="bg-lightgray font-18 font700">Total</td>
                   <td
@@ -1155,8 +1170,8 @@
             <tbody>
               <tr>
                 <td class="bg-gray font-18 font700 wd-14">Grand Total</td>
-                <td class="bg-gray font-18 font700 align-right wd-4"></td>
-                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <!-- <td class="bg-gray font-18 font700 align-right wd-2"></td> -->
+                <td class="bg-gray font-18 font700 align-right wd-10"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span
                     class="padding-right-12"
