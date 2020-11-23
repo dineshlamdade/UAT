@@ -885,6 +885,16 @@ export class LicdeclarationComponent implements OnInit {
     console.log(this.filesArray);
   }
 
+  onUploadInEditCase(event) {
+    console.log('event::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.editfilesArray.push(file);
+      }
+    }
+    console.log(this.editfilesArray);
+  }
+
   removeDocument() {
     this.currentFileUpload = null;
   }

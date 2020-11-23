@@ -26,9 +26,21 @@ import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.com
 import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
 import { LicmasterComponent } from './lic/licmaster/licmaster.component';
 import { PensionPlanComponent } from './pension-plan/pension-plan.component';
-import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
+import { SukanyaSamriddhiComponent } from './sukanya-samriddhi/sukanya-samriddhi.component';
+import { SukanyaSamriddhiSummaryComponent } from './sukanya-samriddhi/sukanya-samriddhi-summary/sukanya-samriddhi-summary.component';
+import { SukanyaSamriddhiMasterComponent } from './sukanya-samriddhi/sukanya-samriddhi-master/sukanya-samriddhi-master.component';
+import { SukanyaSamriddhiDeclarationComponent } from './sukanya-samriddhi/sukanya-samriddhi-declaration/sukanya-samriddhi-declaration.component';
+import { PostOfficeComponent } from './post-office/post-office.component';
+import { PostOfficeSummaryComponent } from './post-office/post-office-summary/post-office-summary.component';
+import { PostOfficeMasterComponent } from './post-office/post-office-master/post-office-master.component';
+import { PostOfficeDeclarationComponent } from './post-office/post-office-declaration/post-office-declaration.component';
+import { UnitLinkedInsurancePlanComponent } from './unit-linked-insurance-plan/unit-linked-insurance-plan.component';
+import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-linked-summary/unit-linked-summary.component';
+import { UnitLinkedMasterComponent } from './unit-linked-insurance-plan/unit-linked-master/unit-linked-master.component';
+import { UnitLinkedDeclarationComponent } from './unit-linked-insurance-plan/unit-linked-declaration/unit-linked-declaration.component';
 import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
 import { PpsummaryComponent } from './pension-plan/ppsummary/ppsummary.component';
+import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
 
 @NgModule({
   declarations: [
@@ -43,8 +55,20 @@ import { PpsummaryComponent } from './pension-plan/ppsummary/ppsummary.component
     PensionPlanComponent,
     PpdeclarationComponent,
     PpmasterComponent,
-    PpsummaryComponent
-  ],
+    PpsummaryComponent,
+    SukanyaSamriddhiComponent,
+    SukanyaSamriddhiSummaryComponent,
+    SukanyaSamriddhiMasterComponent,
+    SukanyaSamriddhiDeclarationComponent,
+    PostOfficeComponent,
+    PostOfficeSummaryComponent,
+    PostOfficeMasterComponent,
+    PostOfficeDeclarationComponent,
+    UnitLinkedInsurancePlanComponent,
+    UnitLinkedSummaryComponent,
+    UnitLinkedMasterComponent,
+    UnitLinkedDeclarationComponent,
+     ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

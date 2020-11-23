@@ -9,14 +9,8 @@
           <div class="card">
             <div class="card-body">
               <div class="tabview">
-                <input
-                  name="nav"
-                  type="radio"
-                  class="about-radio"
-                  id="summary"
-                  (change)="changeTabIndex(0)"
-                  [checked]="tabIndex == 0"
-                />
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
                   <app-ppsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-ppsummary>
                 </div>
@@ -24,35 +18,19 @@
                   <span> Summary </span>
                 </label>
 
-                <input
-                  name="nav"
-                  type="radio"
-                  class="nav home-radio"
-                  id="Master"
-                  (change)="changeTabIndex(1)"
-                  [checked]="tabIndex == 1"
-                />
+                <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
+                  [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <app-ppmaster  *ngIf = "tabIndex== 1" > </app-ppmaster>
+                  <app-ppmaster *ngIf="tabIndex== 1"> </app-ppmaster>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>
                 </label>
 
-                <input
-                  name="nav"
-                  type="radio"
-                  class="about-radio"
-                  id="Declaration"
-                  (change)="changeTabIndex(2)"
-                  [checked]="tabIndex == 2"
-                />
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
-                  <app-ppdeclaration #licdeclaration
-                  [data] =  "data"
-
-                  *ngIf="tabIndex == 2"
-                  ></app-ppdeclaration>
+                  <app-ppdeclaration #licdeclaration [data]="data" *ngIf="tabIndex == 2"></app-ppdeclaration>
                 </div>
 
                 <label class="nav" for="Declaration">
@@ -62,18 +40,9 @@
             </div>
           </div>
         </div>
-        <div
-          class="scroll-to-top"
-          [ngClass]="{ 'show-scrollTop': windowScrolled }"
-        >
-          <button
-            type="button"
-            class="btn active"
-            data-toggle="button"
-            aria-pressed="true"
-            tooltip="Top"
-            (click)="scrollToTop()"
-          >
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
             <i class="fa fa-angle-double-up text-white font-18"></i>
           </button>
         </div>

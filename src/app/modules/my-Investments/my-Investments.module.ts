@@ -19,11 +19,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { EightyCComponent } from './eighty-c/eighty-c.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
+import { NPSComponent } from './VI-A/nps/nps.component';
 
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
     EightyCComponent,
+    NPSComponent,
   ],
   imports: [
     CommonModule,
