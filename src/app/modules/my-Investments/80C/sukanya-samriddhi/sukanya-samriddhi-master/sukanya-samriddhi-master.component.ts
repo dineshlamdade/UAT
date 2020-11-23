@@ -24,14 +24,15 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PensionPlanService } from '../pension-plan.service';
+import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
+
 
 @Component({
-  selector: 'app-ppmaster',
-  templateUrl: './ppmaster.component.html',
-  styleUrls: ['./ppmaster.component.scss'],
+  selector: 'app-sukanya-samriddhi-master',
+  templateUrl: './sukanya-samriddhi-master.component.html',
+  styleUrls: ['./sukanya-samriddhi-master.component.scss']
 })
-export class PpmasterComponent implements OnInit {
+export class SukanyaSamriddhiMasterComponent implements OnInit {
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -111,7 +112,7 @@ export class PpmasterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private pensionPlanService: PensionPlanService,
+    private sukanyaSamriddhiService : SukanyaSamriddhiService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -176,13 +177,17 @@ export class PpmasterComponent implements OnInit {
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
+      console.log("getFamilyInfo", res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        this.familyMemberName.push(obj);
+        if(element.relation ==='Daughter'){
+          this.familyMemberName.push(obj);
+        }
+
       });
     });
 
@@ -311,7 +316,7 @@ export class PpmasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.pensionPlanService.getEightyCMaster().subscribe((res) => {
+    this.sukanyaSamriddhiService.getEightyCMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -333,7 +338,7 @@ export class PpmasterComponent implements OnInit {
 
     if (this.masterfilesArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'LIC Document needed to Create Master.'
+        'Sukanya Samriddhi Document needed to Create Master.'
       );
       return;
     } else {
@@ -353,8 +358,8 @@ export class PpmasterComponent implements OnInit {
 
       console.log('LICdata::', data);
 
-      this.pensionPlanService
-        .uploadMultiplepensionPlanMasterFiles(this.masterfilesArray, data)
+      this.sukanyaSamriddhiService
+        .uploadMultipleSukanyaSamriddhiSchemeMasterFiles(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
           if (res) {
@@ -371,7 +376,8 @@ export class PpmasterComponent implements OnInit {
                 'Go to "Declaration & Actual" Page to see Schedule.'
               );
             } else {
-              this.alertService.sweetalertWarning(res.status.messsage);
+              // this.alertService.sweetalertWarning(res.status.messsage);
+              this.alertService.sweetalertError('This Policy Holder Already Added');
             }
           } else {
             this.alertService.sweetalertError(

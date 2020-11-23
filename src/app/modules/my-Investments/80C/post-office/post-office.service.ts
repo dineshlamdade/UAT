@@ -4,17 +4,17 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
- @Injectable({
+@Injectable({
   providedIn: 'root'
- })
- export class PensionPlanService {
+})
+export class PostOfficeService {
   apiUrl = environment.apiBaseUrl;
 
   constructor(private _HTTP: HttpClient) { }
 
-//Summary services
+
   getEightyCSummary() {
-    return this._HTTP.get(this.apiUrl + 'pensionPlanmaster-detail/pensionPlanMasterSummary')
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -23,7 +23,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
   postEightyCSummaryFuturePolicy(data) {
 
-    return this._HTTP.post(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -31,7 +31,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
    //Master Services
 
   getEightyCMaster() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'pensionPlanmaster-detail')
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail')
     .pipe(map((res: any) => {
       return res;
     }
@@ -49,7 +49,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
   }
 
   getEightyCDeclarationInstitutionListWithPolicyNo() {
-    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/institutionListWithPolicyNo')
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
     }
@@ -57,21 +57,21 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
   }
 
   getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   postEightyCDeclarationTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'pensionPlan-transaction', data)
+    return this._HTTP.post(this.apiUrl + 'postOfficeRecurringDeposit-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -92,7 +92,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     }));
   }
 
-  uploadMultiplepensionPlanMasterFiles(files: File[], data:any): Observable<any> {
+  uploadMultiplePostOfficeRecurringDepositMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -108,14 +108,14 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     });
     //return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/pensionPlanmaster-detail',
+      this.apiUrl + 'postOfficeRecurringDepositMaster-detail',
       formData,
       {
 
       });
   }
 
-  uploadpensionPlanTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadPostOfficeRecurringTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -131,12 +131,11 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'pensionPlan-transaction/uploadPensionPlanTransactionDocuments',
+      this.apiUrl + 'postOfficeRecurringDeposit-transaction/uploadPostOfficeRecurringDepositDocuments',
       formData,
       {
 
       });
   }
-
 }
 
