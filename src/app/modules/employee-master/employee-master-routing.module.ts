@@ -2,6 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BankInformationComponent } from './components/bank-information/bank-information.component';
 import { ContactInformationComponent } from './components/contact-information/contact-information.component';
+import { BankDetailsComponent } from './components/family-information/bank-details/bank-details.component';
+import { FamilyDetailsComponent } from './components/family-information/family-details/family-details.component';
+import { FamilyInformationComponent } from './components/family-information/family-information.component';
+import { NominationDetailsComponent } from './components/family-information/nomination-details/nomination-details.component';
 import { IdentityInformationComponent } from './components/identity-information/identity-information.component';
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
@@ -46,6 +50,28 @@ const routes: Routes = [
         path: 'payroll-area-information',
         component: PayrollAreaInformationComponent,
         data: { title: ':: DelziaHR :: payroll-area-information' },
+      },
+      {
+        path: 'family-information',
+        component: FamilyInformationComponent,
+        data: { title: ':: DelziaHR :: family-information' },
+        children: [
+          {
+            path: 'family-details',
+            component: FamilyDetailsComponent,
+            data: { title: ':: DelziaHR :: family-details' },
+          },
+          {
+            path: 'nomination-details',
+            component: NominationDetailsComponent,
+            data: { title: ':: DelziaHR :: nomination-details' },
+          },
+          {
+            path: 'bank-details',
+            component: BankDetailsComponent,
+            data: { title: ':: DelziaHR :: bank-details' },
+          }
+        ]
       },
 
 

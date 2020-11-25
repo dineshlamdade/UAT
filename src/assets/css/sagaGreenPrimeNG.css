@@ -1841,6 +1841,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   color: #495057;
   background: #f8f9fa;
   transition: box-shadow 0.2s;
+  font-size: 14px;
 }
 .p-datatable .p-datatable-tfoot > tr > td {
   text-align: left;
@@ -1850,6 +1851,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   font-weight: 600;
   color: #495057;
   background: #f8f9fa;
+  font-size: 14px;
 }
 .p-datatable .p-sortable-column {
   outline-color: #b7e0b8;

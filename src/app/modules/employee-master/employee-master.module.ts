@@ -35,6 +35,10 @@ import { PrimeNGModule } from './../../app.primeNG.module';
 // import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
+import { FamilyInformationComponent } from './components/family-information/family-information.component';
+import { FamilyDetailsComponent } from './components/family-information/family-details/family-details.component';
+import { NominationDetailsComponent } from './components/family-information/nomination-details/nomination-details.component';
+import { BankDetailsComponent } from './components/family-information/bank-details/bank-details.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +48,11 @@ import { PayrollAreaInformationComponent } from './components/payroll-area-infor
         IdentityInformationComponent,
         PreviousEmploymentInformationComponent,
         BankInformationComponent,
-        PayrollAreaInformationComponent
+        PayrollAreaInformationComponent,
+        FamilyInformationComponent,
+        FamilyDetailsComponent,
+        NominationDetailsComponent,
+        BankDetailsComponent
     ],
     imports: [
         CommonModule,

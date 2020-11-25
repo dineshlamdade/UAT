@@ -392,8 +392,12 @@
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/employee-master/payroll-area-information']"><span>{{ 'EmployeeMaster.payrollInformation' | transloco }}</span></a>
-                </li>
+                            [routerLink]="['/employee-master/family-information']"><span>{{ 'EmployeeMaster.familyInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/payroll-area-information']"><span>{{ 'EmployeeMaster.payrollInformation' | transloco }}</span></a>
+                    </li>
                 </ul>
             </li>
         </ul>

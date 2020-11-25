@@ -219,9 +219,9 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
 
-    if (PayrollAreaRequestModel.currency == '') {
+    // if (PayrollAreaRequestModel.currency == '') {
       delete PayrollAreaRequestModel.currency;
-    }
+    // }
     this.PayrollAreaService.postPayrollAreaInfoForm(PayrollAreaRequestModel).subscribe(res => {
       debugger
       this.getPayrollAreaInformation();

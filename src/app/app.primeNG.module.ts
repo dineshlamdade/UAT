@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {DropdownModule} from 'primeng/dropdown';
+import {TableModule} from 'primeng/table';
 
 
 
@@ -8,7 +9,8 @@ import {DropdownModule} from 'primeng/dropdown';
 @NgModule({
   exports: [
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    TableModule
   ]
 })
 export class PrimeNGModule {}

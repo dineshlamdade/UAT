@@ -1344,3 +1344,74 @@ button:focus {
     -moz-osx-font-smoothing: grayscale !important;
 }
 
+.code-line{
+    margin-top: 44px;
+  
+  }
+  
+  .thumbnail {
+      /* // position: absolute; */
+      width: 123px;
+      height: 100%;
+      overflow: hidden;
+      cursor: pointer;
+      /* // border: ridge 3px #e7deec; */
+    }
+  .thumbnail img {
+      cursor: pointer;
+      /* // position: absolute; */
+      left: 52px;
+      top: 71px;
+      width: 100%;
+      height: auto;
+      display: block;
+      border: ridge;
+      /* // -webkit-transform: translate(-50%,-50%);
+      //     -ms-transform: translate(-50%,-50%);
+      //         transform: translate(-50%,-50%); */
+    }
+  
+    .image-size-info{
+      font-size: 11px;
+      text-align: center;
+    }
+    .disabled-btn-bg-green{
+      background-color: #94c1c1!important;
+  }
+  
+  .small-size{
+    font-size: 7px;
+  }
+  
+  .form-control.is-invalid {
+    background-image: none!important;
+  }
+
+  .primeng-table-header-center{
+    text-align: center !important;
+  }
+
+  .p-button.p-button-icon-only {
+    width: 2.357rem;
+    padding: 0 11px !important;
+    max-width: 43px;
+}
+
+.p-button-label{
+    visibility: hidden !important; 
+}
+
+.p-inputtext:invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23dc3545' viewBox='-2 -2 7 7'%3e%3cpath stroke='%23dc3545' d='M0 0l3 3m0-3L0 3'/%3e%3ccircle r='.5'/%3e%3ccircle cx='3' r='.5'/%3e%3ccircle cy='3' r='.5'/%3e%3ccircle cx='3' cy='3' r='.5'/%3e%3c/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center right calc(0.375em + 0.1875rem);
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+  }
+
+  input {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
