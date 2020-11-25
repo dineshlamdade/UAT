@@ -27,15 +27,16 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
+import { NpsService } from '../nps.service';
+
 
 @Component({
-  selector: 'app-sukanya-samriddhi-declaration',
-  templateUrl: './sukanya-samriddhi-declaration.component.html',
-  styleUrls: ['./sukanya-samriddhi-declaration.component.scss']
+  selector: 'app-nps-declaration',
+  templateUrl: './nps-declaration.component.html',
+  styleUrls: ['./nps-declaration.component.scss']
 })
+export class NpsDeclarationComponent implements OnInit {
 
-export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -163,7 +164,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private sukanyaSamriddhiService : SukanyaSamriddhiService,
+    private npsService : NpsService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -291,8 +292,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.sukanyaSamriddhiService
-      .getSukanyaSamriddhiDeclarationInstitutionListWithPolicyNo()
+    this.npsService
+      .getNpsDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -720,8 +721,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.sukanyaSamriddhiService
-      .postSukanyaSamriddhiDeclarationTransaction(data)
+    this.npsService
+      .postNpsDeclarationTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
@@ -779,7 +780,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedSukanyaSamridhhiTransactionDocument(index: number) {
+  removeSelectedNpsTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -841,8 +842,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.sukanyaSamriddhiService
-      .uploadSukanyaSamriddhiSchemeTransactionwithDocument(this.editfilesArray, data)
+    this.npsService
+      .uploadNpsTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1077,7 +1078,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedSukanyaSamridhiTransactionDocumentInEditCase(index: number) {
+  removeSelectedLicTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
@@ -1095,7 +1096,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.sukanyaSamriddhiService
+    this.npsService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
@@ -1153,7 +1154,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.sukanyaSamriddhiService
+    this.npsService
       .getTransactionFilterData(institution, policyNo, transactionStatus)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
@@ -1255,8 +1256,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.sukanyaSamriddhiService
-      .uploadSukanyaSamriddhiSchemeTransactionwithDocument(this.editfilesArray, data)
+    this.npsService
+      .uploadNpsTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1283,7 +1284,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   //     // documentRemark: this.documentRemark,
   //   };
   //   console.log('data::', data);
-  //   this.sukanyaSamriddhiService
+  //   this.npsService
   //     .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
   //     .subscribe((res) => {
   //       console.log(res);
@@ -1301,7 +1302,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.sukanyaSamriddhiService
+    this.npsService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);

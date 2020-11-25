@@ -291,7 +291,7 @@ export class PpdeclarationComponent implements OnInit {
 
   public getInstitutionListWithPolicyNo() {
     this.PensionPlanService
-      .getEightyCDeclarationInstitutionListWithPolicyNo()
+      .getPensionPlanDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -720,7 +720,7 @@ export class PpdeclarationComponent implements OnInit {
     });
     const data = this.transactionDetail;
     this.PensionPlanService
-      .postEightyCDeclarationTransaction(data)
+      .postPensionPlanTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =

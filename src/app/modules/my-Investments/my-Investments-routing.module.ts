@@ -6,6 +6,7 @@ import { PensionPlanComponent } from './80C/pension-plan/pension-plan.component'
 import { SukanyaSamriddhiComponent } from './80C/sukanya-samriddhi/sukanya-samriddhi.component';
 import { PostOfficeComponent } from './80C/post-office/post-office.component';
 import { UnitLinkedInsurancePlanComponent } from './80C/unit-linked-insurance-plan/unit-linked-insurance-plan.component';
+import { NPSComponent } from './VI-A/nps/nps.component';
 
 const routes: Routes = [
 
@@ -41,6 +42,11 @@ const routes: Routes = [
         path:   '80C-UnitLinkedInsurancePlan',
         component:  UnitLinkedInsurancePlanComponent,
         data: { title: ':: DelziaHR :: UnitLinkedInsurancePlan' },
+      },
+      {
+        path:   'Chapter-VI-A-NPS',
+        component:  NPSComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-NPS' },
       }
     ],
   },

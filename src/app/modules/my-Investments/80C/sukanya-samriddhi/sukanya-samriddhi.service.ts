@@ -13,7 +13,7 @@ export class SukanyaSamriddhiService {
   constructor(private _HTTP: HttpClient) { }
 
 
-  getEightyCSummary() {
+  getSukanyaSamriddhiSummary() {
     return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiSchemeMaster-detail/sukanyaSamriddhiSchemeMasterSummary')
     .pipe(map((res: any) => {
       return res;
@@ -21,7 +21,7 @@ export class SukanyaSamriddhiService {
     ));
   }
 
-  postEightyCSummaryFuturePolicy(data) {
+  postSukanyaSamriddhiSummaryFuturePolicy(data) {
 
     return this._HTTP.post(this.apiUrl + 'sukanyaSamriddhiSchemeMaster-detail/sukanyaSamriddhiSchemeMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
@@ -30,7 +30,7 @@ export class SukanyaSamriddhiService {
   }
    //Master Services
 
-  getEightyCMaster() : Observable<any> {
+  getSukanyaSamriddhiMaster() : Observable<any> {
     return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiSchemeMaster-detail')
     .pipe(map((res: any) => {
       return res;
@@ -48,7 +48,7 @@ export class SukanyaSamriddhiService {
     ));
   }
 
-  getEightyCDeclarationInstitutionListWithPolicyNo() {
+  getSukanyaSamriddhiDeclarationInstitutionListWithPolicyNo() {
     return this._HTTP.get(this.apiUrl + 'sukanyaSamriddhiScheme-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
@@ -70,7 +70,7 @@ export class SukanyaSamriddhiService {
     }));
   }
 
-  postEightyCDeclarationTransaction(data) {
+  postSukanyaSamriddhiDeclarationTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'sukanyaSamriddhiScheme-transaction', data)
     .pipe(map((res: any) => {
       return res;

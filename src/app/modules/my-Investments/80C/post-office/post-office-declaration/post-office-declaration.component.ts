@@ -293,9 +293,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
 
   public getInstitutionListWithPolicyNo() {
     this.postOfficeService
-      .getEightyCDeclarationInstitutionListWithPolicyNo()
+      .getPostOfficeDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {
-        console.log('getInstitutionListWithPolicyNo', res);
+        console.log('getInstitutionListWithAccountNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -728,7 +728,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
     });
     const data = this.transactionDetail;
     this.postOfficeService
-      .postEightyCDeclarationTransaction(data)
+      .postPostOfficeDeclarationTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =

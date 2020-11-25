@@ -1,13 +1,10 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {
   Component,
-  HostListener,
   Inject,
   OnInit,
-  Optional,
   TemplateRef,
-  ViewChild,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -18,20 +15,20 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PensionPlanService } from '../pension-plan.service';
+import { NpsService } from '../nps.service';
+
 
 @Component({
-  selector: 'app-ppmaster',
-  templateUrl: './ppmaster.component.html',
-  styleUrls: ['./ppmaster.component.scss'],
+  selector: 'app-nps-master',
+  templateUrl: './nps-master.component.html',
+  styleUrls: ['./nps-master.component.scss'],
 })
-export class PpmasterComponent implements OnInit {
+export class NpsMasterComponent implements OnInit {
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -110,8 +107,8 @@ export class PpmasterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private Service: MyInvestmentsService,
-    private pensionPlanService: PensionPlanService,
+    private myInvestmentsService: MyInvestmentsService,
+    private npsService: NpsService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -122,8 +119,53 @@ export class PpmasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+    this.frequencyOfPaymentList = [
+      { label: 'Monthly', value: 'Monthly' },
+      { label: 'Quarterly', value: 'Quarterly' },
+      { label: 'Half-Yearly', value: 'Halfyearly' },
+      { label: 'Yearly', value: 'Yearly' },
+    ];
+    this.masterPage();
+    this.addNewRowId = 0;
+    this.hideRemarkDiv = false;
+    this.hideRemoveRow = false;
+    this.isClear = false;
+    this.isCancel = false;
+    this.receiptAmount = this.numberFormat.transform(0);
+    this.globalAddRowIndex = 0;
+    this.globalSelectedAmount = this.numberFormat.transform(0);
+  }
+
+  public ngOnInit(): void {
+    this.initiateMasterForm();
+    this.getFinacialYear();
+    this.getMasterFamilyInfo();
+    this.getNpsIdentityInformation();
+    this.getInstitutesFromGlobal();
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+    this.deactivateRemark();
+    this.getPreviousEmployer();
+    if (this.today.getMonth() + 1 <= 3) {
+      this.financialYear =
+        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    } else {
+      this.financialYear =
+        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    }
+    const splitYear = this.financialYear.split('-', 2);
+    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+  }
+
+  // initiate Reactive Master Form
+  initiateMasterForm() {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
+      accountType: new FormControl('Tier_1'),
+      pran: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(null, Validators.required),
       relationship: new FormControl(
@@ -148,49 +190,45 @@ export class PpmasterComponent implements OnInit {
       investmentGroup1MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
     });
-
-    this.frequencyOfPaymentList = [
-      { label: 'Monthly', value: 'Monthly' },
-      { label: 'Quarterly', value: 'Quarterly' },
-      { label: 'Half-Yearly', value: 'Halfyearly' },
-      { label: 'Yearly', value: 'Yearly' },
-    ];
-    this.masterPage();
-    this.addNewRowId = 0;
-    this.hideRemarkDiv = false;
-    this.hideRemoveRow = false;
-    this.isClear = false;
-    this.isCancel = false;
-    this.receiptAmount = this.numberFormat.transform(0);
-    this.globalAddRowIndex = 0;
-    this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
-  public ngOnInit(): void {
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-
-    // Business Financial Year API Call
-    this.Service.getBusinessFinancialYear().subscribe((res) => {
+  // Business Financial Year API Call
+  getFinacialYear() {
+    this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
+  }
 
-    // Family Member List API call
-    this.Service.getFamilyInfo().subscribe((res) => {
+  // Family Member List API call
+  getMasterFamilyInfo() {
+    this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
+      console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        this.familyMemberName.push(obj);
+        if (element.relation === 'Self') {
+          this.familyMemberName.push(obj);
+        }
       });
     });
+  }
 
-    this.deactivateRemark();
+  //NPS Identity Information API Call
+  getNpsIdentityInformation() {
+    this.npsService.getIdentityInformation().subscribe((res) => {
+      console.log('get Identity Information', res);
+      this.form.patchValue({
+        pran: res.data.results[0].employeePersonalInfoResponseDTO.pran,
+      });
+    });
+  }
 
-    // Get All Institutes From Global Table
-    this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
-      // console.log(res);
+  // Get All Institutes From Global Table
+  getInstitutesFromGlobal() {
+    this.myInvestmentsService.getAllInstitutesFromGlobal().subscribe((res) => {
       res.data.results.forEach((element: { insurerName: any }) => {
         const obj = {
           label: element.insurerName,
@@ -199,28 +237,16 @@ export class PpmasterComponent implements OnInit {
         this.institutionNameList.push(obj);
       });
     });
+  }
 
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
+  // Get All Previous Employer
+  getPreviousEmployer() {
+    this.myInvestmentsService.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
       if (res.data.results.length > 0) {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
     });
-
-    if (this.today.getMonth() + 1 <= 3) {
-      this.financialYear =
-        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
-    } else {
-      this.financialYear =
-        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
-    }
-
-    const splitYear = this.financialYear.split('-', 2);
-
-    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
   // convenience getter for easy access to form fields
@@ -311,7 +337,7 @@ export class PpmasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
+    this.npsService.getNpsMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -333,7 +359,7 @@ export class PpmasterComponent implements OnInit {
 
     if (this.masterfilesArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'Pension Plan Document needed to Create Master.'
+        'National Pension Scheme Document needed to Create Master.'
       );
       return;
     } else {
@@ -351,10 +377,10 @@ export class PpmasterComponent implements OnInit {
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-      console.log('PensionPlandata::', data);
+      console.log('National Pension Scheme ::', data);
 
-      this.pensionPlanService
-        .uploadMultiplepensionPlanMasterFiles(this.masterfilesArray, data)
+      this.npsService
+        .uploadMultipleNpsDepositMasterFiles(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
           if (res) {
@@ -371,7 +397,10 @@ export class PpmasterComponent implements OnInit {
                 'Go to "Declaration & Actual" Page to see Schedule.'
               );
             } else {
-              this.alertService.sweetalertWarning(res.status.messsage);
+              // this.alertService.sweetalertWarning(res.status.messsage);
+              this.alertService.sweetalertError(
+                'This Policy Holder Already Added'
+              );
             }
           } else {
             this.alertService.sweetalertError(
@@ -403,7 +432,7 @@ export class PpmasterComponent implements OnInit {
   }
 
   // Remove LicMaster Document
-  removeSelectedPensionPlanMasterDocument(index: number) {
+  removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
     console.log('this.filesArray::', this.masterfilesArray);
     console.log('this.filesArray.size::', this.masterfilesArray.length);

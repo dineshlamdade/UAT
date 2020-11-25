@@ -58,7 +58,7 @@ export class PostOfficeSummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.postOfficeService.getEightyCSummary().subscribe((res) => {
+    this.postOfficeService.getPostOfficeSummary().subscribe((res) => {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -73,7 +73,7 @@ export class PostOfficeSummaryComponent implements OnInit {
   }
 
   // Post New Future Policy Data API call
-  public addFuturePolicy(): void {
+  public addFuturePlan(): void {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
       .toString()
       .replace(',', '');
@@ -84,7 +84,7 @@ export class PostOfficeSummaryComponent implements OnInit {
 
     //console.log('addFuturePolicy Data..', data);
     this.postOfficeService
-      .postEightyCSummaryFuturePolicy(data)
+      .getPostOfficeSummaryFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
         this.summaryGridData = res.data.results[0].licMasterList;
@@ -103,11 +103,11 @@ export class PostOfficeSummaryComponent implements OnInit {
   }
 
   // On Change Future New Policy Declared Amount with formate
-  onChangeFutureNewPolicyDeclaredAmount() {
+  onChangeFutureNewPlanDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
       this.futureNewPolicyDeclaredAmount
     );
-    this.addFuturePolicy();
+    this.addFuturePlan();
   }
 
   jumpToMasterPage(n: number) {

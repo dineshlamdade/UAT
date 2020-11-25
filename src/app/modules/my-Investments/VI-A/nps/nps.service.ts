@@ -7,31 +7,33 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PostOfficeService {
+export class NpsService {
+
   apiUrl = environment.apiBaseUrl;
+  apiUrlEmployee = environment.apiBaseUrlEmployee;
 
   constructor(private _HTTP: HttpClient) { }
 
 
-  getPostOfficeSummary() {
-    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummary')
+  getNpsSummary() {
+    return this._HTTP.get(this.apiUrl + 'npsMaster-detail/npsMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  getPostOfficeSummaryFuturePlan(data) {
+  getNpsSummaryFuturePlan(data) {
 
-    return this._HTTP.post(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'npsMaster-detail/npsMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
    //Master Services
 
-  getPostOfficeMaster() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail')
+  getNpsMaster() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'npsMaster-detail')
     .pipe(map((res: any) => {
       return res;
     }
@@ -40,34 +42,36 @@ export class PostOfficeService {
 
    //Declaration services
 
-   getPostOfficeDeclarationInstitutionListWithAccountNo() {
-    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/institutionListWithPolicyNo')
+   getNpsDeclarationInstitutionListWithAccountNo() {
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
+
+  postNpsDeclarationTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/psid/' + proofSubmissionId)
+   getTransactionByProofSubmissionId(proofSubmissionId: String) {
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  postPostOfficeDeclarationTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'postOfficeRecurringDeposit-transaction', data)
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
 
   getpreviousEmployeName() {
 
@@ -84,7 +88,15 @@ export class PostOfficeService {
     }));
   }
 
-  uploadMultiplePostOfficeRecurringDepositMasterFiles(files: File[], data:any): Observable<any> {
+  getIdentityInformation () {
+    return this._HTTP.get(this.apiUrlEmployee + 'employeeIdentity-information/3')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+  uploadMultipleNpsDepositMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -100,14 +112,14 @@ export class PostOfficeService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'postOfficeRecurringDepositMaster-detail',
+      this.apiUrl + 'npsMaster-detail',
       formData,
       {
 
       });
   }
 
-  uploadPostOfficeRecurringTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadNpsTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -123,11 +135,10 @@ export class PostOfficeService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'http://localhost:8085/hrms/v1/postOfficeRecurringDeposit-transaction/uploadPostOfficeRecurringDepositDocuments',
+      this.apiUrl + 'nps-transaction/uploadNPSDocuments',
       formData,
       {
 
       });
   }
 }
-
