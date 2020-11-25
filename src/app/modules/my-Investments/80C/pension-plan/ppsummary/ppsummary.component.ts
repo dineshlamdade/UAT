@@ -57,7 +57,7 @@ export class PpsummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.pensionPlanService.getEightyCSummary().subscribe((res) => {
+    this.pensionPlanService.getPensionPlanSummary().subscribe((res) => {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -83,7 +83,7 @@ export class PpsummaryComponent implements OnInit {
 
     //console.log('addFuturePolicy Data..', data);
     this.pensionPlanService
-      .postEightyCSummaryFuturePolicy(data)
+      .postPensionPlanFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
         this.summaryGridData = res.data.results[0].licMasterList;

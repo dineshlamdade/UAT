@@ -34,13 +34,31 @@
            </div>
         </div>
         <div class="col-sm-6 col-md-3">
-           <label class="form-label">Relationship</label>
-           <input type="text" formControlName="relationship" class="form-control" disabled
-              [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
-           <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
-           </div>
-        </div>
+          <label class="form-label">Relationship</label>
+          <input type="text" formControlName="relationship" class="form-control" disabled
+             [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
+          <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
+             <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
+          </div>
+       </div>
+       <div class="col-sm-6 col-md-3 mt-10">
+        <label class="form-label">Type</label>
+        <input type="text" formControlName="accountType" class="form-control"
+           disabled
+           [ngClass]="{ 'is-invalid': submitted && masterForm.accountType.errors }"  >
+        <!-- <div *ngIf="submitted && masterForm.type.errors" class="invalid-feedback">
+           <div *ngIf="masterForm.type.errors.required">Type is mandatory</div>
+        </div> -->
+     </div>
+     <div class="col-sm-6 col-md-3 mt-10">
+          <label class="form-label">PRAN</label>
+          <input type="text" formControlName="pran" class="form-control"
+             disabled [ngClass]="{ 'is-invalid': submitted && masterForm.pran.errors }"  >
+          <div *ngIf="submitted && masterForm.pran.errors" class="invalid-feedback">
+             <div *ngIf="masterForm.pran.errors.required">PRAN is mandatory</div>
+          </div>
+       </div>
+
         <div class="col-sm-6 col-md-3 mt-10">
            <label class="form-label">Policy Start Date</label>
            <div class="form-group">
@@ -314,6 +332,8 @@
                             <th scope="col" class="wd-10">Account No..</th>
                             <th scope="col" class="wd-10">Account Holder Name</th>
                             <th scope="col" class="wd-10">Relationship</th>
+                            <th scope="col" class="wd-10">Type</th>
+                            <th scope="col" class="wd-10">PRAN</th>
                             <th scope="col" class="wd-10">Policy Start Date</th>
                             <th scope="col" class="wd-10">Policy End Date</th>
                             <th scope="col" class="wd-10">Frequency</th>
@@ -331,6 +351,10 @@
                             <td class="wd-10"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
                             </td>
                             <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
+                            </td>
+                            <td class="wd-10"><span tooltip="{{summary.accountType}}">{{summary.accountType}}</span>
+                            </td>
+                            <td class="wd-10"><span tooltip="{{summary.pran}}">{{summary.pran}}</span>
                             </td>
                             <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
                             </td>
@@ -396,7 +420,7 @@
                             </span>
                          </div>
                          <div>
-                            <i class="fa fa-times text-red font-18" (click)="removeSelectedPensionPlanMasterDocument(index)"></i>
+                            <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
                          </div>
                       </label>
                    </div>

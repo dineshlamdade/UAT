@@ -27,14 +27,16 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PostOfficeService } from '../post-office.service';
+import { NpsService } from '../nps.service';
+
 
 @Component({
-  selector: 'app-post-office-declaration',
-  templateUrl: './post-office-declaration.component.html',
-  styleUrls: ['./post-office-declaration.component.scss']
+  selector: 'app-nps-declaration',
+  templateUrl: './nps-declaration.component.html',
+  styleUrls: ['./nps-declaration.component.scss']
 })
-export class PostOfficeDeclarationComponent implements OnInit {
+export class NpsDeclarationComponent implements OnInit {
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -162,7 +164,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    private npsService : NpsService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -290,10 +292,10 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.postOfficeService
-      .getPostOfficeDeclarationInstitutionListWithAccountNo()
+    this.npsService
+      .getNpsDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {
-        console.log('getInstitutionListWithAccountNo', res);
+        console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -719,8 +721,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.postOfficeService
-      .postPostOfficeDeclarationTransaction(data)
+    this.npsService
+      .postNpsDeclarationTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
@@ -778,7 +780,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedLicTransactionDocument(index: number) {
+  removeSelectedNpsTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -840,8 +842,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.postOfficeService
-      .uploadPostOfficeRecurringTransactionwithDocument(this.editfilesArray, data)
+    this.npsService
+      .uploadNpsTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1094,7 +1096,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.postOfficeService
+    this.npsService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
@@ -1152,7 +1154,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.postOfficeService
+    this.npsService
       .getTransactionFilterData(institution, policyNo, transactionStatus)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
@@ -1254,8 +1256,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.postOfficeService
-      .uploadPostOfficeRecurringTransactionwithDocument(this.editfilesArray, data)
+    this.npsService
+      .uploadNpsTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1282,7 +1284,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
   //     // documentRemark: this.documentRemark,
   //   };
   //   console.log('data::', data);
-  //   this.postOfficeService
+  //   this.npsService
   //     .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
   //     .subscribe((res) => {
   //       console.log(res);
@@ -1300,7 +1302,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.postOfficeService
+    this.npsService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);

@@ -292,7 +292,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
 
   public getInstitutionListWithPolicyNo() {
     this.sukanyaSamriddhiService
-      .getEightyCDeclarationInstitutionListWithPolicyNo()
+      .getSukanyaSamriddhiDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -721,7 +721,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     });
     const data = this.transactionDetail;
     this.sukanyaSamriddhiService
-      .postEightyCDeclarationTransaction(data)
+      .postSukanyaSamriddhiDeclarationTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
@@ -779,7 +779,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedLicTransactionDocument(index: number) {
+  removeSelectedSukanyaSamridhhiTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -1077,7 +1077,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedLicTransactionDocumentInEditCase(index: number) {
+  removeSelectedSukanyaSamridhiTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);

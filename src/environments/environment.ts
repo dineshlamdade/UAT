@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:8085/hrms/v1/',
+  apiBaseUrlEmployee: 'http://localhost:8082/hrms/v1/',
 };
 
 /*

@@ -60,20 +60,31 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Future New Deposit Scheme &nbsp;
+              <td colspan="3" class="align-right font700">Previous Employer &nbsp;
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                  (change)='onChangeFutureNewPlanDeclaredAmount()' placeholder="0.00"
-                  class="form-control width120 inline_center align-right">
+                <input type="text" [(ngModel)]="previousEmployerB" (change)='onChangeFutureNewPolicyDeclaredAmount()'
+                  placeholder="0.00" class="form-control width120 inline_center align-right">
               </td>
               <td></td>
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
-                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B
+              <td colspan="3" class="align-right font700">Future Investments &nbsp;
+                <span class="Letterbadge">C</span>
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="futureInvestmentsC" (change)='onChangeFutureNewPolicyDeclaredAmount()'
+                  placeholder="0.00" class="form-control width120 inline_center align-right">
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">D</span> = &nbsp;
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B</span> + &nbsp;<span
+                  class="Letterbadge"> C
                 </span>
               </td>
               <td class="align-right">
@@ -82,12 +93,65 @@
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{grandTotalActualAmount | number:'1.2-2'}}">
-                  {{grandTotalActualAmount | number:'1.2-2'}}
-                </span>
+                <!-- <span class="padding-right-12" tooltip="{{previousEmployerB | number:'1.2-2'}}">
+                  {{previousEmployerB | number:'1.2-2'}}
+                </span> -->
+              </td>
+              <td class="align-right">
+                <!-- <span class="padding-right-12" tooltip="{{futureInvestmentsC | number:'1.2-2'}}">
+                  {{futureInvestmentsC | number:'1.2-2'}}
+                </span> -->
               </td>
               <td></td>
             </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">Limit &nbsp;
+                <span class="Letterbadge">E</span>
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="limitE" (change)='onChangeLimit()' placeholder="0.00"
+                  class="form-control width120 inline_center align-right">
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">Deduction [Sec.80-CCD(1B)] &nbsp;
+                <span class="Letterbadge">F </span> : Mininum of &nbsp;<span class="Letterbadge"> D</span> & &nbsp;<span
+                  class="Letterbadge"> E
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
+                  {{grandTotalDeclaredAmount | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="align-right">
+                <!-- <span class="padding-right-12" tooltip="{{limitE | number:'1.2-2'}}">
+                  {{limitE | number:'1.2-2'}}
+                </span> -->
+              </td>
+              <td></td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="3" class="align-right font700">Eligible for Deduction [Sec.80-CCD(1) part of Sec.80-C] &nbsp;
+                <span class="Letterbadge">G </span> = &nbsp;<span class="Letterbadge"> D </span> - &nbsp;<span
+                  class="Letterbadge"> F
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
+                  {{grandTotalDeclaredAmount | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="align-right">
+                <!-- <span class="padding-right-12" tooltip="{{deductionF | number:'1.2-2'}}">
+                  {{deductionF | number:'1.2-2'}}
+                </span> -->
+              </td>
+              <td></td>
+            </tr>
+
           </tbody>
         </table>
       </div>
