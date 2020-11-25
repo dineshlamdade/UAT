@@ -354,7 +354,8 @@ export class PostOfficeMasterComponent implements OnInit {
         )
         .subscribe((res) => {
           console.log(res);
-          if (res) {
+          if (res)
+          {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {

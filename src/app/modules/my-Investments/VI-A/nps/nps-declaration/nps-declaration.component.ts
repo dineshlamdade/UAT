@@ -63,6 +63,8 @@ export class NpsDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
+  public editProofSubmissionId: any;
+  public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -836,17 +838,12 @@ export class NpsDeclarationComponent implements OnInit {
     };
     console.log('data::', data);
 
-    // this.fileService.uploadSingleFile(this.currentFileUpload, data)
-    // .pipe(tap(event => {
-    //     if (event.type === HttpEventType.UploadProgress) {
-    //         this.loaded = Math.round(100 * event.loaded / event.total);
-    //     }
-    // }))
     this.npsService
       .uploadNpsTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+
           this.transactionDetail =
             res.data.results[0].investmentGroupTransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
@@ -855,22 +852,36 @@ export class NpsDeclarationComponent implements OnInit {
           this.grandActualTotal = res.data.results[0].grandActualTotal;
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+          this.initialArrayIndex = [];
+
           this.transactionDetail.forEach((element) => {
+            this.initialArrayIndex.push(element.groupTransactionList.length);
+
             element.groupTransactionList.forEach((innerElement) => {
+
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(
                   innerElement.dateOfPayment
                 );
               }
-              if (this.employeeJoiningDate < innerElement.dueDate) {
-                innerElement.active = false;
+
+              if (innerElement.isECS === 0) {
+                this.glbalECS == 0;
+              } else if (innerElement.isECS === 1) {
+                this.glbalECS == 1;
+              } else {
+                this.glbalECS == 0;
               }
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );
-              // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
             });
           });
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -883,6 +894,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
   }
+
 
   changeReceiptAmountFormat() {
     // let formatedReceiptAmount = this.numberFormat.transform(this.receiptAmount)
@@ -1111,6 +1123,8 @@ export class NpsDeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
+        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].receiptAmount;
         //console.log(this.urlArray);
         this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1253,6 +1267,8 @@ export class NpsDeclarationComponent implements OnInit {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       //documentRemark: this.documentRemark,
+      proofSubmissionId: this.editProofSubmissionId,
+      receiptAmount: this.editReceiptAmount,
     };
     console.log('uploadUpdateTransaction data::', data);
 
@@ -1261,44 +1277,56 @@ export class NpsDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
           );
+
+          this.transactionDetail =
+            res.data.results[0].investmentGroupTransactionDetail;
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal =
+            res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+          this.initialArrayIndex = [];
+
+          this.transactionDetail.forEach((element) => {
+            this.initialArrayIndex.push(element.groupTransactionList.length);
+
+            element.groupTransactionList.forEach((innerElement) => {
+
+              if (innerElement.dateOfPayment !== null) {
+                innerElement.dateOfPayment = new Date(
+                  innerElement.dateOfPayment
+                );
+              }
+
+              if (innerElement.isECS === 0) {
+                this.glbalECS == 0;
+              } else if (innerElement.isECS === 1) {
+                this.glbalECS == 1;
+              } else {
+                this.glbalECS == 0;
+              }
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            });
+          });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
     this.currentFileUpload = null;
+    this.editfilesArray = [];
   }
-
-
-  // // tslint:disable-next-line: typedef
-  // public uploadUpdateTransaction() {
-  //   this.editTransactionUpload.forEach((element) => {
-  //     this.uploadGridData.push(element.investmentGroup1TransactionId);
-  //   });
-  //   const data = {
-  //     investmentGroupTransactionDetail: this.editTransactionUpload,
-  //     groupTransactionIDs: this.uploadGridData,
-  //     // documentRemark: this.documentRemark,
-  //   };
-  //   console.log('data::', data);
-  //   this.npsService
-  //     .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
-  //     .subscribe((res) => {
-  //       console.log(res);
-  //       if (res.data.results.length > 0) {
-  //         this.alertService.sweetalertMasterSuccess(
-  //           'Transaction Saved Successfully.',
-  //           ''
-  //         );
-  //       } else {
-  //         this.alertService.sweetalertWarning(res.status.messsage);
-  //       }
-  //     });
-  //   this.currentFileUpload = null;
-  // }
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);

@@ -59,7 +59,7 @@
               </td>
               <td></td>
             </tr>
-            <tr class="table-light-color">
+            <!-- <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Previous Employer &nbsp;
                 <span class="Letterbadge">B</span>
               </td>
@@ -69,23 +69,21 @@
               </td>
               <td></td>
               <td></td>
-            </tr>
+            </tr> -->
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Future Investments &nbsp;
-                <span class="Letterbadge">C</span>
+                <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureInvestmentsC" (change)='onChangeFutureNewPolicyDeclaredAmount()'
+                <input type="text" [(ngModel)]="futureInvestmentsB" (change)='onChangeFutureNewPolicyDeclaredAmount()'
                   placeholder="0.00" class="form-control width120 inline_center align-right">
               </td>
               <td></td>
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">D</span> = &nbsp;
-                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B</span> + &nbsp;<span
-                  class="Letterbadge"> C
-                </span>
+              <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B</span>
               </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
@@ -106,10 +104,10 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Limit &nbsp;
-                <span class="Letterbadge">E</span>
+                <span class="Letterbadge">D</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="limitE" (change)='onChangeLimit()' placeholder="0.00"
+                <input type="text" [(ngModel)]="limitD" (change)='onChangeLimit()' placeholder="0.00"
                   class="form-control width120 inline_center align-right">
               </td>
               <td></td>
@@ -117,8 +115,8 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Deduction [Sec.80-CCD(1B)] &nbsp;
-                <span class="Letterbadge">F </span> : Mininum of &nbsp;<span class="Letterbadge"> D</span> & &nbsp;<span
-                  class="Letterbadge"> E
+                <span class="Letterbadge">E </span> : Mininum of &nbsp;<span class="Letterbadge"> C</span> & &nbsp;<span
+                  class="Letterbadge"> D
                 </span>
               </td>
               <td class="align-right">
@@ -135,8 +133,8 @@
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Eligible for Deduction [Sec.80-CCD(1) part of Sec.80-C] &nbsp;
-                <span class="Letterbadge">G </span> = &nbsp;<span class="Letterbadge"> D </span> - &nbsp;<span
-                  class="Letterbadge"> F
+                <span class="Letterbadge">F </span> = &nbsp;<span class="Letterbadge"> C </span> - &nbsp;<span
+                  class="Letterbadge"> E
                 </span>
               </td>
               <td class="align-right">

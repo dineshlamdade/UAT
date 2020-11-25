@@ -123,7 +123,7 @@ export class PostOfficeService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'http://localhost:8085/hrms/v1/postOfficeRecurringDeposit-transaction/uploadPostOfficeRecurringDepositDocuments',
+      this.apiUrl + 'postOfficeRecurringDeposit-transaction/uploadPostOfficeRecurringDepositDocuments',
       formData,
       {
 

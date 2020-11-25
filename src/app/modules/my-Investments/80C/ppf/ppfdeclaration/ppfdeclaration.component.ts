@@ -48,6 +48,8 @@ export class PPFDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
+  public editProofSubmissionId: any;
+  public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
