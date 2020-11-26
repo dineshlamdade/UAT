@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -14,33 +15,37 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
-
-import { MatSliderModule } from '@angular/material/slider';
 import { PPFMasterComponent } from '../80C/ppf/ppfmaster/ppfmaster.component';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
+import { LicComponent } from './lic/lic.component';
+import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
+import { LicmasterComponent } from './lic/licmaster/licmaster.component';
+import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
+import { NscComponent } from './nsc/nsc.component';
+import { PensionPlanComponent } from './pension-plan/pension-plan.component';
+import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
+import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
+import { PpsummaryComponent } from './pension-plan/ppsummary/ppsummary.component';
+import { PostOfficeDeclarationComponent } from './post-office/post-office-declaration/post-office-declaration.component';
+import { PostOfficeMasterComponent } from './post-office/post-office-master/post-office-master.component';
+import { PostOfficeSummaryComponent } from './post-office/post-office-summary/post-office-summary.component';
+import { PostOfficeComponent } from './post-office/post-office.component';
 import { PPFComponent } from './ppf/ppf.component';
 import { PPFDeclarationComponent } from './ppf/ppfdeclaration/ppfdeclaration.component';
 import { PPFSummaryComponent } from './ppf/ppfsummary/ppfsummary.component';
-import { LicComponent } from './lic/lic.component';
-import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
-import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
-import { LicmasterComponent } from './lic/licmaster/licmaster.component';
-import { PensionPlanComponent } from './pension-plan/pension-plan.component';
-import { SukanyaSamriddhiComponent } from './sukanya-samriddhi/sukanya-samriddhi.component';
-import { SukanyaSamriddhiSummaryComponent } from './sukanya-samriddhi/sukanya-samriddhi-summary/sukanya-samriddhi-summary.component';
-import { SukanyaSamriddhiMasterComponent } from './sukanya-samriddhi/sukanya-samriddhi-master/sukanya-samriddhi-master.component';
+// tslint:disable-next-line: max-line-length
 import { SukanyaSamriddhiDeclarationComponent } from './sukanya-samriddhi/sukanya-samriddhi-declaration/sukanya-samriddhi-declaration.component';
-import { PostOfficeComponent } from './post-office/post-office.component';
-import { PostOfficeSummaryComponent } from './post-office/post-office-summary/post-office-summary.component';
-import { PostOfficeMasterComponent } from './post-office/post-office-master/post-office-master.component';
-import { PostOfficeDeclarationComponent } from './post-office/post-office-declaration/post-office-declaration.component';
-import { UnitLinkedInsurancePlanComponent } from './unit-linked-insurance-plan/unit-linked-insurance-plan.component';
-import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-linked-summary/unit-linked-summary.component';
-import { UnitLinkedMasterComponent } from './unit-linked-insurance-plan/unit-linked-master/unit-linked-master.component';
+import { SukanyaSamriddhiMasterComponent } from './sukanya-samriddhi/sukanya-samriddhi-master/sukanya-samriddhi-master.component';
+import { SukanyaSamriddhiSummaryComponent } from './sukanya-samriddhi/sukanya-samriddhi-summary/sukanya-samriddhi-summary.component';
+import { SukanyaSamriddhiComponent } from './sukanya-samriddhi/sukanya-samriddhi.component';
+import { TaxsavingMfDeclarationComponent } from './taxsaving-mutual-fund/taxsaving-mf-declaration/taxsaving-mf-declaration.component';
+import { TaxsavingMfMasterComponent } from './taxsaving-mutual-fund/taxsaving-mf-master/taxsaving-mf-master.component';
+import { TaxsavingMfSummaryComponent } from './taxsaving-mutual-fund/taxsaving-mf-summary/taxsaving-mf-summary.component';
+import { TaxsavingMutualFundComponent } from './taxsaving-mutual-fund/taxsaving-mutual-fund.component';
 import { UnitLinkedDeclarationComponent } from './unit-linked-insurance-plan/unit-linked-declaration/unit-linked-declaration.component';
-import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
-import { PpsummaryComponent } from './pension-plan/ppsummary/ppsummary.component';
-import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
+import { UnitLinkedInsurancePlanComponent } from './unit-linked-insurance-plan/unit-linked-insurance-plan.component';
+import { UnitLinkedMasterComponent } from './unit-linked-insurance-plan/unit-linked-master/unit-linked-master.component';
+import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-linked-summary/unit-linked-summary.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,11 @@ import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclarati
     LicsummaryComponent,
     LicmasterComponent,
     LicdeclarationComponent,
+    NscComponent,
+    TaxsavingMfDeclarationComponent,
+    TaxsavingMfSummaryComponent,
+    TaxsavingMfMasterComponent,
+    TaxsavingMutualFundComponent,
     PensionPlanComponent,
     PpdeclarationComponent,
     PpmasterComponent,
