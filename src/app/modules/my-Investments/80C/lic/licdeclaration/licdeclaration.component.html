@@ -853,9 +853,6 @@
 
                   </td>
                   <td>
-                    {{ documentSummary.licMasterList[0].institution }}
-                  </td>
-                  <td>
                     <span
                       tooltip="{{
                         documentSummary.receiptAmount | number: '1.2-2'
@@ -872,21 +869,6 @@
                     >
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
-                  </td>
-                  <td>
-                    <div class="custom_Label_badge">
-                      <button
-                        class="btn bg-color-lightgray text-000"
-                        (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        "
-                      >
-                        Documents
-                      </button>
-                      <span class="Label_badge">{{
-                        documentSummary.documentDetailList.length
-                      }}</span>
-                    </div>
                   </td>
                   <td>
                     <div class="custom_Label_badge">
@@ -1445,7 +1427,7 @@
                 <input
                   class="FileUpload1"
                   class="dropify"
-                  (change)="onUpload($event)"
+                  (change)="onUploadInEditCase($event)"
                   accept=".jpg , .jpeg, .pdf , .png"
                   id="FileInput"
                   type="file"

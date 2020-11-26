@@ -80,6 +80,7 @@ export class FileService {
       });
   }
 
+
   // Fetches the names of files to be displayed in the downloads list.
   fetchFileNames() {
     return this.http

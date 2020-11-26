@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 
 @Component({
   selector: 'app-licsummary',

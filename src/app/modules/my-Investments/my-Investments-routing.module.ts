@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PPFComponent } from './80C/ppf/ppf.component';
 import { LicComponent } from './80C/lic/lic.component';
-//import { PensionPlanComponent } from './80C/pension-plan/pension-plan.component';
-import { TaxsavingMutualFundsComponent } from './80C/taxsaving-mutual-funds/taxsaving-mutual-funds.component';
-
+import { PensionPlanComponent } from './80C/pension-plan/pension-plan.component';
+import { PostOfficeComponent } from './80C/post-office/post-office.component';
+import { PPFComponent } from './80C/ppf/ppf.component';
+import { SukanyaSamriddhiComponent } from './80C/sukanya-samriddhi/sukanya-samriddhi.component';
+import { TaxsavingMutualFundComponent } from './80C/taxsaving-mutual-fund/taxsaving-mutual-fund.component';
+import { UnitLinkedInsurancePlanComponent } from './80C/unit-linked-insurance-plan/unit-linked-insurance-plan.component';
 
 const routes: Routes = [
 
@@ -12,31 +14,45 @@ const routes: Routes = [
     path: '',
     children: [
       {
-      path:   '80C-LIC',
-      component:  LicComponent,
-      data: { title: ':: DelziaHR :: LIC' },
+        path:   '80C-LIC',
+        component:  LicComponent,
+        data: { title: ':: DelziaHR :: LIC' },
       },
       {
         path:   '80C-PPF',
         component:  PPFComponent,
         data: { title: ':: DelziaHR :: PPF' },
         },
-        // {
-        //   path:   '80C-PensionPlan',
-        //   component:  PensionPlanComponent,
-        //   data: { title: ':: DelziaHR :: PensionPlan' },
-        // },
         {
           path:   '80C-TaxsavingMutualFund',
-          component:     TaxsavingMutualFundsComponent,
+          component:     TaxsavingMutualFundComponent,
           data: { title: ':: DelziaHR :: PensionPlan' },
-        }
-
-
+        },
+      {
+        path:   '80C-PensionPlan',
+        component:  PensionPlanComponent,
+        data: { title: ':: DelziaHR :: PensionPlan' },
+      },
+      {
+        path:   '80C-SukanyaSamriddhiScheme',
+        component:  SukanyaSamriddhiComponent,
+        data: { title: ':: DelziaHR :: SukanyaSamriddhiScheme' },
+      },
+      {
+        path:   '80C-PostOfficeTimeDepositScheme',
+        component:  PostOfficeComponent,
+        data: { title: ':: DelziaHR :: PostOfficeTimeDepositScheme' },
+      },
+      {
+        path:   '80C-UnitLinkedInsurancePlan',
+        component:  UnitLinkedInsurancePlanComponent,
+        data: { title: ':: DelziaHR :: UnitLinkedInsurancePlan' },
+      }
     ],
-  },
+
   // { path: '', pathMatch: 'full', redirectTo: '/investment' },
-      ];
+   },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -276,7 +276,7 @@ public apiUrl = environment.apiBaseUrl;
   }
 
   postEightyCDeclarationInstitutions(data) {
-    return this._HTTP.post(this.apiUrl + '/lic-transaction', data)
+    return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -427,6 +427,130 @@ public apiUrl = environment.apiBaseUrl;
   }
 
   public uploadPPFTransactionwithDocument(files: File[], data: any): Observable<any> {
+    let formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (const file of files) {
+      formData.append('transactionDocuments', file);
+    }
+    // formData.append('licDocuments', files);
+    formData.append('transactionWithDocumentBeanJson', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key,' ', value);
+    });
+    // return null;
+    return this._HTTP.post<any>(
+      'http://localhost:8085/hrms/v1/ppf-transaction/uploadTransactionDocuments',
+      formData,
+      {
+
+      });
+  }
+
+// ---------------------------Tax-Saver Fund -----------------------------//
+
+  public getELSSMaster(): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'elssmaster-detail')
+    .pipe(map((res: any) => {
+      return res;
+    },
+    ));
+  }
+
+  public submitELSSMasterData(files: File[], data: any): Observable<any> {
+    let formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (const file of files) {
+      formData.append('group2MasterDocuments', file);
+    }
+    // formData.append('licDocuments', files);
+    formData.append('investmentGroup2MasterRequestDTO', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key, ' ', value);
+    });
+    // return null;
+    return this._HTTP.post<any>(
+      'http://localhost:8085/hrms/v1/elssmaster-detail',
+      formData,
+      {
+
+      });
+  }
+
+  public getELSSSummary(): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'elssmaster-detail/elssMasterSummary')
+    .pipe(map((res: any) => {
+      return res;
+
+    },
+    ));
+  }
+
+  public submitELSSMaster(data): Observable<any> {
+
+    return this._HTTP.post(this.apiUrl + 'elssmaster-detail', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getELSSDeclarationInstitutions(): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/ppfinstitution')
+    .pipe(map((res: any) => {
+      return res;
+    },
+    ));
+  }
+
+  public getELSSDeclarationInstitutionListWithPolicyNo(): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/institutionListWithPolicyNo')
+    .pipe(map((res: any) => {
+      return res;
+    },
+    ));
+  }
+
+  public getELSSTransactionInstName(data): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/' + data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getELSSTransactionFilterData(institution: String, policyNo: String, transactionStatus: String): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public getELSSTransactionByProofSubmissionId(proofSubmissionId: String): Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'ppf-transaction/psid/' + proofSubmissionId)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public submitELSSDeclarationInstitutions(data): Observable<any> {
+    return this._HTTP.post(this.apiUrl + '/ppf-transaction', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public submitELSSlarationTransaction(data): Observable<any> {
+    return this._HTTP.post(this.apiUrl + 'ppf-transaction', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+  public uploadELSSTransactionwithDocument(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (const file of files) {
