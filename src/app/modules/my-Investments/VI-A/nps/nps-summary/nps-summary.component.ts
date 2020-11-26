@@ -4,11 +4,10 @@ import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormat
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { NpsService } from '../nps.service';
 
-
 @Component({
   selector: 'app-nps-summary',
   templateUrl: './nps-summary.component.html',
-  styleUrls: ['./nps-summary.component.scss']
+  styleUrls: ['./nps-summary.component.scss'],
 })
 export class NpsSummaryComponent implements OnInit {
   @Input() institution: string;
@@ -43,14 +42,14 @@ export class NpsSummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   // public previousEmployerB: string;
-  public futureInvestmentsB : string;
-  public limitD : number ;
-  public deductionE : number;
-  public eligibleForDeductionG : number;
+  public futureInvestmentsB: string;
+  public limitD: number;
+  public deductionE: number;
+  public eligibleForDeductionG: number;
 
   constructor(
     private service: MyInvestmentsService,
-    private npsService : NpsService,
+    private npsService: NpsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {
@@ -72,41 +71,44 @@ export class NpsSummaryComponent implements OnInit {
       // this.previousEmployerB = this.numberFormat.transform(
       //   res.data.results[0].previousEmployerB
       // );
+      this.futureInvestmentsB = this.numberFormat.transform(
+        res.data.results[0].futureNewPolicyDeclaredAmount
+      );
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-      console.log(res);
+      console.log('summaryPage::', res);
     });
   }
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
     // this.previousEmployerB = this.previousEmployerB.toString().replace(',', '');
-    this.futureInvestmentsB = this.futureInvestmentsB.toString().replace(',', '');
+    this.futureInvestmentsB = this.futureInvestmentsB
+      .toString()
+      .replace(',', '');
     const data = {
       // previousEmployerB: this.previousEmployerB,
-      futureInvestmentsB: this. futureInvestmentsB,
+      futureNewPolicyDeclaredAmount: this.futureInvestmentsB,
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.npsService
-      .getNpsSummaryFuturePlan(data)
-      .subscribe((res) => {
-        //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].licMasterList;
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        // this.previousEmployerB = this.numberFormat.transform(
-        //   res.data.results[0].previousEmployerB
-        // );
-        this.futureInvestmentsB = this.numberFormat.transform(
-          res.data.results[0].futureInvestmentsB
-        );
+    this.npsService.getNpsSummaryFuturePlan(data).subscribe((res) => {
+      //console.log('addFuturePolicy Res..', res);
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      // this.previousEmployerB = this.numberFormat.transform(
+      //   res.data.results[0].previousEmployerB
+      // );
+      this.futureInvestmentsB = this.numberFormat.transform(
+        res.data.results[0].futureNewPolicyDeclaredAmount
+      );
 
-        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
-      });
+      this.grandTotalDeclaredAmount =
+        res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+    });
 
     this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
@@ -137,11 +139,9 @@ export class NpsSummaryComponent implements OnInit {
     console.log('policyNo::', policyNo);
   }
 
-  onChangeLimit(){
+  onChangeLimit() {
     this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
-    this.eligibleForDeductionG = this.grandTotalDeclaredAmount - this.deductionE;
+    this.eligibleForDeductionG =
+      this.grandTotalDeclaredAmount - this.deductionE;
   }
-
-
 }
-
