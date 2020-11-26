@@ -38,15 +38,15 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     ));
   }
 
-   //Declaration services
+  //  Declaration services
 
-  // getEightyCDeclarationInstitutions() {
-  //   return this._HTTP.get(this.apiUrl + 'lic-transaction/institutions')
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }
-  //   ));
-  // }
+  getEightyCDeclarationInstitutions() {
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/institutions')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
 
   getPensionPlanDeclarationInstitutionListWithPolicyNo() {
     return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/institutionListWithPolicyNo')
@@ -92,7 +92,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     }));
   }
 
-  uploadMultiplepensionPlanMasterFiles(files: File[], data:any): Observable<any> {
+  uploadMultiplePensionPlanMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -108,14 +108,14 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     });
     //return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/pensionPlanmaster-detail',
+      this.apiUrl + 'pensionPlanmaster-detail',
       formData,
       {
 
       });
   }
 
-  uploadpensionPlanTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadPensionPlanTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {

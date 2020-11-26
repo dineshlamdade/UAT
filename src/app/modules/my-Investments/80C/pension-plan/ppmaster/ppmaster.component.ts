@@ -354,7 +354,7 @@ export class PpmasterComponent implements OnInit {
       console.log('PensionPlandata::', data);
 
       this.pensionPlanService
-        .uploadMultiplepensionPlanMasterFiles(this.masterfilesArray, data)
+        .uploadMultiplePensionPlanMasterFiles(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
           if (res) {
