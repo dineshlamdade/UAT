@@ -2,15 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { NpsService } from '../nps.service';
-
+import { PostOfficeService } from '../..//post-office/post-office.service';
 
 @Component({
-  selector: 'app-nps-summary',
-  templateUrl: './nps-summary.component.html',
-  styleUrls: ['./nps-summary.component.scss']
+  selector: 'app-national-seving-certificate-summary',
+  templateUrl: './national-seving-certificate-summary.component.html',
+  styleUrls: ['./national-seving-certificate-summary.component.scss']
 })
-export class NpsSummaryComponent implements OnInit {
+export class NationalSevingCertificateSummaryComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -33,6 +32,7 @@ export class NpsSummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
+  public futureNewPolicyDeclaredAmount: string;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -42,64 +42,58 @@ export class NpsSummaryComponent implements OnInit {
   public grandTabStatus: boolean;
   public selectedInstitution: string;
 
-  // public previousEmployerB: string;
-  public futureInvestmentsB : string;
-  public limitD : number = 150000;
-  public deductionE : number;
-  public eligibleForDeductionF : number;
-
   constructor(
     private service: MyInvestmentsService,
-    private npsService : NpsService,
+    private postOfficeService : PostOfficeService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
-  ) {  }
+  ) {}
 
   public ngOnInit(): void {
+    // Summary get Call on Page Load
     this.summaryPage();
   }
 
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.npsService.getNpsSummary().subscribe((res) => {
+    this.postOfficeService.getPostOfficeSummary().subscribe((res) => {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      // this.previousEmployerB = this.numberFormat.transform(
-      //   res.data.results[0].previousEmployerB
-      // );
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+        res.data.results[0].futureNewPolicyDeclaredAmount
+      );
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      console.log(res);
     });
   }
 
   // Post New Future Policy Data API call
-  public addFuturePolicy(): void {
-    // this.previousEmployerB = this.previousEmployerB.toString().replace(',', '');
-    this.futureInvestmentsB = this.futureInvestmentsB.toString().replace(',', '');
+  public addFuturePlan(): void {
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
+      .toString()
+      .replace(',', '');
+
     const data = {
-      // previousEmployerB: this.previousEmployerB,
-      futureInvestmentsB: this. futureInvestmentsB,
+      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.npsService
-      .getNpsSummaryFuturePlan(data)
+    this.postOfficeService
+      .getPostOfficeSummaryFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
         this.summaryGridData = res.data.results[0].licMasterList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        // this.previousEmployerB = this.numberFormat.transform(
-        //   res.data.results[0].previousEmployerB
-        // );
-        this.futureInvestmentsB = this.numberFormat.transform(
-          res.data.results[0].futureInvestmentsB
+        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+          res.data.results[0].futureNewPolicyDeclaredAmount
         );
-
-        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalDeclaredAmount =
+          res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =
           res.data.results[0].grandTotalActualAmount;
       });
@@ -108,15 +102,11 @@ export class NpsSummaryComponent implements OnInit {
   }
 
   // On Change Future New Policy Declared Amount with formate
-  onChangeFutureNewPolicyDeclaredAmount() {
-    // this.previousEmployerB = this.numberFormat.transform(
-    //   this.previousEmployerB
-    // );
-    this.futureInvestmentsB = this.numberFormat.transform(
-      this.futureInvestmentsB
+  onChangeFutureNewPlanDeclaredAmount() {
+    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+      this.futureNewPolicyDeclaredAmount
     );
-    this.onChangeLimit();
-    this.addFuturePolicy();
+    this.addFuturePlan();
   }
 
   jumpToMasterPage(n: number) {
@@ -133,12 +123,5 @@ export class NpsSummaryComponent implements OnInit {
     console.log('institution::', institution);
     console.log('policyNo::', policyNo);
   }
-
-  onChangeLimit() {
-    this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
-    this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.deductionE;
-  }
-
-
 }
 

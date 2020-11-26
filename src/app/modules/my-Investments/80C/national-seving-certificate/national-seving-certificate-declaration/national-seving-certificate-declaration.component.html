@@ -466,8 +466,7 @@
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
                   <th scope="col" class="font700 wd-15">Policy No.</th>
-                  <!-- <th scope="col" class="font700 wd-10">Receipt No.</th>
-                   <th scope="col" class="font700 wd-10">Receipt Date</th> -->
+
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
@@ -509,7 +508,7 @@
                       tooltip="{{ policyNo.policyNo }}"
                     >
                       <div colspan="1">
-                        {{ policyNo.policyNo }}
+                        {{ policyNo.accountNumber }}
                       </div>
                     </div>
                   </td>
@@ -517,13 +516,14 @@
 
                     <span
                     tooltip="{{
-                      documentSummary.group1MasterList[0].policyNo
+                      documentSummary.group1MasterList[0].accountNumber
                     }}"
                   >
-                        {{ documentSummary.group1MasterList[0].policyNo }}
+                        {{ documentSummary.group1MasterList[0].accountNumber }}
                     </span>
 
                   </td>
+
                   <td>
                     <span
                       tooltip="{{
@@ -1064,7 +1064,7 @@
                 <div>
                   <i
                     class="fa fa-times text-red font-18"
-                    (click)="removeSelectedSukanyaSamridhiTransactionDocumentInEditCase(index)"
+                    (click)="removeSelectedLicTransactionDocumentInEditCase(index)"
                   ></i>
                 </div>
               </label>
@@ -1192,7 +1192,7 @@
                   </span>
                 </div>
                 <div>
-                  <i class="fa fa-times text-red font-18" (click)="removeSelectedSukanyaSamridhhiTransactionDocument(index)"></i>
+                  <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
                 </div>
               </label>
             </div>

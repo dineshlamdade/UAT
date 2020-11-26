@@ -1,24 +1,38 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { MatDialog} from '@angular/material/dialog';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnInit,
+  Optional,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import {FileService} from '../../../file.service';
+import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.service';
-
+import { PostOfficeService } from '../../post-office/post-office.service';
 
 @Component({
-  selector: 'app-unit-linked-master',
-  templateUrl: './unit-linked-master.component.html',
-  styleUrls: ['./unit-linked-master.component.scss']
+  selector: 'app-national-seving-certificate-master',
+  templateUrl: './national-seving-certificate-master.component.html',
+  styleUrls: ['./national-seving-certificate-master.component.scss']
 })
-export class UnitLinkedMasterComponent implements OnInit {
+export class NationalSevingCertificateMasterComponent implements OnInit {
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -34,6 +48,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   public declarationGridData: Array<any> = [];
   public familyMemberGroup: Array<any> = [];
   public frequencyOfPaymentList: Array<any> = [];
+  public issueTypeOfList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
@@ -95,10 +110,11 @@ export class UnitLinkedMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private unitLinkedInsurancePlanService : UnitLinkedInsurancePlanService,
+    private postOfficeService: PostOfficeService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -111,9 +127,11 @@ export class UnitLinkedMasterComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
-      policyNo: new FormControl(null, Validators.required),
-      policyholdername: new FormControl(null, Validators.required),
+      issueType: new FormControl(null, Validators.required),
+      certificateNumber: new FormControl(null, Validators.required),
+      certificateHolderName: new FormControl({ value: null, disabled: true }, Validators.required),
       relationship: new FormControl({ value: null, disabled: true }, Validators.required),
+      amount: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
@@ -135,6 +153,11 @@ export class UnitLinkedMasterComponent implements OnInit {
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },];
+
+      this.issueTypeOfList = [
+        {label: 'VIII th Issue', value:'VIII th Issue' },
+        {label: 'IX th Issue', value: 'IX th Issue'},];
+
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -292,7 +315,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.unitLinkedInsurancePlanService.getULIPMaster().subscribe((res) => {
+    this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -334,8 +357,8 @@ export class UnitLinkedMasterComponent implements OnInit {
 
       console.log('Post Office Data::', data);
 
-      this.unitLinkedInsurancePlanService
-        .uploadMultipleULIPDepositMasterFiles(
+      this.postOfficeService
+        .uploadMultiplePostOfficeRecurringDepositMasterFiles(
           this.masterfilesArray,
           data
         )
@@ -429,12 +452,12 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  // Family relationship shown on Policyholder selection
-  OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('policyholdername').value);
-    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    this.form.get('relationship').setValue(toSelect.relation);
-  }
+  // // Family relationship shown on Policyholder selection
+  // OnSelectionfamilyMemberGroup() {
+  //   const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
+  //   this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  //   this.form.get('relationship').setValue(toSelect.relation);
+  // }
 
   // Deactivate the Remark
   deactivateRemark() {

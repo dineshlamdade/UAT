@@ -41,6 +41,10 @@ import { UnitLinkedDeclarationComponent } from './unit-linked-insurance-plan/uni
 import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
 import { PpsummaryComponent } from './pension-plan/ppsummary/ppsummary.component';
 import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
+import { NationalSevingCertificateComponent } from './national-seving-certificate/national-seving-certificate.component';
+import { NationalSevingCertificateSummaryComponent } from './national-seving-certificate/national-seving-certificate-summary/national-seving-certificate-summary.component';
+import { NationalSevingCertificateMasterComponent } from './national-seving-certificate/national-seving-certificate-master/national-seving-certificate-master.component';
+import { NationalSevingCertificateDeclarationComponent } from './national-seving-certificate/national-seving-certificate-declaration/national-seving-certificate-declaration.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +72,10 @@ import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclarati
     UnitLinkedSummaryComponent,
     UnitLinkedMasterComponent,
     UnitLinkedDeclarationComponent,
+    NationalSevingCertificateComponent,
+    NationalSevingCertificateSummaryComponent,
+    NationalSevingCertificateMasterComponent,
+    NationalSevingCertificateDeclarationComponent,
      ],
   imports: [
     CommonModule,

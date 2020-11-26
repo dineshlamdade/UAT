@@ -7,6 +7,7 @@ import { SukanyaSamriddhiComponent } from './80C/sukanya-samriddhi/sukanya-samri
 import { PostOfficeComponent } from './80C/post-office/post-office.component';
 import { UnitLinkedInsurancePlanComponent } from './80C/unit-linked-insurance-plan/unit-linked-insurance-plan.component';
 import { NPSComponent } from './VI-A/nps/nps.component';
+import { NationalSevingCertificateComponent } from './80C/national-seving-certificate/national-seving-certificate.component';
 
 const routes: Routes = [
 
@@ -47,7 +48,12 @@ const routes: Routes = [
         path:   'Chapter-VI-A-NPS',
         component:  NPSComponent,
         data: { title: ':: DelziaHR :: Chapter-VI-A-NPS' },
-      }
+      },
+      {
+        path:   '80C-NationalSevingCertificate',
+        component:  NationalSevingCertificateComponent,
+        data: { title: ':: DelziaHR :: NationalSevingCertificate' },
+      },
     ],
   },
   // { path: '', pathMatch: 'full', redirectTo: '/investment' },
