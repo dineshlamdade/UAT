@@ -32,7 +32,7 @@ import { PostOfficeService } from '../post-office.service';
 @Component({
   selector: 'app-post-office-declaration',
   templateUrl: './post-office-declaration.component.html',
-  styleUrls: ['./post-office-declaration.component.scss']
+  styleUrls: ['./post-office-declaration.component.scss'],
 })
 export class PostOfficeDeclarationComponent implements OnInit {
   @Input() institution: string;
@@ -61,6 +61,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
+  public editProofSubmissionId: any;
+  public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -162,7 +164,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    private postOfficeService: PostOfficeService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -291,9 +293,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
 
   public getInstitutionListWithPolicyNo() {
     this.postOfficeService
-      .getEightyCDeclarationInstitutionListWithPolicyNo()
+      .getPostOfficeDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {
-        console.log('getInstitutionListWithPolicyNo', res);
+        console.log('getInstitutionListWithAccountNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
 
         res.data.results.forEach((element) => {
@@ -445,7 +447,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
         formatedGlobalSelectedValue - formatedActualAmount
       );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
+      const index = this.uploadGridData.indexOf(
+        data.investmentGroup1TransactionId
+      );
       this.uploadGridData.splice(index, 1);
     }
 
@@ -642,7 +646,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
     this.declarationService.investmentGroup1MasterPaymentDetailId = this.transactionDetail[
       j
     ].groupTransactionList[0].investmentGroup1MasterPaymentDetailId;
-    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
+    this.transactionDetail[j].groupTransactionList.push(
+      this.declarationService
+    );
     console.log('addRow::', this.transactionDetail[j].groupTransactionList);
   }
 
@@ -702,7 +708,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
     ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
+    this.transactionDetail[j].groupTransactionList.push(
+      this.declarationService
+    );
     this.declarationService = new DeclarationService();
   }
 
@@ -720,7 +728,7 @@ export class PostOfficeDeclarationComponent implements OnInit {
     });
     const data = this.transactionDetail;
     this.postOfficeService
-      .postEightyCDeclarationTransaction(data)
+      .postPostOfficeDeclarationTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
@@ -764,13 +772,13 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
   onUploadInEditCase(event) {
-    console.log('event::', event);
+    console.log('onUploadInEditCaseevent::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.editfilesArray.push(file);
       }
     }
-    console.log(this.editfilesArray);
+    console.log('onUploadInEditCase::', this.editfilesArray);
   }
 
   removeDocument() {
@@ -834,17 +842,12 @@ export class PostOfficeDeclarationComponent implements OnInit {
     };
     console.log('data::', data);
 
-    // this.fileService.uploadSingleFile(this.currentFileUpload, data)
-    // .pipe(tap(event => {
-    //     if (event.type === HttpEventType.UploadProgress) {
-    //         this.loaded = Math.round(100 * event.loaded / event.total);
-    //     }
-    // }))
     this.postOfficeService
-      .uploadPostOfficeRecurringTransactionwithDocument(this.editfilesArray, data)
+      .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
+
           this.transactionDetail =
             res.data.results[0].investmentGroupTransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
@@ -853,22 +856,60 @@ export class PostOfficeDeclarationComponent implements OnInit {
           this.grandActualTotal = res.data.results[0].grandActualTotal;
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+          this.initialArrayIndex = [];
+
           this.transactionDetail.forEach((element) => {
+            this.initialArrayIndex.push(element.groupTransactionList.length);
+
             element.groupTransactionList.forEach((innerElement) => {
+
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(
                   innerElement.dateOfPayment
                 );
               }
-              if (this.employeeJoiningDate < innerElement.dueDate) {
-                innerElement.active = false;
+
+              if (innerElement.isECS === 0) {
+                this.glbalECS == 0;
+              } else if (innerElement.isECS === 1) {
+                this.glbalECS == 1;
+              } else {
+                this.glbalECS == 0;
               }
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount
               );
-              // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
             });
           });
+
+          // this.transactionDetail =
+          //   res.data.results[0].investmentGroupTransactionDetail;
+          // this.documentDetailList = res.data.results[0].documentInformation;
+          // this.grandDeclarationTotal =
+          //   res.data.results[0].grandDeclarationTotal;
+          // this.grandActualTotal = res.data.results[0].grandActualTotal;
+          // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.transactionDetail.forEach((element) => {
+          //   element.groupTransactionList.forEach((innerElement) => {
+          //     if (innerElement.dateOfPayment !== null) {
+          //       innerElement.dateOfPayment = new Date(
+          //         innerElement.dateOfPayment
+          //       );
+          //     }
+          //     if (this.employeeJoiningDate < innerElement.dueDate) {
+          //       innerElement.active = false;
+          //     }
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //   });
+          // });
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -899,12 +940,15 @@ export class PostOfficeDeclarationComponent implements OnInit {
     console.log('receiptAmount::', this.receiptAmount);
   }
 
-     // Update Previous Employee in Edit Modal
+  // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
     this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId =
       event.target.value;
-    console.log('previous emp id::', this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId);
+    console.log(
+      'previous emp id::',
+      this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId
+    );
   }
 
   // ------------ ON change of DueDate in Edit Modal----------
@@ -919,8 +963,12 @@ export class PostOfficeDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].groupTransactionList[i].dueDate = summary.dueDate;
-    console.log('onDueDateChangeInEditCase::',  this.editTransactionUpload[j].groupTransactionList[i].dueDate);
+    this.editTransactionUpload[j].groupTransactionList[i].dueDate =
+      summary.dueDate;
+    console.log(
+      'onDueDateChangeInEditCase::',
+      this.editTransactionUpload[j].groupTransactionList[i].dueDate
+    );
   }
 
   // --------------- ON change of declared Amount Edit Modal-------------
@@ -936,20 +984,30 @@ export class PostOfficeDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
+    console.log(
+      'onDeclaredAmountChangeInEditCase Amount change::' +
+        summary.declaredAmount
+    );
 
-    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].groupTransactionList[
+      i
+    ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].groupTransactionList[i].declaredAmount
     );
-    console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
+    console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = formatedDeclaredAmount;
+    this.editTransactionUpload[j].groupTransactionList[
+      i
+    ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
     this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
-      console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
+      console.log(
+        'declaredAmount::',
+        element.declaredAmount.toString().replace(',', '')
+      );
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
       );
@@ -957,9 +1015,11 @@ export class PostOfficeDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
-    console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
+    console.log(
+      'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
+    );
   }
-   // ---- Set Date of Payment On Edit Modal----
+  // ---- Set Date of Payment On Edit Modal----
   setDateOfPaymentInEditCase(
     summary: {
       previousEmployerName: any;
@@ -973,11 +1033,13 @@ export class PostOfficeDeclarationComponent implements OnInit {
   ) {
     this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment);
+    console.log(
+      this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment
+    );
   }
 
-   // ------------Actual Amount change Edit Modal-----------
-   onActualAmountChangeInEditCase(
+  // ------------Actual Amount change Edit Modal-----------
+  onActualAmountChangeInEditCase(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
@@ -989,17 +1051,23 @@ export class PostOfficeDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    console.log("onActualAmountChangeInEditCaseActual Amount change::" , summary);
+    console.log(
+      'onActualAmountChangeInEditCaseActual Amount change::',
+      summary
+    );
 
     this.editTransactionUpload[j].groupTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    console.log("Actual Amount changed::" , this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
+    console.log(
+      'Actual Amount changed::',
+      this.editTransactionUpload[j].groupTransactionList[i].actualAmount
+    );
 
     const formatedActualAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].groupTransactionList[i].actualAmount
     );
-    console.log(`formatedActualAmount::`,formatedActualAmount);
+    console.log(`formatedActualAmount::`, formatedActualAmount);
 
     this.editTransactionUpload[j].groupTransactionList[
       i
@@ -1008,19 +1076,24 @@ export class PostOfficeDeclarationComponent implements OnInit {
     if (
       this.editTransactionUpload[j].groupTransactionList[i].actualAmount !==
         Number(0) ||
-      this.editTransactionUpload[j].groupTransactionList[i].actualAmount !== null
+      this.editTransactionUpload[j].groupTransactionList[i].actualAmount !==
+        null
     ) {
-      console.log(`in if::`,this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
-
+      console.log(
+        `in if::`,
+        this.editTransactionUpload[j].groupTransactionList[i].actualAmount
+      );
     } else {
-      console.log(`in else::`,this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
-
+      console.log(
+        `in else::`,
+        this.editTransactionUpload[j].groupTransactionList[i].actualAmount
+      );
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ""));
+      console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
@@ -1102,6 +1175,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
+        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1198,13 +1273,10 @@ export class PostOfficeDeclarationComponent implements OnInit {
 
   public uploadUpdateTransaction() {
 
-    console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
-    // this.editTransactionUpload.forEach((element) => {
-    //   element.lictransactionList.forEach((innerelement) => {
-    //     this.uploadGridData.push(innerelement.investmentGroup1TransactionId);
-    //   });
-    // });
-    // console.log('uploadUpdateTransaction uploadGridData::', this.uploadGridData);
+    console.log(
+      'uploadUpdateTransaction editTransactionUpload::',
+      this.editTransactionUpload
+    );
 
     this.editTransactionUpload.forEach((element) => {
       element.groupTransactionList.forEach((innerElement) => {
@@ -1251,52 +1323,69 @@ export class PostOfficeDeclarationComponent implements OnInit {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       //documentRemark: this.documentRemark,
+      proofSubmissionId: this.editProofSubmissionId,
+      receiptAmount: this.editReceiptAmount,
     };
     console.log('uploadUpdateTransaction data::', data);
 
     this.postOfficeService
-      .uploadPostOfficeRecurringTransactionwithDocument(this.editfilesArray, data)
+      .uploadPostOfficeRecurringTransactionwithDocument(
+        this.editfilesArray,
+        data
+      )
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
           );
+
+          this.transactionDetail =
+            res.data.results[0].investmentGroupTransactionDetail;
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal =
+            res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+          this.initialArrayIndex = [];
+
+          this.transactionDetail.forEach((element) => {
+            this.initialArrayIndex.push(element.groupTransactionList.length);
+
+            element.groupTransactionList.forEach((innerElement) => {
+
+              if (innerElement.dateOfPayment !== null) {
+                innerElement.dateOfPayment = new Date(
+                  innerElement.dateOfPayment
+                );
+              }
+
+              if (innerElement.isECS === 0) {
+                this.glbalECS == 0;
+              } else if (innerElement.isECS === 1) {
+                this.glbalECS == 1;
+              } else {
+                this.glbalECS == 0;
+              }
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            });
+          });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
     this.currentFileUpload = null;
+    this.editfilesArray = [];
   }
-
-
-  // // tslint:disable-next-line: typedef
-  // public uploadUpdateTransaction() {
-  //   this.editTransactionUpload.forEach((element) => {
-  //     this.uploadGridData.push(element.investmentGroup1TransactionId);
-  //   });
-  //   const data = {
-  //     investmentGroupTransactionDetail: this.editTransactionUpload,
-  //     groupTransactionIDs: this.uploadGridData,
-  //     // documentRemark: this.documentRemark,
-  //   };
-  //   console.log('data::', data);
-  //   this.postOfficeService
-  //     .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
-  //     .subscribe((res) => {
-  //       console.log(res);
-  //       if (res.data.results.length > 0) {
-  //         this.alertService.sweetalertMasterSuccess(
-  //           'Transaction Saved Successfully.',
-  //           ''
-  //         );
-  //       } else {
-  //         this.alertService.sweetalertWarning(res.status.messsage);
-  //       }
-  //     });
-  //   this.currentFileUpload = null;
-  // }
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
@@ -1328,7 +1417,9 @@ export class PostOfficeDeclarationComponent implements OnInit {
   ) {
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+    console.log(
+      this.transactionDetail[j].groupTransactionList[i].dateOfPayment
+    );
   }
 }
 

@@ -4,78 +4,74 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
- @Injectable({
+@Injectable({
   providedIn: 'root'
- })
- export class PensionPlanService {
+})
+export class NpsService {
+
   apiUrl = environment.apiBaseUrl;
+  apiUrlEmployee = environment.apiBaseUrlEmployee;
 
   constructor(private _HTTP: HttpClient) { }
 
-//Summary services
-  getPensionPlanSummary() {
-    return this._HTTP.get(this.apiUrl + 'pensionPlanmaster-detail/pensionPlanMasterSummary')
+
+  getNpsSummary() {
+    return this._HTTP.get(this.apiUrl + 'npsMaster-detail/npsMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  postPensionPlanFuturePlan(data) {
+  getNpsSummaryFuturePlan(data) {
 
-    return this._HTTP.post(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'npsMaster-detail/npsMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
    //Master Services
 
-  getPensionPlanMaster() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'pensionPlanmaster-detail')
+  getNpsMaster() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'npsMaster-detail')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  //  Declaration services
+   //Declaration services
 
-  getEightyCDeclarationInstitutions() {
-    return this._HTTP.get(this.apiUrl + 'lic-transaction/institutions')
+   getNpsDeclarationInstitutionListWithAccountNo() {
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  getPensionPlanDeclarationInstitutionListWithPolicyNo() {
-    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/institutionListWithPolicyNo')
+
+  postNpsDeclarationTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'lic-transaction', data)
     .pipe(map((res: any) => {
       return res;
-    }
-    ));
+    }));
   }
 
   getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/psid/' + proofSubmissionId)
+   getTransactionByProofSubmissionId(proofSubmissionId: String) {
+    return this._HTTP.get(this.apiUrl + 'nps-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  postPensionPlanTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'pensionPlan-transaction', data)
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
 
   getpreviousEmployeName() {
 
@@ -92,7 +88,15 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     }));
   }
 
-  uploadMultiplePensionPlanMasterFiles(files: File[], data:any): Observable<any> {
+  getIdentityInformation () {
+    return this._HTTP.get(this.apiUrlEmployee + 'employeeIdentity-information/3')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+
+  uploadMultipleNpsDepositMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -108,14 +112,14 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'pensionPlanmaster-detail',
+      this.apiUrl + 'npsMaster-detail',
       formData,
       {
 
       });
   }
 
-  uploadPensionPlanTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadNpsTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -131,12 +135,10 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'pensionPlan-transaction/uploadPensionPlanTransactionDocuments',
+      this.apiUrl + 'nps-transaction/uploadNPSDocuments',
       formData,
       {
 
       });
   }
-
 }
-

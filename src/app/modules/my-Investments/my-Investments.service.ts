@@ -311,6 +311,7 @@ public apiUrl = environment.apiBaseUrl;
     }));
   }
 
+
   getAllPreviousEmployer() {
     return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
     .pipe(map((res: any) => {

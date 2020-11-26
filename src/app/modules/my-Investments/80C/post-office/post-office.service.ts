@@ -13,7 +13,7 @@ export class PostOfficeService {
   constructor(private _HTTP: HttpClient) { }
 
 
-  getEightyCSummary() {
+  getPostOfficeSummary() {
     return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummary')
     .pipe(map((res: any) => {
       return res;
@@ -21,7 +21,7 @@ export class PostOfficeService {
     ));
   }
 
-  postEightyCSummaryFuturePolicy(data) {
+  getPostOfficeSummaryFuturePlan(data) {
 
     return this._HTTP.post(this.apiUrl + 
       'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummaryFuturePolicy', data)
@@ -31,7 +31,7 @@ export class PostOfficeService {
   }
    //Master Services
 
-  getEightyCMaster() : Observable<any> {
+  getPostOfficeMaster() : Observable<any> {
     return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDepositMaster-detail')
     .pipe(map((res: any) => {
       return res;
@@ -41,15 +41,7 @@ export class PostOfficeService {
 
    //Declaration services
 
-  getEightyCDeclarationInstitutions() {
-    return this._HTTP.get(this.apiUrl + 'lic-transaction/institutions')
-    .pipe(map((res: any) => {
-      return res;
-    }
-    ));
-  }
-
-  getEightyCDeclarationInstitutionListWithPolicyNo() {
+   getPostOfficeDeclarationInstitutionListWithAccountNo() {
     return this._HTTP.get(this.apiUrl + 'postOfficeRecurringDeposit-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
@@ -71,7 +63,7 @@ export class PostOfficeService {
     }));
   }
 
-  postEightyCDeclarationTransaction(data) {
+  postPostOfficeDeclarationTransaction(data) {
     return this._HTTP.post(this.apiUrl + 'postOfficeRecurringDeposit-transaction', data)
     .pipe(map((res: any) => {
       return res;

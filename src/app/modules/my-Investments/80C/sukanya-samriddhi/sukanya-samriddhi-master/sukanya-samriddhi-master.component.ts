@@ -135,7 +135,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
-      // remark: new FormControl(null),
+      remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
@@ -316,7 +316,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.sukanyaSamriddhiService.getEightyCMaster().subscribe((res) => {
+    this.sukanyaSamriddhiService.getSukanyaSamriddhiMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {

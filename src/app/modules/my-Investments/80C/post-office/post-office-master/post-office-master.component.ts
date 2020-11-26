@@ -29,10 +29,9 @@ import { PostOfficeService } from '../post-office.service';
 @Component({
   selector: 'app-post-office-master',
   templateUrl: './post-office-master.component.html',
-  styleUrls: ['./post-office-master.component.scss']
+  styleUrls: ['./post-office-master.component.scss'],
 })
 export class PostOfficeMasterComponent implements OnInit {
-
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -112,7 +111,7 @@ export class PostOfficeMasterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    private postOfficeService: PostOfficeService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -127,21 +126,15 @@ export class PostOfficeMasterComponent implements OnInit {
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(null, Validators.required),
-      relationship: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
+      relationship: new FormControl({ value: null, disabled: true }, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
-      // remark: new FormControl(null),
+      remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
+      annualAmount: new FormControl( { value: null, disabled: true }, Validators.required),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
@@ -154,8 +147,7 @@ export class PostOfficeMasterComponent implements OnInit {
       { label: 'Monthly', value: 'Monthly' },
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
-      { label: 'Yearly', value: 'Yearly' },
-    ];
+      { label: 'Yearly', value: 'Yearly' },];
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -177,17 +169,16 @@ export class PostOfficeMasterComponent implements OnInit {
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
-      console.log("getFamilyInfo", res);
+      console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if(element.relation ==='Self'){
+        if (element.relation === 'Self') {
           this.familyMemberName.push(obj);
         }
-
       });
     });
 
@@ -215,12 +206,10 @@ export class PostOfficeMasterComponent implements OnInit {
     });
 
     if (this.today.getMonth() + 1 <= 3) {
-      this.financialYear =
-        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+      this.financialYear =this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
     } else {
       this.financialYear =
-        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
-    }
+        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);}
 
     const splitYear = this.financialYear.split('-', 2);
 
@@ -316,7 +305,7 @@ export class PostOfficeMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.postOfficeService.getEightyCMaster().subscribe((res) => {
+    this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -356,13 +345,17 @@ export class PostOfficeMasterComponent implements OnInit {
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-      console.log('LICdata::', data);
+      console.log('Post Office Data::', data);
 
       this.postOfficeService
-        .uploadMultiplePostOfficeRecurringDepositMasterFiles(this.masterfilesArray, data)
+        .uploadMultiplePostOfficeRecurringDepositMasterFiles(
+          this.masterfilesArray,
+          data
+        )
         .subscribe((res) => {
           console.log(res);
-          if (res) {
+          if (res)
+          {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -377,7 +370,9 @@ export class PostOfficeMasterComponent implements OnInit {
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
-              this.alertService.sweetalertError('This Policy Holder Already Added');
+              this.alertService.sweetalertError(
+                'This Policy Holder Already Added'
+              );
             }
           } else {
             this.alertService.sweetalertError(
@@ -408,7 +403,7 @@ export class PostOfficeMasterComponent implements OnInit {
     //console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
-  // Remove LicMaster Document
+  // Remove Post Office Master Document
   removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
     console.log('this.filesArray::', this.masterfilesArray);
@@ -449,9 +444,7 @@ export class PostOfficeMasterComponent implements OnInit {
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find(
-      (c) => c.familyMemberName === this.form.get('accountHolderName').value
-    );
+    const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
   }
@@ -462,8 +455,10 @@ export class PostOfficeMasterComponent implements OnInit {
       // this.form.get('remark').enable();
       this.hideRemarkDiv = true;
       this.form.get('remark').setValidators([Validators.required]);
+      this.form.get('remark').updateValueAndValidity();
     } else {
       this.form.get('remark').clearValidators();
+      this.form.get('remark').updateValueAndValidity();
       this.hideRemarkDiv = false;
       // this.form.get('remark').disable();
       this.form.get('remark').reset();
