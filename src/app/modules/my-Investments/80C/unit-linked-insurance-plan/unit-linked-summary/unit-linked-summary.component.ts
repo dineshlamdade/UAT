@@ -90,7 +90,7 @@ export class UnitLinkedSummaryComponent implements OnInit {
       .getULIPSummaryFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].licMasterList;
+        this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
@@ -100,9 +100,10 @@ export class UnitLinkedSummaryComponent implements OnInit {
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =
           res.data.results[0].grandTotalActualAmount;
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+
       });
 
-    this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
   // On Change Future New Policy Declared Amount with formate

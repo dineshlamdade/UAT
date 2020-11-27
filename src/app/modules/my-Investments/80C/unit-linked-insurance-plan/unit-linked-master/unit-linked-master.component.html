@@ -12,25 +12,26 @@
      </div>
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Policy No.</label>
-           <input type="text" formControlName="policyNo" class="form-control"
+           <input type="text" formControlName="accountNumber" class="form-control"
               placeholder="Enter Policy No.."
-              [ngClass]="{ 'is-invalid': submitted && masterForm.policyNo.errors }"  >
-           <div *ngIf="submitted && masterForm.policyNo.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.policyNo.errors.required">Policy No is mandatory</div>
+              [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
+           <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+              <div *ngIf="masterForm.accountNumber.errors.required">Policy No is mandatory</div>
            </div>
         </div>
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Policy Holder Name</label>
-           <select name="Policy_Holder_Name" id="policyholdername" class="form-control custom-select"
-                formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'
-                [ngClass]="{ 'is-invalid': submitted && masterForm.policyholdername.errors }">
+           <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
+                formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
               <option *ngFor="let familyMember of familyMemberName"
                 [value]="familyMember.value">
                 {{familyMember.label}}
               </option>
            </select>
-           <div *ngIf="submitted && masterForm.policyholdername.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.policyholdername.errors.required">Policy Holder Name is mandatory</div>
+           <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
+              <div *ngIf="masterForm.accountHolderName
+                    .errors.required">Policy Holder Name is mandatory</div>
            </div>
         </div>
         <div class="col-sm-6 col-md-3">

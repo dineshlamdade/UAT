@@ -378,12 +378,13 @@ export class PPFDeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+    j: number,
+
   ) {
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
-      this.globalSelectedAmount == '0'
+      this.globalSelectedAmount === '0'
         ? this.globalSelectedAmount
         : this.globalSelectedAmount.toString().replace(',', '')
     );
@@ -395,12 +396,12 @@ export class PPFDeclarationComponent implements OnInit {
       this.transactionDetail[j].groupTransactionList[i].isECS
     );
     if (checked) {
+          //console.log('item' ,item);
+          if (this.transactionDetail[j].frequency !== 'As & When') {
       if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].groupTransactionList[
-          i
-        ].dateOfPayment = new Date(data.dueDate);
+        this.transactionDetail[j].groupTransactionList[i].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
           this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -410,16 +411,18 @@ export class PPFDeclarationComponent implements OnInit {
           this.transactionDetail[j].groupTransactionList[i].dateOfPayment
         );
       } else {
+        console.log('in else actualamount')
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
+     }
 
-      formatedActualAmount = Number(
+          formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
           .replace(',', ''),
            );
-      formatedSelectedAmount = this.numberFormat.transform(
+          formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
@@ -427,6 +430,7 @@ export class PPFDeclarationComponent implements OnInit {
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
+
     } else {
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -450,8 +454,8 @@ export class PPFDeclarationComponent implements OnInit {
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
+    console.log(element.actualAmount.toString().replace(',', ""));
+    this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
     });

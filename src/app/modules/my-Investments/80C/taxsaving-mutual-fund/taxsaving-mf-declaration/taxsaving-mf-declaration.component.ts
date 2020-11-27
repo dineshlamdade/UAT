@@ -27,14 +27,15 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.service';
+import { PostOfficeService } from '../../post-office/post-office.service';
 
 @Component({
-  selector: 'app-unit-linked-declaration',
-  templateUrl: './unit-linked-declaration.component.html',
-  styleUrls: ['./unit-linked-declaration.component.scss']
+  selector: 'app-taxsaving-mf-declaration',
+  templateUrl: './taxsaving-mf-declaration.component.html',
+  styleUrls: ['./taxsaving-mf-declaration.component.scss']
 })
-export class UnitLinkedDeclarationComponent implements OnInit {
+export class TaxsavingMfDeclarationComponent implements OnInit {
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -61,8 +62,6 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public transactionInstitutionNames: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
-  public editProofSubmissionId: any;
-  public editReceiptAmount: string;
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
@@ -164,7 +163,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private unitLinkedInsurancePlanService : UnitLinkedInsurancePlanService,
+    private postOfficeService : PostOfficeService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -252,11 +251,11 @@ export class UnitLinkedDeclarationComponent implements OnInit {
 
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].group2TransactionList[i].previousEmployerId =
+    this.transactionDetail[j].groupTransactionList[i].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].group2TransactionList[i].previousEmployerId
+      this.transactionDetail[j].groupTransactionList[i].previousEmployerId
     );
   }
   // -----------on Page referesh transactionStatustList------------
@@ -292,8 +291,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.unitLinkedInsurancePlanService
-      .getULIPInstitutionListWithPolicyNo()
+    this.Service
+      .getELSSDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -397,30 +396,30 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     let formatedSelectedAmount: string;
     console.log(
       'in IS ECS::',
-      this.transactionDetail[j].group2TransactionList[i].isECS
+      this.transactionDetail[j].groupTransactionList[i].isECS
     );
     if (checked) {
-      if (this.transactionDetail[j].group2TransactionList[i].isECS === 1) {
-        this.transactionDetail[j].group2TransactionList[i].actualAmount =
+      if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
+        this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].group2TransactionList[
+        this.transactionDetail[j].groupTransactionList[
           i
         ].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
-          this.transactionDetail[j].group2TransactionList[i].actualAmount
+          this.transactionDetail[j].groupTransactionList[i].actualAmount
         );
         console.log(
           'in IS dateOfPayment::',
-          this.transactionDetail[j].group2TransactionList[i].dateOfPayment
+          this.transactionDetail[j].groupTransactionList[i].dateOfPayment
         );
       } else {
-        this.transactionDetail[j].group2TransactionList[i].actualAmount =
+        this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
 
       formatedActualAmount = Number(
-        this.transactionDetail[j].group2TransactionList[i].actualAmount
+        this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
@@ -428,33 +427,33 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         formatedGlobalSelectedValue + formatedActualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.investmentGroup2TransactionId);
+      this.uploadGridData.push(data.investmentGroup1TransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
-        this.transactionDetail[j].group2TransactionList[i].actualAmount
+        this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
-      this.transactionDetail[j].group2TransactionList[
+      this.transactionDetail[j].groupTransactionList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-      this.transactionDetail[j].group2TransactionList[i].dateOfPayment = null;
+      this.transactionDetail[j].groupTransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(data.investmentGroup2TransactionId);
+      const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
       this.uploadGridData.splice(index, 1);
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
+    this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -483,8 +482,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       this.isCheckAll = true;
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
-      item.group2TransactionList.forEach((element) => {
-        this.uploadGridData.push(element.investmentGroup2TransactionId);
+      item.groupTransactionList.forEach((element) => {
+        this.uploadGridData.push(element.investmentGroup1TransactionId);
       });
       this.enableFileUpload = true;
     }
@@ -507,21 +506,21 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].group2TransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].group2TransactionList[i].declaredAmount
+      this.transactionDetail[j].groupTransactionList[i].declaredAmount
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].group2TransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
+    this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -546,7 +545,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].group2TransactionList[i].dueDate = summary.dueDate;
+    this.transactionDetail[j].groupTransactionList[i].dueDate = summary.dueDate;
   }
 
   // ------------Actual Amount change-----------
@@ -564,33 +563,33 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
 
-    this.transactionDetail[j].group2TransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].group2TransactionList[i].actualAmount);
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].groupTransactionList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].group2TransactionList[i].actualAmount
+      this.transactionDetail[j].groupTransactionList[i].actualAmount
     );
     // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].group2TransactionList[
+    this.transactionDetail[j].groupTransactionList[
       i
     ].actualAmount = formatedActualAmount;
 
     if (
-      this.transactionDetail[j].group2TransactionList[i].actualAmount !==
+      this.transactionDetail[j].groupTransactionList[i].actualAmount !==
         Number(0) ||
-      this.transactionDetail[j].group2TransactionList[i].actualAmount !== null
+      this.transactionDetail[j].groupTransactionList[i].actualAmount !== null
     ) {
-      // console.log(`in if::`,this.transactionDetail[j].group2TransactionList[i].actualAmount);
+      // console.log(`in if::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.transactionDetail[j].group2TransactionList[i].actualAmount);
+      // console.log(`in else::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
       this.isDisabled = true;
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
+    this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -610,8 +609,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   addRowInList(
     summarynew: {
-      investmentGroup2TransactionId: number;
-      investmentGroup2MasterPaymentDetailId: number;
+      investmentGroup1TransactionId: number;
+      investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
       dueDate: Date;
       declaredAmount: any;
@@ -632,7 +631,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+    this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -641,11 +640,11 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
-    this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
+    this.declarationService.investmentGroup1MasterPaymentDetailId = this.transactionDetail[
       j
-    ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
-    this.transactionDetail[j].group2TransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].group2TransactionList);
+    ].groupTransactionList[0].investmentGroup1MasterPaymentDetailId;
+    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
+    console.log('addRow::', this.transactionDetail[j].groupTransactionList);
   }
 
   sweetalertWarning(msg: string) {
@@ -658,13 +657,13 @@ export class UnitLinkedDeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].group2TransactionList.length == 1) {
+    if (this.transactionDetail[j].groupTransactionList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].group2TransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].groupTransactionList.splice(rowCount, 1);
       return true;
     }
   }
@@ -687,8 +686,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.declarationService.actualAmount -
-      this.transactionDetail[j].group2TransactionList[i].actualAmount;
-    this.transactionDetail[j].group2TransactionList[i] = this.declarationService;
+      this.transactionDetail[j].groupTransactionList[i].actualAmount;
+    this.transactionDetail[j].groupTransactionList[i] = this.declarationService;
     this.declarationService = new DeclarationService();
   }
 
@@ -704,41 +703,41 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].group2TransactionList.push(this.declarationService);
+    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
     this.declarationService = new DeclarationService();
   }
 
-  submitDeclaration() {
-    // this.tabIndex = 0;
-    console.log(this.transactionDetail);
-    this.tabIndex = 0;
-    this.transactionDetail.forEach((element) => {
-      element.group2TransactionList.forEach((element) => {
-        element.dateOfPayment = this.datePipe.transform(
-          element.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-      });
-    });
-    const data = this.transactionDetail;
-    this.unitLinkedInsurancePlanService
-      .postULIPTransaction(data)
-      .subscribe((res) => {
-        console.log(res);
-        this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        this.transactionDetail.forEach((element) => {
-          element.group2TransactionList.forEach((element) => {
-            element.dateOfPayment = new Date(element.dateOfPayment);
-          });
-        });
-      });
-    this.resetAll();
-  }
+  // submitDeclaration() {
+  //   // this.tabIndex = 0;
+  //   console.log(this.transactionDetail);
+  //   this.tabIndex = 0;
+  //   this.transactionDetail.forEach((element) => {
+  //     element.groupTransactionList.forEach((element) => {
+  //       element.dateOfPayment = this.datePipe.transform(
+  //         element.dateOfPayment,
+  //         'yyyy-MM-dd'
+  //       );
+  //     });
+  //   });
+  //   const data = this.transactionDetail;
+  //   this.Service
+  //     .postEightyCDeclarationTransaction(data)
+  //     .subscribe((res) => {
+  //       console.log(res);
+  //       this.transactionDetail =
+  //         res.data.results[0].investmentGroupTransactionDetail;
+  //       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+  //       this.grandActualTotal = res.data.results[0].grandActualTotal;
+  //       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+  //       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+  //       this.transactionDetail.forEach((element) => {
+  //         element.groupTransactionList.forEach((element) => {
+  //           element.dateOfPayment = new Date(element.dateOfPayment);
+  //         });
+  //       });
+  //     });
+  //   this.resetAll();
+  // }
 
   // Reset All
   resetAll() {
@@ -780,7 +779,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedULIPTransactionDocument(index: number) {
+  removeSelectedLicTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -797,7 +796,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
-      element.group2TransactionList.forEach((innerElement) => {
+      element.groupTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -842,8 +841,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.unitLinkedInsurancePlanService
-      .uploadULIPTransactionwithDocument(this.filesArray, data)
+    this.Service
+      .uploadELSSTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -856,7 +855,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
           this.transactionDetail.forEach((element) => {
-            element.group2TransactionList.forEach((innerElement) => {
+            element.groupTransactionList.forEach((innerElement) => {
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(
                   innerElement.dateOfPayment
@@ -904,9 +903,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
      // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.editTransactionUpload[j].group2TransactionList[i].previousEmployerId =
+    this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId =
       event.target.value;
-    console.log('previous emp id::', this.editTransactionUpload[j].group2TransactionList[i].previousEmployerId);
+    console.log('previous emp id::', this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId);
   }
 
   // ------------ ON change of DueDate in Edit Modal----------
@@ -921,8 +920,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].group2TransactionList[i].dueDate = summary.dueDate;
-    console.log('onDueDateChangeInEditCase::',  this.editTransactionUpload[j].group2TransactionList[i].dueDate);
+    this.editTransactionUpload[j].groupTransactionList[i].dueDate = summary.dueDate;
+    console.log('onDueDateChangeInEditCase::',  this.editTransactionUpload[j].groupTransactionList[i].dueDate);
   }
 
   // --------------- ON change of declared Amount Edit Modal-------------
@@ -940,17 +939,17 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
+      this.editTransactionUpload[j].groupTransactionList[i].declaredAmount
     );
     console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[i].declaredAmount = formatedDeclaredAmount;
+    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
-    this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
+    this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
       console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -973,9 +972,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment =
+    this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment);
+    console.log(this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment);
   }
 
    // ------------Actual Amount change Edit Modal-----------
@@ -993,35 +992,35 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onActualAmountChangeInEditCaseActual Amount change::" , summary);
 
-    this.editTransactionUpload[j].group2TransactionList[
+    this.editTransactionUpload[j].groupTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    console.log("Actual Amount changed::" , this.editTransactionUpload[j].group2TransactionList[i].actualAmount);
+    console.log("Actual Amount changed::" , this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
 
     const formatedActualAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount
+      this.editTransactionUpload[j].groupTransactionList[i].actualAmount
     );
     console.log(`formatedActualAmount::`,formatedActualAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[
+    this.editTransactionUpload[j].groupTransactionList[
       i
     ].actualAmount = formatedActualAmount;
 
     if (
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount !==
+      this.editTransactionUpload[j].groupTransactionList[i].actualAmount !==
         Number(0) ||
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount !== null
+      this.editTransactionUpload[j].groupTransactionList[i].actualAmount !== null
     ) {
-      console.log(`in if::`,this.editTransactionUpload[j].group2TransactionList[i].actualAmount);
+      console.log(`in if::`,this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
 
     } else {
-      console.log(`in else::`,this.editTransactionUpload[j].group2TransactionList[i].actualAmount);
+      console.log(`in else::`,this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
 
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
+    this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -1067,9 +1066,9 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
   copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
     dueDate = new Date(dueDate);
-    // item.group2TransactionList.dateOfPayment = dueDate;
-    this.transactionDetail[0].group2TransactionList[i].dateOfPayment = dueDate;
-    this.declarationService.dateOfPayment = this.transactionDetail[0].group2TransactionList[
+    // item.groupTransactionList.dateOfPayment = dueDate;
+    this.transactionDetail[0].groupTransactionList[i].dateOfPayment = dueDate;
+    this.declarationService.dateOfPayment = this.transactionDetail[0].groupTransactionList[
       i
     ].dateOfPayment;
     // this.dateOfPayment = dueDate;
@@ -1078,7 +1077,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedULIPTransactionDocumentInEditCase(index: number) {
+  removeSelectedLicTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
@@ -1096,8 +1095,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.unitLinkedInsurancePlanService
-      .getTransactionByProofSubmissionId(proofSubmissionId)
+    this.Service
+      .getELSSTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
@@ -1111,8 +1110,6 @@ export class UnitLinkedDeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-          this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
         //console.log(this.urlArray);
         this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1156,7 +1153,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.unitLinkedInsurancePlanService
+    this.postOfficeService
       .getTransactionFilterData(institution, policyNo, transactionStatus)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
@@ -1167,14 +1164,14 @@ export class UnitLinkedDeclarationComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
+        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
 
         this.initialArrayIndex = [];
 
         this.transactionDetail.forEach((element) => {
-          this.initialArrayIndex.push(element.group2TransactionList.length);
+          this.initialArrayIndex.push(element.groupTransactionList.length);
 
-          element.group2TransactionList.forEach((innerElement) => {
+          element.groupTransactionList.forEach((innerElement) => {
             if (innerElement.dateOfPayment !== null) {
               innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
             }
@@ -1203,9 +1200,15 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   public uploadUpdateTransaction() {
 
     console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
+    // this.editTransactionUpload.forEach((element) => {
+    //   element.lictransactionList.forEach((innerelement) => {
+    //     this.uploadGridData.push(innerelement.investmentGroup1TransactionId);
+    //   });
+    // });
+    // console.log('uploadUpdateTransaction uploadGridData::', this.uploadGridData);
 
     this.editTransactionUpload.forEach((element) => {
-      element.group2TransactionList.forEach((innerElement) => {
+      element.groupTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -1232,11 +1235,11 @@ export class UnitLinkedDeclarationComponent implements OnInit {
 
         innerElement.dateOfPayment = dateOfPaymnet;
         innerElement.dueDate = dueDate;
-        this.uploadGridData.push(innerElement.investmentGroup2TransactionId);
+        this.uploadGridData.push(innerElement.investmentGroup1TransactionId);
       });
     });
     this.editTransactionUpload.forEach((element) => {
-      element.group2TransactionList.forEach((innerElement) => {
+      element.groupTransactionList.forEach((innerElement) => {
         const dateOfPaymnet = this.datePipe.transform(
           innerElement.dateOfPayment,
           'yyyy-MM-dd'
@@ -1249,71 +1252,57 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       //documentRemark: this.documentRemark,
-      proofSubmissionId: this.editProofSubmissionId,
-      receiptAmount: this.editReceiptAmount,
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.unitLinkedInsurancePlanService
-      .uploadULIPTransactionwithDocument(this.editfilesArray, data)
+    this.Service
+      .uploadELSSTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
-
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
           );
-
-          this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
-          this.documentDetailList = res.data.results[0].documentInformation;
-          this.grandDeclarationTotal =
-            res.data.results[0].grandDeclarationTotal;
-          this.grandActualTotal = res.data.results[0].grandActualTotal;
-          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-
-          this.initialArrayIndex = [];
-
-          this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.group2TransactionList.length);
-
-            element.group2TransactionList.forEach((innerElement) => {
-
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
-
-              if (innerElement.isECS === 0) {
-                this.glbalECS == 0;
-              } else if (innerElement.isECS === 1) {
-                this.glbalECS == 1;
-              } else {
-                this.glbalECS == 0;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
-              );
-            });
-          });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
     this.currentFileUpload = null;
-    this.editfilesArray = [];
   }
+
+
+  // // tslint:disable-next-line: typedef
+  // public uploadUpdateTransaction() {
+  //   this.editTransactionUpload.forEach((element) => {
+  //     this.uploadGridData.push(element.investmentGroup1TransactionId);
+  //   });
+  //   const data = {
+  //     investmentGroupTransactionDetail: this.editTransactionUpload,
+  //     groupTransactionIDs: this.uploadGridData,
+  //     // documentRemark: this.documentRemark,
+  //   };
+  //   console.log('data::', data);
+  //   this.postOfficeService
+  //     .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
+  //     .subscribe((res) => {
+  //       console.log(res);
+  //       if (res.data.results.length > 0) {
+  //         this.alertService.sweetalertMasterSuccess(
+  //           'Transaction Saved Successfully.',
+  //           ''
+  //         );
+  //       } else {
+  //         this.alertService.sweetalertWarning(res.status.messsage);
+  //       }
+  //     });
+  //   this.currentFileUpload = null;
+  // }
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.unitLinkedInsurancePlanService
-      .getTransactionByProofSubmissionId(proofSubmissionId)
+    this.Service
+      .getELSSTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
@@ -1324,7 +1313,6 @@ export class UnitLinkedDeclarationComponent implements OnInit {
           );
         });
         console.log(this.urlArray);
-
       });
   }
 
@@ -1339,15 +1327,15 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].group2TransactionList[i].dateOfPayment =
+    this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(this.transactionDetail[j].group2TransactionList[i].dateOfPayment);
+    console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
   }
 }
 
 class DeclarationService {
-  public investmentGroup2TransactionId = 0;
-  public investmentGroup2MasterPaymentDetailId: number;
+  public investmentGroup1TransactionId = 0;
+  public investmentGroup1MasterPaymentDetailId: number;
   public previousEmployerId = 0;
   public dueDate: Date;
   public declaredAmount: number;
@@ -1360,4 +1348,5 @@ class DeclarationService {
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
+
 }

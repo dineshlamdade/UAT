@@ -18,25 +18,24 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { getDecade, startOfYear } from 'date-fns';
+import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { NscService } from '../nsc.service';
+import { PostOfficeService } from '../../post-office/post-office.service';
 
 @Component({
-  selector: 'app-national-seving-certificate-master',
-  templateUrl: './national-seving-certificate-master.component.html',
-  styleUrls: ['./national-seving-certificate-master.component.scss']
+  selector: 'app-taxsaving-mf-master',
+  templateUrl: './taxsaving-mf-master.component.html',
+  styleUrls: ['./taxsaving-mf-master.component.scss'],
 })
-export class NationalSevingCertificateMasterComponent implements OnInit {
+export class TaxsavingMfMasterComponent implements OnInit {
 
   public modalRef: BsModalRef;
   public submitted = false;
-  public pdfSrc =
-    'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+  public pdfSrc ='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
@@ -48,7 +47,6 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public declarationGridData: Array<any> = [];
   public familyMemberGroup: Array<any> = [];
   public frequencyOfPaymentList: Array<any> = [];
-  public issueTypeOfList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
@@ -110,11 +108,10 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private nscService : NscService,
+    private postOfficeService: PostOfficeService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -123,22 +120,27 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     private modalService: BsModalService,
     private alertService: AlertServiceService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
   ) {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
-      issueType: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl({ value: null, disabled: true }, Validators.required),
-      relationship: new FormControl({ value: null, disabled: true }, Validators.required),
+      accountHolderName: new FormControl(null, Validators.required),
+      relationship: new FormControl(
+        { value: null, disabled: true },
+        Validators.required,
+      ),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
-      remark: new FormControl(null),
+      // remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl( { value: null, disabled: true }, Validators.required),
+      annualAmount: new FormControl(
+        { value: null, disabled: true },
+        Validators.required,
+      ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
@@ -148,12 +150,11 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     });
 
     this.frequencyOfPaymentList = [
-       { label: 'One Time', value:'OneTime'},];
-
-    this.issueTypeOfList = [
-      {label: 'VIII th Issue', value:'VIII th Issue'},
-      {label: 'IX th Issue', value:'IX th Issue'},];
-
+      { label: 'Monthly', value: 'Monthly' },
+      { label: 'Quarterly', value: 'Quarterly' },
+      { label: 'Half-Yearly', value: 'Halfyearly' },
+      { label: 'Yearly', value: 'Yearly' },
+    ];
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -167,7 +168,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-    this.deactivateRemark();
+
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
@@ -176,21 +177,25 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
-      this.familyMemberGroup = res.data.results;
-      res.data.results.forEach((element) => {
+      this.familyMemberGroup = res.data.results.filter(e =>  e.relation.includes('Self'));
+      console.log('filter family' , this.familyMemberGroup);
+      this.familyMemberGroup.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Self') {
-          this.familyMemberName.push(obj);
-        }
+
+
+        this.familyMemberName.push(obj);
+
+
       });
       this.form.patchValue({
         familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
         accountHolderName: this.familyMemberGroup[0].familyMemberName,
         relationship : this.familyMemberGroup[0].relation,
       });
+
     });
 
 
@@ -217,27 +222,18 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     });
 
     if (this.today.getMonth() + 1 <= 3) {
-      this.financialYear =this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+      this.financialYear =
+        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
     } else {
       this.financialYear =
-        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);}
+        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    }
 
     const splitYear = this.financialYear.split('-', 2);
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
-
-  // //NSC Identity Information API Call
-  // getNSCIdentityInformation() {
-  //   this.nscService.getNSCIdentityInformation().subscribe((res) => {
-  //     console.log('get Identity Information', res);
-  //     this.form.patchValue({
-  //       accountHolderName: res.data.results[0].employeePersonalInfoResponseDTO.accountHolderName,
-  //     });
-  //     });
-  //   }
-
 
   // convenience getter for easy access to form fields
   get masterForm() {
@@ -249,11 +245,11 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
       this.form.get('policyStartDate').value,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     this.minFormDate = this.policyMinDate;
     if (policyStart > policyEnd) {
@@ -270,16 +266,16 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     const financialYearStartDate = this.datePipe.transform(
       this.financialYearStart,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
         'Policy End Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+          this.financialYearStart,
       );
       this.form.controls.policyEndDate.reset();
     } else {
@@ -295,11 +291,11 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.paymentDetailMinDate = this.form.value.fromDate;
     const from = this.datePipe.transform(
       this.form.get('fromDate').value,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     if (from > to) {
       this.form.controls.toDate.reset();
@@ -310,16 +306,16 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     const financialYearStartDate = this.datePipe.transform(
       this.financialYearStart,
-      'yyyy-MM-dd'
+      'yyyy-MM-dd',
     );
     if (to < financialYearStartDate) {
       this.alertService.sweetalertWarning(
         'To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+          this.financialYearStart,
       );
       this.form.controls.toDate.reset();
     }
@@ -327,7 +323,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.nscService.getNSCMaster().subscribe((res) => {
+    this.Service.getELSSMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -341,25 +337,27 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+    console.log('in add master');
     this.submitted = true;
 
     if (this.form.invalid) {
+      console.log(this.form)
       return;
     }
 
     if (this.masterfilesArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'Post Office Recurring  Document needed to Create Master.'
+        'Please submit tax saver fund receipt',
       );
       return;
     } else {
       const from = this.datePipe.transform(
         this.form.get('fromDate').value,
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       const to = this.datePipe.transform(
         this.form.get('toDate').value,
-        'yyyy-MM-dd'
+        'yyyy-MM-dd',
       );
       const data = this.form.getRawValue();
 
@@ -367,17 +365,13 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-      console.log('Post Office Data::', data);
+      console.log('LICdata::', data);
 
-      this.nscService
-        .uploadMultipleNSCMasterFiles(
-          this.masterfilesArray,
-          data
-        )
+      this.Service
+        .submitELSSMasterData(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
-          if (res)
-          {
+          if (res) {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -388,17 +382,15 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'Go to "Declaration & Actual" Page to see Schedule.',
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
-              this.alertService.sweetalertError(
-                'This Policy Holder Already Added'
-              );
+              this.alertService.sweetalertError('This Policy Holder Already Added');
             }
           } else {
             this.alertService.sweetalertError(
-              'Something went wrong. Please try again.'
+              'Something went wrong. Please try again.',
             );
           }
         });
@@ -407,7 +399,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      // this.form.get('ecs').setValue(0);
+      this.form.get('ecs').setValue(0);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
@@ -416,16 +408,16 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
-    //console.log('event::', event);
+    // console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.masterfilesArray.push(file);
       }
     }
-    //console.log('this.masterfilesArray::', this.masterfilesArray);
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
-  // Remove Post Office Master Document
+  // Remove LicMaster Document
   removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
     console.log('this.filesArray::', this.masterfilesArray);
@@ -446,11 +438,17 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       if (!this.form.value.frequencyOfPayment) {
         installment = 0;
       }
-      if (this.form.value.frequencyOfPayment === 'One Time') {
+      if (this.form.value.frequencyOfPayment === 'Monthly') {
+        installment = installment * 12;
+      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+        installment = installment * 4;
+      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+        installment = installment * 2;
+      } else {
         installment = installment * 1;
       }
       const formatedPremiumAmount = this.numberFormat.transform(
-        this.form.value.premiumAmount
+        this.form.value.premiumAmount,
       );
       // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
       this.form.get('premiumAmount').setValue(formatedPremiumAmount);
@@ -460,7 +458,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
+    const toSelect = this.familyMemberGroup.find(
+      (c) => c.familyMemberName === this.form.get('accountHolderName').value,
+    );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
   }
@@ -471,10 +471,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       // this.form.get('remark').enable();
       this.hideRemarkDiv = true;
       this.form.get('remark').setValidators([Validators.required]);
-      this.form.get('remark').updateValueAndValidity();
     } else {
       this.form.get('remark').clearValidators();
-      this.form.get('remark').updateValueAndValidity();
       this.hideRemarkDiv = false;
       // this.form.get('remark').disable();
       this.form.get('remark').reset();
@@ -483,14 +481,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(i: number) {
-    //this.scrollToTop();
+    // this.scrollToTop();
     this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
     const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
+      this.masterGridData[i].premiumAmount,
     );
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
@@ -501,7 +499,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    // this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
@@ -509,14 +507,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // On Master Edit functionality
   viewMaster(i: number) {
-    //this.scrollToTop();
+    // this.scrollToTop();
     this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
     const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
+      this.masterGridData[i].premiumAmount,
     );
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
@@ -527,7 +525,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   cancelView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    // this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;
@@ -535,7 +533,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign({}, { class: 'gray modal-md' }),
     );
   }
+
 }

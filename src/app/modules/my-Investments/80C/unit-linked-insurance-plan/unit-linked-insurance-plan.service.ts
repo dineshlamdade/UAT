@@ -89,10 +89,10 @@ export class UnitLinkedInsurancePlanService {
       var formData: any = new FormData();
       console.log('in uploadMultipleFiles Service::', files);
       for (let file of files) {
-        formData.append('group1MasterDocuments', file);
+        formData.append('group2MasterDocuments', file);
       }
       //formData.append('licDocuments', files);
-      formData.append('investmentGroup1MasterRequestDTO', JSON.stringify(data));
+      formData.append('investmentGroup2MasterRequestDTO', JSON.stringify(data));
 
       console.log('formData', formData);
 
@@ -124,8 +124,7 @@ export class UnitLinkedInsurancePlanService {
       });
       //return null;
       return this._HTTP.post<any>(
-        this.apiUrl + 'ulip-transaction/uploadULIPgDepositDocuments',
-        formData,
+        this.apiUrl + 'ulip-transaction/uploadULIPTransactionDocuments',formData,
         {
 
         });

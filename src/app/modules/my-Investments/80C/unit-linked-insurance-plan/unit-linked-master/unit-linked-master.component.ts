@@ -111,8 +111,8 @@ export class UnitLinkedMasterComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
-      policyNo: new FormControl(null, Validators.required),
-      policyholdername: new FormControl(null, Validators.required),
+      accountNumber: new FormControl(null, Validators.required),
+      accountHolderName: new FormControl(null, Validators.required),
       relationship: new FormControl({ value: null, disabled: true }, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
@@ -126,7 +126,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
-      investmentGroup1MasterId: new FormControl(0),
+      investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
     });
 
@@ -431,7 +431,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('policyholdername').value);
+    const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
   }

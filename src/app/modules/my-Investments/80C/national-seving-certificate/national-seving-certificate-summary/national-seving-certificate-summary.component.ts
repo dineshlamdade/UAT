@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PostOfficeService } from '../..//post-office/post-office.service';
+import { NscService } from '../nsc.service';
 
 @Component({
   selector: 'app-national-seving-certificate-summary',
@@ -10,6 +10,8 @@ import { PostOfficeService } from '../..//post-office/post-office.service';
   styleUrls: ['./national-seving-certificate-summary.component.scss']
 })
 export class NationalSevingCertificateSummaryComponent implements OnInit {
+
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -23,8 +25,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
     };
     this.institution = institution;
     this.policyNo = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
+
     this.myEvent.emit(data);
   }
 
@@ -44,7 +45,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    private nscService : NscService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -57,7 +58,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.postOfficeService.getPostOfficeSummary().subscribe((res) => {
+    this.nscService.getNSCSummary().subscribe((res) => {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -72,7 +73,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   }
 
   // Post New Future Policy Data API call
-  public addFuturePlan(): void {
+  public addFuturePolicy(): void {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
       .toString()
       .replace(',', '');
@@ -82,11 +83,11 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.postOfficeService
-      .getPostOfficeSummaryFuturePlan(data)
+    this.nscService
+      .getNSCSummaryFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].licMasterList;
+        this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
@@ -96,17 +97,18 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =
           res.data.results[0].grandTotalActualAmount;
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+
       });
 
-    this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
   // On Change Future New Policy Declared Amount with formate
-  onChangeFutureNewPlanDeclaredAmount() {
+  onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
       this.futureNewPolicyDeclaredAmount
     );
-    this.addFuturePlan();
+    this.addFuturePolicy();
   }
 
   jumpToMasterPage(n: number) {

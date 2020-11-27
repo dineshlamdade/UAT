@@ -25,19 +25,19 @@
      </div>
      <div class="col-sm-6 col-md-3">
           <label class="form-label">Certificate No.</label>
-          <input type="text" formControlName="certificateNumber" class="form-control"
+          <input type="text" formControlName="accountNumber" class="form-control"
             placeholder="Enter Certificate No.."
-            [ngClass]="{ 'is-invalid': submitted && masterForm.certificateNumber.errors }"  >
-          <div *ngIf="submitted && masterForm.certificateNumber.errors" class="invalid-feedback">
-            <div *ngIf="masterForm.certificateNumber.errors.required">Certificate No is mandatory</div>
+            [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
+          <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+            <div *ngIf="masterForm.accountNumber.errors.required">Certificate No is mandatory</div>
           </div>
       </div>
         <div class="col-sm-6 col-md-3">
           <label class="form-label">Certificate Holder Name</label>
-          <input type="text" formControlName="certificateHolderName" class="form-control" disabled
-             [ngClass]="{ 'is-invalid': submitted && masterForm.certificateHolderName.errors }">
-          <div *ngIf="submitted && masterForm.certificateHolderName.errors" class="invalid-feedback">
-             <div *ngIf="masterForm.certificateHolderName.errors.required">certificate is mandatory</div>
+          <input type="text" formControlName="accountHolderName" class="form-control" disabled
+             [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
+          <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
+             <div *ngIf="masterForm.accountHolderName.errors.required">Certificate Holder Name is mandatory</div>
           </div>
        </div>
        <div class="col-sm-6 col-md-3 mt-10">
@@ -48,7 +48,7 @@
               <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
            </div>
         </div>
-        <div class="col-sm-6 col-md-3 mt-10">
+        <!-- <div class="col-sm-6 col-md-3 mt-10">
           <label class="form-label">Amount</label>
           <input type="text" formControlName="amount" class="form-control"
             placeholder="Enter Amount.."
@@ -56,9 +56,9 @@
           <div *ngIf="submitted && masterForm.amount.errors" class="invalid-feedback">
             <div *ngIf="masterForm.amount.errors.required">Amount is mandatory</div>
           </div>
-      </div>
+      </div> -->
         <div class="col-sm-6 col-md-3 mt-10">
-           <label class="form-label">Policy Start Date</label>
+           <label class="form-label">Start Date</label>
            <div class="form-group">
               <div class="input-group">
                  <div class="input-group-prepend">
@@ -66,17 +66,17 @@
                  </div>
                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate"
                   data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                  (bsValueChange)="setPolicyEndDate()" placeholder="Policy Start Date" bsDatepicker
+                  (bsValueChange)="setPolicyEndDate()" placeholder="Start Date" bsDatepicker
                   [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }"
                   [maxDate]="today">
                  <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
-                    <div *ngIf="masterForm.policyStartDate.errors.required">Policy Start Date is mandatory</div>
+                    <div *ngIf="masterForm.policyStartDate.errors.required">Start Date is mandatory</div>
                  </div>
               </div>
            </div>
         </div>
         <div class="col-sm-6 col-md-3 mt-10">
-           <label class="form-label">Policy End Date</label>
+           <label class="form-label">End Date</label>
            <div class="form-group">
               <div class="input-group">
                  <div class="input-group-prepend">
@@ -84,10 +84,10 @@
                  </div>
                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate" data-provide="datepicker"
                     data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()"
-                    [minDate]="policyMinDate" placeholder="Policy End Date" bsDatepicker
+                    [minDate]="policyMinDate" placeholder="End Date" bsDatepicker
                     [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
                  <div *ngIf="submitted && masterForm.policyEndDate.errors" class="invalid-feedback">
-                    <div *ngIf="masterForm.policyEndDate.errors.required">Policy End Date is mandatory</div>
+                    <div *ngIf="masterForm.policyEndDate.errors.required">End Date is mandatory</div>
                  </div>
               </div>
            </div>
@@ -128,7 +128,7 @@
                        <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
                     </div>
                  </div>
-                 <div class="col-sm-6 col-md-3">
+                 <!-- <div class="col-sm-6 col-md-3">
                     <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
                     <div class="custom-controls-stacked ml-15 mt-10">
                        <label class="custom-control custom-radio custom-control-inline">
@@ -142,7 +142,7 @@
                        <span class="custom-control-label">No</span>
                        </label>
                     </div>
-                 </div>
+                 </div> -->
               </div>
               <div class="row mt-4 mb-10">
                  <div class="col-sm-6 col-md-3">
@@ -230,11 +230,11 @@
                                    {{summary.annualAmount | number:'1.2-2'}}
                                    </span>
                                 </td>
-                                <td class="wd-10">
+                                <!-- <td class="wd-10">
                                    <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
                                    {{summary.ecs==1?'Yes':'No'}}
                                    </span>
-                                </td>
+                                </td> -->
                              </tr>
                              <tr *ngIf="!paymentDetailGridData?.length">
                                 <td colspan="7">
@@ -331,12 +331,11 @@
                             <th scope="col" class="wd-10">certificate Holder Name</th>
                             <th scope="col" class="wd-10">Issue Type</th>
                             <th scope="col" class="wd-10">Relationship</th>
-                            <th scope="col" class="wd-10">Amount</th>
-                            <th scope="col" class="wd-10">Policy Start Date</th>
-                            <th scope="col" class="wd-10">Policy End Date</th>
-                            <th scope="col" class="wd-10">Frequency</th>
+                            <th scope="col" class="wd-10">Start Date</th>
+                            <th scope="col" class="wd-10">End Date</th>
+                            <th scope="col" class="wd-7">Frequency</th>
                             <th scope="col" class="wd-10">Premium Amount</th>
-                            <th scope="col" class="wd-10">Status</th>
+                            <th scope="col" class="wd-8">Status</th>
                             <th scope="col" class="wd-5">Action</th>
                         </tr>
                     </thead>
@@ -344,15 +343,13 @@
                         <tr *ngFor="let summary of masterGridData; let i = index">
                             <td class="align-left wd-15"><span tooltip="{{summary.institution}}">{{summary.institution}}</span>
                             </td>
-                              <td class="wd-10"><span tooltip="{{summary.certificateNumber}}">{{summary.certificateNumber}}</span>
+                              <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.certificateHolderName}}">{{summary.certificateHolderName}}</span>
+                            <td class="wd-10"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
                             </td>
                             <td class="align-left wd-15"><span tooltip="{{summary.issueType}}">{{summary.issueType}}</span>
                             </td>
                             <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
-                            </td>
-                            <td class="wd-10"><span tooltip="{{summary.amount}}">{{summary.amount}}</span>
                             </td>
                             <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
                             </td>

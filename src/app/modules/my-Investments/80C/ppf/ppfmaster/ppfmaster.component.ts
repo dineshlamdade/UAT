@@ -113,15 +113,15 @@ export class PPFMasterComponent implements OnInit {
         accountHolderName: new FormControl(null, Validators.required),
         relationship: new FormControl({value: null, disabled: true}, Validators.required),
         policyStartDate: new FormControl(null, Validators.required),
-        policyEndDate: new FormControl(null, Validators.required),
+        policyEndDate: new FormControl(null),
         familyMemberInfoId: new FormControl(null, Validators.required),
         active: new FormControl(true, Validators.required),
         remark: new FormControl(null),
-        frequencyOfPayment: new FormControl(null, Validators.required),
-        premiumAmount: new FormControl(null, Validators.required),
-        annualAmount: new FormControl({value: null, disabled: true}, Validators.required),
-        fromDate: new FormControl(null, Validators.required),
-        toDate: new FormControl(null, Validators.required),
+        frequencyOfPayment: new FormControl(null),
+        premiumAmount: new FormControl(null),
+        annualAmount: new FormControl({value: null, disabled: true}),
+        fromDate: new FormControl(null),
+        toDate: new FormControl(null),
         ecs: new FormControl(0),
         masterPaymentDetailId: new FormControl(0),
         investmentGroup1MasterId: new FormControl(0),
@@ -133,6 +133,7 @@ export class PPFMasterComponent implements OnInit {
         {label: 'Quarterly', value: 'Quarterly'},
         {label: 'Half-Yearly', value: 'Halfyearly'},
         {label: 'Yearly', value: 'Yearly'},
+        {label: 'As & When', value: 'As & When'},
       ];
 this.masterPage();
       this.addNewRowId = 0;
@@ -156,8 +157,11 @@ this.masterPage();
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
-      this.familyMemberGroup = res.data.results;
-      res.data.results.forEach((element) => {
+      console.log('getFamilyInfo',res),
+      this.familyMemberGroup = res.data.results.filter(e => e.relation.includes( 'Daughter') || e.relation.includes( 'Self') ||
+      e.relation.includes( 'Son') || e.relation.includes( 'Wife')  );
+      console.log('getFamilyInfo', this.familyMemberGroup);
+      this.familyMemberGroup.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
@@ -166,19 +170,7 @@ this.masterPage();
       });
     });
 
-    this.deactivateRemark();
 
-    // Get All Institutes From Global Table
-    this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
-      // console.log(res);
-      res.data.results.forEach((element: { insurerName: any; }) => {
-        const obj = {
-          label: element.insurerName,
-          value: element.insurerName,
-        };
-        this.institutionNameList.push(obj);
-      });
-    });
 
     // Get All Previous Employer
     this.Service.getAllPreviousEmployer().subscribe((res) => {
@@ -294,10 +286,18 @@ this.masterPage();
           console.log('masterGridData::', res);
           this.masterGridData = res.data.results;
           this.masterGridData.forEach((element) => {
+            if (element.policyStartDate !== null) {
             element.policyStartDate = new Date(element.policyStartDate);
+            }
+            if (element.policyEndDate !== null) {
             element.policyEndDate = new Date(element.policyEndDate);
+            }
+            if (element.fromDate !== null) {
             element.fromDate = new Date(element.fromDate);
+            }
+            if (element.toDate !== null) {
             element.toDate = new Date(element.toDate);
+            }
           });
         });
       }
@@ -314,16 +314,22 @@ this.masterPage();
         if (this.masterfilesArray.length === 0) {
           this.alertService.sweetalertWarning('LIC Document needed to Create Master.');
           return;
-        } else {
+        }
+
+         else {
+          const data = this.form.getRawValue();
+          if (this.form.value.frequencyOfPayment !== 'As & When'){
           const from = this.datePipe.transform(this.form.get('fromDate').value, 'yyyy-MM-dd');
           const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
-          const data = this.form.getRawValue();
+
 
           data.fromDate = from;
           data.toDate = to;
           data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+          }
 
           console.log('LICdata::', data);
+
 
           this.Service.submitPPFMasterData(this.masterfilesArray, data)
             .subscribe((res) => {
@@ -336,9 +342,16 @@ this.masterPage();
                     element.policyEndDate = new Date(element.policyEndDate);
                     element.fromDate = new Date(element.fromDate);
                     element.toDate = new Date(element.toDate);
+
                   });
+                  if (data.frequencyOfPayment !== 'As & When'){
+
                   this.alertService.sweetalertMasterSuccess('Record saved Successfully.',
                   'Go to "Declaration & Actual" Page to see Schedule.');
+                  } else if (data.frequencyOfPayment === 'As & When') {
+                    this.alertService.sweetalertMasterSuccess('Record saved Successfully.',
+                    'Go to "Declaration & Actual"ss Page to update the Actuals.');
+                  }
                 } else {
                   this.alertService.sweetalertWarning(res.status.messsage);
                 }
@@ -379,9 +392,23 @@ this.masterPage();
 
       // Calculate annual amount on basis of premium and frquency
         calculateAnnualAmount() {
+              console.log (this.form.value.frequencyOfPayment);
+              if (this.form.value.frequencyOfPayment === 'As & When'){
+            console.log('in as and when')
+            //this.form.get(this.form.value.premiumAmoun).setValue(null);
+
+            this.form.get('premiumAmount').setValue(0);
+            this.form.get('annualAmount').setValue(0) ;
+            this.form.get('fromDate').reset() ;
+            this.form.get('toDate').reset() ;
+            this.form.get('ecs').setValue('0') ;
+
+          }
+          else{
           let installment = this.form.value.premiumAmount;
           installment = installment.toString().replace(',', '');
           // console.log(installment);
+
           if (!this.form.value.frequencyOfPayment) {
               installment = 0;
           }
@@ -391,7 +418,8 @@ this.masterPage();
               installment = installment * 4;
           } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
               installment = installment * 2;
-          } else {
+          }
+          else {
               installment = installment * 1;
           }
           const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
@@ -399,6 +427,7 @@ this.masterPage();
           this.form.get('premiumAmount').setValue(formatedPremiumAmount);
           this.form.get('annualAmount').setValue(installment);
         }
+      }
 
       // Family relationship shown on Policyholder selection
         OnSelectionfamilyMemberGroup() {
@@ -424,6 +453,30 @@ this.masterPage();
       // On Master Edit functionality
         editMaster(i: number) {
           //this.scrollToTop();
+          console.log('inedit as and when', this.masterGridData[i].frequency);
+          if (this.masterGridData[i].frequency === 'As & When') {
+
+            this.form.patchValue({
+              institution: this.masterGridData[i].institution,
+              accountNumber: this.masterGridData[i].accountNumber,
+              accountHolderName: this.masterGridData[i].accountHolderName,
+              relationship: this.masterGridData[i].relationship,
+              policyStartDate:this.masterGridData[i].policyStartDate,
+              fromDate: this.masterGridData[i].fromDate,
+              familyMemberInfoId: this.masterGridData[i].familyMemberInfoId,
+              frequencyOfPayment: this.masterGridData[i].frequencyOfPayment,
+              //premiumAmount: this.masterGridData[i].institution,
+              //annualAmount: this.masterGridData[i].institution,
+
+              //toDate: new FormControl(null),
+              //ecs: new FormControl(0),
+
+
+
+          });
+
+          }
+          else{
           this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
           this.form.patchValue(this.masterGridData[i]);
           // console.log(this.form.getRawValue());
@@ -434,6 +487,7 @@ this.masterPage();
           this.form.get('premiumAmount').setValue(formatedPremiumAmount);
           this.isClear = true;
         }
+      }
 
       // On Edit Cancel
         cancelEdit() {

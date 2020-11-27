@@ -12,7 +12,7 @@
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-national-seving-certificate-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-national-seving-certificate-summary>
+                  <app-taxsaving-mf-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-taxsaving-mf-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -21,7 +21,7 @@
                 <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
                   [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <app-national-seving-certificate-master *ngIf="tabIndex== 1"> </app-national-seving-certificate-master>
+                  <app-taxsaving-mf-master *ngIf="tabIndex== 1"> </app-taxsaving-mf-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>
@@ -29,9 +29,10 @@
 
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
-                  <div class="tabs about-page">
-                    <app-national-seving-certificate-declaration [data] ="data" *ngIf="tabIndex == 2"> </app-national-seving-certificate-declaration>
-                  </div>
+                <div class="tabs about-page">
+                  <app-taxsaving-mf-declaration #licdeclaration [data]="data" *ngIf="tabIndex == 2"></app-taxsaving-mf-declaration>
+                </div>
+
                 <label class="nav" for="Declaration">
                   <span> Declaration & Actual </span>
                 </label>
@@ -50,3 +51,4 @@
     <app-footer></app-footer>
   </div>
 </div>
+

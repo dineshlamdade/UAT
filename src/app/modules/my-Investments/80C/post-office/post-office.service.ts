@@ -23,7 +23,8 @@ export class PostOfficeService {
 
   getPostOfficeSummaryFuturePlan(data) {
 
-    return this._HTTP.post(this.apiUrl + 'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 
+      'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
