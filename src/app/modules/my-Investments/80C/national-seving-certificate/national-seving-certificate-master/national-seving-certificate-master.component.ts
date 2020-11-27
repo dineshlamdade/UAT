@@ -1,24 +1,38 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { MatDialog} from '@angular/material/dialog';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnInit,
+  Optional,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { startOfYear } from 'date-fns';
+import { getDecade, startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import {FileService} from '../../../file.service';
+import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.service';
-
+import { NscService } from '../nsc.service';
 
 @Component({
-  selector: 'app-unit-linked-master',
-  templateUrl: './unit-linked-master.component.html',
-  styleUrls: ['./unit-linked-master.component.scss']
+  selector: 'app-national-seving-certificate-master',
+  templateUrl: './national-seving-certificate-master.component.html',
+  styleUrls: ['./national-seving-certificate-master.component.scss']
 })
-export class UnitLinkedMasterComponent implements OnInit {
+export class NationalSevingCertificateMasterComponent implements OnInit {
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -34,6 +48,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   public declarationGridData: Array<any> = [];
   public familyMemberGroup: Array<any> = [];
   public frequencyOfPaymentList: Array<any> = [];
+  public issueTypeOfList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
@@ -95,10 +110,11 @@ export class UnitLinkedMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private unitLinkedInsurancePlanService : UnitLinkedInsurancePlanService,
+    private nscService : NscService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -111,8 +127,9 @@ export class UnitLinkedMasterComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
+      issueType: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl(null, Validators.required),
+      accountHolderName: new FormControl({ value: null, disabled: true }, Validators.required),
       relationship: new FormControl({ value: null, disabled: true }, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
@@ -131,10 +148,12 @@ export class UnitLinkedMasterComponent implements OnInit {
     });
 
     this.frequencyOfPaymentList = [
-      { label: 'Monthly', value: 'Monthly' },
-      { label: 'Quarterly', value: 'Quarterly' },
-      { label: 'Half-Yearly', value: 'Halfyearly' },
-      { label: 'Yearly', value: 'Yearly' },];
+       { label: 'One Time', value:'OneTime'},];
+
+    this.issueTypeOfList = [
+      {label: 'VIII th Issue', value:'VIII th Issue'},
+      {label: 'IX th Issue', value:'IX th Issue'},];
+
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -148,7 +167,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-
+    this.deactivateRemark();
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
@@ -167,9 +186,14 @@ export class UnitLinkedMasterComponent implements OnInit {
           this.familyMemberName.push(obj);
         }
       });
+      this.form.patchValue({
+        familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
+        accountHolderName: this.familyMemberGroup[0].familyMemberName,
+        relationship : this.familyMemberGroup[0].relation,
+      });
     });
 
-    this.deactivateRemark();
+
 
     // Get All Institutes From Global Table
     this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
@@ -203,6 +227,17 @@ export class UnitLinkedMasterComponent implements OnInit {
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
+
+  // //NSC Identity Information API Call
+  // getNSCIdentityInformation() {
+  //   this.nscService.getNSCIdentityInformation().subscribe((res) => {
+  //     console.log('get Identity Information', res);
+  //     this.form.patchValue({
+  //       accountHolderName: res.data.results[0].employeePersonalInfoResponseDTO.accountHolderName,
+  //     });
+  //     });
+  //   }
+
 
   // convenience getter for easy access to form fields
   get masterForm() {
@@ -292,7 +327,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.unitLinkedInsurancePlanService.getULIPMaster().subscribe((res) => {
+    this.nscService.getNSCMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
@@ -334,8 +369,8 @@ export class UnitLinkedMasterComponent implements OnInit {
 
       console.log('Post Office Data::', data);
 
-      this.unitLinkedInsurancePlanService
-        .uploadMultipleULIPDepositMasterFiles(
+      this.nscService
+        .uploadMultipleNSCMasterFiles(
           this.masterfilesArray,
           data
         )
@@ -372,7 +407,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      // this.form.get('ecs').setValue(0);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
@@ -411,13 +446,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       if (!this.form.value.frequencyOfPayment) {
         installment = 0;
       }
-      if (this.form.value.frequencyOfPayment === 'Monthly') {
-        installment = installment * 12;
-      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-        installment = installment * 4;
-      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-        installment = installment * 2;
-      } else {
+      if (this.form.value.frequencyOfPayment === 'One Time') {
         installment = installment * 1;
       }
       const formatedPremiumAmount = this.numberFormat.transform(
@@ -472,7 +501,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    // this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
@@ -498,7 +527,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   cancelView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    // this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;

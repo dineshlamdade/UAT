@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.service';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 export class UnitLinkedSummaryComponent implements OnInit {
 
+
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -18,14 +20,13 @@ export class UnitLinkedSummaryComponent implements OnInit {
   onEditSummary(institution: string, policyNo: string) {
     this.tabIndex = 2;
     const data = {
-      institution : institution,
-      policyNo : policyNo,
-      tabIndex : this.tabIndex
+      institution: institution,
+      policyNo: policyNo,
+      tabIndex: this.tabIndex,
     };
     this.institution = institution;
     this.policyNo = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
+
     this.myEvent.emit(data);
   }
 
@@ -45,71 +46,87 @@ export class UnitLinkedSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
+    private unitLinkedInsurancePlanService : UnitLinkedInsurancePlanService,
+
+
     private numberFormat: NumberFormatPipe,
-    private alertService: AlertServiceService,
-    ) { }
+    private alertService: AlertServiceService
+  ) {}
 
   public ngOnInit(): void {
     // Summary get Call on Page Load
     this.summaryPage();
-
   }
 
   // ---------------------Summary ----------------------
-    // Summary get Call
-      summaryPage() {
-        this.service.getEightyCSummary().subscribe((res) => {
-          this.summaryGridData = res.data.results[0].licMasterList;
-          this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-          this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
-          this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-          this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-          // console.log(res);
-        });
-      }
+  // Summary get Call
+  summaryPage() {
+    this.unitLinkedInsurancePlanService.getULIPSummary().subscribe((res) => {
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+        res.data.results[0].futureNewPolicyDeclaredAmount
+      );
+      this.grandTotalDeclaredAmount =
+        res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      console.log(res);
+    });
+  }
 
-    // Post New Future Policy Data API call
-      public addFuturePolicy(): void {
+  // Post New Future Policy Data API call
+  public addFuturePolicy(): void {
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
+      .toString()
+      .replace(',', '');
 
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
+    const data = {
+      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
+    };
 
-        const data = {
-            futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
-        };
+    //console.log('addFuturePolicy Data..', data);
+    this.unitLinkedInsurancePlanService
+      .getULIPSummaryFuturePlan(data)
+      .subscribe((res) => {
+        //console.log('addFuturePolicy Res..', res);
+        this.summaryGridData = res.data.results[0].transactionDetailList;
+        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+        this.totalActualAmount = res.data.results[0].totalActualAmount;
+        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+          res.data.results[0].futureNewPolicyDeclaredAmount
+        );
+        this.grandTotalDeclaredAmount =
+          res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount =
+          res.data.results[0].grandTotalActualAmount;
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
 
-        console.log('addFuturePolicy Data..', data);
-        this.service.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
-            console.log('addFuturePolicy Res..', res);
-            this.summaryGridData = res.data.results[0].licMasterList;
-            this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-            this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
-            this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-            this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-        });
+      });
 
-        this.alertService.sweetalertMasterSuccess("Future Amount was saved","");
-      }
+  }
 
   // On Change Future New Policy Declared Amount with formate
-    onChangeFutureNewPolicyDeclaredAmount() {
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
-      this.addFuturePolicy();
-    }
+  onChangeFutureNewPolicyDeclaredAmount() {
+    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+      this.futureNewPolicyDeclaredAmount
+    );
+    this.addFuturePolicy();
+  }
 
-    jumpToMasterPage(n: number) {
-        //console.log(n);
-        this.tabIndex = 1;
-        //this.editMaster(3);
-    }
+  jumpToMasterPage(n: number) {
+    //console.log(n);
+    this.tabIndex = 1;
+    //this.editMaster(3);
+  }
 
   // On onEditSummary
-    onEditSummary1(institution: string, policyNo: string) {
-      this.tabIndex = 2;
-      this.institution = institution;
-      this.policyNo = policyNo;
-      console.log('institution::', institution);
-      console.log('policyNo::', policyNo);
-    }
+  onEditSummary1(institution: string, policyNo: string) {
+    this.tabIndex = 2;
+    this.institution = institution;
+    this.policyNo = policyNo;
+    console.log('institution::', institution);
+    console.log('policyNo::', policyNo);
+  }
 }
+
