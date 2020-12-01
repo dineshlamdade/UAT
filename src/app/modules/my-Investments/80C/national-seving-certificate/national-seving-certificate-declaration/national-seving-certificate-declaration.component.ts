@@ -27,14 +27,17 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.service';
+import { PostOfficeService } from '../../post-office/post-office.service';
+import { NscService } from '../nsc.service';
+// import { PostOfficeService } from '../post-office.service';
+
 
 @Component({
-  selector: 'app-unit-linked-declaration',
-  templateUrl: './unit-linked-declaration.component.html',
-  styleUrls: ['./unit-linked-declaration.component.scss']
+  selector: 'app-national-seving-certificate-declaration',
+  templateUrl: './national-seving-certificate-declaration.component.html',
+  styleUrls: ['./national-seving-certificate-declaration.component.scss']
 })
-export class UnitLinkedDeclarationComponent implements OnInit {
+export class NationalSevingCertificateDeclarationComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -164,7 +167,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private unitLinkedInsurancePlanService : UnitLinkedInsurancePlanService,
+    private nscService : NscService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -292,8 +295,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.unitLinkedInsurancePlanService
-      .getULIPInstitutionListWithPolicyNo()
+    this.nscService
+      .getNSCInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -721,8 +724,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.unitLinkedInsurancePlanService
-      .postULIPTransaction(data)
+    this.nscService
+      .postNSCTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
@@ -780,7 +783,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedULIPTransactionDocument(index: number) {
+  removeSelectedNSCTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -842,8 +845,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.unitLinkedInsurancePlanService
-      .uploadULIPTransactionwithDocument(this.filesArray, data)
+    this.nscService
+      .uploadNSCTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1078,7 +1081,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedULIPTransactionDocumentInEditCase(index: number) {
+  removeSelectedNSCTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
@@ -1096,7 +1099,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.unitLinkedInsurancePlanService
+    this.nscService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
@@ -1156,7 +1159,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.unitLinkedInsurancePlanService
+    this.nscService
       .getTransactionFilterData(institution, policyNo, transactionStatus)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
@@ -1254,8 +1257,8 @@ export class UnitLinkedDeclarationComponent implements OnInit {
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.unitLinkedInsurancePlanService
-      .uploadULIPTransactionwithDocument(this.editfilesArray, data)
+    this.nscService
+      .uploadNSCTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1312,7 +1315,7 @@ export class UnitLinkedDeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.unitLinkedInsurancePlanService
+    this.nscService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);

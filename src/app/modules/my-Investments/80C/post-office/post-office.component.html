@@ -30,7 +30,7 @@
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
-                  <app-post-office-declaration #licdeclaration [data]="data" *ngIf="tabIndex == 2"></app-post-office-declaration>
+                  <app-post-office-declaration [data] ="data" *ngIf="tabIndex == 2"></app-post-office-declaration>
                 </div>
 
                 <label class="nav" for="Declaration">

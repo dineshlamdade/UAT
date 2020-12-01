@@ -21,7 +21,6 @@ import { LicComponent } from './lic/lic.component';
 import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
 import { LicmasterComponent } from './lic/licmaster/licmaster.component';
 import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
-import { NscComponent } from './nsc/nsc.component';
 import { PensionPlanComponent } from './pension-plan/pension-plan.component';
 import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
 import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
@@ -45,6 +44,11 @@ import { TaxsavingMutualFundComponent } from './taxsaving-mutual-fund/taxsaving-
 import { UnitLinkedDeclarationComponent } from './unit-linked-insurance-plan/unit-linked-declaration/unit-linked-declaration.component';
 import { UnitLinkedInsurancePlanComponent } from './unit-linked-insurance-plan/unit-linked-insurance-plan.component';
 import { UnitLinkedMasterComponent } from './unit-linked-insurance-plan/unit-linked-master/unit-linked-master.component';
+
+import { NationalSevingCertificateComponent } from './national-seving-certificate/national-seving-certificate.component';
+import { NationalSevingCertificateSummaryComponent } from './national-seving-certificate/national-seving-certificate-summary/national-seving-certificate-summary.component';
+import { NationalSevingCertificateMasterComponent } from './national-seving-certificate/national-seving-certificate-master/national-seving-certificate-master.component';
+import { NationalSevingCertificateDeclarationComponent } from './national-seving-certificate/national-seving-certificate-declaration/national-seving-certificate-declaration.component';
 import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-linked-summary/unit-linked-summary.component';
 
 @NgModule({
@@ -57,7 +61,6 @@ import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-li
     LicsummaryComponent,
     LicmasterComponent,
     LicdeclarationComponent,
-    NscComponent,
     TaxsavingMfDeclarationComponent,
     TaxsavingMfSummaryComponent,
     TaxsavingMfMasterComponent,
@@ -78,6 +81,10 @@ import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-li
     UnitLinkedSummaryComponent,
     UnitLinkedMasterComponent,
     UnitLinkedDeclarationComponent,
+    NationalSevingCertificateComponent,
+    NationalSevingCertificateSummaryComponent,
+    NationalSevingCertificateMasterComponent,
+    NationalSevingCertificateDeclarationComponent,
      ],
   imports: [
     CommonModule,
