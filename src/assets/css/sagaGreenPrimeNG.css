@@ -1841,7 +1841,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   color: #495057;
   background: #f8f9fa;
   transition: box-shadow 0.2s;
-  font-size: 14px;
+  font-size: 13px;
 }
 .p-datatable .p-datatable-tfoot > tr > td {
   text-align: left;
@@ -1851,7 +1851,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   font-weight: 600;
   color: #495057;
   background: #f8f9fa;
-  font-size: 14px;
+  font-size: 13px;
 }
 .p-datatable .p-sortable-column {
   outline-color: #b7e0b8;
@@ -1905,6 +1905,7 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   border: 1px solid #e9ecef;
   border-width: 0 0 1px 0;
   padding: 1rem 1rem;
+  font-size: 13px;
 }
 .p-datatable .p-datatable-tbody > tr > td .p-row-toggler,
 .p-datatable .p-datatable-tbody > tr > td .p-row-editor-init,

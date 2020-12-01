@@ -300,7 +300,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
         this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
-
+          debugger
           this.AllESICList = res.data.results[0];
           this.getStates();
           // const TABLE_DATA1: ESICElement[] = res.data.results[0];
@@ -322,9 +322,10 @@ export class NominationDetailsComponent implements OnInit {
               this.ESICMemberList.find((element1) => {
                 if (element == element1.familyMemberInfoId) {
                   this.AllESICList.push(element1);
-                  const TABLE_DATA1: ESICElement[] = this.AllESICList;
+                  // const TABLE_DATA1: ESICElement[] = this.AllESICList;
                   this.AllESICList.forEach(res => {
                     res.stateList = this.states;
+                    res.familyMemberName = element1.familyMemberName;
                   })
                   return this.esicDataSource = this.AllESICList;
                   // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
@@ -333,8 +334,13 @@ export class NominationDetailsComponent implements OnInit {
             })
           } else {
             const TABLE_DATA1: ESICElement[] = this.AllESICList;
-            this.AllESICList.forEach(res => {
-              res.stateList = this.states;
+            this.ESICMemberList.forEach((element1) => {
+              this.AllESICList.some(res => {
+                res.stateList = this.states;
+                if(element1.familyMemberInfoId == res.familyMemberInfoId){
+                  res.familyMemberName = element1.familyMemberName;
+                }
+              })
             })
             return this.esicDataSource = this.AllESICList;
             // return this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
@@ -664,7 +670,7 @@ export class NominationDetailsComponent implements OnInit {
       // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
       // this.dataSource = new MatTableDataSource(TABLE_DATA);
       this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
-      
+
     })
   }
 
@@ -682,7 +688,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   filterCities(event, ESIC) {
-    
+
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: any[] = [];
     let query = event.query;
@@ -696,7 +702,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   filterDispensaryList(event, ESIC) {
-    
+
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: any[] = [];
     let query = event.query;

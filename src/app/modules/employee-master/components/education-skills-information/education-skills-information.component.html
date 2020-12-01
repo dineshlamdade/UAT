@@ -1,0 +1,61 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="educatiotabview">
+                                <input name="nav" type="radio" class="about-radio" id="educationDetails"
+                                    [checked]="tabIndex==0" />
+                                <label class="nav" for="educationDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/education-skills-information/education-details']">
+                                    <span>
+                                        Education Information
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="skillsDetails"
+                                    [checked]="tabIndex==1" />
+                                <label class="nav" for="skillsDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/education-skills-information/skills-details']">
+                                    <span>
+                                        Skills Information
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="languageDetails"
+                                    [checked]="tabIndex==2" />
+                                <label class="nav" for="languageDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/education-skills-information/language-details']">
+                                    <span>
+                                        Language Information
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="CertificationDetails"
+                                    [checked]="tabIndex==3" />
+                                <label class="nav" for="CertificationDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/education-skills-information/certification-details']">
+                                    <span>
+                                        Certification Information
+                                    </span>
+                                </label>
+
+
+                                <div class="educationtabs about-page">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -81,4 +81,19 @@ export class SharedInformationService {
       timerProgressBar: true,
     })
   }
+
+  sweetalertWarning(message:any) {
+    Swal.fire({
+        title: message,
+        showCloseButton: true,
+        showCancelButton: false,
+        toast:true,
+        position:'top-end',
+        showConfirmButton:false,
+        background:'#e68a00',
+        icon:'warning',
+        timer: 15000,
+        timerProgressBar: true,
+    })
+}
 }

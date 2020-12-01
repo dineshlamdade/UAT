@@ -39,6 +39,12 @@ import { FamilyInformationComponent } from './components/family-information/fami
 import { FamilyDetailsComponent } from './components/family-information/family-details/family-details.component';
 import { NominationDetailsComponent } from './components/family-information/nomination-details/nomination-details.component';
 import { BankDetailsComponent } from './components/family-information/bank-details/bank-details.component';
+import { EducationSkillsInformationComponent } from './components/education-skills-information/education-skills-information.component';
+import { EducationDetailComponent } from './components/education-skills-information/education-detail/education-detail.component';
+import { LanguageDetailComponent } from './components/education-skills-information/language-detail/language-detail.component';
+import { SkillsDetailComponent } from './components/education-skills-information/skills-detail/skills-detail.component';
+import { CertificationDetailComponent } from './components/education-skills-information/certification-detail/certification-detail.component';
+import { JobInformationComponent } from './components/job-information/job-information.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +58,13 @@ import { BankDetailsComponent } from './components/family-information/bank-detai
         FamilyInformationComponent,
         FamilyDetailsComponent,
         NominationDetailsComponent,
-        BankDetailsComponent
+        BankDetailsComponent,
+        EducationSkillsInformationComponent,
+        EducationDetailComponent,
+        LanguageDetailComponent,
+        SkillsDetailComponent,
+        CertificationDetailComponent,
+        JobInformationComponent
     ],
     imports: [
         CommonModule,
