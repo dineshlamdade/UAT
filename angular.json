@@ -32,7 +32,6 @@
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/angular-calendar/css/angular-calendar.css"
-
             ],
             "scripts": [
               "node_modules/apexcharts/dist/apexcharts.min.js"
@@ -120,20 +119,22 @@
           }
         },
         "e2e": {
-                    "builder": "@angular-devkit/build-angular:protractor",
-                     "options": {
-                       "protractorConfig": "e2e/protractor.conf.js",
-                       "devServerTarget": "DelziaHR:serve"
-                     },
-                     "configurations": {
-                       "production": {
-                         "devServerTarget": "DelziaHR:serve:production"
-                       }
-                     }
-                   }
-                 }
-               }},
-             "defaultProject": "DelziaHR"
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "DelziaHR:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "DelziaHR:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "DelziaHR",
+  "cli": {
+    "analytics": false
+  }
 }
-
-

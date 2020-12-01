@@ -509,7 +509,7 @@ export class EightyCComponent implements OnInit {
                 this.form.get('ecs').setValue(0);
                 this.showUpdateButton = false;
                 this.paymentDetailGridData = [];
-                this.isCancel=false;
+                this.isCancel = false;
             }
 
         // ----------------------------------------------- Declaration --------------------------------------
@@ -814,7 +814,7 @@ export class EightyCComponent implements OnInit {
                     .subscribe(res => {
                         console.log(res);
 
-                        if(res.data.results.length > 0) {
+                        if (res.data.results.length > 0) {
                             this.transactionDetail = res.data.results[0].licTransactionDetail;
                             this.documentDetailList = res.data.results[0].documentInformation;
                             this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;

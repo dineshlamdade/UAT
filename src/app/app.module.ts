@@ -36,6 +36,8 @@ import { DemoMaterialModule } from './app.material.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
+import { OtherMasterModule } from './modules/other-master/other-master.module';
+
 
 
 @NgModule({
@@ -76,7 +78,8 @@ import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.mod
     AppRoutingModule,
     DashboardModule,
     MyInvestmentsModule,
-    PayrollModule
+    PayrollModule,
+    OtherMasterModule
   ],
   providers: [BsDatepickerModule,
     translocoLoader, {
