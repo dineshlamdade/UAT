@@ -426,7 +426,7 @@ export class PPFDeclarationComponent implements OnInit {
         formatedGlobalSelectedValue + formatedActualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.investmentGroup1TransactionId);
+      this.uploadGridData.push(data.investmentGroup2TransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
@@ -446,7 +446,7 @@ export class PPFDeclarationComponent implements OnInit {
         formatedGlobalSelectedValue - formatedActualAmount
       );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
+      const index = this.uploadGridData.indexOf(data.investmentGroup2TransactionId);
       this.uploadGridData.splice(index, 1);
     }
 
@@ -483,7 +483,7 @@ export class PPFDeclarationComponent implements OnInit {
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
       item.groupTransactionList.forEach((element) => {
-        this.uploadGridData.push(element.investmentGroup1TransactionId);
+        this.uploadGridData.push(element.investmentGroup2TransactionId);
       });
       this.enableFileUpload = true;
     }
@@ -609,7 +609,7 @@ export class PPFDeclarationComponent implements OnInit {
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   addRowInList(
     summarynew: {
-      investmentGroup1TransactionId: number;
+      investmentGroup2TransactionId: number;
       licMasterPaymentDetailsId: number;
       previousEmployerId: number;
       dueDate: Date;
@@ -631,7 +631,7 @@ export class PPFDeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
+    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -1047,7 +1047,7 @@ export class PPFDeclarationComponent implements OnInit {
   // tslint:disable-next-line: typedef
   public uploadUpdateTransaction() {
     this.editTransactionUpload.forEach((element) => {
-      this.uploadGridData.push(element.investmentGroup1TransactionId);
+      this.uploadGridData.push(element.investmentGroup2TransactionId);
     });
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
@@ -1106,7 +1106,7 @@ export class PPFDeclarationComponent implements OnInit {
 }
 
 class DeclarationService {
-  public investmentGroup1TransactionId = 0;
+  public investmentGroup2TransactionId = 0;
   public licMasterPaymentDetailsId: number;
   public previousEmployerId = 0;
   public dueDate: Date;

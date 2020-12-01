@@ -132,7 +132,7 @@
             </thead>
             <tbody>
               <tr *ngFor="
-                  let summary of item.groupTransactionList;
+                  let summary of item.group2TransactionList;
                   let i = index;
                   count as c
                 ">
@@ -491,7 +491,7 @@
                     </span>
                   </td>
                   <td>
-                    {{ documentSummary.group1MasterList[0].institution }}
+                    {{ documentSummary.group2MasterList[0].institution }}
                   </td>
                   <td>
                     <span
@@ -504,9 +504,9 @@
                       }}</span
                     >
                   </td>
-                  <td class="padding-0"  *ngIf = "documentSummary.group1MasterList.length > 1">
+                  <td class="padding-0"  *ngIf = "documentSummary.group2MasterList.length > 1">
                     <div class="pd-5"
-                      *ngFor="let policyNo of documentSummary.group1MasterList"
+                      *ngFor="let policyNo of documentSummary.group2MasterList"
                       tooltip="{{ policyNo.policyNo }}"
                     >
                       <div colspan="1">
@@ -514,14 +514,14 @@
                       </div>
                     </div>
                   </td>
-                  <td class="padding-0"  *ngIf = "documentSummary.group1MasterList.length == 1">
+                  <td class="padding-0"  *ngIf = "documentSummary.group2MasterList.length == 1">
 
                     <span
                     tooltip="{{
-                      documentSummary.group1MasterList[0].accountNumber
+                      documentSummary.group2MasterList[0].accountNumber
                     }}"
                   >
-                        {{ documentSummary.group1MasterList[0].accountNumber }}
+                        {{ documentSummary.group2MasterList[0].accountNumber }}
                     </span>
 
                   </td>
@@ -589,7 +589,7 @@
                     ></i>
                   </td>
                 </tr>
-                <!-- <tr *ngFor="let policyNo of documentSummary.group1MasterList">
+                <!-- <tr *ngFor="let policyNo of documentSummary.group2MasterList">
               <td>{{ policyNo.policyNo }}</td>
               <td>{{ documentSummary.receiptAmount | number: "1.2-2" }}</td>
             </tr> -->
@@ -736,7 +736,7 @@
               <tbody>
                 <tr
                   *ngFor="
-                    let summary of item.groupTransactionList;
+                    let summary of item.group2TransactionList;
                     let i = index;
                     count as c
                   "

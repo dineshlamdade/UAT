@@ -30,19 +30,19 @@ export class PPFSummaryComponent implements OnInit {
     this.myEvent.emit(data);
   }
 
-  public summaryGridData: Array<any> = [];
-  public tabIndex = 0;
-  public totalDeclaredAmount: any;
-  public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
-  public grandTotalDeclaredAmount: number;
-  public grandTotalActualAmount: number;
-  public grandDeclarationTotal: number;
-  public grandActualTotal: number;
-  public grandRejectedTotal: number;
-  public grandApprovedTotal: number;
-  public grandTabStatus: boolean;
-  public selectedInstitution: string;
+      public summaryGridData: Array<any> = [];
+      public tabIndex = 0;
+      public totalDeclaredAmount: any;
+      public totalActualAmount: any;
+      public futureNewPolicyDeclaredAmount: string;
+      public grandTotalDeclaredAmount: number;
+      public grandTotalActualAmount: number;
+      public grandDeclarationTotal: number;
+      public grandActualTotal: number;
+      public grandRejectedTotal: number;
+      public grandApprovedTotal: number;
+      public grandTabStatus: boolean;
+      public selectedInstitution: string;
 
   constructor(
     private service: MyInvestmentsService,
@@ -82,7 +82,7 @@ export class PPFSummaryComponent implements OnInit {
         //console.log('addFuturePolicy Data..', data);
         this.service.submitPPFSummaryFuturePolicy(data).subscribe((res) => {
             //console.log('addFuturePolicy Res..', res);
-            this.summaryGridData = res.data.results[0].licMasterList;
+            this.summaryGridData = res.data.results[0].transactionDetailList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
             this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
