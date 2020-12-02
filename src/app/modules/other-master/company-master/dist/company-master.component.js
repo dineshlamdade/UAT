@@ -77,7 +77,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             endDate: new forms_1.FormControl(''),
             reason: new forms_1.FormControl(''),
             remark: new forms_1.FormControl(''),
-            officialCountryCode: new forms_1.FormControl(''),
+            isdCode: new forms_1.FormControl(''),
             officialMobileNumber: new forms_1.FormControl(''),
             contactInformation: new forms_1.FormControl(''),
             companyActive: new forms_1.FormControl('')
@@ -322,7 +322,7 @@ var CompanyMasterComponent = /** @class */ (function () {
     CompanyMasterComponent.prototype.cancelViewMasterForm = function () {
         this.showButtonSaveAndReset = true;
         this.isSaveAndReset = true;
-        this.employeeMasterRequestDTO = new company_master_dto_1.EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+        this.employeeMasterRequestDTO = new company_master_dto_1.EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
         // this.isEditMode = false;
         this.selectedImageFileLogo1 = undefined;
         this.selectedImageFileLogo2 = undefined;
@@ -412,6 +412,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.state = this.companyMasterform.get('state').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get('state').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.village = this.companyMasterform.get('village').value;
+            this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode = this.companyMasterform.get('isdCode').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber = this.companyMasterform.get('phoneNumber').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.emailId = this.companyMasterform.get('emailId').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.website = this.companyMasterform.get('website').value;
@@ -451,7 +452,7 @@ var CompanyMasterComponent = /** @class */ (function () {
                 console.log(res);
                 if (res.data.results.length > 0) {
                     _this.sweetalertMasterSuccess('Company  Master Updated Successfully.', '');
-                    _this.employeeMasterRequestDTO = new company_master_dto_1.EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+                    _this.employeeMasterRequestDTO = new company_master_dto_1.EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
                     _this.saveFormValidation();
                     // this.companyMasterform.reset();
                     _this.isSaveAndReset = true;
@@ -497,6 +498,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get('state').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.village = this.companyMasterform.get('village').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber = this.companyMasterform.get('phoneNumber').value;
+            this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode = this.companyMasterform.get('isdCode').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.emailId = this.companyMasterform.get('emailId').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.website = this.companyMasterform.get('website').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.contractor = isContractor2;

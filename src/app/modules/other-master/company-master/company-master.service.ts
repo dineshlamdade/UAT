@@ -21,9 +21,6 @@ export class CompanyMasterService {
         return res;
       }));
   }
-
-
-
    getAddressFromPIN(postalCode) {
 
     return this._HTTP.get(environment.baseUrl8082 + '/pincode-details-check/' + postalCode, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
@@ -31,7 +28,6 @@ export class CompanyMasterService {
         return res;
       }))
   }
-
     getLocationInformationOrCountryList() {
 
       return this._HTTP.get(environment.baseUrl8082  + '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
@@ -68,8 +64,8 @@ export class CompanyMasterService {
         const headers = new HttpHeaders()
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
-        .set('X-TenantId', 'PaysquareDefault')
-        return this._HTTP.post(environment.baseUrl8083 + '/compaymaster', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        .set('X-TenantId', 'PaysquareDefault');
+        return this._HTTP.post(environment.baseUrl8083 + '/companymaster', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
           .pipe(map((res: any) => {
             return res;
           }));
@@ -99,8 +95,12 @@ export class CompanyMasterService {
 
 
       getCurrencyList(){
+        const headers = new HttpHeaders()
+          .set('content-type', 'application/json')
+          .set('Access-Control-Allow-Origin', '*')
+          .set('X-TenantId', 'PaysquareDefault');
 
-        return this._HTTP.get(environment.baseUrl8082  + '/currency-information/symbol', {headers:{ 'X-TenantId': 'PaysquareGlobal'}})
+        return this._HTTP.get(environment.baseUrl8082  + '/currency-information/symbol', {headers: headers})
         .pipe(map((res: any) => {
           return res;
         }))

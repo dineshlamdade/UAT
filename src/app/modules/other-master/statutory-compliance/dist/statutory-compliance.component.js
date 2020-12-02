@@ -16,6 +16,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
         this.datePipe = datePipe;
         this.statuatoryComplianceService = statuatoryComplianceService;
         this.complianceHeadService = complianceHeadService;
+        this.selectedIsdCode = [];
         this.countryCode = [];
         this.showButtonSaveAndReset = true;
         // isEditMode: boolean = false;
@@ -57,14 +58,15 @@ var StatutoryComplianceComponent = /** @class */ (function () {
     }
     StatutoryComplianceComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.refreshHtmlTableData();
         this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
         this.statuatoryComplianceService.getLocationInformationOrCountryList().subscribe(function (res) {
             _this.countries = res.data.results;
         });
         this.statuatoryComplianceService.getCountryCodes().subscribe(function (res) {
             _this.countryCode = res.data.results;
+            console.log(_this.countryCode);
         });
+        this.refreshHtmlTableData();
     };
     StatutoryComplianceComponent.prototype.onSelectHeadName = function (evt) {
         var _this = this;

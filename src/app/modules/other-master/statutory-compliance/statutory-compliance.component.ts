@@ -21,6 +21,9 @@ import { ComplianceHeadService } from '../compliance-head/compliance-head.servic
 })
 export class StatutoryComplianceComponent implements OnInit {
  hideRemarkDiv:boolean;
+ selectedIsdCode = [];
+
+
 
  countryCode: Array<any> = [];
   showButtonSaveAndReset: boolean = true;
@@ -73,11 +76,7 @@ export class StatutoryComplianceComponent implements OnInit {
     });
 }
   ngOnInit(): void {
-    this.refreshHtmlTableData();
-
     this.tempObjForgroupNameScaleStartDate = {scale:'',groupName:'',startDate:'',groupName1:''};
-
-
 
     this.statuatoryComplianceService.getLocationInformationOrCountryList().subscribe(res => {
       this.countries = res.data.results;
@@ -85,15 +84,9 @@ export class StatutoryComplianceComponent implements OnInit {
 
     this.statuatoryComplianceService.getCountryCodes().subscribe(res => {
       this.countryCode = res.data.results;
+      console.log(this.countryCode);
     });
-
-
-
-
-
-
-
-
+    this.refreshHtmlTableData();
 }
 onSelectHeadName(evt:any){
   console.log(this.form.get('headName').value);
@@ -392,5 +385,4 @@ getPermanentAddressFromPIN() {
       timerProgressBar: true,
     });
   }
-
 }

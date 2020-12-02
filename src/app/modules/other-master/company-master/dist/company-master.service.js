@@ -62,7 +62,7 @@ var CompanyMasterService = /** @class */ (function () {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/compaymaster', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/companymaster', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -88,7 +88,11 @@ var CompanyMasterService = /** @class */ (function () {
         }));
     };
     CompanyMasterService.prototype.getCurrencyList = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/currency-information/symbol', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+        var headers = new http_1.HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('Access-Control-Allow-Origin', '*')
+            .set('X-TenantId', 'PaysquareDefault');
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/currency-information/symbol', { headers: headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

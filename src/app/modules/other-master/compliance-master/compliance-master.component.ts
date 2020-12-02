@@ -14,6 +14,7 @@ import { ComplianceHeadService } from '../compliance-head/compliance-head.servic
 import { ComplianceMasterService } from './compliance-master.service';
 import { takeUntil } from 'rxjs/operators';
 import { AnyMxRecord } from 'dns';
+import { combineLatest } from 'rxjs';
 
 
 @Component({
@@ -25,7 +26,10 @@ export class ComplianceMasterComponent implements OnInit {
   public form: any = FormGroup;
   public SelectedemployeeContribtionMultiSelect = [];
   public selectedCompanyContribtionMultiSelect = [];
+  public selectedEstablishmentMasterId = [];
   public isView: boolean = false;
+  isActivateButton:number;
+  isGlobalView:boolean = false;
 
   public complianceApplicationForm: any = FormGroup;
 
@@ -71,6 +75,8 @@ export class ComplianceMasterComponent implements OnInit {
   //companyRegistrationIdList: Array<any> = [];
   // companyRegistrationMasterList: Array<any> = [];
   masterGridDataList: Array<any> = [];
+  getComplianceHeadDetailsObject:any;
+  getComplianceInstituionMasterDetails:any;
 
   tempObjForCompanyRegistration: any;
   //companyRegistrationId: number = 0;
@@ -279,64 +285,63 @@ export class ComplianceMasterComponent implements OnInit {
     this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
     this.refreshHtmlTableDataOfComplianceApplicability();
 
-  }
-  refreshHtmlTableData() {
-    this.summaryHtmlDataList = [];
-    this.masterGridDataList = [];
-    this.complianceMasterService.getComplianceMasterDetails().subscribe(res => {
-      // below line is commented because if you soft delete the record it incluedes in it, it is problematic when we edit the record, it gives wrong editedRecordIndex
-      //this.masterGridDataList = res.data.results;
-      console.log(res.data.results);
+  } // end of ngOnInit
+  // refreshHtmlTableData() {
+  //   this.summaryHtmlDataList = [];
+  //   this.masterGridDataList = [];
+  //   this.complianceMasterService.getComplianceMasterDetails().subscribe(res => {
+  //     // below line is commented because if you soft delete the record it incluedes in it, it is problematic when we edit the record, it gives wrong editedRecordIndex
+  //     //this.masterGridDataList = res.data.results;
+  //     console.log(res.data.results);
 
-      let srNo = 1;
-      res.data.results.forEach(element => {
-        if (element.isActive == 0) {
-          // soft deleted record
+  //     let srNo = 1;
+  //     res.data.results.forEach(element => {
+  //       // if (element.isActive == 0) {
+  //         // soft deleted record
 
-        } else {
-          this.masterGridDataList.push(element);
-          var filteredEvents = this.institutionMasterList.filter(function (event) {
-            return event.institutionName == element.statutoryInstituteName;
-          });
-          let establishmentNames: string;
+  //       // } else {
+  //         this.masterGridDataList.push(element);
+  //         var filteredEvents = this.institutionMasterList.filter(function (event) {
+  //           return event.institutionName == element.statutoryInstituteName;
+  //         });
+  //         let establishmentNames: string;
 
-          for (let i = 0; i < element.complianceDetail.length; i++) {
-            if (i == 0) {
-              let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
-              establishmentNames = this.dropdownList[index].establishmentCode;
-            } else {
-              establishmentNames += ', ';
-              let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
-              establishmentNames += this.dropdownList[index].establishmentCode;
-            }
-          }
-          let tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(o => o.establishmentMasterId == element.complianceDetail[0].establishmentMasterId);
+  //         for (let i = 0; i < element.complianceDetail.length; i++) {
+  //           if (i == 0) {
+  //             let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+  //             establishmentNames = this.dropdownList[index].establishmentCode;
+  //           } else {
+  //             establishmentNames += ', ';
+  //             let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+  //             establishmentNames += this.dropdownList[index].establishmentCode;
+  //           }
+  //         }
+  //         let tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(o => o.establishmentMasterId == element.complianceDetail[0].establishmentMasterId);
 
-          const obj = {
-            SrNo: srNo++,
-            complianceName: element.complianceName,
-            statutoryInstituteName: element.statutoryInstituteName,
-            complianceHeadShortName: element.complianceHeadShortName,
-            accountNumber: element.accountNumber,
-            establishmentCode: tempObjEstablishmentAddress.establishmentCode,
-            registrationNumber: element.registrationNumber,
-            complianceMasterId: element.complianceMasterId,
-            tempObjEstablishmentAddress: tempObjEstablishmentAddress,
-            groupCompanyId: element.groupCompanyId,
-            issueDate: element.issueDate,
-            coverageDate: element.coverageDate,
-            userNameForWebsite: element.userNameForWebsite,
-            filter: filteredEvents[0],
-            establishmentNames: establishmentNames,
-
-          };
-          this.summaryHtmlDataList.push(obj);
-        }
-      });
-    });
-    // console.log(this.summaryHtmlDataList);
-    this.commonValidation();
-  }
+  //         const obj = {
+  //           SrNo: srNo++,
+  //           complianceName: element.complianceName,
+  //           statutoryInstituteName: element.statutoryInstituteName,
+  //           complianceHeadShortName: element.complianceHeadShortName,
+  //           accountNumber: element.accountNumber,
+  //           establishmentCode: tempObjEstablishmentAddress.establishmentCode,
+  //           registrationNumber: element.registrationNumber,
+  //           complianceMasterId: element.complianceMasterId,
+  //           tempObjEstablishmentAddress: tempObjEstablishmentAddress,
+  //           groupCompanyId: element.groupCompanyId,
+  //           issueDate: element.issueDate,
+  //           coverageDate: element.coverageDate,
+  //           userNameForWebsite: element.userNameForWebsite,
+  //           filter: filteredEvents[0],
+  //           establishmentNames: establishmentNames,
+  //           isActive: element.isActive,
+  //         };
+  //         this.summaryHtmlDataList.push(obj);
+  //     });
+  //   });
+  //   // console.log(this.summaryHtmlDataList);
+  //   this.commonValidation();
+  // }
   save() {
     console.log(this.ServicesList);
 
@@ -659,6 +664,7 @@ export class ComplianceMasterComponent implements OnInit {
 
   editMaster(i: number, establishmentMasterId: number, complianceHeadShortName: string, establishmentNames: string, isView: boolean) {
     this.form.enable();
+    this.isGlobalView = false;
     this.isView = isView;
     this.editedRecordIndex = i;
     this.isEditableEstablismentMasterId = true;
@@ -789,7 +795,6 @@ export class ComplianceMasterComponent implements OnInit {
     }
     this.isSaveAndReset = false;
     this.showButtonSaveAndReset = true;
-
     this.establishmentMasterId = establishmentMasterId;
     this.form.patchValue({
       complianceName: this.masterGridDataList[i].complianceName,
@@ -819,14 +824,16 @@ export class ComplianceMasterComponent implements OnInit {
       gratuityFromDate: this.masterGridDataList[i].complianceDetail[0].gratuityFromDate,
       gratuityToDate: this.masterGridDataList[i].complianceDetail[0].gratuityToDate,
 
+      saFromDate: this.masterGridDataList[i].complianceDetail[0].saFromDate,
+      saMaxPercentage: this.masterGridDataList[i].complianceDetail[0].saMaxPercentage,
+      saToDate: this.masterGridDataList[i].complianceDetail[0].saToDate,
+
       lwfState: this.masterGridDataList[i].complianceDetail[0].lwfState,
 
       ptCity: this.masterGridDataList[i].complianceDetail[0].ptCity,
       ptState: this.masterGridDataList[i].complianceDetail[0].ptState,
 
-      saFromDate: this.masterGridDataList[i].complianceDetail[0].saFromDate,
-      saMaxPercentage: this.masterGridDataList[i].complianceDetail[0].saMaxPercentage,
-      saToDate: this.masterGridDataList[i].complianceDetail[0].saToDate,
+
 
       tan: this.masterGridDataList[i].complianceDetail[0].tan,
       tdsCircle: this.masterGridDataList[i].complianceDetail[0].tdsCircle,
@@ -837,8 +844,16 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get('establishmentMasterId').disable();
     this.form.get('statutoryInstituteName').disable();
   }
-  viewMaster(i: number, establishmentMasterId: number, complianceHeadShortName: string, establishmentNames: string) {
+
+
+  viewMaster(i: number, establishmentMasterId: number, complianceHeadShortName: string, establishmentNames: string, active: number) {
+    this.isActivateButton = active;
+
+  //  debugger
+  console.log(active);
     this.isView = true;
+    this.isEditMode = false;
+
     this.ServicesList = [];
     this.establishmentMasterId = 0;
 
@@ -862,9 +877,12 @@ export class ComplianceMasterComponent implements OnInit {
       .forEach(control => {
         control.controls.establishmentName.enable();
       });
+      this.isGlobalView = true;
+      this.isView =true;
   }
 
   cancelView() {
+    this.isGlobalView = false;
     this.form.setControl('pfFormArray', new FormArray([]));
     this.form.setControl('epsArray', new FormArray([]));
     this.form.setControl('esiArray', new FormArray([]));
@@ -1100,54 +1118,161 @@ export class ComplianceMasterComponent implements OnInit {
     this.institutionMasterList = [];
     this.getComplianceInstitutionMasterGridListObject = {};
     this.complianceHeadDetailsObject = {};
-    this.complianceHeadService.getComplianceHeadDetails().subscribe(res => {
-      this.complianceHeadDetailsObject = res.data.results;
-      res.data.results.forEach(element => {
-        this.complianceHeadNameList.push(element.complianceHeadName);
-        this.institutionMasterObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
-      });
-    }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
-    }, () => {
-      this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails().subscribe(res => {
-        this.getComplianceInstitutionMasterGridListObject = res.data.results;
-        let i = 1;
-        res.data.results.forEach(element => {
 
-          let tempObjForgroupNameScaleStartDate = this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.find(o => o.complianceHeadId == element.complianceHeadId);
-          this.institutionNameList.push({ label: element.institutionName, value: element.complianceHeadId });
-          let tempComplianceHeadObject = this.complianceHeadDetailsObject.find(o => o.complianceHeadId == element.complianceHeadId);
+    combineLatest([this.complianceHeadService.getComplianceHeadDetails(), this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails(),  this.complianceMasterService.getComplianceMasterDetails()]).subscribe((res: any) => {
+     this.getComplianceHeadDetailsObject = res[0];
+    this.getComplianceInstituionMasterDetails = res[1];
+    this.complianceHeadDetailsObject = res[0].data.results;
+    this.getComplianceInstitutionMasterGridListObject = res[1].data.results;
+
+    res[1].data.results.forEach(element => {
+      let tempObjForgroupNameScaleStartDate = this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.find(o => o.complianceHeadId == element.complianceHeadId);
+      this.complianceHeadNameList.push(element.complianceHeadName);
+      this.institutionMasterObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
+      let i = 1;
+      this.institutionNameList.push({ label: element.institutionName, value: element.complianceHeadId });
+      let tempComplianceHeadObject = this.complianceHeadDetailsObject.find(o => o.complianceHeadId == element.complianceHeadId);
+
+      const obj = {
+        SrNo: i++,
+        institutionName: element.institutionName,
+        complianceHeadId: element.complianceHeadId,
+        country: element.country,
+        applicabilityLevel: element.applicabilityLevel,
+        address1: element.address1,
+        address2: element.address2,
+        address3: element.address3,
+        state: element.state,
+        city: element.city,
+        village: element.village,
+        pinCode: element.pinCode,
+        typeOfOffice: element.typeOfOffice,
+        telephoneNumber: element.telephoneNumber,
+        emailId: element.emailId,
+        complianceHeadName: tempObjForgroupNameScaleStartDate.complianceHeadName,
+        country1: tempObjForgroupNameScaleStartDate.country,
+        complianceInstitutionMasterId: element.complianceInstitutionMasterId,
+        tempObjForgroupNameScaleStartDate: tempObjForgroupNameScaleStartDate,
+        complianceDetailObject: tempComplianceHeadObject,
+      };
+      this.institutionMasterList.push(obj);
+    });
+
+
+
+
+
+    this.summaryHtmlDataList = [];
+    this.masterGridDataList = [];
+
+
+
+      let srNo = 1;
+      res[2].data.results.forEach(element => {
+        // if (element.isActive == 0) {
+          // soft deleted record
+
+        // } else {
+          this.masterGridDataList.push(element);
+          var filteredEvents = this.institutionMasterList.filter(function (event) {
+            return event.institutionName == element.statutoryInstituteName;
+          });
+          let establishmentNames: string;
+
+          for (let i = 0; i < element.complianceDetail.length; i++) {
+            if (i == 0) {
+              let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+              establishmentNames = this.dropdownList[index].establishmentCode;
+            } else {
+              establishmentNames += ', ';
+              let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+              establishmentNames += this.dropdownList[index].establishmentCode;
+            }
+          }
+          let tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(o => o.establishmentMasterId == element.complianceDetail[0].establishmentMasterId);
 
           const obj = {
-            SrNo: i++,
-            institutionName: element.institutionName,
-            complianceHeadId: element.complianceHeadId,
-            country: element.country,
-            applicabilityLevel: element.applicabilityLevel,
-            address1: element.address1,
-            address2: element.address2,
-            address3: element.address3,
-            state: element.state,
-            city: element.city,
-            village: element.village,
-            pinCode: element.pinCode,
-            typeOfOffice: element.typeOfOffice,
-            telephoneNumber: element.telephoneNumber,
-            emailId: element.emailId,
-            complianceHeadName: tempObjForgroupNameScaleStartDate.complianceHeadName,
-            country1: tempObjForgroupNameScaleStartDate.country,
-            complianceInstitutionMasterId: element.complianceInstitutionMasterId,
-            tempObjForgroupNameScaleStartDate: tempObjForgroupNameScaleStartDate,
-            complianceDetailObject: tempComplianceHeadObject,
+            SrNo: srNo++,
+            complianceName: element.complianceName,
+            statutoryInstituteName: element.statutoryInstituteName,
+            complianceHeadShortName: element.complianceHeadShortName,
+            accountNumber: element.accountNumber,
+            establishmentCode: tempObjEstablishmentAddress.establishmentCode,
+            registrationNumber: element.registrationNumber,
+            complianceMasterId: element.complianceMasterId,
+            tempObjEstablishmentAddress: tempObjEstablishmentAddress,
+            groupCompanyId: element.groupCompanyId,
+            issueDate: element.issueDate,
+            coverageDate: element.coverageDate,
+            userNameForWebsite: element.userNameForWebsite,
+            filter: filteredEvents[0],
+            establishmentNames: establishmentNames,
+            isActive: element.isActive,
           };
-          this.institutionMasterList.push(obj);
-        });
+          this.summaryHtmlDataList.push(obj);
       });
     });
+    // console.log(this.summaryHtmlDataList);
+    this.commonValidation();
+
+
+
+
+    // this.complianceHeadService.getComplianceHeadDetails().subscribe(res => {
+    //   this.complianceHeadDetailsObject = res.data.results;
+    //   res.data.results.forEach(element => {
+    //     this.complianceHeadNameList.push(element.complianceHeadName);
+    //     this.institutionMasterObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
+    //   });
+    // }, (error: any) => {
+    //   this.sweetalertError(error["error"]["status"]["messsage"]);
+    // }, () => {
+    //   this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails().subscribe(res => {
+    //     this.getComplianceInstitutionMasterGridListObject = res.data.results;
+    //     let i = 1;
+    //     res.data.results.forEach(element => {
+
+    //       let tempObjForgroupNameScaleStartDate = this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.find(o => o.complianceHeadId == element.complianceHeadId);
+    //       this.institutionNameList.push({ label: element.institutionName, value: element.complianceHeadId });
+    //       let tempComplianceHeadObject = this.complianceHeadDetailsObject.find(o => o.complianceHeadId == element.complianceHeadId);
+
+    //       const obj = {
+    //         SrNo: i++,
+    //         institutionName: element.institutionName,
+    //         complianceHeadId: element.complianceHeadId,
+    //         country: element.country,
+    //         applicabilityLevel: element.applicabilityLevel,
+    //         address1: element.address1,
+    //         address2: element.address2,
+    //         address3: element.address3,
+    //         state: element.state,
+    //         city: element.city,
+    //         village: element.village,
+    //         pinCode: element.pinCode,
+    //         typeOfOffice: element.typeOfOffice,
+    //         telephoneNumber: element.telephoneNumber,
+    //         emailId: element.emailId,
+    //         complianceHeadName: tempObjForgroupNameScaleStartDate.complianceHeadName,
+    //         country1: tempObjForgroupNameScaleStartDate.country,
+    //         complianceInstitutionMasterId: element.complianceInstitutionMasterId,
+    //         tempObjForgroupNameScaleStartDate: tempObjForgroupNameScaleStartDate,
+    //         complianceDetailObject: tempComplianceHeadObject,
+    //       };
+    //       this.institutionMasterList.push(obj);
+    //     });
+    //   });
+    // });
   }
   onSelectStatuatoryInstitutionMaster(value: any, label: any) {
     this.clearEpsValidation();
     this.clearPfValidation();
+    this.clearEsiValidation();
+    this.clearPtValidation();
+    this.clearlwfValidation();
+    this.clearTdsValidation();
+    this.clearGratuityValidation();
+    this.clearSaValidation();
+
     this.isPf = false;
     this.isEps = false;
     this.isEsi = false;
@@ -1155,9 +1280,13 @@ export class ComplianceMasterComponent implements OnInit {
     this.isLw = false;
     this.isTaxDeductedAtSource = false;
     this.isGratuity = false;
-    this.isSa = false;  // Super Annuation\\
+    this.isSa = false;  // Super Annuation
     this.isPfNew = false;
     this.isEpsNew = false;
+
+    // blank if user has already selected establishment multi checkbox
+    this.ServicesList = [];
+    this.selectedEstablishmentMasterId = [];
 
     let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == value);
     console.log(tempObj);
@@ -1179,15 +1308,19 @@ export class ComplianceMasterComponent implements OnInit {
     }
     if (this.complianceHeadTempObj.shortName === 'PT') {
       this.isPt = true;
+      this.ptValidation();
     }
     if (this.complianceHeadTempObj.shortName === 'TDS') {
       this.isTaxDeductedAtSource = true;
+      this.tdsValidation();
     }
     if (this.complianceHeadTempObj.shortName === 'ESIC') {
       this.isEsi = true;
+      this.esiValidation();
     }
     if (this.complianceHeadTempObj.shortName === 'LWF') {
       this.isLw = true;
+      this.lwfValidation();
     }
     if (this.complianceHeadTempObj.shortName === 'S&E') {
       console.log('Not Avail');
@@ -1197,9 +1330,11 @@ export class ComplianceMasterComponent implements OnInit {
     }
     if (this.complianceHeadTempObj.shortName === 'SA') {
       this.isSa = true;
+      this.saValidation();
     }
     if (this.complianceHeadTempObj.shortName === 'Gratuity') {
       this.isGratuity = true;
+      this.gratuityValidation();
     }
     if (this.complianceHeadTempObj.shortName === 'BOCW') {
       console.log('Not Avail');
@@ -1258,7 +1393,7 @@ export class ComplianceMasterComponent implements OnInit {
       this.sweetalertError(error["error"]["status"]["messsage"]);
 
     }, () => {
-      this.refreshHtmlTableData();
+     // this.refreshHtmlTableData();
     });
   }
   selectionChallenged(event) {
@@ -1474,6 +1609,30 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.controls['issueDate'].updateValueAndValidity();
     this.form.controls['coverageDate'].updateValueAndValidity();
   }
+  tdsValidation(){
+
+    this.form.get('tan').setValidators([Validators.required]);
+    this.form.controls['tan'].updateValueAndValidity();
+
+    this.form.get('tdsCircle').setValidators([Validators.required]);
+    this.form.controls['tdsCircle'].updateValueAndValidity();
+
+    this.form.get('deductorStatus').setValidators([Validators.required]);
+    this.form.controls['deductorStatus'].updateValueAndValidity();
+
+  }
+  clearTdsValidation(){
+
+    this.form.get('tan').clearValidators();
+    this.form.controls['tan'].updateValueAndValidity();
+
+    this.form.get('tdsCircle').clearValidators();
+    this.form.controls['tdsCircle'].updateValueAndValidity();
+
+    this.form.get('deductorStatus').clearValidators();
+    this.form.controls['deductorStatus'].updateValueAndValidity();
+
+  }
   pfValidation() {
 
     this.form.get('pfStatus').setValidators([Validators.required]);
@@ -1502,6 +1661,102 @@ export class ComplianceMasterComponent implements OnInit {
 
     this.form.get('eps1ToDate').setValidators([Validators.required]);
     this.form.controls['eps1ToDate'].updateValueAndValidity();
+  }
+  esiValidation(){
+
+    this.form.get('esic1').setValidators([Validators.required]);
+    this.form.controls['esic1'].updateValueAndValidity();
+
+    this.form.get('esic1FromDate').setValidators([Validators.required]);
+    this.form.controls['esic1FromDate'].updateValueAndValidity();
+
+    this.form.get('esic1ToDate').setValidators([Validators.required]);
+    this.form.controls['esic1ToDate'].updateValueAndValidity();
+}
+  clearEsiValidation(){
+
+    this.form.get('esic1').clearValidators();
+    this.form.controls['esic1'].updateValueAndValidity();
+
+    this.form.get('esic1FromDate').clearValidators();
+    this.form.controls['esic1FromDate'].updateValueAndValidity();
+
+    this.form.get('esic1ToDate').clearValidators();
+    this.form.controls['esic1ToDate'].updateValueAndValidity();
+
+  }
+  ptValidation(){
+    this.form.get('ptState').setValidators([Validators.required]);
+    this.form.controls['ptState'].updateValueAndValidity();
+
+    this.form.get('ptCity').setValidators([Validators.required]);
+    this.form.controls['ptCity'].updateValueAndValidity();
+  }
+  gratuityValidation(){
+
+
+    this.form.get('gratuityDividingFactor').setValidators([Validators.required]);
+    this.form.controls['gratuityDividingFactor'].updateValueAndValidity();
+
+    this.form.get('gratuityFromDate').setValidators([Validators.required]);
+    this.form.controls['gratuityFromDate'].updateValueAndValidity();
+
+    this.form.get('gratuityToDate').setValidators([Validators.required]);
+    this.form.controls['gratuityToDate'].updateValueAndValidity();
+  }
+  clearGratuityValidation(){
+
+    this.form.get('gratuityDividingFactor').clearValidators();
+    this.form.controls['gratuityDividingFactor'].updateValueAndValidity();
+
+    this.form.get('gratuityToDate').clearValidators();
+    this.form.controls['gratuityToDate'].updateValueAndValidity();
+
+    this.form.get('gratuityFromDate').clearValidators();
+    this.form.controls['gratuityFromDate'].updateValueAndValidity();
+  }
+  saValidation(){
+
+    this.form.get('saMaxPercentage').setValidators([Validators.required]);
+    this.form.controls['saMaxPercentage'].updateValueAndValidity();
+
+    this.form.get('saFromDate').setValidators([Validators.required]);
+    this.form.controls['saFromDate'].updateValueAndValidity();
+
+    this.form.get('saToDate').setValidators([Validators.required]);
+    this.form.controls['saToDate'].updateValueAndValidity();
+
+}
+  clearSaValidation(){
+
+    this.form.get('saMaxPercentage').clearValidators();
+    this.form.controls['saMaxPercentage'].updateValueAndValidity();
+
+    this.form.get('saFromDate').clearValidators();
+    this.form.controls['saFromDate'].updateValueAndValidity();
+
+    this.form.get('saToDate').clearValidators();
+    this.form.controls['saToDate'].updateValueAndValidity();
+  }
+
+  lwfValidation(){
+
+    this.form.get('lwfState').setValidators([Validators.required]);
+    this.form.controls['lwfState'].updateValueAndValidity();
+  }
+
+  clearlwfValidation(){
+    this.form.get('lwfState').clearValidators();
+    this.form.controls['lwfState'].updateValueAndValidity();
+  }
+
+  clearPtValidation(){
+    this.form.get('ptState').clearValidators();
+    this.form.controls['ptState'].updateValueAndValidity();
+
+    this.form.get('ptCity').clearValidators();
+    this.form.controls['ptCity'].updateValueAndValidity();
+
   }
   // esiValidation(){
   //   this.f.esiArray.get('esic1').setValidators([Validators.required]),
@@ -2057,7 +2312,6 @@ export class ComplianceMasterComponent implements OnInit {
       complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
       complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
       establishmentMasterId: this.form.get('lwfArray').value[i].establishmentName,
-
       lwfState: this.form.get('lwfArray').value[0].lwfState,
 
     }
@@ -2161,6 +2415,47 @@ export class ComplianceMasterComponent implements OnInit {
 
   }
   UpdateComplianceMaster() {
+    if(this.isView){
+      let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == this.masterGridDataList[this.editedRecordIndex].statutoryInstituteName);
+      let saveData = ({
+        complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
+        complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
+        statutoryInstituteName: this.summaryHtmlDataList[this.editedRecordIndex].statutoryInstituteName,
+
+        complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
+        accountNumber: this.masterGridDataList[this.editedRecordIndex].accountNumber,
+        groupCompanyId: this.masterGridDataList[this.editedRecordIndex].groupCompanyId,
+        registrationNumber: this.masterGridDataList[this.editedRecordIndex].registrationNumber,
+        issueDate: this.masterGridDataList[this.editedRecordIndex].issueDate,
+        coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
+        userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite
+      });
+      console.log(JSON.stringify(saveData));
+      this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
+        console.log(res);
+        this.sweetalertMasterSuccess('Compliance Master Updated Successfully.', '');
+
+      }, (error: any) => {
+        this.sweetalertError(error["error"]["status"]["messsage"]);
+
+      }, () => {
+        this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+        this.form.reset();
+        this.isEditMode = false;
+        this.showButtonSaveAndReset = true;
+        this.isSaveAndReset = true;
+        this.form.setControl('pfFormArray', new FormArray([]));
+        this.form.setControl('epsArray', new FormArray([]));
+        this.form.setControl('esiArray', new FormArray([]));
+        this.form.setControl('ptArray', new FormArray([]));
+        this.form.setControl('lwfArray', new FormArray([]));
+        this.form.setControl('tdsArray', new FormArray([]));
+        this.form.setControl('gratuityArray', new FormArray([]));
+        this.form.setControl('epsArray', new FormArray([]));
+      });
+
+    } else{
+
     const data = this.form.getRawValue();
     let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == data.statutoryInstituteName);
     let saveData = ({
@@ -2200,6 +2495,7 @@ export class ComplianceMasterComponent implements OnInit {
       this.form.setControl('epsArray', new FormArray([]));
     });
   }
+  }
   DeletePf(i: number) {
     if (this.savedEstablishmentList.length == 1) {
       this.DeleteComplianceMaster();
@@ -2233,7 +2529,6 @@ export class ComplianceMasterComponent implements OnInit {
       });
     }
   }
-
 
   DeleteEps(i: number) {
     let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('epsArray').value[i].establishmentName);
@@ -2401,11 +2696,11 @@ export class ComplianceMasterComponent implements OnInit {
       this.addEpsFormControl(this.editedRecordIndex,this.dropdownList[index],false);
     }
     if(data.shortName == 'PT'){
-      (<FormArray>this.form.get('epsArray').removeAt(0));
+      (<FormArray>this.form.get('ptArray').removeAt(0));
       this.addPtFormControl(this.editedRecordIndex,this.dropdownList[index],false);
     }
     if(data.shortName == 'TDS'){
-      (<FormArray>this.form.get('epsArray').removeAt(0));
+      (<FormArray>this.form.get('tdsArray').removeAt(0));
       this.addTdsFormControl(this.editedRecordIndex,this.dropdownList[index],false);
     }
     if(data.shortName == 'ESIC'){
@@ -2425,11 +2720,9 @@ export class ComplianceMasterComponent implements OnInit {
       this.addGratuityFormControl(this.editedRecordIndex,this.dropdownList[index],false);
     }
     if(data.shortName == 'SA'){
-      (<FormArray>this.form.get('SA').removeAt(0));
+      (<FormArray>this.form.get('saArray').removeAt(0));
       this.addSaFormControl(this.editedRecordIndex,this.dropdownList[index],false);
     }
-
-
   }
   onChangeContributionMethodIsDiffernt(event: any, i: number) {
     if (i == -1) {
@@ -2592,6 +2885,103 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get('statutoryInstituteName').enable();
   }
   cancelAllValidation() {
+
+  }
+  activateComplianceMaster(){
+    console.log(this.editedRecordIndex);
+    let complianceDetails = [];
+
+      const saveData = {
+        complianceMasterId:this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
+        complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
+        statutoryInstituteName: this.masterGridDataList[this.editedRecordIndex].institutionName,
+        // complianceHeadShortName: this.complianceHeadTempObj.shortName,
+        complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
+        accountNumber: this.masterGridDataList[this.editedRecordIndex].accountNumber,
+        groupCompanyId: this.masterGridDataList[this.editedRecordIndex].groupCompanyId,
+        registrationNumber: this.masterGridDataList[this.editedRecordIndex].registrationNumber,
+        issueDate: this.masterGridDataList[this.editedRecordIndex].issueDate,
+        coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
+        userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite,
+      }
+      console.log(JSON.stringify(saveData));
+
+      this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
+        console.log(res);
+        if (res.data.results.length > 0) {
+          console.log(res);
+          this.sweetalertMasterSuccess('Compliance Master Activated Successfully.', '');
+        } else {
+          this.sweetalertWarning(res.status.messsage);
+        }
+
+      }, (error: any) => {
+        this.sweetalertError(error["error"]["status"]["messsage"]);
+      });
+
+
+
+
+
+
+    for (let i = 0; i < this.masterGridDataList[i].complianceDetail.length; i++) {
+      complianceDetails.push({
+
+        complianceDetailId : this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].complianceDetailId,
+        complianceMasterId :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].complianceMasterId,
+        establishmentMasterId :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].establishmentMasterId,
+        eps1 :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].eps1,
+        eps1FromDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].eps1FromDate,
+        eps1ToDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].eps1ToDate,
+        gratuityDividingFactor :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].gratuityDividingFactor,
+        gratuityFromDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].gratuityFromDate,
+        gratuityToDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].gratuityToDate,
+        saMaxPercentage :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].saMaxPercentage,
+        saFromDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].saFromDate,
+        saToDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].saToDate,
+        esic1 :   this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].esic1,
+        esic1FromDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].esic1FromDate,
+        esic1ToDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].esic1ToDate ,
+        pfStatus :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].pfStatus,
+        edliExemption :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].edliExemption,
+        pfNilOptionChoice :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].pfNilOptionChoice,
+        employeeCompanyContributionDiff :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeCompanyContributionDiff,
+        contributionMethodChoice :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].contributionMethodChoice,
+        companyContribution :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].companyContribution,
+        companyFromDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].companyFromDate,
+        companyToDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].companyToDate,
+        employeeContribution :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeContribution,
+        employeeFromDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeFromDate,
+        employeeToDate :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeToDate,
+        ptState :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].ptState,
+        ptCity :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].ptCity,
+        lwfState :  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].lwfState,
+       tan:  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].tan,
+       tdsCircle:  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].tdsCircle,
+       deductorStatus:  this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].deductorStatus,
+
+      });
+    }
+    console.log(JSON.stringify(complianceDetails));
+    for(let j=0; j<complianceDetails.length;j++){
+      this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails[j]).subscribe(res => {
+        console.log(res);
+        this.sweetalertMasterSuccess('Compliance Details Activated Successfully.', '');
+        this.isEditMode = false;
+      }, (error: any) => {
+        this.sweetalertError(error["error"]["status"]["messsage"]);
+
+      }, () => {
+        //this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+        this.resetAlllArrayAndFormField();
+      });
+
+    }
+
+
+
+
+
 
   }
 }

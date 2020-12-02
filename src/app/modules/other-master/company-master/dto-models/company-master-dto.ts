@@ -5,7 +5,7 @@ export class requestDTOString {
 }
 
 export class companyMasterRequestDTOs {
-  public employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  public employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','');
   public companyMasterRequestDTOs: Array<any> = [];
 
   constructor() { }
@@ -28,6 +28,7 @@ export class EmployeeMasterRequestDTO {
     public city: any,
     public village: any,
     public phoneNumber: any,
+    public isdCode: any,
     public emailId: any,
     public website: any,
     public contractor: any,

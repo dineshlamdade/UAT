@@ -40,10 +40,6 @@ export class CompanyRegistrationDetailsService {
         return res;
       }));
   }
-
-
-
-
   getCompanyRegistrationMaster() {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')

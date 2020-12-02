@@ -10,14 +10,14 @@ var requestDTOString = /** @class */ (function () {
 exports.requestDTOString = requestDTOString;
 var companyMasterRequestDTOs = /** @class */ (function () {
     function companyMasterRequestDTOs() {
-        this.employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+        this.employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
         this.companyMasterRequestDTOs = [];
     }
     return companyMasterRequestDTOs;
 }());
 exports.companyMasterRequestDTOs = companyMasterRequestDTOs;
 var EmployeeMasterRequestDTO = /** @class */ (function () {
-    function EmployeeMasterRequestDTO(globalCompanyMasterId, code, companyName, shortName, formerName, companyGroupName, address1, address2, address3, country, pinCode, state, city, village, phoneNumber, emailId, website, contractor, typeOfEstablishment, language, currency, industryType, scale, coClassification, startDate, endDate, reason, companyActive, remark, logo1, logo2, logo3) {
+    function EmployeeMasterRequestDTO(globalCompanyMasterId, code, companyName, shortName, formerName, companyGroupName, address1, address2, address3, country, pinCode, state, city, village, phoneNumber, isdCode, emailId, website, contractor, typeOfEstablishment, language, currency, industryType, scale, coClassification, startDate, endDate, reason, companyActive, remark, logo1, logo2, logo3) {
         this.globalCompanyMasterId = globalCompanyMasterId;
         this.code = code;
         this.companyName = companyName;
@@ -33,6 +33,7 @@ var EmployeeMasterRequestDTO = /** @class */ (function () {
         this.city = city;
         this.village = village;
         this.phoneNumber = phoneNumber;
+        this.isdCode = isdCode;
         this.emailId = emailId;
         this.website = website;
         this.contractor = contractor;

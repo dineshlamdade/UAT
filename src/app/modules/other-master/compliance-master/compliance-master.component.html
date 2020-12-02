@@ -13,7 +13,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <fieldset>
-                        <legend>Compliance Master Details {{isView}}</legend>
+                        <legend>Compliance Master Details</legend>
                         <div class="row">
 
                           <div class="col-sm-3">
@@ -92,6 +92,7 @@
                               style="font-size: small;" [settings]="dropdownSettings" [data]="dropdownList"
                               (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
                               (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)"
+                              [(ngModel)]= "selectedEstablishmentMasterId"
                               [ngClass]="{'is-invalid' : form.get('establishmentMasterId').status == 'INVALID'}"
                               formControlName="establishmentMasterId" [disabled]=isEditableEstablismentMasterId>
                             </ng-multiselect-dropdown>
@@ -126,14 +127,20 @@
                           </div>
 
                           <div class="col-sm-3">
-                            <label class="form-label">User Name to access government website</label>
+                            <label class="form-label">User Name to access government website </label>
                             <input type="text" formControlName="userNameForWebsite" class="form-control"
                               name="userNameForWebsite" placeholder="Enter User Name">
                           </div>
 
-                          <div class="col-sm-3 mt-2" *ngIf="isEditMode && isView == false">
-
-                            <button type="button"
+                          <div class="col-sm-3 mt-2">
+                            <div *ngIf="isActivateButton ==0">
+                              <button type="button"
+                              class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="activateComplianceMaster()"><b><i
+                                  class="fa fa-times-circle"></i></b> Activate Record</button>
+                            </div>
+                            <div *ngIf="isGlobalView == false && isEditMode == true">
+                              <button type="button"
                               class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteComplianceMaster()"><b><i
                                   class="fa fa-times-circle"></i></b> Delete</button>
@@ -142,6 +149,26 @@
                               class="pull-right custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               tooltip="Update" (click)="UpdateComplianceMaster()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
+
+                            </div>
+                            <ng-container>
+                              <ng-template *ngIf ="isActivateButton ==0">
+
+                              </ng-template>
+
+                              <ng-template  *ngIf="isGlobalView ==false">
+
+
+                              </ng-template>
+
+                            </ng-container>
+
+
+
+
+
+
+
                           </div>
 
 
@@ -379,7 +406,7 @@
 
 
                         </div>
-                        <div class="row pull-right" *ngIf="isView == false">
+                        <div class="row pull-right"  *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbutton"
                               onclick="document.getElementById('submitbutton').disabled = true;document.getElementById('submitbutton').style.opacity='0.5';"
@@ -468,6 +495,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
+                              [ngClass]="{'is-invalid' : form.get('esic1FromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
                             </div>
@@ -478,6 +506,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
+                              [ngClass]="{'is-invalid' : form.get('esic1ToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -498,6 +527,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
+                            [ngClass]="{'is-invalid' : form.get('ptState').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
                               <option *ngFor="let state of states" [value]="state">
                                 {{state}}
@@ -508,6 +538,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">City</label>
                             <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
+                            [ngClass]="{'is-invalid' : form.get('ptCity').status == 'INVALID'}"
 
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
                               <option *ngFor="let issuedBy of officePremisesOwnershipList" [value]="issuedBy">
@@ -530,6 +561,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
+                            [ngClass]="{'is-invalid' : form.get('lwfState').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
                               <option *ngFor="let issuedBy of states" [value]="issuedBy">
                                 {{issuedBy}}
@@ -550,18 +582,21 @@
                           <div class="col-sm-3">
                             <label class="form-label">TAN</label>
                             <input type="text" formControlName="tan" class="form-control" name="tan"
+                            [ngClass]="{'is-invalid' : form.get('tan').status == 'INVALID'}"
                               placeholder="Enter TAN">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">TDS Circle</label>
                             <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
+                            [ngClass]="{'is-invalid' : form.get('tdsCircle').status == 'INVALID'}"
                               placeholder="Enter TDS Circle">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">Deductor Status</label>
                             <input type="text" formControlName="deductorStatus" class="form-control"
+                            [ngClass]="{'is-invalid' : form.get('deductorStatus').status == 'INVALID'}"
                               name="deductorStatus" placeholder="Enter Deductor Status">
                           </div>
 
@@ -580,6 +615,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Dividing Factor % </label>
                             <input type="number" formControlName="gratuityDividingFactor" class="form-control"
+                            [ngClass]="{'is-invalid' : form.get('gratuityDividingFactor').status == 'INVALID'}"
                               name="gratuityDividingFactor" placeholder="Enter Dividing Factor">
                           </div>
 
@@ -588,6 +624,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityFromDate"
+                              [ngClass]="{'is-invalid' : form.get('gratuityFromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
                             </div>
@@ -598,6 +635,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityToDate"
+                              [ngClass]="{'is-invalid' : form.get('gratuityToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -862,7 +900,7 @@
                   <div class="row" formArrayName="epsArray">
                     <div class="col-md-12" *ngFor="let item of epsArray.controls; index as i">
                       <fieldset [formGroupName]="i">
-                        <legend>EMPLOYEE PENSION SCHEME (EPS)</legend>
+                        <legend>EMPLOYEE PENSION SCHEME (EPS) {{isGlobalView}}</legend>
                         <div class="row">
 
                           <div class="col-sm-3">
@@ -906,7 +944,7 @@
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonEps"
                               onclick="document.getElementById('submitbuttonEps').disabled = true;document.getElementById('submitbuttonEps').style.opacity='0.5';"
@@ -989,7 +1027,7 @@
 
                           </div>
 
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonEsi"
                               onclick="document.getElementById('submitbuttonEsi').disabled = true;document.getElementById('submitbuttonEsi').style.opacity='0.5';"
@@ -1056,7 +1094,7 @@
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonPt"
                               onclick="document.getElementById('submitbuttonPt').disabled = true;document.getElementById('submitbuttonPt').style.opacity='0.5';"
@@ -1111,7 +1149,7 @@
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonLwf"
                               onclick="document.getElementById('submitbuttonLwf').disabled = true;document.getElementById('submitbuttonLwf').style.opacity='0.5';"
@@ -1176,7 +1214,7 @@
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20"  *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonTds"
                               onclick="document.getElementById('submitbuttonTds').disabled = true;document.getElementById('submitbuttonTds').style.opacity='0.5';"
@@ -1246,7 +1284,7 @@
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20"  *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonGratuity"
                               onclick="document.getElementById('submitbuttonGratuity').disabled = true;document.getElementById('submitbuttonGratuity').style.opacity='0.5';"
@@ -1315,7 +1353,7 @@
 
                         </div>
                         <!-- end of row -->
-                        <div class="row pull-right mt-20" *ngIf="isView == false">
+                        <div class="row pull-right mt-20"  *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonSa"
                               onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
@@ -1451,14 +1489,25 @@
                         </td>
 
                         <td class="wd-10">
-                          <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                          <!-- <i  class="fa fa-edit font-16 text-dark-green cursor-pointer" *ngIf="summary.isActive ==1"
                             (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,false)"
                             tooltip="Edit"></i>
 
                           <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
                             (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
-                            tooltip="View"></i>
+                            tooltip="View"></i> -->
+
+                            <span *ngIf="summary.isActive ==0">
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" style="visibility: hidden;"
+                                (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)" tooltip="Edit"></i> </span>
+                            <span *ngIf="summary.isActive ==1">
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)" tooltip="Edit"></i> </span>
+
+                            <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,summary.isActive)"
+                              tooltip="View"></i>
                         </td>
+
                       </tr>
                       <tr *ngIf="!summaryHtmlDataList?.length">
                         <td colspan="10">
@@ -1517,9 +1566,6 @@
                     </ng-multiselect-dropdown>
 
                   </div>
-
-
-
                 </div>
                 <div class="row mt-20">
                   <div class="col-sm-12">
@@ -1538,15 +1584,6 @@
           </div>
 
 
-
-
-
-
-
-
-
-
-
           <div class="row">
             <div class="col-12">
               <div class="card">
@@ -1560,10 +1597,6 @@
                       <tr>
                         <th scope="col" class="wd-50">Sr. No.</th>
                         <th scope="col" class="wd-50">Job Field</th>
-
-
-
-
                         <th scope="col" class="wd-50">Action</th>
                       </tr>
                     </thead>

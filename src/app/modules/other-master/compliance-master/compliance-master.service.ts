@@ -87,9 +87,9 @@ export class ComplianceMasterService {
       .set('content-type', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('X-TenantId', 'PaysquareDefault');
-     // return this._HTTP.get(environment.baseUrl8082 + '/pincode-details-check/' + stateName, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+  //  return this._HTTP.get(environment.baseUrl8082 + '/location-information/city/+ stateName,{ headers: { 'X-TenantId': 'PaysquareGlobal' } })
 
-      return this._HTTP.get('http://deliziahruat.paysquare.com:8082/v1/location-information/city/'+ stateName,{ headers: { 'X-TenantId': 'PaysquareGlobal' } })
+     return this._HTTP.get(environment.baseUrl8082+'/location-information/city/'+ stateName, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
       .pipe(map((res: any) => {
         return res;
       }));

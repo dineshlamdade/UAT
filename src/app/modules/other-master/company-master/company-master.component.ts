@@ -110,7 +110,7 @@ export class CompanyMasterComponent implements OnInit {
       endDate: new FormControl(''),
       reason: new FormControl(''),
       remark: new FormControl(''),
-      officialCountryCode: new FormControl(''),
+      isdCode: new FormControl(''),
       officialMobileNumber: new FormControl(''),
       contactInformation: new FormControl(''),
       companyActive: new FormControl(''),
@@ -385,7 +385,7 @@ this.companyMasterform.patchValue({
     this.showButtonSaveAndReset = true;
     this.isSaveAndReset = true;
 
-    this.employeeMasterRequestDTO  = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+    this.employeeMasterRequestDTO  = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','');
    // this.isEditMode = false;
     this.selectedImageFileLogo1 = undefined;
     this.selectedImageFileLogo2 = undefined;
@@ -485,6 +485,7 @@ deactiveActiveCheckBox() {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.state = this.companyMasterform.get('state').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get('state').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.village = this.companyMasterform.get('village').value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode  = this.companyMasterform.get('isdCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber  = this.companyMasterform.get('phoneNumber').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.emailId = this.companyMasterform.get('emailId').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.website = this.companyMasterform.get('website').value;
@@ -535,7 +536,7 @@ deactiveActiveCheckBox() {
         console.log(res);
         if (res.data.results.length > 0) {
           this.sweetalertMasterSuccess('Company  Master Updated Successfully.', '');
-          this.employeeMasterRequestDTO  = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+          this.employeeMasterRequestDTO  = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','');
           this.saveFormValidation();
          // this.companyMasterform.reset();
          this.isSaveAndReset = true;
@@ -581,6 +582,7 @@ deactiveActiveCheckBox() {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.city = this.companyMasterform.get('state').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.village = this.companyMasterform.get('village').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber  = this.companyMasterform.get('phoneNumber').value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode  = this.companyMasterform.get('isdCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.emailId = this.companyMasterform.get('emailId').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.website = this.companyMasterform.get('website').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.contractor = isContractor2;
