@@ -228,17 +228,6 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
-  // //NSC Identity Information API Call
-  // getNSCIdentityInformation() {
-  //   this.nscService.getNSCIdentityInformation().subscribe((res) => {
-  //     console.log('get Identity Information', res);
-  //     this.form.patchValue({
-  //       accountHolderName: res.data.results[0].employeePersonalInfoResponseDTO.accountHolderName,
-  //     });
-  //     });
-  //   }
-
-
   // convenience getter for easy access to form fields
   get masterForm() {
     return this.form.controls;

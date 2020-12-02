@@ -27,16 +27,16 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PostOfficeService } from '../../post-office/post-office.service';
-import { NscService } from '../nsc.service';
+import { NscService } from '../../national-seving-certificate/nsc.service';
+import { FixedDepositsService } from '../fixed-deposits.service';
 
 
 @Component({
-  selector: 'app-national-seving-certificate-declaration',
-  templateUrl: './national-seving-certificate-declaration.component.html',
-  styleUrls: ['./national-seving-certificate-declaration.component.scss']
+  selector: 'app-fixed-deposits-declaration',
+  templateUrl: './fixed-deposits-declaration.component.html',
+  styleUrls: ['./fixed-deposits-declaration.component.scss']
 })
-export class NationalSevingCertificateDeclarationComponent implements OnInit {
+export class FixedDepositsDeclarationComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -103,7 +103,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   public grandApprovedTotalEditModal: number;
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
-  public isDisabled: boolean;
+  public isDisabled: boolean = true;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
   public documentRemark: any;
@@ -166,7 +166,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private nscService : NscService,
+    private fixedDepositsService: FixedDepositsService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -203,7 +203,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       const input = this.data;
       this.globalInstitution = input.institution;
       this.globalPolicy = input.policyNo;
-      this.getInstitutionListWithPolicyNo();
+      // this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.policyNo, 'All');
     }
 
@@ -214,29 +214,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService();
 
     this.deactiveCopytoActualDate();
-    // Get API call for All previous employee Names
-    this.Service.getpreviousEmployeName().subscribe((res) => {
-      console.log('previousEmployeeList::', res);
-      if (!res.data.results[0]) {
-        return;
-      }
-      res.data.results.forEach((element) => {
-        const obj = {
-          label: element.name,
-          value: element.previousEmployerId,
-        };
-        this.previousEmployeeList.push(obj);
-      });
-    });
-
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
-      if (res.data.results.length > 0) {
-        this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
-      }
-    });
+    this.getpreviousEmployeName();
+    this.getAllPreviousEmployer();
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -250,6 +229,35 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+  }
+
+  // Get API call for All previous employee Names
+  getpreviousEmployeName() {
+    this.Service.getpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.name,
+          value: element.previousEmployerId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+      console.log('previousEmployeeList 2::', this.previousEmployeeList);
+    });
+  }
+
+  // Get All Previous Employer
+  getAllPreviousEmployer() {
+    this.Service.getAllPreviousEmployer().subscribe((res) => {
+      console.log(res.data.results);
+      if (res.data.results.length > 0) {
+        this.employeeJoiningDate = res.data.results[0].joiningDate;
+        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
+      }
+    });
   }
 
   updatePreviousEmpId(event: any, i: number, j: number) {
@@ -287,36 +295,36 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     this.transactionPolicyList.push(data);
     this.refreshTransactionStatustList();
 
-    this.getInstitutionListWithPolicyNo();
+    // this.getInstitutionListWithPolicyNo();
 
     this.resetAll();
     this.selectedTransactionInstName('All');
   }
 
-  public getInstitutionListWithPolicyNo() {
-    this.nscService
-      .getNSCInstitutionListWithPolicyNo()
-      .subscribe((res) => {
-        console.log('getInstitutionListWithPolicyNo', res);
-        this.transactionInstitutionListWithPolicies = res.data.results;
+  // public getInstitutionListWithPolicyNo() {
+  //   this.fixedDepositsService
+  //     .getFDInstitutionListWithPolicyNo()
+  //     .subscribe((res) => {
+  //       console.log('getInstitutionListWithPolicyNo', res);
+  //       this.transactionInstitutionListWithPolicies = res.data.results;
 
-        res.data.results.forEach((element) => {
-          const obj = {
-            label: element.institution,
-            value: element.institution,
-          };
-          this.transactionInstitutionNames.push(obj);
+  //       res.data.results.forEach((element) => {
+  //         const obj = {
+  //           label: element.institution,
+  //           value: element.institution,
+  //         };
+  //         this.transactionInstitutionNames.push(obj);
 
-          element.policies.forEach((policy) => {
-            const policyObj = {
-              label: policy,
-              value: policy,
-            };
-            this.transactionPolicyList.push(policyObj);
-          });
-        });
-      });
-  }
+  //         element.policies.forEach((policy) => {
+  //           const policyObj = {
+  //             label: policy,
+  //             value: policy,
+  //           };
+  //           this.transactionPolicyList.push(policyObj);
+  //         });
+  //       });
+  //     });
+  // }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
     this.globalInstitution = institutionName;
@@ -350,13 +358,13 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       }
     });
 
-    if (institutionName == 'All') {
-      this.grandTabStatus = true;
-      this.isDisabled = true;
-    } else {
-      this.grandTabStatus = false;
-      this.isDisabled = false;
-    }
+    // if (institutionName == 'All') {
+    //   this.grandTabStatus = true;
+    //   this.isDisabled = true;
+    // } else {
+    //   this.grandTabStatus = false;
+    //   this.isDisabled = false;
+    // }
 
     this.resetAll();
   }
@@ -615,11 +623,10 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       investmentGroup2TransactionId: number;
       investmentGroup2MasterPaymentDetailId: number;
       previousEmployerId: number;
-      dueDate: Date;
       declaredAmount: any;
-      dateOfPayment: Date;
+      accountNumber: number;
       actualAmount: any;
-      isECS: number;
+      institution: number;
     },
     j: number
   ) {
@@ -634,20 +641,20 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
+    this.isDisabled = false;
     this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = null;
-    this.declarationService.dueDate = null;
+    this.declarationService.accountNumber = null;
     this.declarationService.actualAmount = null;
-    this.declarationService.dateOfPayment = null;
-    this.declarationService.isECS = 0;
+    this.declarationService.institution = 0;
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
-    this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
-      j
-    ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
-    this.transactionDetail[j].group2TransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].group2TransactionList);
+    // this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
+    //   j
+    // ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
+    // this.transactionDetail[j].group2TransactionList.push(this.declarationService);
+   // console.log('addRow::', this.transactionDetail[j].group2TransactionList);
   }
 
   sweetalertWarning(msg: string) {
@@ -723,12 +730,12 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.nscService
-      .postNSCTransaction(data)
+    this.fixedDepositsService
+      .postFDTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
+          res.data.results[0].investmentGroup3TransactionDetail;
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -782,7 +789,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedNSCTransactionDocument(index: number) {
+  removeSelectedTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -831,7 +838,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-      investmentGroupTransactionDetail: this.transactionDetail,
+      investmentGroup3TransactionDetail: this.transactionDetail,
       groupTransactionIDs: this.uploadGridData,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
@@ -844,13 +851,13 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.nscService
-      .uploadNSCTransactionwithDocument(this.filesArray, data)
+    this.fixedDepositsService
+      .uploadFDTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
           this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
+            res.data.results[0].investmentGroup3TransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -1067,20 +1074,17 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       this.hideCopytoActualDate = false;
     }
   }
-  copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
-    dueDate = new Date(dueDate);
-    // item.group2TransactionList.dateOfPayment = dueDate;
-    this.transactionDetail[0].group2TransactionList[i].dateOfPayment = dueDate;
-    this.declarationService.dateOfPayment = this.transactionDetail[0].group2TransactionList[
-      i
-    ].dateOfPayment;
-    // this.dateOfPayment = dueDate;
-    alert('hiiii');
-    console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
-  }
+  // copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
+  //   dueDate = new Date(dueDate);
+  //   this.transactionDetail[0].group2TransactionList[i].dateOfPayment = dueDate;
+  //   this.declarationService.dateOfPayment = this.transactionDetail[0].group2TransactionList[
+  //     i
+  //   ].dateOfPayment;
+  //   console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
+  // }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedNSCTransactionDocumentInEditCase(index: number) {
+  removeSelectedTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
@@ -1098,14 +1102,14 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.nscService
+    this.fixedDepositsService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
-          res.data.results[0].investmentGroupTransactionDetail;
+          res.data.results[0].investmentGroup3TransactionDetail;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1158,47 +1162,51 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.nscService
-      .getTransactionFilterData(institution, policyNo, transactionStatus)
+    this.fixedDepositsService
+      .getTransactionFilterData()
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
-        this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
-        this.documentDetailList = res.data.results[0].documentInformation;
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
+        if (res.data.results.length > 0 ) {
+          this.transactionDetail =
+            res.data.results[0].investmentGroup3TransactionDetail;
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+          // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
 
-        this.initialArrayIndex = [];
+          this.initialArrayIndex = [];
 
-        this.transactionDetail.forEach((element) => {
-          this.initialArrayIndex.push(element.group2TransactionList.length);
+          this.transactionDetail.forEach((element) => {
+            this.initialArrayIndex.push(element.group2TransactionList.length);
 
-          element.group2TransactionList.forEach((innerElement) => {
-            if (innerElement.dateOfPayment !== null) {
-              innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-            }
+            element.group2TransactionList.forEach((innerElement) => {
+              // if (innerElement.dateOfPayment !== null) {
+              //   innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
+              // }
 
-            // if(this.employeeJoiningDate < innerElement.dueDate) {
-            //   innerElement.active = false;
-            // }
-            if (innerElement.isECS === 0) {
-              this.glbalECS == 0;
-            } else if (innerElement.isECS === 1) {
-              this.glbalECS == 1;
-            } else {
-              this.glbalECS == 0;
-            }
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount
-            );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount
-            );
+              // if(this.employeeJoiningDate < innerElement.dueDate) {
+              //   innerElement.active = false;
+              // }
+              // if (innerElement.isECS === 0) {
+              //   this.glbalECS == 0;
+              // } else if (innerElement.isECS === 1) {
+              //   this.glbalECS == 1;
+              // } else {
+              //   this.glbalECS == 0;
+              // }
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            });
           });
-        });
+        } else {
+          this.addRowInList(this.declarationService, 0);
+        }
       });
   }
 
@@ -1248,7 +1256,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     });
 
     const data = {
-      investmentGroupTransactionDetail: this.editTransactionUpload,
+      investmentGroup3TransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
@@ -1256,8 +1264,8 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.nscService
-      .uploadNSCTransactionwithDocument(this.editfilesArray, data)
+    this.fixedDepositsService
+      .uploadFDTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1268,7 +1276,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
           );
 
           this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
+            res.data.results[0].investmentGroup3TransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -1314,7 +1322,7 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.nscService
+    this.fixedDepositsService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
@@ -1345,18 +1353,20 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].group2TransactionList[i].dateOfPayment);
   }
+
 }
 
 class DeclarationService {
   public investmentGroup2TransactionId = 0;
   public investmentGroup2MasterPaymentDetailId: number;
   public previousEmployerId = 0;
-  public dueDate: Date;
+  public institution: 0;
+    public accountNumber: number;
+  // public dueDate: Date;
   public declaredAmount: number;
-  public dateOfPayment: Date;
   public actualAmount: number;
-  public isECS: 0;
-  public transactionStatus: 'Pending';
+  // public dateOfPayment: Date;
+  public transactionStatus: string = 'Pending';
   public amountRejected: number;
   public amountApproved: number;
   constructor(obj?: any) {

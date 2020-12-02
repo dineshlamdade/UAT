@@ -1921,3 +1921,12 @@ button:focus {
         margin-left: 0px;
     }
 }
+.tabview_fixed_deposit{
+  display: grid;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  grid-template-rows: 40px 1fr;
+  grid-template-columns: 2fr 2fr!important;
+  font-family: Montserrat, sans-serif!important;
+}

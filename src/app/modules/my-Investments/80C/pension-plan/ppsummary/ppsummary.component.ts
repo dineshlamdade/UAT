@@ -86,7 +86,7 @@ export class PpsummaryComponent implements OnInit {
       .postPensionPlanFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].licMasterList;
+        this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(

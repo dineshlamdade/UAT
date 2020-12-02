@@ -35,8 +35,7 @@
                   {{summary.actualAmount | number:'1.2-2'}}
                 </span>
               </td>
-              <td class="wd-10">
-                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+              <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
             </tr>
@@ -60,21 +59,22 @@
               </td>
               <td></td>
             </tr>
-
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Future Investments &nbsp;
+              <td colspan="3" class="align-right font700">Future New Saving Certificate&nbsp;
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount" (blur)='onChangeFutureNewPolicyDeclaredAmount()'
-                  placeholder="0.00" class="form-control width120 inline_center align-right">
+                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                  (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder="0.00"
+                  class="form-control width120 inline_center align-right">
               </td>
               <td></td>
               <td></td>
             </tr>
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
-                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B</span>
+                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B
+                </span>
               </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
@@ -82,50 +82,9 @@
                 </span>
               </td>
               <td class="align-right">
-               </td>
-              <td class="align-right">
-              </td>
-              <td></td>
-            </tr>
-
-            <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Limit&nbsp; <span class="Letterbadge">D</span></td>
-              <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limitD | number:'1.2-2'}}">
-                  {{limitD | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{grandTotalActualAmount | number:'1.2-2'}}">
+                  {{grandTotalActualAmount | number:'1.2-2'}}
                 </span>
-              </td>
-              <td class="align-right">
-              </td>
-              <td></td>
-            </tr>
-            <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Deduction [Sec.80-CCD(1B)] &nbsp;
-                <span class="Letterbadge">E </span> : Mininum of &nbsp;<span class="Letterbadge"> C</span> & &nbsp;<span
-                  class="Letterbadge"> D
-                </span>
-              </td>
-              <td class="align-right">
-                <span class="padding-right-12" tooltip="{{deductionE | number:'1.2-2'}}">
-                  {{deductionE | number:'1.2-2'}}
-                </span>
-              </td>
-              <td class="align-right">
-              </td>
-              <td></td>
-            </tr>
-            <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Eligible for Deduction [Sec.80-CCD(1) part of Sec.80-C] &nbsp;
-                <span class="Letterbadge">F </span> = &nbsp;<span class="Letterbadge"> C </span> - &nbsp;<span
-                  class="Letterbadge"> E
-                </span>
-              </td>
-              <td class="align-right">
-                <span class="padding-right-12" tooltip="{{eligibleForDeductionF | number:'1.2-2'}}">
-                  {{eligibleForDeductionF | number:'1.2-2'}}
-                </span>
-              </td>
-              <td class="align-right">
               </td>
               <td></td>
             </tr>
@@ -135,4 +94,3 @@
     </div>
   </div>
 </div>
-

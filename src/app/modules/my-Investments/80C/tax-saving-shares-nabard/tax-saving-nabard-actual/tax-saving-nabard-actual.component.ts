@@ -27,16 +27,15 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PostOfficeService } from '../../post-office/post-office.service';
-import { NscService } from '../nsc.service';
-
+import { NscService } from '../../national-seving-certificate/nsc.service';
 
 @Component({
-  selector: 'app-national-seving-certificate-declaration',
-  templateUrl: './national-seving-certificate-declaration.component.html',
-  styleUrls: ['./national-seving-certificate-declaration.component.scss']
+  selector: 'app-tax-saving-nabard-actual',
+  templateUrl: './tax-saving-nabard-actual.component.html',
+  styleUrls: ['./tax-saving-nabard-actual.component.scss']
 })
-export class NationalSevingCertificateDeclarationComponent implements OnInit {
+
+export class TaxSavingNabardActualComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;

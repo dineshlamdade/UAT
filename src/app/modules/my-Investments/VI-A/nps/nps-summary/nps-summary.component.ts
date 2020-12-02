@@ -24,8 +24,6 @@ export class NpsSummaryComponent implements OnInit {
     };
     this.institution = institution;
     this.policyNo = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
     this.myEvent.emit(data);
   }
 
@@ -43,7 +41,7 @@ export class NpsSummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   // public previousEmployerB: string;
-  public futureInvestmentsB : string;
+  public futureNewPolicyDeclaredAmount: string;
   public limitD : number = 150000;
   public deductionE : number;
   public eligibleForDeductionF : number;
@@ -66,22 +64,21 @@ export class NpsSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      // this.previousEmployerB = this.numberFormat.transform(
-      //   res.data.results[0].previousEmployerB
-      // );
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+        res.data.results[0].futureNewPolicyDeclaredAmount
+      );
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.onNPSChangeLimit();
     });
   }
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-    // this.previousEmployerB = this.previousEmployerB.toString().replace(',', '');
-    this.futureInvestmentsB = this.futureInvestmentsB.toString().replace(',', '');
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
     const data = {
-      // previousEmployerB: this.previousEmployerB,
-      futureInvestmentsB: this. futureInvestmentsB,
+      futureNewPolicyDeclaredAmount: this. futureNewPolicyDeclaredAmount,
     };
 
     //console.log('addFuturePolicy Data..', data);
@@ -89,33 +86,28 @@ export class NpsSummaryComponent implements OnInit {
       .getNpsSummaryFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].licMasterList;
+        this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        // this.previousEmployerB = this.numberFormat.transform(
-        //   res.data.results[0].previousEmployerB
-        // );
-        this.futureInvestmentsB = this.numberFormat.transform(
-          res.data.results[0].futureInvestmentsB
+        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+          res.data.results[0].futureNewPolicyDeclaredAmount
         );
+        this.grandTotalDeclaredAmount =
+        res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount =
+        res.data.results[0].grandTotalActualAmount;
+      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
 
-        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
       });
-
-    this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-    // this.previousEmployerB = this.numberFormat.transform(
-    //   this.previousEmployerB
-    // );
-    this.futureInvestmentsB = this.numberFormat.transform(
-      this.futureInvestmentsB
+
+    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+      this.futureNewPolicyDeclaredAmount
     );
-    this.onChangeLimit();
+    this.onNPSChangeLimit();
     this.addFuturePolicy();
   }
 
@@ -134,7 +126,7 @@ export class NpsSummaryComponent implements OnInit {
     console.log('policyNo::', policyNo);
   }
 
-  onChangeLimit() {
+  onNPSChangeLimit() {
     this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
     this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.deductionE;
   }
