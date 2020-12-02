@@ -45,6 +45,10 @@ import { LanguageDetailComponent } from './components/education-skills-informati
 import { SkillsDetailComponent } from './components/education-skills-information/skills-detail/skills-detail.component';
 import { CertificationDetailComponent } from './components/education-skills-information/certification-detail/certification-detail.component';
 import { JobInformationComponent } from './components/job-information/job-information.component';
+import { OrganizationDetailComponent } from './components/job-information/organization-detail/organization-detail.component';
+import { PositionDetailComponent } from './components/job-information/position-detail/position-detail.component';
+import { ProjectDetailComponent } from './components/job-information/project-detail/project-detail.component';
+import { DeputationDetailComponent } from './components/job-information/deputation-detail/deputation-detail.component';
 
 @NgModule({
     declarations: [
@@ -64,7 +68,11 @@ import { JobInformationComponent } from './components/job-information/job-inform
         LanguageDetailComponent,
         SkillsDetailComponent,
         CertificationDetailComponent,
-        JobInformationComponent
+        JobInformationComponent,
+        OrganizationDetailComponent,
+        PositionDetailComponent,
+        ProjectDetailComponent,
+        DeputationDetailComponent
     ],
     imports: [
         CommonModule,

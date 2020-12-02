@@ -388,11 +388,19 @@
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/job-information']"><span>{{ 'EmployeeMaster.jobInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/employee-master/bank-information']"><span>{{ 'EmployeeMaster.bankInformation' | transloco }}</span></a>
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/employee-master/family-information']"><span>{{ 'EmployeeMaster.familyInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/previous-employment-information']"><span>{{ 'EmployeeMaster.complianceInformation' | transloco }}</span></a>
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"

@@ -12,6 +12,11 @@ import { FamilyDetailsComponent } from './components/family-information/family-d
 import { FamilyInformationComponent } from './components/family-information/family-information.component';
 import { NominationDetailsComponent } from './components/family-information/nomination-details/nomination-details.component';
 import { IdentityInformationComponent } from './components/identity-information/identity-information.component';
+import { DeputationDetailComponent } from './components/job-information/deputation-detail/deputation-detail.component';
+import { JobInformationComponent } from './components/job-information/job-information.component';
+import { OrganizationDetailComponent } from './components/job-information/organization-detail/organization-detail.component';
+import { PositionDetailComponent } from './components/job-information/position-detail/position-detail.component';
+import { ProjectDetailComponent } from './components/job-information/project-detail/project-detail.component';
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
 import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
@@ -102,6 +107,33 @@ const routes: Routes = [
             path: 'certification-details',
             component: CertificationDetailComponent,
             data: { title: ':: DelziaHR :: certification-details' },
+          }
+        ]
+      },
+      {
+        path: 'job-information',
+        component: JobInformationComponent,
+        data: { title: ':: DelziaHR :: job-information' },
+        children: [
+          {
+            path: 'organization-details',
+            component: OrganizationDetailComponent,
+            data: { title: ':: DelziaHR :: organization-details' },
+          },
+          {
+            path: 'position-details',
+            component: PositionDetailComponent,
+            data: { title: ':: DelziaHR :: position-details' },
+          },
+          {
+            path: 'project-details',
+            component: ProjectDetailComponent,
+            data: { title: ':: DelziaHR :: project-details' },
+          },
+          {
+            path: 'deputation-details',
+            component: DeputationDetailComponent,
+            data: { title: ':: DelziaHR :: deputation-details' },
           }
         ]
       },

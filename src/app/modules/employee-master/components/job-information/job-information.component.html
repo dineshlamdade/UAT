@@ -1,1 +1,61 @@
-<p>job-information works!</p>
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="jobtabview">
+                                <input name="nav" type="radio" class="about-radio" id="organizationDetails"
+                                    [checked]="tabIndex==0" />
+                                <label class="nav" for="organizationDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/job-information/organization-details']">
+                                    <span>
+                                        Organization Details
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="positionDetails"
+                                    [checked]="tabIndex==1" />
+                                <label class="nav" for="positionDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/job-information/position-details']">
+                                    <span>
+                                        Position Details
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="projectDetails"
+                                    [checked]="tabIndex==2" />
+                                <label class="nav" for="projectDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/job-information/project-details']">
+                                    <span>
+                                        Project Details
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="deputationDetails"
+                                    [checked]="tabIndex==3" />
+                                <label class="nav" for="deputationDetails" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/job-information/deputation-details']">
+                                    <span>
+                                        Deputation Details
+                                    </span>
+                                </label>
+
+
+                                <div class="jobtabs about-page">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
