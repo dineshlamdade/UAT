@@ -56,6 +56,9 @@ import { FixedDepositsDeclarationComponent } from './fixed-deposits/fixed-deposi
 import { TaxSavingSharesNabardComponent } from './tax-saving-shares-nabard/tax-saving-shares-nabard.component';
 import { TaxSavingNabardSummaryComponent } from './tax-saving-shares-nabard/tax-saving-nabard-summary/tax-saving-nabard-summary.component';
 import { TaxSavingNabardActualComponent } from './tax-saving-shares-nabard/tax-saving-nabard-actual/tax-saving-nabard-actual.component';
+import { PostOfficeTermDepositComponent } from './post-office-term-deposit/post-office-term-deposit.component';
+import { PostOfficeTermDepositSummaryComponent } from './post-office-term-deposit/post-office-term-deposit-summary/post-office-term-deposit-summary.component';
+import { PostOfficeTermDepositDeclarationComponent } from './post-office-term-deposit/post-office-term-deposit-declaration/post-office-term-deposit-declaration.component';
 
 @NgModule({
   declarations: [
@@ -97,6 +100,9 @@ import { TaxSavingNabardActualComponent } from './tax-saving-shares-nabard/tax-s
     TaxSavingSharesNabardComponent,
     TaxSavingNabardSummaryComponent,
     TaxSavingNabardActualComponent,
+    PostOfficeTermDepositComponent,
+    PostOfficeTermDepositSummaryComponent,
+    PostOfficeTermDepositDeclarationComponent,
      ],
   imports: [
     CommonModule,

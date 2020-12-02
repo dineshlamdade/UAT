@@ -2,14 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { TaxSavingNabardService } from '../tax-saving-nabard.service';
+import { PostOfficeTermDepositService } from '../post-office-term-deposit.service';
 
 @Component({
-  selector: 'app-tax-saving-nabard-summary',
-  templateUrl: './tax-saving-nabard-summary.component.html',
-  styleUrls: ['./tax-saving-nabard-summary.component.scss']
+  selector: 'app-post-office-term-deposit-summary',
+  templateUrl: './post-office-term-deposit-summary.component.html',
+  styleUrls: ['./post-office-term-deposit-summary.component.scss']
 })
-export class TaxSavingNabardSummaryComponent implements OnInit {
+export class PostOfficeTermDepositSummaryComponent implements OnInit {
 
       @Input() institution: string;
       @Input() policyNo: string;
@@ -45,7 +45,7 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
 
       constructor(
         private service: MyInvestmentsService,
-        private taxSavingNabardService : TaxSavingNabardService,
+       private postOfficeTermDepositService : PostOfficeTermDepositService,
         private numberFormat: NumberFormatPipe,
         private alertService: AlertServiceService
       ) {}
@@ -58,7 +58,7 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
       // ---------------------Summary ----------------------
       // Summary get Call
       summaryPage() {
-        this.taxSavingNabardService.getTSNabardSummary().subscribe((res) => {
+        this.postOfficeTermDepositService.getPOTDepositSummary().subscribe((res) => {
           this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -83,8 +83,8 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
         };
 
         //console.log('addFuturePolicy Data..', data);
-        this.taxSavingNabardService
-          .getTSNabardSummaryFuturePolicy(data)
+        this.postOfficeTermDepositService
+          .postPOTDepositSummaryFuturePolicy(data)
           .subscribe((res) => {
             //console.log('addFuturePolicy Res..', res);
             this.summaryGridData = res.data.results[0].transactionDetailList;

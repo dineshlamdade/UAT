@@ -27,15 +27,15 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { TaxSavingNabardService } from '../tax-saving-nabard.service';
+import { PostOfficeTermDepositService } from '../post-office-term-deposit.service';
+
 
 @Component({
-  selector: 'app-tax-saving-nabard-actual',
-  templateUrl: './tax-saving-nabard-actual.component.html',
-  styleUrls: ['./tax-saving-nabard-actual.component.scss']
+  selector: 'app-post-office-term-deposit-declaration',
+  templateUrl: './post-office-term-deposit-declaration.component.html',
+  styleUrls: ['./post-office-term-deposit-declaration.component.scss']
 })
-
-export class TaxSavingNabardActualComponent implements OnInit {
+export class PostOfficeTermDepositDeclarationComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -165,7 +165,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private taxSavingNabardService : TaxSavingNabardService,
+    private postOfficeTermDepositService: PostOfficeTermDepositService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -301,7 +301,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   // public getInstitutionListWithPolicyNo() {
-  //   this.taxSavingNabardService
+  //   this.postOfficeTermDepositService
   //     .getFDInstitutionListWithPolicyNo()
   //     .subscribe((res) => {
   //       console.log('getInstitutionListWithPolicyNo', res);
@@ -729,8 +729,8 @@ export class TaxSavingNabardActualComponent implements OnInit {
       });
     });
     const data = this.transactionDetail;
-    this.taxSavingNabardService
-      .postTSNabardTransaction(data)
+    this.postOfficeTermDepositService
+      .postPOTDepositTransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
@@ -850,8 +850,8 @@ export class TaxSavingNabardActualComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.taxSavingNabardService
-      .uploadTSNabardTransactionwithDocument(this.filesArray, data)
+    this.postOfficeTermDepositService
+      .uploadPOTDepositTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1101,7 +1101,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.taxSavingNabardService
+    this.postOfficeTermDepositService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
@@ -1161,7 +1161,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.taxSavingNabardService
+    this.postOfficeTermDepositService
       .getTransactionFilterData()
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
@@ -1263,8 +1263,8 @@ export class TaxSavingNabardActualComponent implements OnInit {
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.taxSavingNabardService
-      .uploadTSNabardTransactionwithDocument(this.editfilesArray, data)
+    this.postOfficeTermDepositService
+      .uploadPOTDepositTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1321,7 +1321,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.taxSavingNabardService
+    this.postOfficeTermDepositService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
