@@ -83,24 +83,14 @@
               </td>
               <td></td>
             </tr>
-            <!-- <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Previous Employer &nbsp;
-                <span class="Letterbadge">B</span>
-              </td>
-              <td>
-                <input type="text" [(ngModel)]="previousEmployerB" (change)='onChangeFutureNewPolicyDeclaredAmount()'
-                  placeholder="0.00" class="form-control width120 inline_center align-right">
-              </td>
-              <td></td>
-              <td></td>
-            </tr> -->
+
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">
                 Future Investments &nbsp;
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureInvestmentsB" (blur)='onChangeFutureNewPolicyDeclaredAmount()'
+                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount" (blur)='onChangeFutureNewPolicyDeclaredAmount()'
                   placeholder="0.00" class="form-control width120 inline_center align-right">
               </td>
               <td></td>
@@ -124,14 +114,8 @@
                 </span>
               </td>
               <td class="align-right">
-                <!-- <span class="padding-right-12" tooltip="{{previousEmployerB | number:'1.2-2'}}">
-                  {{previousEmployerB | number:'1.2-2'}}
-                </span> -->
-              </td>
+               </td>
               <td class="align-right">
-                <!-- <span class="padding-right-12" tooltip="{{futureInvestmentsC | number:'1.2-2'}}">
-                  {{futureInvestmentsC | number:'1.2-2'}}
-                </span> -->
               </td>
               <td></td>
             </tr>
@@ -144,9 +128,6 @@
                 </span>
               </td>
               <td class="align-right">
-                <!-- <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
-                  {{totalActualAmount | number:'1.2-2'}}
-                </span> -->
               </td>
               <td></td>
             </tr>
@@ -166,9 +147,6 @@
                 </span>
               </td>
               <td class="align-right">
-                <!-- <span class="padding-right-12" tooltip="{{limitE | number:'1.2-2'}}">
-                  {{limitE | number:'1.2-2'}}
-                </span> -->
               </td>
               <td></td>
             </tr>

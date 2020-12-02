@@ -2,29 +2,29 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
+import { NscService } from '../../national-seving-certificate/nsc.service';
 
 @Component({
-  selector: 'app-sukanya-samriddhi-summary',
-  templateUrl: './sukanya-samriddhi-summary.component.html',
-  styleUrls: ['./sukanya-samriddhi-summary.component.scss'],
+  selector: 'app-tax-saving-nabard-summary',
+  templateUrl: './tax-saving-nabard-summary.component.html',
+  styleUrls: ['./tax-saving-nabard-summary.component.scss']
 })
-export class SukanyaSamriddhiSummaryComponent implements OnInit {
+export class TaxSavingNabardSummaryComponent implements OnInit {
+
   @Input() institution: string;
-  @Input() accountNumber: string;
+  @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(institution: string, accountNumber: string) {
+  onEditSummary(institution: string, policyNo: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
-      accountNumber: accountNumber,
+      policyNo: policyNo,
       tabIndex: this.tabIndex,
     };
     this.institution = institution;
-    this.accountNumber = accountNumber;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
+    this.policyNo = policyNo;
+
     this.myEvent.emit(data);
   }
 
@@ -44,7 +44,7 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private sukanyaSamriddhiService: SukanyaSamriddhiService,
+    private nscService : NscService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -57,21 +57,18 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.sukanyaSamriddhiService
-      .getSukanyaSamriddhiSummary()
-      .subscribe((res) => {
-        this.summaryGridData = res.data.results[0].transactionDetailList;
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].futureNewPolicyDeclaredAmount
-        );
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
-        console.log(res);
-      });
+    this.nscService.getNSCSummary().subscribe((res) => {
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+        res.data.results[0].futureNewPolicyDeclaredAmount
+      );
+      this.grandTotalDeclaredAmount =
+        res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      console.log(res);
+    });
   }
 
   // Post New Future Policy Data API call
@@ -85,10 +82,10 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.sukanyaSamriddhiService
-      .postSukanyaSamriddhiSummaryFuturePolicy(data)
+    this.nscService
+      .getNSCSummaryFuturePlan(data)
       .subscribe((res) => {
-        console.log('addFuturePolicy Res..', res);
+        //console.log('addFuturePolicy Res..', res);
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -96,14 +93,14 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
           res.data.results[0].futureNewPolicyDeclaredAmount
         );
         this.grandTotalDeclaredAmount =
-        res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount =
-        res.data.results[0].grandTotalActualAmount;
-      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-    });
-}
+          res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount =
+          res.data.results[0].grandTotalActualAmount;
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
 
+      });
 
+  }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
@@ -120,11 +117,12 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
   }
 
   // On onEditSummary
-  onEditSummary1(institution: string, accountNumber: string) {
+  onEditSummary1(institution: string, policyNo: string) {
     this.tabIndex = 2;
     this.institution = institution;
-    this.accountNumber = accountNumber;
+    this.policyNo = policyNo;
     console.log('institution::', institution);
-    console.log('accountNumber::', accountNumber);
+    console.log('policyNo::', policyNo);
   }
 }
+

@@ -393,13 +393,13 @@ export class PpmasterComponent implements OnInit {
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
-    //console.log('event::', event);
+    console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.masterfilesArray.push(file);
       }
     }
-    //console.log('this.masterfilesArray::', this.masterfilesArray);
+    // console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   // Remove LicMaster Document
@@ -521,4 +521,8 @@ export class PpmasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+
+
 }
+
+

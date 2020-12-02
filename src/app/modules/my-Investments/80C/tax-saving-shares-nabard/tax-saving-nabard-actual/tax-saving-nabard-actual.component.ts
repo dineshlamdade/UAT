@@ -27,15 +27,15 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { PostOfficeService } from '../../post-office/post-office.service';
+import { NscService } from '../../national-seving-certificate/nsc.service';
 
 @Component({
-  selector: 'app-taxsaving-mf-declaration',
-  templateUrl: './taxsaving-mf-declaration.component.html',
-  styleUrls: ['./taxsaving-mf-declaration.component.scss']
+  selector: 'app-tax-saving-nabard-actual',
+  templateUrl: './tax-saving-nabard-actual.component.html',
+  styleUrls: ['./tax-saving-nabard-actual.component.scss']
 })
-export class TaxsavingMfDeclarationComponent implements OnInit {
 
+export class TaxSavingNabardActualComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
@@ -165,7 +165,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    private nscService : NscService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -293,8 +293,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.Service
-      .getELSSDeclarationInstitutionListWithPolicyNo()
+    this.nscService
+      .getNSCInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -709,37 +709,37 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService();
   }
 
-  // submitDeclaration() {
-  //   // this.tabIndex = 0;
-  //   console.log(this.transactionDetail);
-  //   this.tabIndex = 0;
-  //   this.transactionDetail.forEach((element) => {
-  //     element.group2TransactionList.forEach((element) => {
-  //       element.dateOfPayment = this.datePipe.transform(
-  //         element.dateOfPayment,
-  //         'yyyy-MM-dd'
-  //       );
-  //     });
-  //   });
-  //   const data = this.transactionDetail;
-  //   this.Service
-  //     .postEightyCDeclarationTransaction(data)
-  //     .subscribe((res) => {
-  //       console.log(res);
-  //       this.transactionDetail =
-  //         res.data.results[0].investmentGroupTransactionDetail;
-  //       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-  //       this.grandActualTotal = res.data.results[0].grandActualTotal;
-  //       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-  //       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-  //       this.transactionDetail.forEach((element) => {
-  //         element.group2TransactionList.forEach((element) => {
-  //           element.dateOfPayment = new Date(element.dateOfPayment);
-  //         });
-  //       });
-  //     });
-  //   this.resetAll();
-  // }
+  submitDeclaration() {
+    // this.tabIndex = 0;
+    console.log(this.transactionDetail);
+    this.tabIndex = 0;
+    this.transactionDetail.forEach((element) => {
+      element.group2TransactionList.forEach((element) => {
+        element.dateOfPayment = this.datePipe.transform(
+          element.dateOfPayment,
+          'yyyy-MM-dd'
+        );
+      });
+    });
+    const data = this.transactionDetail;
+    this.nscService
+      .postNSCTransaction(data)
+      .subscribe((res) => {
+        console.log(res);
+        this.transactionDetail =
+          res.data.results[0].investmentGroupTransactionDetail;
+        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+        this.grandActualTotal = res.data.results[0].grandActualTotal;
+        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+        this.transactionDetail.forEach((element) => {
+          element.group2TransactionList.forEach((element) => {
+            element.dateOfPayment = new Date(element.dateOfPayment);
+          });
+        });
+      });
+    this.resetAll();
+  }
 
   // Reset All
   resetAll() {
@@ -781,7 +781,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document
-  removeSelectedLicTransactionDocument(index: number) {
+  removeSelectedNSCTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
@@ -843,8 +843,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     //         this.loaded = Math.round(100 * event.loaded / event.total);
     //     }
     // }))
-    this.Service
-      .uploadELSSTransactionwithDocument(this.filesArray, data)
+    this.nscService
+      .uploadNSCTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1079,7 +1079,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   // Remove Selected LicTransaction Document Edit Maodal
-  removeSelectedLicTransactionDocumentInEditCase(index: number) {
+  removeSelectedNSCTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
@@ -1097,16 +1097,14 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
 
-    this.Service
-      .getELSSTransactionByProofSubmissionId(proofSubmissionId)
+    this.nscService
+      .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].investmentGroupTransactionDetail;
-          this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1114,6 +1112,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
+          this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+          this.editReceiptAmount = res.data.results[0].receiptAmount;
         //console.log(this.urlArray);
         this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
@@ -1157,8 +1157,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.Service
-      .getELSSTransactionFilterData(institution, policyNo, transactionStatus)
+    this.nscService
+      .getTransactionFilterData(institution, policyNo, transactionStatus)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
         this.transactionDetail =
@@ -1202,6 +1202,8 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   public uploadUpdateTransaction() {
+
+    console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
 
     this.editTransactionUpload.forEach((element) => {
       element.group2TransactionList.forEach((innerElement) => {
@@ -1247,17 +1249,18 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
+      //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
-      //documentRemark: this.documentRemark,
     };
     console.log('uploadUpdateTransaction data::', data);
 
-    this.Service
-      .uploadELSSTransactionwithDocument(this.editfilesArray, data)
+    this.nscService
+      .uploadNSCTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
+
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -1305,40 +1308,13 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
         }
       });
     this.currentFileUpload = null;
+    this.editfilesArray = [];
   }
-
-
-  // // tslint:disable-next-line: typedef
-  // public uploadUpdateTransaction() {
-  //   this.editTransactionUpload.forEach((element) => {
-  //     this.uploadGridData.push(element.investmentGroup2TransactionId);
-  //   });
-  //   const data = {
-  //     investmentGroupTransactionDetail: this.editTransactionUpload,
-  //     groupTransactionIDs: this.uploadGridData,
-  //     // documentRemark: this.documentRemark,
-  //   };
-  //   console.log('data::', data);
-  //   this.postOfficeService
-  //     .uploadPostOfficeRecurringTransactionwithDocument(this.filesArray, data)
-  //     .subscribe((res) => {
-  //       console.log(res);
-  //       if (res.data.results.length > 0) {
-  //         this.alertService.sweetalertMasterSuccess(
-  //           'Transaction Saved Successfully.',
-  //           ''
-  //         );
-  //       } else {
-  //         this.alertService.sweetalertWarning(res.status.messsage);
-  //       }
-  //     });
-  //   this.currentFileUpload = null;
-  // }
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service
-      .getELSSTransactionByProofSubmissionId(proofSubmissionId)
+    this.nscService
+      .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
@@ -1349,6 +1325,7 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
           );
         });
         console.log(this.urlArray);
+
       });
   }
 
@@ -1384,5 +1361,4 @@ class DeclarationService {
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
-
 }

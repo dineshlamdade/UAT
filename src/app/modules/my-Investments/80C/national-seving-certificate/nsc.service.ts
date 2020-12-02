@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class NscService {
 
   apiUrl = environment.apiBaseUrl;
-  apiUrlEmployee = environment.apiBaseUrlEmployee;
+
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -85,14 +85,6 @@ export class NscService {
       return res;
     }));
   }
-
-  // getNSCIdentityInformation () {
-  //   return this._HTTP.get(this.apiUrlEmployee + 'employeeIdentity-information/3')
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
-  // }
-
 
   uploadMultipleNSCMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();

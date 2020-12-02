@@ -1,14 +1,14 @@
 <div class="tabview-contents">
-  <div class="row mb-15" *ngIf="isDisabled">
+  <!-- <div class="row mb-15" *ngIf="isDisabled">
     <div class="col-md-12">
       <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span> Select institution for proof
         submission
       </label>
     </div>
-  </div>
-  <div class="row d-flex">
-    <!-- <div class="col-12 mr-0 pr-0" *ngIf="isDisabled">
-      </div> -->
+  </div> -->
+  <!-- <div class="row d-flex">
+    <div class="col-12 mr-0 pr-0" *ngIf="isDisabled">
+      </div>
     <div class="ml-2 pl-1 pr-0">
       <label class="form-label mt-2">Institution <span class="text-red">*</span></label>
     </div>
@@ -43,9 +43,10 @@
         </option>
       </select>
     </div>
-  </div>
+  </div> -->
   <div *ngFor="let item of transactionDetail; let j = index">
-    <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
+
+    <!-- <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1">Institution & Account No.</label>
       </div>
@@ -73,7 +74,7 @@
           {{ item.frequency }}
         </label>
       </div>
-    </div>
+    </div> -->
     <div class="row mt-15">
       <div class="col-12">
         <div class="table-responsive Custom_Table">
@@ -90,24 +91,25 @@
                 <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
                 </th>
-                <th rowspan="2" class="wd-4 font700">
-                  <span tooltip="Electronic Clearing Service">ECS</span>
+                <th rowspan="2" class="wd-10 font700">
+                  <span tooltip="Electronic Clearing Service">Institution</span>
                 </th>
-                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <th rowspan="2" class="wd-11 font700">Account No</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                <!-- <th rowspan="2" class="wd-11 font700">Date of Payment</th> -->
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
                 <th rowspan="2" class="wd-8">Proof Submission ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Action</th> -->
               </tr>
               <tr>
                 <th>Rejected</th>
                 <th>Approved</th>
               </tr>
             </thead>
-            <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+            <thead class="thead-dark" *ngIf="!previousEmployeeList.length">
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
@@ -115,15 +117,16 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
-                <th rowspan="2" class="wd-11 font700">Due Date</th>
+                <th rowspan="2" class="wd-4 font700"><span>Institution</span></th>
+                <th rowspan="2" class="wd-11 font700">Account No</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                <!-- <th rowspan="2" class="wd-11 font700">Date of Payment</th> -->
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
                 <th rowspan="2" class="wd-10">Proof Submission ID</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
+                <!-- <th rowspan="2" class="wd-10 font700">Action</th> -->
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -159,6 +162,7 @@
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
+
                     ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
@@ -170,17 +174,20 @@
                   </select>
                 </td>
                 <td>
-                  <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                  <input type="text" class="form-control" [ngModel]="summary.institution" [disabled]="
+                  initialArrayIndex[j] > i || summary.institution">
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" class="form-control" [minDate]="financialYearStartDate"
+                    <!-- <input type="text" class="form-control" [minDate]="financialYearStartDate"
                       [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
                         initialArrayIndex[j] > i || summary.isECS === 1
                       " (ngModelChange)="
                         summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
-                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
+                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker /> -->
+                      <input type="text" class="form-control" [ngModel]="summary.accountNumber" [disabled]="
+                      initialArrayIndex[j] > i || summary.accountNumber">
                   </div>
                 </td>
                 <td>
@@ -194,7 +201,7 @@
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
                   </div>
                 </td>
-                <td>
+                <!-- <td>
                   <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                     [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
@@ -204,7 +211,7 @@
                     " [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
                     " class="form-control" bsDatepicker />
-                </td>
+                </td> -->
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
@@ -235,21 +242,22 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
-                <td *ngIf="previousEmployeeList?.length" colspan="12"
+              <tr>
+                <td colspan="10"></td>
+                <td
+                  class="align-right font700 font-16 text-light-green cursor-pointer">
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
+                  <span tooltip="Add Row"> Add</span>&nbsp;&nbsp;
+                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                    (click)="deleteRow(j)"></i>
+                </td>
+                <!-- <td *ngIf="!previousEmployeeList?.length" colspan="11"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(j)"></i>
-                </td>
-                <td *ngIf="!previousEmployeeList?.length" colspan="11"
-                  class="align-right font700 font-16 text-light-green cursor-pointer">
-                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                    (click)="deleteRow(j)"></i>
-                </td>
+                </td> -->
               </tr>
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
@@ -260,7 +268,7 @@
                     {{ item.declarationTotal | number: "1.2-2" }}
                   </span>
                 </td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ item.actualTotal | number: "1.2-2" }}
@@ -288,7 +296,7 @@
     <hr />
   </div>
 
-  <div class="row mt-15" *ngIf="transactionDetail?.length">
+  <!-- <div class="row mt-15" *ngIf="transactionDetail?.length">
     <div class="col-12">
       <div class="table-responsive Custom_Table">
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">
@@ -328,7 +336,6 @@
           <tbody>
             <tr>
               <td class="bg-gray font-18 font700 wd-8">Grand Total</td>
-              <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
               <td class="bg-gray font-18 font700 align-right wd-11"></td>
               <td class="bg-gray font-18 font700 align-right wd-9">
                 <span class="padding-right-12" tooltip="{{ grandDeclarationTotal | number: '1.2-2' }}">
@@ -359,7 +366,7 @@
         </table>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -431,6 +438,14 @@
       </div>
     </div>
   </div>
+  <div class="row mt-15">
+    <div class="col-12">
+       <div class="float-right mb-15">
+          <button type="button"  (click)="submitDeclaration()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+            <i class="fa fa-floppy-o"></i></b> Save</button>
+       </div>
+    </div>
+ </div>
   <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
     <div class="col-12">
       <div class="float-right mb-15">
@@ -462,16 +477,14 @@
             <table class="table table-striped table-hover table-bordered m-b-0">
               <thead class="thead-dark">
                 <tr>
+                  <th scope="col" class="font700 wd-7">Sr.No</th>
+                  <th scope="col" class="font700 wd-15">Institution & Account No</th>
                   <th scope="col" class="font700 wd-15">Proof Submission ID</th>
-                  <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
-                  <!-- <th scope="col" class="font700 wd-10">Receipt No.</th>
-                   <th scope="col" class="font700 wd-10">Receipt Date</th> -->
-                  <th scope="col" class="font700 wd-10">Selected Amount</th>
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
-                  <th scope="col" class="font700 wd-15">Document Name</th>
-                  <th scope="col" class="font700 wd-10">Action</th>
+                  <th scope="col" class="font700 wd-10">Receipt Date</th>
+                  <th scope="col" class="font700 wd-10">Document Name</th>
+                  <th scope="col" class="font700 wd-15">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -485,13 +498,22 @@
                     let documentIndex = index
                   "
                 >
-                  <td>
-                    <span tooltip="{{ documentSummary.proofSubmissionId }}">
-                      {{ documentSummary.proofSubmissionId }}
+                <td>
+                    {{ documentSummary.group2MasterList[0].documentName }}
+                  </td>
+               <td class="padding-0" *ngIf = "documentSummary.group2MasterList.length == 1">
+                  <span tooltip="{{documentSummary.institutionName}}:{{ documentSummary.policyNo }}">
+                          {{documentSummary.institutionName}} : {{ documentSummary.policyNo }}
                     </span>
                   </td>
                   <td>
-                    {{ documentSummary.group2MasterList[0].institution }}
+                    <span
+                    tooltip="{{
+                      documentSummary.group2MasterList[0].proofSubmissionId
+                    }}"
+                  >
+                        {{ documentSummary.group2MasterList[0].proofSubmissionId }}
+                    </span>
                   </td>
                   <td>
                     <span
@@ -504,7 +526,7 @@
                       }}</span
                     >
                   </td>
-                  <td class="padding-0"  *ngIf = "documentSummary.group2MasterList.length > 1">
+                  <!-- <td class="padding-0"  *ngIf = "documentSummary.group2MasterList.length > 1">
                     <div class="pd-5"
                       *ngFor="let policyNo of documentSummary.group2MasterList"
                       tooltip="{{ policyNo.policyNo }}"
@@ -513,34 +535,26 @@
                         {{ policyNo.accountNumber }}
                       </div>
                     </div>
-                  </td>
-                  <td class="padding-0"  *ngIf = "documentSummary.group2MasterList.length == 1">
+                  </td> -->
+                  <td>
 
                     <span
                     tooltip="{{
-                      documentSummary.group2MasterList[0].accountNumber
+                      documentSummary.receiptAmount | number: '1.2-2'
                     }}"
                   >
-                        {{ documentSummary.group2MasterList[0].accountNumber }}
-                    </span>
+                    {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                  </span>
 
                   </td>
+
                   <td>
                     <span
                       tooltip="{{
-                        documentSummary.receiptAmount | number: '1.2-2'
+                        documentSummary.receiptDate | date: 'dd-MMM-yyyy'
                       }}"
                     >
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
-                    </span>
-                  </td>
-                  <td>
-                    <span
-                      tooltip="{{
-                        documentSummary.receiptAmount | number: '1.2-2'
-                      }}"
-                    >
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                      {{ documentSummary.receiptDate | date: 'dd-MMM-yyyy'}}
                     </span>
                   </td>
                   <td>
@@ -1074,7 +1088,7 @@
                 <div>
                   <i
                     class="fa fa-times text-red font-18"
-                    (click)="removeSelectedLicTransactionDocumentInEditCase(index)"
+                    (click)="removeSelectedTransactionDocumentInEditCase(index)"
                   ></i>
                 </div>
               </label>
@@ -1202,7 +1216,7 @@
                   </span>
                 </div>
                 <div>
-                  <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
+                  <i class="fa fa-times text-red font-18" (click)="removeSelectedTransactionDocument(index)"></i>
                 </div>
               </label>
             </div>

@@ -235,7 +235,7 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
+              <!-- <tr *ngIf="!isDisabled">
                 <td *ngIf="previousEmployeeList?.length" colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
@@ -250,7 +250,7 @@
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(j)"></i>
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
@@ -465,10 +465,8 @@
                   <th scope="col" class="font700 wd-15">Proof Submission ID</th>
                   <th scope="col" class="font700 wd-20">Institution</th>
                   <th scope="col" class="font700 wd-15">Date of Submission</th>
-                  <th scope="col" class="font700 wd-15">Policy No.</th>
-                  <!-- <th scope="col" class="font700 wd-10">Receipt No.</th>
-                   <th scope="col" class="font700 wd-10">Receipt Date</th> -->
-                  <th scope="col" class="font700 wd-10">Selected Amount</th>
+                  <th scope="col" class="font700 wd-15">Certificate No</th>
+
                   <th scope="col" class="font700 wd-10">Receipt Amount</th>
                   <th scope="col" class="font700 wd-15">Document Name</th>
                   <th scope="col" class="font700 wd-10">Action</th>
@@ -525,15 +523,7 @@
                     </span>
 
                   </td>
-                  <td>
-                    <span
-                      tooltip="{{
-                        documentSummary.receiptAmount | number: '1.2-2'
-                      }}"
-                    >
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
-                    </span>
-                  </td>
+
                   <td>
                     <span
                       tooltip="{{
@@ -1074,7 +1064,7 @@
                 <div>
                   <i
                     class="fa fa-times text-red font-18"
-                    (click)="removeSelectedLicTransactionDocumentInEditCase(index)"
+                    (click)="removeSelectedNSCTransactionDocumentInEditCase(index)"
                   ></i>
                 </div>
               </label>
@@ -1202,7 +1192,7 @@
                   </span>
                 </div>
                 <div>
-                  <i class="fa fa-times text-red font-18" (click)="removeSelectedLicTransactionDocument(index)"></i>
+                  <i class="fa fa-times text-red font-18" (click)="removeSelectedNSCTransactionDocument(index)"></i>
                 </div>
               </label>
             </div>
