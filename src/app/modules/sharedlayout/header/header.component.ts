@@ -1,49 +1,53 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  isFullScreen: boolean;
-  contactTab: boolean;
-  groupTab: boolean;
-  chatTab: boolean = true;
-  title: any
-  constructor(private route: Router) {
+  public isFullScreen: boolean;
+  public contactTab: boolean;
+  public groupTab: boolean;
+  public chatTab = true;
+  public title: any;
+  constructor(private service: AuthService,
+              private route: Router) {
     this.title = route.url;
-    debugger
     this.title = this.title.replace(/\//g, '');
     this.title = this.title.toUpperCase();
   }
 
-  ngOnInit(): void {
-
+  public ngOnInit(): void {
 
   }
+
+  logout(){
+   this.service.logout(); 
+  }
   mToggoleMenu() {
-    document.getElementsByTagName('body')[0].classList.toggle("offcanvas-active");
-    document.getElementsByClassName('overlay')[0].classList.toggle("open");
+    document.getElementsByTagName('body')[0].classList.toggle('offcanvas-active');
+    document.getElementsByClassName('overlay')[0].classList.toggle('open');
 
   }
   noteToggle() {
-    document.getElementsByClassName('sticky-note')[0].classList.toggle("open");
-    document.getElementsByClassName('overlay')[0].classList.toggle("open");
+    document.getElementsByClassName('sticky-note')[0].classList.toggle('open');
+    document.getElementsByClassName('overlay')[0].classList.toggle('open');
   }
   openRightMenu() {
-    document.getElementById('rightbar').classList.toggle("open");
-    document.getElementsByClassName('overlay')[0].classList.toggle("open");
+    document.getElementById('rightbar').classList.toggle('open');
+    document.getElementsByClassName('overlay')[0].classList.toggle('open');
 
   }
   openfullScreen() {
 
-    let elem = document.documentElement;
-    let methodToBeInvoked = elem.requestFullscreen ||
+    const elem = document.documentElement;
+    const methodToBeInvoked = elem.requestFullscreen ||
       elem.requestFullscreen || elem['mozRequestFullscreen'] || elem['msRequestFullscreen'];
     if (methodToBeInvoked) {
-      methodToBeInvoked.call(elem)
+      methodToBeInvoked.call(elem);
     }
     this.isFullScreen = true;
   }
@@ -72,11 +76,9 @@ export class HeaderComponent implements OnInit {
     this.contactTab = false;
     if (number == '1') {
       this.chatTab = true;
-    }
-    else if (number == '2') {
+    } else if (number == '2') {
       this.groupTab = true;
-    }
-    else if (number == '3') {
+    } else if (number == '3') {
       this.contactTab = true;
     }
   }

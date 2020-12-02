@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -32,6 +32,54 @@ export class FileService {
         // observe: 'events'
       });
   }
+
+  // Upload Multiple Files in LIC Transaction
+  uploadMultipleFiles(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('licDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('licTransactionWithDocumentBeanJson', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
+    return this.http.post<any>(
+      'http://localhost:8085/hrms/v1/lic-transaction/uploadLICTransactionDocuments',
+      formData,
+      {
+
+      });
+  }
+
+  uploadMultipleMasterFiles(files: File[], data:any): Observable<any> {
+    var formData: any = new FormData();
+    console.log('in uploadMultipleFiles Service::', files);
+    for (let file of files) {
+      formData.append('licDocuments', file);
+    }
+    //formData.append('licDocuments', files);
+    formData.append('licMasterRequestDTO', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key," ",value)
+    });
+    //return null;
+    return this.http.post<any>(
+      'http://localhost:8085/hrms/v1/licmaster-detail',
+      formData,
+      {
+
+      });
+  }
+
 
   // Fetches the names of files to be displayed in the downloads list.
   fetchFileNames() {

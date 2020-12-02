@@ -40,10 +40,13 @@ var settings_module_1 = require("./modules/settings/settings.module");
 common_1.registerLocaleData(fr_1["default"], 'fr');
 common_1.registerLocaleData(en_GB_1["default"], 'en-GB');
 var app_material_module_1 = require("./app.material.module");
+var auth_guard_1 = require("./modules/auth/auth.guard");
+var token_interceptor_service_1 = require("./modules/auth/token-interceptor/token-interceptor.service");
 var dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 var payroll_module_1 = require("./modules/payroll/payroll.module");
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
 var other_master_module_1 = require("./modules/other-master/other-master.module");
+var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -60,6 +63,7 @@ var AppModule = /** @class */ (function () {
                 dashboard_module_1.DashboardModule,
                 payroll_module_1.PayrollModule,
                 my_Investments_module_1.MyInvestmentsModule,
+                eighty_c_module_1.EightyCModule,
                 profile_module_1.ProfileModule,
                 settings_module_1.SettingsModule,
                 http_1.HttpClientModule,
@@ -87,6 +91,7 @@ var AppModule = /** @class */ (function () {
                 other_master_module_1.OtherMasterModule
             ],
             providers: [datepicker_1.BsDatepickerModule,
+                auth_guard_1.AuthGuard,
                 transloco_loader_1.translocoLoader, {
                     provide: transloco_1.TRANSLOCO_CONFIG,
                     useValue: {
@@ -97,7 +102,11 @@ var AppModule = /** @class */ (function () {
                         fallbackLang: 'fr',
                         prodMode: false
                     }
-                }],
+                }, {
+                    provide: http_1.HTTP_INTERCEPTORS,
+                    useClass: token_interceptor_service_1.TokenInterceptorService,
+                    multi: true
+                },],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);

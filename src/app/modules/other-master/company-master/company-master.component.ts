@@ -39,7 +39,7 @@ export class CompanyMasterComponent implements OnInit {
 
 
 
-  employeeMasterRequestDTO  = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  employeeMasterRequestDTO  = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','');
   countryCode: Array<any> = [];
   public isContractorDataList = ['No', 'Yes'];
   public companyClassificationList = ['A', 'B', 'C'];

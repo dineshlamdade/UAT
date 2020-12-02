@@ -2,7 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 // transloco
 // import your locales
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
@@ -33,11 +33,14 @@ registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
 
 import { DemoMaterialModule } from './app.material.module';
+import { AuthGuard } from './modules/auth/auth.guard';
+import { TokenInterceptorService} from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
 
+import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 
 
 @NgModule({
@@ -54,6 +57,7 @@ import { OtherMasterModule } from './modules/other-master/other-master.module';
     DashboardModule,
     PayrollModule,
     MyInvestmentsModule,
+    EightyCModule,
     ProfileModule ,
     SettingsModule,
     HttpClientModule,
@@ -82,6 +86,7 @@ import { OtherMasterModule } from './modules/other-master/other-master.module';
     OtherMasterModule
   ],
   providers: [BsDatepickerModule,
+    AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
@@ -93,7 +98,13 @@ import { OtherMasterModule } from './modules/other-master/other-master.module';
 
         prodMode: false
       } as TranslocoConfig
-    } ],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass:  TokenInterceptorService,
+      multi: true,
+    },
+   ],
 
     bootstrap: [AppComponent]
 })
