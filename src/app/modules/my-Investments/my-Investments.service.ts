@@ -311,7 +311,6 @@ public apiUrl = environment.apiBaseUrl;
     }));
   }
 
-
   getAllPreviousEmployer() {
     return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
     .pipe(map((res: any) => {
@@ -492,6 +491,14 @@ public apiUrl = environment.apiBaseUrl;
     ));
   }
 
+  public submitELSSSummaryFuturePolicy(data): Observable<any> {
+
+    return this._HTTP.post(this.apiUrl + 'elssmaster-detail/elssMasterSummaryFuturePolicy', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
   public submitELSSMaster(data): Observable<any> {
 
     return this._HTTP.post(this.apiUrl + 'elssmaster-detail', data)
@@ -501,7 +508,7 @@ public apiUrl = environment.apiBaseUrl;
   }
 
   public getELSSDeclarationInstitutions(): Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'ppf-transaction/ppfinstitution')
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/elssinstitution')
     .pipe(map((res: any) => {
       return res;
     },
@@ -509,7 +516,7 @@ public apiUrl = environment.apiBaseUrl;
   }
 
   public getELSSDeclarationInstitutionListWithPolicyNo(): Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'ppf-transaction/institutionListWithPolicyNo')
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/institutionListWithPolicyNo')
     .pipe(map((res: any) => {
       return res;
     },
@@ -517,35 +524,35 @@ public apiUrl = environment.apiBaseUrl;
   }
 
   public getELSSTransactionInstName(data): Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'ppf-transaction/' + data)
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/' + data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   public getELSSTransactionFilterData(institution: String, policyNo: String, transactionStatus: String): Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'ppf-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   public getELSSTransactionByProofSubmissionId(proofSubmissionId: String): Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'ppf-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'elss-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   public submitELSSDeclarationInstitutions(data): Observable<any> {
-    return this._HTTP.post(this.apiUrl + '/ppf-transaction', data)
+    return this._HTTP.post(this.apiUrl + '/elss-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   public submitELSSlarationTransaction(data): Observable<any> {
-    return this._HTTP.post(this.apiUrl + 'ppf-transaction', data)
+    return this._HTTP.post(this.apiUrl + 'elss-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -567,7 +574,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/ppf-transaction/uploadTransactionDocuments',
+      'http://localhost:8085/hrms/v1/elss-transaction/uploadTransactionDocuments',
       formData,
       {
 
