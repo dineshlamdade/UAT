@@ -32,6 +32,7 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-master.component.scss'],
 })
 export class PostOfficeMasterComponent implements OnInit {
+  
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =

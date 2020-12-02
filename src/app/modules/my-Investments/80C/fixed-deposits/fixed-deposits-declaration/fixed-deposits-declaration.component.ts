@@ -62,6 +62,8 @@ export class FixedDepositsDeclarationComponent implements OnInit {
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
 
+  public fixedDepositTransactionForm: FormGroup;
+
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
@@ -177,6 +179,19 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+
+    // ---------------- fixedDepositTransactionForm -----------------
+    this.fixedDepositTransactionForm = this.formBuilder.group({
+      institution: new FormControl(null, Validators.required),
+      accountNumber: new FormControl(null, Validators.required),
+      active: new FormControl(true, Validators.required),
+      remark: new FormControl(null),
+      declaredAmount: new FormControl(null, Validators.required),
+      actualAmount: new FormControl(null, Validators.required),
+      investmentGroup3TransactionId: new FormControl(0),
+      previousEmployerId: new FormControl(0),
+    });
+
     // ---------------- Transaction status List -----------------
     this.refreshTransactionStatustList();
 
