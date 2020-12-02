@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,7 +13,8 @@ export class HeaderComponent implements OnInit {
   groupTab: boolean;
   chatTab: boolean = true;
   title: any
-  constructor(private route: Router) {
+  constructor(private service: AuthService,
+    private route: Router) {
     this.title = route.url;
     this.title = this.title.replace(/\//g, '');
     this.title = this.title.toUpperCase();
@@ -21,6 +23,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
 
 
+  }
+
+  logout(){
+   this.service.logout(); 
   }
   mToggoleMenu() {
     document.getElementsByTagName('body')[0].classList.toggle("offcanvas-active");
