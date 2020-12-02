@@ -1,0 +1,531 @@
+<app-leftmenu></app-leftmenu>
+<form class="card" role="form" [formGroup]="companyMasterform" #formDirective="ngForm" method="post" novalidate>
+  <div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+      <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body p-0">
+                  <div class="col-12">
+                    <fieldset>
+                      <legend>Company Details</legend>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label class="form-label"> Code</label>
+                          <input type="text" formControlName="code"  autocomplete="off" class="form-control" maxlength="25" name="code"
+                            placeholder="Enter Group Code" [(ngModel)]="employeeMasterRequestDTO.code"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('code').status == 'INVALID'}">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Name</label>
+                          <input type="text" formControlName="companyName" autocomplete="off"
+                            [(ngModel)]="employeeMasterRequestDTO.companyName" class="form-control " name="companyName"
+                            placeholder="Enter Group Name"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('companyName').status == 'INVALID'}">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Short Name</label>
+                          <input type="text" formControlName="shortName"
+                            [(ngModel)]="employeeMasterRequestDTO.shortName"  autocomplete="off" class="form-control " name="shortName"
+                            placeholder="Enter Short Name"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('shortName').status == 'INVALID'}">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Former Name</label>
+                          <input type="text" formControlName="formerName"
+                            [(ngModel)]="employeeMasterRequestDTO.formerName" class="form-control"   autocomplete="off" name="formerName"
+                            placeholder="Enter Former Name"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('formerName').status == 'INVALID'}">
+                        </div>
+                      </div> <!-- end of row -->
+                      <div class="row mt-10">
+                        <div class="col-sm-3">
+                          <label class="form-label">Group Master</label>
+                          <select name="companyGroupName" id="companyGroupName"
+                            [(ngModel)]="employeeMasterRequestDTO.companyGroupName" class="form-control"
+                            formControlName="companyGroupName" (change)='onSelectGroupMaster($event.target.value)'
+                            [ngClass]="{'is-invalid' : companyMasterform.get('companyGroupName').status == 'INVALID'}">
+                            <!-- <option selected [ngValue]=null>Select </option> -->
+                            <option *ngFor="let code11 of companyGroupNameList" [value]="code11">
+                              {{code11}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Group Name</label>
+                          <input type="text" formControlName="companyGroupName1" class="form-control "
+                            name="companyGroupName">
+                        </div>
+
+
+                      </div>
+                    </fieldset>
+                  </div>
+
+
+                  <div class="col-12 mt-10">
+                    <fieldset>
+                      <legend>Address Details</legend>
+                      <div class="row mt-10">
+                        <div class="col-sm-3">
+                          <label class="form-label"> Address 1</label>
+                          <input type="text" formControlName="address1" [(ngModel)]="employeeMasterRequestDTO.address1"
+                            class="form-control " name="address1"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('address1').status == 'INVALID'}"
+                            placeholder="Enter Address 1">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label"> Address 2</label>
+                          <input type="text" formControlName="address2" [(ngModel)]="employeeMasterRequestDTO.address2"
+                            class="form-control " name="address2" placeholder="Enter Address 2">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label"> Address 3</label>
+                          <input type="text" formControlName="address3" [(ngModel)]="employeeMasterRequestDTO.address3"
+                            class="form-control " name="address3" placeholder="Enter Address 3">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Country</label>
+                          <select name="country" id="country" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('country').status == 'INVALID'}"
+                            formControlName="country" [(ngModel)]="employeeMasterRequestDTO.country">
+                            <!-- <option value="" selected disabled>Select Country
+                            </option> -->
+                            <option *ngFor="let country of countries" [value]="country">
+                              {{country}}
+                            </option>
+                          </select>
+                        </div>
+
+
+                      </div> <!-- end of row -->
+
+
+                      <div class="row mt-20">
+
+
+
+                        <div class="col-sm-3">
+                          <label class="form-label">PIN</label>
+                          <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('pinCode').status == 'INVALID'}"
+                            formControlName="pinCode" [(ngModel)]="employeeMasterRequestDTO.pinCode" pattern="[0-9]{6}"
+                            (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">State</label>
+                          <input type="text" formControlName="state" [(ngModel)]="employeeMasterRequestDTO.state"
+                            class="form-control " name="state" placeholder="Enter state">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">City</label>
+                          <input type="text" formControlName="city" [(ngModel)]="employeeMasterRequestDTO.city"
+                            class="form-control " name="city" placeholder="Enter City">
+                        </div>
+
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Village</label>
+                          <input type="text" formControlName="village" [(ngModel)]="employeeMasterRequestDTO.village"
+                            class="form-control " name="village" placeholder="Enter Village">
+                        </div>
+
+                      </div>
+                      <div class="row mt-20">
+
+                        <div class="col-3">
+                          <div class="row">
+                              <div class="col-sm-3 col-md-5 country-code  pr-0">
+                                  <label class="form-label">Country Code</label>
+                                  <select class="form-control selectpicker custom-select" placeholder="Select ISD" formControlName="isdCode">
+                                  <option value='' data-hidden="true">Select</option>
+                                  <option *ngFor="let code of countryCode"
+                                      [value]="code">
+                                      {{code}}
+                                  </option>
+                              </select>
+                              </div>
+                              <div class="col-sm-3 col-md-7">
+                                  <label class="form-label">Tel No.</label>
+                                  <input type="text" class="form-control" placeholder="Enter Mobile No." minlength="1" maxlength="10" formControlName="phoneNumber" [(ngModel)]="employeeMasterRequestDTO.phoneNumber">
+                              </div>
+                          </div>
+                      </div>
+
+
+                      <div class="col-sm-3">
+                          <label class="form-label">Email Id</label>
+                          <input type="text" formControlName="emailId" class="form-control " name="emailId"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('emailId').status == 'INVALID'}"
+                            placeholder="Enter Email Id" [(ngModel)]="employeeMasterRequestDTO.emailId">
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Website</label>
+                          <input type="text" formControlName="website" class="form-control " name="website"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('website').status == 'INVALID'}"
+                            placeholder="Enter Website" [(ngModel)]="employeeMasterRequestDTO.website">
+                        </div>
+
+                      </div>
+                    </fieldset>
+                  </div>
+
+
+                  <div class="col-12 mt-10">
+                    <fieldset>
+                      <legend>Other Details</legend>
+
+                      <div class="row mt-10">
+                        <div class="col-sm-3">
+                          <label class="form-label">Association </label>
+                          <select name="contractor" id="contractor" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('contractor').status == 'INVALID'}"
+                            formControlName="contractor" [(ngModel)]="employeeMasterRequestDTO.contractor">
+
+                            <option *ngFor="let code11 of isContractorDataList" [value]="code11">
+                              {{code11}}
+                            </option>
+
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Types of Establishment</label>
+                          <select name="typeOfEstablishment" id="typeOfEstablishment" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('typeOfEstablishment').status == 'INVALID'}"
+                            formControlName="typeOfEstablishment"
+                            [(ngModel)]="employeeMasterRequestDTO.typeOfEstablishment"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('typeOfEstablishment').status == 'INVALID'}">
+                            <option *ngFor="let reason of typeOfEstablishmentList" [value]="reason.label">
+                              {{reason.label}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Industry Type</label>
+                          <select name="industryType" id="industryType" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('industryType').status == 'INVALID'}"
+                            formControlName="industryType" [(ngModel)]="employeeMasterRequestDTO.industryType"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('industryType').status == 'INVALID'}">
+
+                            <option *ngFor="let reason of industryTypeList" [value]="reason.label">
+
+
+
+                              {{reason.label}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Scale</label>
+                          <select name="scale" id="scale" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('scale').status == 'INVALID'}"
+                            formControlName="scale" (change)='onSelectScale($event.target.value)'
+                            [(ngModel)]="employeeMasterRequestDTO.scale"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('scale').status == 'INVALID'}">
+                            <option *ngFor="let scales of scaleList" [value]="scales.label">
+                              {{scales.label}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+
+                      <div class="row mt-20">
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Company Classification</label>
+                          <select name="coClassification" id="coClassification" class="form-control"
+                            formControlName="coClassification" [(ngModel)]="employeeMasterRequestDTO.coClassification"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('coClassification').status == 'INVALID'}">
+                            <option *ngFor="let code11 of companyClassificationList" [value]="code11">
+                              {{code11}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Default Language</label>
+                          <select name="language" id="language" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('language').status == 'INVALID'}"
+                            formControlName="language" [(ngModel)]="employeeMasterRequestDTO.language">
+                            <option *ngFor="let code11 of languageList" [value]="code11">
+                              {{code11}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Default Currency</label>
+                          <select name="currency" id="defaultLandefaultCurrencyguage" class="form-control"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('currency').status == 'INVALID'}"
+                            formControlName="currency" [(ngModel)]="employeeMasterRequestDTO.currency">
+                            <option *ngFor="let code11 of currencyList" [value]="code11">
+                              {{code11}}
+                            </option>
+
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Engagement Start Date</label>
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="startDate"
+                              [(ngModel)]="employeeMasterRequestDTO.startDate"
+                              [min]="tempObjForgroupNameScaleStartDate.startDate" data-provide="datepicker"
+                              data-date-autoclose="true" class="form-control" placeholder="Start Date"
+                              (bsValueChange)="onChangeStartDate()" bsDatepicker (focusout)="onChangeStartDate()"
+                              [ngClass]="{'is-invalid' : companyMasterform.get('startDate').status == 'INVALID'}">
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <!-- end of row-->
+
+
+                      <div class="row mt-20">
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Engagement End Date</label>
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="endDate"
+                              [(ngModel)]="employeeMasterRequestDTO.endDate" data-provide="datepicker"
+                              data-date-autoclose="true" class="form-control" placeholder="End Date"
+                              (bsValueChange)="setPaymentDetailToDate()" bsDatepicker
+                              (focusout)="onChangeEndDate($event)">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">Reason For Exit</label>
+                          <select name="reason" id="reason" class="form-control"
+                            [(ngModel)]="employeeMasterRequestDTO.reason"
+                            [ngClass]="{'is-invalid' : companyMasterform.get('reason').status == 'INVALID'}"
+                            formControlName="reason">
+                            <option *ngFor="let reason of reasonForExitList" [value]="reason.label">
+                              {{reason.label}}
+                            </option>
+                          </select>
+
+                        </div>
+
+
+
+
+                      </div>
+                      <div class="row mt-20 mb-10">
+
+                        <div class="col-md-3">
+                          <label class="form-label">Company Logo 1</label>
+                          <input type='file' class="form-control-sm" id="logo1" name='logo1' accept=".jpg" #fileInput1
+                            formControlName="logo1" (change)="logo1($event, fileInput1)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo1" style="font-size: x-small;" />
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">Company Logo 2</label>
+                          <input type='file' class="form-control-sm" id="logo2" name='logo2' accept=".jpg" #fileInput2
+                            formControlName="logo2" (change)="logo2($event, fileInput2)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo2" style="font-size: x-small;" />
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">Company Logo 3</label>
+                          <input type='file' class="form-control-sm-" id="logo3" name='logo3' accept=".jpg" #fileInput3
+                            formControlName="logo3" (change)="logo3($event, fileInput3)"
+                            [(ngModel)]="employeeMasterRequestDTO.logo3" style="font-size: x-small;" />
+                        </div>
+
+                      </div>
+
+                    </fieldset>
+                  </div>
+                  <!--end of row-->
+
+                  <div class="row mt-20">
+
+                    <div class="col-md-3">
+                      <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                        <input formControlName="companyActive" [(ngModel)]="employeeMasterRequestDTO.companyActive"
+                          type="checkbox" class="custom-control-input" name="example-inline-checkbox1" value="option1"
+                          checked (change)="deactiveActiveCheckBox()">
+                        <span class="custom-control-label">Active </span>
+                      </label>
+                    </div>
+
+
+                    <div class="col-md-3" *ngIf="hideRemarkDiv">
+                      <label class="form-label">Remark</label>
+                      <textarea formControlName="remark" [(ngModel)]="employeeMasterRequestDTO.remark"
+                        [ngClass]="{'is-invalid' : companyMasterform.get('remark').status == 'INVALID', 'form-submitted': formDirective.submitted}"
+                        class="form-control" rows="2" placeholder="Enter Remark"
+                        [ngClass]="{'is-invalid' : companyMasterform.get('remark').status == 'INVALID'}"></textarea>
+                    </div>
+
+
+
+
+
+                  </div><!-- end of row -->
+                </div> <!-- card body -->
+
+
+
+
+                <div class="col-12">
+                  <div class="col-12 mt-20">
+                    <div class="float-right mb-15">
+                      <ng-container *ngIf="showButtonSaveAndReset">
+
+                        <ng-container *ngIf="isSaveAndReset; else newDeb">
+
+                          <button type="submit" [disabled]="companyMasterform.invalid"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            (click)="saveCompanyMaster(employeeMasterRequestDTO)"
+                            [ngClass]="{'disabled-btn-bg-green' : companyMasterform.invalid,'btn-bg-green': !companyMasterform.invalid}">
+                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
+                          <button type="button" tooltip="Reset" (click)="cancelViewMasterForm()"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                class="fa  fa-refresh"></i></b> Reset</button>
+                        </ng-container>
+
+                        <ng-template #newDeb>
+
+                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : companyMasterform.invalid,
+                        'btn-bg-green': !companyMasterform.invalid}"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                            (click)="saveCompanyMaster(employeeMasterRequestDTO)"
+                            [disabled]="companyMasterform.invalid"><b><i class="fa fa-floppy-o"></i></b>
+                            Update</button>
+
+
+                          <button type="button"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="cancelViewMasterForm()"><b><i class="fa fa-times-circle"></i></b>
+                            Cancel</button>
+
+                        </ng-template>
+
+                      </ng-container>
+                      <ng-container *ngIf="!showButtonSaveAndReset">
+                        <button type="button"
+                          class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                          tooltip="Cancel" (click)="cancelViewMasterForm()"><b><i class="fa fa-times-circle"></i></b>
+                          Cancel</button>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div> <!-- <end of div col-6 -->
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold">Summary</h3>
+                      </div>
+                      <!-- <div class=""> -->
+                      <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-hover table-bordered m-b-0">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" class="wd-8">Sr. No.</th>
+                              <th scope="col" class="wd-8">Company Master Id</th>
+                              <th scope="col" class="wd-10">Code</th>
+                              <th scope="col" class="wd-12">Name</th>
+                              <th scope="col" class="wd-12">Short Name</th>
+                              <th scope="col" class="wd-8">Assoiation</th>
+                              <th scope="col" class="wd-12">Industry Type</th>
+                              <th scope="col" class="wd-10">Scale</th>
+                              <th scope="col" class="wd-10">Engagement Start Date</th>
+                              <th scope="col" class="wd-10">Engagement End Date</th>
+                              <!-- <th scope="col" class="wd-10">Reason for Exit</th> -->
+                              <th scope="col" class="wd-10">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
+                              <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
+                              </td>
+                              <td class="wd-10"><span
+                                  tooltip="{{summary.globalCompanyMasterId}}">{{summary.globalCompanyMasterId}}</span>
+                              </td>
+                              <td class="wd-10"><span tooltip="{{summary.code}}">{{summary.code}}</span>
+                              </td>
+
+                              <td class="wd-10"><span tooltip="{{summary.companyName}}">{{summary.companyName}}</span>
+                              </td>
+                              <td class="wd-10"><span tooltip="{{summary.shortName}}">{{summary.shortName}}</span>
+                              </td>
+
+                              <td class="wd-10"><span tooltip="{{summary.contractor}}">{{summary.contractor}}</span>
+                              </td>
+
+                              <td class="wd-10"><span tooltip="{{summary.industryType}}">{{summary.industryType}}</span>
+                              </td>
+
+
+                              <td class="wd-10"><span tooltip="{{summary.Scale}}">{{summary.Scale}}</span>
+                              </td>
+                              <td class="wd-10"><span
+                                  tooltip="{{summary.StartDate}}">{{summary.StartDate | date :"dd-MMM-yyyy"}}</span>
+                              </td>
+                              <td class="wd-10"><span
+                                  tooltip="{{summary.EndDate}}">{{summary.EndDate | date :"dd-MMM-yyyy"}}</span>
+                              </td>
+                              <!-- <td class="wd-10"><span tooltip="{{summary.reason}}">{{summary.reason}}</span>
+                                  </td> -->
+
+                              <td class="wd-10">
+                                <!-- <span *ngIf="summary.companyActive == false">
+                                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" style="visibility: hidden;"
+                                        (click)="editMaster(summary.SrNo,summary.globalCompanyMasterId)" tooltip="Edit"></i> </span> -->
+                                <span>
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                    (click)="editMaster(summary.SrNo-1,summary.globalCompanyMasterId)"
+                                    tooltip="Edit"></i> </span>
+
+                                <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
+                                  (click)="viewMaster(summary.globalCompanyMasterId, summary.SrNo-1)"
+                                  tooltip="View"></i>
+                              </td>
+                            </tr>
+                            <tr *ngIf="!summaryHtmlDataList?.length">
+                              <td colspan="10">
+                                <span class="font-14 font500 align-center text-red">No Data Available</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</form>

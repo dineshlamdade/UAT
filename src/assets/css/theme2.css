@@ -907,6 +907,10 @@ strong {
     color: #000!important;
 }
 
+.padding-right-2 {
+    padding-right: 2px!important;
+}
+
 .padding-right-12 {
     padding-right: 12px!important;
 }
@@ -1535,6 +1539,8 @@ button:focus {
         color: orangered;
     }
 }
+<<<<<<< HEAD
+=======
 
 
 /*-----------------------------*/
@@ -1930,3 +1936,4 @@ button:focus {
   grid-template-columns: 2fr 2fr!important;
   font-family: Montserrat, sans-serif!important;
 }
+>>>>>>> f7c50f8b496ab19e795eadd385fb9210c5fe59a7
