@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:8085/hrms/v1/',
+  apiBaseUrl: 'http://deliziahruat.paysquare.com:8080/hrms/v1/',
+  // apiBaseUrl: 'http://localhost:8085/hrms/v1/',
   apiBaseUrlEmployee: 'http://localhost:8082/hrms/v1/',
 };
 
