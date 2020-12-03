@@ -7,28 +7,28 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class FixedDepositsService {
+export class TaxSavingNabardService {
   apiUrl = environment.apiBaseUrl;
 
 
   constructor(private _HTTP: HttpClient) { }
 
 
-  getFDSummary() {
-    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/summary')
-    // return this._HTTP.get(this.apiUrl + 'nscMaster-detail/nscMasterSummary')
+  getTSNabardSummary() {
+    return this._HTTP.get(this.apiUrl + 'nabardBonds-transaction/summary')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  getFDSummaryFuturePolicy(data) {
-    return this._HTTP.post(this.apiUrl + 'fdmorethan5years-transaction/SummaryFuturePolicy', data)
+  getTSNabardSummaryFuturePolicy(data) {
+    return this._HTTP.post(this.apiUrl + 'nabardBonds-transaction/SummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
 
    //Declaration services
 
@@ -42,21 +42,21 @@ export class FixedDepositsService {
 
   //service to be created
   getTransactionFilterData() {
-    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/')
+    return this._HTTP.get(this.apiUrl + 'nabardBonds-transaction')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'nabardBonds-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  postFDTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'fdmorethan5years-transaction', data)
+  postTSNabardTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'nabardBonds-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -100,7 +100,7 @@ export class FixedDepositsService {
   //     });
   // }
 
-  uploadFDTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadTSNabardTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -116,7 +116,7 @@ export class FixedDepositsService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'fdmorethan5years-transaction/uploadfdmorethan5yearsTransactionDocuments',formData,
+      this.apiUrl + 'nabardBonds-transaction/uploadnabardBondsTransactionDocuments',formData,
       {
 
       });

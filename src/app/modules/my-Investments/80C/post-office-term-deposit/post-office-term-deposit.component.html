@@ -14,7 +14,7 @@
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-tax-saving-nabard-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-tax-saving-nabard-summary>
+                  <app-post-office-term-deposit-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-post-office-term-deposit-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -31,7 +31,7 @@
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                   <div class="tabs about-page">
-                    <app-tax-saving-nabard-actual [data] ="data" *ngIf="tabIndex == 2"> </app-tax-saving-nabard-actual>
+                    <app-post-office-term-deposit-declaration [data] ="data" *ngIf="tabIndex == 2"> </app-post-office-term-deposit-declaration>
                   </div>
                 <label class="nav" for="Declaration">
                   <span> Declaration & Actual </span>

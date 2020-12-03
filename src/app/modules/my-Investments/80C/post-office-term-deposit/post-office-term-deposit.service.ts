@@ -4,33 +4,37 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class FixedDepositsService {
+export class PostOfficeTermDepositService {
+
   apiUrl = environment.apiBaseUrl;
 
 
   constructor(private _HTTP: HttpClient) { }
 
 
-  getFDSummary() {
-    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/summary')
-    // return this._HTTP.get(this.apiUrl + 'nscMaster-detail/nscMasterSummary')
+  getPOTDepositSummary() {
+    // return this._HTTP.get(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummary')
+    return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction/summary')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  getFDSummaryFuturePolicy(data) {
-    return this._HTTP.post(this.apiUrl + 'fdmorethan5years-transaction/SummaryFuturePolicy', data)
+  postPOTDepositSummaryFuturePolicy(data) {
+    // return this._HTTP.post(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummaryFuturePolicy', data)
+    return this._HTTP.post(this.apiUrl + 'postOfficeTermedDeposit-transaction/SummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
    //Declaration services
+  //  postOfficeTermedDeposit-transaction/SummaryFuturePolicy
 
   //service to be created
   // getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
@@ -42,21 +46,21 @@ export class FixedDepositsService {
 
   //service to be created
   getTransactionFilterData() {
-    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/')
+    return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  postFDTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'fdmorethan5years-transaction', data)
+  postPOTDepositTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'postOfficeTermedDeposit-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -96,11 +100,10 @@ export class FixedDepositsService {
   //     this.apiUrl + 'nscMaster-detail',
   //     formData,
   //     {
-
   //     });
   // }
 
-  uploadFDTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadPOTDepositTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -116,7 +119,7 @@ export class FixedDepositsService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'fdmorethan5years-transaction/uploadfdmorethan5yearsTransactionDocuments',formData,
+      this.apiUrl + 'postOfficeTermedDeposit-transaction/uploadpostOfficeTermedDepositTransactionDocuments',formData,
       {
 
       });
