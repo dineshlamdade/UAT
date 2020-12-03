@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2/dist/sweetalert2.js'; 
+
+import Swal from 'sweetalert2';
 declare const $: any;
 
 @Injectable({
@@ -42,7 +43,7 @@ sweetalert7(message:any) {
             position:'top-end',
             showConfirmButton:false,
             icon:'info',
-            timer: 15000,
+            timer: 5000,
             timerProgressBar: true,
         })
     }
@@ -57,7 +58,7 @@ sweetalert7(message:any) {
             position:'top-end',
             showConfirmButton:false,
             icon:'success',
-            timer: 15000,
+            timer: 5000,
             timerProgressBar: true,
         })
     }
@@ -71,7 +72,7 @@ sweetalert7(message:any) {
             position:'top-end',
             showConfirmButton:false,
             icon:'error',
-            timer: 15000,
+            timer: 5000,
             timerProgressBar: true,
         })
     }
@@ -130,33 +131,21 @@ sweetalert7(message:any) {
 //          '</div>'
 //      });
 //    }
-alert( title: string, type: any, redirectPath: string) {
-    Swal({
-      title,
-          buttonsStyling: true,
-         confirmButtonClass: 'btn btn-info',
-         customClass: 'animated tada',
-         type,
-    }).then((result) => {
-      if (result.value) {
-         this.router.navigate(['/' + redirectPath + '']);
-      }
-    });
-  }
+// alert( title: string, type: any, redirectPath: string) {
+//     Swal({
+//       title,
+//           buttonsStyling: true,
+//          confirmButtonClass: 'btn btn-info',
+//          customClass: 'animated tada',
+//          type,
+//     }).then((result) => {
+//       if (result.value) {
+//          this.router.navigate(['/' + redirectPath + '']);
+//       }
+//     });
+//   }
 
-  alertReload( title: string, type: any) {
-    Swal({
-      title,
-          buttonsStyling: true,
-         confirmButtonClass: 'btn btn-info',
-         customClass: 'animated tada',
-         type,
-    }).then((result) => {
-      if (result.value) {
-        window.location.reload();
-      }
-    });
-  }
+
 
     showNotification(msg: number, name: string) {
       const message = ['Welcome to EHR India' + ' <br> <b>' + name + '</b> ', '' + ' <b>' + name + '</b> '];

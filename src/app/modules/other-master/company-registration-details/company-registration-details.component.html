@@ -1,0 +1,225 @@
+<app-leftmenu></app-leftmenu>
+<form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
+  <div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+       <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <div class="row">
+             <div class="col-12">
+                <div class="card">
+                   <div class="card-body p-0">
+                    <div class="row">
+                      <div class="col-sm-3" *ngIf="!isEditMode">
+                        <label class="form-label">Company Code</label>
+                        <select name="companyRegistrationId" id="companyRegistrationId" class="form-control"  [ngClass]="{'is-invalid' : form.get('companyRegistrationId').status == 'INVALID'}"
+                          formControlName="companyRegistrationId"   (change)='onSelectCompanyRegistrationId($event)'>
+                          <option *ngFor="let reason of companyRegistrationIdList" [value]="reason.code">
+                            {{reason.code}}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-sm-3" *ngIf="isEditMode">
+                        <label class="form-label">Company Code</label>
+                        <input type="text" formControlName="companyRegistrationId1" class="form-control"
+                          name="companyRegistrationId1">
+                      </div>
+
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Company Name</label>
+                      <input type="text" formControlName="companyName" class="form-control"
+                        name="companyName">
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Company Group Name</label>
+                      <input type="text" formControlName="companyGroupName" class="form-control"
+                        name="companyGroupName">
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label"> Registration No.</label>
+                      <input type="text" formControlName="registrationNumber" class="form-control" minlength="21" maxlength="21"
+                        name="registrationNumber" placeholder="Enter Registration No."  [ngClass]="{'is-invalid' : form.get('registrationNumber').status == 'INVALID'}">
+                    </div>
+
+
+                  </div>
+                  <!-- end of row -->
+
+                  <div class= "row mt-20">
+
+                    <div class="col-sm-3">
+                      <label class="form-label"> Date of Incorporation</label>
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfIncorporation" (bsValueChange)="onBsValueChangeDateOfIncorporation()"
+                          data-provide="datepicker" data-date-autoclose="true" class="form-control" [ngClass]="{'is-invalid' : form.get('dateOfIncorporation').status == 'INVALID'}"
+                          placeholder="Date of Incorporation" bsDatepicker>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Issued By</label>
+                      <select name="issuedBy" id="issuedBy" class="form-control" formControlName="issuedBy"  [ngClass]="{'is-invalid' : form.get('issuedBy').status == 'INVALID'}"
+                        (change)='onSelectIssuedBy($event.target.value)'>
+                        <option *ngFor="let issuedBy of issuedByList" [value]="issuedBy">
+                          {{issuedBy}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">PAN</label>
+                      <input type="text" formControlName="pan" class="form-control " name="pan"  minlength="10" maxlength="10"
+                        placeholder="Enter PAN" [ngClass]="{'is-invalid' : form.get('pan').status == 'INVALID'}">
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label">MSME No.</label>
+                      <input type="text" formControlName="msmeNumber" class="form-control " name="msmeNumber" minlength="12" maxlength="12"
+                        placeholder="Enter MSME No." [ngClass]="{'is-invalid' : form.get('msmeNumber').status == 'INVALID'}">
+                    </div>
+
+
+
+
+                  </div>
+                  <!-- end of row -->
+
+                  <div class= "row mt-20">
+
+                    <div class="col-sm-3">
+                      <label class="form-label">Udyog Aadhaar No.</label>
+                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control " name="udyogAadhaarNumber" minlength="12" maxlength="12"
+                        placeholder="Enter Udyog Aadhaar No." [ngClass]="{'is-invalid' : form.get('udyogAadhaarNumber').status == 'INVALID'}">
+                    </div>
+
+                  </div>
+                       <!-- end of row -->
+
+
+
+                  <div class="col-12 mt-20">
+
+                    <div class="float-right mb-15">
+                      <ng-container *ngIf="showButtonSaveAndReset">
+
+                        <ng-container *ngIf="isSaveAndReset; else newDeb" >
+
+                          <button type="submit" [disabled]="form.invalid"  class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)="save()"
+                 [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b><i class="fa fa-floppy-o"></i></b> Save</button>
+
+     <button type="button" tooltip="Reset" (click)="cancelView()"  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+             class="fa  fa-refresh"></i></b> Reset</button>
+
+                      </ng-container>
+
+                      <ng-template #newDeb>
+
+                        <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
+                        'btn-bg-green': !form.invalid}"  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                        tooltip="Update" (click)="save()"    [disabled]= "form.invalid" ><b><i class="fa fa-floppy-o"></i></b>
+                        Update</button>
+
+
+                        <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
+                        (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                        Cancel</button>
+
+                      </ng-template>
+
+                      </ng-container>
+                      <ng-container *ngIf="!showButtonSaveAndReset">
+                        <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
+                        (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                        Cancel</button>
+                      </ng-container> </div>
+                  </div> <!-- <end of div col-6 -->
+
+
+                </div> <!-- card body -->
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="mb-0">
+                  <h3 class="font-14 text-purple font-bold">Summary</h3>
+                </div>
+                <!-- <div class=""> -->
+                  <div class="table-responsive Custom_Table">
+                    <table class="table table-striped table-hover table-bordered m-b-0">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="wd-8">Sr. No.</th>
+                          <th scope="col" class="wd-15">Code</th>
+                          <th scope="col" class="wd-20">Company Name</th>
+                          <th scope="col" class="wd-20">Group Name</th>
+                          <th scope="col" class="wd-17">Registration No. </th>
+                          <th scope="col" class="wd-10">PAN</th>
+                          <th scope="col" class="wd-10">Action</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
+                          <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
+                          </td>
+
+
+                          <td class="wd-10"><span
+                            tooltip="{{summary.code}}">{{summary.code}}</span>
+                        </td>
+
+                          <td class="wd-10"><span
+                              tooltip="{{summary.companyName}}">{{summary.companyName}}</span>
+                          </td>
+
+                          <td class="wd-10"><span
+                              tooltip="{{summary.companyGroupName}}">{{summary.companyGroupName}}</span>
+                          </td>
+                          <td class="wd-10"><span
+                            tooltip="{{summary.registrationNumber}}">{{summary.registrationNumber}}</span>
+                        </td>
+                        <td class="wd-10"><span
+                          tooltip="{{summary.pan}}">{{summary.pan}}</span>
+                      </td>
+
+
+                          <td class="wd-10">
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                (click)="editMaster(i)" tooltip="Edit"></i>
+
+                            <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
+                              tooltip="View"></i>
+                          </td>
+                        </tr>
+                        <tr *ngIf="!summaryHtmlDataList?.length">
+                          <td colspan="10">
+                            <span class="font-14 font500 align-center text-red">No Data Available</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+</form>

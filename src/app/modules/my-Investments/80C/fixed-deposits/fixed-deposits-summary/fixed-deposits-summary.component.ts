@@ -85,7 +85,7 @@ export class FixedDepositsSummaryComponent implements OnInit {
 
     //console.log('addFuturePolicy Data..', data);
     this.fixedDepositsService
-      .getFDSummaryFuturePlan(data)
+      .getFDSummaryFuturePolicy(data)
       .subscribe((res) => {
         if (res.data.length > 0 ) {
           //console.log('addFuturePolicy Res..', res);
@@ -99,8 +99,8 @@ export class FixedDepositsSummaryComponent implements OnInit {
             res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount =
             res.data.results[0].grandTotalActualAmount;
-          this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
         }
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
       });
   }
 

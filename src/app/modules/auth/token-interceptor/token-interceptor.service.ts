@@ -29,7 +29,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       switch (type) {
         case  401 : {
           this.authService.logout();
-          this.alertService.alert( 'Session Has Expired !!', 'warning', 'login');
+          this.alertService.sweetalertError( 'Session Has Expired !!');
           break;
          }
 
@@ -40,16 +40,16 @@ export class TokenInterceptorService implements HttpInterceptor {
       //     break;
       //  }
        case  404 : {
-        this.alertService.alert('Data not found !!', 'warning', 'home');
+        this.alertService.sweetalertError('Data not found !!', );
         break;
      }
      case  500 : {
-      this.alertService.alert('Failed To load Resource,  Please Try Again !!', 'warning', 'home');
+      this.alertService.sweetalertError('Failed To load Resource,  Please Try Again !!', );
       break;
    }
      default : {
       console.log('default error');
-      this.alertService.alert('Something Went Wrong,  Please Try Again !!', 'warning', 'home');
+      this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
       break;
  }
 

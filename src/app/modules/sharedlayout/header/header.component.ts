@@ -1,6 +1,6 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -24,8 +24,8 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  logout() {
-   this.service.logout();
+  logout(){
+   this.service.logout(); 
   }
   mToggoleMenu() {
     document.getElementsByTagName('body')[0].classList.toggle('offcanvas-active');

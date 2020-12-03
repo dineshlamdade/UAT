@@ -7,7 +7,7 @@
             <tr>
               <th scope="col" class="wd-20">Institution</th>
               <th scope="col" class="wd-20">Account no.</th>
-              <th scope="col" class="wd-20">Account Holder Name</th>
+              <!-- <th scope="col" class="wd-20">Account Holder Name</th> -->
               <th scope="col" class="wd-15">Declared</th>
               <th scope="col" class="wd-15">Actual</th>
               <th scope="col" class="wd-10">Action</th>
@@ -20,11 +20,11 @@
               </td>
               <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
               </td>
-              <td class="wd-20">
+              <!-- <td class="wd-20">
                 <span tooltip="{{summary.accountHolderName}}">
                   {{summary.accountHolderName}}
                 </span>
-              </td>
+              </td> -->
               <td class="wd-15 align-right">
                 <span class="padding-right-12" tooltip="{{summary.declaredAmount | number:'1.2-2'}}">
                   {{summary.declaredAmount | number:'1.2-2'}}
@@ -40,13 +40,13 @@
                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
-              <td colspan="6">
+              <td colspan="5">
                 <span class="font-14 font500 align-center text-red">No Data
                   Available</span>
               </td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
+              <td colspan="2" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
                   {{totalDeclaredAmount | number:'1.2-2'}}
@@ -60,7 +60,7 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Future New Deposits&nbsp;
+              <td colspan="2" class="align-right font700">Future New Deposits&nbsp;
                 <span class="Letterbadge">B</span>
               </td>
               <td>
@@ -72,7 +72,7 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
+              <td colspan="2" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
                 <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B
                 </span>
               </td>

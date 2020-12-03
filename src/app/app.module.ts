@@ -38,6 +38,8 @@ import { TokenInterceptorService} from './modules/auth/token-interceptor/token-i
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
+import { OtherMasterModule } from './modules/other-master/other-master.module';
+
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 
 
@@ -80,7 +82,8 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     AppRoutingModule,
     DashboardModule,
     MyInvestmentsModule,
-    PayrollModule
+    PayrollModule,
+    OtherMasterModule
   ],
   providers: [BsDatepickerModule,
     AuthGuard,

@@ -23,27 +23,14 @@ export class FixedDepositsService {
     ));
   }
 
-  getFDSummaryFuturePlan(data) {
-
-    // return this._HTTP.post(this.apiUrl + 'nscMaster-detail/nscMasterSummaryFuturePolicy', data)
+  getFDSummaryFuturePolicy(data) {
     return this._HTTP.post(this.apiUrl + 'fdmorethan5years-transaction/SummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-
    //Declaration services
-
-  //  getFDInstitutionListWithPolicyNo() {
-  //   return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/institutionListWithPolicyNo')
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }
-  //   ));
-  // }
-
-  // return this._HTTP.get(this.apiUrl + 'pensionPlan-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
 
   //service to be created
   // getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
