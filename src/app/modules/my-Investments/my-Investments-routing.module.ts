@@ -8,7 +8,8 @@ import { SukanyaSamriddhiComponent } from './80C/sukanya-samriddhi/sukanya-samri
 import { TaxsavingMutualFundComponent } from './80C/taxsaving-mutual-fund/taxsaving-mutual-fund.component';
 import { UnitLinkedInsurancePlanComponent } from './80C/unit-linked-insurance-plan/unit-linked-insurance-plan.component';
 import { NPSComponent } from './VI-A/nps/nps.component';
-import { NationalSevingCertificateComponent } from './80C/national-seving-certificate/national-seving-certificate.component';
+import { NationalSevingCertificateComponent } from
+'./80C/national-seving-certificate/national-seving-certificate.component';
 
 const routes: Routes = [
 

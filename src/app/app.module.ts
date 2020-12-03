@@ -11,7 +11,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+//import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import { CalendarModule, DateAdapter} from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -70,7 +70,6 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    FullCalendarModule,
     CKEditorModule,
     BrowserAnimationsModule,
     TranslocoModule,
