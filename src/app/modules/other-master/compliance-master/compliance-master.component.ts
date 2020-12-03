@@ -126,9 +126,9 @@ export class ComplianceMasterComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private complianceHeadService: ComplianceHeadService,
-    private statuatoryComplianceService: StatuatoryComplianceService,
-    private establishmentMasterService: EstablishmentMasterService, private datePipe: DatePipe,
-    private complianceMasterService: ComplianceMasterService) {
+              private statuatoryComplianceService: StatuatoryComplianceService,
+              private establishmentMasterService: EstablishmentMasterService, private datePipe: DatePipe,
+              private complianceMasterService: ComplianceMasterService) {
     this.form = this.formBuilder.group({
       'pfFormArray': new FormArray([]),
       'epsArray': new FormArray([]),
@@ -850,7 +850,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.isActivateButton = active;
 
   //  debugger
-  console.log(active);
+    console.log(active);
     this.isView = true;
     this.isEditMode = false;
 
@@ -877,8 +877,8 @@ export class ComplianceMasterComponent implements OnInit {
       .forEach(control => {
         control.controls.establishmentName.enable();
       });
-      this.isGlobalView = true;
-      this.isView =true;
+    this.isGlobalView = true;
+    this.isView =true;
   }
 
   cancelView() {
@@ -914,26 +914,25 @@ export class ComplianceMasterComponent implements OnInit {
     this.setPfDefaultValueAfterReset();
     this.showButtonSaveAndReset = true;
   }
-  checkLocalAddress() { }
-  onSelectPrimaryBusinessActivity(evt: any) { }
-  getPermanentAddressFromPIN() {
-    console.log(this.form.get('pinCode').value);
-    if (this.form.get('pinCode').value.length < 6) {
-      this.form.get('state').setValue('');
-      // this.form.get('city').setValue('');
-    }
-    if (this.form.get('pinCode').value.length == 6 && this.form.get('country').value == 'India') {
-      this.statuatoryComplianceService.getAddressFromPIN(this.form.get('pinCode').value).subscribe(res => {
-        console.log(res);
-        this.form.get('state').setValue(res.data.results[0].state);
-        // this.form.get('city').setValue(res.data.results[0].city);
 
-      }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+  // getPermanentAddressFromPIN() {
+  //   console.log(this.form.get('pinCode').value);
+  //   if (this.form.get('pinCode').value.length < 6) {
+  //     this.form.get('state').setValue('');
+  //     // this.form.get('city').setValue('');
+  //   }
+  //   if (this.form.get('pinCode').value.length == 6 && this.form.get('country').value == 'India') {
+  //     this.statuatoryComplianceService.getAddressFromPIN(this.form.get('pinCode').value).subscribe(res => {
+  //       console.log(res);
+  //       this.form.get('state').setValue(res.data.results[0].state);
+  //       // this.form.get('city').setValue(res.data.results[0].city);
 
-      });
-    }
-  }
+  //     }, (error: any) => {
+  //       this.sweetalertError(error["error"]["status"]["messsage"]);
+
+  //     });
+  //   }
+  // }
   onSelectEstablishmentCode(evt: any) {
 
     let tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(o => o.establishmentMasterId == this.form.get('establishmentMasterId').value.trim());
@@ -1121,11 +1120,11 @@ export class ComplianceMasterComponent implements OnInit {
 
     combineLatest([this.complianceHeadService.getComplianceHeadDetails(), this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails(),  this.complianceMasterService.getComplianceMasterDetails()]).subscribe((res: any) => {
      this.getComplianceHeadDetailsObject = res[0];
-    this.getComplianceInstituionMasterDetails = res[1];
-    this.complianceHeadDetailsObject = res[0].data.results;
-    this.getComplianceInstitutionMasterGridListObject = res[1].data.results;
+     this.getComplianceInstituionMasterDetails = res[1];
+     this.complianceHeadDetailsObject = res[0].data.results;
+     this.getComplianceInstitutionMasterGridListObject = res[1].data.results;
 
-    res[1].data.results.forEach(element => {
+     res[1].data.results.forEach(element => {
       let tempObjForgroupNameScaleStartDate = this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.find(o => o.complianceHeadId == element.complianceHeadId);
       this.complianceHeadNameList.push(element.complianceHeadName);
       this.institutionMasterObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
@@ -1162,19 +1161,19 @@ export class ComplianceMasterComponent implements OnInit {
 
 
 
-    this.summaryHtmlDataList = [];
-    this.masterGridDataList = [];
+     this.summaryHtmlDataList = [];
+     this.masterGridDataList = [];
 
 
 
-      let srNo = 1;
-      res[2].data.results.forEach(element => {
+     let srNo = 1;
+     res[2].data.results.forEach(element => {
         // if (element.isActive == 0) {
           // soft deleted record
 
         // } else {
           this.masterGridDataList.push(element);
-          var filteredEvents = this.institutionMasterList.filter(function (event) {
+          var filteredEvents = this.institutionMasterList.filter(function(event) {
             return event.institutionName == element.statutoryInstituteName;
           });
           let establishmentNames: string;
@@ -1567,32 +1566,123 @@ export class ComplianceMasterComponent implements OnInit {
     });
     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = [];
     this.tempGetAllOtherMastersMappingDetails = [];
-    if (evt === 'RegionMaster') {
-      evt = evt + 'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    if(evt == 'CostCentre'){
+      evt = 'CostCentre'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
-    } else if (evt === 'SubLocationMaster') {
-
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-        return event.masterMappingType == 'SubLocationMapping' && event.isActive == 1 && event.groupCompanyId == 1;
+    }
+    if(evt == 'DivisionMaster'){
+      evt = 'DivisionMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    else if (evt == 'BusinessAreaMaster') { }
-    else if (evt == 'SubArea') { }
-    else if (evt == 'CostCentre') { }
-    else if (evt == 'SubCostCenter') { }
-    else if (evt == 'DivisionMaster') { }
-    else if (evt == 'DepartmentMaster') { }
-    else if (evt == 'SubDepartment') { }
-    else if (evt == 'GradeMaster') { }
-    else if (evt == 'PlantMaster') { }
-    else if (evt == 'ProjectMaster') { }
-    else if (evt == 'ProfitCentreMaster') { }
-    else if (evt == 'StrategicBusinessUnit') { }
-    else if (evt == 'WorkLocationMaster') { }
+    if(evt == 'DepartmentMaster'){
+      evt = 'DepartmentMaster'+'Mapping';
+
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'SubDepartment'){
+      evt = 'SubDepartment'+'Mapping';
+
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'GLCodeMaster'){
+      evt = 'GLCodeMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'GradeMaster'){
+      evt = 'GradeMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'StrategicBusinessUnit'){
+      evt = 'StrategicBusinessUnit'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'WorkLocationMaster'){
+      evt = 'WorkLocationMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'SubCostCenter'){
+      evt = 'SubCostCentre'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'SubArea'){
+      evt = 'SubArea'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'BusinessAreaMaster'){
+      evt = 'BusinessAreaMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'PlantMaster'){
+      evt = 'PlantMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if(evt == 'ProjectMaster'){
+      evt = 'ProjectMaster'+'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+
+    }
+    if(evt === 'ProfitCentreMaster'){
+       evt = 'ProfitCentreMaster'+'Mapping';
+       var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+
+    }
+    if (evt === 'RegionMaster') {
+      evt = evt + 'Mapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+    if (evt === 'SubLocationMaster') {
+      evt ='SubLocationMapping';
+       var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+        return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+      });
+      this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    }
+
   }
   commonValidation() {
     this.form.get('complianceName').setValidators([Validators.required]);
@@ -1853,7 +1943,7 @@ export class ComplianceMasterComponent implements OnInit {
   addPtFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
     let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
-   const formGroup = new FormGroup({
+    const formGroup = new FormGroup({
       'establishmentName': new FormControl(dropdownList.establishmentMasterId),
       ptState: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].ptState, Validators.required),
       ptCity: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].ptCity, Validators.required),
@@ -2891,11 +2981,10 @@ export class ComplianceMasterComponent implements OnInit {
     console.log(this.editedRecordIndex);
     let complianceDetails = [];
 
-      const saveData = {
+    const saveData = {
         complianceMasterId:this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
         complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
         statutoryInstituteName: this.masterGridDataList[this.editedRecordIndex].institutionName,
-        // complianceHeadShortName: this.complianceHeadTempObj.shortName,
         complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
         accountNumber: this.masterGridDataList[this.editedRecordIndex].accountNumber,
         groupCompanyId: this.masterGridDataList[this.editedRecordIndex].groupCompanyId,
@@ -2904,9 +2993,9 @@ export class ComplianceMasterComponent implements OnInit {
         coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
         userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite,
       }
-      console.log(JSON.stringify(saveData));
+    console.log(JSON.stringify(saveData));
 
-      this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
+    this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
         console.log(res);
         if (res.data.results.length > 0) {
           console.log(res);
@@ -2918,11 +3007,6 @@ export class ComplianceMasterComponent implements OnInit {
       }, (error: any) => {
         this.sweetalertError(error["error"]["status"]["messsage"]);
       });
-
-
-
-
-
 
     for (let i = 0; i < this.masterGridDataList[i].complianceDetail.length; i++) {
       complianceDetails.push({
@@ -2977,11 +3061,5 @@ export class ComplianceMasterComponent implements OnInit {
       });
 
     }
-
-
-
-
-
-
   }
 }
