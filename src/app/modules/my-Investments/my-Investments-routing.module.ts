@@ -8,8 +8,10 @@ import { SukanyaSamriddhiComponent } from './80C/sukanya-samriddhi/sukanya-samri
 import { TaxsavingMutualFundComponent } from './80C/taxsaving-mutual-fund/taxsaving-mutual-fund.component';
 import { UnitLinkedInsurancePlanComponent } from './80C/unit-linked-insurance-plan/unit-linked-insurance-plan.component';
 import { NPSComponent } from './VI-A/nps/nps.component';
-import { NationalSevingCertificateComponent } from
-'./80C/national-seving-certificate/national-seving-certificate.component';
+import { NationalSevingCertificateComponent } from './80C/national-seving-certificate/national-seving-certificate.component';
+import { FixedDepositsComponent } from './80C/fixed-deposits/fixed-deposits.component';
+import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/tax-saving-shares-nabard.component';
+import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
 
 const routes: Routes = [
 
@@ -61,7 +63,23 @@ const routes: Routes = [
         component:  NationalSevingCertificateComponent,
         data: { title: ':: DelziaHR :: NationalSevingCertificate' },
       },
+      {
+        path:   '80C-FixedDepositsMoreThan5Years',
+        component:  FixedDepositsComponent,
+        data: { title: ':: DelziaHR :: Fixed Deposits More Than 5 Years' },
+      },
+      {
+        path:   '80C-TaxSavingSharesNabardandOtherBonds',
+        component:  TaxSavingSharesNabardComponent,
+        data: { title: ':: DelziaHR :: TaxSavingSharesNabardandOtherBonds' },
+      },
+      {
+        path:   '80C-PostOfficeTermDeposit',
+        component:  PostOfficeTermDepositComponent,
+        data: { title: ':: DelziaHR :: PostOfficeTermDeposit' },
+      },
     ],
+
 
   // { path: '', pathMatch: 'full', redirectTo: '/investment' },
    },

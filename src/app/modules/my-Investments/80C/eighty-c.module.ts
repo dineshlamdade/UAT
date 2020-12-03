@@ -50,6 +50,15 @@ import { NationalSevingCertificateSummaryComponent } from './national-seving-cer
 import { NationalSevingCertificateMasterComponent } from './national-seving-certificate/national-seving-certificate-master/national-seving-certificate-master.component';
 import { NationalSevingCertificateDeclarationComponent } from './national-seving-certificate/national-seving-certificate-declaration/national-seving-certificate-declaration.component';
 import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-linked-summary/unit-linked-summary.component';
+import { FixedDepositsComponent } from './fixed-deposits/fixed-deposits.component';
+import { FixedDepositsSummaryComponent } from './fixed-deposits/fixed-deposits-summary/fixed-deposits-summary.component';
+import { FixedDepositsDeclarationComponent } from './fixed-deposits/fixed-deposits-declaration/fixed-deposits-declaration.component';
+import { TaxSavingSharesNabardComponent } from './tax-saving-shares-nabard/tax-saving-shares-nabard.component';
+import { TaxSavingNabardSummaryComponent } from './tax-saving-shares-nabard/tax-saving-nabard-summary/tax-saving-nabard-summary.component';
+import { TaxSavingNabardActualComponent } from './tax-saving-shares-nabard/tax-saving-nabard-actual/tax-saving-nabard-actual.component';
+import { PostOfficeTermDepositComponent } from './post-office-term-deposit/post-office-term-deposit.component';
+import { PostOfficeTermDepositSummaryComponent } from './post-office-term-deposit/post-office-term-deposit-summary/post-office-term-deposit-summary.component';
+import { PostOfficeTermDepositDeclarationComponent } from './post-office-term-deposit/post-office-term-deposit-declaration/post-office-term-deposit-declaration.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +94,15 @@ import { UnitLinkedSummaryComponent } from './unit-linked-insurance-plan/unit-li
     NationalSevingCertificateSummaryComponent,
     NationalSevingCertificateMasterComponent,
     NationalSevingCertificateDeclarationComponent,
+    FixedDepositsComponent,
+    FixedDepositsSummaryComponent,
+    FixedDepositsDeclarationComponent,
+    TaxSavingSharesNabardComponent,
+    TaxSavingNabardSummaryComponent,
+    TaxSavingNabardActualComponent,
+    PostOfficeTermDepositComponent,
+    PostOfficeTermDepositSummaryComponent,
+    PostOfficeTermDepositDeclarationComponent,
      ],
   imports: [
     CommonModule,

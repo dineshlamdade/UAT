@@ -14,7 +14,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 //Summary services
   getPensionPlanSummary() {
-    return this._HTTP.get(this.apiUrl + 'pensionPlanmaster-detail/pensionPlanMasterSummary')
+    return this._HTTP.get(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -31,7 +31,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
    //Master Services
 
   getPensionPlanMaster() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'pensionPlanmaster-detail')
+    return this._HTTP.get(this.apiUrl + 'pensionPlanMaster-detail')
     .pipe(map((res: any) => {
       return res;
     }
@@ -108,7 +108,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'pensionPlanmaster-detail',
+      this.apiUrl + 'pensionPlanMaster-detail',
       formData,
       {
 
