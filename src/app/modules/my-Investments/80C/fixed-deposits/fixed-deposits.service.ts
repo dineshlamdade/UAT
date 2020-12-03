@@ -8,11 +8,10 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class FixedDepositsService {
+
   apiUrl = environment.apiBaseUrl;
 
-
   constructor(private _HTTP: HttpClient) { }
-
 
   getFDSummary() {
     return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/summary')
