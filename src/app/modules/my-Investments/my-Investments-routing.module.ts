@@ -11,6 +11,7 @@ import { NPSComponent } from './VI-A/nps/nps.component';
 import { NationalSevingCertificateComponent } from './80C/national-seving-certificate/national-seving-certificate.component';
 import { FixedDepositsComponent } from './80C/fixed-deposits/fixed-deposits.component';
 import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/tax-saving-shares-nabard.component';
+import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
 
 const routes: Routes = [
 
@@ -71,6 +72,11 @@ const routes: Routes = [
         path:   '80C-TaxSavingSharesNabardandOtherBonds',
         component:  TaxSavingSharesNabardComponent,
         data: { title: ':: DelziaHR :: TaxSavingSharesNabardandOtherBonds' },
+      },
+      {
+        path:   '80C-PostOfficeTermDeposit',
+        component:  PostOfficeTermDepositComponent,
+        data: { title: ':: DelziaHR :: PostOfficeTermDeposit' },
       },
     ],
 

@@ -148,7 +148,7 @@
                   <select
                     name="Previous Employer Name"
                     class="form-control custom-select"
-                    (change)="updatePreviousEmpId($event, i, j)"
+                    (change)="updatePreviousEmpId($event, i)"
                     [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
                     "

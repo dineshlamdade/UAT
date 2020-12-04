@@ -30,11 +30,11 @@ export class LeftmenuComponent implements OnInit {
   public staticscard: boolean = true;
   public friendscard: boolean = true;
   constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
-    if ((this.router.url).includes('hr')) {
+    if ((this.router.url).includes('Payroll')) {
       this.isCollapsed = false;
     }
 
-    if ((this.router.url).includes('project')) {
+    if ((this.router.url).includes('Investment')) {
       this.isProjectCollapsed = false;
     }
     if ((this.router.url).includes('jobportal')) {

@@ -802,25 +802,22 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.setPfDefaultValueAfterReset();
         this.showButtonSaveAndReset = true;
     };
-    ComplianceMasterComponent.prototype.checkLocalAddress = function () { };
-    ComplianceMasterComponent.prototype.onSelectPrimaryBusinessActivity = function (evt) { };
-    ComplianceMasterComponent.prototype.getPermanentAddressFromPIN = function () {
-        var _this = this;
-        console.log(this.form.get('pinCode').value);
-        if (this.form.get('pinCode').value.length < 6) {
-            this.form.get('state').setValue('');
-            // this.form.get('city').setValue('');
-        }
-        if (this.form.get('pinCode').value.length == 6 && this.form.get('country').value == 'India') {
-            this.statuatoryComplianceService.getAddressFromPIN(this.form.get('pinCode').value).subscribe(function (res) {
-                console.log(res);
-                _this.form.get('state').setValue(res.data.results[0].state);
-                // this.form.get('city').setValue(res.data.results[0].city);
-            }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
-            });
-        }
-    };
+    // getPermanentAddressFromPIN() {
+    //   console.log(this.form.get('pinCode').value);
+    //   if (this.form.get('pinCode').value.length < 6) {
+    //     this.form.get('state').setValue('');
+    //     // this.form.get('city').setValue('');
+    //   }
+    //   if (this.form.get('pinCode').value.length == 6 && this.form.get('country').value == 'India') {
+    //     this.statuatoryComplianceService.getAddressFromPIN(this.form.get('pinCode').value).subscribe(res => {
+    //       console.log(res);
+    //       this.form.get('state').setValue(res.data.results[0].state);
+    //       // this.form.get('city').setValue(res.data.results[0].city);
+    //     }, (error: any) => {
+    //       this.sweetalertError(error["error"]["status"]["messsage"]);
+    //     });
+    //   }
+    // }
     ComplianceMasterComponent.prototype.onSelectEstablishmentCode = function (evt) {
         var _this = this;
         var tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(function (o) { return o.establishmentMasterId == _this.form.get('establishmentMasterId').value.trim(); });
@@ -1414,6 +1411,104 @@ var ComplianceMasterComponent = /** @class */ (function () {
         });
         this.getFilteredRecordOfAllOtherMastersMappingDetailsList = [];
         this.tempGetAllOtherMastersMappingDetails = [];
+        if (evt == 'CostCentre') {
+            evt = 'CostCentre' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'DivisionMaster') {
+            evt = 'DivisionMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'DepartmentMaster') {
+            evt = 'DepartmentMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'SubDepartment') {
+            evt = 'SubDepartment' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'GLCodeMaster') {
+            evt = 'GLCodeMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'GradeMaster') {
+            evt = 'GradeMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'StrategicBusinessUnit') {
+            evt = 'StrategicBusinessUnit' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'WorkLocationMaster') {
+            evt = 'WorkLocationMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'SubCostCenter') {
+            evt = 'SubCostCentre' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'SubArea') {
+            evt = 'SubArea' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'BusinessAreaMaster') {
+            evt = 'BusinessAreaMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'PlantMaster') {
+            evt = 'PlantMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt == 'ProjectMaster') {
+            evt = 'ProjectMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
+        if (evt === 'ProfitCentreMaster') {
+            evt = 'ProfitCentreMaster' + 'Mapping';
+            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+            });
+            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+        }
         if (evt === 'RegionMaster') {
             evt = evt + 'Mapping';
             var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
@@ -1421,25 +1516,13 @@ var ComplianceMasterComponent = /** @class */ (function () {
             });
             this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
         }
-        else if (evt === 'SubLocationMaster') {
+        if (evt === 'SubLocationMaster') {
+            evt = 'SubLocationMapping';
             var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == 'SubLocationMapping' && event.isActive == 1 && event.groupCompanyId == 1;
+                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
             });
             this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
         }
-        else if (evt == 'BusinessAreaMaster') { }
-        else if (evt == 'SubArea') { }
-        else if (evt == 'CostCentre') { }
-        else if (evt == 'SubCostCenter') { }
-        else if (evt == 'DivisionMaster') { }
-        else if (evt == 'DepartmentMaster') { }
-        else if (evt == 'SubDepartment') { }
-        else if (evt == 'GradeMaster') { }
-        else if (evt == 'PlantMaster') { }
-        else if (evt == 'ProjectMaster') { }
-        else if (evt == 'ProfitCentreMaster') { }
-        else if (evt == 'StrategicBusinessUnit') { }
-        else if (evt == 'WorkLocationMaster') { }
     };
     ComplianceMasterComponent.prototype.commonValidation = function () {
         this.form.get('complianceName').setValidators([forms_1.Validators.required]);
@@ -2647,7 +2730,6 @@ var ComplianceMasterComponent = /** @class */ (function () {
             complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
             complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
             statutoryInstituteName: this.masterGridDataList[this.editedRecordIndex].institutionName,
-            // complianceHeadShortName: this.complianceHeadTempObj.shortName,
             complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
             accountNumber: this.masterGridDataList[this.editedRecordIndex].accountNumber,
             groupCompanyId: this.masterGridDataList[this.editedRecordIndex].groupCompanyId,
