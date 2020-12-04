@@ -25,11 +25,9 @@ import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { NscService } from '../../national-seving-certificate/nsc.service';
 import { FixedDepositsService } from '../fixed-deposits.service';
-
 
 @Component({
   selector: 'app-fixed-deposits-declaration',
@@ -169,7 +167,6 @@ export class FixedDepositsDeclarationComponent implements OnInit {
     private fixedDepositsService: FixedDepositsService,
     private datePipe: DatePipe,
     private http: HttpClient,
-    private fileService: FileService,
     private numberFormat: NumberFormatPipe,
     public dialog: MatDialog,
     private modalService: BsModalService,

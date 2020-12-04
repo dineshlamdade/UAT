@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class NpsService {
 
   apiUrl = environment.apiBaseUrl;
-  apiUrlEmployee = environment.apiBaseUrlEmployee;
+  apiUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
