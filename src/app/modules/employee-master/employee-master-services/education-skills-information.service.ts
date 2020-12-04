@@ -168,4 +168,20 @@ export class EducationSkillsInformationService {
         return res;
       }))
   }
+
+  getAllCertificates() {
+
+    return this.httpClient.get(environment.baseUrl8083 + '/certificate-master/details', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+  getAllCertificateMapping() {
+
+    return this.httpClient.get(environment.baseUrl8083 + '/certificate-master-mapping/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
 }

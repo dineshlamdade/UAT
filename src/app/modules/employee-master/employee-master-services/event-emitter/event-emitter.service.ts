@@ -34,6 +34,7 @@ export class EventEmitterService {
   private FamilyPopupFormSave = new Subject<any>();
   private JobInformationInitiate = new Subject<any>();
   private NextJobTab = new Subject<any>();
+  private NextToAssignment = new Subject<any>();
 
 
 
@@ -241,5 +242,11 @@ export class EventEmitterService {
   }
   setNextJobTab() {
     return this.NextJobTab.asObservable();
+  }
+  getNextToAssignment(assignment){
+    this.NextToAssignment.next(assignment);
+  }
+  setNextToAssignment() {
+    return this.NextToAssignment.asObservable();
   }
 }

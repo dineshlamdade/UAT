@@ -1,4 +1,12 @@
 <form>
+    <div class="col-sm-6 col-md-3">
+        <label class="form-label">Payroll Area</label>
+        <p-autoComplete [suggestions]="filteredHighestEducationList"
+            placeholder="Select" (completeMethod)="filterHighestEducation($event)"
+            [dropdown]="true">
+        </p-autoComplete>
+    </div>
+    <br>
     <div class="row">
         <div class="col-sm-6 col-md-3">
             <label class="form-label">Deputed To</label>

@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./job-information.component.scss']
 })
 export class JobInformationComponent implements OnInit {
+  hiddenSummary:boolean = true;
+
 
   constructor() { }
 
   ngOnInit(): void {
+    this.hiddenSummary = true;
   }
 
 }

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BankInformationComponent } from './components/bank-information/bank-information.component';
+import { ComplianceInformationComponent } from './components/compliance-information/compliance-information.component';
+import { ComplianceTypeInformationComponent } from './components/compliance-information/compliance-type-information/compliance-type-information.component';
+import { InputComplianceInformationComponent } from './components/compliance-information/input-compliance-information/input-compliance-information.component';
 import { ContactInformationComponent } from './components/contact-information/contact-information.component';
 import { CertificationDetailComponent } from './components/education-skills-information/certification-detail/certification-detail.component';
 import { EducationDetailComponent } from './components/education-skills-information/education-detail/education-detail.component';
@@ -14,6 +17,7 @@ import { NominationDetailsComponent } from './components/family-information/nomi
 import { IdentityInformationComponent } from './components/identity-information/identity-information.component';
 import { DeputationDetailComponent } from './components/job-information/deputation-detail/deputation-detail.component';
 import { JobInformationComponent } from './components/job-information/job-information.component';
+import { MinimumWagesDetailComponent } from './components/job-information/minimum-wages-detail/minimum-wages-detail.component';
 import { OrganizationDetailComponent } from './components/job-information/organization-detail/organization-detail.component';
 import { PositionDetailComponent } from './components/job-information/position-detail/position-detail.component';
 import { ProjectDetailComponent } from './components/job-information/project-detail/project-detail.component';
@@ -131,10 +135,32 @@ const routes: Routes = [
             data: { title: ':: DelziaHR :: project-details' },
           },
           {
+            path: 'minimum-wages-details',
+            component: MinimumWagesDetailComponent,
+            data: { title: ':: DelziaHR :: minimum-wages-details' },
+          },
+          {
             path: 'deputation-details',
             component: DeputationDetailComponent,
             data: { title: ':: DelziaHR :: deputation-details' },
           }
+        ]
+      },
+      {
+        path: 'compliance-information',
+        component: ComplianceInformationComponent,
+        data: { title: ':: DelziaHR :: compliance-information' },
+        children: [
+          {
+            path: 'input',
+            component: InputComplianceInformationComponent,
+            data: { title: ':: DelziaHR :: input' },
+          },
+          {
+            path: 'compliance-type',
+            component: ComplianceTypeInformationComponent,
+            data: { title: ':: DelziaHR :: compliance-type' },
+          },
         ]
       },
 

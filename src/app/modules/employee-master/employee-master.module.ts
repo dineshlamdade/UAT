@@ -49,6 +49,11 @@ import { OrganizationDetailComponent } from './components/job-information/organi
 import { PositionDetailComponent } from './components/job-information/position-detail/position-detail.component';
 import { ProjectDetailComponent } from './components/job-information/project-detail/project-detail.component';
 import { DeputationDetailComponent } from './components/job-information/deputation-detail/deputation-detail.component';
+import { ComplianceInformationComponent } from './components/compliance-information/compliance-information.component';
+import { InputComplianceInformationComponent } from './components/compliance-information/input-compliance-information/input-compliance-information.component';
+import { ComplianceTypeInformationComponent } from './components/compliance-information/compliance-type-information/compliance-type-information.component';
+import { SubComplianceTypeInformationComponent } from './components/compliance-information/compliance-type-information/sub-compliance-type-information/sub-compliance-type-information.component';
+import { MinimumWagesDetailComponent } from './components/job-information/minimum-wages-detail/minimum-wages-detail.component';
 
 @NgModule({
     declarations: [
@@ -72,7 +77,12 @@ import { DeputationDetailComponent } from './components/job-information/deputati
         OrganizationDetailComponent,
         PositionDetailComponent,
         ProjectDetailComponent,
-        DeputationDetailComponent
+        DeputationDetailComponent,
+        ComplianceInformationComponent,
+        InputComplianceInformationComponent,
+        ComplianceTypeInformationComponent,
+        SubComplianceTypeInformationComponent,
+        MinimumWagesDetailComponent
     ],
     imports: [
         CommonModule,

@@ -13,10 +13,10 @@
                                     <label class="form-label">Name</label>
                                     <p-autoComplete [suggestions]="filteredCertificateList" placeholder="Select"
                                         (completeMethod)="filterCertificate($event)" [dropdown]="true"
-                                        formControlName="cerificateName" (onSelect)="onSelectionName(certificateName)"
-                                        [(ngModel)]="certificateName" field="certificateName">
+                                        formControlName="cerificateName" (onSelect)="onSelectionName(certificateModel)"
+                                        [(ngModel)]="certificateModel" field="certificateMasterDetails.certificateName">
                                         <ng-template let-certificate pTemplate="item">
-                                            {{certificate.certificateName}}
+                                            {{certificate.certificateMasterDetails.certificateName}}
                                         </ng-template>
                                     </p-autoComplete>
                                 </div>
@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div class="col-sm-6 col-md-3">
-                                        <label class="form-label">Valitity - From Date</label>
+                                        <label class="form-label">Validity - From Date</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -78,13 +78,14 @@
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalValidityFromDate"
-                                                    [(ngModel)]="employeeCertificateRequestModel.renewalValidityFromDate">
+                                                    [(ngModel)]="employeeCertificateRequestModel.renewalValidityFromDate"
+                                                    [minDate]="employeeCertificateRequestModel.renewalCertificationDate">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6 col-md-3">
-                                        <label class="form-label">Valitity - To Date</label>
+                                        <label class="form-label">Valdtity - To Date</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -94,7 +95,8 @@
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalValidityToDate"
-                                                    [(ngModel)]="employeeCertificateRequestModel.renewalValidityToDate">
+                                                    [(ngModel)]="employeeCertificateRequestModel.renewalValidityToDate"
+                                                    [minDate]="employeeCertificateRequestModel.renewalValidityFromDate">
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +134,7 @@
                                     </div>
 
                                     <div class="col-sm-6 col-md-3">
-                                        <label class="form-label">Valitity - From Date</label>
+                                        <label class="form-label">Validity - From Date</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -142,13 +144,14 @@
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalFeesValidityFromDate"
-                                                    [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityFromDate">
+                                                    [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityFromDate"
+                                                    [minDate]="employeeCertificateRequestModel.renewalCertificationDate">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6 col-md-3">
-                                        <label class="form-label">Valitity - To Date</label>
+                                        <label class="form-label">Validity - To Date</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -158,7 +161,8 @@
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalFeesValidityToDate"
-                                                    [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityToDate">
+                                                    [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityToDate"
+                                                    [minDate]="employeeCertificateRequestModel.renewalFeesValidityFromDate">
                                             </div>
                                         </div>
                                     </div>
@@ -233,7 +237,7 @@
                         <ng-template pTemplate="body" let-certificate>
                             <tr>
                                 <td class="primeng-table-header-center"><span>
-                                        {{certificate.certificateName}}
+                                        {{certificate.certificateMasterMappingId.certificateMaster.certificateName}}
                                     </span></td>
 
                                 <td class="primeng-table-header-center"><span>
@@ -246,7 +250,7 @@
 
                                 <td class="primeng-table-header-center"><span>
                             <tr *ngFor="let history of certificate.history">
-                                {{history.renewalFeesValidityFromDate}}
+                                {{history.renewalValidityFromDate}}
                             </tr>
                             </span>
 
@@ -255,7 +259,7 @@
 
                             <td class="primeng-table-header-center"><span>
                                     <tr *ngFor="let history of certificate.history">
-                                        {{history.renewalFeesValidityToDate}}
+                                        {{history.renewalValidityToDate}}
                                     </tr>
                                 </span>
 
