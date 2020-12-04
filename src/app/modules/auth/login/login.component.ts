@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
-import jwt_decode from 'jwt-decode';
+// import jwt_decode from 'jwt-decode';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
 import { decode } from 'punycode';
 import { AlertServiceService } from './../../../core/services/alert-service.service';
@@ -78,7 +78,7 @@ this.otpDiv = false;
         //   this.timeLeft = 1000;
         // }
       }, 1000);
-       
+
         // this.alertService.sweetalertError('Something went wrong. Please try again.');
     },
     (err) => {
@@ -107,8 +107,8 @@ this.otpDiv = false;
       // localStorage.setItem('token', res.data.results[0].token);
       console.log(res.data.results[0].token);
       console.log(this.service.getJwtToken());
-      const decoded = jwt_decode(res.data.results[0].token);
-      console.log(decoded);
+      // const decoded = jwt_decode(res.data.results[0].token);
+      // console.log(decoded);
       this.router.navigate(['dashboard']);
       this.alertService.sweetalertMasterSuccess('Login successfull','');
       // this.alertService.sweetalertError('Something went wrong. Please try again.');

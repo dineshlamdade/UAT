@@ -12,6 +12,8 @@ import { NationalSevingCertificateComponent } from './80C/national-seving-certif
 import { FixedDepositsComponent } from './80C/fixed-deposits/fixed-deposits.component';
 import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/tax-saving-shares-nabard.component';
 import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
+import { SeniorCitizenSavingSchemeComponent } from './80C/senior-citizen-saving-scheme/senior-citizen-saving-scheme.component';
+import { TuitionFeesComponent } from './80C/tuition-fees/tuition-fees.component';
 
 const routes: Routes = [
 
@@ -31,7 +33,7 @@ const routes: Routes = [
         {
           path:   '80C-TaxsavingMutualFund',
           component:     TaxsavingMutualFundComponent,
-          data: { title: ':: DelziaHR :: PensionPlan' },
+          data: { title: ':: DelziaHR :: TaxsavingMutualFund' },
         },
       {
         path:   '80C-PensionPlan',
@@ -78,10 +80,17 @@ const routes: Routes = [
         component:  PostOfficeTermDepositComponent,
         data: { title: ':: DelziaHR :: PostOfficeTermDeposit' },
       },
+      {
+        path:   '80C-SeniorCitizenSavingScheme',
+        component:  SeniorCitizenSavingSchemeComponent,
+        data: { title: ':: DelziaHR :: SeniorCitizenSavingScheme' },
+      },
+      {
+        path:   '80C-TuitionFeesComponent',
+        component:  TuitionFeesComponent,
+        data: { title: ':: DelziaHR :: TuitionFeesComponent' },
+      },
     ],
-
-
-  // { path: '', pathMatch: 'full', redirectTo: '/investment' },
    },
 ];
 

@@ -32,7 +32,7 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     NpsSummaryComponent,
     NpsMasterComponent,
     NpsDeclarationComponent,
-  ],
+   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

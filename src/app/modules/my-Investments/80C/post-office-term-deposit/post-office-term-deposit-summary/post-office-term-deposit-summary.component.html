@@ -7,7 +7,6 @@
             <tr>
               <th scope="col" class="wd-20">Institution</th>
               <th scope="col" class="wd-20">Account no.</th>
-              <!-- <th scope="col" class="wd-20">Account Holder Name</th> -->
               <th scope="col" class="wd-15">Declared</th>
               <th scope="col" class="wd-15">Actual</th>
               <th scope="col" class="wd-10">Action</th>
@@ -20,11 +19,6 @@
               </td>
               <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
               </td>
-              <!-- <td class="wd-20">
-                <span tooltip="{{summary.accountHolderName}}">
-                  {{summary.accountHolderName}}
-                </span>
-              </td> -->
               <td class="wd-15 align-right">
                 <span class="padding-right-12" tooltip="{{summary.declaredAmount | number:'1.2-2'}}">
                   {{summary.declaredAmount | number:'1.2-2'}}
