@@ -10,6 +10,8 @@ export class LeftmenuComponent implements OnInit {
 public menuDetails: Array<any>;
   public isCollapsed = true;
   public isProjectCollapsed = true;
+  public isInvestmentCollapsed = true;
+  public isOtherMasterCollapsed = true;
   public isJobportalCollapsed = true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
@@ -56,19 +58,16 @@ public menuDetails: Array<any>;
       {
       collapsed: true,
       icon: 'icon-credit-card',
-        name: 'Other Master',
+        name: 'Investment',
         subDetails: [{
-          icon: 'icon-credit-card',
-          name: 'Company Group Master',
-          routerlink: '/otherMaster/companyGroupMaster',
+          name: '80C-LIC',
+          routerlink: '/investment/80C-LIC',
         },
         {
-          icon: 'icon-rocket',
-          name: 'Company Registration Details',
+          name: '80C-PPF',
           routerlink: '/otherMaster/companyRegistrationDetails',
         },
         {
-          icon: 'icon-rocket',
           name: 'Compliance Head',
           routerlink: '/otherMaster/complianceHead',
         }],
@@ -78,17 +77,14 @@ public menuDetails: Array<any>;
         icon: 'icon-rocket',
           name: 'Other Master',
           subDetails: [{
-            icon: 'icon-rocket',
             name: 'Company Group Master',
             routerlink: '/otherMaster/companyGroupMaster',
           },
           {
-            icon: 'icon-rocket',
             name: 'Company Registration Details',
             routerlink: '/otherMaster/companyRegistrationDetails',
           },
           {
-            icon: 'icon-rocket',
             name: 'Compliance Head',
             routerlink: '/otherMaster/complianceHead',
           }],

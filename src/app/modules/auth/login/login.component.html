@@ -39,9 +39,9 @@
                     </div>
                 </form>
                 </div>
-                <div class="text-center text-muted">
+                <!-- <div class="text-center text-muted">
                     Don't have account yet? <a [routerLink]="['/register']" href="javascript:void(0)">Sign up</a>
-                </div>
+                </div> -->
             </div>
             <div *ngIf="otpDiv ===true">
                 <div class="card-body">
@@ -58,7 +58,7 @@
                         <!-- <label class="form-label">Enter OTP</label> -->
                         <input type="number" [(ngModel)]="otp" name="otp" class="form-control" aria-describedby="emailHelp"
                             placeholder="Enter OTP">
-                            <a class="float-left small">Time Left {{minLeft}}mm : {{secLeft}}ss</a>
+                            <small><a class="float-left small red">Time Left: {{minLeft}}m : {{secLeft}}s</a></small>
                             <a class="float-right small" (click)="resendOTP()">Resend OTP </a>
                     </div>
                     

@@ -2,9 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
-import jwt_decode from 'jwt-decode';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
-import { decode } from 'punycode';
 import { AlertServiceService } from './../../../core/services/alert-service.service';
 import { AuthService } from './../auth.service';
 @Component({
@@ -19,7 +17,7 @@ import { AuthService } from './../auth.service';
 export class LoginComponent implements OnInit {
   public email: string;
   public password: string;
-  timeLeft: number = 1000;
+  timeLeft: number = 600;
   minLeft: number;
   secLeft: number;
   interval;
@@ -53,19 +51,7 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-this.otpDiv = false;;
-this.interval = setInterval(() => {
-  if (this.timeLeft > 0) {
-    this.timeLeft--;
-    this.minLeft = Math.floor(this.timeLeft / 100);
-    this.secLeft = (this.timeLeft % 100);
-  }
-  else {
-    // this.timeLeft = 1000;
-    this.otpDiv = false;
-   // window.location.reload();
-  }
-}, 1000);
+this.otpDiv = false;
   }
 
   signIn() {
@@ -85,8 +71,8 @@ this.interval = setInterval(() => {
       this.interval = setInterval(() => {
         if (this.timeLeft > 0) {
           this.timeLeft--;
-          this.minLeft = Math.floor(this.timeLeft / 100);
-          this.secLeft = (this.timeLeft % 100);
+          this.minLeft = Math.floor(this.timeLeft / 60);
+          this.secLeft = Math.floor(this.timeLeft % 60);
         }
         else {
           // this.timeLeft = 1000;
@@ -122,9 +108,6 @@ this.interval = setInterval(() => {
       console.log(res);
       // localStorage.setItem('token', res.data.results[0].token);
       console.log(res.data.results[0].token);
-      console.log(this.service.getJwtToken());
-      const decoded = jwt_decode(res.data.results[0].token);
-      console.log(decoded);
       this.router.navigate(['dashboard']);
       this.alertService.sweetalertMasterSuccess('Login successfull','');
       // this.alertService.sweetalertError('Something went wrong. Please try again.');
