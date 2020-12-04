@@ -4,11 +4,10 @@ import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormat
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { NpsService } from '../nps.service';
 
-
 @Component({
   selector: 'app-nps-summary',
   templateUrl: './nps-summary.component.html',
-  styleUrls: ['./nps-summary.component.scss']
+  styleUrls: ['./nps-summary.component.scss'],
 })
 export class NpsSummaryComponent implements OnInit {
   @Input() institution: string;
@@ -48,7 +47,7 @@ export class NpsSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private npsService : NpsService,
+    private npsService: NpsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {  }
@@ -130,7 +129,4 @@ export class NpsSummaryComponent implements OnInit {
     this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
     this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.deductionE;
   }
-
-
 }
-

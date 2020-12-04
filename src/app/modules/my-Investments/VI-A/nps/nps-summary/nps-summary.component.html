@@ -15,24 +15,38 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
-                <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
-              </td>
-              <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+              <td
+                class="text-link wd-20 align-left"
+                (click)="jumpToMasterPage(i)"
+              >
+                <span tooltip="{{ summary.institution }}">{{
+                  summary.institution
+                }}</span>
               </td>
               <td class="wd-20">
-                <span tooltip="{{summary.accountHolderName}}">
-                  {{summary.accountHolderName}}
+                <span tooltip="{{ summary.accountNumber }}">{{
+                  summary.accountNumber
+                }}</span>
+              </td>
+              <td class="wd-20">
+                <span tooltip="{{ summary.accountHolderName }}">
+                  {{ summary.accountHolderName }}
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{summary.declaredAmount | number:'1.2-2'}}">
-                  {{summary.declaredAmount | number:'1.2-2'}}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ summary.declaredAmount | number: '1.2-2' }}"
+                >
+                  {{ summary.declaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{summary.actualAmount | number:'1.2-2'}}">
-                  {{summary.actualAmount | number:'1.2-2'}}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ summary.actualAmount | number: '1.2-2' }}"
+                >
+                  {{ summary.actualAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="wd-10">
@@ -42,27 +56,37 @@
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="6">
-                <span class="font-14 font500 align-center text-red">No Data
-                  Available</span>
+                <span class="font-14 font500 align-center text-red"
+                  >No Data Available</span
+                >
               </td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
+              <td colspan="3" class="align-right font700">
+                Total &nbsp; <span class="Letterbadge">A</span>
+              </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
-                  {{totalDeclaredAmount | number:'1.2-2'}}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}"
+                >
+                  {{ totalDeclaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
-                  {{totalActualAmount | number:'1.2-2'}}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ totalActualAmount | number: '1.2-2' }}"
+                >
+                  {{ totalActualAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td></td>
             </tr>
 
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Future Investments &nbsp;
+              <td colspan="3" class="align-right font700">
+                Future Investments &nbsp;
                 <span class="Letterbadge">B</span>
               </td>
               <td>
@@ -73,12 +97,20 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
-                <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B</span>
+              <td colspan="3" class="align-right font700">
+                Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
+                <span class="Letterbadge">A</span> + &nbsp;<span
+                  class="Letterbadge"
+                >
+                  B</span
+                >
               </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
-                  {{grandTotalDeclaredAmount | number:'1.2-2'}}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}"
+                >
+                  {{ grandTotalDeclaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right">
@@ -100,10 +132,14 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Deduction [Sec.80-CCD(1B)] &nbsp;
-                <span class="Letterbadge">E </span> : Mininum of &nbsp;<span class="Letterbadge"> C</span> & &nbsp;<span
-                  class="Letterbadge"> D
-                </span>
+              <td colspan="3" class="align-right font700">
+                Deduction [Sec.80-CCD(1B)] &nbsp;
+                <span class="Letterbadge">E </span> : Mininum of &nbsp;<span
+                  class="Letterbadge"
+                >
+                  C</span
+                >
+                & &nbsp;<span class="Letterbadge"> D </span>
               </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{deductionE | number:'1.2-2'}}">
@@ -115,10 +151,14 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Eligible for Deduction [Sec.80-CCD(1) part of Sec.80-C] &nbsp;
-                <span class="Letterbadge">F </span> = &nbsp;<span class="Letterbadge"> C </span> - &nbsp;<span
-                  class="Letterbadge"> E
+              <td colspan="3" class="align-right font700">
+                Eligible for Deduction [Sec.80-CCD(1) part of Sec.80-C] &nbsp;
+                <span class="Letterbadge">F </span> = &nbsp;<span
+                  class="Letterbadge"
+                >
+                  C
                 </span>
+                - &nbsp;<span class="Letterbadge"> E </span>
               </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{eligibleForDeductionF | number:'1.2-2'}}">

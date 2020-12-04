@@ -201,9 +201,9 @@
                     (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
-                    " [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    " class="form-control" bsDatepicker />
+                    "
+                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                      class="form-control" bsDatepicker />
                 </td>
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
