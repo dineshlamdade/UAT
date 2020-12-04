@@ -125,7 +125,7 @@ export class NscService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'nsc-transaction/uploadNSCTransactionDocuments',formData,
+      this.apiUrl + 'nsc-transaction/uploadNSCTransactionDocuments', formData,
       {
 
       });

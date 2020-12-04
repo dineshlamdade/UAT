@@ -9,10 +9,8 @@ import { AppComponent } from 'src/app/app.component';
 export class LeftmenuComponent implements OnInit {
 public menuDetails: Array<any>;
   public isCollapsed = true;
-  public isProjectCollapsed = true;
   public isInvestmentCollapsed = true;
-  public isOtherMasterCollapsed = true;
-  public isJobportalCollapsed = true;
+  public isOtherMaster = true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
@@ -33,15 +31,15 @@ public menuDetails: Array<any>;
   public staticscard = true;
   public friendscard = true;
   constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
-    if ((this.router.url).includes('Payroll')) {
+    if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
 
-    if ((this.router.url).includes('Investment')) {
-      this.isProjectCollapsed = false;
+    if ((this.router.url).includes('investment')) {
+      this.isInvestmentCollapsed = false;
     }
-    if ((this.router.url).includes('jobportal')) {
-      this.isJobportalCollapsed = false;
+    if ((this.router.url).includes('otherMaster')) {
+      this.isOtherMaster = false;
     }
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
