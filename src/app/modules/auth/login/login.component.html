@@ -27,12 +27,12 @@
                                 password</a></label>
                         <input type="password" [(ngModel)]="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" />
                             <span class="custom-control-label">Remember me</span>
                         </label>
-                    </div>
+                    </div> -->
                     <div class="form-footer">
                         <a class="btn btn-primary btn-block"
                             title="" (click)="signIn()">Sign in</a>
@@ -59,7 +59,7 @@
                         <input type="number" [(ngModel)]="otp" name="otp" class="form-control" aria-describedby="emailHelp"
                             placeholder="Enter OTP">
                             <a class="float-left small">Time Left {{minLeft}}mm : {{secLeft}}ss</a>
-                            <a class="float-right small">Resend OTP </a>
+                            <a class="float-right small" (click)="resendOTP()">Resend OTP </a>
                     </div>
                     
                     <div class="form-footer">

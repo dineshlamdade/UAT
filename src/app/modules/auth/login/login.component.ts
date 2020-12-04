@@ -53,7 +53,19 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-this.otpDiv = false;
+this.otpDiv = false;;
+this.interval = setInterval(() => {
+  if (this.timeLeft > 0) {
+    this.timeLeft--;
+    this.minLeft = Math.floor(this.timeLeft / 100);
+    this.secLeft = (this.timeLeft % 100);
+  }
+  else {
+    // this.timeLeft = 1000;
+    this.otpDiv = false;
+   // window.location.reload();
+  }
+}, 1000);
   }
 
   signIn() {
@@ -68,15 +80,19 @@ this.otpDiv = false;
       console.log(res);
       this.otpDiv = true;
       console.log(this.otpDiv);
+      this.alertService.sweetalertMasterSuccess(res['status']['message'],'');
+
       this.interval = setInterval(() => {
-        if(this.timeLeft > 0) {
+        if (this.timeLeft > 0) {
           this.timeLeft--;
           this.minLeft = Math.floor(this.timeLeft / 100);
           this.secLeft = (this.timeLeft % 100);
         }
-        // else {
-        //   this.timeLeft = 1000;
-        // }
+        else {
+          // this.timeLeft = 1000;
+          //this.otpDiv = false;
+          window.location.reload();
+        }
       }, 1000);
        
         // this.alertService.sweetalertError('Something went wrong. Please try again.');
@@ -86,7 +102,7 @@ this.otpDiv = false;
       if ( err instanceof HttpErrorResponse) {
         if ( err.error.status.code === '401') {
           this.alertService.sweetalertError(
-            'Invalid username or password',
+            err.error.status.message,
           );
         }
       }
@@ -124,6 +140,19 @@ this.otpDiv = false;
             }
     });
 
+  }
+
+  resendOTP() {
+    this.timeLeft = 1000;
+    const data = {
+      emailId: this.email,
+      password: this.password,
+    };
+    this.service.postLogin(data)
+    .subscribe((res) => {
+      console.log(res);
+    }
+    );
   }
 
   // change locale/language at runtime
