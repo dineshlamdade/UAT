@@ -126,7 +126,7 @@ this.otpDiv = false;
   }
 
   resendOTP() {
-    this.timeLeft = 1000;
+    this.timeLeft = 600;
     const data = {
       emailId: this.email,
       password: this.password,
