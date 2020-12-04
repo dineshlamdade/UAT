@@ -199,11 +199,22 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
     } else {
+      console.log('in transaction::', this.data);
       const input = this.data;
       this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
+      this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+
+      const data = {
+        label: 'All',
+        value: 'All',
+      };
+
+      this.transactionPolicyList = [];
+      this.transactionPolicyList.push(data);
+      this.transactionInstitutionNames = [];
+      this.transactionInstitutionNames.push(data);
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -321,6 +332,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     this.globalInstitution = institutionName;
     this.getTransactionFilterData(this.globalInstitution, null, null);
     this.globalSelectedAmount = this.numberFormat.transform(0);
+
     const data = {
       label: 'All',
       value: 'All',
@@ -1157,6 +1169,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
+
     this.sukanyaSamriddhiService
       .getTransactionFilterData(institution, policyNo, transactionStatus)
       .subscribe((res) => {

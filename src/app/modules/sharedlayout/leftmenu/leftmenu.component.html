@@ -364,12 +364,30 @@
               </ul>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+            <a href="javascript:void(0)" (click)="isInvestmentCollapsed = !isInvestmentCollapsed" [attr.aria-expanded]="!isCollapsed"
                 aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
                     class="icon-credit-card"></i><span>Investment</span></a>
-            <ul class="collapse" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+            <ul class="collapse" id="investmentCollapsed" [collapse]="isInvestmentCollapsed" [isAnimated]="true">
                 <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/investment/80-C']" ><span>80-C</span></a></li>
+                        [routerLink]="['/investment/80C-LIC']" ><span>80C-LIC</span></a></li>
+                        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                          [routerLink]="['/investment/80C-PPF']" ><span>80C-PPF</span></a></li>
+                          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-PensionPlan']" ><span>80C-PensionPlan</span></a></li>
+                            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                              [routerLink]="['/investment/80C-SukanyaSamriddhiScheme']" ><span>80C-SukanyaSamriddhiScheme</span></a></li>
+                              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                                [routerLink]="['/investment/80C-PostOfficeTimeDepositScheme']" ><span>80C-PostOfficeTimeDepositScheme</span></a></li>
+
+                                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                                    [routerLink]="['/investment/80C-NationalSevingCertificate']" ><span>80C-NationalSevingCertificate</span></a></li>
+                                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                                      [routerLink]="['/investment/80C-UnitLinkedInsurancePlan']" ><span>80C-UnitLinkedInsurancePlan</span></a></li>
+                                      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                                        [routerLink]="['/investment/80C-TaxsavingMutualFund']" ><span>80C-TaxsavingMutualFund</span></a></li>
+                                        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                                          [routerLink]="['/investment/Chapter-VI-A-NPS']" ><span>Chapter-VI-A-NPS</span></a></li>
+
 
             </ul>
         </li>

@@ -31,11 +31,11 @@ public menuDetails: Array<any>;
   public staticscard = true;
   public friendscard = true;
   constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
-    if ((this.router.url).includes('hr')) {
+    if ((this.router.url).includes('Payroll')) {
       this.isCollapsed = false;
     }
 
-    if ((this.router.url).includes('project')) {
+    if ((this.router.url).includes('Investment')) {
       this.isProjectCollapsed = false;
     }
     if ((this.router.url).includes('jobportal')) {

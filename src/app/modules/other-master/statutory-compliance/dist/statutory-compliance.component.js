@@ -115,8 +115,9 @@ var StatutoryComplianceComponent = /** @class */ (function () {
             var data = this.form.getRawValue();
             console.log(JSON.stringify(data));
             delete data.country1;
-            delete data.officialCountryCode;
             delete data.headName;
+            data.telephoneNumber = data.officialCountryCode + ' ' + data.telephoneNumber;
+            delete data.officialCountryCode;
             data.complianceHeadId = this.complianceHeadId;
             data.complianceInstitutionMasterId = this.complianceInstitutionMasterId;
             this.statuatoryComplianceService.putComplianceInstituionMaster(data).subscribe(function (res) {
@@ -143,6 +144,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
             var data = this.form.getRawValue();
             console.log(JSON.stringify(data));
             delete data.country1;
+            data.telephoneNumber = data.officialCountryCode + ' ' + data.telephoneNumber;
             delete data.officialCountryCode;
             delete data.headName;
             data.complianceHeadId = this.complianceHeadId;
@@ -190,10 +192,23 @@ var StatutoryComplianceComponent = /** @class */ (function () {
         console.log(this.summaryHtmlDataList[i]);
         this.form.reset();
         this.form.patchValue(this.summaryHtmlDataList[i]);
+        console.log(this.summaryHtmlDataList[i].telephoneNumber.split(' '));
         this.form.patchValue({
             headName: this.summaryHtmlDataList[i].headName,
             country1: this.summaryHtmlDataList[i].country
         });
+        var a = this.summaryHtmlDataList[i].telephoneNumber.split(' ');
+        console.log(a.length);
+        console.log(a.length);
+        console.log(a.length);
+        if (a.length == 2) {
+            console.log('ssss');
+            this.form.patchValue({
+                telephoneNumber: a[1],
+                officialCountryCode: a[0]
+            });
+        }
+        console.log(a);
         this.complianceHeadId = this.summaryHtmlDataList[i].complianceHeadId;
         this.complianceInstitutionMasterId = this.summaryHtmlDataList[i].complianceInstitutionMasterId;
         this.form.enable();
