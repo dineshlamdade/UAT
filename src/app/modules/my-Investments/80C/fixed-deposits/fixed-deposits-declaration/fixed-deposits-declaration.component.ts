@@ -1277,7 +1277,6 @@ export class FixedDepositsDeclarationComponent implements OnInit {
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
       );
-      // console.log(this.declarationTotal);
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
