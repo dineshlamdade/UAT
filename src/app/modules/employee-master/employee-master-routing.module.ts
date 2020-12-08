@@ -10,6 +10,11 @@ import { EducationDetailComponent } from './components/education-skills-informat
 import { EducationSkillsInformationComponent } from './components/education-skills-information/education-skills-information.component';
 import { LanguageDetailComponent } from './components/education-skills-information/language-detail/language-detail.component';
 import { SkillsDetailComponent } from './components/education-skills-information/skills-detail/skills-detail.component';
+import { EmploymentInformationComponent } from './components/employment-information/employment-information.component';
+import { ExitInformationComponent } from './components/employment-information/exit-information/exit-information.component';
+import { JoiningInformationComponent } from './components/employment-information/joining-information/joining-information.component';
+import { ReJoiningInformationComponent } from './components/employment-information/re-joining-information/re-joining-information.component';
+import { TransferInformationComponent } from './components/employment-information/transfer-information/transfer-information.component';
 import { BankDetailsComponent } from './components/family-information/bank-details/bank-details.component';
 import { FamilyDetailsComponent } from './components/family-information/family-details/family-details.component';
 import { FamilyInformationComponent } from './components/family-information/family-information.component';
@@ -39,11 +44,6 @@ const routes: Routes = [
         path: 'contact-information',
         component: ContactInformationComponent,
         data: { title: ':: DelziaHR :: contact-information' },
-      },
-      {
-        path: 'identity-information',
-        component: IdentityInformationComponent,
-        data: { title: ':: DelziaHR :: identity-information' },
       },
       {
         path: 'identity-information',
@@ -163,7 +163,33 @@ const routes: Routes = [
           },
         ]
       },
-
+      {
+        path: 'employment-information',
+        component: EmploymentInformationComponent,
+        data: { title: ':: DelziaHR :: employment-information' },
+        children: [
+          {
+            path: 'joining-information',
+            component: JoiningInformationComponent,
+            data: { title: ':: DelziaHR :: joining-information' },
+          },
+          {
+            path: 're-joining-information',
+            component: ReJoiningInformationComponent,
+            data: { title: ':: DelziaHR :: re-joining-information' },
+          },
+          {
+            path: 'transfer-information',
+            component: TransferInformationComponent,
+            data: { title: ':: DelziaHR :: transfer-information' },
+          },
+          {
+            path: 'exit-information',
+            component: ExitInformationComponent,
+            data: { title: ':: DelziaHR :: exit-information' },
+          }
+        ]
+      },
 
     ]
   },

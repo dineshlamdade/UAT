@@ -384,6 +384,10 @@
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/employment-information']"><span>{{ 'EmployeeMaster.employmentInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/employee-master/previous-employment-information']"><span>{{ 'EmployeeMaster.previousEmploymentInformation' | transloco }}</span></a>
                     </li>
 

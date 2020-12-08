@@ -1,0 +1,129 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="emptabview">
+                                <input name="nav" type="radio" class="about-radio" id="joining"
+                                    [checked]="tabIndex==0" />
+                                <label class="nav" for="joining" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/employment-information/joining-information']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Joining
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="rejoining"
+                                    [checked]="tabIndex==1" />
+                                <label class="nav" for="rejoining" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/employment-information/re-joining-information']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Re - Joining
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="transfer"
+                                    [checked]="tabIndex==1" />
+                                <label class="nav" for="transfer" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/employment-information/transfer-information']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Transfer
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="exit"
+                                    [checked]="tabIndex==2" />
+                                <label class="nav" for="exit" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/employment-information/exit-information']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Exit
+                                    </span>
+                                </label>
+
+
+                                <div class="emptabs about-page">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+
+                                        <div class="col-sm-6 col-md-3" *ngIf="hiddenSummary">
+                                            <label class="form-label">Payroll Area</label>
+                                            <p-autoComplete [suggestions]="filteredHighestEducationList"
+                                                placeholder="Select" (completeMethod)="filterHighestEducation($event)"
+                                                [dropdown]="true">
+                                            </p-autoComplete>
+                                        </div>
+                                        <br>
+                                        <legend style="font-size: 17px !important;" *ngIf="hiddenSummary">Summary
+                                        </legend>
+                                        <p-table [value]="EducationSummaryData" [scrollable]="true"
+                                            [style]="{width:'1000px'}" scrollHeight="200px" *ngIf="hiddenSummary">
+                                            <ng-template pTemplate="colgroup" let-education>
+                                                <colgroup>
+                                                    <col style="width:150px">
+                                                    <col style="width:120px">
+                                                    <col style="width:120px">
+                                                    <col style="width:170px">
+                                                    <col style="width:175px">
+                                                    <col style="width:170px">
+                                                </colgroup>
+                                            </ng-template>
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th class="primeng-table-header-center">Job Detail</th>
+                                                    <th class="primeng-table-header-center">Job Field</th>
+                                                    <th class="primeng-table-header-center">Value</th>
+                                                    <th class="primeng-table-header-center">From Date</th>
+                                                    <th class="primeng-table-header-center">To Date</th>
+                                                    <th class="primeng-table-header-center">Action</th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-education>
+                                                <tr>
+                                                    <td class="primeng-table-header-center"><span>
+                                                            Job Detail
+                                                        </span></td>
+
+                                                    <td class="primeng-table-header-center"><span>
+                                                            Job Field
+                                                        </span></td>
+
+                                                    <td class="primeng-table-header-center"><span>
+                                                            Value</span></td>
+
+                                                    <td class="primeng-table-header-center"><span>
+                                                            From Date</span></td>
+
+                                                    <td class="primeng-table-header-center"><span>
+                                                            To Date</span></td>
+                                                    <td class="primeng-table-header-center"><span><i
+                                                                class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
+                                                                tooltip="Edit"></i>
+
+                                                            <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1"
+                                                                tooltip="View"></i></span>
+
+                                                        <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                            tooltip="Delete"></i>
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

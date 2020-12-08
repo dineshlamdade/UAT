@@ -54,6 +54,11 @@ import { InputComplianceInformationComponent } from './components/compliance-inf
 import { ComplianceTypeInformationComponent } from './components/compliance-information/compliance-type-information/compliance-type-information.component';
 import { SubComplianceTypeInformationComponent } from './components/compliance-information/compliance-type-information/sub-compliance-type-information/sub-compliance-type-information.component';
 import { MinimumWagesDetailComponent } from './components/job-information/minimum-wages-detail/minimum-wages-detail.component';
+import { EmploymentInformationComponent } from './components/employment-information/employment-information.component';
+import { JoiningInformationComponent } from './components/employment-information/joining-information/joining-information.component';
+import { ReJoiningInformationComponent } from './components/employment-information/re-joining-information/re-joining-information.component';
+import { TransferInformationComponent } from './components/employment-information/transfer-information/transfer-information.component';
+import { ExitInformationComponent } from './components/employment-information/exit-information/exit-information.component';
 
 @NgModule({
     declarations: [
@@ -82,7 +87,12 @@ import { MinimumWagesDetailComponent } from './components/job-information/minimu
         InputComplianceInformationComponent,
         ComplianceTypeInformationComponent,
         SubComplianceTypeInformationComponent,
-        MinimumWagesDetailComponent
+        MinimumWagesDetailComponent,
+        EmploymentInformationComponent,
+        JoiningInformationComponent,
+        ReJoiningInformationComponent,
+        TransferInformationComponent,
+        ExitInformationComponent
     ],
     imports: [
         CommonModule,
