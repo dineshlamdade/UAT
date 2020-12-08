@@ -33,7 +33,6 @@ export class LeftmenuComponent implements OnInit {
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
-
     if ((this.router.url).includes('investment')) {
       this.isInvestmentCollapsed = false;
     }

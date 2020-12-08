@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of , throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 //import { environment } from 'src/environments/environment';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -443,7 +443,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'uploadTransactionDocuments',
+      this.apiUrl + 'ppf-transaction/uploadTransactionDocuments',
       formData,
       {
 
