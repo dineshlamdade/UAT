@@ -54,7 +54,7 @@
                     </li>
                 </ul> -->
                 <div class="right">
-                  <h1 class="page-title">Welcome Rahul Jadhav</h1>
+                  <h1 class="page-title">Welcome {{userName}}</h1>
                     <!-- <div class="dropdown d-flex" dropdown>
                         <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1"
                             href="javascript:void(0);" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -177,8 +177,8 @@
                         <a class="nav-link icon d-none d-md-flex btn btn-default btn-icon ml-1"
                             href="javascript:void(0);" data-toggle="dropdown" role="button" aria-haspopup="true"
                             aria-expanded="false" id="button-basic" dropdownToggle aria-controls="dropdown-basic"
-                            style="color: #fff;box-shadow: none;" (click)="logout()"><i class="fa fa-user"></i></a>
-                        <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" id="dropdown-basic"
+                            style="color: #fff;box-shadow: none;" (click)="logout()" ><i class="fa fa-user"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" id="dropdown-basic"
                             *dropdownMenu role="menu" aria-labelledby="button-basic">
                             <a class="dropdown-item" [routerLink]="['/profile']" href="javascript:void(0)"><i
                                     class="dropdown-icon fe fe-user"></i>
@@ -191,7 +191,7 @@
                             <a class="dropdown-item" [routerLink]="['/login']" href="javascript:void(0)"><i
                                     class="dropdown-icon fe fe-log-out"></i> Sign
                                 out</a>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>

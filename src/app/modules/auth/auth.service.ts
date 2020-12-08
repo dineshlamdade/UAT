@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 // public apiUrl = environment.apiBaseUrl;
-public apiUrl = environment.baseUrl8080;
+public apiUrl = environment.baseUrlUAt;
 private readonly JWT_TOKEN = '%qycutr';
     private readonly REFRESH_TOKEN = '';
     public loggedUser: string;
@@ -83,6 +83,10 @@ private readonly JWT_TOKEN = '%qycutr';
 
   getJwtToken() {
     return sessionStorage.getItem(this.JWT_TOKEN);
+  }
+
+  getprivileges() {
+    return jwt_decode(sessionStorage.getItem(this.JWT_TOKEN));
   }
 
   private doLoginUser(tokens: Tokens) {
