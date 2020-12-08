@@ -34,9 +34,9 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./licdeclaration.component.scss'],
 })
 export class LicdeclarationComponent implements OnInit {
-  @Input() institution: string;
-  @Input() policyNo: string;
-  @Input() data: any;
+  @Input() public institution: string;
+  @Input() public policyNo: string;
+  @Input() public data: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -169,6 +169,9 @@ export class LicdeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public testnumber1: number =5000;
+  public testnumber2: number =5000;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -180,7 +183,7 @@ export class LicdeclarationComponent implements OnInit {
     private modalService: BsModalService,
     private alertService: AlertServiceService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
   ) {
     // ---------------- Transaction status List -----------------
     this.refreshTransactionStatustList();
@@ -266,7 +269,7 @@ export class LicdeclarationComponent implements OnInit {
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].lictransactionList[i].previousEmployerId
+      this.transactionDetail[j].lictransactionList[i].previousEmployerId,
     );
   }
 
@@ -277,7 +280,7 @@ export class LicdeclarationComponent implements OnInit {
       event.target.value;
     console.log(
       'previous emp id::',
-      this.editTransactionUpload[j].lictransactionList[i].previousEmployerId
+      this.editTransactionUpload[j].lictransactionList[i].previousEmployerId,
     );
   }
 
@@ -335,7 +338,7 @@ export class LicdeclarationComponent implements OnInit {
             this.transactionPolicyList.push(policyObj);
           });
         });
-      }
+      },
     );
   }
 
@@ -389,7 +392,7 @@ export class LicdeclarationComponent implements OnInit {
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
-      null
+      null,
     );
   }
 
@@ -398,7 +401,7 @@ export class LicdeclarationComponent implements OnInit {
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
-      transactionStatus
+      transactionStatus,
     );
   }
 
@@ -407,21 +410,21 @@ export class LicdeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+    j: number,
   ) {
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(',', ''),
     );
 
-    let formatedActualAmount: number = 0;
+    let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
     console.log(
       'in IS ECS::',
-      this.transactionDetail[j].lictransactionList[i].isECS
+      this.transactionDetail[j].lictransactionList[i].isECS,
     );
     if (checked) {
       if (this.transactionDetail[j].lictransactionList[i].isECS === 1) {
@@ -432,11 +435,11 @@ export class LicdeclarationComponent implements OnInit {
         ].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
-          this.transactionDetail[j].lictransactionList[i].actualAmount
+          this.transactionDetail[j].lictransactionList[i].actualAmount,
         );
         console.log(
           'in IS dateOfPayment::',
-          this.transactionDetail[j].lictransactionList[i].dateOfPayment
+          this.transactionDetail[j].lictransactionList[i].dateOfPayment,
         );
       } else {
         this.transactionDetail[j].lictransactionList[i].actualAmount =
@@ -446,10 +449,10 @@ export class LicdeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].lictransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(',', ''),
       );
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue + formatedActualAmount
+        formatedGlobalSelectedValue + formatedActualAmount,
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.licTransactionId);
@@ -460,7 +463,7 @@ export class LicdeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].lictransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(',', ''),
       );
       this.transactionDetail[j].lictransactionList[
         i
@@ -468,7 +471,7 @@ export class LicdeclarationComponent implements OnInit {
       this.transactionDetail[j].lictransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue - formatedActualAmount
+        formatedGlobalSelectedValue - formatedActualAmount,
       );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(data.licTransactionId);
@@ -481,7 +484,7 @@ export class LicdeclarationComponent implements OnInit {
     this.transactionDetail[j].lictransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(',', ''),
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -526,7 +529,7 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: Date;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
@@ -535,7 +538,7 @@ export class LicdeclarationComponent implements OnInit {
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].lictransactionList[i].declaredAmount
+      this.transactionDetail[j].lictransactionList[i].declaredAmount,
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
     this.transactionDetail[j].lictransactionList[
@@ -548,7 +551,7 @@ export class LicdeclarationComponent implements OnInit {
     this.transactionDetail[j].lictransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(',', ''),
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -568,19 +571,19 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: Date;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onDeclaredAmountChangeInEditCase Amount change::' +
-        summary.declaredAmount
+        summary.declaredAmount,
     );
 
     this.editTransactionUpload[j].lictransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].lictransactionList[i].declaredAmount
+      this.editTransactionUpload[j].lictransactionList[i].declaredAmount,
     );
     console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
@@ -593,17 +596,17 @@ export class LicdeclarationComponent implements OnInit {
     this.editTransactionUpload[j].lictransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(',', ''),
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(',', ''),
       );
       // console.log(this.declarationTotal);
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
     console.log(
-      'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
+      'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
     );
   }
 
@@ -617,7 +620,7 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: any;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.transactionDetail[j].lictransactionList[i].dueDate = summary.dueDate;
   }
@@ -632,13 +635,13 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: any;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.editTransactionUpload[j].lictransactionList[i].dueDate =
       summary.dueDate;
     console.log(
       'onDueDateChangeInEditCase::',
-      this.editTransactionUpload[j].lictransactionList[i].dueDate
+      this.editTransactionUpload[j].lictransactionList[i].dueDate,
     );
   }
 
@@ -652,7 +655,7 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: Date;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
@@ -662,7 +665,7 @@ export class LicdeclarationComponent implements OnInit {
     ].actualAmount = this.declarationService.actualAmount;
     // console.log("Actual Amount changed::" , this.transactionDetail[j].lictransactionList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].lictransactionList[i].actualAmount
+      this.transactionDetail[j].lictransactionList[i].actualAmount,
     );
     // console.log(`formatedActualAmount::`,formatedActualAmount);
     this.transactionDetail[j].lictransactionList[
@@ -686,7 +689,7 @@ export class LicdeclarationComponent implements OnInit {
     this.transactionDetail[j].lictransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(',', ''),
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -708,12 +711,12 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: Date;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.declarationService = new DeclarationService(summary);
     console.log(
       'onActualAmountChangeInEditCaseActual Amount change::',
-      summary
+      summary,
     );
 
     this.editTransactionUpload[j].lictransactionList[
@@ -721,11 +724,11 @@ export class LicdeclarationComponent implements OnInit {
     ].actualAmount = this.declarationService.actualAmount;
     console.log(
       'Actual Amount changed::',
-      this.editTransactionUpload[j].lictransactionList[i].actualAmount
+      this.editTransactionUpload[j].lictransactionList[i].actualAmount,
     );
 
     const formatedActualAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].lictransactionList[i].actualAmount
+      this.editTransactionUpload[j].lictransactionList[i].actualAmount,
     );
     console.log(`formatedActualAmount::`, formatedActualAmount);
 
@@ -740,12 +743,12 @@ export class LicdeclarationComponent implements OnInit {
     ) {
       console.log(
         `in if::`,
-        this.editTransactionUpload[j].lictransactionList[i].actualAmount
+        this.editTransactionUpload[j].lictransactionList[i].actualAmount,
       );
     } else {
       console.log(
         `in else::`,
-        this.editTransactionUpload[j].lictransactionList[i].actualAmount
+        this.editTransactionUpload[j].lictransactionList[i].actualAmount,
       );
     }
 
@@ -754,7 +757,7 @@ export class LicdeclarationComponent implements OnInit {
     this.editTransactionUpload[j].lictransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(',', ''),
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -778,7 +781,7 @@ export class LicdeclarationComponent implements OnInit {
       actualAmount: any;
       isECS: number;
     },
-    j: number
+    j: number,
   ) {
     // console.log('summary::',  summarynew);
     // if (this.initialArrayIndex[j] > i) {
@@ -837,7 +840,7 @@ export class LicdeclarationComponent implements OnInit {
       actualAmount: any;
     },
     i: any,
-    j: any
+    j: any,
   ) {
     this.declarationService = new DeclarationService(summary);
   }
@@ -875,7 +878,7 @@ export class LicdeclarationComponent implements OnInit {
       element.lictransactionList.forEach((element) => {
         element.dateOfPayment = this.datePipe.transform(
           element.dateOfPayment,
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
       });
     });
@@ -953,7 +956,7 @@ export class LicdeclarationComponent implements OnInit {
 
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
+        'Please attach Premium Receipt / Premium Statement',
       );
       return;
     }
@@ -978,11 +981,11 @@ export class LicdeclarationComponent implements OnInit {
 
         const dateOfPaymnet = this.datePipe.transform(
           innerElement.dateOfPayment,
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
         const dueDate = this.datePipe.transform(
           innerElement.dueDate,
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
 
         innerElement.dateOfPayment = dateOfPaymnet;
@@ -1033,18 +1036,18 @@ export class LicdeclarationComponent implements OnInit {
               }
 
               innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
+                innerElement.declaredAmount,
               );
 
               innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
+                innerElement.actualAmount,
               );
             });
           });
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
-            ''
+            '',
           );
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
@@ -1056,38 +1059,47 @@ export class LicdeclarationComponent implements OnInit {
   }
 
   changeReceiptAmountFormat() {
+      // tslint:disable-next-line: variable-name
+      let receiptAmount_: number;
+      let globalSelectedAmount_ : number;
 
-    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
-    if (this.receiptAmount < this.globalSelectedAmount) {
+      receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+      globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
+
+      console.log(receiptAmount_);
+      console.log(globalSelectedAmount_);
+      if (receiptAmount_ < globalSelectedAmount_) {
       this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
       );
-    } else if (this.receiptAmount > this.globalSelectedAmount) {
+    } else if (receiptAmount_ > globalSelectedAmount_) {
+      console.log(receiptAmount_);
+      console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
+        'Receipt Amount is greater than Selected line Actual Amount',
       );
     }
-    console.log('receiptAmount::', this.receiptAmount);
+      this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign({}, { class: 'gray modal-md' }),
     );
   }
 
   UploadedDocumentModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign({}, { class: 'gray modal-md' }),
     );
   }
 
   UploadedDocumentModal1(template1: TemplateRef<any>, documentIndex: number) {
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign({}, { class: 'gray modal-md' }),
     );
     this.proofSubmissionFileList = this.documentDetailList[
       documentIndex
@@ -1116,13 +1128,13 @@ export class LicdeclarationComponent implements OnInit {
   // When Edit of Document Details
   declarationEditUpload(
     template2: TemplateRef<any>,
-    proofSubmissionId: string
+    proofSubmissionId: string,
   ) {
     console.log('proofSubmissionId::', proofSubmissionId);
 
     this.modalRef = this.modalService.show(
       template2,
-      Object.assign({}, { class: 'gray modal-xl' })
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
 
     this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
@@ -1140,7 +1152,7 @@ export class LicdeclarationComponent implements OnInit {
           res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
-        //console.log(this.urlArray);
+        // console.log(this.urlArray);
         this.urlArray.forEach((element) => {
           // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
           element.blobURI = 'data:image/image;base64,' + element.blobURI;
@@ -1149,41 +1161,41 @@ export class LicdeclarationComponent implements OnInit {
         this.editTransactionUpload.forEach((element) => {
           element.lictransactionList.forEach((innerElement) => {
             innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount
+              innerElement.declaredAmount,
             );
             innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount
+              innerElement.actualAmount,
             );
           });
         });
-        //console.log('converted:: ', this.urlArray);
-      }
+        // console.log('converted:: ', this.urlArray);
+      },
     );
   }
 
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
   }
 
   previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
   }
 
   docViewer(template3: TemplateRef<any>) {
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
-      Object.assign({}, { class: 'gray modal-xl' })
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
   }
 
@@ -1191,13 +1203,13 @@ export class LicdeclarationComponent implements OnInit {
   getTransactionFilterData(
     institution: String,
     policyNo: String,
-    transactionStatus: String
+    transactionStatus: String,
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.Service.getTransactionFilterData(
       institution,
       policyNo,
-      transactionStatus
+      transactionStatus,
     ).subscribe((res) => {
       console.log(res);
       this.transactionDetail = res.data.results[0].licTransactionDetail;
@@ -1228,11 +1240,11 @@ export class LicdeclarationComponent implements OnInit {
           }
 
           innerElement.declaredAmount = this.numberFormat.transform(
-            innerElement.declaredAmount
+            innerElement.declaredAmount,
           );
 
           innerElement.actualAmount = this.numberFormat.transform(
-            innerElement.actualAmount
+            innerElement.actualAmount,
           );
         });
       });
@@ -1244,7 +1256,7 @@ export class LicdeclarationComponent implements OnInit {
 
     console.log(
       'uploadUpdateTransaction editTransactionUpload::',
-      this.editTransactionUpload
+      this.editTransactionUpload,
     );
 
     this.editTransactionUpload.forEach((element) => {
@@ -1266,11 +1278,11 @@ export class LicdeclarationComponent implements OnInit {
 
         const dateOfPaymnet = this.datePipe.transform(
           innerElement.dateOfPayment,
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
         const dueDate = this.datePipe.transform(
           innerElement.dueDate,
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
 
         innerElement.dateOfPayment = dateOfPaymnet;
@@ -1283,7 +1295,7 @@ export class LicdeclarationComponent implements OnInit {
       element.lictransactionList.forEach((innerElement) => {
         const dateOfPaymnet = this.datePipe.transform(
           innerElement.dateOfPayment,
-          'yyyy-MM-dd'
+          'yyyy-MM-dd',
         );
         innerElement.dateOfPayment = dateOfPaymnet;
       });
@@ -1292,7 +1304,7 @@ export class LicdeclarationComponent implements OnInit {
     const data = {
       licTransactionDetail: this.editTransactionUpload,
       licTransactionIDs: this.uploadGridData,
-      //documentRemark: this.documentRemark,
+      // documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
     };
@@ -1306,7 +1318,7 @@ export class LicdeclarationComponent implements OnInit {
 
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
-            ''
+            '',
           );
 
           this.transactionDetail = res.data.results[0].licTransactionDetail;
@@ -1337,11 +1349,11 @@ export class LicdeclarationComponent implements OnInit {
               }
 
               innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
+                innerElement.declaredAmount,
               );
 
               innerElement.actualAmount = this.numberFormat.transform(
-                innerElement.actualAmount
+                innerElement.actualAmount,
               );
             });
           });
@@ -1361,11 +1373,11 @@ export class LicdeclarationComponent implements OnInit {
           res.data.results[0].documentInformation[0].documentDetailList;
         this.urlArray.forEach((element) => {
           element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
-            element.blobURI
+            element.blobURI,
           );
         });
         console.log(this.urlArray);
-      }
+      },
     );
   }
 
@@ -1379,7 +1391,7 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: any;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.transactionDetail[j].lictransactionList[i].dateOfPayment =
       summary.dateOfPayment;
@@ -1396,12 +1408,12 @@ export class LicdeclarationComponent implements OnInit {
       dueDate: any;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.editTransactionUpload[j].lictransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(
-      this.editTransactionUpload[j].lictransactionList[i].dateOfPayment
+      this.editTransactionUpload[j].lictransactionList[i].dateOfPayment,
     );
   }
 }

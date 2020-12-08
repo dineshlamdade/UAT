@@ -39,6 +39,10 @@ export class TokenInterceptorService implements HttpInterceptor {
       //     this.alertService.alert( 'Session Has Expired !!', 'warning', 'login');
       //     break;
       //  }
+      case  401 : {
+        this.alertService.sweetalertError('Invalid Tocken Please, Please Try Again !!!!', );
+        break;
+     }
        case  404 : {
         this.alertService.sweetalertError('Data not found !!', );
         break;
