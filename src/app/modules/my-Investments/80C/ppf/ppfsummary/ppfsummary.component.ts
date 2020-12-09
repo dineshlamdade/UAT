@@ -25,8 +25,8 @@ export class PPFSummaryComponent implements OnInit {
     };
     this.institution = institution;
     this.policyNo = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
+    console.log('institution::', institution);
+    console.log('policyNo::', policyNo);
     this.myEvent.emit(data);
   }
 
@@ -90,7 +90,7 @@ export class PPFSummaryComponent implements OnInit {
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         });
 
-        this.alertService.sweetalertMasterSuccess("Future Amount was saved","");
+        this.alertService.sweetalertMasterSuccess("Future Amount saved","");
       }
 
   // On Change Future New Policy Declared Amount with formate
