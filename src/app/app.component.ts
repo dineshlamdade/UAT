@@ -4,7 +4,6 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './modules/auth/auth.service';
-AuthService;
 
 @Component({
   selector: 'app-root',

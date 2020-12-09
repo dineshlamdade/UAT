@@ -1,3 +1,6 @@
+import { workflowModule } from './modules/workflow/workflow.module';
+import { OtherMasterModule } from './modules/other-master/other-master.module';
+
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // transloco
 // import your locales
@@ -11,12 +14,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-//import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+// import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import { CalendarModule, DateAdapter} from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CountToModule } from 'angular-count-to';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
@@ -36,19 +39,17 @@ import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptorService} from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { PayrollModule } from './modules/payroll/payroll.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-import { OtherMasterModule } from './modules/other-master/other-master.module';
+import { PayrollModule } from './modules/payroll/payroll.module';
 
+import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
-
 
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     SettingsComponent,
-
 
   ],
   imports: [
@@ -82,7 +83,9 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     DashboardModule,
     MyInvestmentsModule,
     PayrollModule,
-    OtherMasterModule
+   LMSModule,
+   OtherMasterModule,
+   workflowModule,
   ],
   providers: [BsDatepickerModule,
     AuthGuard,
@@ -95,8 +98,8 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
         defaultLang: 'en',
         fallbackLang: 'fr',
 
-        prodMode: false
-      } as TranslocoConfig
+        prodMode: false,
+      } as TranslocoConfig,
     },
     {
       provide: HTTP_INTERCEPTORS,
@@ -105,6 +108,6 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     },
    ],
 
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

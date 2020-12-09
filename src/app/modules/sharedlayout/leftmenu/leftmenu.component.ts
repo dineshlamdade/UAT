@@ -14,6 +14,8 @@ public menuDetails: Array<any>;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
+  public isCollapsedLMS = true;
+  public isCollapsedWorkflowSettings = true;
   public contactTab: boolean;
   public chatTab = true;
   public toggle1: boolean;

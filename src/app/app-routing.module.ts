@@ -10,7 +10,9 @@ const routes: Routes = [
   { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
   { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
-  { path: 'investment', loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' },
+  { path: 'investment', loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' }, 
+ { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
+ { path: 'workflow', loadChildren: './modules/workflow/workflow.module#workflowModule' },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
 
 
