@@ -1272,7 +1272,7 @@
                 <input
                   class="FileUpload1"
                   class="dropify"
-                  (change)="onUpload($event)"
+                  (change)="onUploadInEditCase($event)"
                   accept=".jpg , .jpeg, .pdf , .png"
                   id="FileInput"
                   type="file"
@@ -1281,10 +1281,10 @@
               </label>
             </div>
 
-            <div *ngIf="filesArray.length > 0" class="fileuploadbox">
+            <div *ngIf="editfilesArray.length > 0" class="fileuploadbox">
               Selected Files
               <label
-                *ngFor="let item of filesArray; let index = index"
+                *ngFor="let item of editfilesArray; let index = index"
                 class="filelabeldisplay"
               >
                 <div class="text-ellipsis">
@@ -1296,7 +1296,7 @@
                 <div>
                   <i
                     class="fa fa-times text-red font-18"
-                    (click)="removeSelectedLicTransactionDocument(index)"
+                    (click)="removeSelectedLicTransactionDocumentInEditCase(index)"
                   ></i>
                 </div>
               </label>

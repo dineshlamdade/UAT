@@ -46,7 +46,7 @@ export class FileService {
     });
     // return null;
     return this.http.post<any>(
-      this.apiUrl + 'uploadLICTransactionDocuments',
+      this.apiUrl + 'lic-transaction/uploadLICTransactionDocuments',
       formData,
       {
 

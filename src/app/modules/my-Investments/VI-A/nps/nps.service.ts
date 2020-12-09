@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 @Injectable({
@@ -89,7 +89,7 @@ export class NpsService {
   }
 
   getIdentityInformation () {
-    return this._HTTP.get(this.apiUrlEmployee + 'employeeIdentity-information/3')
+    return this._HTTP.get(this.apiUrlEmployee + '/employeeIdentity-information/1')
     .pipe(map((res: any) => {
       return res;
     }));

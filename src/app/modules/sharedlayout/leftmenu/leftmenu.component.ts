@@ -36,7 +36,6 @@ public menuDetails: Array<any>;
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
-
     if ((this.router.url).includes('investment')) {
       this.isInvestmentCollapsed = false;
     }
