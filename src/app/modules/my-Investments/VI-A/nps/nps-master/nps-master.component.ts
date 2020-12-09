@@ -418,7 +418,12 @@ export class NpsMasterComponent implements OnInit {
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
+
     }
+    this.form.patchValue({
+      accountType: 'Tier_1',
+    });
+    this.getNpsIdentityInformation();
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
