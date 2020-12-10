@@ -50,19 +50,19 @@ export class OrganizationDetailComponent implements OnInit {
   subCostCenterList: Array<any> = [];
   profitCenterList: Array<any> = [];
 
-  totalPayrollAreaList: Array<any> = [];
-  totalEstablishmentList: Array<any> = [];
-  totalSubLocationList: Array<any> = [];
-  totalWorkLocationList: Array<any> = [];
-  totalBusinessAreaList: Array<any> = [];
-  totalSubAreaList: Array<any> = [];
-  totalStrategicBusinessAreaList: Array<any> = [];
-  totalDivisionList: Array<any> = [];
-  totalDepartmentList: Array<any> = [];
-  totalSubDepartmentList: Array<any> = [];
-  totalCostCenterList: Array<any> = [];
-  totalSubCostCenterList: Array<any> = [];
-  totalProfitCenterList: Array<any> = [];
+  filteredPayrollAreaList: Array<any> = [];
+  filteredEstablishmentList: Array<any> = [];
+  filteredSubLocationList: Array<any> = [];
+  filteredWorkLocationList: Array<any> = [];
+  filteredBusinessAreaList: Array<any> = [];
+  filteredSubAreaList: Array<any> = [];
+  filteredStrategicBusinessAreaList: Array<any> = [];
+  filteredDivisionList: Array<any> = [];
+  filteredDepartmentList: Array<any> = [];
+  filteredSubDepartmentList: Array<any> = [];
+  filteredCostCenterList: Array<any> = [];
+  filteredSubCostCenterList: Array<any> = [];
+  filteredProfitCenterList: Array<any> = [];
 
   establishmentDescription: any;
   establishmentCode: any;
@@ -160,7 +160,7 @@ export class OrganizationDetailComponent implements OnInit {
     this.employeeMasterId = Number(empId);
 
     const joiningDate = localStorage.getItem('joiningDate');
-    this.joiningDate = joiningDate;
+   this.joiningDate = new Date(joiningDate);
 
     //get payroll area's
     debugger
@@ -169,7 +169,7 @@ export class OrganizationDetailComponent implements OnInit {
     this.JobInformationService.getEstaDetails().subscribe(res => {
       this.establishmentList = [];
       this.establishmentList = res.data.results;
-      this.totalEstablishmentList = res.data.results;
+      this.filteredEstablishmentList = res.data.results;
     })
 
   
@@ -190,47 +190,47 @@ export class OrganizationDetailComponent implements OnInit {
 
         if (item.masterType == 'SubLocationMaster') {
           this.subLocationList.push(item);
-          this.totalSubLocationList.push(item);
+          this.filteredSubLocationList.push(item);
         }
         if (item.masterType == 'WorkLocationMaster') {
           this.workLocationList.push(item);
-          this.totalWorkLocationList.push(item);
+          this.filteredWorkLocationList.push(item);
         }
         if (item.masterType == 'BusinessAreaMaster') {
           this.businessAreaList.push(item);
-          this.totalBusinessAreaList.push(item);
+          this.filteredBusinessAreaList.push(item);
         }
         if (item.masterType == 'SubArea') {
           this.subAreaList.push(item);
-          this.totalSubAreaList.push(item);
+          this.filteredSubAreaList.push(item);
         }
         if (item.masterType == 'StrategicBusinessUnit') {
           this.strategicBusinessAreaList.push(item);
-          this.totalStrategicBusinessAreaList.push(item);
+          this.filteredStrategicBusinessAreaList.push(item);
         }
         if (item.masterType == 'DivisionMaster') {
           this.divisionList.push(item);
-          this.totalDivisionList.push(item);
+          this.filteredDivisionList.push(item);
         }
         if (item.masterType == 'DepartmentMaster') {
           this.departmentList.push(item);
-          this.totalDepartmentList.push(item);
+          this.filteredDepartmentList.push(item);
         }
         if (item.masterType == 'SubDepartment') {
           this.subDepartmentList.push(item);
-          this.totalSubDepartmentList.push(item);
+          this.filteredSubDepartmentList.push(item);
         }
         if (item.masterType == 'CostCentre') {
           this.costCenterList.push(item);
-          this.totalCostCenterList.push(item);
+          this.filteredCostCenterList.push(item);
         }
         if (item.masterType == 'SubCostCenter') {
           this.subCostCenterList.push(item);
-          this.totalSubCostCenterList.push(item);
+          this.filteredSubCostCenterList.push(item);
         }
         if (item.masterType == 'ProfitCentreMaster') {
           this.profitCenterList.push(item);
-          this.totalProfitCenterList.push(item);
+          this.filteredProfitCenterList.push(item);
         }
       });
 
@@ -247,6 +247,38 @@ export class OrganizationDetailComponent implements OnInit {
       if (res.data.results[0]) {
 
         this.organizationDetailsModel = res.data.results[0];
+
+        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+
+        this.organizationDetailsModel.establishmentFromDate = new Date(res.data.results[0].establishmentFromDate);
+        this.organizationDetailsModel.establishmentToDate = new Date(res.data.results[0].establishmentToDate);
+
+        this.organizationDetailsModel.subLocationFromDate = new Date(res.data.results[0].subLocationFromDate);
+        this.organizationDetailsModel.subLocationToDate = new Date(res.data.results[0].subLocationToDate);
+
+        this.organizationDetailsModel.workLocationFromDate = new Date(res.data.results[0].workLocationFromDate);
+        this.organizationDetailsModel.workLocationToDate = new Date(res.data.results[0].workLocationToDate);
+
+        this.organizationDetailsModel.subAreaFromDate = new Date(res.data.results[0].subAreaFromDate);
+        this.organizationDetailsModel.subAreaToDate = new Date(res.data.results[0].subAreaToDate);
+
+        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+
+        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+
+        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+
+        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+
+        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+
+
         this.establishmentCode = res.data.results[0].establishmentCode;
         this.establishmentDescription = res.data.results[0].establishmentDescription;
         this.subLocationCode = res.data.results[0].subLocationCode;
@@ -470,6 +502,7 @@ export class OrganizationDetailComponent implements OnInit {
     this.EventEmitterService.getNextJobTab(jobTab)
   }
   validateEstablishmentToDate() {
+    debugger
     if (this.organizationDetailsModel.establishmentToDate == '' || this.organizationDetailsModel.establishmentToDate == null) {
       this.organizationDetailsModel.establishmentToDate = '31-Dec-9999';
       const estaToDate = this.OrganizationForm.get('establishmentToDateControl');
@@ -792,6 +825,7 @@ export class OrganizationDetailComponent implements OnInit {
     }
   }
   establishmentObject(establishment) {
+    debugger
     this.establishmentDescription = establishment.description;
     this.organizationDetailsModel.establishmentMasterId = establishment.establishmentMasterId;
     this.enableEstablishmentDate()
@@ -864,6 +898,7 @@ export class OrganizationDetailComponent implements OnInit {
     this.enableProfitDate();
   }
   SearchEstablishment(establishmentCode) {
+    debugger
     this.establishmentDescription = null;
     this.organizationDetailsModel.establishmentFromDate = null;
     this.organizationDetailsModel.establishmentToDate = null;
@@ -872,11 +907,22 @@ export class OrganizationDetailComponent implements OnInit {
     const establishmentToDate = this.OrganizationForm.get('establishmentToDateControl');
     establishmentToDate.disable();
 
-    establishmentCode = establishmentCode.toLowerCase();
-    const ifsc = this.totalEstablishmentList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(establishmentCode);
-    });
-    this.establishmentList = ifsc;
+    // establishmentCode = establishmentCode.toLowerCase();
+    // const ifsc = this.filteredEstablishmentList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(establishmentCode);
+    // });
+    // this.establishmentList = ifsc;
+
+
+    let filtered: any[] = [];
+    let query = establishmentCode.query;
+    for (let i = 0; i < this.establishmentList.length; i++) {
+      let country = this.establishmentList[i];
+      if (country.establishmentCode.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredEstablishmentList = filtered;
   }
   SearchSubLocation(subLocationCode) {
 
@@ -889,11 +935,21 @@ export class OrganizationDetailComponent implements OnInit {
     const subLocationToDate = this.OrganizationForm.get('subLocationToDateControl');
     subLocationToDate.disable();
 
-    subLocationCode = subLocationCode.toLowerCase();
-    const ifsc = this.totalSubLocationList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(subLocationCode);
-    });
-    this.subLocationList = ifsc;
+    // subLocationCode = subLocationCode.toLowerCase();
+    // const ifsc = this.filteredSubLocationList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(subLocationCode);
+    // });
+    // this.subLocationList = ifsc;
+
+    let filtered: any[] = [];
+    let query = subLocationCode.query;
+    for (let i = 0; i < this.subLocationList.length; i++) {
+      let country = this.subLocationList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredSubLocationList = filtered;
   }
   SearchWorkLocation(workLocationCode) {
 
@@ -904,11 +960,22 @@ export class OrganizationDetailComponent implements OnInit {
     workLocationFromDate.disable();
     const workLocationToDate = this.OrganizationForm.get('workLocationToDateControl');
     workLocationToDate.disable();
-    workLocationCode = workLocationCode.toLowerCase();
-    const ifsc = this.totalWorkLocationList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(workLocationCode);
-    });
-    this.workLocationList = ifsc;
+
+    // workLocationCode = workLocationCode.toLowerCase();
+    // const ifsc = this.filteredWorkLocationList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(workLocationCode);
+    // });
+    // this.workLocationList = ifsc;
+
+    let filtered: any[] = [];
+    let query = workLocationCode.query;
+    for (let i = 0; i < this.workLocationList.length; i++) {
+      let country = this.workLocationList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredWorkLocationList = filtered;
 
   }
   SearchBusinessArea(businessAreaCode) {
@@ -923,11 +990,21 @@ export class OrganizationDetailComponent implements OnInit {
     businessAreaToDate.disable();
 
 
-    businessAreaCode = businessAreaCode.toLowerCase();
-    const ifsc = this.totalBusinessAreaList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(businessAreaCode);
-    });
-    this.businessAreaList = ifsc;
+    // businessAreaCode = businessAreaCode.toLowerCase();
+    // const ifsc = this.filteredBusinessAreaList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(businessAreaCode);
+    // });
+    // this.businessAreaList = ifsc;
+
+    let filtered: any[] = [];
+    let query = businessAreaCode.query;
+    for (let i = 0; i < this.businessAreaList.length; i++) {
+      let country = this.businessAreaList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredBusinessAreaList = filtered;
   }
   SearchSubArea(subAreaCode) {
 
@@ -941,11 +1018,21 @@ export class OrganizationDetailComponent implements OnInit {
     subAreaToDate.disable();
 
 
-    subAreaCode = subAreaCode.toLowerCase();
-    const ifsc = this.totalSubAreaList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(subAreaCode);
-    });
-    this.subAreaList = ifsc;
+    // subAreaCode = subAreaCode.toLowerCase();
+    // const ifsc = this.filteredSubAreaList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(subAreaCode);
+    // });
+    // this.subAreaList = ifsc;
+
+    let filtered: any[] = [];
+    let query = subAreaCode.query;
+    for (let i = 0; i < this.subAreaList.length; i++) {
+      let country = this.subAreaList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredSubAreaList = filtered;
   }
   SearchStrategic(strategicBusinessCode) {
 
@@ -959,11 +1046,21 @@ export class OrganizationDetailComponent implements OnInit {
     strategicBusinessToDate.disable();
 
 
-    strategicBusinessCode = strategicBusinessCode.toLowerCase();
-    const ifsc = this.totalStrategicBusinessAreaList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(strategicBusinessCode);
-    });
-    this.strategicBusinessAreaList = ifsc;
+    // strategicBusinessCode = strategicBusinessCode.toLowerCase();
+    // const ifsc = this.filteredStrategicBusinessAreaList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(strategicBusinessCode);
+    // });
+    // this.strategicBusinessAreaList = ifsc;
+
+    let filtered: any[] = [];
+    let query = strategicBusinessCode.query;
+    for (let i = 0; i < this.strategicBusinessAreaList.length; i++) {
+      let country = this.strategicBusinessAreaList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredStrategicBusinessAreaList = filtered;
   }
   SearchDivision(divisionCode) {
 
@@ -977,11 +1074,21 @@ export class OrganizationDetailComponent implements OnInit {
     divisionToDate.disable();
 
 
-    divisionCode = divisionCode.toLowerCase();
-    const ifsc = this.totalDivisionList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(divisionCode);
-    });
-    this.divisionList = ifsc;
+    // divisionCode = divisionCode.toLowerCase();
+    // const ifsc = this.filteredDivisionList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(divisionCode);
+    // });
+    // this.divisionList = ifsc;
+
+    let filtered: any[] = [];
+    let query = divisionCode.query;
+    for (let i = 0; i < this.divisionList.length; i++) {
+      let country = this.divisionList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredDivisionList = filtered;
   }
   SearchDepartment(departmentCode) {
 
@@ -995,11 +1102,21 @@ export class OrganizationDetailComponent implements OnInit {
     departmentToDate.disable();
 
 
-    departmentCode = departmentCode.toLowerCase();
-    const ifsc = this.totalDepartmentList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(departmentCode);
-    });
-    this.departmentList = ifsc;
+    // departmentCode = departmentCode.toLowerCase();
+    // const ifsc = this.filteredDepartmentList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(departmentCode);
+    // });
+    // this.departmentList = ifsc;
+
+    let filtered: any[] = [];
+    let query = departmentCode.query;
+    for (let i = 0; i < this.departmentList.length; i++) {
+      let country = this.departmentList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredDepartmentList = filtered;
   }
   SearchSubDepartment(subDepartmentCode) {
 
@@ -1013,11 +1130,21 @@ export class OrganizationDetailComponent implements OnInit {
     subDepartmentToDate.disable();
 
 
-    subDepartmentCode = subDepartmentCode.toLowerCase();
-    const ifsc = this.totalSubDepartmentList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(subDepartmentCode);
-    });
-    this.subDepartmentList = ifsc;
+    // subDepartmentCode = subDepartmentCode.toLowerCase();
+    // const ifsc = this.filteredSubDepartmentList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(subDepartmentCode);
+    // });
+    // this.subDepartmentList = ifsc;
+
+    let filtered: any[] = [];
+    let query = subDepartmentCode.query;
+    for (let i = 0; i < this.subDepartmentList.length; i++) {
+      let country = this.subDepartmentList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredSubDepartmentList = filtered;
   }
   SearchCost(costCentreCode) {
 
@@ -1030,11 +1157,21 @@ export class OrganizationDetailComponent implements OnInit {
     costCentreToDate.disable();
 
 
-    costCentreCode = costCentreCode.toLowerCase();
-    const ifsc = this.totalCostCenterList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(costCentreCode);
-    });
-    this.costCenterList = ifsc;
+    // costCentreCode = costCentreCode.toLowerCase();
+    // const ifsc = this.filteredCostCenterList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(costCentreCode);
+    // });
+    // this.costCenterList = ifsc;
+
+    let filtered: any[] = [];
+    let query = costCentreCode.query;
+    for (let i = 0; i < this.costCenterList.length; i++) {
+      let country = this.costCenterList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredCostCenterList = filtered;
   }
   SearchSubCost(subCostCentreCode) {
 
@@ -1047,11 +1184,21 @@ export class OrganizationDetailComponent implements OnInit {
     subCostCentreToDate.disable();
 
 
-    subCostCentreCode = subCostCentreCode.toLowerCase();
-    const ifsc = this.totalSubCostCenterList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(subCostCentreCode);
-    });
-    this.subCostCenterList = ifsc;
+    // subCostCentreCode = subCostCentreCode.toLowerCase();
+    // const ifsc = this.filteredSubCostCenterList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(subCostCentreCode);
+    // });
+    // this.subCostCenterList = ifsc;
+
+    let filtered: any[] = [];
+    let query = subCostCentreCode.query;
+    for (let i = 0; i < this.subCostCenterList.length; i++) {
+      let country = this.subCostCenterList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredSubCostCenterList = filtered;
   }
   SearchProfit(profitCentreCode) {
 
@@ -1062,11 +1209,22 @@ export class OrganizationDetailComponent implements OnInit {
     profitCentreFromDate.disable();
     const profitCentreToDate = this.OrganizationForm.get('profitCentreToDateControl');
     profitCentreToDate.disable();
-    profitCentreCode = profitCentreCode.toLowerCase();
-    const ifsc = this.totalProfitCenterList.filter((item) => {
-      return JSON.stringify(item).toLowerCase().includes(profitCentreCode);
-    });
-    this.profitCenterList = ifsc;
+
+    // profitCentreCode = profitCentreCode.toLowerCase();
+    // const ifsc = this.filteredProfitCenterList.filter((item) => {
+    //   return JSON.stringify(item).toLowerCase().includes(profitCentreCode);
+    // });
+    // this.profitCenterList = ifsc;
+
+    let filtered: any[] = [];
+    let query = profitCentreCode.query;
+    for (let i = 0; i < this.profitCenterList.length; i++) {
+      let country = this.profitCenterList[i];
+      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(country);
+      }
+    }
+    this.filteredProfitCenterList = filtered;
   }
 
   //get payroll area aasigned to that employee
@@ -1076,7 +1234,7 @@ debugger
       debugger
       res.data.results[0].forEach(item =>{
         this.payrollAreaList.push(item.payrollAreaCode);
-        this.totalPayrollAreaList.push(item.payrollAreaCode);
+        this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
      });
     })
@@ -1094,7 +1252,7 @@ debugger
         filtered.push(country);
       }
     }
-    this.totalPayrollAreaList = filtered;
+    this.filteredPayrollAreaList = filtered;
   }
 
   //set PayrollArea
