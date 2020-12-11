@@ -1,0 +1,7 @@
+{
+    "/devstoreaccount1/*": {
+        "target": "http://127.0.0.1:10000/devstoreaccount1/firstcontainer/",
+        "secure": false,
+        "logLevel": "debug"
+    }
+  }

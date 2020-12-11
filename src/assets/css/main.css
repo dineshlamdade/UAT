@@ -8394,10 +8394,12 @@ a:hover {
     -ms-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
-    left: 280px;
+    /* left: 280px; */
+    left: 245px;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
-    width: calc(100% - 280px);
+    /* width: calc(100% - 280px); */
+    width: calc(100% - 245px);
     position: relative
 }
 
@@ -9158,7 +9160,8 @@ a:hover {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    width: 280px;
+    /* width: 280px; */
+    width: 245px;
     background-color: #fff;
     border-right: 1px solid #E6E9ED;
     left: 0;
@@ -11159,10 +11162,12 @@ textarea[cols] {
 }
 
 .custom-checkbox .custom-control-label:before {
-    border: 1px solid rgba(0, 40, 100, 0.12);
+    /* border: 1px solid rgba(0, 40, 100, 0.12); */
     background-color: #fff;
     background-size: .5rem;
-    top: 0.1rem
+    top: 0.1rem;
+    border: #999 solid 1.4px!important;
+    box-shadow: 1px 0px 11px #ddd!important;
 }
 
 .custom-checkbox .custom-control-label:after {

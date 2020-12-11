@@ -1,7 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -13,18 +12,26 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
+import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { EightyCComponent } from './eighty-c/eighty-c.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
+import { NPSComponent } from './VI-A/nps/nps.component';
+import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
+import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
+import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
 
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
     EightyCComponent,
-
+    NPSComponent,
+    NpsSummaryComponent,
+    NpsMasterComponent,
+    NpsDeclarationComponent,
   ],
   imports: [
     CommonModule,
@@ -51,8 +58,7 @@ import { MyInvestmentsComponent } from './my-investments.component';
     MyInvestmentsRoutingModule,
   ],
 
-  providers:[ DatePipe, NumberFormatPipe],
-
+  providers: [ DatePipe, NumberFormatPipe],
 
 })
 export class MyInvestmentsModule { }
