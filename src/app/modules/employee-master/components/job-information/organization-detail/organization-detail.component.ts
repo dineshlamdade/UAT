@@ -17,7 +17,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   OrganizationForm: FormGroup;
   tomorrow = new Date();
-  organizationDetailsModel = new OrganizationDetailsModel(null, null,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+  organizationDetailsModel = new OrganizationDetailsModel(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
   employeeMasterId: number;
   joiningDate: any;
   employeeOrganizationDetailId: any;
@@ -89,11 +89,11 @@ export class OrganizationDetailComponent implements OnInit {
   profitDescription: any;
   profitCentreCode: any;
 
-  payrollAreaCode:'';
+  payrollAreaCode: '';
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
-    private formBuilder: FormBuilder,private PayrollAreaService: PayrollAreaInformationService,private CommonDataService: SharedInformationService) {
+    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService) {
     this.tomorrow.setDate(this.tomorrow.getDate());
 
   }
@@ -151,28 +151,29 @@ export class OrganizationDetailComponent implements OnInit {
 
       profitCentreMasterIdControl: [''],
       profitCentreFromDateControl: [{ value: null, disabled: true }],
-      profitCentreToDateControl: [{ value: null, disabled: true }]
+      profitCentreToDateControl: [{ value: null, disabled: true }],
+
+      payrollAreaCode: ['']
 
     });
 
-    this.payrollAreaCode=null;
+    this.payrollAreaCode = null;
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
     const joiningDate = localStorage.getItem('joiningDate');
-   this.joiningDate = new Date(joiningDate);
+    this.joiningDate = new Date(joiningDate);
 
-    //get payroll area's
-    debugger
-   this.getPayrollAreaInformation();
-   
+    //get assigned payroll area's list
+    this.getPayrollAreaInformation();
+
     this.JobInformationService.getEstaDetails().subscribe(res => {
       this.establishmentList = [];
       this.establishmentList = res.data.results;
       this.filteredEstablishmentList = res.data.results;
     })
 
-  
+
     this.JobInformationService.getOtherMasterDetails().subscribe(res => {
       this.subLocationList = [];
       this.workLocationList = [];
@@ -196,7 +197,9 @@ export class OrganizationDetailComponent implements OnInit {
           this.workLocationList.push(item);
           this.filteredWorkLocationList.push(item);
         }
+
         if (item.masterType == 'BusinessAreaMaster') {
+
           this.businessAreaList.push(item);
           this.filteredBusinessAreaList.push(item);
         }
@@ -235,49 +238,58 @@ export class OrganizationDetailComponent implements OnInit {
       });
 
     })
-
     this.getOrganizationForm()
   }
+
+  //get organization details service calling
   getOrganizationForm() {
-    
-    debugger
-    this.JobInformationService.getOrganizationDetails(this.employeeMasterId,this.payrollAreaCode).subscribe(res => {
+
+
+    this.JobInformationService.getOrganizationDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       this.employeeOrganizationDetailId = res.data.results[0].employeeOrganizationDetailId;
       if (res.data.results[0]) {
-
+      
         this.organizationDetailsModel = res.data.results[0];
+        // this.payrollAreaCode=res.data.results[0].payrollAreaCode;
 
-        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+        //changing String to date format
+        // this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
+        // this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
 
-        this.organizationDetailsModel.establishmentFromDate = new Date(res.data.results[0].establishmentFromDate);
-        this.organizationDetailsModel.establishmentToDate = new Date(res.data.results[0].establishmentToDate);
 
-        this.organizationDetailsModel.subLocationFromDate = new Date(res.data.results[0].subLocationFromDate);
-        this.organizationDetailsModel.subLocationToDate = new Date(res.data.results[0].subLocationToDate);
+        // this.organizationDetailsModel.establishmentFromDate = new Date(res.data.results[0].establishmentFromDate);
+        // this.organizationDetailsModel.establishmentToDate = new Date(res.data.results[0].establishmentToDate);
 
-        this.organizationDetailsModel.workLocationFromDate = new Date(res.data.results[0].workLocationFromDate);
-        this.organizationDetailsModel.workLocationToDate = new Date(res.data.results[0].workLocationToDate);
+        // this.organizationDetailsModel.subLocationFromDate = new Date(res.data.results[0].subLocationFromDate);
+        // this.organizationDetailsModel.subLocationToDate = new Date(res.data.results[0].subLocationToDate);
 
-        this.organizationDetailsModel.subAreaFromDate = new Date(res.data.results[0].subAreaFromDate);
-        this.organizationDetailsModel.subAreaToDate = new Date(res.data.results[0].subAreaToDate);
+        // this.organizationDetailsModel.workLocationFromDate = new Date(res.data.results[0].workLocationFromDate);
+        // this.organizationDetailsModel.workLocationToDate = new Date(res.data.results[0].workLocationToDate);
 
-        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+        // this.organizationDetailsModel.subAreaFromDate = new Date(res.data.results[0].subAreaFromDate);
+        // this.organizationDetailsModel.subAreaToDate = new Date(res.data.results[0].subAreaToDate);
 
-        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+        // this.organizationDetailsModel.strategicBusinessFromDate = new Date(res.data.results[0].strategicBusinessFromDate);
+        // this.organizationDetailsModel.strategicBusinessToDate = new Date(res.data.results[0].strategicBusinessToDate);
 
-        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+        // this.organizationDetailsModel.divisionFromDate = new Date(res.data.results[0].divisionFromDate);
+        // this.organizationDetailsModel.divisionToDate = new Date(res.data.results[0].divisionToDate);
 
-        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+        // this.organizationDetailsModel.departmentFromDate = new Date(res.data.results[0].departmentFromDate);
+        // this.organizationDetailsModel.departmentToDate = new Date(res.data.results[0].departmentToDate);
 
-        this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
+        // this.organizationDetailsModel.subDepartmentFromDate = new Date(res.data.results[0].subDepartmentFromDate);
+        // this.organizationDetailsModel.subDepartmentToDate = new Date(res.data.results[0].subDepartmentToDate);
 
+        // this.organizationDetailsModel.costCentreFromDate = new Date(res.data.results[0].costCentreFromDate);
+        // this.organizationDetailsModel.costCentreToDate = new Date(res.data.results[0].costCentreToDate);
+
+        // this.organizationDetailsModel.subCostCentreFromDate = new Date(res.data.results[0].subCostCentreFromDate);
+        // this.organizationDetailsModel.subCostCentreToDate = new Date(res.data.results[0].subCostCentreToDate);
+
+        // this.organizationDetailsModel.profitCentreFromDate = new Date(res.data.results[0].profitCentreFromDate);
+        // this.organizationDetailsModel.profitCentreToDate = new Date(res.data.results[0].profitCentreToDate);
 
         this.establishmentCode = res.data.results[0].establishmentCode;
         this.establishmentDescription = res.data.results[0].establishmentDescription;
@@ -303,87 +315,153 @@ export class OrganizationDetailComponent implements OnInit {
         this.subCostDescription = res.data.results[0].subCostCentreDescription;
         this.profitCentreCode = res.data.results[0].profitCentreMasterCode;
         this.profitDescription = res.data.results[0].profitCentreMasterDescription;
+
+        //establishment
         if (this.organizationDetailsModel.establishmentMasterId != null) {
           const estFromDate = this.OrganizationForm.get('establishmentFromDateControl');
           estFromDate.enable();
           const estToDate = this.OrganizationForm.get('establishmentToDateControl');
           estToDate.enable();
         }
+        else {
+          this.disableEstablishmentDates();
+        }
+
+        //sub location
         if (this.organizationDetailsModel.subLocationMasterId != null) {
           const subLocFromDate = this.OrganizationForm.get('subLocationFromDateControl');
           subLocFromDate.enable();
           const subLocToDate = this.OrganizationForm.get('subLocationToDateControl');
           subLocToDate.enable();
         }
+        else {
+          this.disableSubLocationDates();
+        }
+
+        //work location
         if (this.organizationDetailsModel.workLocationMasterId != null) {
           const workLocFromDate = this.OrganizationForm.get('workLocationFromDateControl');
           workLocFromDate.enable();
           const workLocToDate = this.OrganizationForm.get('workLocationToDateControl');
           workLocToDate.enable();
         }
+        else {
+          this.disableWorkLocationDates();
+        }
+
+        //business area
         if (this.organizationDetailsModel.businessAreaMasterId != null) {
           const baFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
           baFromDate.enable();
           const baToDate = this.OrganizationForm.get('businessAreaToDateControl');
           baToDate.enable();
         }
+        else {
+          this.disableBusinessAreaDates();
+        }
+
+        //sub area
         if (this.organizationDetailsModel.subAreaId != null) {
           const subAreaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
           subAreaFromDate.enable();
           const subAreaToDate = this.OrganizationForm.get('subAreaToDateControl');
           subAreaToDate.enable();
         }
+        else {
+          this.disableSubAreaDates();
+        }
+
+        //strategic business
         if (this.organizationDetailsModel.strategicBusinessUnitId != null) {
           const sbuFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
           sbuFromDate.enable();
           const sbuToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
           sbuToDate.enable();
         }
+        else {
+          this.disableStrategicDates();
+        }
+
+        //division
         if (this.organizationDetailsModel.divisionMasterId != null) {
           const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
           divisionFromDate.enable();
           const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
           divisionToDate.enable();
         }
+        else {
+          this.disableDivisionDates();
+        }
+
+        //department
         if (this.organizationDetailsModel.departmentMasterId != null) {
           const departmentFromDate = this.OrganizationForm.get('departmentFromDateControl');
           departmentFromDate.enable();
           const departmentToDate = this.OrganizationForm.get('departmentToDateControl');
           departmentToDate.enable();
         }
+        else {
+          this.disableDepartmentDates();
+        }
+
+        //sub department
         if (this.organizationDetailsModel.subDepartmentId != null) {
           const subdepFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
           subdepFromDate.enable();
           const subdepToDate = this.OrganizationForm.get('subDepartmentToDateControl');
           subdepToDate.enable();
         }
+        else {
+          this.disableSubDepartmentDates();
+        }
+
+        //cost center
         if (this.organizationDetailsModel.costCentreId != null) {
           const costFromDate = this.OrganizationForm.get('costCentreFromDateControl');
           costFromDate.enable();
           const costToDate = this.OrganizationForm.get('costCentreToDateControl');
           costToDate.enable();;
         }
+        else {
+          this.disableCostDates();
+        }
+
+        //sub cost center
         if (this.organizationDetailsModel.subCostCentreId != null) {
           const subCostFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
           subCostFromDate.enable();
           const subCostToDate = this.OrganizationForm.get('subCostCentreToDateControl');
           subCostToDate.enable();
         }
+        else {
+          this.disableSubCostDates();
+        }
+
+        //profit center
         if (this.organizationDetailsModel.profitCentreMasterId != null) {
           const profitFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
           profitFromDate.enable();
           const profitCostToDate = this.OrganizationForm.get('profitCentreToDateControl');
           profitCostToDate.enable();
         }
-        
+        else {
+          this.disableProfitDates();
+        }
+
         localStorage.setItem('establishmentMasterId', res.data.results[0].establishmentMasterId);
-    
+
       }
+    }, (error: any) => {
 
-
+      this.resetOrganizationForm();
+    })
+    if (this.payrollAreaList.length == 1) {
+      this.payrollAreaCode = this.payrollAreaList[0];
     }
-
-    )
+    else {
+      this.payrollAreaCode = this.payrollAreaCode;
+    }
+    this.OrganizationForm.markAsUntouched();
   }
 
   OrganizationFormSubmit(organizationDetailsModel) {
@@ -427,7 +505,12 @@ export class OrganizationDetailComponent implements OnInit {
 
     organizationDetailsModel.employeeMasterId = this.employeeMasterId;
     organizationDetailsModel.employeeOrganizationDetailId = this.employeeOrganizationDetailId;
-    organizationDetailsModel.payrollAreaCode=this.payrollAreaCode;
+    if (this.payrollAreaList.length == 1) {
+      organizationDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+    }
+    else {
+      organizationDetailsModel.payrollAreaCode = this.payrollAreaCode;
+    }
 
     organizationDetailsModel.establishmentFromDate = this.datepipe.transform(organizationDetailsModel.establishmentFromDate, "dd-MMM-yyyy");
     organizationDetailsModel.establishmentToDate = this.datepipe.transform(organizationDetailsModel.establishmentToDate, "dd-MMM-yyyy");
@@ -454,8 +537,6 @@ export class OrganizationDetailComponent implements OnInit {
     organizationDetailsModel.profitCentreFromDate = this.datepipe.transform(organizationDetailsModel.profitCentreFromDate, "dd-MMM-yyyy");
     organizationDetailsModel.profitCentreToDate = this.datepipe.transform(organizationDetailsModel.profitCentreToDate, "dd-MMM-yyyy");
 
-
-  
     //deleting extra fields
 
     delete organizationDetailsModel.establishmentCode;
@@ -485,24 +566,25 @@ export class OrganizationDetailComponent implements OnInit {
 
 
     this.JobInformationService.postOrganizationDetails(organizationDetailsModel).subscribe(res => {
-      
-     // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
+
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.organizationDetailsModel = res.data.results[0];
       this.employeeOrganizationDetailId = this.organizationDetailsModel.employeeOrganizationDetailId;
-      
+
       localStorage.setItem('establishmentMasterId', res.data.results[0].establishmentMasterId);
-  
-      this.getOrganizationForm();
-      this.EventEmitterService.getJobInformationInitiate();
+
+     // this.getOrganizationForm();
+     //navigate to summary page
+   //  this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
+    //this.EventEmitterService.getJobInformationInitiate();
+    }, (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
     this.OrganizationForm.markAsUntouched();
   }
 
-  nextTo(jobTab) {
-    this.EventEmitterService.getNextJobTab(jobTab)
-  }
   validateEstablishmentToDate() {
-    debugger
+
     if (this.organizationDetailsModel.establishmentToDate == '' || this.organizationDetailsModel.establishmentToDate == null) {
       this.organizationDetailsModel.establishmentToDate = '31-Dec-9999';
       const estaToDate = this.OrganizationForm.get('establishmentToDateControl');
@@ -510,7 +592,6 @@ export class OrganizationDetailComponent implements OnInit {
     }
   }
   validatEstSave() {
-
     this.OrganizationForm.controls['establishmentFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['establishmentToDateControl'].setValidators([Validators.required]);
 
@@ -523,10 +604,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.establishmentCode == '' || this.establishmentCode == null) {
       this.organizationDetailsModel.establishmentFromDate = null;
       this.organizationDetailsModel.establishmentToDate = null;
-      const estToDate = this.OrganizationForm.get('establishmentToDateControl');
-      estToDate.disable();
-      const estFromDate = this.OrganizationForm.get('establishmentFromDateControl');
-      estFromDate.disable();
+      this.disableEstablishmentDates();
     }
 
   }
@@ -540,7 +618,7 @@ export class OrganizationDetailComponent implements OnInit {
   validatSubLocSave() {
     this.OrganizationForm.controls['subLocationFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['subLocationToDateControl'].setValidators([Validators.required]);
-    }
+  }
   enableSubLocDate() {
     const subLocFromDate = this.OrganizationForm.get('subLocationFromDateControl');
     subLocFromDate.enable();
@@ -549,10 +627,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.subLocationCode == '' || this.subLocationCode == null) {
       this.organizationDetailsModel.subLocationFromDate = null;
       this.organizationDetailsModel.subLocationToDate = null;
-      const subToDate = this.OrganizationForm.get('subLocationToDateControl');
-      subToDate.disable();
-      const subFromDate = this.OrganizationForm.get('subLocationFromDateControl');
-      subFromDate.disable();
+      this.disableSubLocationDates();
     }
   }
   validateWorkLocToDate() {
@@ -565,7 +640,7 @@ export class OrganizationDetailComponent implements OnInit {
   validateWorkLocSave() {
     this.OrganizationForm.controls['workLocationFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['workLocationToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableWorkLocDate() {
     const workLocFromDate = this.OrganizationForm.get('workLocationFromDateControl');
@@ -575,24 +650,22 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.workLocationCode == '' || this.workLocationCode == null) {
       this.organizationDetailsModel.workLocationFromDate = null;
       this.organizationDetailsModel.workLocationToDate = null;
-      const workToDate = this.OrganizationForm.get('workLocationToDateControl');
-      workToDate.disable();
-      const workFromDate = this.OrganizationForm.get('workLocationFromDateControl');
-      workFromDate.disable();
+      this.disableWorkLocationDates();
     }
   }
   validateBusinessAreaToDate() {
+
     if (this.organizationDetailsModel.businessAreaToDate == '' || this.organizationDetailsModel.businessAreaToDate == null) {
       this.organizationDetailsModel.businessAreaToDate = '31-Dec-9999';
       const baToDate = this.OrganizationForm.get('businessAreaToDateControl');
       baToDate.enable();
     }
   }
-  validateBusiDatesSave()
-  {
+  validateBusiDatesSave() {
+
     this.OrganizationForm.controls['businessAreaFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['businessAreaToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableBusinessAreaDate() {
     const baFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
@@ -602,10 +675,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.businessAreaCode == '' || this.businessAreaCode == null) {
       this.organizationDetailsModel.businessAreaFromDate = null;
       this.organizationDetailsModel.businessAreaToDate = null;
-      const bareaToDate = this.OrganizationForm.get('businessAreaToDateControl');
-      bareaToDate.disable();
-      const bareaFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
-      bareaFromDate.disable();
+      this.disableBusinessAreaDates();
     }
   }
   validateSubAreaToDate() {
@@ -615,11 +685,10 @@ export class OrganizationDetailComponent implements OnInit {
       subAreaToDate.enable();
     }
   }
-  validateSubAreaDatesSave()
-  {
+  validateSubAreaDatesSave() {
     this.OrganizationForm.controls['subAreaFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['subAreaToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableSubAreaDate() {
     const subAreaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
@@ -629,10 +698,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.subAreaCode == '' || this.subAreaCode == null) {
       this.organizationDetailsModel.subAreaFromDate = null;
       this.organizationDetailsModel.subAreaToDate = null;
-      const subaToDate = this.OrganizationForm.get('subAreaToDateControl');
-      subaToDate.disable();
-      const subaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
-      subaFromDate.disable();
+      this.disableSubAreaDates();
     }
   }
   validateStrategicToDate() {
@@ -642,11 +708,10 @@ export class OrganizationDetailComponent implements OnInit {
       sbuToDate.enable();
     }
   }
-  validateSBUDatesSave()
-  {
+  validateSBUDatesSave() {
     this.OrganizationForm.controls['strategicBusinessFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['strategicBusinessToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableStategicAreaDate() {
     const sbuFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
@@ -656,10 +721,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.strategicCode == '' || this.strategicCode == null) {
       this.organizationDetailsModel.strategicBusinessFromDate = null;
       this.organizationDetailsModel.strategicBusinessToDate = null;
-      const sbuToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
-      sbuToDate.disable();
-      const sbuFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
-      sbuFromDate.disable();
+      this.disableStrategicDates();
     }
   }
   validateDivisionToDate() {
@@ -669,11 +731,10 @@ export class OrganizationDetailComponent implements OnInit {
       divisionToDate.enable();
     }
   }
-  validateDivisionDatesSave()
-  {
+  validateDivisionDatesSave() {
     this.OrganizationForm.controls['divisionFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['divisionToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableDivisionDate() {
     const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
@@ -683,10 +744,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.divisionCode == '' || this.divisionCode == null) {
       this.organizationDetailsModel.divisionFromDate = null;
       this.organizationDetailsModel.divisionToDate = null;
-      const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
-      divisionToDate.disable();
-      const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
-      divisionFromDate.disable();
+      this.disableDivisionDates();
     }
   }
   validateDepartmentToDate() {
@@ -696,11 +754,10 @@ export class OrganizationDetailComponent implements OnInit {
       sbuToDate.enable();
     }
   }
-  validateDepartmentDatesSave()
-  {
+  validateDepartmentDatesSave() {
     this.OrganizationForm.controls['departmentFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['departmentToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableDepartmentDate() {
     const departmentFromDate = this.OrganizationForm.get('departmentFromDateControl');
@@ -710,10 +767,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.departmentCode == '' || this.departmentCode == null) {
       this.organizationDetailsModel.departmentFromDate = null;
       this.organizationDetailsModel.departmentToDate = null;
-      const depToDate = this.OrganizationForm.get('departmentToDateControl');
-      depToDate.disable();
-      const depFromDate = this.OrganizationForm.get('departmentFromDateControl');
-      depFromDate.disable();
+      this.disableDepartmentDates();
     }
   }
   validateSubDepartmentToDate() {
@@ -723,11 +777,10 @@ export class OrganizationDetailComponent implements OnInit {
       subDepToDate.enable();
     }
   }
-  validateSubDepDatesSave()
-  {
+  validateSubDepDatesSave() {
     this.OrganizationForm.controls['subDepartmentFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['subDepartmentToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableSubDepartmentDate() {
     const subdepFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
@@ -737,10 +790,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.subDepCode == '' || this.subDepCode == null) {
       this.organizationDetailsModel.subDepartmentFromDate = null;
       this.organizationDetailsModel.subDepartmentToDate = null;
-      const subDepaToDate = this.OrganizationForm.get('subDepartmentToDateControl');
-      subDepaToDate.disable();
-      const subdepaFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
-      subdepaFromDate.disable();
+      this.disableSubDepartmentDates();
     }
   }
   validateCostToDate() {
@@ -750,11 +800,10 @@ export class OrganizationDetailComponent implements OnInit {
       costToDate.enable();
     }
   }
-  validateCostDatesSave()
-  {
+  validateCostDatesSave() {
     this.OrganizationForm.controls['costCentreFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['costCentreToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableCostDate() {
     const costFromDate = this.OrganizationForm.get('costCentreFromDateControl');
@@ -764,10 +813,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.costCode == '' || this.costCode == null) {
       this.organizationDetailsModel.costCentreFromDate = null;
       this.organizationDetailsModel.costCentreToDate = null;
-      const costToDate = this.OrganizationForm.get('costCentreToDateControl');
-      costToDate.disable();
-      const costFromDate = this.OrganizationForm.get('costCentreFromDateControl');
-      costFromDate.disable();
+      this.disableCostDates();
     }
   }
   validateSubCostToDate() {
@@ -777,11 +823,10 @@ export class OrganizationDetailComponent implements OnInit {
       subCostToDate.enable();
     }
   }
-  validateSubCostDatesSave()
-  {
+  validateSubCostDatesSave() {
     this.OrganizationForm.controls['subCostCentreFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['subCostCentreToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableSubCostDate() {
     const subCostFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
@@ -791,10 +836,7 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.subCostCode == '' || this.subCostCode == null) {
       this.organizationDetailsModel.subCostCentreFromDate = null;
       this.organizationDetailsModel.subCostCentreToDate = null;
-      const subCostToDate = this.OrganizationForm.get('subCostCentreToDateControl');
-      subCostToDate.disable();
-      const subCostFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
-      subCostFromDate.disable();
+      this.disableSubCostDates();
     }
   }
   validateProfitToDate() {
@@ -804,11 +846,10 @@ export class OrganizationDetailComponent implements OnInit {
       subCostToDate.enable();
     }
   }
-  validateProfitDatesSave()
-  {
+  validateProfitDatesSave() {
     this.OrganizationForm.controls['profitCentreFromDateControl'].setValidators([Validators.required]);
     this.OrganizationForm.controls['profitCentreToDateControl'].setValidators([Validators.required]);
-    
+
   }
   enableProfitDate() {
     const profitFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
@@ -818,94 +859,160 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.profitCentreCode == '' || this.profitCentreCode == null) {
       this.organizationDetailsModel.profitCentreFromDate = null;
       this.organizationDetailsModel.profitCentreToDate = null;
-      const profitCostToDate = this.OrganizationForm.get('profitCentreToDateControl');
-      profitCostToDate.disable();
-      const profitFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
-      profitFromDate.disable();
+      this.disableProfitDates();
     }
   }
   establishmentObject(establishment) {
-    debugger
-    this.establishmentDescription = establishment.description;
-    this.organizationDetailsModel.establishmentMasterId = establishment.establishmentMasterId;
+
+    const toSelect = this.filteredEstablishmentList.find(
+      (c) => c.establishmentCode === this.OrganizationForm.get('establishmentMasterIdControl').value
+    );
+    this.establishmentDescription = toSelect.description;
+    this.organizationDetailsModel.establishmentMasterId = toSelect.establishmentMasterId;
+    this.OrganizationForm.get('establishmentMasterIdControl').setValue(toSelect.establishmentCode);
+
     this.enableEstablishmentDate()
   }
   subLocationObject(sublocation) {
 
-    this.subLocationDescription = sublocation.masterDescription;
-    this.organizationDetailsModel.subLocationMasterId = sublocation.masterId;
+    const toSelect = this.filteredSubLocationList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('subLocationMasterIdControl').value
+    );
+    this.subLocationDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.subLocationMasterId = toSelect.masterId;
+    this.OrganizationForm.get('subLocationMasterIdControl').setValue(toSelect.masterCode);
     this.enableSubLocDate()
   }
   workLocationObject(worklocation) {
 
-    this.workLocationDescription = worklocation.masterDescription;
-    this.organizationDetailsModel.workLocationMasterId = worklocation.masterId;
+
+    const toSelect = this.filteredWorkLocationList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('workLocationMasterIdControl').value
+    );
+    this.workLocationDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.workLocationMasterId = toSelect.masterId;
+    this.OrganizationForm.get('workLocationMasterIdControl').setValue(toSelect.masterCode);
+
     this.enableWorkLocDate()
   }
   businessAreaObject(businessarea) {
+    
+    const toSelect = this.filteredBusinessAreaList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('businessAreaMasterIdControl').value
+    );
+    this.businessAreaDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.businessAreaMasterId = toSelect.masterId;
+    this.OrganizationForm.get('businessAreaMasterIdControl').setValue(toSelect.masterCode);
 
-    this.businessAreaDescription = businessarea.masterDescription;
-    this.organizationDetailsModel.businessAreaMasterId = businessarea.masterId;
     this.enableBusinessAreaDate()
 
   }
   subAreaObject(subarea) {
 
-    this.subAreaDescription = subarea.masterDescription;
-    this.organizationDetailsModel.subAreaId = subarea.masterId;
+
+    const toSelect = this.filteredSubAreaList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('subAreaIdControl').value
+    );
+    this.subAreaDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.subAreaId = toSelect.masterId;
+    this.OrganizationForm.get('subAreaIdControl').setValue(toSelect.masterCode);
+
     this.enableSubAreaDate();
   }
   strategicObject(strategic) {
 
-    this.strategicDescription = strategic.masterDescription;
-    this.organizationDetailsModel.strategicBusinessUnitId = strategic.masterId;
+    const toSelect = this.filteredStrategicBusinessAreaList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('strategicBusinessUnitIdControl').value
+    );
+    this.strategicDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.strategicBusinessUnitId = toSelect.masterId;
+    this.OrganizationForm.get('strategicBusinessUnitIdControl').setValue(toSelect.masterCode);
     this.enableStategicAreaDate();
   }
   divisionObject(division) {
 
-    this.divisionDescription = division.masterDescription;
-    this.organizationDetailsModel.divisionMasterId = division.masterId;
+
+    const toSelect = this.filteredDivisionList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('divisionMasterIdControl').value
+    );
+    this.divisionDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.divisionMasterId = toSelect.masterId;
+    this.OrganizationForm.get('divisionMasterIdControl').setValue(toSelect.masterCode);
+
     this.enableDivisionDate();
   }
   departmentObject(department) {
 
-    this.departmentDescription = department.masterDescription;
-    this.organizationDetailsModel.departmentMasterId = department.masterId;
+    const toSelect = this.filteredDepartmentList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('departmentMasterIdControl').value
+    );
+    this.departmentDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.departmentMasterId = toSelect.masterId;
+    this.OrganizationForm.get('departmentMasterIdControl').setValue(toSelect.masterCode);
+
     this.enableDepartmentDate();
   }
   sunDepartmentObject(subdepartment) {
 
-    this.subDepDescription = subdepartment.masterDescription;
-    this.organizationDetailsModel.subDepartmentId = subdepartment.masterId;
+
+    const toSelect = this.filteredSubDepartmentList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('subDepartmentMasterIdControl').value
+    );
+    this.subDepDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.subDepartmentId = toSelect.masterId;
+    this.OrganizationForm.get('subDepartmentMasterIdControl').setValue(toSelect.masterCode);
+
     this.enableSubDepartmentDate();
   }
   costObject(cost) {
+    const toSelect = this.filteredCostCenterList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('costCentreIdControl').value
+    );
+    this.costDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.costCentreId = toSelect.masterId;
+    this.OrganizationForm.get('costCentreIdControl').setValue(toSelect.masterCode);
 
-    this.costDescription = cost.masterDescription;
-    this.organizationDetailsModel.costCentreId = cost.masterId;
     this.enableCostDate();
   }
   subCostObject(subcost) {
 
-    this.subCostDescription = subcost.masterDescription;
-    this.organizationDetailsModel.subCostCentreId = subcost.masterId;
+    const toSelect = this.filteredSubCostCenterList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('subCostCentreIdControl').value
+    );
+    this.subCostDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.subCostCentreId = toSelect.masterId;
+    this.OrganizationForm.get('subCostCentreIdControl').setValue(toSelect.masterCode);
+
     this.enableSubCostDate();
   }
   profitObject(profit) {
+    const toSelect = this.filteredProfitCenterList.find(
+      (c) => c.masterCode === this.OrganizationForm.get('profitCentreMasterIdControl').value
+    );
+    this.profitDescription = toSelect.masterDescription;
+    this.organizationDetailsModel.profitCentreMasterId = toSelect.masterId;
+    this.OrganizationForm.get('profitCentreMasterIdControl').setValue(toSelect.masterCode);
 
-    this.profitDescription = profit.masterDescription;
-    this.organizationDetailsModel.profitCentreMasterId = profit.masterId;
     this.enableProfitDate();
   }
-  SearchEstablishment(establishmentCode) {
-    debugger
-    this.establishmentDescription = null;
-    this.organizationDetailsModel.establishmentFromDate = null;
-    this.organizationDetailsModel.establishmentToDate = null;
+
+  disableEstablishmentDates() {
     const establishmentFromDate = this.OrganizationForm.get('establishmentFromDateControl');
     establishmentFromDate.disable();
     const establishmentToDate = this.OrganizationForm.get('establishmentToDateControl');
     establishmentToDate.disable();
+  }
+  SearchEstablishment(establishmentCode) {
+
+    this.establishmentDescription = null;
+    this.organizationDetailsModel.establishmentFromDate = null;
+    this.organizationDetailsModel.establishmentToDate = null;
+    // const establishmentFromDate = this.OrganizationForm.get('establishmentFromDateControl');
+    // establishmentFromDate.disable();
+    // const establishmentToDate = this.OrganizationForm.get('establishmentToDateControl');
+    // establishmentToDate.disable();
+
+    this.disableEstablishmentDates();
 
     // establishmentCode = establishmentCode.toLowerCase();
     // const ifsc = this.filteredEstablishmentList.filter((item) => {
@@ -924,17 +1031,25 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredEstablishmentList = filtered;
   }
+
+  disableSubLocationDates() {
+    const subLocationFromDate = this.OrganizationForm.get('subLocationFromDateControl');
+    subLocationFromDate.disable();
+    const subLocationToDate = this.OrganizationForm.get('subLocationToDateControl');
+    subLocationToDate.disable();
+  }
   SearchSubLocation(subLocationCode) {
 
 
     this.subLocationDescription = null;
     this.organizationDetailsModel.subLocationFromDate = null;
     this.organizationDetailsModel.subLocationToDate = null;
-    const subLocationFromDate = this.OrganizationForm.get('subLocationFromDateControl');
-    subLocationFromDate.disable();
-    const subLocationToDate = this.OrganizationForm.get('subLocationToDateControl');
-    subLocationToDate.disable();
+    // const subLocationFromDate = this.OrganizationForm.get('subLocationFromDateControl');
+    // subLocationFromDate.disable();
+    // const subLocationToDate = this.OrganizationForm.get('subLocationToDateControl');
+    // subLocationToDate.disable();
 
+    this.disableSubLocationDates();
     // subLocationCode = subLocationCode.toLowerCase();
     // const ifsc = this.filteredSubLocationList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(subLocationCode);
@@ -951,16 +1066,25 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredSubLocationList = filtered;
   }
+
+  disableWorkLocationDates() {
+    const workLocationFromDate = this.OrganizationForm.get('workLocationFromDateControl');
+    workLocationFromDate.disable();
+    const workLocationToDate = this.OrganizationForm.get('workLocationToDateControl');
+    workLocationToDate.disable();
+  }
   SearchWorkLocation(workLocationCode) {
 
     this.workLocationDescription = null;
     this.organizationDetailsModel.workLocationFromDate = null;
     this.organizationDetailsModel.workLocationToDate = null;
-    const workLocationFromDate = this.OrganizationForm.get('workLocationFromDateControl');
-    workLocationFromDate.disable();
-    const workLocationToDate = this.OrganizationForm.get('workLocationToDateControl');
-    workLocationToDate.disable();
+    // const workLocationFromDate = this.OrganizationForm.get('workLocationFromDateControl');
+    // workLocationFromDate.disable();
+    // const workLocationToDate = this.OrganizationForm.get('workLocationToDateControl');
+    // workLocationToDate.disable();
 
+
+    this.disableWorkLocationDates();
     // workLocationCode = workLocationCode.toLowerCase();
     // const ifsc = this.filteredWorkLocationList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(workLocationCode);
@@ -978,18 +1102,25 @@ export class OrganizationDetailComponent implements OnInit {
     this.filteredWorkLocationList = filtered;
 
   }
+
+  disableBusinessAreaDates() {
+    const businessAreaFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
+    businessAreaFromDate.disable();
+    const businessAreaToDate = this.OrganizationForm.get('businessAreaToDateControl');
+    businessAreaToDate.disable();
+  }
   SearchBusinessArea(businessAreaCode) {
 
 
     this.businessAreaDescription = null;
     this.organizationDetailsModel.businessAreaFromDate = null;
     this.organizationDetailsModel.businessAreaToDate = null;
-    const businessAreaFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
-    businessAreaFromDate.disable();
-    const businessAreaToDate = this.OrganizationForm.get('businessAreaToDateControl');
-    businessAreaToDate.disable();
+    // const businessAreaFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
+    // businessAreaFromDate.disable();
+    // const businessAreaToDate = this.OrganizationForm.get('businessAreaToDateControl');
+    // businessAreaToDate.disable();
 
-
+    this.disableBusinessAreaDates();
     // businessAreaCode = businessAreaCode.toLowerCase();
     // const ifsc = this.filteredBusinessAreaList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(businessAreaCode);
@@ -1006,17 +1137,25 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredBusinessAreaList = filtered;
   }
+
+  disableSubAreaDates() {
+    const subAreaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
+    subAreaFromDate.disable();
+    const subAreaToDate = this.OrganizationForm.get('subAreaToDateControl');
+    subAreaToDate.disable();
+  }
   SearchSubArea(subAreaCode) {
 
 
     this.subAreaDescription = null;
     this.organizationDetailsModel.subAreaFromDate = null;
     this.organizationDetailsModel.subAreaToDate = null;
-    const subAreaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
-    subAreaFromDate.disable();
-    const subAreaToDate = this.OrganizationForm.get('subAreaToDateControl');
-    subAreaToDate.disable();
+    // const subAreaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
+    // subAreaFromDate.disable();
+    // const subAreaToDate = this.OrganizationForm.get('subAreaToDateControl');
+    // subAreaToDate.disable();
 
+    this.disableSubAreaDates();
 
     // subAreaCode = subAreaCode.toLowerCase();
     // const ifsc = this.filteredSubAreaList.filter((item) => {
@@ -1034,18 +1173,26 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredSubAreaList = filtered;
   }
+
+  disableStrategicDates() {
+    const strategicBusinessFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
+    strategicBusinessFromDate.disable();
+    const strategicBusinessToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
+    strategicBusinessToDate.disable();
+  }
   SearchStrategic(strategicBusinessCode) {
 
 
     this.strategicDescription = null;
     this.organizationDetailsModel.strategicBusinessFromDate = null;
     this.organizationDetailsModel.strategicBusinessToDate = null;
-    const strategicBusinessFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
-    strategicBusinessFromDate.disable();
-    const strategicBusinessToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
-    strategicBusinessToDate.disable();
+    // const strategicBusinessFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
+    // strategicBusinessFromDate.disable();
+    // const strategicBusinessToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
+    // strategicBusinessToDate.disable();
 
 
+    this.disableStrategicDates();
     // strategicBusinessCode = strategicBusinessCode.toLowerCase();
     // const ifsc = this.filteredStrategicBusinessAreaList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(strategicBusinessCode);
@@ -1062,17 +1209,25 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredStrategicBusinessAreaList = filtered;
   }
+
+  disableDivisionDates() {
+    const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
+    divisionFromDate.disable();
+    const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
+    divisionToDate.disable();
+  }
   SearchDivision(divisionCode) {
 
 
     this.divisionDescription = null;
     this.organizationDetailsModel.divisionFromDate = null;
     this.organizationDetailsModel.divisionToDate = null;
-    const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
-    divisionFromDate.disable();
-    const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
-    divisionToDate.disable();
+    // const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
+    // divisionFromDate.disable();
+    // const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
+    // divisionToDate.disable();
 
+    this.disableDivisionDates();
 
     // divisionCode = divisionCode.toLowerCase();
     // const ifsc = this.filteredDivisionList.filter((item) => {
@@ -1090,18 +1245,25 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredDivisionList = filtered;
   }
+
+  disableDepartmentDates() {
+    const departmentFromDate = this.OrganizationForm.get('departmentFromDateControl');
+    departmentFromDate.disable();
+    const departmentToDate = this.OrganizationForm.get('departmentToDateControl');
+    departmentToDate.disable();
+  }
   SearchDepartment(departmentCode) {
 
 
     this.departmentDescription = null;
     this.organizationDetailsModel.departmentFromDate = null;
     this.organizationDetailsModel.departmentToDate = null;
-    const departmentFromDate = this.OrganizationForm.get('departmentFromDateControl');
-    departmentFromDate.disable();
-    const departmentToDate = this.OrganizationForm.get('departmentToDateControl');
-    departmentToDate.disable();
+    // const departmentFromDate = this.OrganizationForm.get('departmentFromDateControl');
+    // departmentFromDate.disable();
+    // const departmentToDate = this.OrganizationForm.get('departmentToDateControl');
+    // departmentToDate.disable();
 
-
+    this.disableDepartmentDates();
     // departmentCode = departmentCode.toLowerCase();
     // const ifsc = this.filteredDepartmentList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(departmentCode);
@@ -1118,18 +1280,25 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredDepartmentList = filtered;
   }
+
+  disableSubDepartmentDates() {
+    const subDepartmentFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
+    subDepartmentFromDate.disable();
+    const subDepartmentToDate = this.OrganizationForm.get('subDepartmentToDateControl');
+    subDepartmentToDate.disable();
+  }
   SearchSubDepartment(subDepartmentCode) {
 
 
     this.subDepDescription = null;
     this.organizationDetailsModel.subDepartmentFromDate = null;
     this.organizationDetailsModel.subDepartmentToDate = null;
-    const subDepartmentFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
-    subDepartmentFromDate.disable();
-    const subDepartmentToDate = this.OrganizationForm.get('subDepartmentToDateControl');
-    subDepartmentToDate.disable();
+    // const subDepartmentFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
+    // subDepartmentFromDate.disable();
+    // const subDepartmentToDate = this.OrganizationForm.get('subDepartmentToDateControl');
+    // subDepartmentToDate.disable();
 
-
+    this.disableSubDepartmentDates();
     // subDepartmentCode = subDepartmentCode.toLowerCase();
     // const ifsc = this.filteredSubDepartmentList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(subDepartmentCode);
@@ -1146,17 +1315,23 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredSubDepartmentList = filtered;
   }
+  disableCostDates() {
+    const costCentreFromDate = this.OrganizationForm.get('costCentreFromDateControl');
+    costCentreFromDate.disable();
+    const costCentreToDate = this.OrganizationForm.get('costCentreToDateControl');
+    costCentreToDate.disable();
+  }
   SearchCost(costCentreCode) {
 
     this.costDescription = null;
     this.organizationDetailsModel.costCentreFromDate = null;
     this.organizationDetailsModel.costCentreToDate = null;
-    const costCentreFromDate = this.OrganizationForm.get('costCentreFromDateControl');
-    costCentreFromDate.disable();
-    const costCentreToDate = this.OrganizationForm.get('costCentreToDateControl');
-    costCentreToDate.disable();
+    // const costCentreFromDate = this.OrganizationForm.get('costCentreFromDateControl');
+    // costCentreFromDate.disable();
+    // const costCentreToDate = this.OrganizationForm.get('costCentreToDateControl');
+    // costCentreToDate.disable();
 
-
+    this.disableCostDates();
     // costCentreCode = costCentreCode.toLowerCase();
     // const ifsc = this.filteredCostCenterList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(costCentreCode);
@@ -1173,17 +1348,23 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredCostCenterList = filtered;
   }
+  disableSubCostDates() {
+    const subCostCentreFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
+    subCostCentreFromDate.disable();
+    const subCostCentreToDate = this.OrganizationForm.get('subCostCentreToDateControl');
+    subCostCentreToDate.disable();
+  }
   SearchSubCost(subCostCentreCode) {
 
     this.subCostDescription = null;
     this.organizationDetailsModel.subCostCentreFromDate = null;
     this.organizationDetailsModel.subCostCentreToDate = null;
-    const subCostCentreFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
-    subCostCentreFromDate.disable();
-    const subCostCentreToDate = this.OrganizationForm.get('subCostCentreToDateControl');
-    subCostCentreToDate.disable();
+    // const subCostCentreFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
+    // subCostCentreFromDate.disable();
+    // const subCostCentreToDate = this.OrganizationForm.get('subCostCentreToDateControl');
+    // subCostCentreToDate.disable();
 
-
+    this.disableSubCostDates();
     // subCostCentreCode = subCostCentreCode.toLowerCase();
     // const ifsc = this.filteredSubCostCenterList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(subCostCentreCode);
@@ -1200,16 +1381,24 @@ export class OrganizationDetailComponent implements OnInit {
     }
     this.filteredSubCostCenterList = filtered;
   }
+
+  disableProfitDates() {
+    const profitCentreFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
+    profitCentreFromDate.disable();
+    const profitCentreToDate = this.OrganizationForm.get('profitCentreToDateControl');
+    profitCentreToDate.disable();
+  }
   SearchProfit(profitCentreCode) {
 
     this.profitDescription = null;
     this.organizationDetailsModel.profitCentreFromDate = null;
     this.organizationDetailsModel.profitCentreToDate = null;
-    const profitCentreFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
-    profitCentreFromDate.disable();
-    const profitCentreToDate = this.OrganizationForm.get('profitCentreToDateControl');
-    profitCentreToDate.disable();
+    // const profitCentreFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
+    // profitCentreFromDate.disable();
+    // const profitCentreToDate = this.OrganizationForm.get('profitCentreToDateControl');
+    // profitCentreToDate.disable();
 
+    this.disableProfitDates();
     // profitCentreCode = profitCentreCode.toLowerCase();
     // const ifsc = this.filteredProfitCenterList.filter((item) => {
     //   return JSON.stringify(item).toLowerCase().includes(profitCentreCode);
@@ -1227,18 +1416,17 @@ export class OrganizationDetailComponent implements OnInit {
     this.filteredProfitCenterList = filtered;
   }
 
-  //get payroll area aasigned to that employee
+  //get payroll area assigned to that employee
   getPayrollAreaInformation() {
-debugger
+
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      debugger
-      res.data.results[0].forEach(item =>{
+
+      res.data.results[0].forEach(item => {
         this.payrollAreaList.push(item.payrollAreaCode);
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
-     });
+      });
     })
-    console.log("payroll: ",this.payrollAreaList);
 
   }
 
@@ -1256,11 +1444,42 @@ debugger
   }
 
   //set PayrollArea
-  selectPayrollArea(event){
-    debugger
-    this.payrollAreaCode=event;
-    console.log("this.payrollAreaCode: ",this.payrollAreaCode);
-
+  selectPayrollArea(event) {
+    this.payrollAreaCode = event;
+    this. resetOrganizationForm();
     this.getOrganizationForm();
+  }
+
+  resetOrganizationForm() {
+    this.OrganizationForm.reset();
+
+    //set fields to null for -form clearing
+    this.employeeOrganizationDetailId = 0;
+    this.establishmentDescription = null;
+    this.subLocationDescription = null;
+    this.workLocationDescription = null;
+    this.businessAreaDescription = null;
+    this.subAreaDescription = null;
+    this.strategicDescription = null;
+    this.divisionDescription = null;
+    this.departmentDescription = null;
+    this.subDepDescription = null;
+    this.costDescription = null;
+    this.subCostDescription = null;
+    this.profitDescription = null;
+
+    //disable dates
+    this.disableBusinessAreaDates();
+    this.disableCostDates();
+    this.disableDepartmentDates();
+    this.disableDivisionDates();
+    this.disableEstablishmentDates();
+    this.disableStrategicDates();
+    this.disableSubAreaDates();
+    this.disableSubCostDates();
+    this.disableSubDepartmentDates();
+    this.disableSubLocationDates();
+    this.disableWorkLocationDates();
+    this.disableProfitDates();
   }
 }

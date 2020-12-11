@@ -14,9 +14,11 @@ export class JobInformationService {
   constructor(private httpClient: HttpClient) { }
 
   //GET summary API call
-  getSummaryDetails(employeeMasterId){
+  getSummaryDetails(employeeMasterId,payrollAreaCode){
+    const params = new HttpParams()
+    .set('payrollAreaCode', payrollAreaCode);
 
-    return this.httpClient.get(environment.baseUrl8082 + '/job-information/summary/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + '/job-information/summary/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -40,6 +42,7 @@ export class JobInformationService {
   }
    //organization details API Calls
    postOrganizationDetails(organizationFormModel: any) {
+     
     return this.httpClient.post(environment.baseUrl8082 + '/employee-organization', organizationFormModel, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
@@ -92,9 +95,10 @@ export class JobInformationService {
     }))
   }
 
-  getJoiningInformation(employeeMasterId){
-
-    return this.httpClient.get(environment.baseUrl8082 + '/minimumwages-info/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  getMinimumWagesDetails(employeeMasterId,payrollAreaCode){
+    const params = new HttpParams()
+    .set('payrollAreaCode', payrollAreaCode);
+    return this.httpClient.get(environment.baseUrl8082 + '/minimumwages-info/employeeMaster/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -111,15 +115,18 @@ export class JobInformationService {
 
   // Project details API Calls
   postProjectDetails(ProjectDetailsModel){
-    
+
     return this.httpClient.post(environment.baseUrl8082 + '/project-details', ProjectDetailsModel, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
-  getProjectDetails(employeeProjectDetailId) {
-    return this.httpClient.get(environment.baseUrl8082 + '/project-details/' + employeeProjectDetailId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  getProjectDetails(employeeProjectDetailId,payrollAreaCode) {
+    const params = new HttpParams()
+    .set('payrollAreaCode', payrollAreaCode);
+
+    return this.httpClient.get(environment.baseUrl8082 + '/project-details/employeeMaster/' + employeeProjectDetailId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))

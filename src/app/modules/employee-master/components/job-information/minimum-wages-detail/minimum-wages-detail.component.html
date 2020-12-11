@@ -1,3 +1,13 @@
+<form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(minumumWagesDetailsModel)">
+    <div class="col-sm-6 col-md-3">
+        <label class="form-label">Payroll Area</label>
+        <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+            (completeMethod)="filterpayrollArea($event)" [dropdown]="true"
+            (onSelect)="selectPayrollArea($event)"
+            [(ngModel)]="payrollAreaCode">
+        </p-autoComplete>
+    </div>
+    <br>
 <div class="row row-cards">
     <div class="col-sm-6 col-lg-3">
         <div class="card p-3 row-card-color">
@@ -5,10 +15,14 @@
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
-            <select class="form-control" placeholder="Select Skill">
-              <option value="ABC">ABC</option>
-              <option value="PQR">PQR</option>
-              <option value="XYZ">XYZ</option>
+            <select class="form-control" placeholder="Select Skill"
+            (completeMethod)="searchSkill(minumumWagesDetailsModel.skill)"
+            (change)="enableSkillDate();validateSkillDates();"
+            formControlName="skillControl" [(ngModel)]="minumumWagesDetailsModel.skill">
+              <option value="" selected disabled>Select Skill</option>
+              <option *ngFor="let skill of skillList" [value]="skill">
+                {{skill}}
+            </option>
           </select>
 
             <label class="form-label mt-10">From Date</label>
@@ -17,7 +31,11 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
+                    data-date-autoclose="true" class="form-control" placeholder="  /   /" 
+                    bsDatepicker formControlName="skillStartDateControl" 
+                    [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.skillStartDate"
+                    (bsValueChange)="validateSkillDate()">
                 </div>
             </div>
 
@@ -27,8 +45,12 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
-                </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
+                    data-date-autoclose="true" class="form-control" placeholder="  /   /" 
+                    bsDatepicker formControlName="skillEndDateControl" 
+                    [minDate]="minumumWagesDetailsModel.skillStartDate"
+                            [(ngModel)]="minumumWagesDetailsModel.skillEndDate">
+                     </div>
             </div>
         </div>
     </div>
@@ -39,10 +61,14 @@
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
-            <select class="form-control" placeholder="Select Type Of Work">
-              <option value="ABC">ABC</option>
-              <option value="PQR">PQR</option>
-              <option value="XYZ">XYZ</option>
+            <select class="form-control" placeholder="Select Type Of Work"
+            (completeMethod)="searchSkill(minumumWagesDetailsModel.workType)"
+            (change)="enableWorkDate();validateWorkDates();"
+            formControlName="workTypeControl" [(ngModel)]="minumumWagesDetailsModel.workType">
+              <option value="" selected disabled>Select Skill</option>
+              <option *ngFor="let work of filteredWorkList" [value]="work">
+                {{work}}
+            </option>
           </select>
             <label class="form-label mt-10">From Date</label>
             <div class="form-group">
@@ -50,7 +76,11 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
+                    data-date-autoclose="true" class="form-control" placeholder="  /   /" 
+                    bsDatepicker formControlName="workStartDateControl" 
+                    [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.workStartDate"
+                    (bsValueChange)="validateWorkDate()">
                 </div>
             </div>
 
@@ -60,9 +90,31 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                     </div>
-                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
-                </div>
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" 
+                    data-date-autoclose="true" class="form-control" placeholder="  /   /" 
+                    bsDatepicker formControlName="workEndDateControl" 
+                    [minDate]="minumumWagesDetailsModel.workStartDate"
+                            [(ngModel)]="minumumWagesDetailsModel.workEndDate">
+                    </div>
             </div>
         </div>
     </div>
 </div>
+<div class="row mt-15">
+    <div class="col-12">
+        <div class="float-right mb-15">
+            <button type="submit" 
+            [disabled]="minimumWagesForm.invalid || minimumWagesForm.untouched"
+            class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"  tooltip="Save"
+            [ngClass]="{'disabled-btn-bg-green' : minimumWagesForm.invalid || minimumWagesForm.untouched,
+                       'btn-bg-green': !minimumWagesForm.invalid}"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+
+            <button type="button" tooltip="Previous" [routerLink]="['/employee-master/job-information/position-details']" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                        class="fa fa-refresh" aria-hidden="true"></i></b>Previous</button>
+
+            <button type="button" tooltip="Next" [routerLink]="['/employee-master/job-information/project-details']" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                        class="fa fa-refresh" aria-hidden="true"></i></b>Next</button>
+        </div>
+    </div>
+</div>
+</form>
