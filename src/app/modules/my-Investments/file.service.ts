@@ -46,12 +46,13 @@ export class FileService {
     });
     // return null;
     return this.http.post<any>(
-      this.apiUrl + 'uploadLICTransactionDocuments',
+      this.apiUrl + 'lic-transaction/uploadLICTransactionDocuments',
       formData,
       {
 
       });
   }
+
 
   public uploadMultipleMasterFiles(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();

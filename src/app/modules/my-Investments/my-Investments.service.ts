@@ -443,7 +443,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'uploadTransactionDocuments',
+      this.apiUrl + 'ppf-transaction/uploadTransactionDocuments',
       formData,
       {
 
@@ -575,7 +575,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'uploadTransactionDocuments',
+      this.apiUrl + '/elss-transaction/uploadTransactionDocuments',
       formData,
       {
 

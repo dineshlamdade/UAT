@@ -85,6 +85,10 @@ private readonly JWT_TOKEN = '%qycutr';
     return sessionStorage.getItem(this.JWT_TOKEN);
   }
 
+  getprivileges() {
+    return jwt_decode(sessionStorage.getItem(this.JWT_TOKEN));
+  }
+
   private doLoginUser(tokens: Tokens) {
    // this.loggedUser = username;
     this.storeTokens(tokens);
