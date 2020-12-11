@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { TaxSavingNabardService } from '../../tax-saving-shares-nabard/tax-saving-nabard.service';
+import { TuitionFeesService } from '../tuition-fees.service';
 
 
 @Component({
@@ -12,18 +12,18 @@ import { TaxSavingNabardService } from '../../tax-saving-shares-nabard/tax-savin
 })
 export class TuitionFeesSummaryComponent implements OnInit {
 
-  @Input() schoolCollegeName: string;
+  @Input() institution: string;
   @Input() childName: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(schoolCollegeName: string, childName: string) {
+  onEditSummary(institution: string, childName: string) {
     this.tabIndex = 2;
     const data = {
-      schoolCollegeName: schoolCollegeName,
+      institution: institution,
       childName: childName,
       tabIndex: this.tabIndex,
     };
-    this.schoolCollegeName = schoolCollegeName;
+    this.institution = institution;
     this.childName = childName;
     this.myEvent.emit(data);
   }
@@ -44,7 +44,7 @@ export class TuitionFeesSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private taxSavingNabardService : TaxSavingNabardService,
+    private tuitionFeesService : TuitionFeesService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -57,13 +57,10 @@ export class TuitionFeesSummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.taxSavingNabardService.getTSNabardSummary().subscribe((res) => {
-      this.summaryGridData = res.data.results[0].transactionDetailList;
+    this.tuitionFeesService.getTuitionFeesSummary().subscribe((res) => {
+      this.summaryGridData = res.data.results[0].tuitionFeesTransactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-        res.data.results[0].futureNewPolicyDeclaredAmount
-      );
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -82,21 +79,21 @@ export class TuitionFeesSummaryComponent implements OnInit {
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.taxSavingNabardService
-      .getTSNabardSummaryFuturePolicy(data)
-      .subscribe((res) => {
-        //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].transactionDetailList;
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].futureNewPolicyDeclaredAmount
-        );
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
-      });
+    // this.tuitionFeesService
+    //   .getTSNabardSummaryFuturePolicy(data)
+    //   .subscribe((res) => {
+    //     //console.log('addFuturePolicy Res..', res);
+    //     this.summaryGridData = res.data.results[0].transactionDetailList;
+    //     this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+    //     this.totalActualAmount = res.data.results[0].totalActualAmount;
+    //     this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+    //       res.data.results[0].futureNewPolicyDeclaredAmount
+    //     );
+    //     this.grandTotalDeclaredAmount =
+    //       res.data.results[0].grandTotalDeclaredAmount;
+    //     this.grandTotalActualAmount =
+    //       res.data.results[0].grandTotalActualAmount;
+    //   });
     this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
@@ -105,7 +102,7 @@ export class TuitionFeesSummaryComponent implements OnInit {
     this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
       this.futureNewPolicyDeclaredAmount
     );
-    this.addFuturePolicy();
+    // this.addFuturePolicy();
   }
 
   jumpToMasterPage(n: number) {
@@ -115,11 +112,11 @@ export class TuitionFeesSummaryComponent implements OnInit {
   }
 
   // On onEditSummary
-  onEditSummary1(schoolCollegeName: string, childName: string) {
+  onEditSummary1(institution: string, childName: string) {
     this.tabIndex = 2;
-    this.schoolCollegeName = schoolCollegeName;
+    this.institution = institution;
     this.childName = childName;
-    console.log('schoolCollegeName::', schoolCollegeName);
+    console.log('institution::', institution);
     console.log('childName::', childName);
   }
 }

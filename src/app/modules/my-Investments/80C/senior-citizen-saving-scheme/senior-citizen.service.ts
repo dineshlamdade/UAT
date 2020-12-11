@@ -33,14 +33,6 @@ export class SeniorCitizenService {
 
    //Declaration services
 
-  //service to be created
-  // getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-  //   return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
-  // }
-
     getTransactionFilterData() {
     return this._HTTP.get(this.apiUrl + 'seniorCitizenSavingScheme-transaction')
     .pipe(map((res: any) => {

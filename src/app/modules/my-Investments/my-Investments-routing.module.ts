@@ -14,6 +14,8 @@ import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/t
 import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
 import { SeniorCitizenSavingSchemeComponent } from './80C/senior-citizen-saving-scheme/senior-citizen-saving-scheme.component';
 import { TuitionFeesComponent } from './80C/tuition-fees/tuition-fees.component';
+import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
+import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
 
 const routes: Routes = [
 
@@ -86,9 +88,19 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: SeniorCitizenSavingScheme' },
       },
       {
-        path:   '80C-TuitionFeesComponent',
+        path:   '80C-TuitionFees',
         component:  TuitionFeesComponent,
-        data: { title: ':: DelziaHR :: TuitionFeesComponent' },
+        data: { title: ':: DelziaHR :: TuitionFees' },
+      },
+      {
+        path:   'Chapter-VI-A-PhysicallyHandicapped',
+        component:  PhysicallyHandicappedComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-PhysicallyHandicapped' },
+      },
+      {
+        path:   'Chapter-VI-A-HandicappedDependent',
+        component:  HandicappedDependentComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-HandicappedDependent{Sec.80-DD}' },
       },
     ],
    },

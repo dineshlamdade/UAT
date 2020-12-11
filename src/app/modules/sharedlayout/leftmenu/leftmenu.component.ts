@@ -8,8 +8,8 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class LeftmenuComponent implements OnInit {
   public isCollapsed = true;
-  public isProjectCollapsed = true;
-  public isJobportalCollapsed = true;
+  public isInvestmentCollapsed = true;
+  public isOtherMaster = true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
@@ -30,15 +30,15 @@ export class LeftmenuComponent implements OnInit {
   public staticscard: boolean = true;
   public friendscard: boolean = true;
   constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
-    if ((this.router.url).includes('hr')) {
+    if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
 
-    if ((this.router.url).includes('project')) {
-      this.isProjectCollapsed = false;
+    if ((this.router.url).includes('investment')) {
+      this.isInvestmentCollapsed = false;
     }
-    if ((this.router.url).includes('jobportal')) {
-      this.isJobportalCollapsed = false;
+    if ((this.router.url).includes('otherMaster')) {
+      this.isOtherMaster = false;
     }
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;

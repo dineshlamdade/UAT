@@ -17,7 +17,6 @@ export class PostOfficeTermDepositService {
 
 
   getPOTDepositSummary() {
-    // return this._HTTP.get(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummary')
     return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction/summary')
     .pipe(map((res: any) => {
       return res;
@@ -26,7 +25,6 @@ export class PostOfficeTermDepositService {
   }
 
   postPOTDepositSummaryFuturePolicy(data) {
-    // return this._HTTP.post(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummaryFuturePolicy', data)
     return this._HTTP.post(this.apiUrl + 'postOfficeTermedDeposit-transaction/SummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;

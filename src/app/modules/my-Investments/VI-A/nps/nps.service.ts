@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class NpsService {
 
   apiUrl = environment.apiBaseUrl;
-  apiUrlEmployee = environment.apiBaseUrlEmployee;
+  apiUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -74,7 +74,6 @@ export class NpsService {
 
 
   getpreviousEmployeName() {
-
     return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
     .pipe(map((res: any) => {
       return res;

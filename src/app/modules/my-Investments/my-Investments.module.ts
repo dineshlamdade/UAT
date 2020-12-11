@@ -23,6 +23,13 @@ import { NPSComponent } from './VI-A/nps/nps.component';
 import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
 import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
 import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
+import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
+import { PhysicallyHandicappedSummaryComponent } from './VI-A/physically-handicapped/physically-handicapped-summary/physically-handicapped-summary.component';
+import { PhysicallyHandicappedDeclarationAndActualComponent } from './VI-A/physically-handicapped/physically-handicapped-declaration-and-actual/physically-handicapped-declaration-and-actual.component';
+import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
+import { SummaryComponent } from './VI-A/handicapped-dependent/summary/summary.component';
+import { MasterComponent } from './VI-A/handicapped-dependent/master/master.component';
+import { DeclarationAndActualComponent } from './VI-A/handicapped-dependent/declaration-and-actual/declaration-and-actual.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +39,13 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     NpsSummaryComponent,
     NpsMasterComponent,
     NpsDeclarationComponent,
+    PhysicallyHandicappedComponent,
+    PhysicallyHandicappedSummaryComponent,
+    PhysicallyHandicappedDeclarationAndActualComponent,
+    HandicappedDependentComponent,
+    SummaryComponent,
+    MasterComponent,
+    DeclarationAndActualComponent,
    ],
   imports: [
     CommonModule,

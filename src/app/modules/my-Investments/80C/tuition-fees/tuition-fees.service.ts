@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@src/environments/environment';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,25 +11,23 @@ export class TuitionFeesService {
 
   apiUrl = environment.apiBaseUrl;
 
-
   constructor(private _HTTP: HttpClient) { }
 
-  //Summary Services
 
-  getSeniorCitizenSummary() {
-    return this._HTTP.get(this.apiUrl + 'seniorCitizenSavingScheme-transaction/summary')
+  getTuitionFeesSummary() {
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/summary')
     .pipe(map((res: any) => {
       return res;
     }
     ));
   }
 
-  saveSeniorCitizenSummaryFuturePolicy(data) {
-    return this._HTTP.post(this.apiUrl + 'seniorCitizenSavingScheme-transaction/SummaryFuturePolicy', data)
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
+  // getTSNabardSummaryFuturePolicy(data) {
+  //   return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction/SummaryFuturePolicy', data)
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
 
    //Declaration services
@@ -42,22 +40,23 @@ export class TuitionFeesService {
   //   }));
   // }
 
-    getTransactionFilterData() {
-    return this._HTTP.get(this.apiUrl + 'seniorCitizenSavingScheme-transaction')
+
+  getTransactionFilterData() {
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'seniorCitizenSavingScheme-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  postSeniorCitizenTransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'seniorCitizenSavingScheme-transaction', data)
+  postTuitionFeesTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -71,6 +70,13 @@ export class TuitionFeesService {
     }));
   }
 
+  getChildsName() {
+    // return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+    // .pipe(map((res: any) => {
+    //   return res;
+    // }));
+  }
+
   getAllInstitutesFromGlobal() {
     return this._HTTP.get(this.apiUrl + 'institution')
     .pipe(map((res: any) => {
@@ -78,7 +84,7 @@ export class TuitionFeesService {
     }));
   }
 
-  uploadSeniorCitizenTransactionwithDocument(files: File[], data:any): Observable<any> {
+  uploadTuitionFeesTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
@@ -94,7 +100,7 @@ export class TuitionFeesService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + '/seniorCitizenSavingScheme-transaction/uploadseniorCitizenSavingSchemeDocuments',formData,
+      this.apiUrl + 'fdmorethan5years-transaction/uploadfdmorethan5yearsTransactionDocuments',formData,
       {
 
       });

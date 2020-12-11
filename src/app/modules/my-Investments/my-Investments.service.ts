@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of , throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+//import { environment } from 'src/environments/environment';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -343,7 +344,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/ppfmaster-detail',
+      this.apiUrl + 'ppfmaster-detail',
       formData,
       {
 
@@ -442,7 +443,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/ppf-transaction/uploadTransactionDocuments',
+      this.apiUrl + 'uploadTransactionDocuments',
       formData,
       {
 
@@ -475,7 +476,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/elssmaster-detail',
+      this.apiUrl + 'elssmaster-detail',
       formData,
       {
 
@@ -574,7 +575,7 @@ public apiUrl = environment.apiBaseUrl;
     });
     // return null;
     return this._HTTP.post<any>(
-      'http://localhost:8085/hrms/v1/elss-transaction/uploadTransactionDocuments',
+      this.apiUrl + 'uploadTransactionDocuments',
       formData,
       {
 

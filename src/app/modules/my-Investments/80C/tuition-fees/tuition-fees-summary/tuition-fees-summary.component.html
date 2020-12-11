@@ -1,4 +1,3 @@
-
 <div class="tabview-contents">
   <div class="row mt-10">
     <div class="col-12">
@@ -16,7 +15,7 @@
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
               <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
-                <span tooltip="{{summary.schoolCollegeName}}">{{summary.schoolCollegeName}}</span>
+                <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
               </td>
               <td class="wd-20"><span tooltip="{{summary.childName}}">{{summary.childName}}</span>
               </td>
@@ -31,7 +30,7 @@
                 </span>
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                  (click)="onEditSummary(summary.schoolCollegeName, summary.childName)" tooltip="Edit"></i>&nbsp;&nbsp;
+                  (click)="onEditSummary(summary.institution, summary.childName)" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
@@ -41,7 +40,7 @@
               </td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="2" class="align-right font700">Total &nbsp;</td>
+              <td colspan="2" class="align-right font700">Total &nbsp; </td>
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
                   {{totalDeclaredAmount | number:'1.2-2'}}
