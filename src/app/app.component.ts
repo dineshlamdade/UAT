@@ -46,13 +46,13 @@ export class AppComponent implements OnInit {
       }
      }
   ngOnInit(): void {
-    if (this.router.getCurrentNavigation() === null) { 
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
-    }
+    // if (this.router.getCurrentNavigation() === null) { 
+    // if (!this.authService.isLoggedIn()) {
+    //   this.router.navigate(['/login']);
+    // } else {
+    //   this.router.navigate(['/dashboard']);
+    // }
+    // }
     const body = document.getElementsByTagName('body')[0];
     body.classList.add("offcanvas-active");
     body.classList.add('font-montserrat');
