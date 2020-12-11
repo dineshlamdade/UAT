@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BankInformationComponent } from './components/bank-information/bank-information.component';
 import { ComplianceInformationComponent } from './components/compliance-information/compliance-information.component';
+import { ComplianceSummaryComponent } from './components/compliance-information/compliance-summary/compliance-summary.component';
 import { ComplianceTypeInformationComponent } from './components/compliance-information/compliance-type-information/compliance-type-information.component';
 import { InputComplianceInformationComponent } from './components/compliance-information/input-compliance-information/input-compliance-information.component';
 import { ContactInformationComponent } from './components/contact-information/contact-information.component';
@@ -158,6 +159,11 @@ const routes: Routes = [
         component: ComplianceInformationComponent,
         data: { title: ':: DelziaHR :: compliance-information' },
         children: [
+          {
+            path: 'compliance-summary',
+            component: ComplianceSummaryComponent,
+            data: { title: ':: DelziaHR :: compliance-summary' },
+          },
           {
             path: 'input',
             component: InputComplianceInformationComponent,
