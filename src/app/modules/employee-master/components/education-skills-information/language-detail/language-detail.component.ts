@@ -98,7 +98,7 @@ export class LanguageDetailComponent implements OnInit {
   getAllLanguageSummary() {
 
     this.EducationSkillsInformationService.getAllLanguageSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.LanguageSummaryGridData = res.data.results[0];
 
       // this.validatingHigherQualification();
@@ -106,11 +106,11 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   postLanguageForm(employeeLanguageRequestModel) {
-    debugger
+    
     employeeLanguageRequestModel.employeeMasterId = this.employeeMasterId
 
     this.EducationSkillsInformationService.postLanguageInfoForm(employeeLanguageRequestModel).subscribe(res => {
-      debugger
+      
       this.getAllLanguageSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
     }, (error: any) => {
@@ -135,7 +135,7 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   editLanguageRow(language) {
-    debugger
+    
     this.LanguageEditFlag = true;
     this.LanguageviewFlag = false;
     this.employeeLanguageRequestModel.employeeLanguageinfoId = language.employeeLanguageinfoId;
@@ -155,7 +155,7 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   viewLanguageRow(language) {
-    debugger
+    
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = true;
     this.employeeLanguageRequestModel = language;
@@ -170,7 +170,7 @@ export class LanguageDetailComponent implements OnInit {
     temp4.disable();
   }
   deleteLanguageRow(language) {
-    debugger
+    
     this.languageId = language.employeeLanguageinfoId;
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,

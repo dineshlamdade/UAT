@@ -26,7 +26,7 @@ export class FamilyInformationComponent implements OnInit {
   getFamilyGridSummary() {
 
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.FamilySummaryGridData = res.data.results[0].familyDetailsSummaryBeans;
       console.log(this.FamilySummaryGridData);
 

@@ -126,7 +126,7 @@ export class CertificationDetailComponent implements OnInit {
   getCertificateList() {
 
     this.EducationSkillsInformationService.getAllCertificates().subscribe(res => {
-      debugger
+      
 
       this.CertificateMappingList.forEach(element1 => {
         res.data.results.forEach(element2 => {
@@ -143,7 +143,7 @@ export class CertificationDetailComponent implements OnInit {
   getCertificateMapping() {
 
     this.EducationSkillsInformationService.getAllCertificateMapping().subscribe(res => {
-      debugger
+      
       this.ToFilteredCertificateAllList = res.data.results;
       // this.getCertificateList();
     })
@@ -152,7 +152,7 @@ export class CertificationDetailComponent implements OnInit {
   getAllCertificateSummary() {
 
     this.EducationSkillsInformationService.getAllCertificateSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.certificateSummaryGridData = res.data.results[0];
       console.log((this.certificateSummaryGridData));
 
@@ -168,7 +168,7 @@ export class CertificationDetailComponent implements OnInit {
   }
 
   postCertificateForm(employeeCertificateRequestModel) {
-    debugger
+    
     employeeCertificateRequestModel.employeeMasterId = this.employeeMasterId
     employeeCertificateRequestModel.renewalCertificationDate = this.datepipe.transform(employeeCertificateRequestModel.renewalCertificationDate, 'dd-MMM-yyyy');
     employeeCertificateRequestModel.renewalValidityFromDate = this.datepipe.transform(employeeCertificateRequestModel.renewalValidityFromDate, 'dd-MMM-yyyy');
@@ -197,7 +197,7 @@ export class CertificationDetailComponent implements OnInit {
   }
 
   updateCertificateForm(employeeCertificateRequestModel) {
-    debugger
+    
     employeeCertificateRequestModel.employeeMasterId = this.employeeMasterId
     employeeCertificateRequestModel.renewalCertificationDate = this.datepipe.transform(employeeCertificateRequestModel.renewalCertificationDate, 'dd-MMM-yyyy');
     employeeCertificateRequestModel.renewalValidityFromDate = this.datepipe.transform(employeeCertificateRequestModel.renewalValidityFromDate, 'dd-MMM-yyyy');
@@ -229,7 +229,7 @@ export class CertificationDetailComponent implements OnInit {
   }
 
   onSelectionName(certificate) {
-    debugger
+    
     this.employeeCertificateRequestModel.cerificateNumber = '';
     if (certificate.certificateMasterDetails.renewable == false) {
       this.renewableModel = 'no';
@@ -255,7 +255,7 @@ export class CertificationDetailComponent implements OnInit {
     this.certificateViewFlag = false;
 
     this.EducationSkillsInformationService.getCertificateById(certificate.employeeCertificateId).subscribe(res => {
-      debugger
+      
       this.employeeCertificateRequestModel.renewalFeesValidityFromDate = res.data.results[0].renewalFeesValidityFromDate;
       this.employeeCertificateRequestModel.renewalCertificationDate = res.data.results[0].renewalCertificationDate;
       this.employeeCertificateRequestModel.renewalFeesValidityToDate = res.data.results[0].renewalFeesValidityToDate;
@@ -292,7 +292,7 @@ export class CertificationDetailComponent implements OnInit {
     this.certificateViewFlag = true;
 
     this.EducationSkillsInformationService.getCertificateById(certificate.employeeCertificateId).subscribe(res => {
-      debugger
+      
       this.employeeCertificateRequestModel.renewalFeesValidityFromDate = res.data.results[0].renewalFeesValidityFromDate;
       this.employeeCertificateRequestModel.renewalCertificationDate = res.data.results[0].renewalCertificationDate;
       this.employeeCertificateRequestModel.renewalFeesValidityToDate = res.data.results[0].renewalFeesValidityToDate;

@@ -59,6 +59,8 @@ import { JoiningInformationComponent } from './components/employment-information
 import { ReJoiningInformationComponent } from './components/employment-information/re-joining-information/re-joining-information.component';
 import { TransferInformationComponent } from './components/employment-information/transfer-information/transfer-information.component';
 import { ExitInformationComponent } from './components/employment-information/exit-information/exit-information.component';
+import { EmployeeSummaryComponent } from './components/employee-summary/employee-summary.component';
+import { EmploymentSummaryComponent } from './components/employment-information/employment-summary/employment-summary.component';
 
 @NgModule({
     declarations: [
@@ -92,7 +94,9 @@ import { ExitInformationComponent } from './components/employment-information/ex
         JoiningInformationComponent,
         ReJoiningInformationComponent,
         TransferInformationComponent,
-        ExitInformationComponent
+        ExitInformationComponent,
+        EmployeeSummaryComponent,
+        EmploymentSummaryComponent
     ],
     imports: [
         CommonModule,

@@ -101,10 +101,10 @@ export class SkillsDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-      debugger
+      
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
-          debugger
+          
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
           this.getAllEducationSummary();
         })
@@ -121,9 +121,9 @@ export class SkillsDetailComponent implements OnInit {
 
 
   getAllEducationSummary() {
-    debugger
+    
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
@@ -146,14 +146,14 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   postEducationForm(employeeEducationRequestModel) {
-    debugger
+    
     employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
 
     employeeEducationRequestModel.startDate = this.datepipe.transform(employeeEducationRequestModel.startDate, 'dd-MMM-yyyy');
     employeeEducationRequestModel.endDate = this.datepipe.transform(employeeEducationRequestModel.endDate, 'dd-MMM-yyyy');
 
     this.EducationSkillsInformationService.postEducationInfoForm(employeeEducationRequestModel).subscribe(res => {
-      debugger
+      
       this.getAllEducationSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetEducationForm();
@@ -182,7 +182,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   editEducationRow(education) {
-    debugger
+    
     this.educationEditFlag = true;
     this.educationviewFlag = false;
     this.validateQualification = false;
@@ -234,7 +234,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   viewEducationRow(education) {
-    debugger
+    
     this.educationviewFlag = true;
     this.educationEditFlag = false;
     this.validateQualification = true;
@@ -284,7 +284,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   deleteEducationRow(education) {
-    debugger
+    
     this.educationId = education.employeeEducationID;
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,
@@ -294,7 +294,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   cancelEducationEditView() {
-    debugger
+    
     this.educationEditFlag = false;
     this.educationviewFlag = false;
     this.validateQualification = false;

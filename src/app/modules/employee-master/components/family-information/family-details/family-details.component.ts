@@ -277,7 +277,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   saveFamilyInformation() {
-    debugger
+    
     const body: FormData = new FormData();
 
     body.append('files', this.selectedImageFile);
@@ -295,7 +295,7 @@ export class FamilyDetailsComponent implements OnInit {
   // Push Education Form Data to Summary Grid
   pushFamilyDetailsToGrid(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
     guardianDetailRequestDTO) {
-    debugger
+    
     familyMemberInfoRequestDTO.employeeMasterId = this.employeeMasterId
     familyAddressDetailRequestDTO.employeeMasterId = this.employeeMasterId
     guardianDetailRequestDTO.employeeMasterId = this.employeeMasterId
@@ -356,7 +356,7 @@ export class FamilyDetailsComponent implements OnInit {
 
   saveFamilyEditRow(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
     guardianDetailRequestDTO) {
-    debugger
+    
     if (familyMemberInfoRequestDTO) {
       familyMemberInfoRequestDTO.employeeMasterId = this.employeeMasterId;
     }
@@ -376,7 +376,7 @@ export class FamilyDetailsComponent implements OnInit {
 
     const array = []
     this.familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(this.familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
-    debugger
+    
     this.FamilyInformation.familyMemberInfoRequestDTO = familyMemberInfoRequestDTO;
     this.FamilyInformation.familyAddressDetailRequestDTO = familyAddressDetailRequestDTO;
     this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
@@ -403,7 +403,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   populateGender(relation) {
-    debugger
+    
     if (relation.value == 'Father' || relation.value == 'Brother' || relation.value == 'Son' ||
       relation.value == 'Husband' || relation.value == 'Father in Law') {
       this.familyMemberInfoRequestDTO.gender = 'Male';
@@ -413,7 +413,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   birthDateValidation() {
-    debugger
+    
     let dateObj = new Date();
     dateObj = this.familyMemberInfoRequestDTO.dateOfBirth;
     var month = dateObj.getMonth() + 1; //months from 1-12
@@ -423,7 +423,7 @@ export class FamilyDetailsComponent implements OnInit {
     return new Date(year + 18, month - 1, day) <= new Date();
   }
   birthD() {
-    debugger
+    
     if (this.birthDateValidation() == false) {
       this.familyMemberInfoRequestDTO.ageBracket = 'Minor';
       this.dependentOnEmployee = 'yes';
@@ -470,7 +470,7 @@ export class FamilyDetailsComponent implements OnInit {
   getCopyFromAddress() {
 
     this.FamilyInformationService.getCopyFromAddress(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.getAddressCopyFromList = res.data.results[0].allAddressBeans;
 
       const newa = res.data.results[0].allAddressBeans.forEach(element => {
@@ -483,7 +483,7 @@ export class FamilyDetailsComponent implements OnInit {
   getFamilyGridSummary() {
 
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.FamilySummaryGridData = res.data.results[0].familyDetailsSummaryBeans;
 
       this.FamilySummaryGridData.forEach(res => {
@@ -506,7 +506,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   getAddressFromCopyList(copyAddress) {
-    debugger
+    
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
 
@@ -624,7 +624,7 @@ export class FamilyDetailsComponent implements OnInit {
   editFamilyMember(family) {
     this.enableForm();
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-      debugger
+      
       this.updateFormFlag = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
@@ -670,7 +670,7 @@ export class FamilyDetailsComponent implements OnInit {
 
   viewFamilyMember(family) {
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-      debugger
+      
       this.disableForm();
       this.familyViewItem = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;

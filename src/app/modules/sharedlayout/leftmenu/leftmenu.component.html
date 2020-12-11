@@ -372,6 +372,10 @@
                         class="icon-credit-card"></i><span>{{ 'EmployeeMaster.employeeMaster' | transloco }}</span></a>
                 <ul class="collapse" id="collapseBasic" [collapse]="isEmployeeMaster" [isAnimated]="true">
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/employee-summary']"><span>Employee Summary</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/employee-master/personal-information']"><span>{{ 'EmployeeMaster.personalInformation' | transloco }}</span></a>
                     </li>
 
@@ -384,7 +388,7 @@
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/employment-information']"><span>{{ 'EmployeeMaster.employmentInformation' | transloco }}</span></a>
+                            [routerLink]="['/employee-master/employment-information/employment-summary']"><span>{{ 'EmployeeMaster.employmentInformation' | transloco }}</span></a>
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"

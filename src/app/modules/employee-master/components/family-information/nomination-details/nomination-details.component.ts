@@ -300,7 +300,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
         this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
-          debugger
+          
           this.AllESICList = res.data.results[0];
           this.getStates();
           // const TABLE_DATA1: ESICElement[] = res.data.results[0];
@@ -381,7 +381,7 @@ export class NominationDetailsComponent implements OnInit {
     // })
   }
   filterCity(state, ESIC) {
-    debugger
+    
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (state == city.state) {
@@ -395,7 +395,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   filterDispensaryName(city, ESIC) {
-    debugger
+    
     let dispensaryNames = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(dispensaryName => {
       if (city == dispensaryName.district) {
@@ -428,7 +428,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   getDispensaryAddress(nomination) {
-    debugger
+    
     let dispensary1 = this.ESICLocationLIST['esicdispensaryDB'].filter(dispensary => {
       if (nomination.dispensaryName == dispensary.dispensary) {
         return dispensary;
@@ -594,7 +594,7 @@ export class NominationDetailsComponent implements OnInit {
       this.SaveBoolean = true;
     }
 
-    debugger
+    
     if (this.SaveBoolean == true) {
 
       this.NominationInformation.familyNominationRequestDTO = nominationDataSource;

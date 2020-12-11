@@ -103,7 +103,7 @@ export class ContactInformationComponent implements OnInit {
 
     // get API for contact information
     // this.initiateContactForm = this.EventEmitterService.setcontactFormInitiate().subscribe(res => {
-    //   debugger
+    //   
     //   this.permanentAddressInformation.country = '';
     //   this.localAddressInformation.country = '';
     //   this.ngOfficialCountryCode = '';
@@ -152,7 +152,7 @@ export class ContactInformationComponent implements OnInit {
 
   // getting selected communication Address value
   selectionChallenged(event) {
-    debugger
+    
     this.communicationAddress = event.target.defaultValue;
   }
   // Contact Form submit Post API call
@@ -268,7 +268,7 @@ export class ContactInformationComponent implements OnInit {
     this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactName1 = res.data.results[0]['employeePersonalInfoResponseDTO'].emergencyContactName1;
     this.contactInformation.employeePersonalInfoRequestDTO.personalEmailID = res.data.results[0]['employeePersonalInfoResponseDTO'].personalEmailID;
 
-    debugger
+    
     // Personal mobile number countryCode extraction
     if (res.data.results[0]['employeeMasterResponseDTO'].personalMobileNumber) {
       this.contactInformation.employeeMasterRequestDTO.personalMobileNumber = res.data.results[0]['employeeMasterResponseDTO'].personalMobileNumber.slice(res.data.results[0]['employeeMasterResponseDTO'].personalMobileNumber.length - 10)

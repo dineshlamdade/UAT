@@ -10,7 +10,9 @@ import { EducationDetailComponent } from './components/education-skills-informat
 import { EducationSkillsInformationComponent } from './components/education-skills-information/education-skills-information.component';
 import { LanguageDetailComponent } from './components/education-skills-information/language-detail/language-detail.component';
 import { SkillsDetailComponent } from './components/education-skills-information/skills-detail/skills-detail.component';
+import { EmployeeSummaryComponent } from './components/employee-summary/employee-summary.component';
 import { EmploymentInformationComponent } from './components/employment-information/employment-information.component';
+import { EmploymentSummaryComponent } from './components/employment-information/employment-summary/employment-summary.component';
 import { ExitInformationComponent } from './components/employment-information/exit-information/exit-information.component';
 import { JoiningInformationComponent } from './components/employment-information/joining-information/joining-information.component';
 import { ReJoiningInformationComponent } from './components/employment-information/re-joining-information/re-joining-information.component';
@@ -35,6 +37,11 @@ const routes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: 'employee-summary',
+        component: EmployeeSummaryComponent,
+        data: { title: ':: DelziaHR :: employee-summary' },
+      },
       {
         path: 'personal-information',
         component: PersonalInformationComponent,
@@ -187,6 +194,11 @@ const routes: Routes = [
             path: 'exit-information',
             component: ExitInformationComponent,
             data: { title: ':: DelziaHR :: exit-information' },
+          },
+          {
+            path: 'employment-summary',
+            component: EmploymentSummaryComponent,
+            data: { title: ':: DelziaHR :: employment-summary' },
           }
         ]
       },

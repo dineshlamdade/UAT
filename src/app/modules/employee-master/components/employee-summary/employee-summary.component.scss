@@ -1,0 +1,526 @@
+
+// app-employee-summary{
+    .wj-dialog-header{
+      text-align: center;
+    }
+ 
+  .wj-content.wj-dropdown{
+      width: 185px;
+  }
+  .column-block{
+    display: flex;
+    max-width: fit-content;
+
+  }
+  .vl {
+    border-left: 6px dotted #9c65a559;
+    height: 100%;
+    position: absolute;
+    left: 47%;
+    // margin-left: -3px;
+    top: 0;
+  }
+    .wj-fullName-size{
+      width: 390px !important;
+    }
+    .basic-form-row{
+    //     margin-left: 179px;
+    //   margin-right: 36px;
+      border: 2.5px #dfceea ridge;
+    }
+    .legend{
+        color: #662d8c;
+        font-weight: 700;
+        width: auto;
+        padding: 8px;
+        font-size: 16px;
+      }
+    // .container-form{
+      // justify-content: center;
+    // }
+    .flex-grid {
+      display: flex;
+      // margin: 0 0 20px 0;
+      width: 1137px;
+      height: 468px;
+    }
+    .flex-grid .col {
+      flex: 1;
+      padding: 29px;
+    }
+
+  
+    .pb-1, .py-1 {
+      padding-bottom: .25rem!important;
+      font-size: 15px;
+  }
+  .thumbnail {
+    position: absolute;
+    width: 117px;
+    height: 171px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-left: 5px;
+    }
+    .thumbnail img {
+        cursor: pointer;
+        position: absolute;
+        left: 59px;
+        top: 58px;
+        width: 100%;
+        height: auto;
+        display: block;
+        border: ridge;
+        transform: translate(-50%, -50%);
+    }
+    .borderRequired {
+      border: 1px dashed #d50000 !important;
+    }
+    .valid-border{
+      border: ridge;
+    }
+    .forgot-valid-otp-btn{
+      display: flex !important;
+      // margin: auto !important;
+      background-color: #662d8c !important;
+      color: white !important;
+      margin-right: 46px;
+  }
+  .forgot-invalid-otp-btn{
+      display: flex !important;
+      // margin: auto !important;
+      background-color: #a98fd7 !important;
+      color: white !important;
+      margin-right: 46px;
+  }
+  .reset-form-btn{
+    display: flex !important;
+    // margin: auto !important;
+    background-color: #662d8c !important;
+    color: white !important;
+    margin-right: 25px;
+    height: fit-content;
+  }
+  .wj-dialog-footer {
+      /* text-align: right; */
+      /* margin-top: 1em; */
+      padding: 0 !important; 
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0 !important; 
+  }
+  html, body {
+    overflow: hidden;
+  }
+  .wj-popup .wj-dialog-body {
+     padding: 0;
+    padding-left: 15px !important;
+    padding-right: 14px !important;
+  }
+  .wj-personal-form{
+  //  height: 430px;
+  //  width: 526px;
+    height: 1393px;
+      // width: 100%;
+      width: 1099px;
+  }
+
+  .image-card{
+    width: 161px;
+    height: 241px;
+    position: absolute;
+    margin-top: 16px;
+  }
+    /* wj-labeled-input: adapted from MDL styles */
+  
+  /* underline access keys */
+  .wj-labeled-input .accesskey {
+      text-decoration: underline;
+  }
+  
+  /* label input container */
+  .wj-labeled-input {
+      position: relative;
+      font-size: 16px;
+      display: inline-block;
+      box-sizing: border-box;
+      // width: 175px;
+      width: 185px;
+      max-width: 100%;
+      margin: 0 6px;
+      padding: 20px 0;
+  }
+  
+      /* Wijmo control in the container for Personal form */
+      .wj-labeled-input .wj-control.wj-content {
+          margin: 0;
+          width: 100%;
+          background-color: transparent;
+          border: none;
+          border-bottom: 1px solid rgba(0,0,0,.1);
+      }
+      .wj-labeled-input .wj-control.wj-content button {
+          opacity: 0.75;
+          border-color: rgba(0,0,0,.1);
+      }
+  
+      /* hide InputNumber buttons when the control doesn't have focus */
+      .wj-labeled-input .wj-inputnumber.wj-content:not(.wj-state-focused) button {
+          opacity: 0;
+      }
+  
+      /* label in the container (must come after the control) */
+      .wj-labeled-input label {
+          font-size: 16px;
+          top: 24px;
+          bottom: 0;
+          margin: 0;
+          pointer-events: none;
+          position: absolute;
+          display: block;
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-align: left;
+          color: #777775;
+          transition-duration: .2s;
+          transition-timing-function: cubic-bezier(.4,0,.2,1);
+      }
+      
+      /* move label out of the way when control is focused or not empty */
+      .wj-static-labels .wj-labeled-input :not(.wj-state-focused) + label,
+      .wj-labeled-input .wj-state-focused + label,
+      .wj-labeled-input :not(.wj-state-empty) + label {
+          font-size: 12px;
+          top: 4px;
+          color: rgb(63,81,181);
+          visibility: visible;
+      }
+      .wj-labeled-input .wj-state-invalid + label {
+          color: #d50000;
+      }
+  
+      /* underline label */
+      .wj-labeled-input label:after {
+          background-color: rgb(63,81,181);
+          bottom: 20px;
+          content: '';
+          height: 2px;
+          left: 45%;
+          position: absolute;
+          transition-duration: .2s;
+          transition-timing-function: cubic-bezier(.4,0,.2,1);
+          visibility: hidden;
+          width: 10px;
+      }
+  
+      /* show underline when focused */
+      .wj-labeled-input .wj-state-focused + label:after {
+          left: 0;
+          visibility: visible;
+          width: 100%;
+      }
+      .wj-labeled-input .wj-state-invalid + label:after {
+          background-color: #d50000;
+      }
+  
+      /* validation message */
+      .wj-labeled-input .wj-error {
+          color: #d50000;
+          position: absolute;
+          font-size: 12px;
+          margin-top: 3px;
+          visibility: hidden;
+          display: block;
+      }
+      .wj-labeled-input .wj-control.wj-state-invalid ~ .wj-error {
+          visibility: visible;
+      }
+  
+      /* Wijmo control in the container for Basic form */
+      .wj-basic-labeled-input {
+        position: relative;
+        font-size: 16px;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 215px;
+        max-width: 100%;
+        margin: 0 6px;
+        padding: 20px 0;
+        font-family: Roboto;
+      }
+      .wj-control .wj-input-group .wj-form-control:enabled {
+        font-family: Roboto;
+        background: 0 0;
+        /* color: rgba(0,0,0,.87); */
+        // width: 152px;
+    }
+  
+      .wj-basic-labeled-input .wj-control.wj-content {
+        margin: 0;
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+    .wj-basic-labeled-input .wj-control.wj-content button {
+        opacity: 0.75;
+        border-color: rgba(0,0,0,.1);
+    }
+  
+    /* hide InputNumber buttons when the control doesn't have focus */
+    .wj-basic-labeled-input .wj-inputnumber.wj-content:not(.wj-state-focused) button {
+        opacity: 0;
+    }
+  
+    /* label in the container (must come after the control) */
+    .wj-basic-labeled-input label {
+        font-size: 16px;
+        top: 24px;
+        bottom: 0;
+        margin: 0;
+        pointer-events: none;
+        position: absolute;
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: left;
+        color: #7993d6;
+        transition-duration: 0.2s;
+        // font-style: italic;
+        // color: #777775;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+    }
+    
+    /* move label out of the way when control is focused or not empty */
+    .wj-static-labels .wj-basic-labeled-input :not(.wj-state-focused) + label,
+    .wj-basic-labeled-input .wj-state-focused + label,
+    .wj-basic-labeled-input :not(.wj-state-empty) + label {
+        font-size: 12px;
+        top: 4px;
+        color: rgb(63,81,181);
+        visibility: visible;
+    }
+    .invalid-label {
+      font-size: 12px;
+      top: 4px;
+      color: red;
+      visibility: visible;
+    }
+    .wj-basic-labeled-input .wj-state-invalid + label {
+        color: #d50000;
+    }
+  
+    /* underline label */
+    .wj-basic-labeled-input label:after {
+        background-color: rgb(63,81,181);
+        bottom: 20px;
+        content: '';
+        height: 2px;
+        left: 45%;
+        position: absolute;
+        transition-duration: .2s;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+        visibility: hidden;
+        width: 10px;
+    }
+  
+    /* show underline when focused */
+    .wj-basic-labeled-input .wj-state-focused + label:after {
+        left: 0;
+        visibility: visible;
+        width: 100%;
+    }
+    .wj-basic-labeled-input .wj-state-invalid + label:after {
+        background-color: #d50000;
+    }
+  
+    /* validation message */
+    .wj-basic-labeled-input .wj-error {
+        color: #d50000;
+        position: absolute;
+        font-size: 12px;
+        margin-top: 3px;
+        visibility: hidden;
+        display: block;
+    }
+    .wj-basic-labeled-input .wj-control.wj-state-invalid ~ .wj-error {
+        visibility: visible;
+    }
+  
+  
+      mat-grid-tile {
+        // background: lightblue;
+        width: calc((48% - 0.5px) * 1 + 0px) !important;
+        height: 459px;
+        overflow: unset;
+      }
+      .mat-button {
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .margin-btn{
+      margin-top: 28px;
+    }
+    .wj-inputnumber input.wj-form-control {
+      text-align: left;
+  }
+  .full-name {
+    color: #807c7cd9;
+  }
+  
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 15px;
+    vertical-align: middle !important;
+  }
+
+  .image-size-info{
+      width: 123px;
+      position: absolute;
+      text-align: center;
+      margin-top: 140px;
+      color: rgb(105 67 161);
+      font-size: 12px;
+  }
+  .img-add-icon{
+    font-size: 41px;
+      margin: 123;
+      margin-top: 49px;
+      margin-left: 32px;
+      color: #d1bae0;
+      position: absolute;
+      cursor: pointer;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* Wijmo control in the container for Basic form */
+      .new-basic-labeled-input {
+        position: relative;
+        font-size: 16px;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 215px;
+        max-width: 100%;
+        margin: 0 6px;
+        padding: 20px 0;
+        font-family: Roboto;
+      }
+      .wj-control .wj-input-group .wj-form-control:enabled {
+        font-family: Roboto;
+        background: 0 0;
+        /* color: rgba(0,0,0,.87); */
+        // width: 152px;
+    }
+  
+      .new-basic-labeled-input .wj-control.wj-content {
+        margin: 0;
+        width: 100%;
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        color: #d50000;
+  
+    }
+    .new-basic-labeled-input .wj-control.wj-content button {
+        opacity: 0.75;
+        border-color: rgba(0,0,0,.1);
+    }
+  
+    /* hide InputNumber buttons when the control doesn't have focus */
+    .new-basic-labeled-input .wj-inputnumber.wj-content:not(.wj-state-focused) button {
+        opacity: 0;
+    }
+  
+    /* label in the container (must come after the control) */
+    .new-basic-labeled-input label {
+        font-size: 16px;
+        top: 24px;
+        bottom: 0;
+        margin: 0;
+        pointer-events: none;
+        position: absolute;
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: left;
+        color: #777775;
+        transition-duration: .2s;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+    }
+    
+    /* move label out of the way when control is focused or not empty */
+    .wj-static-labels .new-basic-labeled-input :not(.wj-state-focused) + label,
+    .new-basic-labeled-input .wj-state-focused + label,
+    .new-basic-labeled-input :not(.wj-state-empty) + label {
+        font-size: 12px;
+        top: 4px;
+        color: #d50000;
+        visibility: visible;
+    }
+    .invalid-label {
+      font-size: 12px;
+      top: 4px;
+      color: #d50000;
+      visibility: visible;
+    }
+    .new-basic-labeled-input label {
+        color: #d50000;
+    }
+  
+    /* underline label */
+    .new-basic-labeled-input label:after {
+        background-color: rgb(63,81,181);
+        bottom: 20px;
+        content: '';
+        height: 2px;
+        left: 45%;
+        position: absolute;
+        transition-duration: .2s;
+        transition-timing-function: cubic-bezier(.4,0,.2,1);
+        visibility: hidden;
+        width: 10px;
+    }
+  
+    /* show underline when focused */
+    .new-basic-labeled-input .wj-state-focused + label:after {
+        left: 0;
+        visibility: visible;
+        width: 100%;
+    }
+    .new-basic-labeled-input .wj-state-focused + label:after {
+        background-color: #d50000;
+    }
+  
+    /* validation message */
+    .new-basic-labeled-input .wj-error {
+        color: #d50000;
+        position: absolute;
+        font-size: 12px;
+        margin-top: 3px;
+        visibility: hidden;
+        display: block;
+    }
+    .new-basic-labeled-input .wj-control.wj-state-invalid ~ .wj-error {
+        visibility: visible;
+    }
+//   }

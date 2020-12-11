@@ -184,7 +184,7 @@ export class PersonalInformationComponent implements OnInit {
     })
 
     this.SharedInformationService.getAdditionalFields().subscribe(res=>{
-      debugger
+      
       res.data.results.filter(item => {
         if(item.fieldName == 'PersonalAdditional1'){
           this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;

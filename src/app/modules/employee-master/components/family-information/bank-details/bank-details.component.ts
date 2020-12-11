@@ -78,13 +78,13 @@ export class BankDetailsComponent implements OnInit {
     // this.controls = new FormArray(this.toGroups);
     if (this.BankAccountDataSource.length == 0) {
       this.FamilyInformationService.getFamilyMemberInfo(this.employeeMasterId).subscribe(res => {
-        debugger
+        
         this.familyMemberList = res.data.results[0];
         // const TABLE_DATA1: BankElement[] = this.familyMemberList;
         // this.BankDataSource = new MatTableDataSource(TABLE_DATA1);
 
         this.FamilyInformationService.getBankDetailsInfo(this.employeeMasterId).subscribe(res => {
-          debugger
+          
 
           this.BankDetailsList = res.data.results[0];
           // const TABLE_DATA1: BankElement[] = this.familyMemberList;
@@ -142,7 +142,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   searchIFSC(searchTerm, bankIFSC, stateModel, bank: any) {
-    debugger
+    
     this.currenBank = bank;
     if (searchTerm.query.length < 2) {
       this.AllIFSCcodeList = []
@@ -183,7 +183,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   differenceOf2Arrays(array1, array2) {
-    // debugger
+    // 
     var temp = [];
 
     for (var i in array1) {
@@ -211,7 +211,7 @@ export class BankDetailsComponent implements OnInit {
   // }
 
   IFSCDetails(bankIFSC, bank: any) {
-    debugger
+    
     this.currenBank = bank;
     if (bankIFSC) {
       bank.bankName = '';
@@ -222,7 +222,7 @@ export class BankDetailsComponent implements OnInit {
     }
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
-      debugger
+      
       this.maxAccNumber = res.data.results[0].limit
       bank.bankName = res.data.results[0].bankName;
       bank.branchName = res.data.results[0].branchName;
@@ -277,7 +277,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   filterIFSCCode(event) {
-    debugger
+    
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: any[] = [];
     let query = event.query;

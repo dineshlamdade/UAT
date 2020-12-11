@@ -142,7 +142,7 @@ export class BankInformationComponent implements OnInit {
 
   getBankAccounts() {
     this.BankInformationService.getBankInformation(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.bankSummaryGridData = res.data.results[0];
       this.employeeBankInfoId = res.data.results[0][0].employeeBankInfoId;
     });

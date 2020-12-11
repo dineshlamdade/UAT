@@ -83,7 +83,7 @@ export class IdentityInformationComponent implements OnInit {
     private modalService: BsModalService,
     public dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public VisaDialog: any,) {
-      debugger
+      
     if (VisaDialog?.VisaDialog) {
       this.editVisaDialogFlag = VisaDialog.VisaDialog;
       if (this.editVisaDialogFlag == 'editVisaDialog') {
@@ -165,7 +165,7 @@ export class IdentityInformationComponent implements OnInit {
     //   }
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(res => {
-      debugger
+      
      
       // (<wjcCore.CollectionView>this.flex.collectionView).remove(this.item);
       this.deleteInternationalWorkerID.push(this.item.employeeVisaDetailId);
@@ -176,7 +176,7 @@ export class IdentityInformationComponent implements OnInit {
 
 
   IdentityInfoFormSubmit(IdentityInformation) {
-    debugger
+    
     IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate =
       this.datepipe.transform(IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate, "dd-MMM-yyyy");
 
@@ -229,13 +229,13 @@ export class IdentityInformationComponent implements OnInit {
   }
   getIdentityInfoData() {
     this.IdentityInformationService.getIdentityInfoData().subscribe((res: any) => {
-      debugger
+      
       this.newData = res;
       this.dataBinding(res);
     })
   }
   dataBinding(res) {
-    debugger
+    
     if (res.data.results[0].employeeESICDTOResponseDTO) {
       this.IdentityInformation.employeeESICDTORequestDTO = res.data.results[0].employeeESICDTOResponseDTO;
     }
@@ -246,147 +246,9 @@ export class IdentityInformationComponent implements OnInit {
       this.data = res.data.results[0].employeeVisaDetailResponseDTOList;
     }
   }
-  // initializeGrid(flex: wjcGrid.FlexGrid) {
-  //   this.flexNew = flex;
-  //   flex.rows.defaultSize = 40;
-  //   // custom formatter to paint buttons and editors
-  //   flex.formatItem.addHandler((s: wjcGrid.FlexGrid, e: wjcGrid.FormatItemEventArgs) => {
-  //     if (e.panel == s.cells) {
-  //       let col = s.columns[e.col],
-  //         item = s.rows[e.row].dataItem;
-  //       if (item == this._currentEditItem) {
-  //         // create editors and buttons for the item being edited
-  //         switch (col.binding) {
-  //           case 'buttons':
-  //             e.cell.innerHTML = document.getElementById('tplBtnEditMode').innerHTML;
-  //             e.cell['dataItem'] = item;
-  //             break;
-  //           case 'countryName':
-  //           case 'visaType':
-  //           case 'validTill':
-  //             e.cell.innerHTML = '<input class="form-control" ' +
-  //               'id="' + col.binding + '" ' +
-  //               'value="' + s.getCellData(e.row, e.col, true) + '"/>';
-  //             break;
-  //         }
-  //       } else {
-  //         // create buttons for items not being edited
-  //         switch (col.binding) {
-  //           case 'buttons':
-  //             e.cell.innerHTML = document.getElementById('tplBtnViewMode').innerHTML;
-  //             e.cell['dataItem'] = item;
-  //             break;
-  //         }
-  //       }
-  //     }
-  //   });
-
-  //   // handle button clicks
-  //   flex.addEventListener(flex.hostElement, 'click', (e: MouseEvent) => {
-  //     let targetBtn: HTMLButtonElement;
-  //     if (e.target instanceof HTMLButtonElement) {
-  //       targetBtn = e.target;
-  //     } else if (e.target instanceof HTMLSpanElement && e.target.classList.contains('glyphicon')) {
-  //       targetBtn = e.target.parentElement as HTMLButtonElement;
-  //     }
-  //     if (targetBtn) {
-  //       // get button's data item
-  //       let item = wjcCore.closest(targetBtn, '.wj-cell')['dataItem'];
-  //       this.item = item;
-  //       // handle buttons
-  //       switch (targetBtn.id) {
-  //         // start editing this item
-  //         case 'btnEdit':
-  //           this._editItem();
-  //           break;
-  //         // remove this item from the collection
-  //         case 'btnDelete':
-  //           const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-  //             width: '664px', height: '241px',
-  //             data: { pageValue: 'IdentityForm', info: 'Do you really want to delete?' }
-  //           });
-  //           if (this.IdentityInformation.employeePersonalInfoRequestDTO.countryOfOrigin != '') {
-  //             this.IdentityInformation.employeePersonalInfoRequestDTO.countryOfOrigin = '';
-  //           }
-  //           break;
-  //         // commit edits
-  //         case 'btnOK':
-  //           this._commitEdit();
-  //           break;
-  //         // cancel edits
-  //         case 'btnCancel':
-  //           this._cancelEdit();
-  //           break;
-  //         case 'btnPopup':
-  //           // this.popupDialog();
-  //           break;
-  //       }
-  //     }
-
-  //     let ht = flex.hitTest(e);
-  //     this.ht = ht;
-
-  //     if (ht.target.id == 'btnEdit') {
-  //       this._editItem();
-  //       // prepare form
-  //       this.editingItem = flex.rows[ht.row].dataItem;
-  //       this.gridVisaType.text = this.editingItem.visaType;
-  //       this.gridoriginCountry.text = this.editingItem.countryName;
-  //       this.gridVisaValidTill.text = this.editingItem.validTill;
-  //     }
-  //     if (ht.target.id == 'btnPopup') {
-  //       this.popupDialog();
-  //       // prepare form
-  //       this.viewItem = flex.rows[ht.row].dataItem;
-  //       this.gridViewVisaType.text = this.viewItem.visaType;
-  //       this.gridViewOriginCountry.text = this.viewItem.countryName;
-  //       this.gridViewVisaValidTill.text = this.viewItem.validTill;
-  //     }
-  //   });
-
-  //   // exit edit mode when scrolling the grid or losing focus
-  //   flex.scrollPositionChanged.addHandler(this._cancelEdit.bind(this));
-  //   flex.lostFocus.addHandler(this._cancelEdit.bind(this));
-  // }
-
-  // _editItem() {
-
-  //   this.editcell.show(true, (s: wjcInput.Popup) => {
-  //     // s.dialogResult = wjhideok;
-  //     if (s.dialogResult == 'wj-hide-ok') {
-  //       // commit changes if the user pressed the OK button
-  //       (<wjcCore.CollectionView>this.flexNew.collectionView).editItem(this.editingItem);
-  //       this.editingItem.visaType = this.gridVisaType.text;
-  //       this.editingItem.countryName = this.gridoriginCountry.text;
-  //       this.editingItem.validTill = this.gridVisaValidTill.text;
-  //       console.log(this.data);
-
-  //       (<wjcCore.CollectionView>this.flexNew.collectionView).commitEdit();
-  //     }
-  //     // return focus to the grid
-  //     this.flexNew.focus();
-  //   });
-  // }
-
-  // popupDialog() {
-  //   this.viewPopUp.show(true, (s: wjcInput.Popup) => {
-  //     this.viewItem.visaType = this.gridViewVisaType.text;
-  //     this.viewItem.countryName = this.gridViewOriginCountry.text;
-  //     this.viewItem.validTill = this.gridViewVisaValidTill.text;
-  //     (<wjcCore.CollectionView>this.flexNew.collectionView).commitEdit();
-
-  //     this.flexNew.focus();
-  //   });
-  // }
-
-  // _cancelEdit() {
-  //   if (this._currentEditItem) {
-  //     this._currentEditItem = null;
-  //     this.flex.invalidate();
-  //   }
-  // }
+  
   editVisaInfo(visa) {
-    debugger
+    
     // this.modalRef = this.modalService.show(template);
     const dialogRef = this.dialog.open(IdentityInformationComponent, {
       disableClose: true,
@@ -411,7 +273,7 @@ export class IdentityInformationComponent implements OnInit {
 
   pushToGrid() {
     let data = [];
-    debugger
+    
     this.tableCountries = []; this.typeOfVisa = []; this.validTill = [];
     this.tableCountries.push(this.VisaInformation.countryName);
     this.typeOfVisa.push(this.VisaInformation.visaType);
