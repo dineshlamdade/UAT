@@ -11,28 +11,32 @@ import { PayrollAreaInformationService } from '../../employee-master-services/pa
   styleUrls: ['./job-information.component.scss']
 })
 export class JobInformationComponent implements OnInit {
-  hiddenSummary:boolean = true;
+  hiddenSummary: boolean = true;
   employeeMasterId: number;
   summaryGridData: Array<any> = [];
-  payrollAreaCode:'';
-  joiningDate:any;
+  payrollAreaCode: any;
+  joiningDate: any;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
-    private router:Router,private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
+    private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
 
 
   ngOnInit(): void {
     this.hiddenSummary = true;
 
-    this.payrollAreaCode=null;
-        
+    this.payrollAreaCode = '';
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
-     //get payroll area aasigned to that employee
-     this.getPayrollAreaInformation()
+    //get payroll area code from local storage
+    const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+    this.payrollAreaCode = new String(payrollAreaCode);
+
+    //get payroll area aasigned to that employee
+    this.getPayrollAreaInformation()
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -43,15 +47,15 @@ export class JobInformationComponent implements OnInit {
   }
 
   getGridSummary() {
-    
-    if(this.payrollAreaList.length==1){
-      this.payrollAreaCode=this.payrollAreaList[0];
+
+    if (this.payrollAreaList.length == 1) {
+      this.payrollAreaCode = this.payrollAreaList[0];
     }
-    else{
-      this.payrollAreaCode=this.payrollAreaCode;
+    else {
+      this.payrollAreaCode = this.payrollAreaCode;
     }
-    this.JobInformationService.getSummaryDetails(this.employeeMasterId,this.payrollAreaCode).subscribe(res => {
-      
+    this.JobInformationService.getSummaryDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
+
       if (res.data.results[0]) {
 
         this.summaryGridData = res.data.results[0];
@@ -60,16 +64,26 @@ export class JobInformationComponent implements OnInit {
   }
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
+
     
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      
-      res.data.results[0].forEach(item =>{
-        
+
+      res.data.results[0].forEach(item => {
+
         this.payrollAreaList.push(item.payrollAreaCode);
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
-     });
+      });
     })
+
+    if (this.payrollAreaList.length == 1) {
+      this.payrollAreaCode = this.payrollAreaList[0];
+    }
+    else {
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+    }
 
   }
 
@@ -87,28 +101,28 @@ export class JobInformationComponent implements OnInit {
   }
 
   //set PayrollArea
-  selectPayrollArea(event){
+  selectPayrollArea(event) {
     
-    this.payrollAreaCode=event;
+    localStorage.setItem('jobInformationPayrollAreaCode', event);
+    this.payrollAreaCode = event;
     this.getGridSummary()
   }
 
   //edit job details
-  editJobDetails(job){
-    
-    if(job==="Minimum Wages"){
+  editJobDetails(job) {
+
+    if (job === "Minimum Wages") {
       this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
     }
-    else if(job==="Organization Details"){
+    else if (job === "Organization Details") {
       this.router.navigate(['/employee-master/job-information/organization-details']);
     }
-    else if(job==="Position Details"){
+    else if (job === "Position Details") {
       this.router.navigate(['/employee-master/job-information/position-details']);
     }
-    else if(job==="Project Details"){
+    else if (job === "Project Details") {
       this.router.navigate(['/employee-master/job-information/project-details']);
     }
-    console.log("job ",job);
   }
 
 }

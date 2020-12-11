@@ -89,7 +89,7 @@ export class OrganizationDetailComponent implements OnInit {
   profitDescription: any;
   profitCentreCode: any;
 
-  payrollAreaCode: '';
+  payrollAreaCode: any;
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
@@ -157,9 +157,13 @@ export class OrganizationDetailComponent implements OnInit {
 
     });
 
-    this.payrollAreaCode = null;
+    this.payrollAreaCode = '';
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+
+    //get payroll area code from local storage
+    const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+    this.payrollAreaCode = new String(payrollAreaCode);
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -249,7 +253,7 @@ export class OrganizationDetailComponent implements OnInit {
 
       this.employeeOrganizationDetailId = res.data.results[0].employeeOrganizationDetailId;
       if (res.data.results[0]) {
-      
+
         this.organizationDetailsModel = res.data.results[0];
         // this.payrollAreaCode=res.data.results[0].payrollAreaCode;
 
@@ -459,7 +463,9 @@ export class OrganizationDetailComponent implements OnInit {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      this.payrollAreaCode = this.payrollAreaCode;
+       //get payroll area code from local storage
+       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+       this.payrollAreaCode = new String(payrollAreaCode);
     }
     this.OrganizationForm.markAsUntouched();
   }
@@ -509,7 +515,9 @@ export class OrganizationDetailComponent implements OnInit {
       organizationDetailsModel.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      organizationDetailsModel.payrollAreaCode = this.payrollAreaCode;
+     //get payroll area code from local storage
+     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+     this.payrollAreaCode = new String(payrollAreaCode);
     }
 
     organizationDetailsModel.establishmentFromDate = this.datepipe.transform(organizationDetailsModel.establishmentFromDate, "dd-MMM-yyyy");
@@ -573,10 +581,10 @@ export class OrganizationDetailComponent implements OnInit {
 
       localStorage.setItem('establishmentMasterId', res.data.results[0].establishmentMasterId);
 
-     // this.getOrganizationForm();
-     //navigate to summary page
-   //  this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
-    //this.EventEmitterService.getJobInformationInitiate();
+      // this.getOrganizationForm();
+      //navigate to summary page
+      //  this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
+      //this.EventEmitterService.getJobInformationInitiate();
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -896,7 +904,7 @@ export class OrganizationDetailComponent implements OnInit {
     this.enableWorkLocDate()
   }
   businessAreaObject(businessarea) {
-    
+
     const toSelect = this.filteredBusinessAreaList.find(
       (c) => c.masterCode === this.OrganizationForm.get('businessAreaMasterIdControl').value
     );
@@ -1427,6 +1435,14 @@ export class OrganizationDetailComponent implements OnInit {
 
       });
     })
+    if (this.payrollAreaList.length == 1) {
+      this.payrollAreaCode = this.payrollAreaList[0];
+    }
+    else {
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+    }
 
   }
 
@@ -1445,8 +1461,9 @@ export class OrganizationDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
+    localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
-    this. resetOrganizationForm();
+    this.resetOrganizationForm();
     this.getOrganizationForm();
   }
 

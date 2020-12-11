@@ -53,7 +53,7 @@ export class PositionDetailComponent implements OnInit {
   designation2Code: any;
   designation1Desc: any;
   designation2Desc: any;
-  payrollAreaCode: '';
+  payrollAreaCode: any;
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
@@ -99,9 +99,13 @@ export class PositionDetailComponent implements OnInit {
       reportingToDateControl: [{ value: null, disabled: false }]
     });
 
-    this.payrollAreaCode = null;
+    this.payrollAreaCode = '';
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+
+    //get payroll area code from local storage
+    const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+    this.payrollAreaCode = new String(payrollAreaCode);
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -156,8 +160,6 @@ export class PositionDetailComponent implements OnInit {
           this.employeeTaxCategoryList.push(item);
           this.filteredEmployeeTaxCategoryList.push(item)
         }
-
-
       });
     })
     this.getPositionForm()
@@ -278,7 +280,9 @@ export class PositionDetailComponent implements OnInit {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      this.payrollAreaCode = this.payrollAreaCode;
+     //get payroll area code from local storage
+     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+     this.payrollAreaCode = new String(payrollAreaCode);
     }
     this.PositionForm.markAsUntouched();
   }
@@ -310,7 +314,9 @@ export class PositionDetailComponent implements OnInit {
       positionDetailsModel.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      positionDetailsModel.payrollAreaCode = this.payrollAreaCode;
+     //get payroll area code from local storage
+     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+     this.payrollAreaCode = new String(payrollAreaCode);
     }
 
     positionDetailsModel.employeeTypeFromDate = this.datepipe.transform(positionDetailsModel.employeeTypeFromDate, "dd-MMM-yyyy");
@@ -566,9 +572,6 @@ export class PositionDetailComponent implements OnInit {
   }
   gradeObject(grade) {
 
-    // this.description = grade.masterDescription;
-    // this.positionDetailsModel.gradeMasterId = grade.masterId;
-
     const toSelect = this.filteredGradeList.find(
       (c) => c.masterCode === this.PositionForm.get('gradeMasterIdControl').value
     );
@@ -617,7 +620,7 @@ export class PositionDetailComponent implements OnInit {
     this.enableEmployeeStatusDate()
   }
   employeeTaxCategoryObject(employee) {
-     const toSelect = this.filteredEmployeeTaxCategoryList.find(
+    const toSelect = this.filteredEmployeeTaxCategoryList.find(
       (c) => c.value === this.PositionForm.get('employeeTaxCategoryControl').value
     );
     this.positionDetailsModel.employeeTaxCategoryDescription = toSelect.description;
@@ -750,6 +753,14 @@ export class PositionDetailComponent implements OnInit {
 
       });
     })
+    if (this.payrollAreaList.length == 1) {
+      this.payrollAreaCode = this.payrollAreaList[0];
+    }
+    else {
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+    }
 
   }
 
@@ -768,8 +779,9 @@ export class PositionDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
+    localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
-   this. resetPositionForm();
+    this.resetPositionForm();
     this.getPositionForm();
   }
 
