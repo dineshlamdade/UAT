@@ -7,6 +7,7 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 import { JobInformationService } from '../../../employee-master-services/job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { PayrollAreaInformationService } from './../../../employee-master-services/payroll-area-information.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -57,7 +58,7 @@ export class PositionDetailComponent implements OnInit {
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
-    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService) {
+    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService,private router: Router) {
     this.tomorrow.setDate(this.tomorrow.getDate());
 
   }
@@ -104,6 +105,7 @@ export class PositionDetailComponent implements OnInit {
     this.employeeMasterId = Number(empId);
 
     //get payroll area code from local storage
+    debugger
     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
     this.payrollAreaCode = new String(payrollAreaCode);
 
@@ -138,14 +140,13 @@ export class PositionDetailComponent implements OnInit {
     })
 
     this.JobInformationService.getPositionDD().subscribe(res => {
-      debugger
+     
       this.employeeTypeList = [];
       this.employeeStatusList = [];
       this.employeeTaxCategoryList = [];
 
 
       const location = res.data.results.filter((item) => {
-        debugger
         if (item.category == 'Employee Type') {
           this.employeeTypeList.push(item);
           this.filteredEmployeeTypeList.push(item)
@@ -174,28 +175,6 @@ export class PositionDetailComponent implements OnInit {
       this.employeePositionDetailId = res.data.results[0].employeePositionDetailId;
       if (res.data.results[0]) {
         this.positionDetailsModel = res.data.results[0];
-
-        //changing String to date format
-        //  this.positionDetailsModel.employeeTypeFromDate = new Date(res.data.results[0].employeeTypeFromDate);
-        //  this.positionDetailsModel.employeeTypeToDate = new Date(res.data.results[0].employeeTypeToDate);
-
-        //  this.positionDetailsModel.employeeStatusFromDate = new Date(res.data.results[0].employeeStatusFromDate);
-        //  this.positionDetailsModel.employeeStatusToDate = new Date(res.data.results[0].employeeStatusToDate);
-
-        //  this.positionDetailsModel.employeeTaxCategoryFromDate = new Date(res.data.results[0].employeeTaxCategoryFromDate);
-        //  this.positionDetailsModel.employeeTaxCategoryFromDate = new Date(res.data.results[0].employeeTaxCategoryFromDate);
-
-        //  this.positionDetailsModel.gradeFromDate = new Date(res.data.results[0].gradeFromDate);
-        //  this.positionDetailsModel.gradeToDate = new Date(res.data.results[0].gradeToDate);
-
-        //  this.positionDetailsModel.designation1FromDate = new Date(res.data.results[0].designation1FromDate);
-        //  this.positionDetailsModel.designation1ToDate = new Date(res.data.results[0].designation1ToDate);
-
-        //  this.positionDetailsModel.designation2FromDate = new Date(res.data.results[0].designation2FromDate);
-        //  this.positionDetailsModel.designation2ToDate = new Date(res.data.results[0].designation2ToDate);
-
-        //  this.positionDetailsModel.reportingFromDate = new Date(res.data.results[0].reportingFromDate);
-        //  this.positionDetailsModel.reportingToDate = new Date(res.data.results[0].reportingToDate);
 
         this.description = res.data.results[0].gradeDescription;
         this.gradeCode = res.data.results[0].gradeCode;
@@ -317,6 +296,7 @@ export class PositionDetailComponent implements OnInit {
      //get payroll area code from local storage
      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
      this.payrollAreaCode = new String(payrollAreaCode);
+     positionDetailsModel.payrollAreaCode=new String(payrollAreaCode);
     }
 
     positionDetailsModel.employeeTypeFromDate = this.datepipe.transform(positionDetailsModel.employeeTypeFromDate, "dd-MMM-yyyy");
@@ -354,8 +334,9 @@ export class PositionDetailComponent implements OnInit {
       this.positionDetailsModel = res.data.results[0];
       this.employeePositionDetailId = this.positionDetailsModel.employeePositionDetailId;
 
-      this.getPositionForm()
-      this.EventEmitterService.getJobInformationInitiate();
+      // this.getPositionForm()
+     //redirecting page to summary page
+     this.router.navigate(['/employee-master/job-information/job-summary']);
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -370,12 +351,11 @@ export class PositionDetailComponent implements OnInit {
     }
   }
   validatEmployeeTypeDate() {
-    debugger
+    
     this.PositionForm.controls['employeeTypeFromDateControl'].setValidators([Validators.required]);
     this.PositionForm.controls['employeeTypeToDateControl'].setValidators([Validators.required]);
   }
   enableEmployeeTypeDate() {
-    debugger
     const employeeTypeFromDate = this.PositionForm.get('employeeTypeFromDateControl');
     employeeTypeFromDate.enable();
     const employeeTypeToDate = this.PositionForm.get('employeeTypeToDateControl');
@@ -634,12 +614,8 @@ export class PositionDetailComponent implements OnInit {
     this.positionDetailsModel.employeeTypeDescription = null;
     this.positionDetailsModel.employeeTypeFromDate = null;
     this.positionDetailsModel.employeeTypeToDate = null;
-    // const employeeTypeToDate = this.PositionForm.get('employeeTypeToDateControl');
-    // employeeTypeToDate.disable();
-    // const employeeTypeFromDate = this.PositionForm.get('employeeTypeFromDateControl');
-    // employeeTypeFromDate.disable();
-
     this.disableEmployeeTypeDates();
+    
     employeeType = employeeType.toLowerCase();
     const ifsc = this.filteredEmployeeTypeList.filter((item) => {
       return JSON.stringify(item).toLowerCase().includes(employeeType);
@@ -653,11 +629,9 @@ export class PositionDetailComponent implements OnInit {
     this.positionDetailsModel.employeeStatusFromDate = null;
     this.positionDetailsModel.employeeStatusToDate = null;
     const employeeStatusToDate = this.PositionForm.get('employeeStatusToDateControl');
-    // employeeStatusToDate.disable();
-    // const employeeStatusFromDate = this.PositionForm.get('employeeStatusFromDateControl');
-    // employeeStatusFromDate.disable();
 
     this.disableEmployeeStatusDates();
+    
     employeeStatus = employeeStatus.toLowerCase();
     const ifsc = this.filteredEmployeeStatusList.filter((item) => {
       return JSON.stringify(item).toLowerCase().includes(employeeStatus);
@@ -670,10 +644,6 @@ export class PositionDetailComponent implements OnInit {
     this.positionDetailsModel.employeeTaxCategoryDescription = null;
     this.positionDetailsModel.employeeTaxCategoryFromDate = null;
     this.positionDetailsModel.employeeTaxCategoryToDate = null;
-    // const employeeTaxCategoryToDate = this.PositionForm.get('employeeTaxCategoryToDateControl');
-    // employeeTaxCategoryToDate.disable();
-    // const employeeTaxCategoryFromDate = this.PositionForm.get('employeeTaxCategoryFromDateControl');
-    // employeeTaxCategoryFromDate.disable();
 
     this.disableEmployeeTaxDates();
 
@@ -691,10 +661,6 @@ export class PositionDetailComponent implements OnInit {
     this.description = null;
     this.positionDetailsModel.gradeFromDate = null;
     this.positionDetailsModel.gradeToDate = null;
-    // const gradeFromDate = this.PositionForm.get('gradeFromDateControl');
-    // gradeFromDate.disable();
-    // const gradeToDate = this.PositionForm.get('gradeToDateControl');
-    // gradeToDate.disable();
 
     this.disableGradeDates();
 
@@ -710,10 +676,6 @@ export class PositionDetailComponent implements OnInit {
     this.designation1Desc = null;
     this.positionDetailsModel.designation1FromDate = null;
     this.positionDetailsModel.designation1ToDate = null;
-    // const designation1FromDate = this.PositionForm.get('designation1FromDateControl');
-    // designation1FromDate.disable();
-    // const designation1ToDate = this.PositionForm.get('designation1ToDateControl');
-    // designation1ToDate.disable();
 
     this.disableDesignation1Dates();
     designation1 = designation1.toLowerCase();
@@ -728,10 +690,6 @@ export class PositionDetailComponent implements OnInit {
     this.designation2Desc = null;
     this.positionDetailsModel.designation2FromDate = null;
     this.positionDetailsModel.designation2ToDate = null;
-    // const designation2FromDate = this.PositionForm.get('designation2FromDateControl');
-    // designation2FromDate.disable();
-    // const designation2ToDate = this.PositionForm.get('designation2ToDateControl');
-    // designation2ToDate.disable();
 
     this.disableDesignation2Dates();
 
@@ -744,7 +702,7 @@ export class PositionDetailComponent implements OnInit {
 
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
-
+    debugger
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {

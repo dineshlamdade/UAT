@@ -1,24 +1,24 @@
 <form [formGroup]="OrganizationForm" (ngSubmit)="OrganizationFormSubmit(organizationDetailsModel)">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
-        <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+        <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select Payroll Area"
             (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
-        </p-autoComplete>
+        </p-autoComplete> -->
         <!-- <select class="form-control" placeholder="Select Payroll Area"
         (completeMethod)="filterpayrollArea(option)"
         (change)="selectPayrollArea(option)"
         [(ngModel)]="payrollAreaCode" formControlName="payrollAreaCode"> -->
 
-        <!-- <select class="form-control" placeholder="Select Business Area"
+        <select class="form-control" placeholder="Select Payroll Area"
                 (completeMethod)="filterpayrollArea(payrollAreaCode)"
-                (change)='selectPayrollArea(payrollAreaCode)'
-                formControlName="payrollAreaCode" [(ngModel)]="payrollAreaCode">
+                (change)="selectPayrollArea(payrollAreaCode)"
+                 [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
           <option value="" selected disabled>Select Payroll Area</option>
           <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
             {{option}}
         </option> 
-      </select> -->
+      </select>
     </div>
     <br>
     <div class="row row-cards">

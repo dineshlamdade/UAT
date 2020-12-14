@@ -25,6 +25,7 @@ import { NominationDetailsComponent } from './components/family-information/nomi
 import { IdentityInformationComponent } from './components/identity-information/identity-information.component';
 import { DeputationDetailComponent } from './components/job-information/deputation-detail/deputation-detail.component';
 import { JobInformationComponent } from './components/job-information/job-information.component';
+import { JobSummaryComponent } from './components/job-information/job-summary/job-summary.component';
 import { MinimumWagesDetailComponent } from './components/job-information/minimum-wages-detail/minimum-wages-detail.component';
 import { OrganizationDetailComponent } from './components/job-information/organization-detail/organization-detail.component';
 import { PositionDetailComponent } from './components/job-information/position-detail/position-detail.component';
@@ -127,6 +128,11 @@ const routes: Routes = [
         component: JobInformationComponent,
         data: { title: ':: DelziaHR :: job-information' },
         children: [
+          {
+            path: 'job-summary',
+            component: JobSummaryComponent,
+            data: { title: ':: DelziaHR :: job-summary' },
+          },
           {
             path: 'organization-details',
             component: OrganizationDetailComponent,

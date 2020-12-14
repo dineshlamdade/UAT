@@ -7,6 +7,7 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 import { JobInformationService } from '../../../employee-master-services/job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { PayrollAreaInformationService } from './../../../employee-master-services/payroll-area-information.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-organization-detail',
@@ -93,7 +94,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
-    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService) {
+    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService,private router: Router) {
     this.tomorrow.setDate(this.tomorrow.getDate());
 
   }
@@ -247,53 +248,12 @@ export class OrganizationDetailComponent implements OnInit {
 
   //get organization details service calling
   getOrganizationForm() {
-
-
     this.JobInformationService.getOrganizationDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       this.employeeOrganizationDetailId = res.data.results[0].employeeOrganizationDetailId;
       if (res.data.results[0]) {
 
         this.organizationDetailsModel = res.data.results[0];
-        // this.payrollAreaCode=res.data.results[0].payrollAreaCode;
-
-        //changing String to date format
-        // this.organizationDetailsModel.businessAreaFromDate = new Date(res.data.results[0].businessAreaFromDate);
-        // this.organizationDetailsModel.businessAreaToDate = new Date(res.data.results[0].businessAreaToDate);
-
-
-        // this.organizationDetailsModel.establishmentFromDate = new Date(res.data.results[0].establishmentFromDate);
-        // this.organizationDetailsModel.establishmentToDate = new Date(res.data.results[0].establishmentToDate);
-
-        // this.organizationDetailsModel.subLocationFromDate = new Date(res.data.results[0].subLocationFromDate);
-        // this.organizationDetailsModel.subLocationToDate = new Date(res.data.results[0].subLocationToDate);
-
-        // this.organizationDetailsModel.workLocationFromDate = new Date(res.data.results[0].workLocationFromDate);
-        // this.organizationDetailsModel.workLocationToDate = new Date(res.data.results[0].workLocationToDate);
-
-        // this.organizationDetailsModel.subAreaFromDate = new Date(res.data.results[0].subAreaFromDate);
-        // this.organizationDetailsModel.subAreaToDate = new Date(res.data.results[0].subAreaToDate);
-
-        // this.organizationDetailsModel.strategicBusinessFromDate = new Date(res.data.results[0].strategicBusinessFromDate);
-        // this.organizationDetailsModel.strategicBusinessToDate = new Date(res.data.results[0].strategicBusinessToDate);
-
-        // this.organizationDetailsModel.divisionFromDate = new Date(res.data.results[0].divisionFromDate);
-        // this.organizationDetailsModel.divisionToDate = new Date(res.data.results[0].divisionToDate);
-
-        // this.organizationDetailsModel.departmentFromDate = new Date(res.data.results[0].departmentFromDate);
-        // this.organizationDetailsModel.departmentToDate = new Date(res.data.results[0].departmentToDate);
-
-        // this.organizationDetailsModel.subDepartmentFromDate = new Date(res.data.results[0].subDepartmentFromDate);
-        // this.organizationDetailsModel.subDepartmentToDate = new Date(res.data.results[0].subDepartmentToDate);
-
-        // this.organizationDetailsModel.costCentreFromDate = new Date(res.data.results[0].costCentreFromDate);
-        // this.organizationDetailsModel.costCentreToDate = new Date(res.data.results[0].costCentreToDate);
-
-        // this.organizationDetailsModel.subCostCentreFromDate = new Date(res.data.results[0].subCostCentreFromDate);
-        // this.organizationDetailsModel.subCostCentreToDate = new Date(res.data.results[0].subCostCentreToDate);
-
-        // this.organizationDetailsModel.profitCentreFromDate = new Date(res.data.results[0].profitCentreFromDate);
-        // this.organizationDetailsModel.profitCentreToDate = new Date(res.data.results[0].profitCentreToDate);
 
         this.establishmentCode = res.data.results[0].establishmentCode;
         this.establishmentDescription = res.data.results[0].establishmentDescription;
@@ -459,6 +419,7 @@ export class OrganizationDetailComponent implements OnInit {
 
       this.resetOrganizationForm();
     })
+    debugger
     if (this.payrollAreaList.length == 1) {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
@@ -515,9 +476,11 @@ export class OrganizationDetailComponent implements OnInit {
       organizationDetailsModel.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
+      debugger
      //get payroll area code from local storage
      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
      this.payrollAreaCode = new String(payrollAreaCode);
+     organizationDetailsModel.payrollAreaCode=new String(payrollAreaCode);
     }
 
     organizationDetailsModel.establishmentFromDate = this.datepipe.transform(organizationDetailsModel.establishmentFromDate, "dd-MMM-yyyy");
@@ -572,7 +535,6 @@ export class OrganizationDetailComponent implements OnInit {
     delete organizationDetailsModel.profitCentreMasterDescription;
     delete organizationDetailsModel.profitCentreMasterCode;
 
-
     this.JobInformationService.postOrganizationDetails(organizationDetailsModel).subscribe(res => {
 
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
@@ -582,9 +544,8 @@ export class OrganizationDetailComponent implements OnInit {
       localStorage.setItem('establishmentMasterId', res.data.results[0].establishmentMasterId);
 
       // this.getOrganizationForm();
-      //navigate to summary page
-      //  this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
-      //this.EventEmitterService.getJobInformationInitiate();
+         //redirecting page to summary page
+         this.router.navigate(['/employee-master/job-information/job-summary']);
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -1011,23 +972,11 @@ export class OrganizationDetailComponent implements OnInit {
     establishmentToDate.disable();
   }
   SearchEstablishment(establishmentCode) {
-
     this.establishmentDescription = null;
     this.organizationDetailsModel.establishmentFromDate = null;
     this.organizationDetailsModel.establishmentToDate = null;
-    // const establishmentFromDate = this.OrganizationForm.get('establishmentFromDateControl');
-    // establishmentFromDate.disable();
-    // const establishmentToDate = this.OrganizationForm.get('establishmentToDateControl');
-    // establishmentToDate.disable();
 
     this.disableEstablishmentDates();
-
-    // establishmentCode = establishmentCode.toLowerCase();
-    // const ifsc = this.filteredEstablishmentList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(establishmentCode);
-    // });
-    // this.establishmentList = ifsc;
-
 
     let filtered: any[] = [];
     let query = establishmentCode.query;
@@ -1047,22 +996,11 @@ export class OrganizationDetailComponent implements OnInit {
     subLocationToDate.disable();
   }
   SearchSubLocation(subLocationCode) {
-
-
     this.subLocationDescription = null;
     this.organizationDetailsModel.subLocationFromDate = null;
     this.organizationDetailsModel.subLocationToDate = null;
-    // const subLocationFromDate = this.OrganizationForm.get('subLocationFromDateControl');
-    // subLocationFromDate.disable();
-    // const subLocationToDate = this.OrganizationForm.get('subLocationToDateControl');
-    // subLocationToDate.disable();
 
     this.disableSubLocationDates();
-    // subLocationCode = subLocationCode.toLowerCase();
-    // const ifsc = this.filteredSubLocationList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(subLocationCode);
-    // });
-    // this.subLocationList = ifsc;
 
     let filtered: any[] = [];
     let query = subLocationCode.query;
@@ -1082,22 +1020,11 @@ export class OrganizationDetailComponent implements OnInit {
     workLocationToDate.disable();
   }
   SearchWorkLocation(workLocationCode) {
-
     this.workLocationDescription = null;
     this.organizationDetailsModel.workLocationFromDate = null;
     this.organizationDetailsModel.workLocationToDate = null;
-    // const workLocationFromDate = this.OrganizationForm.get('workLocationFromDateControl');
-    // workLocationFromDate.disable();
-    // const workLocationToDate = this.OrganizationForm.get('workLocationToDateControl');
-    // workLocationToDate.disable();
-
 
     this.disableWorkLocationDates();
-    // workLocationCode = workLocationCode.toLowerCase();
-    // const ifsc = this.filteredWorkLocationList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(workLocationCode);
-    // });
-    // this.workLocationList = ifsc;
 
     let filtered: any[] = [];
     let query = workLocationCode.query;
@@ -1118,22 +1045,11 @@ export class OrganizationDetailComponent implements OnInit {
     businessAreaToDate.disable();
   }
   SearchBusinessArea(businessAreaCode) {
-
-
     this.businessAreaDescription = null;
     this.organizationDetailsModel.businessAreaFromDate = null;
     this.organizationDetailsModel.businessAreaToDate = null;
-    // const businessAreaFromDate = this.OrganizationForm.get('businessAreaFromDateControl');
-    // businessAreaFromDate.disable();
-    // const businessAreaToDate = this.OrganizationForm.get('businessAreaToDateControl');
-    // businessAreaToDate.disable();
 
     this.disableBusinessAreaDates();
-    // businessAreaCode = businessAreaCode.toLowerCase();
-    // const ifsc = this.filteredBusinessAreaList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(businessAreaCode);
-    // });
-    // this.businessAreaList = ifsc;
 
     let filtered: any[] = [];
     let query = businessAreaCode.query;
@@ -1153,23 +1069,11 @@ export class OrganizationDetailComponent implements OnInit {
     subAreaToDate.disable();
   }
   SearchSubArea(subAreaCode) {
-
-
     this.subAreaDescription = null;
     this.organizationDetailsModel.subAreaFromDate = null;
     this.organizationDetailsModel.subAreaToDate = null;
-    // const subAreaFromDate = this.OrganizationForm.get('subAreaFromDateControl');
-    // subAreaFromDate.disable();
-    // const subAreaToDate = this.OrganizationForm.get('subAreaToDateControl');
-    // subAreaToDate.disable();
 
     this.disableSubAreaDates();
-
-    // subAreaCode = subAreaCode.toLowerCase();
-    // const ifsc = this.filteredSubAreaList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(subAreaCode);
-    // });
-    // this.subAreaList = ifsc;
 
     let filtered: any[] = [];
     let query = subAreaCode.query;
@@ -1189,23 +1093,12 @@ export class OrganizationDetailComponent implements OnInit {
     strategicBusinessToDate.disable();
   }
   SearchStrategic(strategicBusinessCode) {
-
-
     this.strategicDescription = null;
     this.organizationDetailsModel.strategicBusinessFromDate = null;
     this.organizationDetailsModel.strategicBusinessToDate = null;
-    // const strategicBusinessFromDate = this.OrganizationForm.get('strategicBusinessFromDateControl');
-    // strategicBusinessFromDate.disable();
-    // const strategicBusinessToDate = this.OrganizationForm.get('strategicBusinessToDateControl');
-    // strategicBusinessToDate.disable();
 
 
     this.disableStrategicDates();
-    // strategicBusinessCode = strategicBusinessCode.toLowerCase();
-    // const ifsc = this.filteredStrategicBusinessAreaList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(strategicBusinessCode);
-    // });
-    // this.strategicBusinessAreaList = ifsc;
 
     let filtered: any[] = [];
     let query = strategicBusinessCode.query;
@@ -1225,23 +1118,11 @@ export class OrganizationDetailComponent implements OnInit {
     divisionToDate.disable();
   }
   SearchDivision(divisionCode) {
-
-
     this.divisionDescription = null;
     this.organizationDetailsModel.divisionFromDate = null;
     this.organizationDetailsModel.divisionToDate = null;
-    // const divisionFromDate = this.OrganizationForm.get('divisionFromDateControl');
-    // divisionFromDate.disable();
-    // const divisionToDate = this.OrganizationForm.get('divisionToDateControl');
-    // divisionToDate.disable();
 
     this.disableDivisionDates();
-
-    // divisionCode = divisionCode.toLowerCase();
-    // const ifsc = this.filteredDivisionList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(divisionCode);
-    // });
-    // this.divisionList = ifsc;
 
     let filtered: any[] = [];
     let query = divisionCode.query;
@@ -1261,22 +1142,11 @@ export class OrganizationDetailComponent implements OnInit {
     departmentToDate.disable();
   }
   SearchDepartment(departmentCode) {
-
-
     this.departmentDescription = null;
     this.organizationDetailsModel.departmentFromDate = null;
     this.organizationDetailsModel.departmentToDate = null;
-    // const departmentFromDate = this.OrganizationForm.get('departmentFromDateControl');
-    // departmentFromDate.disable();
-    // const departmentToDate = this.OrganizationForm.get('departmentToDateControl');
-    // departmentToDate.disable();
 
     this.disableDepartmentDates();
-    // departmentCode = departmentCode.toLowerCase();
-    // const ifsc = this.filteredDepartmentList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(departmentCode);
-    // });
-    // this.departmentList = ifsc;
 
     let filtered: any[] = [];
     let query = departmentCode.query;
@@ -1296,22 +1166,11 @@ export class OrganizationDetailComponent implements OnInit {
     subDepartmentToDate.disable();
   }
   SearchSubDepartment(subDepartmentCode) {
-
-
     this.subDepDescription = null;
     this.organizationDetailsModel.subDepartmentFromDate = null;
     this.organizationDetailsModel.subDepartmentToDate = null;
-    // const subDepartmentFromDate = this.OrganizationForm.get('subDepartmentFromDateControl');
-    // subDepartmentFromDate.disable();
-    // const subDepartmentToDate = this.OrganizationForm.get('subDepartmentToDateControl');
-    // subDepartmentToDate.disable();
 
     this.disableSubDepartmentDates();
-    // subDepartmentCode = subDepartmentCode.toLowerCase();
-    // const ifsc = this.filteredSubDepartmentList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(subDepartmentCode);
-    // });
-    // this.subDepartmentList = ifsc;
 
     let filtered: any[] = [];
     let query = subDepartmentCode.query;
@@ -1330,21 +1189,11 @@ export class OrganizationDetailComponent implements OnInit {
     costCentreToDate.disable();
   }
   SearchCost(costCentreCode) {
-
     this.costDescription = null;
     this.organizationDetailsModel.costCentreFromDate = null;
     this.organizationDetailsModel.costCentreToDate = null;
-    // const costCentreFromDate = this.OrganizationForm.get('costCentreFromDateControl');
-    // costCentreFromDate.disable();
-    // const costCentreToDate = this.OrganizationForm.get('costCentreToDateControl');
-    // costCentreToDate.disable();
 
     this.disableCostDates();
-    // costCentreCode = costCentreCode.toLowerCase();
-    // const ifsc = this.filteredCostCenterList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(costCentreCode);
-    // });
-    // this.costCenterList = ifsc;
 
     let filtered: any[] = [];
     let query = costCentreCode.query;
@@ -1367,17 +1216,8 @@ export class OrganizationDetailComponent implements OnInit {
     this.subCostDescription = null;
     this.organizationDetailsModel.subCostCentreFromDate = null;
     this.organizationDetailsModel.subCostCentreToDate = null;
-    // const subCostCentreFromDate = this.OrganizationForm.get('subCostCentreFromDateControl');
-    // subCostCentreFromDate.disable();
-    // const subCostCentreToDate = this.OrganizationForm.get('subCostCentreToDateControl');
-    // subCostCentreToDate.disable();
 
     this.disableSubCostDates();
-    // subCostCentreCode = subCostCentreCode.toLowerCase();
-    // const ifsc = this.filteredSubCostCenterList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(subCostCentreCode);
-    // });
-    // this.subCostCenterList = ifsc;
 
     let filtered: any[] = [];
     let query = subCostCentreCode.query;
@@ -1401,17 +1241,8 @@ export class OrganizationDetailComponent implements OnInit {
     this.profitDescription = null;
     this.organizationDetailsModel.profitCentreFromDate = null;
     this.organizationDetailsModel.profitCentreToDate = null;
-    // const profitCentreFromDate = this.OrganizationForm.get('profitCentreFromDateControl');
-    // profitCentreFromDate.disable();
-    // const profitCentreToDate = this.OrganizationForm.get('profitCentreToDateControl');
-    // profitCentreToDate.disable();
 
     this.disableProfitDates();
-    // profitCentreCode = profitCentreCode.toLowerCase();
-    // const ifsc = this.filteredProfitCenterList.filter((item) => {
-    //   return JSON.stringify(item).toLowerCase().includes(profitCentreCode);
-    // });
-    // this.profitCenterList = ifsc;
 
     let filtered: any[] = [];
     let query = profitCentreCode.query;
@@ -1426,7 +1257,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   //get payroll area assigned to that employee
   getPayrollAreaInformation() {
-
+    debugger
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
@@ -1435,6 +1266,7 @@ export class OrganizationDetailComponent implements OnInit {
 
       });
     })
+    debugger
     if (this.payrollAreaList.length == 1) {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
@@ -1443,7 +1275,6 @@ export class OrganizationDetailComponent implements OnInit {
       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
       this.payrollAreaCode = new String(payrollAreaCode);
     }
-
   }
 
   filterpayrollArea(event) {
@@ -1461,6 +1292,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
+    debugger
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     this.resetOrganizationForm();
@@ -1484,6 +1316,7 @@ export class OrganizationDetailComponent implements OnInit {
     this.costDescription = null;
     this.subCostDescription = null;
     this.profitDescription = null;
+    
 
     //disable dates
     this.disableBusinessAreaDates();
