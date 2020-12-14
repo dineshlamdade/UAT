@@ -1,33 +1,24 @@
-import { Component, OnInit, ViewChild, TemplateRef, Inject, HostListener } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { DatePipe, DOCUMENT } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-
-import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
-import { from } from 'rxjs';
 import Swal from 'sweetalert2';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { CompanyGroupMasterService } from './company-group-master.service';
-import { start } from 'repl';
-import { rangeContainsMarker } from '@fullcalendar/angular';
-//
-
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 @Component({
   selector: 'app-company-group-master',
   templateUrl: './company-group-master.component.html',
   styleUrls: ['./company-group-master.component.scss']
 })
 export class CompanyGroupMasterComponent implements OnInit {
-  hideRemarkDiv:boolean;
+  hideRemarkDiv: boolean;
   showButtonSaveAndReset: boolean = true;
- // isEditMode: boolean = false;
+  // isEditMode: boolean = false;
   masterGridDataList: Array<any> = [];
   index: number = 0;
   companyGroupId: number = 0;
   reasonForExitList = [];
-  view:boolean = false;
+  view: boolean = false;
 
   isSaveAndReset: boolean = true;
 
@@ -35,7 +26,8 @@ export class CompanyGroupMasterComponent implements OnInit {
   scaleList = [];
   summaryHtmlDataList = [];
   public form: any = FormGroup;
-  constructor(private formBuilder: FormBuilder, private companyGroupMasterService: CompanyGroupMasterService, private datePipe: DatePipe) {
+  constructor(private formBuilder: FormBuilder, private companyGroupMasterService: CompanyGroupMasterService, private datePipe: DatePipe,
+              private alertService: AlertServiceService) {
     this.form = this.formBuilder.group({
       companyGroupCode: new FormControl(null, Validators.required),
       companyGroupName: new FormControl(null, Validators.required),
@@ -47,7 +39,7 @@ export class CompanyGroupMasterComponent implements OnInit {
       remark: new FormControl(null),
       companyGroupActive: new FormControl(null),
     });
-}
+  }
   ngOnInit(): void {
     this.form.get('endDate').disable();
     this.form.get('reasonForExit').disable();
@@ -90,7 +82,7 @@ export class CompanyGroupMasterComponent implements OnInit {
         this.reasonForExitList.push(obj);
       });
     });
-}
+  }
 
   onSelectScale(scale1: any) {
     console.log(scale1);
@@ -102,8 +94,8 @@ export class CompanyGroupMasterComponent implements OnInit {
     console.log(this.form.value.reasonForExit);
   }
   deactiveActiveCheckBox() {
-      this.deactivateRemark();
-   }
+    this.deactivateRemark();
+  }
 
   save() {
     console.log(this.form);
@@ -125,8 +117,8 @@ export class CompanyGroupMasterComponent implements OnInit {
         console.log(res);
         if (res.data.results.length > 0) {
           console.log('data is updated');
-          this.sweetalertMasterSuccess('Company Group Master Updated Successfully.', '');
-        //  this.isEditMode = false;
+          this.alertService.sweetalertMasterSuccess('Company Group Master Updated Successfully.', '');
+          //  this.isEditMode = false;
           this.form.get('companyGroupCode').disable();
           this.saveFormValidation();
           this.form.reset();
@@ -134,12 +126,12 @@ export class CompanyGroupMasterComponent implements OnInit {
           this.showButtonSaveAndReset = true;
           this.refreshHtmlTableData();
         } else {
-          this.sweetalertWarning(res.status.messsage);
-          }
-        }, (error: any) => {
-          this.sweetalertError(error["error"]["status"]["messsage"]);
+         this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      }, (error: any) => {
+        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
-        });
+      });
 
     } else {
       console.log('clcicked on new record save button');
@@ -160,28 +152,28 @@ export class CompanyGroupMasterComponent implements OnInit {
       this.companyGroupMasterService.postCompanyGroupMaster(data).subscribe(res => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.sweetalertMasterSuccess('Company Group Master Saved Successfully.', '');
+          this.alertService.sweetalertMasterSuccess('Company Group Master Saved Successfully.', '');
           this.form.reset();
           this.refreshHtmlTableData();
         } else {
-          this.sweetalertWarning(res.status.messsage);
-         }
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
 
-        }, (error: any) => {
-          this.sweetalertError(error["error"]["status"]["messsage"]);
+      }, (error: any) => {
+        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
-        });
+      });
     }
   }
 
   reset() {
- //   this.isEditMode = false;
+    //   this.isEditMode = false;
     this.companyGroupId = 0;
     this.showButtonSaveAndReset = true;
     this.companyGroupId = 0;
     this.form.get('companyGroupActive').setValue(true);
     this.saveFormValidation();
- }
+  }
 
   cancelView() {
 
@@ -202,7 +194,7 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.form.reset();
     this.form.enable();
     const to = this.datePipe.transform(this.form.get('endDate').value, 'yyyy-MM-dd');
-    if (to !== '9999-12-31'){
+    if (to !== '9999-12-31') {
       console.log('in else part');
       this.form.controls["remark"].clearValidators();
       this.form.controls["remark"].updateValueAndValidity();
@@ -225,7 +217,7 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.form.get('companyGroupCode').disable();
     this.form.get('companyGroupActive').disable();
     this.deactivateRemark();
-}
+  }
   viewMaster(i: number, companyGroupId: number) {
     this.showButtonSaveAndReset = false;
 
@@ -260,7 +252,7 @@ export class CompanyGroupMasterComponent implements OnInit {
     });
 
   }
-  saveFormValidation(){
+  saveFormValidation() {
     this.form.reset();
     this.form.enable();
     this.form.get('endDate').disable();
@@ -270,39 +262,39 @@ export class CompanyGroupMasterComponent implements OnInit {
     this.form.get('companyGroupActive').setValue(true);
 
 
-     this.form.controls['endDate'].clearValidators();
-     this.form.controls['remark'].clearValidators();
-     this.form.controls["endDate"].updateValueAndValidity();
-     this.form.controls["remark"].updateValueAndValidity();
+    this.form.controls['endDate'].clearValidators();
+    this.form.controls['remark'].clearValidators();
+    this.form.controls["endDate"].updateValueAndValidity();
+    this.form.controls["remark"].updateValueAndValidity();
 
 
-     this.form.controls["companyGroupCode"].setValidators(Validators.required);
-     this.form.controls["companyGroupCode"].updateValueAndValidity();
+    this.form.controls["companyGroupCode"].setValidators(Validators.required);
+    this.form.controls["companyGroupCode"].updateValueAndValidity();
 
-     this.form.controls["companyGroupName"].setValidators(Validators.required);
-     this.form.controls["companyGroupName"].updateValueAndValidity();
+    this.form.controls["companyGroupName"].setValidators(Validators.required);
+    this.form.controls["companyGroupName"].updateValueAndValidity();
 
-     this.form.controls["shortName"].setValidators(Validators.required);
-     this.form.controls["shortName"].updateValueAndValidity();
+    this.form.controls["shortName"].setValidators(Validators.required);
+    this.form.controls["shortName"].updateValueAndValidity();
 
-     this.form.controls["scale"].setValidators(Validators.required);
-     this.form.controls["scale"].updateValueAndValidity();
+    this.form.controls["scale"].setValidators(Validators.required);
+    this.form.controls["scale"].updateValueAndValidity();
 
-     this.form.controls["startDate"].setValidators(Validators.required);
-     this.form.controls["startDate"].updateValueAndValidity();
+    this.form.controls["startDate"].setValidators(Validators.required);
+    this.form.controls["startDate"].updateValueAndValidity();
 
     this.form.get('companyGroupActive').setValue(true);
     this.form.get('endDate').disable();
-}
-  onChangeEndDate(evt: any) {
-      console.log(evt);
-      console.log(this.form.get('endDate').value);
-      const from = this.datePipe.transform(this.form.get('startDate').value, 'yyyy-MM-dd');
-      const to = this.datePipe.transform(this.form.get('endDate').value, 'yyyy-MM-dd');
-      if(from > to) {
-          this.form.controls['endDate'].reset()
-
   }
+  onChangeEndDate(evt: any) {
+    console.log(evt);
+    console.log(this.form.get('endDate').value);
+    const from = this.datePipe.transform(this.form.get('startDate').value, 'yyyy-MM-dd');
+    const to = this.datePipe.transform(this.form.get('endDate').value, 'yyyy-MM-dd');
+    if (from > to) {
+      this.form.controls['endDate'].reset()
+
+    }
     this.form.controls["remark"].setValidators(Validators.required);
     this.form.controls["remark"].updateValueAndValidity();
 
@@ -314,125 +306,125 @@ export class CompanyGroupMasterComponent implements OnInit {
 
 
   }
-setPaymentDetailToDate(){
-  const to = this.datePipe.transform(this.form.get('endDate').value, 'yyyy-MM-dd');
-  if(to !==null){
-    if(to.trim() === '9999-12-31' ) {
-      this.form.controls["remark"].clearValidators();
-      this.form.controls["remark"].updateValueAndValidity();
+  setPaymentDetailToDate() {
+    const to = this.datePipe.transform(this.form.get('endDate').value, 'yyyy-MM-dd');
+    if (to !== null) {
+      if (to.trim() === '9999-12-31') {
+        this.form.controls["remark"].clearValidators();
+        this.form.controls["remark"].updateValueAndValidity();
 
-      this.form.controls["reasonForExit"].clearValidators();
-      this.form.controls["reasonForExit"].updateValueAndValidity();
-      // this.form.get('companyGroupActive').setValue(true);
-      this.hideRemarkDiv = false;
-      this.deactivateRemark();
-  }
-
-// } else {
-//   this.form.get('companyGroupActive').setValue(false);
-//   this.hideRemarkDiv = true;
-//   this.deactivateRemark();
-
-//
-}
-}
-// const endDate = this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y');
-    // console.log(endDate);
-    // this.form.get('remark').setValidators([Validators.required]);
-    // this.form.get('reasonForExit').setValidators([Validators.required]);
-
-      // console.log(endDate);
-      // if(endDate !== '31-Dec-9999'){
-      //   this.form.get('remark').setValidators([Validators.required]);
-      //   this.form.get('reasonForExit').setValidators([Validators.required]);
+        this.form.controls["reasonForExit"].clearValidators();
+        this.form.controls["reasonForExit"].updateValueAndValidity();
+        // this.form.get('companyGroupActive').setValue(true);
+        this.hideRemarkDiv = false;
+        this.deactivateRemark();
+      }
 
       // } else {
-      //   this.form.remark.clearValidators();
-      //   this.form.reasonForExit.clearValidators();
-      // }
-    //  this.form.get['remark'].setValidator([Validators.required]);
-    //  this.form.get['remark'].updateValueAndValidity();
-    //  this.form.get('reasonForExit').setValidator([Validators.required]);
-    //  this.form.get('reasonForExit').updateValueAndValidity();
+      //   this.form.get('companyGroupActive').setValue(false);
+      //   this.hideRemarkDiv = true;
+      //   this.deactivateRemark();
 
-
-  sweetalert7(message: any) {
-    Swal.fire({
-      text: message,
-    });
+      //
+    }
   }
+  // const endDate = this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y');
+  // console.log(endDate);
+  // this.form.get('remark').setValidators([Validators.required]);
+  // this.form.get('reasonForExit').setValidators([Validators.required]);
 
-  sweetalertWarning(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      background: '#e68a00',
-      icon: 'warning',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
+  // console.log(endDate);
+  // if(endDate !== '31-Dec-9999'){
+  //   this.form.get('remark').setValidators([Validators.required]);
+  //   this.form.get('reasonForExit').setValidators([Validators.required]);
 
-  sweetalertInfo(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'info',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
+  // } else {
+  //   this.form.remark.clearValidators();
+  //   this.form.reasonForExit.clearValidators();
+  // }
+  //  this.form.get['remark'].setValidator([Validators.required]);
+  //  this.form.get['remark'].updateValueAndValidity();
+  //  this.form.get('reasonForExit').setValidator([Validators.required]);
+  //  this.form.get('reasonForExit').updateValueAndValidity();
 
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
+  // sweetalert7(message: any) {
+  //   Swal.fire({
+  //     text: message,
+  //   });
+  // }
+
+  // sweetalertWarning(message: any) {
+  //   Swal.fire({
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     background: '#e68a00',
+  //     icon: 'warning',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   });
+  // }
+
+  // sweetalertInfo(message: any) {
+  //   Swal.fire({
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'info',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   });
+  // }
+
+  // sweetalertMasterSuccess(message: any, text: any) {
+  //   Swal.fire({
+  //     title: message,
+  //     text: text,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'success',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   });
+  // }
+
+  // sweetalertError(message: any) {
+  //   Swal.fire({
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'error',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   });
+  // }
   deactivateRemark() {
 
     if (this.form.get('companyGroupActive').value === false) {
-       this.form.get('remark').enable();
-       this.hideRemarkDiv = false;
+      this.form.get('remark').enable();
+      this.hideRemarkDiv = false;
 
-        this.form.get('remark').setValidators([Validators.required]);
+      this.form.get('remark').setValidators([Validators.required]);
     } else {
-       // this.form.get('remark').clearValidators();
-        this.hideRemarkDiv = true;
-       // this.form.get('remark').disable();
-       // this.form.get('remark').reset();
+      // this.form.get('remark').clearValidators();
+      this.hideRemarkDiv = true;
+      // this.form.get('remark').disable();
+      // this.form.get('remark').reset();
     }
-}
+  }
   // get remark1(){
   //   const temp = <FormGroup>this.form.control.remark;
   //   return temp.controls.remark;

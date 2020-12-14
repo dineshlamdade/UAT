@@ -1,144 +1,115 @@
-//  this.complaintForm.setControl('complaintLoggers', new FormArray([]));  for blank formArray
-// this.pfArray.patchValue([{
-//   employeeCompanyContributionDiff: '0',
-// }
-
-// ]);
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import Swal from 'sweetalert2';
-import { StatuatoryComplianceService } from '../statutory-compliance/statuatory-compliance.service';
-import { EstablishmentMasterService } from '../establishment-master/establishment-master.service';
-import { ComplianceHeadService } from '../compliance-head/compliance-head.service';
-import { ComplianceMasterService } from './compliance-master.service';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AnyMxRecord } from 'dns';
 import { combineLatest } from 'rxjs';
-
+import { takeUntil } from 'rxjs/operators';
+import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+import Swal from 'sweetalert2';
+import { ComplianceHeadService } from '../compliance-head/compliance-head.service';
+import { EstablishmentMasterService } from '../establishment-master/establishment-master.service';
+import { StatuatoryComplianceService } from '../statutory-compliance/statuatory-compliance.service';
+import { ComplianceMasterService } from './compliance-master.service';
 
 @Component({
   selector: 'app-compliance-master',
   templateUrl: './compliance-master.component.html',
-  styleUrls: ['./compliance-master.component.scss']
+  styleUrls: ['./compliance-master.component.scss'],
 })
 export class ComplianceMasterComponent implements OnInit {
   public form: any = FormGroup;
   public SelectedemployeeContribtionMultiSelect = [];
   public selectedCompanyContribtionMultiSelect = [];
   public selectedEstablishmentMasterId = [];
-  public isView: boolean = false;
-  isActivateButton:number;
-  isGlobalView:boolean = false;
+  public isView = false;
+  public isActivateButton: number;
+  public isGlobalView = false;
 
   public complianceApplicationForm: any = FormGroup;
 
-  public isPf: boolean = false;
-  public isPfNew: boolean = false;
-  public isEpsNew: boolean = false;
-  public isEps: boolean = false;
-  public isEsi: boolean = false;
-  public isPt: boolean = false; // Professional Tax
-  public isLw: boolean = false; // Labour Welfare
-  public isTaxDeductedAtSource: boolean = false;
-  public isGratuity: boolean = false;
-  public isSa: boolean = false;  // Super Annuation
-  ServicesList = [];
-  public isEditableEstablismentMasterId: boolean = false;
+  public isPf = false;
+  public isPfNew = false;
+  public isEpsNew = false;
+  public isEps = false;
+  public isEsi = false;
+  public isPt = false; // Professional Tax
+  public isLw = false; // Labour Welfare
+  public isTaxDeductedAtSource = false;
+  public isGratuity = false;
+  public isSa = false;  // Super Annuation
+  public ServicesList = [];
+  public isEditableEstablismentMasterId = false;
 
-  defaultEmployeeContributionList = [];
-  companyContributionList = [];
-  allOtherMappingDetailsList = [];
-  savedEstablishmentList = [];
-  //isPune: boolean =false;
-  //isAurangabad: boolean = false;
-  public isRestrictedDisableMultiSelect: boolean = false;
-
-  public editedRecordIndex: number = 0;
-
-
-  summaryHtmlDataListComplianceApplicability = [];
-  masterGridDataListComplianceAppicability = [];
-
-
-
-
-
-  summaryHtmlDataList: Array<any> = [];
+  public defaultEmployeeContributionList = [];
+  public companyContributionList = [];
+  public allOtherMappingDetailsList = [];
+  public savedEstablishmentList = [];
+  public isRestrictedDisableMultiSelect = false;
+  public editedRecordIndex = 0;
+  public summaryHtmlDataListComplianceApplicability = [];
+  public masterGridDataListComplianceAppicability = [];
+  public summaryHtmlDataList: Array<any> = [];
   public institutionMasterList = [];
-  issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
-  primaryBusinessActivityList = ['Payroll', 'PayRoll', 'IT', 'HR1', '22'];
-  officePremisesOwnershipList = ['Owned', 'RENT', 'Lease'];
-  // typeOfEstablishmentList = ['ESTD1','permant','EST-Banglore','Type1','Perm','Tesst'];
-  showButtonSaveAndReset: boolean = true;
-  //registrationNumberList: Array<any> = [];
-  //companyRegistrationIdList: Array<any> = [];
-  // companyRegistrationMasterList: Array<any> = [];
-  masterGridDataList: Array<any> = [];
-  getComplianceHeadDetailsObject:any;
-  getComplianceInstituionMasterDetails:any;
-
-  tempObjForCompanyRegistration: any;
-  //companyRegistrationId: number = 0;
-  companyMasterId: number = 0;
-  isSaveAndReset: boolean = true;
-  countries = [];
-  establishmentMasterId: number = 0;
-  regionMasterDetails = [];
-  selectedRegionMasterCode: number;
-  institutionMasterObject = [];
-  institutionNameList = [];
-  pfStatusList = ['Exempt', 'Unexempt'];
-  isDefaultContribution = true;
-  ContributionMethodChoiceList = ['FULL', 'RESTRICTED', 'EXPACT'];
-  companyIdList = [{ id: 1, itemName: 'WhiteHedge' }];
-
-
+  public issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
+  public primaryBusinessActivityList = ['Payroll', 'PayRoll', 'IT', 'HR1', '22'];
+  public officePremisesOwnershipList = ['Owned', 'RENT', 'Lease'];
+  public showButtonSaveAndReset = true;
+  public masterGridDataList: Array<any> = [];
+  public getComplianceHeadDetailsObject: any;
+  public getComplianceInstituionMasterDetails: any;
+  public tempObjForCompanyRegistration: any;
+  public companyMasterId = 0;
+  public isSaveAndReset = true;
+  public countries = [];
+  public establishmentMasterId = 0;
+  public regionMasterDetails = [];
+  public cityList = [];
+  public selectedRegionMasterCode: number;
+  public institutionMasterObject = [];
+  public institutionNameList = [];
+  public pfStatusList = ['Exempt', 'Unexempt'];
+  public isDefaultContribution = true;
+  public ContributionMethodChoiceList = ['FULL', 'RESTRICTED', 'EXPACT'];
+  public companyIdList = [{ id: 1, itemName: 'WhiteHedge' }];
   // ------------ required below varivables
 
-
-  complianceHeadDetailsObject: any;
+  public complianceHeadDetailsObject: any;
   public complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object: any[] = [];
-
-  complianceHeadNameList = [];
-  establishmentDetailsMasterList = [];
-  establishmentDetailsmasterGridDataList = [];
-  establishmentCodeAndId = [];
-  getAllOtherMasterDetailsResponse = [];
-  dropdownSettings: any;
+  public complianceHeadNameList = [];
+  public establishmentDetailsMasterList = [];
+  public establishmentDetailsmasterGridDataList = [];
+  public establishmentCodeAndId = [];
+  public getAllOtherMasterDetailsResponse = [];
+  public dropdownSettings: any;
   public dropdownList = [];
   public dropdownList1 = [{ id: 0, itemName: 'FULL' }, { id: 1, itemName: 'RESTRICTED' }, { id: 2, itemName: 'EXPACT' }];
   public dropdownList2 = [];
-  complianceHeadTempObj: any;
-  states: Array<any> = [];
-  dropdownSettingsForPF: any;
-  dropdownSettingsAllOtherMasterMappingDetails: any;
-
-
-
-  getAllOtherMastersMappingDetailsResponse: any;
-  tempGetAllOtherMastersMappingDetails = [];
-  getFilteredRecordOfAllOtherMastersMappingDetailsList: any;
-  isEditMode: boolean = false;
-  getComplianceInstitutionMasterGridListObject: any;
-  selectedObjectForUpdate: any;
+  public complianceHeadTempObj: any;
+  public states: Array<any> = [];
+  public dropdownSettingsForPF: any;
+  public dropdownSettingsAllOtherMasterMappingDetails: any;
+  public getAllOtherMastersMappingDetailsResponse: any;
+  public tempGetAllOtherMastersMappingDetails = [];
+  public getFilteredRecordOfAllOtherMastersMappingDetailsList: any;
+  public isEditMode = false;
+  public getComplianceInstitutionMasterGridListObject: any;
+  public selectedObjectForUpdate: any;
   public pfForm: FormGroup;
-
 
   constructor(private formBuilder: FormBuilder, private complianceHeadService: ComplianceHeadService,
               private statuatoryComplianceService: StatuatoryComplianceService,
               private establishmentMasterService: EstablishmentMasterService, private datePipe: DatePipe,
-              private complianceMasterService: ComplianceMasterService) {
+              private complianceMasterService: ComplianceMasterService,
+              private alertService: AlertServiceService) {
     this.form = this.formBuilder.group({
-      'pfFormArray': new FormArray([]),
+      pfFormArray: new FormArray([]),
       'epsArray': new FormArray([]),
-      'esiArray': new FormArray([]),
-      'ptArray': new FormArray([]),
-      'lwfArray': new FormArray([]),
-      'tdsArray':new FormArray([]),
-      'gratuityArray':new FormArray([]),
-      'saArray': new FormArray([]),
-
+      esiArray: new FormArray([]),
+      ptArray: new FormArray([]),
+      lwfArray: new FormArray([]),
+      tdsArray: new FormArray([]),
+      gratuityArray: new FormArray([]),
+      saArray: new FormArray([]),
 
       complianceName: new FormControl(''),
       statutoryInstituteName: new FormControl(''),
@@ -163,7 +134,6 @@ export class ComplianceMasterComponent implements OnInit {
       eps1: new FormControl(''),
       eps1FromDate: new FormControl(''),
       eps1ToDate: new FormControl(''),
-
 
       gratuityDividingFactor: new FormControl(''),
       gratuityFromDate: new FormControl(''),
@@ -209,7 +179,7 @@ export class ComplianceMasterComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -238,42 +208,37 @@ export class ComplianceMasterComponent implements OnInit {
       allowSearchFilter: true,
     };
 
-    this.complianceHeadService.getComplianceHeadDetails().subscribe(res => {
+    this.complianceHeadService.getComplianceHeadDetails().subscribe((res) => {
       console.log(res.data.results);
       this.complianceHeadDetailsObject = res.data.results;
 
-      res.data.results.forEach(element => {
+      res.data.results.forEach((element) => {
         this.complianceHeadNameList.push(element.complianceHeadName);
         this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
       });
     });
 
-    this.statuatoryComplianceService.getLocationInformationOrCountryList().subscribe(res => {
+    this.statuatoryComplianceService.getLocationInformationOrCountryList().subscribe((res) => {
       this.countries = res.data.results;
     });
 
-    this.complianceMasterService.getStates().subscribe(res => {
+    this.complianceMasterService.getStates().subscribe((res) => {
       this.states = res.data.results;
 
     });
-    this.complianceMasterService.getAllOtherMastersMappingDetails().subscribe(res => {
+    this.complianceMasterService.getAllOtherMastersMappingDetails().subscribe((res) => {
       this.getAllOtherMastersMappingDetailsResponse = res.data.results;
     });
 
     // get Region dropdown data
-    this.establishmentMasterService.getRegionMasterDetails().subscribe(res => {
+    this.establishmentMasterService.getRegionMasterDetails().subscribe((res) => {
       this.regionMasterDetails = res.data.results;
     });
-    this.complianceMasterService.getListOfCityFromTheState('Maharashtra').subscribe(res => {
-      console.log(res);
-      console.log(res);
-      console.log(res);
-    });
 
-    this.complianceMasterService.getAllOtherMasterDetails().subscribe(res => {
+    this.complianceMasterService.getAllOtherMasterDetails().subscribe((res) => {
 
-      res.data.results.forEach(element => {
-        let ele = this.getAllOtherMasterDetailsResponse.findIndex(x => x.itemName == element.masterType);
+      res.data.results.forEach((element) => {
+        const ele = this.getAllOtherMasterDetailsResponse.findIndex((x) => x.itemName == element.masterType);
 
         // for checking if itemName is already exist, below code is used for uniqueness dropdown list of job master field/ job master types...
         if (ele < 0) {
@@ -345,7 +310,7 @@ export class ComplianceMasterComponent implements OnInit {
   save() {
     console.log(this.ServicesList);
 
-    let complianceDetails = [];
+    const complianceDetails = [];
     let pfNilOptionChoiceOption = 'NO';
     let edliExemptionOption = 'NO';
     let contributionMethodChoiceOption = 'NO';
@@ -357,7 +322,6 @@ export class ComplianceMasterComponent implements OnInit {
     delete data.establishmentCode;
     delete data.groupCompanyId;
     data.groupCompanyId = 1;
-
 
     // for radio button
     if (data.pfNilOptionChoice == 1) {
@@ -553,22 +517,12 @@ export class ComplianceMasterComponent implements OnInit {
     }
     if (data.shortName === 'TAN') {
       console.log('Not Avail in master');  // Public works department
-
-      // for (let i = 0; i < this.ServicesList.length; i++) {
-      //   complianceDetails.push({
-      //     establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-      //     tan: data.tan,
-      //     tdsCircle: data.tdsCircle,
-      //     deductorStatus: data.deductorStatus,
-      //   });
-      // }
     }
-    let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == data.statutoryInstituteName);
+    const tempObj = this.institutionMasterList.find((o) => o.complianceHeadId == data.statutoryInstituteName);
     console.log(tempObj);
     const saveData = {
       complianceName: data.complianceName,
       statutoryInstituteName: tempObj.institutionName,
-      // complianceHeadShortName: this.complianceHeadTempObj.shortName,
       complianceHeadShortName: data.shortName,
       accountNumber: data.accountNumber,
       groupCompanyId: data.groupCompanyId,
@@ -576,15 +530,15 @@ export class ComplianceMasterComponent implements OnInit {
       issueDate: data.issueDate,
       coverageDate: data.coverageDate,
       userNameForWebsite: data.userNameForWebsite,
-      complianceDetails: complianceDetails,
-    }
+      complianceDetails,
+    };
     console.log(saveData);
 
-    this.complianceMasterService.postComplianceMaster(saveData).subscribe(res => {
+    this.complianceMasterService.postComplianceMaster(saveData).subscribe((res) => {
       console.log(res);
       if (res.data.results.length > 0) {
         console.log(res);
-        this.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
+        this.alertService.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
 
         this.form.setControl('pfFormArray', new FormArray([]));
         this.form.setControl('epsArray', new FormArray([]));
@@ -610,55 +564,43 @@ export class ComplianceMasterComponent implements OnInit {
 
         this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
       } else {
-        this.sweetalertWarning(res.status.messsage);
+        this.alertService.sweetalertWarning(res.status.messsage);
       }
 
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     });
   }
   saveComplianceApplication() {
-    let applicabilityDetails = [];
+    const applicabilityDetails = [];
     const data = this.complianceApplicationForm.getRawValue();
     console.log(data); if (data.jobMasterType === 'RegionMaster') {
 
       for (let i = 0; i < data.allOtherMasterMappingDetails.length; i++) {
-        applicabilityDetails.push({ regionMasterId: data.allOtherMasterMappingDetails[i].masterMappingId })
+        applicabilityDetails.push({ regionMasterId: data.allOtherMasterMappingDetails[i].masterMappingId });
       }
     } else if (data.jobMasterType == 'SubLocationMaster') {
 
       for (let i = 0; i < data.allOtherMasterMappingDetails.length; i++) {
-        applicabilityDetails.push({ subLocationMasterId: data.allOtherMasterMappingDetails[i].masterMappingId })
+        applicabilityDetails.push({ subLocationMasterId: data.allOtherMasterMappingDetails[i].masterMappingId });
       }
-    } else if (data.jobMasterType == 'BusinessAreaMaster') { }
-    else if (data.jobMasterType == 'SubArea') { }
-    else if (data.jobMasterType == 'CostCentre') { }
-    else if (data.jobMasterType == 'SubCostCenter') { }
-    else if (data.jobMasterType == 'DivisionMaster') { }
-    else if (data.jobMasterType == 'DepartmentMaster') { }
-    else if (data.jobMasterType == 'SubDepartment') { }
-    else if (data.jobMasterType == 'GradeMaster') { }
-    else if (data.jobMasterType == 'PlantMaster') { }
-    else if (data.jobMasterType == 'ProjectMaster') { }
-    else if (data.jobMasterType == 'ProfitCentreMaster') { }
-    else if (data.jobMasterType == 'StrategicBusinessUnit') { }
-    else if (data.jobMasterType == 'WorkLocationMaster') { }
+    } else if (data.jobMasterType == 'BusinessAreaMaster') { } else if (data.jobMasterType == 'SubArea') { } else if (data.jobMasterType == 'CostCentre') { } else if (data.jobMasterType == 'SubCostCenter') { } else if (data.jobMasterType == 'DivisionMaster') { } else if (data.jobMasterType == 'DepartmentMaster') { } else if (data.jobMasterType == 'SubDepartment') { } else if (data.jobMasterType == 'GradeMaster') { } else if (data.jobMasterType == 'PlantMaster') { } else if (data.jobMasterType == 'ProjectMaster') { } else if (data.jobMasterType == 'ProfitCentreMaster') { } else if (data.jobMasterType == 'StrategicBusinessUnit') { } else if (data.jobMasterType == 'WorkLocationMaster') { }
     const saveData = {
       complianceMasterId: data.complianceName,
       jobMasterType: data.jobMasterType,
-      applicabilityDetails: applicabilityDetails,    }
+      applicabilityDetails,    };
     console.log(JSON.stringify(saveData));
 
-    this.complianceMasterService.postComplianceApplicability(saveData).subscribe(res => {
+    this.complianceMasterService.postComplianceApplicability(saveData).subscribe((res) => {
       console.log(res);
       if (res.data.results.length > 0) {
-        this.sweetalertMasterSuccess('Compliance Applicability Details Saved Successfully.', '');
+        this.alertService.sweetalertMasterSuccess('Compliance Applicability Details Saved Successfully.', '');
         this.complianceApplicationForm.reset();
       } else {
-        this.sweetalertWarning(res.status.messsage);
+        this.alertService.sweetalertWarning(res.status.messsage);
       }
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     });
   }
 
@@ -712,22 +654,15 @@ export class ComplianceMasterComponent implements OnInit {
         this.saArray.removeAt(i);
       }
     }
-    var establishmentNamesArray = establishmentNames.split(',');
-    console.log(establishmentNamesArray)
-    let establishmentNamesArrayMultiselect = [];
+    let establishmentNamesArray = establishmentNames.split(',');
+    console.log(establishmentNamesArray);
+    const establishmentNamesArrayMultiselect = [];
 
     for (let i = 0; i < establishmentNamesArray.length; i++) {
-      // debugger
-      //  for (let i = 0; i < 1; i++){
-      let a = this.dropdownList.findIndex(o => o.establishmentCode == establishmentNamesArray[i].trim());
-      establishmentNamesArrayMultiselect.push(this.dropdownList[a]);
-      if (complianceHeadShortName === 'EPS') {
-        // this.addEpsFormControl(this.editedRecordIndex,this.dropdownList[a],false);
-      }
-      //    if(complianceHeadShortName === 'PF'){
 
-      //     this.addPfFormControl(this.editedRecordIndex,i,this.dropdownList[a])
-      //  }
+      const a = this.dropdownList.findIndex((o) => o.establishmentCode == establishmentNamesArray[i].trim());
+      establishmentNamesArrayMultiselect.push(this.dropdownList[a]);
+
       this.ServicesList.push({ establishmentMasterId: this.dropdownList[a].establishmentMasterId, establishmentCode: this.dropdownList[a].establishmentCode });
       this.savedEstablishmentList.push({ establishmentMasterId: this.dropdownList[a].establishmentMasterId, establishmentCode: this.dropdownList[a].establishmentCode });
     }
@@ -746,11 +681,11 @@ export class ComplianceMasterComponent implements OnInit {
     this.isSa = false;  // Super Annuation
 
     if (complianceHeadShortName === 'PF') {
-      //this.isPf = true;
-      this.addPfFormControl(this.editedRecordIndex, this.ServicesList[0],false);
+      // this.isPf = true;
+      this.addPfFormControl(this.editedRecordIndex, this.ServicesList[0], false);
     }
     if (complianceHeadShortName === 'EPS') {
-      //this.isEps = true;
+      // this.isEps = true;
       this.addEpsFormControl(this.editedRecordIndex, this.ServicesList[0], false);
     }
     if (complianceHeadShortName === 'PT') {
@@ -766,7 +701,7 @@ export class ComplianceMasterComponent implements OnInit {
       this.addEsiFormControl(this.editedRecordIndex, this.ServicesList[0], false);
     }
     if (complianceHeadShortName === 'LWF') {
-     //this.isLw = true;
+     // this.isLw = true;
       this.addLWFFormControl(this.editedRecordIndex, this.ServicesList[0], false);
     }
     if (complianceHeadShortName === 'S&E') {
@@ -833,8 +768,6 @@ export class ComplianceMasterComponent implements OnInit {
       ptCity: this.masterGridDataList[i].complianceDetail[0].ptCity,
       ptState: this.masterGridDataList[i].complianceDetail[0].ptState,
 
-
-
       tan: this.masterGridDataList[i].complianceDetail[0].tan,
       tdsCircle: this.masterGridDataList[i].complianceDetail[0].tdsCircle,
       deductorStatus: this.masterGridDataList[i].complianceDetail[0].deductorStatus,
@@ -844,7 +777,6 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get('establishmentMasterId').disable();
     this.form.get('statutoryInstituteName').disable();
   }
-
 
   viewMaster(i: number, establishmentMasterId: number, complianceHeadShortName: string, establishmentNames: string, active: number) {
     this.isActivateButton = active;
@@ -874,11 +806,11 @@ export class ComplianceMasterComponent implements OnInit {
 
     this.form.disable();
     this.form.get('pfFormArray').controls
-      .forEach(control => {
+      .forEach((control) => {
         control.controls.establishmentName.enable();
       });
     this.isGlobalView = true;
-    this.isView =true;
+    this.isView = true;
   }
 
   cancelView() {
@@ -908,34 +840,13 @@ export class ComplianceMasterComponent implements OnInit {
     this.showButtonSaveAndReset = true;
     this.form.enable();
     this.form.reset();
-    // this.form.get('companyName').disable();
-    // this.form.get('companyGroupName').disable();
-
     this.setPfDefaultValueAfterReset();
     this.showButtonSaveAndReset = true;
   }
 
-  // getPermanentAddressFromPIN() {
-  //   console.log(this.form.get('pinCode').value);
-  //   if (this.form.get('pinCode').value.length < 6) {
-  //     this.form.get('state').setValue('');
-  //     // this.form.get('city').setValue('');
-  //   }
-  //   if (this.form.get('pinCode').value.length == 6 && this.form.get('country').value == 'India') {
-  //     this.statuatoryComplianceService.getAddressFromPIN(this.form.get('pinCode').value).subscribe(res => {
-  //       console.log(res);
-  //       this.form.get('state').setValue(res.data.results[0].state);
-  //       // this.form.get('city').setValue(res.data.results[0].city);
-
-  //     }, (error: any) => {
-  //       this.sweetalertError(error["error"]["status"]["messsage"]);
-
-  //     });
-  //   }
-  // }
   onSelectEstablishmentCode(evt: any) {
 
-    let tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(o => o.establishmentMasterId == this.form.get('establishmentMasterId').value.trim());
+    const tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find((o) => o.establishmentMasterId == this.form.get('establishmentMasterId').value.trim());
     console.log(tempObjEstablishmentAddress);
   }
   onSelectTypeOfEstablishment(evt: any) { }
@@ -948,7 +859,7 @@ export class ComplianceMasterComponent implements OnInit {
   onSelectPfStatus(evt: any) { }
   onSelectRegionMasterId(evt: any) {
     console.log(this.regionMasterDetails);
-    let tempObj = this.regionMasterDetails.find(o => o.masterCode == this.form.get('regionMasterId').value.trim());
+    const tempObj = this.regionMasterDetails.find((o) => o.masterCode == this.form.get('regionMasterId').value.trim());
     console.log(tempObj);
   }
 
@@ -1018,8 +929,6 @@ export class ComplianceMasterComponent implements OnInit {
       }
     }
   }
-
-
   onChangeContributionMethodChoice(event: any, i: number) {
 
     if (i == -1) {
@@ -1044,7 +953,6 @@ export class ComplianceMasterComponent implements OnInit {
       }
     } else {
       console.log('in i !==-1');
-
       if (event.target.defaultValue == 0) {
         this.pfArray.patchValue([{
           employeeCompanyContributionDiff: '0',
@@ -1052,12 +960,12 @@ export class ComplianceMasterComponent implements OnInit {
         }]);
 
         this.form.get('pfFormArray').controls
-          .forEach(control => {
+          .forEach((control) => {
             control.controls.employeeCompanyContributionDiff.disable();
           });
 
         this.form.get('pfFormArray').controls
-          .forEach(control => {
+          .forEach((control) => {
             control.controls.companyContribution.disable();
           });
         this.isDefaultContribution = true;
@@ -1065,72 +973,33 @@ export class ComplianceMasterComponent implements OnInit {
       } else {
         this.isDefaultContribution = false;
         this.form.get('pfFormArray').controls
-          .forEach(control => {
+          .forEach((control) => {
             control.controls.employeeCompanyContributionDiff.enable();
           });
       }
     }
   }
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
-  sweetalertWarning(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      background: '#e68a00',
-      icon: 'warning',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    });
-  }
   getInstitutionMaster() {
     this.institutionMasterList = [];
     this.getComplianceInstitutionMasterGridListObject = {};
     this.complianceHeadDetailsObject = {};
 
     combineLatest([this.complianceHeadService.getComplianceHeadDetails(), this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails(),  this.complianceMasterService.getComplianceMasterDetails()]).subscribe((res: any) => {
+     console.log(res[0]);
+     console.log(res[1]);
      this.getComplianceHeadDetailsObject = res[0];
      this.getComplianceInstituionMasterDetails = res[1];
      this.complianceHeadDetailsObject = res[0].data.results;
      this.getComplianceInstitutionMasterGridListObject = res[1].data.results;
 
-     res[1].data.results.forEach(element => {
-      let tempObjForgroupNameScaleStartDate = this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.find(o => o.complianceHeadId == element.complianceHeadId);
+     res[1].data.results.forEach((element) => {
+      const tempObjForgroupNameScaleStartDate = this.complianceHeadId_Country_aplicabilityLevel_complianceHeadName_Object.find((o) => o.complianceHeadId == element.complianceHeadId);
       this.complianceHeadNameList.push(element.complianceHeadName);
       this.institutionMasterObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
       let i = 1;
       this.institutionNameList.push({ label: element.institutionName, value: element.complianceHeadId });
-      let tempComplianceHeadObject = this.complianceHeadDetailsObject.find(o => o.complianceHeadId == element.complianceHeadId);
+      const tempComplianceHeadObject = this.complianceHeadDetailsObject.find((o) => o.complianceHeadId == element.complianceHeadId);
 
       const obj = {
         SrNo: i++,
@@ -1151,44 +1020,38 @@ export class ComplianceMasterComponent implements OnInit {
         complianceHeadName: tempObjForgroupNameScaleStartDate.complianceHeadName,
         country1: tempObjForgroupNameScaleStartDate.country,
         complianceInstitutionMasterId: element.complianceInstitutionMasterId,
-        tempObjForgroupNameScaleStartDate: tempObjForgroupNameScaleStartDate,
+        tempObjForgroupNameScaleStartDate,
         complianceDetailObject: tempComplianceHeadObject,
       };
       this.institutionMasterList.push(obj);
     });
 
-
-
-
-
      this.summaryHtmlDataList = [];
      this.masterGridDataList = [];
 
-
-
      let srNo = 1;
-     res[2].data.results.forEach(element => {
+     res[2].data.results.forEach((element) => {
         // if (element.isActive == 0) {
           // soft deleted record
 
         // } else {
           this.masterGridDataList.push(element);
-          var filteredEvents = this.institutionMasterList.filter(function(event) {
+          let filteredEvents = this.institutionMasterList.filter(function(event) {
             return event.institutionName == element.statutoryInstituteName;
           });
           let establishmentNames: string;
 
           for (let i = 0; i < element.complianceDetail.length; i++) {
             if (i == 0) {
-              let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+              const index = this.dropdownList.findIndex((o) => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
               establishmentNames = this.dropdownList[index].establishmentCode;
             } else {
               establishmentNames += ', ';
-              let index = this.dropdownList.findIndex(o => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+              const index = this.dropdownList.findIndex((o) => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
               establishmentNames += this.dropdownList[index].establishmentCode;
             }
           }
-          let tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find(o => o.establishmentMasterId == element.complianceDetail[0].establishmentMasterId);
+          const tempObjEstablishmentAddress = this.establishmentDetailsMasterList.find((o) => o.establishmentMasterId == element.complianceDetail[0].establishmentMasterId);
 
           const obj = {
             SrNo: srNo++,
@@ -1199,13 +1062,13 @@ export class ComplianceMasterComponent implements OnInit {
             establishmentCode: tempObjEstablishmentAddress.establishmentCode,
             registrationNumber: element.registrationNumber,
             complianceMasterId: element.complianceMasterId,
-            tempObjEstablishmentAddress: tempObjEstablishmentAddress,
+            tempObjEstablishmentAddress,
             groupCompanyId: element.groupCompanyId,
             issueDate: element.issueDate,
             coverageDate: element.coverageDate,
             userNameForWebsite: element.userNameForWebsite,
             filter: filteredEvents[0],
-            establishmentNames: establishmentNames,
+            establishmentNames,
             isActive: element.isActive,
           };
           this.summaryHtmlDataList.push(obj);
@@ -1213,9 +1076,6 @@ export class ComplianceMasterComponent implements OnInit {
     });
     // console.log(this.summaryHtmlDataList);
     this.commonValidation();
-
-
-
 
     // this.complianceHeadService.getComplianceHeadDetails().subscribe(res => {
     //   this.complianceHeadDetailsObject = res.data.results;
@@ -1287,14 +1147,14 @@ export class ComplianceMasterComponent implements OnInit {
     this.ServicesList = [];
     this.selectedEstablishmentMasterId = [];
 
-    let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == value);
+    const tempObj = this.institutionMasterList.find((o) => o.complianceHeadId == value);
     console.log(tempObj);
-    this.complianceHeadTempObj = this.complianceHeadDetailsObject.find(o => o.complianceHeadId == tempObj.complianceHeadId);
+    this.complianceHeadTempObj = this.complianceHeadDetailsObject.find((o) => o.complianceHeadId == tempObj.complianceHeadId);
     console.log(this.complianceHeadTempObj);
 
     this.form.patchValue({
       complianceHeadName: this.complianceHeadTempObj.complianceHeadName,
-      shortName: this.complianceHeadTempObj.shortName
+      shortName: this.complianceHeadTempObj.shortName,
     });
 
     if (this.complianceHeadTempObj.shortName === 'PF') {
@@ -1354,12 +1214,12 @@ export class ComplianceMasterComponent implements OnInit {
     this.establishmentDetailsMasterList = [];
     this.establishmentDetailsmasterGridDataList = [];
     this.establishmentCodeAndId = [];
-    this.establishmentMasterService.getEstablishmentMasterDetails().subscribe(res => {
+    this.establishmentMasterService.getEstablishmentMasterDetails().subscribe((res) => {
       this.establishmentDetailsmasterGridDataList = res.data.results;
       this.dropdownList = res.data.results;
       let i = 1;
 
-      res.data.results.forEach(element => {
+      res.data.results.forEach((element) => {
         this.establishmentCodeAndId.push({ label: element.establishmentCode, value: element.establishmentMasterId });
         const obj = {
           SrNo: i++,
@@ -1389,7 +1249,7 @@ export class ComplianceMasterComponent implements OnInit {
         this.establishmentDetailsMasterList.push(obj);
       });
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
      // this.refreshHtmlTableData();
@@ -1403,7 +1263,7 @@ export class ComplianceMasterComponent implements OnInit {
     console.log(item.establishmentCode);
   }
   onItemDeSelect(item: any) {
-    var index = this.ServicesList.findIndex(o => o.establishmentCode == item.establishmentCode);
+    let index = this.ServicesList.findIndex((o) => o.establishmentCode == item.establishmentCode);
     this.ServicesList.splice(index, 1);
     console.log(this.ServicesList);
   }
@@ -1416,7 +1276,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.ServicesList = [];
   }
   onDeselectAllDefaultEmpContribution(items: any, i: number) {
-    debugger
+    debugger;
     if (i == -1) {
       this.defaultEmployeeContributionList = [];
 
@@ -1501,25 +1361,25 @@ export class ComplianceMasterComponent implements OnInit {
   onItemDeSelectDefaultEmpContribution(items: any, i: number) {
     if (i === -1) {
 
-      let index = this.defaultEmployeeContributionList.findIndex(o => o.id == items.id);
-      this.defaultEmployeeContributionList.splice(index, 1)
+      const index = this.defaultEmployeeContributionList.findIndex((o) => o.id == items.id);
+      this.defaultEmployeeContributionList.splice(index, 1);
 
       if (this.form.get('employeeCompanyContributionDiff').value == 0) {
         console.log(this.companyContributionList);
-        let i1 = this.companyContributionList.findIndex(o => o.id == items.id);
-        this.companyContributionList.splice(i1, 1)
+        const i1 = this.companyContributionList.findIndex((o) => o.id == items.id);
+        this.companyContributionList.splice(i1, 1);
 
         this.form.patchValue({
           companyContribtionMultiSelect: this.companyContributionList,
         });
       }
     } else {
-      let index = this.defaultEmployeeContributionList.findIndex(o => o.id == items.id);
-      this.defaultEmployeeContributionList.splice(index, 1)
+      const index = this.defaultEmployeeContributionList.findIndex((o) => o.id == items.id);
+      this.defaultEmployeeContributionList.splice(index, 1);
 
       if (this.form.get('pfFormArray').value[0].employeeCompanyContributionDiff == 0) {
-        let i1 = this.companyContributionList.findIndex(o => o.id == items.id);
-        this.companyContributionList.splice(i1, 1)
+        const i1 = this.companyContributionList.findIndex((o) => o.id == items.id);
+        this.companyContributionList.splice(i1, 1);
 
         this.pfArray.patchValue([{
           companyContribtionMultiSelect: this.companyContributionList,
@@ -1542,7 +1402,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.companyContributionList = items;
   }
   onItemDeSelectCompanyContribution(items: any) {
-    var index = this.companyContributionList.indexOf(items.id);
+    let index = this.companyContributionList.indexOf(items.id);
     this.companyContributionList.splice(index, 1);
   }
   onItemSelectMappingDetails(items: any) {
@@ -1556,7 +1416,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.allOtherMappingDetailsList = items;
   }
   onItemDeSelectMappingDetails(items: any) {
-    var index = this.allOtherMappingDetailsList.indexOf(items.masterCode);
+    let index = this.allOtherMappingDetailsList.indexOf(items.masterCode);
     this.allOtherMappingDetailsList.splice(index, 1);
   }
 
@@ -1566,103 +1426,103 @@ export class ComplianceMasterComponent implements OnInit {
     });
     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = [];
     this.tempGetAllOtherMastersMappingDetails = [];
-    if(evt == 'CostCentre'){
-      evt = 'CostCentre'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'CostCentre') {
+      evt = 'CostCentre' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'DivisionMaster'){
-      evt = 'DivisionMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'DivisionMaster') {
+      evt = 'DivisionMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'DepartmentMaster'){
-      evt = 'DepartmentMaster'+'Mapping';
+    if (evt == 'DepartmentMaster') {
+      evt = 'DepartmentMaster' + 'Mapping';
 
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'SubDepartment'){
-      evt = 'SubDepartment'+'Mapping';
+    if (evt == 'SubDepartment') {
+      evt = 'SubDepartment' + 'Mapping';
 
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'GLCodeMaster'){
-      evt = 'GLCodeMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'GLCodeMaster') {
+      evt = 'GLCodeMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'GradeMaster'){
-      evt = 'GradeMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'GradeMaster') {
+      evt = 'GradeMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'StrategicBusinessUnit'){
-      evt = 'StrategicBusinessUnit'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'StrategicBusinessUnit') {
+      evt = 'StrategicBusinessUnit' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'WorkLocationMaster'){
-      evt = 'WorkLocationMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'WorkLocationMaster') {
+      evt = 'WorkLocationMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'SubCostCenter'){
-      evt = 'SubCostCentre'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'SubCostCenter') {
+      evt = 'SubCostCentre' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'SubArea'){
-      evt = 'SubArea'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'SubArea') {
+      evt = 'SubArea' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'BusinessAreaMaster'){
-      evt = 'BusinessAreaMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'BusinessAreaMaster') {
+      evt = 'BusinessAreaMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'PlantMaster'){
-      evt = 'PlantMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'PlantMaster') {
+      evt = 'PlantMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
-    if(evt == 'ProjectMaster'){
-      evt = 'ProjectMaster'+'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt == 'ProjectMaster') {
+      evt = 'ProjectMaster' + 'Mapping';
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
 
     }
-    if(evt === 'ProfitCentreMaster'){
-       evt = 'ProfitCentreMaster'+'Mapping';
-       var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+    if (evt === 'ProfitCentreMaster') {
+       evt = 'ProfitCentreMaster' + 'Mapping';
+       let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
        this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
@@ -1670,14 +1530,14 @@ export class ComplianceMasterComponent implements OnInit {
     }
     if (evt === 'RegionMaster') {
       evt = evt + 'Mapping';
-      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+      let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
     }
     if (evt === 'SubLocationMaster') {
-      evt ='SubLocationMapping';
-       var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
+      evt = 'SubLocationMapping';
+      var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function(event) {
         return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
       });
       this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
@@ -1692,160 +1552,159 @@ export class ComplianceMasterComponent implements OnInit {
     this.form.get('issueDate').setValidators([Validators.required]);
     this.form.get('coverageDate').setValidators([Validators.required]);
 
-    this.form.controls['complianceName'].updateValueAndValidity();
-    this.form.controls['statutoryInstituteName'].updateValueAndValidity();
-    this.form.controls['accountNumber'].updateValueAndValidity();
-    this.form.controls['registrationNumber'].updateValueAndValidity();
-    this.form.controls['issueDate'].updateValueAndValidity();
-    this.form.controls['coverageDate'].updateValueAndValidity();
+    this.form.controls.complianceName.updateValueAndValidity();
+    this.form.controls.statutoryInstituteName.updateValueAndValidity();
+    this.form.controls.accountNumber.updateValueAndValidity();
+    this.form.controls.registrationNumber.updateValueAndValidity();
+    this.form.controls.issueDate.updateValueAndValidity();
+    this.form.controls.coverageDate.updateValueAndValidity();
   }
-  tdsValidation(){
+  tdsValidation() {
 
     this.form.get('tan').setValidators([Validators.required]);
-    this.form.controls['tan'].updateValueAndValidity();
+    this.form.controls.tan.updateValueAndValidity();
 
     this.form.get('tdsCircle').setValidators([Validators.required]);
-    this.form.controls['tdsCircle'].updateValueAndValidity();
+    this.form.controls.tdsCircle.updateValueAndValidity();
 
     this.form.get('deductorStatus').setValidators([Validators.required]);
-    this.form.controls['deductorStatus'].updateValueAndValidity();
+    this.form.controls.deductorStatus.updateValueAndValidity();
 
   }
-  clearTdsValidation(){
+  clearTdsValidation() {
 
     this.form.get('tan').clearValidators();
-    this.form.controls['tan'].updateValueAndValidity();
+    this.form.controls.tan.updateValueAndValidity();
 
     this.form.get('tdsCircle').clearValidators();
-    this.form.controls['tdsCircle'].updateValueAndValidity();
+    this.form.controls.tdsCircle.updateValueAndValidity();
 
     this.form.get('deductorStatus').clearValidators();
-    this.form.controls['deductorStatus'].updateValueAndValidity();
+    this.form.controls.deductorStatus.updateValueAndValidity();
 
   }
   pfValidation() {
 
     this.form.get('pfStatus').setValidators([Validators.required]);
-    this.form.controls['pfStatus'].updateValueAndValidity();
+    this.form.controls.pfStatus.updateValueAndValidity();
 
     this.form.get('employeeToDate').setValidators([Validators.required]);
-    this.form.controls['employeeToDate'].updateValueAndValidity();
+    this.form.controls.employeeToDate.updateValueAndValidity();
 
     this.form.get('employeeFromDate').setValidators([Validators.required]);
-    this.form.controls['employeeFromDate'].updateValueAndValidity();
+    this.form.controls.employeeFromDate.updateValueAndValidity();
 
     this.form.get('companyToDate').setValidators([Validators.required]);
-    this.form.controls['companyToDate'].updateValueAndValidity();
+    this.form.controls.companyToDate.updateValueAndValidity();
 
     this.form.get('companyFromDate').setValidators([Validators.required]);
-    this.form.controls['companyFromDate'].updateValueAndValidity();
+    this.form.controls.companyFromDate.updateValueAndValidity();
   }
 
   epsValidation() {
 
     this.form.get('eps1').setValidators([Validators.required]);
-    this.form.controls['eps1'].updateValueAndValidity();
+    this.form.controls.eps1.updateValueAndValidity();
 
     this.form.get('eps1FromDate').setValidators([Validators.required]);
-    this.form.controls['eps1FromDate'].updateValueAndValidity();
+    this.form.controls.eps1FromDate.updateValueAndValidity();
 
     this.form.get('eps1ToDate').setValidators([Validators.required]);
-    this.form.controls['eps1ToDate'].updateValueAndValidity();
+    this.form.controls.eps1ToDate.updateValueAndValidity();
   }
-  esiValidation(){
+  esiValidation() {
 
     this.form.get('esic1').setValidators([Validators.required]);
-    this.form.controls['esic1'].updateValueAndValidity();
+    this.form.controls.esic1.updateValueAndValidity();
 
     this.form.get('esic1FromDate').setValidators([Validators.required]);
-    this.form.controls['esic1FromDate'].updateValueAndValidity();
+    this.form.controls.esic1FromDate.updateValueAndValidity();
 
     this.form.get('esic1ToDate').setValidators([Validators.required]);
-    this.form.controls['esic1ToDate'].updateValueAndValidity();
+    this.form.controls.esic1ToDate.updateValueAndValidity();
 }
-  clearEsiValidation(){
+  clearEsiValidation() {
 
     this.form.get('esic1').clearValidators();
-    this.form.controls['esic1'].updateValueAndValidity();
+    this.form.controls.esic1.updateValueAndValidity();
 
     this.form.get('esic1FromDate').clearValidators();
-    this.form.controls['esic1FromDate'].updateValueAndValidity();
+    this.form.controls.esic1FromDate.updateValueAndValidity();
 
     this.form.get('esic1ToDate').clearValidators();
-    this.form.controls['esic1ToDate'].updateValueAndValidity();
+    this.form.controls.esic1ToDate.updateValueAndValidity();
 
   }
-  ptValidation(){
+  ptValidation() {
     this.form.get('ptState').setValidators([Validators.required]);
-    this.form.controls['ptState'].updateValueAndValidity();
+    this.form.controls.ptState.updateValueAndValidity();
 
     this.form.get('ptCity').setValidators([Validators.required]);
-    this.form.controls['ptCity'].updateValueAndValidity();
+    this.form.controls.ptCity.updateValueAndValidity();
   }
-  gratuityValidation(){
-
+  gratuityValidation() {
 
     this.form.get('gratuityDividingFactor').setValidators([Validators.required]);
-    this.form.controls['gratuityDividingFactor'].updateValueAndValidity();
+    this.form.controls.gratuityDividingFactor.updateValueAndValidity();
 
     this.form.get('gratuityFromDate').setValidators([Validators.required]);
-    this.form.controls['gratuityFromDate'].updateValueAndValidity();
+    this.form.controls.gratuityFromDate.updateValueAndValidity();
 
     this.form.get('gratuityToDate').setValidators([Validators.required]);
-    this.form.controls['gratuityToDate'].updateValueAndValidity();
+    this.form.controls.gratuityToDate.updateValueAndValidity();
   }
-  clearGratuityValidation(){
+  clearGratuityValidation() {
 
     this.form.get('gratuityDividingFactor').clearValidators();
-    this.form.controls['gratuityDividingFactor'].updateValueAndValidity();
+    this.form.controls.gratuityDividingFactor.updateValueAndValidity();
 
     this.form.get('gratuityToDate').clearValidators();
-    this.form.controls['gratuityToDate'].updateValueAndValidity();
+    this.form.controls.gratuityToDate.updateValueAndValidity();
 
     this.form.get('gratuityFromDate').clearValidators();
-    this.form.controls['gratuityFromDate'].updateValueAndValidity();
+    this.form.controls.gratuityFromDate.updateValueAndValidity();
   }
-  saValidation(){
+  saValidation() {
 
     this.form.get('saMaxPercentage').setValidators([Validators.required]);
-    this.form.controls['saMaxPercentage'].updateValueAndValidity();
+    this.form.controls.saMaxPercentage.updateValueAndValidity();
 
     this.form.get('saFromDate').setValidators([Validators.required]);
-    this.form.controls['saFromDate'].updateValueAndValidity();
+    this.form.controls.saFromDate.updateValueAndValidity();
 
     this.form.get('saToDate').setValidators([Validators.required]);
-    this.form.controls['saToDate'].updateValueAndValidity();
+    this.form.controls.saToDate.updateValueAndValidity();
 
 }
-  clearSaValidation(){
+  clearSaValidation() {
 
     this.form.get('saMaxPercentage').clearValidators();
-    this.form.controls['saMaxPercentage'].updateValueAndValidity();
+    this.form.controls.saMaxPercentage.updateValueAndValidity();
 
     this.form.get('saFromDate').clearValidators();
-    this.form.controls['saFromDate'].updateValueAndValidity();
+    this.form.controls.saFromDate.updateValueAndValidity();
 
     this.form.get('saToDate').clearValidators();
-    this.form.controls['saToDate'].updateValueAndValidity();
+    this.form.controls.saToDate.updateValueAndValidity();
   }
 
-  lwfValidation(){
+  lwfValidation() {
 
     this.form.get('lwfState').setValidators([Validators.required]);
-    this.form.controls['lwfState'].updateValueAndValidity();
+    this.form.controls.lwfState.updateValueAndValidity();
   }
 
-  clearlwfValidation(){
+  clearlwfValidation() {
     this.form.get('lwfState').clearValidators();
-    this.form.controls['lwfState'].updateValueAndValidity();
+    this.form.controls.lwfState.updateValueAndValidity();
   }
 
-  clearPtValidation(){
+  clearPtValidation() {
     this.form.get('ptState').clearValidators();
-    this.form.controls['ptState'].updateValueAndValidity();
+    this.form.controls.ptState.updateValueAndValidity();
 
     this.form.get('ptCity').clearValidators();
-    this.form.controls['ptCity'].updateValueAndValidity();
+    this.form.controls.ptCity.updateValueAndValidity();
 
   }
   // esiValidation(){
@@ -1860,43 +1719,42 @@ export class ComplianceMasterComponent implements OnInit {
   clearEpsValidation() {
 
     this.form.get('eps1').clearValidators();
-    this.form.controls['eps1'].updateValueAndValidity();
+    this.form.controls.eps1.updateValueAndValidity();
 
     this.form.get('eps1FromDate').clearValidators();
-    this.form.controls['eps1FromDate'].updateValueAndValidity();
+    this.form.controls.eps1FromDate.updateValueAndValidity();
 
     this.form.get('eps1ToDate').clearValidators();
-    this.form.controls['eps1ToDate'].updateValueAndValidity();
+    this.form.controls.eps1ToDate.updateValueAndValidity();
   }
 
   clearPfValidation() {
 
     this.form.get('pfStatus').clearValidators();
-    this.form.controls['pfStatus'].updateValueAndValidity();
+    this.form.controls.pfStatus.updateValueAndValidity();
 
     this.form.get('employeeFromDate').clearValidators();
-    this.form.controls['employeeFromDate'].updateValueAndValidity();
+    this.form.controls.employeeFromDate.updateValueAndValidity();
 
     this.form.get('employeeToDate').clearValidators();
-    this.form.controls['employeeToDate'].updateValueAndValidity();
+    this.form.controls.employeeToDate.updateValueAndValidity();
 
     this.form.get('companyFromDate').clearValidators();
-    this.form.controls['companyFromDate'].updateValueAndValidity();
+    this.form.controls.companyFromDate.updateValueAndValidity();
 
     this.form.get('companyToDate').clearValidators();
-    this.form.controls['companyToDate'].updateValueAndValidity();
+    this.form.controls.companyToDate.updateValueAndValidity();
   }
-
 
   refreshHtmlTableDataOfComplianceApplicability() {
 
     this.summaryHtmlDataListComplianceApplicability = [];
     this.masterGridDataListComplianceAppicability = [];
-    this.complianceMasterService.getComplianceApplicabilityDetails().subscribe(res => {
+    this.complianceMasterService.getComplianceApplicabilityDetails().subscribe((res) => {
       this.masterGridDataListComplianceAppicability = res.data.results;
 
       let i = 1;
-      res.data.results.forEach(element => {
+      res.data.results.forEach((element) => {
         const obj = {
           SrNo: i++,
           jobMasterType: element.jobMasterType,
@@ -1910,109 +1768,109 @@ export class ComplianceMasterComponent implements OnInit {
 
   addEpsFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
 
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       'eps1': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1, Validators.required),
-      'eps1FromDate': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1FromDate, Validators.required),
-      'eps1ToDate': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1ToDate, Validators.required),
-      'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      eps1FromDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1FromDate, Validators.required),
+      eps1ToDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1ToDate, Validators.required),
+      complianceDetail: new FormControl(indexOfComplianceDetail),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
     });
-    (<FormArray>this.form.get('epsArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('epsArray'));
-    //this.epsValidation();
+    ( this.form.get('epsArray') as FormArray).push(formGroup);
+    console.log( this.form.get('epsArray') as FormArray);
+    // this.epsValidation();
     }
 
   addTdsFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
 
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
       tan: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].tan, Validators.required),
       tdsCircle: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].tdsCircle, Validators.required),
       deductorStatus: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].deductorStatus, Validators.required),
     });
-    (<FormArray> this.form.get('tdsArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('tdsArray'));
+    (this.form.get('tdsArray') as FormArray).push(formGroup);
+    console.log( this.form.get('tdsArray') as FormArray);
   }
   addPtFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       ptState: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].ptState, Validators.required),
       ptCity: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].ptCity, Validators.required),
-      'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      complianceDetail: new FormControl(indexOfComplianceDetail),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
     });
-    (<FormArray>this.form.get('ptArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('ptArray'));
+    ( this.form.get('ptArray') as FormArray).push(formGroup);
+    console.log( this.form.get('ptArray') as FormArray);
   }
   addEsiFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
 
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
       esic1: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].esic1, Validators.required),
       esic1FromDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].esic1FromDate,  Validators.required),
       esic1ToDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].esic1ToDate,  Validators.required),
     });
-    (<FormArray>this.form.get('esiArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('esiArray'));
+    ( this.form.get('esiArray') as FormArray).push(formGroup);
+    console.log( this.form.get('esiArray') as FormArray);
 
   }
   addLWFFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
 
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
       lwfState: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].lwfState),
     });
-    (<FormArray>this.form.get('lwfArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('lwfArray'));
+    ( this.form.get('lwfArray') as FormArray).push(formGroup);
+    console.log( this.form.get('lwfArray') as FormArray);
   }
   addGratuityFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
 
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
       gratuityDividingFactor: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].gratuityDividingFactor, Validators.required),
       gratuityFromDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].gratuityFromDate, Validators.required),
       gratuityToDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].gratuityToDate, Validators.required),
     });
-    (<FormArray>this.form.get('gratuityArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('gratuityArray'));
+    ( this.form.get('gratuityArray') as FormArray).push(formGroup);
+    console.log( this.form.get('gratuityArray') as FormArray);
   }
   addSaFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     this.isView = isView;
-    let indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
 
     const formGroup = new FormGroup({
-      'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+      establishmentName: new FormControl(dropdownList.establishmentMasterId),
       'complianceDetail': new FormControl(indexOfComplianceDetail),
-      'establishmentId': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+      establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
       saMaxPercentage: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].saMaxPercentage, Validators.required),
       saFromDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].saFromDate, Validators.required),
       saToDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].saToDate, Validators.required),
     });
-    (<FormArray>this.form.get('saArray')).push(formGroup);
-    console.log(<FormArray>this.form.get('saArray'));
+    ( this.form.get('saArray') as FormArray).push(formGroup);
+    console.log( this.form.get('saArray') as FormArray);
   }
-  addPfFormControl(editRowIndex: number, dropdownList: any,isView:boolean) {
+  addPfFormControl(editRowIndex: number, dropdownList: any, isView: boolean) {
     console.log(editRowIndex);
     this.isView = isView;
     this.SelectedemployeeContribtionMultiSelect = [];
@@ -2020,7 +1878,7 @@ export class ComplianceMasterComponent implements OnInit {
     console.log(editRowIndex);
     console.log(this.editedRecordIndex);
 
-    let indexOfComplianceDetails = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(o => o.establishmentMasterId == dropdownList.establishmentMasterId);
+    const indexOfComplianceDetails = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
     console.log('--');
     console.log(indexOfComplianceDetails);
     console.log('--');
@@ -2028,24 +1886,24 @@ export class ComplianceMasterComponent implements OnInit {
     this.companyContributionList = [];
     this.defaultEmployeeContributionList = [];
     console.log(dropdownList);
-    let pfNilOptionChoice: string = '0';
-    let edliExemption: string = '0';
-    let contributionMethodChoice: string = '0';
-    let employeeCompanyContributionDiff: string = '0';
-    let complianceContributionMultiselectArray = [];
-    let employeeContributionMultiSelectArray = [];
+    let pfNilOptionChoice = '0';
+    let edliExemption = '0';
+    let contributionMethodChoice = '0';
+    let employeeCompanyContributionDiff = '0';
+    const complianceContributionMultiselectArray = [];
+    const employeeContributionMultiSelectArray = [];
     let employeeContribution;
     let companyContribution;
 
-    var companyContributionArray1: any;
-    var employeeContributionArray1: any;
+    let companyContributionArray1: any;
+    let employeeContributionArray1: any;
 
     if (this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeCompanyContributionDiff == 'YES') {
       employeeCompanyContributionDiff = '1';
     } else {
 
       this.form.get('pfFormArray').controls
-        .forEach(control => {
+        .forEach((control) => {
           control.controls.companyContribution.disable();
         });
     }
@@ -2067,13 +1925,13 @@ export class ComplianceMasterComponent implements OnInit {
       contributionMethodChoice = '1';
       this.isDefaultContribution = false;
 
-      var companyContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyContribution;
-      var employeeContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeContribution;
+      let companyContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyContribution;
+      let employeeContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeContribution;
       if (companyContributionNameArray != null || companyContributionNameArray != undefined) {
         companyContributionArray1 = companyContributionNameArray.split(',');
         if (companyContributionArray1.length > 0) {
           for (let i = 0; i < companyContributionArray1.length; i++) {
-            let a = this.dropdownList1.findIndex(o => o.itemName == companyContributionArray1[i].trim());
+            const a = this.dropdownList1.findIndex((o) => o.itemName == companyContributionArray1[i].trim());
             console.log(a);
             if (a != -1) {
               complianceContributionMultiselectArray.push(this.dropdownList1[a]);
@@ -2086,7 +1944,7 @@ export class ComplianceMasterComponent implements OnInit {
       if (employeeContributionNameArray != null || employeeContributionNameArray != undefined) {
         employeeContributionArray1 = employeeContributionNameArray.split(',');
         for (let i = 0; i < employeeContributionArray1.length; i++) {
-          let a = this.dropdownList1.findIndex(o => o.itemName == employeeContributionArray1[i].trim());
+          const a = this.dropdownList1.findIndex((o) => o.itemName == employeeContributionArray1[i].trim());
           console.log(a);
           employeeContributionMultiSelectArray.push(this.dropdownList1[a]);
           this.defaultEmployeeContributionList.push(this.dropdownList1[a]);
@@ -2101,7 +1959,7 @@ export class ComplianceMasterComponent implements OnInit {
       console.log('in if');
 
       this.pfArray.push(this.formBuilder.group({
-        'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+        establishmentName: new FormControl(dropdownList.establishmentMasterId),
         pfStatus: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].pfStatus, Validators.required),
 
         pfNilOptionChoice: new FormControl(pfNilOptionChoice),
@@ -2121,11 +1979,10 @@ export class ComplianceMasterComponent implements OnInit {
         employeeFromDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeFromDate, Validators.required),
         employeeToDate: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeToDate, Validators.required),
       }));
-    }
-    else {
+    } else {
       console.log('in else');
       this.pfArray.push(this.formBuilder.group({
-        'establishmentName': new FormControl(dropdownList.establishmentMasterId),
+        establishmentName: new FormControl(dropdownList.establishmentMasterId),
 
         pfStatus: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].pfStatus, Validators.required),
 
@@ -2149,12 +2006,12 @@ export class ComplianceMasterComponent implements OnInit {
 
       if (contributionMethodChoice == '0') {
         this.form.get('pfFormArray').controls
-          .forEach(control => {
+          .forEach((control) => {
             control.controls.employeeCompanyContributionDiff.disable();
           });
       }
       this.form.get('pfFormArray').controls
-        .forEach(control => {
+        .forEach((control) => {
           control.controls.companyContribution.disable();
         });
       console.log(this.pfArray);
@@ -2225,7 +2082,7 @@ export class ComplianceMasterComponent implements OnInit {
         selectedStringEmployeeContributionList += this.defaultEmployeeContributionList[i].itemName;
       }
     }
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('pfFormArray').value[i].establishmentName);
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('pfFormArray').value[i].establishmentName);
 
     if (this.form.get('pfFormArray').value[0].contributionMethodChoice == 'NO') {
       console.log('in if');
@@ -2279,12 +2136,12 @@ export class ComplianceMasterComponent implements OnInit {
       console.log('errrrorrrorr');
     }
     console.log(JSON.stringify(saveData));
-    this.complianceMasterService.putComplianceMasterUpdateDetails(saveData).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(saveData).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('PF Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('PF Compliance Details Updated Successfully.', '');
 
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
@@ -2313,10 +2170,9 @@ export class ComplianceMasterComponent implements OnInit {
   UpdateEps(i: number) {
     console.log(this.form.get('epsArray').value[i].establishmentName);
 
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('epsArray').value[i].establishmentName);
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('epsArray').value[i].establishmentName);
     console.log(complianceDetailIndexToChange);
     console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
-
 
     const complianceDetails = {
       complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
@@ -2326,49 +2182,48 @@ export class ComplianceMasterComponent implements OnInit {
       eps1: this.form.get('epsArray').value[0].eps1,
       eps1FromDate: this.datePipe.transform(this.form.get('epsArray').value[0].eps1FromDate, 'dd-MMM-yyyy'),
       eps1ToDate: this.datePipe.transform(this.form.get('epsArray').value[0].eps1ToDate, 'dd-MMM-yyyy'),
-    }
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
-      //this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+      // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
       this.resetAlllArrayAndFormField();
     });
   }
-  UpdateEsi(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('esiArray').value[i].establishmentName);
-
+  UpdateEsi(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('esiArray').value[i].establishmentName);
 
     const complianceDetails = {
       complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
       complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
       establishmentMasterId: this.form.get('esiArray').value[i].establishmentName,
       esic1: this.form.get('esiArray').value[0].esic1,
-      esic1FromDate:this.datePipe.transform(this.form.get('esiArray').value[0].esic1FromDate, 'dd-MMM-yyyy'),
-      esic1ToDate: this.datePipe.transform(this.form.get('esiArray').value[0].esic1ToDate,'dd-MMM-yyyy'),
-    }
+      esic1FromDate: this.datePipe.transform(this.form.get('esiArray').value[0].esic1FromDate, 'dd-MMM-yyyy'),
+      esic1ToDate: this.datePipe.transform(this.form.get('esiArray').value[0].esic1ToDate, 'dd-MMM-yyyy'),
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  UpdatePt(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('ptArray').value[i].establishmentName);
+  UpdatePt(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('ptArray').value[i].establishmentName);
     console.log(complianceDetailIndexToChange);
     console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
 
@@ -2378,25 +2233,24 @@ export class ComplianceMasterComponent implements OnInit {
       establishmentMasterId: this.form.get('ptArray').value[i].establishmentName,
       ptCity: this.form.get('ptArray').value[0].ptCity,
       ptState: this.form.get('ptArray').value[0].ptState,
-    }
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.resetAlllArrayAndFormField();
     });
   }
-  UpdateLwf(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('lwfArray').value[i].establishmentName);
+  UpdateLwf(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('lwfArray').value[i].establishmentName);
     console.log(complianceDetailIndexToChange);
     console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
-
 
     const complianceDetails = {
       complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
@@ -2404,26 +2258,25 @@ export class ComplianceMasterComponent implements OnInit {
       establishmentMasterId: this.form.get('lwfArray').value[i].establishmentName,
       lwfState: this.form.get('lwfArray').value[0].lwfState,
 
-    }
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  UpdateTds(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('tdsArray').value[i].establishmentName);
+  UpdateTds(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('tdsArray').value[i].establishmentName);
     console.log(complianceDetailIndexToChange);
     console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
-
 
     const complianceDetails = {
       complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
@@ -2433,26 +2286,25 @@ export class ComplianceMasterComponent implements OnInit {
       tan:  this.form.get('tdsArray').value[0].tan,
       tdsCircle: this.form.get('tdsArray').value[0].tdsCircle,
       deductorStatus: this.form.get('tdsArray').value[0].deductorStatus,
-    }
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  UpdateGratuity(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('gratuityArray').value[i].establishmentName);
+  UpdateGratuity(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('gratuityArray').value[i].establishmentName);
     console.log(complianceDetailIndexToChange);
     console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
-
 
     const complianceDetails = {
       complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
@@ -2462,23 +2314,23 @@ export class ComplianceMasterComponent implements OnInit {
       gratuityDividingFactor: this.form.get('gratuityArray').value[0].gratuityDividingFactor,
       gratuityFromDate:  this.form.get('gratuityArray').value[0].gratuityFromDate,
       gratuityToDate:  this.form.get('gratuityArray').value[0].gratuityToDate,
-    }
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.resetAlllArrayAndFormField();
     });
   }
 
-  UpdateSa(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('saArray').value[i].establishmentName);
+  UpdateSa(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('saArray').value[i].establishmentName);
     console.log(complianceDetailIndexToChange);
     console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
     const complianceDetails = {
@@ -2489,15 +2341,15 @@ export class ComplianceMasterComponent implements OnInit {
       saFromDate: this.datePipe.transform(this.form.get('saArray').value[0].saFromDate, 'dd-MMM-yyyy'),
       saMaxPercentage: this.form.get('saArray').value[0].saMaxPercentage,
       saToDate: this.datePipe.transform(this.form.get('saArray').value[0].saToDate, 'dd-MMM-yyyy'),
-    }
+    };
     console.log(JSON.stringify(complianceDetails));
 
-    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe(res => {
+    this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
       this.isEditMode = false;
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.resetAlllArrayAndFormField();
@@ -2505,9 +2357,9 @@ export class ComplianceMasterComponent implements OnInit {
 
   }
   UpdateComplianceMaster() {
-    if(this.isView){
-      let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == this.masterGridDataList[this.editedRecordIndex].statutoryInstituteName);
-      let saveData = ({
+    if (this.isView) {
+      const tempObj = this.institutionMasterList.find((o) => o.complianceHeadId == this.masterGridDataList[this.editedRecordIndex].statutoryInstituteName);
+      const saveData = ({
         complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
         complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
         statutoryInstituteName: this.summaryHtmlDataList[this.editedRecordIndex].statutoryInstituteName,
@@ -2518,15 +2370,15 @@ export class ComplianceMasterComponent implements OnInit {
         registrationNumber: this.masterGridDataList[this.editedRecordIndex].registrationNumber,
         issueDate: this.masterGridDataList[this.editedRecordIndex].issueDate,
         coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
-        userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite
+        userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite,
       });
       console.log(JSON.stringify(saveData));
-      this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
+      this.complianceMasterService.putComplianceMaster(saveData).subscribe((res) => {
         console.log(res);
-        this.sweetalertMasterSuccess('Compliance Master Updated Successfully.', '');
+        this.alertService.sweetalertMasterSuccess('Compliance Master Updated Successfully.', '');
 
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.alertService.sweetalertError(error['error']['status']['messsage']);
 
       }, () => {
         this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
@@ -2544,11 +2396,11 @@ export class ComplianceMasterComponent implements OnInit {
         this.form.setControl('epsArray', new FormArray([]));
       });
 
-    } else{
+    } else {
 
     const data = this.form.getRawValue();
-    let tempObj = this.institutionMasterList.find(o => o.complianceHeadId == data.statutoryInstituteName);
-    let saveData = ({
+    const tempObj = this.institutionMasterList.find((o) => o.complianceHeadId == data.statutoryInstituteName);
+    const saveData = ({
       complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
       complianceName: data.complianceName,
       statutoryInstituteName: this.summaryHtmlDataList[this.editedRecordIndex].statutoryInstituteName,
@@ -2559,15 +2411,15 @@ export class ComplianceMasterComponent implements OnInit {
       registrationNumber: data.registrationNumber,
       issueDate: data.issueDate,
       coverageDate: data.coverageDate,
-      userNameForWebsite: data.userNameForWebsite
+      userNameForWebsite: data.userNameForWebsite,
     });
     console.log(JSON.stringify(saveData));
-    this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
+    this.complianceMasterService.putComplianceMaster(saveData).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Master Updated Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Master Updated Successfully.', '');
 
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
 
     }, () => {
       this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
@@ -2592,14 +2444,14 @@ export class ComplianceMasterComponent implements OnInit {
 
     } else {
       console.log(i);
-      let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('pfFormArray').value[i].establishmentName);
+      const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('pfFormArray').value[i].establishmentName);
 
-      this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
+      this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
         console.log(res);
-        this.sweetalertMasterSuccess('PF Compliance Details Deleted Successfully.', '');
+        this.alertService.sweetalertMasterSuccess('PF Compliance Details Deleted Successfully.', '');
 
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.alertService.sweetalertError(error['error']['status']['messsage']);
 
       }, () => {
         // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
@@ -2621,102 +2473,89 @@ export class ComplianceMasterComponent implements OnInit {
   }
 
   DeleteEps(i: number) {
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('epsArray').value[i].establishmentName);
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('epsArray').value[i].establishmentName);
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
       this.resetAlllArrayAndFormField();
     });
   }
-  DeleteEsi(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('esiArray').value[i].establishmentName);
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+  DeleteEsi(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('esiArray').value[i].establishmentName);
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
-    }, () => {
-      this.resetAlllArrayAndFormField();
-    });
-
-  }
-  DeletePt(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('ptArray').value[i].establishmentName);
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
-    }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  DeleteLwf(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('lwfArray').value[i].establishmentName);
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+  DeletePt(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('ptArray').value[i].establishmentName);
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  DeleteTds(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('tdsArray').value[i].establishmentName);
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+  DeleteLwf(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('lwfArray').value[i].establishmentName);
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  DeleteGratuity(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('gratuityArray').value[i].establishmentName);
-
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+  DeleteTds(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('tdsArray').value[i].establishmentName);
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
-  DeleteSa(i:number){
-    let complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(o => o.establishmentMasterId == this.form.get('saArray').value[i].establishmentName);
-    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(res => {
-      this.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+  DeleteGratuity(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('gratuityArray').value[i].establishmentName);
+
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
+    }, () => {
+      this.resetAlllArrayAndFormField();
+    });
+
+  }
+  DeleteSa(i: number) {
+    const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('saArray').value[i].establishmentName);
+    this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe((res) => {
+      this.alertService.sweetalertMasterSuccess('Compliance Details Deleted Successfully.', '');
+    }, (error: any) => {
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
       this.resetAlllArrayAndFormField();
     });
 
   }
   DeleteComplianceMaster() {
-    this.complianceMasterService.deleteComplianceMaster(this.masterGridDataList[this.editedRecordIndex].complianceMasterId).subscribe(res => {
+    this.complianceMasterService.deleteComplianceMaster(this.masterGridDataList[this.editedRecordIndex].complianceMasterId).subscribe((res) => {
       console.log(res);
-      this.sweetalertMasterSuccess('Compliance Master  Deleted Successfully.', '');
+      this.alertService.sweetalertMasterSuccess('Compliance Master  Deleted Successfully.', '');
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.alertService.sweetalertError(error['error']['status']['messsage']);
     }, () => {
-      // this.form.reset();
-      // this.isEditMode = false;
-      // this.showButtonSaveAndReset = true;
-      // this.isSaveAndReset = true;
-      // this.form.setControl('pfFormArray', new FormArray([]));
-      // this.form.setControl('epsArray', new FormArray([]));
-      // this.form.setControl('esiArray', new FormArray([]));
-      // this.form.setControl('ptArray', new FormArray([]));
-      // this.form.setControl('lwfArray', new FormArray([]));
-      // this.form.setControl('tdsArray', new FormArray([]));
-      // this.form.setControl('gratuityArray', new FormArray([]));
-      // this.form.setControl('epsArray', new FormArray([]));
-      // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
       this.resetAlllArrayAndFormField();
     });
   }
@@ -2775,51 +2614,46 @@ export class ComplianceMasterComponent implements OnInit {
     }
     const data = this.form.getRawValue();
     console.log(establishmentMasterId);
-    let index = this.dropdownList.findIndex(o => o.establishmentMasterId == establishmentMasterId);
-    console.log(index);
-    if(data.shortName == 'PF'){
-      (<FormArray>this.form.get('pfFormArray').removeAt(0));
-      this.addPfFormControl(this.editedRecordIndex, this.dropdownList[index],false);
+    const index = this.dropdownList.findIndex((o) => o.establishmentMasterId == establishmentMasterId);
+    if (data.shortName == 'PF') {
+      ( this.form.get('pfFormArray').removeAt(0) as FormArray);
+      this.addPfFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'EPS'){
-      (<FormArray>this.form.get('epsArray').removeAt(0));
-      this.addEpsFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'EPS') {
+      ( this.form.get('epsArray').removeAt(0) as FormArray);
+      this.addEpsFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'PT'){
-      (<FormArray>this.form.get('ptArray').removeAt(0));
-      this.addPtFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'PT') {
+      ( this.form.get('ptArray').removeAt(0) as FormArray);
+      this.addPtFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'TDS'){
-      (<FormArray>this.form.get('tdsArray').removeAt(0));
-      this.addTdsFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'TDS') {
+      ( this.form.get('tdsArray').removeAt(0) as FormArray);
+      this.addTdsFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'ESIC'){
-      (<FormArray>this.form.get('esiArray').removeAt(0));
-      this.addEsiFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'ESIC') {
+      ( this.form.get('esiArray').removeAt(0) as FormArray);
+      this.addEsiFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'ESI'){
-      (<FormArray>this.form.get('esiArray').removeAt(0));
-      this.addEsiFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'ESI') {
+      ( this.form.get('esiArray').removeAt(0) as FormArray);
+      this.addEsiFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'LWF'){
-      (<FormArray>this.form.get('lwfArray').removeAt(0));
-      this.addLWFFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'LWF') {
+      ( this.form.get('lwfArray').removeAt(0) as FormArray);
+      this.addLWFFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'Gratuity'){
-      (<FormArray>this.form.get('gratuityArray').removeAt(0));
-      this.addGratuityFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'Gratuity') {
+      ( this.form.get('gratuityArray').removeAt(0) as FormArray);
+      this.addGratuityFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
-    if(data.shortName == 'SA'){
-      (<FormArray>this.form.get('saArray').removeAt(0));
-      this.addSaFormControl(this.editedRecordIndex,this.dropdownList[index],false);
+    if (data.shortName == 'SA') {
+      ( this.form.get('saArray').removeAt(0) as FormArray);
+      this.addSaFormControl(this.editedRecordIndex, this.dropdownList[index], false);
     }
   }
   onChangeContributionMethodIsDiffernt(event: any, i: number) {
-    if (i == -1) {
-
-    } else {
-
-    }
+    if (i == -1) {  } else { }
     if (event.target.defaultValue == 0) {
       this.pfArray.patchValue([{
         employeeCompanyContributionDiff: '0',
@@ -2830,7 +2664,7 @@ export class ComplianceMasterComponent implements OnInit {
     console.log('onChangeContributionMethodChoicePfArray');
     if (event.target.defaultValue == 0) {
       this.form.get('pfFormArray').controls
-        .forEach(control => {
+        .forEach((control) => {
           control.controls.employeeCompanyContributionDiff.disable();
         });
       this.pfArray.patchValue([{
@@ -2841,17 +2675,13 @@ export class ComplianceMasterComponent implements OnInit {
     } else {
       this.isDefaultContribution = true;
       this.form.get('pfFormArray').controls
-        .forEach(control => {
-          control.controls.employeeCompanyContributionDiff.enable()
-        })
+        .forEach((control) => {
+          control.controls.employeeCompanyContributionDiff.enable();
+        });
       this.pfArray.patchValue([{
         employeeCompanyContributionDiff: '0',
       }]);
     }
-  }
-  public trial(i: number) {
-    console.log(this.form.get('pfFormArray').value[0].employeeCompanyContributionDiff);
-    console.log(this.form.get('pfFormArray').value[0].contributionMethodChoice);
   }
   onChaneEmployeeContribution(evt: any, i: number) {
     console.log(evt.target.value);
@@ -2860,13 +2690,11 @@ export class ComplianceMasterComponent implements OnInit {
         companyContribution: evt.target.value,
       });
     } else {
-      console.log('in esle');
-
       this.pfArray.patchValue([{
         companyContribution: evt.target.value,
       }]);
       this.form.get('pfFormArray').controls
-        .forEach(control => {
+        .forEach((control) => {
           control.controls.companyContribution.disable();
         });
     }
@@ -2880,7 +2708,6 @@ export class ComplianceMasterComponent implements OnInit {
           companyFromDate: this.form.get('employeeFromDate').value,
         });
       }
-
     } else {
       if (this.form.get('pfFormArray').value[0].employeeCompanyContributionDiff == 0) {
         this.pfArray.patchValue([{
@@ -2890,12 +2717,9 @@ export class ComplianceMasterComponent implements OnInit {
     }
   }
   onChangeEmplContributionDiff(evt: any, i: number) {
-    if (i == -1) {} else {
-
-    }
+    if (i == -1) {} else {}
   }
   setPfDefaultValueAfterReset() {
-
     this.form.patchValue({
       pfNilOptionChoice: '0',
       employeeCompanyContributionDiff: '0',
@@ -2915,7 +2739,7 @@ export class ComplianceMasterComponent implements OnInit {
       //  this.edliExemptionOption = 'NO';
     }
   }
-  resetAlllArrayAndFormField(){
+  resetAlllArrayAndFormField() {
     if (this.pfArray.controls.length !== 0) {
       for (let i = 0; i < this.pfArray.length; i++) {
         this.pfArray.removeAt(i);
@@ -2977,12 +2801,12 @@ export class ComplianceMasterComponent implements OnInit {
   cancelAllValidation() {
 
   }
-  activateComplianceMaster(){
+  activateComplianceMaster() {
     console.log(this.editedRecordIndex);
-    let complianceDetails = [];
+    const complianceDetails = [];
 
     const saveData = {
-        complianceMasterId:this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
+        complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
         complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
         statutoryInstituteName: this.masterGridDataList[this.editedRecordIndex].institutionName,
         complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
@@ -2992,20 +2816,20 @@ export class ComplianceMasterComponent implements OnInit {
         issueDate: this.masterGridDataList[this.editedRecordIndex].issueDate,
         coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
         userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite,
-      }
+      };
     console.log(JSON.stringify(saveData));
 
-    this.complianceMasterService.putComplianceMaster(saveData).subscribe(res => {
+    this.complianceMasterService.putComplianceMaster(saveData).subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
           console.log(res);
-          this.sweetalertMasterSuccess('Compliance Master Activated Successfully.', '');
+          this.alertService.sweetalertMasterSuccess('Compliance Master Activated Successfully.', '');
         } else {
-          this.sweetalertWarning(res.status.messsage);
+          this.alertService.sweetalertWarning(res.status.messsage);
         }
 
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.alertService.sweetalertError(error['error']['status']['messsage']);
       });
 
     for (let i = 0; i < this.masterGridDataList[i].complianceDetail.length; i++) {
@@ -3047,19 +2871,26 @@ export class ComplianceMasterComponent implements OnInit {
       });
     }
     console.log(JSON.stringify(complianceDetails));
-    for(let j=0; j<complianceDetails.length;j++){
-      this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails[j]).subscribe(res => {
+    for (let j = 0; j < complianceDetails.length; j++) {
+      this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails[j]).subscribe((res) => {
         console.log(res);
-        this.sweetalertMasterSuccess('Compliance Details Activated Successfully.', '');
+        this.alertService.sweetalertMasterSuccess('Compliance Master & Details Activated Successfully.', '');
         this.isEditMode = false;
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.alertService.sweetalertError(error['error']['status']['messsage']);
 
       }, () => {
-        //this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
         this.resetAlllArrayAndFormField();
       });
 
     }
   }
+  onSelectPtState(evt: any) {
+    console.log(evt);
+    this.cityList = [];
+    this.complianceMasterService.getListOfCityFromTheState(evt).subscribe((res) => {
+      this.cityList = res.data.results;
+    });
+  }
+  onSelectPtCity(evt: any) {}
 }

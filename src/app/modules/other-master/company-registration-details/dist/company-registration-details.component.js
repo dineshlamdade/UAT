@@ -9,14 +9,14 @@ exports.__esModule = true;
 exports.CompanyRegistrationDetailsComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
 var CompanyRegistrationDetailsComponent = /** @class */ (function () {
-    function CompanyRegistrationDetailsComponent(formBuilder, companyGroupMasterService, companyMasterService, companyRegistrationDetailsService, datePipe) {
+    function CompanyRegistrationDetailsComponent(formBuilder, companyGroupMasterService, companyMasterService, companyRegistrationDetailsService, datePipe, alertService) {
         this.formBuilder = formBuilder;
         this.companyGroupMasterService = companyGroupMasterService;
         this.companyMasterService = companyMasterService;
         this.companyRegistrationDetailsService = companyRegistrationDetailsService;
         this.datePipe = datePipe;
+        this.alertService = alertService;
         this.summaryHtmlDataList = [];
         this.issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
         this.showButtonSaveAndReset = true;
@@ -99,7 +99,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                 // console.log(this.summaryHtmlDataList);
             });
         }, function (error) {
-            _this.sweetalertError(error["error"]["status"]["messsage"]);
+            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         }, function () {
         });
         //  this.companyRegistrationIdList.filter((v,i,a)=>a.findIndex(t=>t.companyMasterId === v.companyMasterId) == i);
@@ -126,7 +126,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                 if (res.data.results.length > 0) {
                     console.log('data is updated');
                     // this.isEditMode = false;
-                    _this.sweetalertMasterSuccess('Company Registration Details  Updated Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Company Registration Details  Updated Successfully.', '');
                     _this.isSaveAndReset = true;
                     _this.showButtonSaveAndReset = true;
                     _this.form.reset();
@@ -134,10 +134,10 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -156,15 +156,15 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
             this.companyRegistrationDetailsService.postCompanyRegistrationDetails(data).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
-                    _this.sweetalertMasterSuccess('Company Registration Details Saved Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Company Registration Details Saved Successfully.', '');
                     _this.form.reset();
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -227,47 +227,6 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
         this.form.get('companyGroupName').disable();
         this.showButtonSaveAndReset = true;
         this.companyRegistrationId = 0; // for save it should be 0 and update it should have any integer value
-    };
-    CompanyRegistrationDetailsComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyRegistrationDetailsComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyRegistrationDetailsComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
     };
     CompanyRegistrationDetailsComponent = __decorate([
         core_1.Component({

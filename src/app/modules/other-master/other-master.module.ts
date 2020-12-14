@@ -25,6 +25,8 @@ import { StatutoryComplianceComponent } from './statutory-compliance/statutory-c
 import { EstablishmentMasterComponent } from './establishment-master/establishment-master.component';
 import { ComplianceMasterComponent } from './compliance-master/compliance-master.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BankMasterAtGroupComponent } from './bank-master-at-group/bank-master-at-group.component';
+import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     StatutoryComplianceComponent,
     EstablishmentMasterComponent,
     ComplianceMasterComponent,
+    BankMasterAtGroupComponent,
+    BankMasterAtCompanyComponent,
   ],
   imports: [
     CommonModule,

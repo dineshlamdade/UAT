@@ -9,13 +9,12 @@ exports.__esModule = true;
 exports.StatutoryComplianceComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
 var StatutoryComplianceComponent = /** @class */ (function () {
-    function StatutoryComplianceComponent(formBuilder, datePipe, statuatoryComplianceService, complianceHeadService) {
+    function StatutoryComplianceComponent(formBuilder, statuatoryComplianceService, complianceHeadService, alertService) {
         this.formBuilder = formBuilder;
-        this.datePipe = datePipe;
         this.statuatoryComplianceService = statuatoryComplianceService;
         this.complianceHeadService = complianceHeadService;
+        this.alertService = alertService;
         this.selectedIsdCode = [];
         this.countryCode = [];
         this.showButtonSaveAndReset = true;
@@ -48,9 +47,9 @@ var StatutoryComplianceComponent = /** @class */ (function () {
             city: new forms_1.FormControl(null),
             village: new forms_1.FormControl(null),
             pinCode: new forms_1.FormControl(null, forms_1.Validators.required),
-            emailId: new forms_1.FormControl(null, [forms_1.Validators.required, forms_1.Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+            emailId: new forms_1.FormControl(null, [forms_1.Validators.required, forms_1.Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
             typeOfOffice: new forms_1.FormControl(null, forms_1.Validators.required),
-            telephoneNumber: new forms_1.FormControl('', [forms_1.Validators.required, forms_1.Validators.pattern("^[0-9]*$"), forms_1.Validators.minLength(10)]),
+            telephoneNumber: new forms_1.FormControl('', [forms_1.Validators.required, forms_1.Validators.pattern('^[0-9]*$'), forms_1.Validators.minLength(10)]),
             applicabilityLevel: new forms_1.FormControl({ value: null, disabled: true }),
             institutionName: new forms_1.FormControl(null, forms_1.Validators.required),
             country1: new forms_1.FormControl('', forms_1.Validators.required)
@@ -95,7 +94,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                 _this.form.get('state').setValue(res.data.results[0].state);
                 _this.form.get('city').setValue(res.data.results[0].city);
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error['error']['status']['messsage']);
             });
         }
     };
@@ -124,7 +123,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                 console.log(res);
                 if (res.data.results.length > 0) {
                     console.log('data is updated');
-                    _this.sweetalertMasterSuccess('Statutory Compliance Updated Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Statutory Compliance Updated Successfully.', '');
                     _this.saveFormValidation();
                     _this.form.reset();
                     _this.isSaveAndReset = true;
@@ -132,17 +131,15 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error['error']['status']['messsage']);
             });
             console.log(data);
         }
         else {
-            console.log('clcicked on new save button');
             var data = this.form.getRawValue();
-            console.log(JSON.stringify(data));
             delete data.country1;
             data.telephoneNumber = data.officialCountryCode + ' ' + data.telephoneNumber;
             delete data.officialCountryCode;
@@ -152,7 +149,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                 console.log(res);
                 if (res.data.results.length > 0) {
                     console.log('data is updated');
-                    _this.sweetalertMasterSuccess('Statutory Compliance Saved Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Statutory Compliance Saved Successfully.', '');
                     _this.saveFormValidation();
                     _this.form.reset();
                     _this.isSaveAndReset = true;
@@ -160,10 +157,10 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error['error']['status']['messsage']);
             });
             console.log(data);
         }
@@ -197,18 +194,13 @@ var StatutoryComplianceComponent = /** @class */ (function () {
             headName: this.summaryHtmlDataList[i].headName,
             country1: this.summaryHtmlDataList[i].country
         });
-        var a = this.summaryHtmlDataList[i].telephoneNumber.split(' ');
-        console.log(a.length);
-        console.log(a.length);
-        console.log(a.length);
-        if (a.length == 2) {
-            console.log('ssss');
+        var isdCodeAndMobileNumberList = this.summaryHtmlDataList[i].telephoneNumber.split(' ');
+        if (isdCodeAndMobileNumberList.length == 2) {
             this.form.patchValue({
-                telephoneNumber: a[1],
-                officialCountryCode: a[0]
+                telephoneNumber: isdCodeAndMobileNumberList[1],
+                officialCountryCode: isdCodeAndMobileNumberList[0]
             });
         }
-        console.log(a);
         this.complianceHeadId = this.summaryHtmlDataList[i].complianceHeadId;
         this.complianceInstitutionMasterId = this.summaryHtmlDataList[i].complianceInstitutionMasterId;
         this.form.enable();
@@ -224,6 +216,13 @@ var StatutoryComplianceComponent = /** @class */ (function () {
             headName: this.summaryHtmlDataList[i].headName,
             country1: this.summaryHtmlDataList[i].country
         });
+        var isdCodeAndMobileNumberList = this.summaryHtmlDataList[i].telephoneNumber.split(' ');
+        if (isdCodeAndMobileNumberList.length == 2) {
+            this.form.patchValue({
+                telephoneNumber: isdCodeAndMobileNumberList[1],
+                officialCountryCode: isdCodeAndMobileNumberList[0]
+            });
+        }
         this.form.disable();
     };
     StatutoryComplianceComponent.prototype.refreshHtmlTableData = function () {
@@ -240,7 +239,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                 _this.groupNameScaleNameStartDateObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
             });
         }, function (error) {
-            _this.sweetalertError(error["error"]["status"]["messsage"]);
+            _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
             _this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails().subscribe(function (res) {
                 _this.masterGridDataList = res.data.results;
@@ -248,8 +247,6 @@ var StatutoryComplianceComponent = /** @class */ (function () {
                 res.data.results.forEach(function (element) {
                     console.log(_this.groupNameScaleNameStartDateObject);
                     var tempObjForgroupNameScaleStartDate = _this.groupNameScaleNameStartDateObject.find(function (o) { return o.complianceHeadId == element.complianceHeadId; });
-                    console.log(tempObjForgroupNameScaleStartDate);
-                    console.log('---');
                     var obj = {
                         SrNo: i++,
                         institutionName: element.institutionName,
@@ -278,65 +275,6 @@ var StatutoryComplianceComponent = /** @class */ (function () {
     };
     StatutoryComplianceComponent.prototype.saveFormValidation = function () {
         console.log('saveFormValidation');
-    };
-    StatutoryComplianceComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    StatutoryComplianceComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    StatutoryComplianceComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    StatutoryComplianceComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    StatutoryComplianceComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
     };
     StatutoryComplianceComponent = __decorate([
         core_1.Component({
