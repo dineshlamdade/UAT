@@ -11,9 +11,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+//import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
-import { CalendarModule, DateAdapter} from 'angular-calendar';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CountToModule } from 'angular-count-to';
 import { NgApexchartsModule } from "ng-apexcharts";
@@ -34,15 +34,20 @@ registerLocaleData(localeGb, 'en-GB');
 
 import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
-import { TokenInterceptorService} from './modules/auth/token-interceptor/token-interceptor.service';
+import { TokenInterceptorService } from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
+
+import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
+
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
 
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { PrimeNGModule } from './app.primeNG.module';
-
 
 @NgModule({
   declarations: [
@@ -60,7 +65,7 @@ import { PrimeNGModule } from './app.primeNG.module';
     PayrollModule,
     MyInvestmentsModule,
     EightyCModule,
-    ProfileModule ,
+    ProfileModule,
     SettingsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -76,7 +81,6 @@ import { PrimeNGModule } from './app.primeNG.module';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    FullCalendarModule,
     CKEditorModule,
     BrowserAnimationsModule,
     TranslocoModule,
@@ -85,6 +89,10 @@ import { PrimeNGModule } from './app.primeNG.module';
     DashboardModule,
     MyInvestmentsModule,
     PayrollModule,
+
+    EmployeeMasterModule,
+    PrimeNGModule,
+    AccordionModule,
     OtherMasterModule
   ],
   providers: [BsDatepickerModule,
@@ -103,11 +111,11 @@ import { PrimeNGModule } from './app.primeNG.module';
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass:  TokenInterceptorService,
+      useClass: TokenInterceptorService,
       multi: true,
     },
-   ],
+  ],
 
-    bootstrap: [AppComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

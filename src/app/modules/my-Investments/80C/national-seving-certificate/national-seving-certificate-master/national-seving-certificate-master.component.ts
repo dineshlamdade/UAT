@@ -421,6 +421,18 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
+  //----------------- changeStartMaxDate --------------------
+  changeStartMaxDate(event:any) {
+    console.log("event::", event.target.value);
+
+    if(event.target.value === 'IX th Issue') {
+      this.today = new Date('2015-12-20');
+    } else {
+      this.today = new Date();
+    }
+
+    console.log("this.today::", this.today);
+  }
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
     if (

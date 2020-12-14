@@ -10,6 +10,7 @@ exports.PrimeNGModule = void 0;
 var core_1 = require("@angular/core");
 var autocomplete_1 = require("primeng/autocomplete");
 var dropdown_1 = require("primeng/dropdown");
+var table_1 = require("primeng/table");
 var PrimeNGModule = /** @class */ (function () {
     function PrimeNGModule() {
     }
@@ -17,10 +18,14 @@ var PrimeNGModule = /** @class */ (function () {
         core_1.NgModule({
             exports: [
                 autocomplete_1.AutoCompleteModule,
-                dropdown_1.DropdownModule
+                dropdown_1.DropdownModule,
+                table_1.TableModule
             ]
         })
     ], PrimeNGModule);
     return PrimeNGModule;
 }());
 exports.PrimeNGModule = PrimeNGModule;
+/**  Copyright 2019 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license */

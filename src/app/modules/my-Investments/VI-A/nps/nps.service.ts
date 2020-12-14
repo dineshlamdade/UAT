@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class NpsService {
 
   apiUrl = environment.apiBaseUrl;
-  apiUrlEmployee = environment.apiBaseUrlEmployee;
+  apiUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -89,7 +89,7 @@ export class NpsService {
   }
 
   getIdentityInformation () {
-    return this._HTTP.get(this.apiUrlEmployee + 'employeeIdentity-information/3')
+    return this._HTTP.get(this.apiUrlEmployee + '/employeeIdentity-information/1')
     .pipe(map((res: any) => {
       return res;
     }));

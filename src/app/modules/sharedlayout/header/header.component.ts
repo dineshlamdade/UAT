@@ -1,6 +1,6 @@
-import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +13,8 @@ export class HeaderComponent implements OnInit {
   public groupTab: boolean;
   public chatTab = true;
   public title: any;
+  public userInfo: any;
+  public userName: string;
   constructor(private service: AuthService,
               private route: Router) {
     this.title = route.url;
@@ -21,11 +23,12 @@ export class HeaderComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-
+    this.userInfo = this.service.getprivileges();
+    this.userName = this.userInfo.privileges[0].userName;
   }
 
-  logout(){
-   this.service.logout(); 
+  logout() {
+   this.service.logout();
   }
   mToggoleMenu() {
     document.getElementsByTagName('body')[0].classList.toggle('offcanvas-active');
@@ -45,7 +48,7 @@ export class HeaderComponent implements OnInit {
 
     const elem = document.documentElement;
     const methodToBeInvoked = elem.requestFullscreen ||
-      elem.requestFullscreen || elem['mozRequestFullscreen'] || elem['msRequestFullscreen'];
+      elem.requestFullscreen || elem["mozRequestFullscreen"] || elem['msRequestFullscreen'];
     if (methodToBeInvoked) {
       methodToBeInvoked.call(elem);
     }

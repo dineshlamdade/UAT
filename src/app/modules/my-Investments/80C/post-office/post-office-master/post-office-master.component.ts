@@ -32,6 +32,7 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-master.component.scss'],
 })
 export class PostOfficeMasterComponent implements OnInit {
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -319,6 +320,10 @@ export class PostOfficeMasterComponent implements OnInit {
 
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+
+    console.log("form::", this.form);
+    console.log("formData::", formData);
+
     this.submitted = true;
 
     if (this.form.invalid) {

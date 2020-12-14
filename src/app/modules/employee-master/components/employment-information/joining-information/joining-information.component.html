@@ -1,0 +1,186 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="JoiningForm" (ngSubmit)="joiningFormSubmit(JoiningInformationModel)">
+                        <!-- Member Details -->
+                        <fieldset>
+                            <legend><i class="fa fa-users"></i>
+                                Joining</legend>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Joining Date</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true"
+                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Original Hiring Date</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true"
+                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Joining Date For Gratuity</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true"
+                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Company</label>
+                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
+                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
+                                    </p-autoComplete>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <br>
+                        <fieldset>
+                            <legend><i class="fa fa-users"></i>
+                                Confirmation</legend>
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Probation </label>
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="false">
+                                                <span class="custom-control-label">Months</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="true">
+                                                <span class="custom-control-label">
+                                                    Days</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Months</label>
+                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
+                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
+                                    </p-autoComplete>
+                                </div>
+
+                                <!-- <div class="col-sm-6 col-lg-3">
+                                    <label class="form-label">
+                                        Days</label>
+                                    <input type="text" class="form-control">
+                                </div> -->
+
+                                <div class="col-sm-6 col-lg-3">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Notice Period </label>
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="false">
+                                                <span class="custom-control-label">Months</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="true">
+                                                <span class="custom-control-label">
+                                                    Days</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Months</label>
+                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
+                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
+                                    </p-autoComplete>
+                                </div>
+
+                                <!-- <div class="col-sm-6 col-lg-3">
+                                    <label class="form-label">
+                                        Days</label>
+                                    <input type="text" class="form-control">
+                                </div> -->
+
+                                <div class="col-sm-6 col-md-3 mt-10">
+                                    <label class="form-label">Expected Confirmation Date</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true"
+                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-lg-3 mt-10">
+                                    <label class="form-label">
+                                        Remark</label>
+                                    <input type="text" class="form-control">
+                                </div>
+
+                                <div class="col-sm-6 col-md-3 mt-10">
+                                    <label class="form-label">Confirmation Date</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                data-provide="datepicker" data-date-autoclose="true"
+                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-lg-3 mt-10">
+                                    <label class="form-label">
+                                        Remark</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="row mt-15">
+                            <div class="col-12">
+                                <div class="float-right mt-15">
+                                    <button type="submit"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
+                                        tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -116,6 +116,7 @@ export class PPFDeclarationComponent implements OnInit {
   public currentFileUpload: File;
   public filesArray: File[] = [];
   public masterfilesArray: File[] = [];
+  public editfilesArray: File[] = [];
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
@@ -426,7 +427,7 @@ export class PPFDeclarationComponent implements OnInit {
         formatedGlobalSelectedValue + formatedActualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.investmentGroup2TransactionId);
+      this.uploadGridData.push(data.investmentGroup1TransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
@@ -445,8 +446,8 @@ export class PPFDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
-      // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(data.investmentGroup2TransactionId);
+      console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+      const index = this.uploadGridData.indexOf(data.investmentGroup1TransactionId);
       this.uploadGridData.splice(index, 1);
     }
 
@@ -483,7 +484,7 @@ export class PPFDeclarationComponent implements OnInit {
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
       item.groupTransactionList.forEach((element) => {
-        this.uploadGridData.push(element.investmentGroup2TransactionId);
+        this.uploadGridData.push(element.investmentGroup1TransactionId);
       });
       this.enableFileUpload = true;
     }
@@ -609,7 +610,7 @@ export class PPFDeclarationComponent implements OnInit {
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   addRowInList(
     summarynew: {
-      investmentGroup2TransactionId: number;
+      investmentGroup1TransactionId: number;
       licMasterPaymentDetailsId: number;
       previousEmployerId: number;
       dueDate: Date;
@@ -631,7 +632,7 @@ export class PPFDeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
+    this.declarationService.investmentGroup1TransactionId = this.globalAddRowIndex;
     this.declarationService.declaredAmount = null;
     this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
@@ -761,6 +762,16 @@ export class PPFDeclarationComponent implements OnInit {
     console.log(this.filesArray);
   }
 
+  onUploadInEditCase(event) {
+    console.log('onUploadInEditCaseevent::', event);
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        this.editfilesArray.push(file);
+      }
+    }
+    console.log('onUploadInEditCase::', this.editfilesArray);
+  }
+
   removeDocument() {
     this.currentFileUpload = null;
   }
@@ -770,6 +781,12 @@ export class PPFDeclarationComponent implements OnInit {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
     console.log('this.filesArray.size::', this.filesArray.length);
+  }
+
+  removeSelectedLicTransactionDocumentInEditCase(index: number) {
+    this.editfilesArray.splice(index, 1);
+    console.log('this.editfilesArray::', this.editfilesArray);
+    console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
   upload() {
@@ -877,20 +894,26 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   changeReceiptAmountFormat() {
-    // let formatedReceiptAmount = this.numberFormat.transform(this.receiptAmount)
-    // console.log('formatedReceiptAmount::', formatedReceiptAmount);
-    // this.receiptAmount = formatedReceiptAmount;
-    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
-    if (this.receiptAmount < this.globalSelectedAmount) {
-      this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
-      );
-    } else if (this.receiptAmount > this.globalSelectedAmount) {
-      this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount'
-      );
-    }
-    console.log('receiptAmount::', this.receiptAmount);
+    let receiptAmount_: number;
+    let globalSelectedAmount_ : number;
+
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
+
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    if (receiptAmount_ < globalSelectedAmount_) {
+    this.alertService.sweetalertError(
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+    );
+  } else if (receiptAmount_ > globalSelectedAmount_) {
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    this.alertService.sweetalertWarning(
+      'Receipt Amount is greater than Selected line Actual Amount',
+    );
+  }
+    this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
 
   UploadModal(template: TemplateRef<any>) {
@@ -949,8 +972,10 @@ export class PPFDeclarationComponent implements OnInit {
     this.Service.getPPFTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
-        //this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
+        this.urlArray = res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].investmentGroupTransactionDetail;
+        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotalEditModal = res.data.results[0].grandRejectedTotal;
@@ -1046,17 +1071,60 @@ export class PPFDeclarationComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   public uploadUpdateTransaction() {
+    // this.editTransactionUpload.forEach((element) => {
+    //   this.uploadGridData.push(element.investmentGroup1TransactionId);
+    // });
     this.editTransactionUpload.forEach((element) => {
-      this.uploadGridData.push(element.investmentGroup2TransactionId);
+      element.groupTransactionList.forEach((innerElement) => {
+        if (innerElement.declaredAmount !== null) {
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(',', '');
+        } else {
+          innerElement.declaredAmount = 0.0;
+        }
+        if (innerElement.actualAmount !== null) {
+          innerElement.actualAmount = innerElement.actualAmount
+            .toString()
+            .replace(',', '');
+        } else {
+          innerElement.actualAmount = 0.0;
+        }
+
+        const dateOfPaymnet = this.datePipe.transform(
+          innerElement.dateOfPayment,
+          'yyyy-MM-dd'
+        );
+        const dueDate = this.datePipe.transform(
+          innerElement.dueDate,
+          'yyyy-MM-dd'
+        );
+
+        innerElement.dateOfPayment = dateOfPaymnet;
+        innerElement.dueDate = dueDate;
+        this.uploadGridData.push(innerElement.investmentGroup1TransactionId);
+      });
+    });
+    console.log('Group transaction', this.uploadGridData)
+    this.editTransactionUpload.forEach((element) => {
+      element.groupTransactionList.forEach((innerElement) => {
+        const dateOfPaymnet = this.datePipe.transform(
+          innerElement.dateOfPayment,
+          'yyyy-MM-dd'
+        );
+        innerElement.dateOfPayment = dateOfPaymnet;
+      });
     });
     const data = {
       investmentGroupTransactionDetail: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       documentRemark: this.documentRemark,
+      proofSubmissionId: this.editProofSubmissionId,
+      receiptAmount: this.editReceiptAmount,
     };
     console.log('data::', data);
     this.Service
-      .uploadPPFTransactionwithDocument(this.filesArray, data)
+      .uploadPPFTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
@@ -1064,11 +1132,49 @@ export class PPFDeclarationComponent implements OnInit {
             'Transaction Saved Successfully.',
             '',
           );
+          this.transactionDetail =
+          res.data.results[0].investmentGroupTransactionDetail;
+          this.documentDetailList = res.data.results[0].documentInformation;
+         this.grandDeclarationTotal =
+          res.data.results[0].grandDeclarationTotal;
+         this.grandActualTotal = res.data.results[0].grandActualTotal;
+         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+
+        this.initialArrayIndex = [];
+
+        this.transactionDetail.forEach((element) => {
+          this.initialArrayIndex.push(element.groupTransactionList.length);
+
+          element.groupTransactionList.forEach((innerElement) => {
+
+            if (innerElement.dateOfPayment !== null) {
+              innerElement.dateOfPayment = new Date(
+                innerElement.dateOfPayment
+              );
+            }
+
+            if (innerElement.isECS === 0) {
+              this.glbalECS == 0;
+            } else if (innerElement.isECS === 1) {
+              this.glbalECS == 1;
+            } else {
+              this.glbalECS == 0;
+            }
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          });
+        });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
-    this.currentFileUpload = null;
+        this.currentFileUpload = null;
+         this.editfilesArray = [];
   }
 
   downloadTransaction(proofSubmissionId) {
@@ -1106,7 +1212,7 @@ export class PPFDeclarationComponent implements OnInit {
 }
 
 class DeclarationService {
-  public investmentGroup2TransactionId = 0;
+  public investmentGroup1TransactionId = 0;
   public licMasterPaymentDetailsId: number;
   public previousEmployerId = 0;
   public dueDate: Date;

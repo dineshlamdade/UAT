@@ -1,9 +1,10 @@
+import { AuthService } from './modules/auth/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
 import { TranslocoService } from '@ngneat/transloco';
-
+AuthService
 
 
 @Component({
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private authService: AuthService,
     private translocoService: TranslocoService) {
       this.selectedLanguage = localStorage.getItem("selectedLanguage");
       // generate a regex from the locales we support
@@ -44,6 +46,13 @@ export class AppComponent implements OnInit {
       }
      }
   ngOnInit(): void {
+    if (this.router.getCurrentNavigation() === null) { 
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
+    }
     const body = document.getElementsByTagName('body')[0];
     body.classList.add("offcanvas-active");
     body.classList.add('font-montserrat');

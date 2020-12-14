@@ -130,7 +130,7 @@ export class SukanyaSamriddhiService {
       });
       //return null;
       return this._HTTP.post<any>(
-        this.apiUrl + 'sukanyaSamriddhiScheme-transaction/uploadsukanyaSamriddhiSchemeDocuments',
+        this.apiUrl + 'sukanyaSamriddhiScheme-transaction/uploadSukanyaSamriddhiSchemeDocuments',
         formData,
         {
 

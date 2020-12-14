@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     data: { title: ':: Delizia-HR :: Home' },
-    canActivate: [AuthGuard]
+    //canActivate: [AuthGuard]
   },
 
 ];
