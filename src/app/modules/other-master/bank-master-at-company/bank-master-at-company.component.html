@@ -61,7 +61,7 @@
                         <label class="form-label">Company Group</label>
                         <select name="companyGroup" id="companyGroup" class="form-control" formControlName="companyGroup"
                           [ngClass]="{'is-invalid' : form.get('companyGroup').status == 'INVALID'}"
-                          (change)='onSelectTypeOfAccount($event.target.value)'>
+                          (change)='onSelectCompanyGroup($event.target.value)'>
                           <option *ngFor="let companyList of groupCompanyDetailsList" [value]="companyList.id">
                             {{companyList.itemName}}
                           </option>

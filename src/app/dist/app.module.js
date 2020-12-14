@@ -47,6 +47,7 @@ var payroll_module_1 = require("./modules/payroll/payroll.module");
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
 var other_master_module_1 = require("./modules/other-master/other-master.module");
 var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
+var app_primeNG_module_1 = require("./app.primeNG.module");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -58,6 +59,7 @@ var AppModule = /** @class */ (function () {
                 settings_component_1.SettingsComponent,
             ],
             imports: [
+                app_primeNG_module_1.PrimeNGModule,
                 platform_browser_1.BrowserModule,
                 auth_module_1.AuthModule,
                 dashboard_module_1.DashboardModule,

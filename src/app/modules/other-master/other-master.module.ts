@@ -28,6 +28,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BankMasterAtGroupComponent } from './bank-master-at-group/bank-master-at-group.component';
 import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
 
+
 @NgModule({
   declarations: [
     CompanyGroupMasterComponent,
@@ -41,6 +42,7 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
     BankMasterAtCompanyComponent,
   ],
   imports: [
+
     CommonModule,
     OtherMasterRoutingModule,
     ReactiveFormsModule,
@@ -62,10 +64,12 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
     CarouselModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
+
     }),
     SharedlayoutModule,
     OtherMasterRoutingModule,
   ],
+
 
   providers: [ DatePipe, NumberFormatPipe],
 })

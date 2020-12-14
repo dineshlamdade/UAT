@@ -33,6 +33,8 @@ var statutory_compliance_component_1 = require("./statutory-compliance/statutory
 var establishment_master_component_1 = require("./establishment-master/establishment-master.component");
 var compliance_master_component_1 = require("./compliance-master/compliance-master.component");
 var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
+var bank_master_at_group_component_1 = require("./bank-master-at-group/bank-master-at-group.component");
+var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
 var OtherMasterModule = /** @class */ (function () {
     function OtherMasterModule() {
     }
@@ -46,6 +48,8 @@ var OtherMasterModule = /** @class */ (function () {
                 statutory_compliance_component_1.StatutoryComplianceComponent,
                 establishment_master_component_1.EstablishmentMasterComponent,
                 compliance_master_component_1.ComplianceMasterComponent,
+                bank_master_at_group_component_1.BankMasterAtGroupComponent,
+                bank_master_at_company_component_1.BankMasterAtCompanyComponent,
             ],
             imports: [
                 common_1.CommonModule,

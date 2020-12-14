@@ -35,6 +35,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
   public contactNumber: number;
   public isActive:boolean;
   public groupCompanyDetailsList = [];
+  public companyGroupId:number=0;
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertServiceService, private bankMasterAtGroupService: BankMasterAtGroupService,
               private bankMasterAtCompanyService: BankMasterAtCompanyService, private companyMasterService: CompanyMasterService) {
@@ -73,7 +74,6 @@ export class BankMasterAtCompanyComponent implements OnInit {
       });
     }, (error: any) => {
       this.alertService.sweetalertError(error.error.status.messsage);
-
     });
     this.bankMasterAtCompanyService.getGroupCompanyDetails().subscribe((res) => {
       console.log('bank company', res);
@@ -203,8 +203,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
 
   }
-  viewMaster(accountNumber: number,companyBankMasterId:number,accountType:string) {
-
+  viewMaster(accountNumber: number,companyBankMasterId:number,accountType: string) {
     this.form.setControl('pfFormArray', new FormArray([]));
     this.companyBankMasterId =companyBankMasterId;
     this.isGlobalView = false;
@@ -293,7 +292,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
 
         s.push({
-          // groupCompanyId: 1,
+           // groupCompanyId: this.companyGroupId,
           // companyBankMasterId: this.companyBankMasterId,
           // accountType: this.form.get('accountType').value,
           // accountNumber: this.form.get('accountNumber').value,
@@ -343,7 +342,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
         debugger
         for (let i = 0; i < this.pfArray.length; i++) {
           s.push({
-            groupCompanyId: 1,
+            groupCompanyId: this.companyGroupId,
             companyBankMasterId: this.companyBankMasterId,
             accountType: this.form.get('accountType').value,
             accountNumber: this.form.get('accountNumber').value,
@@ -351,12 +350,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
             designation:  this.form.get('pfFormArray').value[i].designation,
             emailId:  this.form.get('pfFormArray').value[i].emailId,
             contactNumber: this.form.get('pfFormArray').value[i].contactNumber,
-            companyGroup:this.form.get('companyGroup').value,
           });
         }
-
         console.log(s);
-
         this.bankMasterAtGroupService.postBankMasterMapping(s).subscribe((res) => {
           console.log(res);
 
@@ -368,8 +364,6 @@ export class BankMasterAtCompanyComponent implements OnInit {
             this.showButtonSaveAndReset = true;
             this.cancelView();
             this.refreshHtmlTableData();
-
-
           } else {
             this.alertService.sweetalertWarning(res.status.messsage);
           }
@@ -392,6 +386,10 @@ export class BankMasterAtCompanyComponent implements OnInit {
   }
   onSelectTypeOfAccount(evt: any) {
     console.log(evt);
+  }
+  onSelectCompanyGroup(evt:any){
+    console.log(evt);
+    this.companyGroupId = evt;
   }
   UpdateContactPerson() {
 
@@ -502,7 +500,7 @@ addRow() {
 }
 DeleteBankAccount(){
   let data = {
-    groupCompanyId:1,
+    groupCompanyId:this.form.get('accountType').value,
     companyBankMasterId:this.companyBankMasterId,
     accountType:this.form.get('accountType').value,
     accountNumber:this.form.get('accountNumber').value,

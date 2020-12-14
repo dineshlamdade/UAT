@@ -41,6 +41,7 @@ import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.mod
 import { OtherMasterModule } from './modules/other-master/other-master.module';
 
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
+import { PrimeNGModule } from './app.primeNG.module';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 
   ],
   imports: [
+    PrimeNGModule,
     BrowserModule,
     AuthModule,
     DashboardModule,

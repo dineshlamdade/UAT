@@ -23,7 +23,7 @@
                         </select>
                       </div>
 
-                      <div class="col-sm-3">
+                      <!-- <div class="col-sm-3">
                         <label class="form-label">IFSC Code</label>
                         <select name="ifscCode" id="ifscCode" class="form-control" formControlName="ifscCode"
                           (change)='onSelectIFSCCode($event.target.value)'>
@@ -31,7 +31,24 @@
                             {{ifscCode}}
                           </option>
                         </select>
-                      </div>
+                      </div> -->
+
+                      <div class="col-sm-6 col-md-3">
+                        <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
+                        <p-autoComplete
+                            [suggestions]="IFSCcodeList" placeholder="Search IFSC"
+                            (completeMethod)="searchIFSC($event, BankInformationModel.bankIFSC)"
+                            formControlName="bankIFSC" (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();
+                            getDataFromIFSC(BankInformationModel.bankIFSC)">
+                            <ng-template let-ifsc pTemplate="item">
+                                <div class="country-item">
+                                    <div>
+                                        {{ifsc}}</div>
+                                </div>
+                            </ng-template>
+                        </p-autoComplete>
+                        <i class="fa fa-chevron-down down-arrow-icon"></i>
+                    </div>
 
                       <div class="col-sm-3">
                         <label class="form-label">Bank Name</label>

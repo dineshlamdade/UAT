@@ -30,6 +30,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
         this.masterGridData = [];
         this.lictransactionList = [];
         this.groupCompanyDetailsList = [];
+        this.companyGroupId = 0;
         this.form = this.formBuilder.group({
             ifscCode: ['', forms_1.Validators.required],
             bankName: [{ value: '', disabled: true }],
@@ -251,7 +252,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
                     a = 1;
                 }
                 s.push({
-                    // groupCompanyId: 1,
+                    // groupCompanyId: this.companyGroupId,
                     // companyBankMasterId: this.companyBankMasterId,
                     // accountType: this.form.get('accountType').value,
                     // accountNumber: this.form.get('accountNumber').value,
@@ -292,15 +293,14 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
             debugger;
             for (var i = 0; i < this.pfArray.length; i++) {
                 s.push({
-                    groupCompanyId: 1,
+                    groupCompanyId: this.companyGroupId,
                     companyBankMasterId: this.companyBankMasterId,
                     accountType: this.form.get('accountType').value,
                     accountNumber: this.form.get('accountNumber').value,
                     contactPersonName: this.form.get('pfFormArray').value[i].contactPersonName,
                     designation: this.form.get('pfFormArray').value[i].designation,
                     emailId: this.form.get('pfFormArray').value[i].emailId,
-                    contactNumber: this.form.get('pfFormArray').value[i].contactNumber,
-                    companyGroup: this.form.get('companyGroup').value
+                    contactNumber: this.form.get('pfFormArray').value[i].contactNumber
                 });
             }
             console.log(s);
@@ -334,6 +334,10 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
     };
     BankMasterAtCompanyComponent.prototype.onSelectTypeOfAccount = function (evt) {
         console.log(evt);
+    };
+    BankMasterAtCompanyComponent.prototype.onSelectCompanyGroup = function (evt) {
+        console.log(evt);
+        this.companyGroupId = evt;
     };
     BankMasterAtCompanyComponent.prototype.UpdateContactPerson = function () {
     };
@@ -436,7 +440,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
     BankMasterAtCompanyComponent.prototype.DeleteBankAccount = function () {
         var _this = this;
         var data = {
-            groupCompanyId: 1,
+            groupCompanyId: this.form.get('accountType').value,
             companyBankMasterId: this.companyBankMasterId,
             accountType: this.form.get('accountType').value,
             accountNumber: this.form.get('accountNumber').value
