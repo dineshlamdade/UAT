@@ -48,6 +48,10 @@ import { OtherMasterModule } from './modules/other-master/other-master.module';
 
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 
+
+import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
+import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
+import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -91,7 +95,10 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,
-    OtherMasterModule
+    OtherMasterModule,
+	 AdminApprovalModule,
+    UploadexcelModule,
+    EmployeemasterlistpageModule,
   ],
   providers: [BsDatepickerModule,
     AuthGuard,
