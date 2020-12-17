@@ -44,4 +44,11 @@ postMasterFormData(data): Observable<any>   {
     }));
 }
 
+putMasterFormData(data): Observable<any>   {
+  return this._HTTP.put(this.apiUrl + 'workflowmaster-header', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+}
+
 }

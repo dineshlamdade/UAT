@@ -27,7 +27,7 @@ export class MasterComponent implements OnInit {
      workflowCode: new FormControl(null, Validators.required),
      description:  new FormControl(null, Validators.required),
      workflowType: new FormControl(null, Validators.required),
-    numberOfApprover: new FormControl(null, Validators.required),
+    numberOfApprover: new FormControl(null, [Validators.required, Validators.min(1)]),
     });
    // this.serviceName = ['','LMS', 'Reimbursement'];
   }
@@ -43,10 +43,10 @@ workflowServiceMasterId: 0,
     }]
     this.service.getMasterServiceList().subscribe((res)=>{
       this.service = res.data.results;
-      console.log('servicelist ::',this.service);
+     // console.log('servicelist ::',this.service);
     })
     this.service.getMasterSummaryData().subscribe((res)=>{
-      console.log('SummaryData ::',res);
+      //console.log('SummaryData ::',res);
       this.summaryGridData = res.data.results;
     })
   }
@@ -63,6 +63,7 @@ workflowServiceMasterId: 0,
     console.log(this.index);
     if (this.index>=0)  {
       //this.summaryGridData[this.index]= this.form.getRawValue();
+      this.service.putMasterFormData(data)
     }
     else{
      // this.summaryGridData.push(this.form.getRawValue());
@@ -82,7 +83,7 @@ workflowServiceMasterId: 0,
 
   }
   view(i) {
-    this.form.setValue(this.summaryGridData[i]);
+    this.form.patchValue(this.summaryGridData[i]);
     this.form.disable();
     this.cancelButton = true;
     }

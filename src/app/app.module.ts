@@ -1,3 +1,4 @@
+import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
 
@@ -44,6 +45,7 @@ import { PayrollModule } from './modules/payroll/payroll.module';
 
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
+import { investmentOthersModule } from './modules/my-Investments/others/others.module';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     PayrollModule,
     MyInvestmentsModule,
     EightyCModule,
+    investmentOthersModule,
+    investmentChapterVIAModule,
     ProfileModule ,
     SettingsModule,
     HttpClientModule,

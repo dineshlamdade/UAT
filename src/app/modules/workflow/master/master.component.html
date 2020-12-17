@@ -11,17 +11,17 @@
                         <div class="col-sm-6 col-md-3 mt-10">
                             <label class="form-label">Workflow Code</label>
                             <input type="text" formControlName="workflowCode" class="form-control align-right"  [ngClass]="{ 'is-invalid': submitted && form.controls.workflowCode.hasError('required') }">
-                            <div *ngIf="submitted && form.controls.workflowCode.hasError('required')" class="invalid-feedback">
+                            <!-- <div *ngIf="submitted && form.controls.workflowCode.hasError('required')" class="invalid-feedback">
                               mandatory
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="col-sm-6 col-md-3 mt-10">
                           <label class="form-label">Workflow Description</label>
                           <input type="text" formControlName="description" class="form-control align-right"  [ngClass]="{ 'is-invalid': submitted && form.controls.description.hasError('required') }">
-                          <div *ngIf="submitted && form.controls.description.hasError('required')" class="invalid-feedback">
+                          <!-- <div *ngIf="submitted && form.controls.description.hasError('required')" class="invalid-feedback">
                             mandatory
-                          </div>
+                          </div> -->
                         </div>
 
                         <div class="col-sm-6 col-md-3 mt-10">
@@ -32,16 +32,19 @@
                                {{object.workflowServiceName}}
                              </option>
                           </select>
-                            <div *ngIf="submitted && form.controls.workflowType.hasError('required')" class="invalid-feedback">
+                            <!-- <div *ngIf="submitted && form.controls.workflowType.hasError('required')" class="invalid-feedback">
                                  mandatory
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-sm-6 col-md-3 mt-10">
-                          <label class="form-label">no. of Approvers</label>
-                          <input type="number" formControlName="numberOfApprover" class="form-control align-right"  [ngClass]="{ 'is-invalid': submitted && form.controls.numberOfApprover.hasError('required') }">
-                          <div *ngIf="submitted && form.controls.numberOfApprover.hasError('required')" class="invalid-feedback">
+                          <label class="form-label">No. of Approvers</label>
+                          <input type="number" min=1 formControlName="numberOfApprover" class="form-control align-right"  [ngClass]="{ 'is-invalid': submitted && form.controls.numberOfApprover.hasError('required') }">
+                          <!-- <div *ngIf="submitted && form.controls.numberOfApprover.hasError('required')" class="invalid-feedback">
                                mandatory
-                          </div>
+                          </div> -->
+                          <small *ngIf="form['controls']['numberOfApprover'].errors.min">
+                            min limit is 1
+                          </small>
                       </div>
 
                         <!-- <div class="col-sm-6 col-md-3 mt-10">
