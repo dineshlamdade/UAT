@@ -15,6 +15,7 @@ import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/t
 import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
 import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
 import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
+import { IDSATTBComponent } from './VI-A/IDSA-TTB/IDSA-TTB.component';
 
 const routes: Routes = [
 
@@ -92,8 +93,13 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'interestDepositSavingAccount',
+        path:   'interestDepositSavingAccountTTA',
         component:  InterestDepositSavingAccountComponent,
+        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      },
+      {
+        path:   'interestDepositSavingAccountTTB',
+        component:  IDSATTBComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
     ],

@@ -32,6 +32,7 @@ import { ProfileComponent } from './modules/profile/profile.component';
 import { ProfileModule } from './modules/profile/profile.module';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SettingsModule } from './modules/settings/settings.module';
+import { BnNgIdleService } from 'bn-ng-idle';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
@@ -92,6 +93,7 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
    workflowModule,
   ],
   providers: [BsDatepickerModule,
+    BnNgIdleService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,

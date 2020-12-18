@@ -1,3 +1,5 @@
+import { IDSATTBSummaryComponent } from './IDSA-TTB/IDSA-TTB-summary/IDSA-TTB-summary.component';
+import { IDSATTBComponent } from './IDSA-TTB/IDSA-TTB.component';
 import { IDSASummaryComponent } from './interest-deposit-savingAccount/IDSA-summary/IDSA-summary.component';
 import { InterestDepositSavingAccountComponent } from './interest-deposit-savingAccount/interest-deposit-savingAccount.component';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -20,12 +22,18 @@ import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
 import { IDSAMasterComponent } from './interest-deposit-savingAccount/IDSA-master/IDSA-master.component';
 import { IDSADeclarationComponent } from './interest-deposit-savingAccount/IDSA-declaration/IDSA-declaration.component';
+import { IDSATTBMasterComponent } from './IDSA-TTB/IDSA-TTB-master/IDSA-TTB-master.component';
+import { IDSATTBDeclarationComponent } from './IDSA-TTB/IDSA-TTB-declaration/IDSA-TTB-declaration.component';
 @NgModule({
   declarations: [
       InterestDepositSavingAccountComponent,
       IDSASummaryComponent,
       IDSAMasterComponent,
-      IDSADeclarationComponent
+      IDSADeclarationComponent,
+      IDSATTBComponent,
+      IDSATTBSummaryComponent,
+      IDSATTBMasterComponent,
+      IDSATTBDeclarationComponent
      ],
   imports: [
     CommonModule,

@@ -117,7 +117,8 @@ export class InterestDepositSavingAccountComponent implements OnInit {
     collapsed: true,
     icon: 'icon-credit-card',
     name: 'Investment',
-    subDetails: [{
+    subDetails: [
+      {
       name: '80C-LIC',
       routerlink: '/investment/80C-LIC',
     },
@@ -155,6 +156,7 @@ export class InterestDepositSavingAccountComponent implements OnInit {
         menuDetail.subDetails.forEach( subdetails=> {
           if (element.menuDisplayName === subdetails.name) {
             console.log(subdetails.name)
+            
           }
           else{
             console.log(0)
