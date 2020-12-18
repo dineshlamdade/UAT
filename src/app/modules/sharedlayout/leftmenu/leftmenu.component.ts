@@ -9,6 +9,11 @@ import { AppComponent } from 'src/app/app.component';
 export class LeftmenuComponent implements OnInit {
 public menuDetails: Array<any>;
   public isCollapsed = true;
+
+  public isEmployeeMaster = true;
+  public isProjectCollapsed = true;
+  public isJobportalCollapsed = true;
+
   public isInvestmentCollapsed = true;
   public isOtherMaster = true;
   public isAuthCollapsed = true;

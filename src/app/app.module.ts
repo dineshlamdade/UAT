@@ -17,7 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 // import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
-import { CalendarModule, DateAdapter} from 'angular-calendar';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CountToModule } from 'angular-count-to';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -39,8 +39,14 @@ registerLocaleData(localeGb, 'en-GB');
 
 import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
-import { TokenInterceptorService} from './modules/auth/token-interceptor/token-interceptor.service';
+import { TokenInterceptorService } from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+
+import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
+
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 
@@ -48,6 +54,9 @@ import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { investmentOthersModule } from './modules/my-Investments/others/others.module';
 
+import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
+import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
+import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,9 +71,7 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
     PayrollModule,
     MyInvestmentsModule,
     EightyCModule,
-    investmentOthersModule,
-    investmentChapterVIAModule,
-    ProfileModule ,
+    ProfileModule,
     SettingsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -88,9 +95,14 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
     DashboardModule,
     MyInvestmentsModule,
     PayrollModule,
-   LMSModule,
-   OtherMasterModule,
-   workflowModule,
+
+    EmployeeMasterModule,
+    PrimeNGModule,
+    AccordionModule,
+    OtherMasterModule,
+	 AdminApprovalModule,
+    UploadexcelModule,
+    EmployeemasterlistpageModule,
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,
@@ -109,11 +121,11 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass:  TokenInterceptorService,
+      useClass: TokenInterceptorService,
       multi: true,
     },
-   ],
+  ],
 
-    bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

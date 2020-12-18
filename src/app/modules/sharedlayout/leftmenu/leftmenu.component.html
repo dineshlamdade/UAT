@@ -3,9 +3,9 @@
         <div class="hleft">
             <!-- <a class="header-brand" [routerLink]="['/dashboard']"><i
                     class="fa fa-gg brand-logo"></i></a> -->
-                    <a href="javascript:void(0)" class="nav-link user_btn"  [routerLink]="['/dashboard']" ><img class="avatar"
-                      src="../assets/images/Paysquare_logo.png" alt="" data-toggle="tooltip" data-placement="right"
-                      title="Delizia HR" /></a>
+            <a href="javascript:void(0)" class="nav-link user_btn" [routerLink]="['/dashboard']"><img class="avatar"
+                    src="../assets/images/Paysquare_logo.png" alt="" data-toggle="tooltip" data-placement="right"
+                    title="Delizia HR" /></a>
             <div class="dropdown">
             </div>
         </div>
@@ -303,9 +303,10 @@
                 <div class="media-body">
                     <h5 class="m-0">Abbott India Limited</h5>
                     <br>
-                    <p class="text-muted mb-1">Corporate Office 16th Floor, Godrej BKC, Bandra-Kurla Complex, Bandra (East), Mumbai – 400 051 India
+                    <p class="text-muted mb-1">Corporate Office 16th Floor, Godrej BKC, Bandra-Kurla Complex, Bandra
+                        (East), Mumbai – 400 051 India
 
-                      </p>
+                    </p>
                     <ul class="social-links list-inline mb-0 mt-2">
                         <li class="list-inline-item"><a href="javascript:void(0)" title="" data-toggle="tooltip"
                                 data-original-title="Facebook"><i class="fa fa-facebook"></i></a></li>
@@ -332,7 +333,7 @@
         <!-- <div class="g_heading">Directories</div> -->
         <ul class="metismenu">
             <!-- <ul class="metismenu" *ngFor="let list of menuDetails">
-            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> 
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
                 <a href="javascript:void(0)" (click)="list.collapsed = !list.collapsed" [attr.aria-expanded]="!isCollapsed"
                 aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true" [routerLink]="list.routerlink" ><i
                     [class]="list.icon"></i><span>{{list.name}}</span></a>
@@ -342,87 +343,121 @@
                                 <span>{{subList.name}}</span></a></li>
                     </ul>
             </li> -->
-            
-           
+
+
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a  [routerLink]="['/dashboard']" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
-                    aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
-                        class="icon-rocket"></i><span>Dashboard</span></a>
+                <a [routerLink]="['/dashboard']" (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
+                    aria-expanded="true"><i class="icon-rocket"></i><span>Dashboard</span></a>
 
 
             </li>
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-              <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
-                  aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
-                      class="icon-credit-card"></i><span>Payroll</span></a>
-              <ul class="collapse" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
-                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                          [routerLink]="['/payroll']" href="javascript:void(0)"><span>Reports</span></a></li>
-                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                          [routerLink]="['/investment']" href="javascript:void(0)"><span>Investment</span></a></li>
-                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                          [routerLink]="['/hr-reports']" href="javascript:void(0)"><span>Expense Reimbursement</span></a></li>
-              </ul>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a href="javascript:void(0)" (click)="isInvestmentCollapsed = !isInvestmentCollapsed" [attr.aria-expanded]="!isCollapsed"
-                aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
-                    class="icon-credit-card"></i><span>Investment</span></a>
-            <ul class="collapse" id="investmentCollapsed" [collapse]="isInvestmentCollapsed" [isAnimated]="true">
-                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/investment/80C-LIC']" ><span>80C-LIC</span></a></li>
-                        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                          [routerLink]="['/investment/80C-PPF']" ><span>80C-PPF</span></a></li>
-                          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/investment/80C-PensionPlan']" ><span>80C-PensionPlan</span></a></li>
-                            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                              [routerLink]="['/investment/80C-SukanyaSamriddhiScheme']" ><span>80C-SukanyaSamriddhiScheme</span></a></li>
-                              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                [routerLink]="['/investment/80C-PostOfficeTimeDepositScheme']" ><span>80C-PostOfficeTimeDepositScheme</span></a></li>
 
-                                  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                    [routerLink]="['/investment/80C-NationalSevingCertificate']" ><span>80C-NationalSevingCertificate</span></a></li>
-                                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                      [routerLink]="['/investment/80C-UnitLinkedInsurancePlan']" ><span>80C-UnitLinkedInsurancePlan</span></a></li>
-                                      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                        [routerLink]="['/investment/80C-TaxsavingMutualFund']" ><span>80C-TaxsavingMutualFund</span></a></li>
-                                        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                          [routerLink]="['/investment/Chapter-VI-A-NPS']" ><span>Chapter-VI-A-NPS</span></a></li>
+                <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                    aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
+                        class="icon-credit-card"></i><span>Payroll</span></a>
+                <ul class="collapse" id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                    [routerLink]="['/investment/childHostelAllowance']" ><span>Child Hostel Allowances</span></a></li>
+                            [routerLink]="['/payroll']" href="javascript:void(0)"><span>Reports</span></a></li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/investment/childEducationAllowance']" ><span>childEducationAllowance</span></a></li>
+                            [routerLink]="['/investment']" href="javascript:void(0)"><span>Investment</span></a></li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/investment/interestDepositSavingAccountTTA']" ><span>Interest on Deposit of Saving Account(Sec. 80 TTA)</span></a></li>
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/investment/interestDepositSavingAccountTTB']" ><span>Interest on Deposit of Saving Account(Sec. 80 TTB)</span></a></li>
-        
+                            [routerLink]="['/hr-reports']" href="javascript:void(0)"><span>Expense
+                                Reimbursement</span></a></li>
                 </ul>
-        </li>
-
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-          <a href="javascript:void(0)" (click)="isOtherMaster = !isOtherMaster" [attr.aria-expanded]="!isOtherMaster"
-              aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
-                  class="icon-credit-card"></i><span>Other Master</span></a>
-          <ul class="collapse" id="collapseBasic" [collapse]="isOtherMaster" [isAnimated]="true">
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                      [routerLink]="['/otherMaster/companyGroupMaster']" ><span>Company Group Master</span></a></li>
-                      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                        [routerLink]="['/otherMaster/companyMaster']" ><span>Company Master</span></a></li>
-                        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                          [routerLink]="['/otherMaster/companyRegistrationDetails']" ><span>Company Registration Details</span></a></li>
-                          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/otherMaster/complianceHead']" ><span>Compliance Head</span></a></li>
-                            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                              [routerLink]="['/otherMaster/statutoryCompliance']" ><span>Statutory Compliance</span></a></li>
-                              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                [routerLink]="['/otherMaster/establishmentMaster']" ><span>Establishment Master</span></a></li>
-                                <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                                  [routerLink]="['/otherMaster/complianceMaster']" ><span>Compliance Master</span></a></li>
+            </li>
 
 
-          </ul>
-      </li>
+            <!-- Employee master Tabs -->
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a href="javascript:void(0)" (click)="isEmployeeMaster = !isEmployeeMaster"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
+                    aria-expanded="true"><i
+                        class="icon-credit-card"></i><span>{{ 'EmployeeMaster.employeeMaster' | transloco }}</span></a>
+                <ul class="collapse" id="collapseBasic" [collapse]="isEmployeeMaster" [isAnimated]="true">
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/employee-summary']"><span>Employee Summary</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/personal-information']"><span>{{ 'EmployeeMaster.personalInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/contact-information']"><span>{{ 'EmployeeMaster.contactInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/identity-information']"><span>{{ 'EmployeeMaster.identityInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/employment-information/employment-summary']"><span>{{ 'EmployeeMaster.employmentInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/previous-employment-information']"><span>{{ 'EmployeeMaster.previousEmploymentInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/job-information']"><span>{{ 'EmployeeMaster.jobInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/bank-information']"><span>{{ 'EmployeeMaster.bankInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/family-information']"><span>{{ 'EmployeeMaster.familyInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/compliance-information/compliance-summary']"><span>{{ 'EmployeeMaster.complianceInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/education-skills-information']"><span>{{ 'EmployeeMaster.education&skillsInformation' | transloco }}</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/employee-master/payroll-area-information']"><span>{{ 'EmployeeMaster.payrollInformation' | transloco }}</span></a>
+                    </li>
+                </ul>
+            </li>
+
+
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a href="javascript:void(0)" (click)="isInvestmentCollapsed = !isInvestmentCollapsed"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
+                    aria-expanded="true"><i class="icon-credit-card"></i><span>Investment</span></a>
+                <ul class="collapse" id="investmentCollapsed" [collapse]="isInvestmentCollapsed" [isAnimated]="true">
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-LIC']"><span>80C-LIC</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-PPF']"><span>80C-PPF</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-PensionPlan']"><span>80C-PensionPlan</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-SukanyaSamriddhiScheme']"><span>80C-SukanyaSamriddhiScheme</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-PostOfficeTimeDepositScheme']"><span>80C-PostOfficeTimeDepositScheme</span></a>
+                    </li>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-NationalSevingCertificate']"><span>80C-NationalSevingCertificate</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-UnitLinkedInsurancePlan']"><span>80C-UnitLinkedInsurancePlan</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/80C-TaxsavingMutualFund']"><span>80C-TaxsavingMutualFund</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/investment/Chapter-VI-A-NPS']"><span>Chapter-VI-A-NPS</span></a></li>
+
 
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a href="javascript:void(0)" (click)="isCollapsedLMS = !isCollapsedLMS" [attr.aria-expanded]="!isCollapsedLMS" aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
@@ -444,8 +479,36 @@
            
         </ul>
     </li>
+                </ul>
+            </li>
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a href="javascript:void(0)" (click)="isOtherMaster = !isOtherMaster"
+                    [attr.aria-expanded]="!isOtherMaster" aria-controls="collapseBasic" class="has-arrow arrow-c"
+                    aria-expanded="true"><i class="icon-credit-card"></i><span>Other Master</span></a>
+                <ul class="collapse" id="collapseBasic" [collapse]="isOtherMaster" [isAnimated]="true">
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/companyGroupMaster']"><span>Company Group Master</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/companyMaster']"><span>Company Master</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/companyRegistrationDetails']"><span>Company Registration
+                                Details</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/complianceHead']"><span>Compliance Head</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/statutoryCompliance']"><span>Statutory Compliance</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/establishmentMaster']"><span>Establishment Master</span></a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                            [routerLink]="['/otherMaster/complianceMaster']"><span>Compliance Master</span></a></li>
 
 
+                </ul>
+            </li>
         </ul>
     </nav>
 </div>

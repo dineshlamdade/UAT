@@ -11,15 +11,21 @@
 
   <title>:: DelziaHR :: Home</title>
   <base href="/">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/primeng/10.0.3/resources/themes/saga-green/theme.min.css" /> -->
+
   <!-- Bootstrap Core and vandor -->
-  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css"  />
+  <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css" />
 
   <!-- Plugins css -->
   <link rel="stylesheet" href="/assets/plugins/charts-c3/c3.min.css" />
 
   <!-- Core css -->
-  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet"  href="/assets/css/main.css" />
   <link rel="stylesheet" href="/assets/css/theme2.css" />
+  <link rel="stylesheet" href="/assets/css/primeicons.css" />  
+  <link rel="stylesheet" href="/assets/css/sagaGreenPrimeNG.css" />
+  <!-- <link rel="stylesheet" href="/assets/css/primeng.min.css" /> -->
 
   <style>
     .HideDiv {
@@ -78,6 +84,20 @@
     </div>
     <div id="main_content">
       <app-root></app-root>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+      <script>
+        $('.toggle-password').on('click', function () {
+          $(this).toggleClass('fa-eye fa-eye-slash');
+          let input = $($(this).attr('toggle'));
+          if (input.attr('type') == 'password') {
+            input.attr('type', 'text');
+          }
+          else {
+            input.attr('type', 'password');
+          }
+        });
+      </script>
     </div>
   </div>
 </body>

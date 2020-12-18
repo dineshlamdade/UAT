@@ -1,0 +1,54 @@
+
+
+.center-fieldset{
+    justify-content: center;
+}
+
+.country-code{
+    margin-right: -15px;
+}
+
+.personal-col{
+    margin-top: -41px;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #662d8c !important;
+  }
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #662d8c !important;
+  }
+
+  .copy-from-btn{
+    height: fit-content;
+    margin: auto;
+    display: grid;
+    cursor: pointer;
+  }
+
+  .disabled-btn-bg-green{
+    background-color: #94c1c1!important;
+}
+
+.mat-error {
+    color: #f44336;
+    font-size: 11px;
+}
+
+select option {
+	color: black;
+}
+select option:first-child {
+	color: grey;
+}
+select.empty {
+	color: grey;
+}
+/* Hidden placeholder */
+select option[disabled]:first-child {
+	display: none;
+}
+
+.form-control.is-invalid {
+  background-image: none!important;
+}

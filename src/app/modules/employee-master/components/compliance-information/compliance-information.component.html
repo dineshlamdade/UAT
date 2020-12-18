@@ -1,0 +1,54 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tabview">
+                                <input name="nav" type="radio" class="about-radio" id="complianceSummary"
+                                    [checked]="tabIndex==2" />
+                                <label class="nav" for="complianceSummary" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/compliance-information/compliance-summary']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Summary
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="Input" [checked]="tabIndex==2" />
+                                <label class="nav" for="Input" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/compliance-information/input']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Input
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="complianceType"
+                                    [checked]="tabIndex==3" />
+                                <label class="nav" for="complianceType" (click)="hideSummaryGrid = true"
+                                    [routerLink]="['/employee-master/compliance-information/compliance-type']"
+                                    (click)="hiddenSummary = false">
+                                    <span>
+                                        Compliance Type
+                                    </span>
+                                </label>
+
+
+                                <div class="tabs about-page">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

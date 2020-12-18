@@ -115,9 +115,9 @@ export class AppComponent implements OnInit {
 
     // change locale/language at runtime
     updateLocale(locale) {
-      localStorage.setItem('selectedLanguage', locale);
+      localStorage.setItem("selectedLanguage", locale);
 
-      if (this.locales.some((l) => l.value === locale)) {
+      if (this.locales.some(l => l.value === locale)) {
         this.locale = locale;
       }
       const lang = locale.substring(0, 2);
