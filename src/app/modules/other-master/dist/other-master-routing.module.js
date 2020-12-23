@@ -18,6 +18,7 @@ var company_registration_details_component_1 = require("./company-registration-d
 var compliance_head_component_1 = require("./compliance-head/compliance-head.component");
 var compliance_master_component_1 = require("./compliance-master/compliance-master.component");
 var establishment_master_component_1 = require("./establishment-master/establishment-master.component");
+var job_master_component_1 = require("./job-master/job-master.component");
 var statutory_compliance_component_1 = require("./statutory-compliance/statutory-compliance.component");
 var routes = [
     {
@@ -63,6 +64,11 @@ var routes = [
     {
         path: 'bankMasterAtCompany',
         component: bank_master_at_company_component_1.BankMasterAtCompanyComponent,
+        data: { title: ':: Delizia-HR :: Home' }
+    },
+    {
+        path: 'jobMaster',
+        component: job_master_component_1.JobMasterComponent,
         data: { title: ':: Delizia-HR :: Home' }
     },
 ];

@@ -22,15 +22,21 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
         this.isEditMode = false;
         this.isSaveAndReset = true;
         this.form = forms_1.FormGroup;
+        this.isActive = false;
         this.ifscCodeList = [];
         this.typeOfAccountList = ['Current', 'OD', 'CC'];
-        this.initialList = ['Mr', 'Ms'];
-        this.countryCode = [];
         this.isGlobalView = true;
         this.masterGridData = [];
-        this.lictransactionList = [];
+        this.countryCode = [];
+        // public contactPersonName: string;
+        // public designation: string;
+        // public emailId: string;
+        // public contactNumber: number;
+        // public isActive:boolean;
         this.groupCompanyDetailsList = [];
         this.companyGroupId = 0;
+        this.accountNumber = 0;
+        this.reEnterAccountNumber = 0;
         this.form = this.formBuilder.group({
             ifscCode: ['', forms_1.Validators.required],
             bankName: [{ value: '', disabled: true }],
@@ -48,7 +54,8 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
             designation: [''],
             emailId: ['', forms_1.Validators.required],
             isActive: [''],
-            contactNumber: [''],
+            contactNumber: ['', [forms_1.Validators.required, forms_1.Validators.minLength(10), forms_1.Validators.maxLength(10)]],
+            isdCode: [''],
             companyBankMappingId: ['']
         }));
     }
@@ -87,12 +94,17 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
             console.log('summary table data', res);
             var k = 1;
             res.data.results.forEach(function (element) {
+                debugger;
+                console.log(_this.bankMasterDetailsResponse);
                 console.log(element);
-                for (var i = 0; i < element.mappingDetails.length; i++) {
+                var _loop_1 = function (i) {
+                    var index = _this.bankMasterDetailsResponse.findIndex(function (o) { return o.companyBankMasterId == element.mappingDetails[i].companyBankMasterId; });
                     // if (element.mappingDetails[i].isActive === 1) {
                     _this.masterGridData.push(element);
                     var obj = {
                         SrNo: k++,
+                        bankName: _this.bankMasterDetailsResponse[index].bankName,
+                        ifscCode: _this.bankMasterDetailsResponse[index].ifscCode,
                         companyBankMappingId: element.mappingDetails[i].companyBankMappingId,
                         companyBankMasterId: element.mappingDetails[i].companyBankMasterId,
                         accountType: element.mappingDetails[i].accountType,
@@ -103,6 +115,9 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
                         contactNumber: element.mappingDetails[i].contactNumber
                     };
                     _this.summaryHtmlDataList.push(obj);
+                };
+                for (var i = 0; i < element.mappingDetails.length; i++) {
+                    _loop_1(i);
                 }
             });
             console.log(_this.masterGridData);
@@ -137,12 +152,14 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
                             });
                         }
                         flag = false;
+                        var contactNumberSplit = element.mappingDetails[j].contactNumber.split(' ');
                         _this.pfArray.push(_this.formBuilder.group({
                             contactPersonName: [element.mappingDetails[j].contactPersonName],
                             designation: [element.mappingDetails[j].designation],
                             emailId: [element.mappingDetails[j].emailId, forms_1.Validators.required],
                             isActive: [element.mappingDetails[j].isActive],
-                            contactNumber: [element.mappingDetails[j].contactNumber],
+                            isdCode: [contactNumberSplit[0]],
+                            contactNumber: [contactNumberSplit[1]],
                             companyBankMappingId: [element.mappingDetails[j].companyBankMappingId]
                         }));
                         // this.addContactPerson(j);
@@ -228,6 +245,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
         this.isEditMode = false;
         this.isActive = false;
         this.isSaveAndReset = true;
+        this.showButtonSaveAndReset = true;
         this.form.reset();
         this.form.enable();
         this.pfArray.push(this.formBuilder.group({
@@ -235,6 +253,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
             designation: [''],
             emailId: ['', forms_1.Validators.required],
             isActive: [''],
+            isdCode: [''],
             contactNumber: [''],
             companyBankMappingId: ['']
         }));
@@ -251,6 +270,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
                 if (this.form.get('pfFormArray').value[i].isActive == true) {
                     a = 1;
                 }
+                var contactNumberSplit = this.form.get('pfFormArray').value[i].contactNumber;
                 s.push({
                     // groupCompanyId: this.companyGroupId,
                     // companyBankMasterId: this.companyBankMasterId,
@@ -259,7 +279,8 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
                     contactPersonName: this.form.get('pfFormArray').value[i].contactPersonName,
                     designation: this.form.get('pfFormArray').value[i].designation,
                     emailId: this.form.get('pfFormArray').value[i].emailId,
-                    contactNumber: this.form.get('pfFormArray').value[i].contactNumber,
+                    isdCode: contactNumberSplit[0],
+                    contactNumber: contactNumberSplit[1],
                     isActive: a,
                     companyBankMappingId: this.form.get('pfFormArray').value[i].companyBankMappingId
                 });
@@ -300,7 +321,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
                     contactPersonName: this.form.get('pfFormArray').value[i].contactPersonName,
                     designation: this.form.get('pfFormArray').value[i].designation,
                     emailId: this.form.get('pfFormArray').value[i].emailId,
-                    contactNumber: this.form.get('pfFormArray').value[i].contactNumber
+                    contactNumber: this.form.get('pfFormArray').value[i].isdCode + ' ' + this.form.get('pfFormArray').value[i].contactNumber
                 });
             }
             console.log(s);
@@ -421,6 +442,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
             designation: [''],
             emailId: ['', forms_1.Validators.required],
             isActive: [''],
+            isdCode: [''],
             contactNumber: ['']
         }));
         // this.lictransactionList.push({

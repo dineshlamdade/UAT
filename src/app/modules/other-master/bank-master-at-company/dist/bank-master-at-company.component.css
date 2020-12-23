@@ -9,3 +9,19 @@
 .disabled-btn-bg-lightgrey {
   background-color: lightgrey !important;
 }
+
+html, body {
+  height: 100%;
+  background: #212121;
+  margin: 0px;
+}
+
+.first-example, .second-example, .third-example {
+  margin-bottom: 10px;
+}
+
+body {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}

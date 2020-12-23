@@ -35,6 +35,10 @@ var compliance_master_component_1 = require("./compliance-master/compliance-mast
 var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
 var bank_master_at_group_component_1 = require("./bank-master-at-group/bank-master-at-group.component");
 var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
+var button_1 = require("@angular/material/button");
+var icon_1 = require("@angular/material/icon");
+var form_field_1 = require("@angular/material/form-field");
+var app_primeNG_module_1 = require("src/app/app.primeNG.module");
 var OtherMasterModule = /** @class */ (function () {
     function OtherMasterModule() {
     }
@@ -52,6 +56,9 @@ var OtherMasterModule = /** @class */ (function () {
                 bank_master_at_company_component_1.BankMasterAtCompanyComponent,
             ],
             imports: [
+                button_1.MatButtonModule,
+                icon_1.MatIconModule,
+                form_field_1.MatFormFieldModule,
                 common_1.CommonModule,
                 other_master_routing_module_1.OtherMasterRoutingModule,
                 forms_1.ReactiveFormsModule,
@@ -76,6 +83,7 @@ var OtherMasterModule = /** @class */ (function () {
                 }),
                 sharedlayout_module_1.SharedlayoutModule,
                 other_master_routing_module_1.OtherMasterRoutingModule,
+                app_primeNG_module_1.PrimeNGModule,
             ],
             providers: [common_1.DatePipe, NumberFormatPipe_1.NumberFormatPipe]
         })

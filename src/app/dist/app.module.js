@@ -20,7 +20,7 @@ var slider_1 = require("@angular/material/slider");
 var platform_browser_1 = require("@angular/platform-browser");
 var animations_1 = require("@angular/platform-browser/animations");
 var ckeditor5_angular_1 = require("@ckeditor/ckeditor5-angular");
-var angular_1 = require("@fullcalendar/angular"); // the main connector. must go first
+//import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 var transloco_1 = require("@ngneat/transloco");
 var angular_calendar_1 = require("angular-calendar");
 var date_fns_1 = require("angular-calendar/date-adapters/date-fns");
@@ -44,10 +44,12 @@ var auth_guard_1 = require("./modules/auth/auth.guard");
 var token_interceptor_service_1 = require("./modules/auth/token-interceptor/token-interceptor.service");
 var dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 var payroll_module_1 = require("./modules/payroll/payroll.module");
+var employee_master_module_1 = require("./modules/employee-master/employee-master.module");
+var app_primeNG_module_1 = require("./app.primeNG.module");
+var accordion_1 = require("primeng/accordion"); //accordion and accordion tab
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
 var other_master_module_1 = require("./modules/other-master/other-master.module");
 var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
-var app_primeNG_module_1 = require("./app.primeNG.module");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -59,7 +61,6 @@ var AppModule = /** @class */ (function () {
                 settings_component_1.SettingsComponent,
             ],
             imports: [
-                app_primeNG_module_1.PrimeNGModule,
                 platform_browser_1.BrowserModule,
                 auth_module_1.AuthModule,
                 dashboard_module_1.DashboardModule,
@@ -81,7 +82,6 @@ var AppModule = /** @class */ (function () {
                     provide: angular_calendar_1.DateAdapter,
                     useFactory: date_fns_1.adapterFactory
                 }),
-                angular_1.FullCalendarModule,
                 ckeditor5_angular_1.CKEditorModule,
                 animations_1.BrowserAnimationsModule,
                 transloco_1.TranslocoModule,
@@ -90,6 +90,9 @@ var AppModule = /** @class */ (function () {
                 dashboard_module_1.DashboardModule,
                 my_Investments_module_1.MyInvestmentsModule,
                 payroll_module_1.PayrollModule,
+                employee_master_module_1.EmployeeMasterModule,
+                app_primeNG_module_1.PrimeNGModule,
+                accordion_1.AccordionModule,
                 other_master_module_1.OtherMasterModule
             ],
             providers: [datepicker_1.BsDatepickerModule,

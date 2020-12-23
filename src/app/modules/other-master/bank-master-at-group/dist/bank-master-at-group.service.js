@@ -61,6 +61,12 @@ var BankMasterAtGroupService = /** @class */ (function () {
             return res;
         }));
     };
+    BankMasterAtGroupService.prototype.searchIFSC = function (terms, stateModel) {
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/bank-master/ifsc/' + stateModel + '/' + terms)
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
     BankMasterAtGroupService.prototype.getStates = function () {
         return this._HTTP.get(environment_1.environment.baseUrl8082 + '/location-information/state/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
             .pipe(operators_1.map(function (res) {

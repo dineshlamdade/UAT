@@ -27,6 +27,11 @@ import { ComplianceMasterComponent } from './compliance-master/compliance-master
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BankMasterAtGroupComponent } from './bank-master-at-group/bank-master-at-group.component';
 import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { PrimeNGModule } from 'src/app/app.primeNG.module';
+import { JobMasterComponent } from './job-master/job-master.component';
 
 
 @NgModule({
@@ -40,8 +45,12 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
     ComplianceMasterComponent,
     BankMasterAtGroupComponent,
     BankMasterAtCompanyComponent,
+    JobMasterComponent,
   ],
   imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
 
     CommonModule,
     OtherMasterRoutingModule,
@@ -66,8 +75,10 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
       positionClass: 'toast-top-center',
 
     }),
+
     SharedlayoutModule,
     OtherMasterRoutingModule,
+    PrimeNGModule,
   ],
 
 

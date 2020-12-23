@@ -907,9 +907,9 @@ strong {
 }
 
 .text-link {
-    color: blue;
-    /* // text-decoration: underline; */
-    cursor: pointer;
+    color: blue !important;
+   text-decoration: underline !important;
+    cursor: pointer !important;
 }
 
 .bg-color-gray {
@@ -1313,6 +1313,12 @@ strong {
     border-radius: 3px!important;
     background-color: #f2f2f2!important;
 }
+.box-line-border {
+  border: 1px solid #ccc!important;
+  border-radius: 3px!important;
+  background-color: #f1f1f1!important;
+}
+
 
 .disabled_label {
     font-size: 12px;
@@ -1337,6 +1343,11 @@ strong {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.bg-color-white {
+  background-color: #fff!important;
+  color: #0c0d0e!important;
+}
+
 
 .form-control:disabled,
 .form-control[readonly] {
@@ -1492,9 +1503,9 @@ button:focus {
 
 .code-line{
     margin-top: 44px;
-  
+
   }
-  
+
   .thumbnail {
       /* // position: absolute; */
       width: 123px;
@@ -1516,7 +1527,7 @@ button:focus {
       //     -ms-transform: translate(-50%,-50%);
       //         transform: translate(-50%,-50%); */
     }
-  
+
     .image-size-info{
       font-size: 11px;
       text-align: center;
@@ -1524,11 +1535,11 @@ button:focus {
     .disabled-btn-bg-green{
       background-color: #94c1c1!important;
   }
-  
+
   .small-size{
     font-size: 7px;
   }
-  
+
   .form-control.is-invalid {
     background-image: none!important;
   }
@@ -1544,7 +1555,7 @@ button:focus {
 }
 
 .p-button-label{
-    visibility: hidden !important; 
+    visibility: hidden !important;
 }
 
 .p-inputtext:invalid {
@@ -2128,3 +2139,83 @@ button:focus {
   font-family: Montserrat, sans-serif!important;
 }
 
+/* job master tab set */
+/*
+ CSS for the main interaction
+*/
+.tabset > input[type="radio"] {
+  position: absolute;
+  left: -200vw;
+}
+
+.tabset .tab-panel {
+  display: none;
+}
+
+.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+  display: block;
+}
+
+
+
+.tabset > label {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px 25px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.tabset > label::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+  width: 40px;
+  height: 4px;
+  background: #8d8d8d;
+
+}
+
+.tabset > label:hover,
+.tabset > input:focus + label {
+  color: #713f93!important;
+}
+
+.tabset > label:hover::after,
+.tabset > input:focus + label::after,
+.tabset > input:checked + label::after {
+  background: #713f93!important;
+
+}
+
+.tabset > input:checked + label {
+  border-color: #ccc;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+  color: #713f93!important;
+}
+
+.tab-panel {
+  padding: 30px 0;
+  border-top: 1px solid #ccc;
+}
+.tab-panel{
+  border: 1px solid #ddd;
+    padding: 15px;
+}
+
+
+
+.tabset {
+  width: 100%;
+}
+/* end of job tab set */

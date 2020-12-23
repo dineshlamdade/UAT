@@ -19,7 +19,7 @@ var PrimeNGModule = /** @class */ (function () {
             exports: [
                 autocomplete_1.AutoCompleteModule,
                 dropdown_1.DropdownModule,
-                table_1.TableModule
+                table_1.TableModule,
             ]
         })
     ], PrimeNGModule);

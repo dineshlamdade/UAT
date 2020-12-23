@@ -48,18 +48,50 @@
                     <div class="row mt-20">
                       <div class="col-sm-3">
                         <label class="form-label">Account Number</label>
-                        <input type="text" formControlName="accountNumber" class="form-control" name="accountNumber"
+                        <input [type]="accountNumber ? 'number' : 'password'" formControlName="accountNumber"
+                          class="form-control" name="accountNumber"
                           [ngClass]="{'is-invalid' : form.get('accountNumber').status == 'INVALID'}">
+                        <mat-icon matSuffix (click)="accountNumber = !accountNumber" class="field-icon"
+                          style="position: relative;right: 3px;font-size: 16px;top: 2px;">
+                          {{accountNumber ? 'visibility' : 'visibility_off'}}</mat-icon>
                       </div>
-                      <div class="col-sm-3">
+
+                      <!-- <div class="col-sm-3">
                         <label class="form-label">Confirm Account Number</label>
-                        <input type="text" formControlName="reEnterAccountNumber" class="form-control"
+                        <input [type]="reEnterAccountNumber ? 'number' : 'password'"  formControlName="reEnterAccountNumber" class="form-control"
                           [ngClass]="{'is-invalid' : form.get('reEnterAccountNumber').status == 'INVALID'}"
                           name="reEnterAccountNumber">
+                          <mat-icon matSuffix (click)="reEnterAccountNumber = !reEnterAccountNumber" class="field-icon" style="position: relative;right: 3px;font-size: 16px;top: 2px;">
+                            {{reEnterAccountNumber ? 'visibility' : 'visibility_off'}}</mat-icon>
+                      </div> -->
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Confirm Account Number</label>
+                        <input [type]="reEnterAccountNumber ? 'number' : 'password'"
+                          formControlName="reEnterAccountNumber" class="form-control"
+                          [ngClass]="{'is-invalid' : form.get('reEnterAccountNumber').status == 'INVALID'}"
+                          name="reEnterAccountNumber">
+                        <mat-icon matSuffix (click)="reEnterAccountNumber = !reEnterAccountNumber" class="field-icon"
+                          style="position: relative;right: 3px;font-size: 16px;top: 2px;">
+                          {{reEnterAccountNumber ? 'visibility' : 'visibility_off'}}</mat-icon>
                       </div>
+
+                      <!-- <div style="display: flex;">
+                        <input placeholder="Re-Enter Account no." formcontrolname="reEnterAccountNumber" minlength="1"
+                          class="form-control ng-untouched ng-pristine ng-invalid" ng-reflect-minlength="1"
+                          ng-reflect-name="reEnterAccountNumber" ng-reflect-maxlength=""[type]="reEnterAccountNumber ? 'number' : 'password'" ><i
+                            class=" fa fa-eye" style="position: relative;right: 24px;font-size: 16px; top: 7px;"></i>
+                      </div>
+
+                      <div style="display: flex;" class="col-sm-3">
+                      <input placeholder="Re-Enter Account no." formcontrolname="confirmAccountNo" minlength="1" class="form-control ng-untouched ng-pristine ng-invalid" ng-reflect-minlength="1" ng-reflect-name="confirmAccountNo" ng-reflect-maxlength="" type="password"><i class=" fa fa-eye" style="position: relative;right: 24px;font-size: 16px;top: 7px;"></i>
+                    </div> -->
+
+
                       <div class="col-sm-3">
                         <label class="form-label">Company Group</label>
-                        <select name="companyGroup" id="companyGroup" class="form-control" formControlName="companyGroup"
+                        <select name="companyGroup" id="companyGroup" class="form-control"
+                          formControlName="companyGroup"
                           [ngClass]="{'is-invalid' : form.get('companyGroup').status == 'INVALID'}"
                           (change)='onSelectCompanyGroup($event.target.value)'>
                           <option *ngFor="let companyList of groupCompanyDetailsList" [value]="companyList.id">
@@ -80,7 +112,7 @@
 
 
 
-              <div class="row mt-15"  formArrayName="pfFormArray">
+              <div class="row mt-15" formArrayName="pfFormArray">
                 <h3 class="font-14 text-purple font-bold">Contact Person Details</h3>
                 <div class="col-12">
                   <div class="table-responsive Custom_Table">
@@ -91,7 +123,8 @@
                           <th rowspan="2" class="wd-25 font700"> Contact Person Name</th>
                           <th rowspan="2" class="wd-25 font700">Designation</th>
                           <th rowspan="2" class="wd-25 font700">Email Id</th>
-                          <th rowspan="2" class="wd-25 font700">Contact Number</th>
+
+                          <th colspan="2" rowspan="2" class="wd-25 font700">Contact Number</th>
                           <th rowspan="2" class="wd-25 font700" *ngIf="isEditMode">Is Active</th>
                           <th rowspan="2" class="wd-25 font700" *ngIf="!isEditMode">Action</th>
 
@@ -101,33 +134,46 @@
 
                       <tbody>
                         <!-- <tr *ngFor=" let summary of lictransactionList; let i = index; count as c"> -->
-                          <tr *ngFor="let summary of pfArray.controls; index as i"  [formGroupName]="i">
+                        <tr *ngFor="let summary of pfArray.controls; index as i" [formGroupName]="i">
                           <td scope="row">
-                            <input type="text"  formControlName="contactPersonName"  class="form-control"/>
+                            <input type="text" formControlName="contactPersonName" class="form-control" />
                           </td>
 
                           <td scope="row">
-                            <input type="text" formControlName="designation"  class="form-control" />
+                            <input type="text" formControlName="designation" class="form-control" />
                           </td>
 
                           <td scope="row">
-                            <input type="email" formControlName="emailId"  class="form-control"
-                            [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('emailId').status == 'INVALID'}"/>
+                            <input type="email" formControlName="emailId" class="form-control"
+                              [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('emailId').status == 'INVALID'}" />
                           </td>
 
                           <td scope="row">
-                            <input type="number" formControlName="contactNumber"  class="form-control" />
+
+
+                            <select class="form-control selectpicker custom-select" placeholder="Select ISD" formControlName="isdCode">
+                              <option value='' data-hidden="true">Select</option>
+                              <option *ngFor="let code of countryCode"
+                                  [value]="code">
+                                  {{code}}
+                              </option>
+                          </select>
+                          </td>
+                          <td>
+                            <input type="text" formControlName="contactNumber" class="form-control" maxlength="10" minLength="10"
+                            pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$"
+                            [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('contactNumber').status == 'INVALID'}" />
                           </td>
 
                           <td scope="row" *ngIf="isEditMode==true">
-                            <input type="checkbox" name="isActive"  formControlName="isActive"  class="form-control"/>
+                            <input type="checkbox" name="isActive" formControlName="isActive" class="form-control" />
                           </td>
-                          <td scope="row"  *ngIf="isEditMode == false">
+                          <td scope="row" *ngIf="isEditMode == false">
                             <!-- <input type="number" [(ngModel)]="summary.contactNumber" /> -->
-                            <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRow()"></i><span
-                            tooltip="Add Row" (click)="addRow()">Add</span>&nbsp;&nbsp;
-                          <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel"
-                            (click)="deleteRow(i)">Delete Row</i>
+                            <i   style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer" tooltip="Add Row" (click)="addRow()"></i><span
+                              tooltip="Add Row" (click)="addRow()">&nbsp;Add</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i style="font-size: 12;" class="fa fa-trash-o  font-12 text-red cursor-pointer" tooltip="Delete Row"
+                              (click)="deleteRow(i)" *ngIf="i!==0">&nbsp;Delete</i>
                           </td>
                         </tr>
                         <!-- <tr>
@@ -250,7 +296,7 @@
                     </div>
                   </div>  end of row -->
 
-                <!-- </div>
+          <!-- </div>
 
 
 
@@ -304,8 +350,8 @@
 
 
                     <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                    tooltip="Delete" (click)="DeleteBankAccount()"><b><i class="fa fa-times-circle"></i></b>
-                    Delete</button>
+                      tooltip="Delete" (click)="DeleteBankAccount()"><b><i class="fa fa-times-circle"></i></b>
+                      Delete</button>
 
 
                     <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
@@ -336,9 +382,12 @@
                     <thead class="thead-dark">
                       <tr>
                         <th scope="col" class="wd-25">Sr. No.</th>
-                        <th scope="col" class="wd-25">Account No</th>
+                        <th scope="col" class="wd-25">Bank Name</th>
+                        <th scope="col" class="wd-25">Ifsc Code</th>
                         <th scope="col" class="wd-25">Type of Account</th>
-                        <th scope="col" class="wd-25">Designation</th>
+                        <th scope="col" class="wd-25">Contact Person Name</th>
+                        <th scope="col" class="wd-25">Account No</th>
+                        <!-- <th scope="col" class="wd-25">Designation</th> -->
                         <th scope="col" class="wd-25">Email</th>
                         <th scope="col" class="wd-25">Telephone Number</th>
                         <th scope="col" class="wd-25">Action</th>
@@ -351,26 +400,32 @@
                       <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
                         <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
                         </td>
-                        <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.bankName}}">{{summary.bankName}}</span>
+                        </td>
+                        <td class="wd-10"><span tooltip="{{summary.ifscCode}}">{{summary.ifscCode}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.accountType}}">{{summary.accountType}}</span>
                         </td>
-                        <td class="wd-10"><span tooltip="{{summary.designation}}">{{summary.designation}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.contactPersonName}}">{{summary.contactPersonName}}</span>
                         </td>
+                        <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+                        </td>
+                        <!-- <td class="wd-10"><span tooltip="{{summary.designation}}">{{summary.designation}}</span>
+                        </td> -->
                         <td class="wd-10"><span tooltip="{{summary.emailId}}">{{summary.emailId}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.contactNumber}}">{{summary.contactNumber}}</span>
                         </td>
-
                         <td class="wd-10">
-
                           <span>
                             <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                              (click)="editMaster(summary.accountNumber,summary.companyBankMasterId,summary.accountType)" tooltip="Edit"></i>
+                              (click)="editMaster(summary.accountNumber,summary.companyBankMasterId,summary.accountType)"
+                              tooltip="Edit"></i>
                           </span>
 
                           <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
-                            (click)="viewMaster(summary.accountNumber,summary.companyBankMasterId,summary.accountType)" tooltip="View"></i>
+                            (click)="viewMaster(summary.accountNumber,summary.companyBankMasterId,summary.accountType)"
+                            tooltip="View"></i>
                         </td>
                       </tr>
                       <tr *ngIf="!summaryHtmlDataList?.length">

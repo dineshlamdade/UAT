@@ -1,6 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { debug } from 'console';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtGroupService } from '../bank-master-at-group/bank-master-at-group.service';
 import { CompanyMasterService } from '../company-master/company-master.service';
@@ -18,24 +19,26 @@ export class BankMasterAtCompanyComponent implements OnInit {
   public isEditMode = false;
   public isSaveAndReset = true;
   public form: any = FormGroup;
+  public isActive:boolean =false;
   public ifscCodeList = [];
   public bankMasterDetailsResponse: any;
   public companyBankMasterId: number;
   public typeOfAccountList = ['Current', 'OD', 'CC'];
-  public initialList = ['Mr', 'Ms'];
-  public countryCode = [];
   public isGlobalView = true;
   public masterGridData = [];
   public declarationService: any;
-  public lictransactionList = [];
-  public transactionDetail: any;
-  public contactPersonName: string;
-  public designation: string;
-  public emailId: string;
-  public contactNumber: number;
-  public isActive:boolean;
+  countryCode: Array<any> = [];
+
+
+  // public contactPersonName: string;
+  // public designation: string;
+  // public emailId: string;
+  // public contactNumber: number;
+  // public isActive:boolean;
   public groupCompanyDetailsList = [];
   public companyGroupId:number=0;
+  public accountNumber: number = 0;
+  public reEnterAccountNumber: number =0;
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertServiceService, private bankMasterAtGroupService: BankMasterAtGroupService,
               private bankMasterAtCompanyService: BankMasterAtCompanyService, private companyMasterService: CompanyMasterService) {
@@ -59,7 +62,8 @@ export class BankMasterAtCompanyComponent implements OnInit {
       designation: [''],
       emailId: ['', Validators.required],
       isActive: [''],
-      contactNumber: [''],
+      contactNumber: ['', [Validators.required,Validators.minLength(10),Validators.maxLength(10)]],
+      isdCode: [''],
       companyBankMappingId:[''],
     }));
   }
@@ -89,6 +93,10 @@ export class BankMasterAtCompanyComponent implements OnInit {
       this.countryCode = res.data.results;
     });
 
+
+
+
+
     this.refreshHtmlTableData();
   }
 
@@ -100,13 +108,19 @@ export class BankMasterAtCompanyComponent implements OnInit {
       console.log('summary table data', res);
       let k = 1;
       res.data.results.forEach((element) => {
+        debugger
+        console.log(this.bankMasterDetailsResponse);
+
         console.log(element);
         for (let i = 0; i < element.mappingDetails.length; i++) {
+          let index =this.bankMasterDetailsResponse.findIndex(o=>o.companyBankMasterId ==  element.mappingDetails[i].companyBankMasterId);
           // if (element.mappingDetails[i].isActive === 1) {
             this.masterGridData.push(element);
 
             const obj = {
               SrNo: k++,
+              bankName: this.bankMasterDetailsResponse[index].bankName,
+              ifscCode: this.bankMasterDetailsResponse[index].ifscCode,
               companyBankMappingId: element.mappingDetails[i].companyBankMappingId,
               companyBankMasterId: element.mappingDetails[i].companyBankMasterId,
               accountType: element.mappingDetails[i].accountType,
@@ -128,7 +142,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
   }
   editMaster(accountNumber: number,companyBankMasterId:number,accountType:string) {
     this.form.setControl('pfFormArray', new FormArray([]));
-    this.companyBankMasterId =companyBankMasterId;
+    this.companyBankMasterId = companyBankMasterId;
     this.isGlobalView = false;
     this.showButtonSaveAndReset = true;
     this.isSaveAndReset = false;
@@ -154,17 +168,17 @@ export class BankMasterAtCompanyComponent implements OnInit {
                   accountType: element.mappingDetails[j].accountType,
                   accountNumber: element.mappingDetails[j].accountNumber,
                   reEnterAccountNumber: element.mappingDetails[j].accountNumber,
-
                 });
-
               }
               flag = false;
+              let contactNumberSplit = element.mappingDetails[j].contactNumber.split(' ');
               this.pfArray.push(this.formBuilder.group({
                 contactPersonName: [element.mappingDetails[j].contactPersonName],
                 designation: [element.mappingDetails[j].designation],
                 emailId: [element.mappingDetails[j].emailId,Validators.required],
                 isActive: [element.mappingDetails[j].isActive],
-                contactNumber: [element.mappingDetails[j].contactNumber],
+                isdCode:[contactNumberSplit[0]],
+                contactNumber: [contactNumberSplit[1]],
                 companyBankMappingId:[element.mappingDetails[j].companyBankMappingId],
               }));
 
@@ -265,6 +279,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
     this.isEditMode = false;
     this.isActive = false;
     this.isSaveAndReset = true;
+
+    this.showButtonSaveAndReset = true;
+
     this.form.reset();
     this.form.enable();
     this.pfArray.push(this.formBuilder.group({
@@ -272,12 +289,14 @@ export class BankMasterAtCompanyComponent implements OnInit {
       designation: [''],
       emailId: ['', Validators.required],
       isActive: [''],
+      isdCode: [''],
       contactNumber: [''],
       companyBankMappingId:[''],
     }));
     this.form.get('bankName').disable();
     this.form.get('branchName').disable();
   }
+
 
   save() {
     if(this.isEditMode){
@@ -290,6 +309,9 @@ export class BankMasterAtCompanyComponent implements OnInit {
           a=1;
         }
 
+        let contactNumberSplit =  this.form.get('pfFormArray').value[i].contactNumber;
+
+
 
         s.push({
            // groupCompanyId: this.companyGroupId,
@@ -299,7 +321,8 @@ export class BankMasterAtCompanyComponent implements OnInit {
           contactPersonName: this.form.get('pfFormArray').value[i].contactPersonName,
           designation:  this.form.get('pfFormArray').value[i].designation,
           emailId:  this.form.get('pfFormArray').value[i].emailId,
-          contactNumber: this.form.get('pfFormArray').value[i].contactNumber,
+          isdCode: contactNumberSplit[0],
+          contactNumber:contactNumberSplit[1],
           isActive: a,
           companyBankMappingId: this.form.get('pfFormArray').value[i].companyBankMappingId,
 
@@ -349,7 +372,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
             contactPersonName: this.form.get('pfFormArray').value[i].contactPersonName,
             designation:  this.form.get('pfFormArray').value[i].designation,
             emailId:  this.form.get('pfFormArray').value[i].emailId,
-            contactNumber: this.form.get('pfFormArray').value[i].contactNumber,
+            contactNumber: this.form.get('pfFormArray').value[i].isdCode +' '+ this.form.get('pfFormArray').value[i].contactNumber,
           });
         }
         console.log(s);
@@ -481,6 +504,7 @@ addRow() {
     designation: [''],
     emailId: ['', Validators.required],
     isActive: [''],
+    isdCode: [''],
     contactNumber: [''],
   }));
   // this.lictransactionList.push({
@@ -518,4 +542,5 @@ DeleteBankAccount(){
   });
 
 }
+
 }

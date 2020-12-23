@@ -60,6 +60,12 @@ export class BankMasterAtGroupService {
     }));
 
   }
+  searchIFSC(terms: any, stateModel) {
+    return this._HTTP.get(environment.baseUrl8082 + '/bank-master/ifsc/' + stateModel + '/' + terms)
+   .pipe(map((res: any) =>{
+     return res;
+   }))
+ }
   getStates(){
 
     return this._HTTP.get(environment.baseUrl8082 + '/location-information/state/', {headers:{ 'X-TenantId': 'PaysquareGlobal'}})

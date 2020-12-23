@@ -47,7 +47,7 @@ import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.mod
 import { OtherMasterModule } from './modules/other-master/other-master.module';
 
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
-import { PrimeNGModule } from './app.primeNG.module';
+
 
 @NgModule({
   declarations: [
@@ -58,7 +58,6 @@ import { PrimeNGModule } from './app.primeNG.module';
 
   ],
   imports: [
-    PrimeNGModule,
     BrowserModule,
     AuthModule,
     DashboardModule,

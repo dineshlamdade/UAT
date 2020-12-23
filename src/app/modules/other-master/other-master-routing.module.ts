@@ -1,3 +1,5 @@
+
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
@@ -9,7 +11,9 @@ import { CompanyRegistrationDetailsComponent } from './company-registration-deta
 import { ComplianceHeadComponent } from './compliance-head/compliance-head.component';
 import { ComplianceMasterComponent } from './compliance-master/compliance-master.component';
 import { EstablishmentMasterComponent } from './establishment-master/establishment-master.component';
+import { JobMasterComponent } from './job-master/job-master.component';
 import { StatutoryComplianceComponent } from './statutory-compliance/statutory-compliance.component';
+
 
 
 const routes: Routes = [
@@ -56,6 +60,11 @@ const routes: Routes = [
   {
     path: 'bankMasterAtCompany',
     component: BankMasterAtCompanyComponent,
+    data: { title: ':: Delizia-HR :: Home' },
+  },
+  {
+    path: 'jobMaster',
+    component: JobMasterComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
 ];

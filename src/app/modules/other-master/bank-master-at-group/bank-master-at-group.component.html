@@ -23,7 +23,7 @@
                         </select>
                       </div>
 
-                      <!-- <div class="col-sm-3">
+                     <!-- <div class="col-sm-3">
                         <label class="form-label">IFSC Code</label>
                         <select name="ifscCode" id="ifscCode" class="form-control" formControlName="ifscCode"
                           (change)='onSelectIFSCCode($event.target.value)'>
@@ -33,10 +33,27 @@
                         </select>
                       </div> -->
 
-                      <div class="col-sm-6 col-md-3">
-                        <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
+                      <div class="col-sm-3">
+                        <label class="form-label">IFSC Code</label>
+                        <p-autoComplete [(ngModel)]="bankIFSC"
+                            [suggestions]="ifscCodeList" placeholder="Search IFSC"
+                            (completeMethod)="searchIFSC($event, bankIFSC)"
+                            formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
+                            onSelectIFSCCode(bankIFSC)">
+                            <ng-template let-ifsc pTemplate="item">
+                                <div class="country-item">
+                                    <div>
+                                        {{ifsc}}</div>
+                                </div>
+                            </ng-template>
+                        </p-autoComplete>
+                        <i class="fa fa-chevron-down down-arrow-icon"></i>
+                    </div>
+
+                      <!-- <div class="col-sm-6 col-md-3">
+                        <label class="form-label">IFSC CODE</label>
                         <p-autoComplete
-                            [suggestions]="IFSCcodeList" placeholder="Search IFSC"
+
                             (completeMethod)="searchIFSC($event, BankInformationModel.bankIFSC)"
                             formControlName="bankIFSC" (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();
                             getDataFromIFSC(BankInformationModel.bankIFSC)">
@@ -48,24 +65,21 @@
                             </ng-template>
                         </p-autoComplete>
                         <i class="fa fa-chevron-down down-arrow-icon"></i>
-                    </div>
+                    </div> -->
+
+
 
                       <div class="col-sm-3">
                         <label class="form-label">Bank Name</label>
-                        <input type="text" formControlName="bankName" class="form-control" name="bankName">
+                        <input type="text" formControlName="bankName" class="form-control" name="bankName" disable>
                       </div>
 
                       <div class="col-sm-3">
                         <label class="form-label">Branch Name</label>
                         <input type="text" formControlName="branchName" class="form-control" name="branchName">
                       </div>
-
-
-
                     </div>
                     <div class="row mt-20">
-
-
                       <div class="col-sm-3">
                         <label class="form-label">Branch Address</label>
                         <input type="text" formControlName="branchAddress" class="form-control" name="branchAddress">
@@ -88,15 +102,17 @@
                         </div>
 
                         <div *ngIf="isEditMode == true">
-                            <button type="button" *ngIf="viewMode== false"
+                            <!-- <button type="button" *ngIf="viewMode== false"
                           class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                           tooltip="Delete" (click)="DeleteBankMaster()"><b><i
-                              class="fa fa-times-circle"></i></b> Delete</button>
+                              class="fa fa-times-circle"></i></b> Delete</button> -->
 
                           <button type="button"
                           class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                           tooltip="Cancel" (click)="cancelView()"><b><i
                               class="fa fa-times-circle"></i></b>Cancel</button>
+
+
                         </div>
                       </div>
                     </div>
@@ -122,6 +138,7 @@
                         <th scope="col" class="wd-25"> IFSC</th>
                         <th scope="col" class="wd-25">Bank Name</th>
                         <th scope="col" class="wd-25">Branch Address</th>
+
                         <th scope="col" class="wd-25">Action</th>
                       </tr>
                     </thead>
@@ -138,16 +155,16 @@
                         <td class="wd-10"><span tooltip="{{summary.branchName}}">{{summary.branchName}}</span>
                         </td>
 
+
                         <td class="wd-10">
                           <span>
-                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i,summary.companyBankMasterId)"
-                              tooltip="Edit"></i>
+                            <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
+                            tooltip="View"></i> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <i class="fa fa-trash-o font-16 text-red cursor-pointer" (click)="DeleteBankMaster(i,summary.companyBankMasterId)"
+                              tooltip="Delete"></i>
                           </span>
-
-                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
-                            tooltip="View"></i>
                         </td>
-                      </tr>
+                       </tr>
                       <tr *ngIf="!summaryHtmlDataList?.length">
                         <td colspan="10">
                           <span class="font-14 font500 align-center text-red">No Data Available</span>

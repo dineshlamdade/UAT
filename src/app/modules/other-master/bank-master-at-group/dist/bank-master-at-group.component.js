@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.BankMasterAtGroupComponent = void 0;
+var util_1 = require("@angular/compiler/src/util");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var BankMasterAtGroupComponent = /** @class */ (function () {
@@ -24,10 +25,11 @@ var BankMasterAtGroupComponent = /** @class */ (function () {
         this.stateList = [];
         this.editedRecordIndex = 0;
         this.viewMode = false;
+        this.TotalIFSCcodeList = [];
         this.form = this.formBuilder.group({
             ifscCode: new forms_1.FormControl(''),
-            bankName: new forms_1.FormControl({ value: '', disabled: true }),
-            branchName: new forms_1.FormControl({ value: '', disabled: true }),
+            bankName: new forms_1.FormControl('', forms_1.Validators.required),
+            branchName: new forms_1.FormControl({ value: '', disabled: true }, forms_1.Validators.required),
             branchAddress: new forms_1.FormControl({ value: '', disabled: true }),
             state: new forms_1.FormControl('')
         });
@@ -44,7 +46,7 @@ var BankMasterAtGroupComponent = /** @class */ (function () {
         this.summaryHtmlDataList = [];
         this.bankMasterDetailsResponse = {};
         this.bankMasterAtGroupService.getBankMasterDetails().subscribe(function (res) {
-            console.log(res);
+            console.log('getBankMasterDetails', res);
             _this.bankMasterDetailsResponse = res.data.results;
             var i = 1;
             res.data.results.forEach(function (element) {
@@ -57,29 +59,66 @@ var BankMasterAtGroupComponent = /** @class */ (function () {
                     isActive: element.isActive
                 };
                 _this.summaryHtmlDataList.push(obj);
+                console.log(_this.summaryHtmlDataList);
             });
         });
+    };
+    BankMasterAtGroupComponent.prototype.getDataFromIFSC = function (bankIFSC) {
+        if (bankIFSC.length < 11) {
+            // this.BankInformationModel.bankName = '';
+            // this.BankInformationModel.branchName = '';
+            // this.BankInformationModel.branchAddress = '';
+            // this.confirmAccountNumber = '';
+            // this.BankInformationModel.accountNo = '';
+            // this.BankInformationModel.nameAsPerBank = '';
+        }
+        if (bankIFSC.length == 11) {
+            this.IFSCDetails(bankIFSC);
+        }
+        if (bankIFSC) {
+            // this.gridEditIFSC1 = bankIFSC
+            // this.IFSCGridDetails(bankIFSC);
+        }
+    };
+    BankMasterAtGroupComponent.prototype.IFSCDetails = function (bankIFSC) {
+        var _this = this;
+        if (bankIFSC.length == 11) {
+            this.bankMasterAtGroupService.getDataFromIFSC(bankIFSC).subscribe(function (res) {
+                console.log(res);
+                _this.form.patchValue({
+                    branchName: res.data.results[0].branchName,
+                    branchAddress: res.data.results[0].address,
+                    bankName: res.data.results[0].bankName
+                });
+            });
+        }
     };
     BankMasterAtGroupComponent.prototype.onSelectIFSCCode = function (evt) {
         var _this = this;
-        this.bankMasterAtGroupService.getDataFromIFSC(evt).subscribe(function (res) {
-            console.log(res);
-            _this.form.patchValue({
-                branchName: res.data.results[0].branchName,
-                branchAddress: res.data.results[0].address,
-                bankName: res.data.results[0].bankName
+        if (evt.length == 11) {
+            console.log('evt::==', evt);
+            this.bankMasterAtGroupService.getDataFromIFSC(evt).subscribe(function (res) {
+                console.log(res);
+                _this.form.patchValue({
+                    branchName: res.data.results[0].branchName,
+                    branchAddress: res.data.results[0].address,
+                    bankName: res.data.results[0].bankName
+                });
             });
-        });
+        }
     };
-    BankMasterAtGroupComponent.prototype.DeleteBankMaster = function () {
+    BankMasterAtGroupComponent.prototype.DeleteBankMaster = function (i, companyBankMasterId) {
         var _this = this;
         console.log(this.editedRecordIndex);
-        this.bankMasterAtGroupService.deleteCompanyBankMaster(this.editedRecordIndex).subscribe(function (res) {
+        this.bankMasterAtGroupService.deleteCompanyBankMaster(companyBankMasterId).subscribe(function (res) {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Bank Master  Deleted Successfully.', '');
             _this.isSaveAndReset = true;
             _this.showButtonSaveAndReset = true;
             _this.refreshHtmlTable();
+            //  else {
+            //     this.alertService.sweetalertError(error.error['status'].messsage);
+            // }
         }, function (error) {
             _this.alertService.sweetalertError(error.error['status'].messsage);
         }, function () {
@@ -95,31 +134,37 @@ var BankMasterAtGroupComponent = /** @class */ (function () {
         console.log(JSON.stringify(saveData));
         this.bankMasterAtGroupService.postBankMaster(saveData).subscribe(function (res) {
             console.log(res);
-            if (res.data.results.length > 0) {
+            if (res.data.results.length !== 0) {
                 _this.alertService.sweetalertMasterSuccess('Bank Master Added Successfully.', '');
                 _this.isSaveAndReset = true;
+                _this.form.reset();
                 _this.showButtonSaveAndReset = true;
                 _this.refreshHtmlTable();
             }
+            else {
+                //  this.alertService.sweetalertError(error.error['status'].messsage);
+                // this.alertService.sweetalertError(error.error['status'].messsage);
+                _this.alertService.sweetalertError(util_1.error["error"]["status"]["messsage"]);
+            }
         }, function (error) {
-            _this.alertService.sweetalertError(error.error['status'].messsage);
+            //this.alertService.sweetalertError(error.error['status'].messsage);
+            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         });
     };
     BankMasterAtGroupComponent.prototype.onSelectState = function (evt) {
-        var _this = this;
         this.selectedState = evt;
-        this.ifscCodeList = [];
-        this.bankMasterAtGroupService.getIfscCodeStateWise(evt).subscribe(function (res) {
-            _this.ifscCodeList = res.data.results;
-        }, function (error) {
-            _this.alertService.sweetalertError(error.error['status'].messsage);
-        });
+        this.bankIFSC = '';
+        // this.ifscCodeList = [];
+        // this.bankMasterAtGroupService.getIfscCodeStateWise(evt).subscribe((res) => {
+        //  this.ifscCodeList = res.data.results;
+        // }   , (error: any) => {
+        //   this.alertService.sweetalertError(error.error['status'].messsage);
+        // });
     };
     BankMasterAtGroupComponent.prototype.editMaster = function (i, companyBankMasterId) {
         this.isEditMode = true;
         this.viewMode = false;
         this.editedRecordIndex = companyBankMasterId;
-        console.log(this.bankMasterDetailsResponse[i]);
         this.form.patchValue(this.bankMasterDetailsResponse[i]);
         this.ifscCodeList.push(this.bankMasterDetailsResponse[i].ifscCode);
         this.form.patchValue({
@@ -149,11 +194,65 @@ var BankMasterAtGroupComponent = /** @class */ (function () {
         this.showButtonSaveAndReset = true;
         this.editedRecordIndex = 0;
         this.form.enable();
-        this.form.get('bankName').disable();
         this.form.get('branchName').disable();
         this.form.get('branchAddress').disable();
     };
     BankMasterAtGroupComponent.prototype.activateBankMaster = function () { };
+    BankMasterAtGroupComponent.prototype.searchIFSC = function (searchTerm, bankIFSC) {
+        var _this = this;
+        this.form.patchValue({
+            branchName: '',
+            branchAddress: '',
+            bankName: ''
+        });
+        if (searchTerm.query.length < 11) {
+            this.ifscCodeList = [];
+        }
+        if (bankIFSC.length < 11) {
+            // this.BankInformationModel.bankName = '';
+            // this.BankInformationModel.branchName = '';
+            // this.BankInformationModel.branchAddress = '';
+            // this.confirmAccountNumber = '';
+            // this.BankInformationModel.accountNo = '';
+            // this.BankInformationModel.nameAsPerBank = '';
+        }
+        if (searchTerm.query.length == 2) {
+            // setTimeout(() => {
+            this.bankMasterAtGroupService.searchIFSC(searchTerm.query, this.form.get('state').value).subscribe(function (res) {
+                console.log(res);
+                _this.ifscCodeList = res.data.results[0];
+                _this.TotalIFSCcodeList = res.data.results[0];
+                if (_this.ifscCodeList.length > 0) {
+                    _this.filterIFSCCodes(searchTerm.query);
+                }
+                else {
+                    // this.alertService.sweetalertError('Record Not Found');
+                    // this.notifyService.showError ('Recordnot found', "Error..!!")
+                }
+            });
+            // }, 1500)
+        }
+        this.filterIFSCCodes(searchTerm.query);
+        if (bankIFSC.length == 11) {
+            var ifsc = this.TotalIFSCcodeList.filter(function (item) {
+                return item == searchTerm.query;
+            });
+            if (ifsc == searchTerm.query) {
+                this.IFSCDetails(searchTerm.query);
+            }
+        }
+    };
+    BankMasterAtGroupComponent.prototype.filterIFSCCodes = function (searchTerm) {
+        if (searchTerm.length > 2) {
+            searchTerm = searchTerm.toLowerCase();
+            var ifsc = this.TotalIFSCcodeList.filter(function (item) {
+                return JSON.stringify(item).toLowerCase().includes(searchTerm);
+            });
+            this.ifscCodeList = ifsc;
+            // this.GridIFSCcodeList = ifsc;
+            // this.showOptios = true;
+        }
+    };
     BankMasterAtGroupComponent = __decorate([
         core_1.Component({
             selector: 'app-bank-master-at-group',
