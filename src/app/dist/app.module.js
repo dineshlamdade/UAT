@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.AppModule = void 0;
+var other_master_module_1 = require("./modules/other-master/other-master.module");
 var drag_drop_1 = require("@angular/cdk/drag-drop");
 // transloco
 // import your locales
@@ -20,7 +21,7 @@ var slider_1 = require("@angular/material/slider");
 var platform_browser_1 = require("@angular/platform-browser");
 var animations_1 = require("@angular/platform-browser/animations");
 var ckeditor5_angular_1 = require("@ckeditor/ckeditor5-angular");
-//import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+// import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 var transloco_1 = require("@ngneat/transloco");
 var angular_calendar_1 = require("angular-calendar");
 var date_fns_1 = require("angular-calendar/date-adapters/date-fns");
@@ -37,19 +38,22 @@ var profile_component_1 = require("./modules/profile/profile.component");
 var profile_module_1 = require("./modules/profile/profile.module");
 var settings_component_1 = require("./modules/settings/settings.component");
 var settings_module_1 = require("./modules/settings/settings.module");
+var bn_ng_idle_1 = require("bn-ng-idle");
 common_1.registerLocaleData(fr_1["default"], 'fr');
 common_1.registerLocaleData(en_GB_1["default"], 'en-GB');
 var app_material_module_1 = require("./app.material.module");
 var auth_guard_1 = require("./modules/auth/auth.guard");
 var token_interceptor_service_1 = require("./modules/auth/token-interceptor/token-interceptor.service");
 var dashboard_module_1 = require("./modules/dashboard/dashboard.module");
-var payroll_module_1 = require("./modules/payroll/payroll.module");
 var employee_master_module_1 = require("./modules/employee-master/employee-master.module");
 var app_primeNG_module_1 = require("./app.primeNG.module");
 var accordion_1 = require("primeng/accordion"); //accordion and accordion tab
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
-var other_master_module_1 = require("./modules/other-master/other-master.module");
+var payroll_module_1 = require("./modules/payroll/payroll.module");
 var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
+var admin_approval_module_1 = require("./modules/admin-approval/admin-approval.module");
+var uploadexcel_module_1 = require("./modules/uploadexcel/uploadexcel.module");
+var employeemasterlistpage_module_1 = require("./modules/employeemasterlistpage/employeemasterlistpage.module");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -93,9 +97,13 @@ var AppModule = /** @class */ (function () {
                 employee_master_module_1.EmployeeMasterModule,
                 app_primeNG_module_1.PrimeNGModule,
                 accordion_1.AccordionModule,
-                other_master_module_1.OtherMasterModule
+                other_master_module_1.OtherMasterModule,
+                admin_approval_module_1.AdminApprovalModule,
+                uploadexcel_module_1.UploadexcelModule,
+                employeemasterlistpage_module_1.EmployeemasterlistpageModule,
             ],
             providers: [datepicker_1.BsDatepickerModule,
+                bn_ng_idle_1.BnNgIdleService,
                 auth_guard_1.AuthGuard,
                 transloco_loader_1.translocoLoader, {
                     provide: transloco_1.TRANSLOCO_CONFIG,

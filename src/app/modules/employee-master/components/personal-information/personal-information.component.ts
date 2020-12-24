@@ -140,60 +140,60 @@ export class PersonalInformationComponent implements OnInit {
       })
     })
 
-    this.SharedInformationService.getGlobalLabels().subscribe(res => {
+    // this.SharedInformationService.getGlobalLabels().subscribe(res => {
 
-      this.changesLabelArray = res.data.results.filter(item => {
-        // Change Label's name as per Company setting
-        if (item.isDisplay == true && item.defaultLabelName == 'Title') {
-          this.PersonalInfoLabels.title = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
-          this.PersonalInfoLabels.firstName = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'Date of Birth') {
-          this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'Middle Name') {
-          this.PersonalInfoLabels.middleName = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
-          this.PersonalInfoLabels.lastName = item.customLabelName;
-        }
-        
-        
-        // Hide Labels As per Company setting
-        if (item.isDisplay == false && item.defaultLabelName == 'Title') {
-          this.PersonalInfoLabels.title = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
-          this.PersonalInfoLabels.gender = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Date of Birth') {
-          this.PersonalInfoLabels.dateOfBirth = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Middle Name') {
-          this.PersonalInfoLabels.middleName = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'First Name') {
-          this.PersonalInfoLabels.firstName = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Last Name') {
-          this.PersonalInfoLabels.lastName = '';
-        }
-      })
-    })
+    //   this.changesLabelArray = res.data.results.filter(item => {
+    //     // Change Label's name as per Company setting
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Title') {
+    //       this.PersonalInfoLabels.title = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
+    //       this.PersonalInfoLabels.firstName = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Date of Birth') {
+    //       this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Middle Name') {
+    //       this.PersonalInfoLabels.middleName = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
+    //       this.PersonalInfoLabels.lastName = item.customLabelName;
+    //     }
 
-    this.SharedInformationService.getAdditionalFields().subscribe(res=>{
-      
-      res.data.results.filter(item => {
-        if(item.fieldName == 'PersonalAdditional1'){
-          this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
-        }
-        if(item.fieldName == 'PersonalAdditional2'){
-          this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
-        }
-      })
-    })
+
+    //     // Hide Labels As per Company setting
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Title') {
+    //       this.PersonalInfoLabels.title = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
+    //       this.PersonalInfoLabels.gender = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Date of Birth') {
+    //       this.PersonalInfoLabels.dateOfBirth = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Middle Name') {
+    //       this.PersonalInfoLabels.middleName = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'First Name') {
+    //       this.PersonalInfoLabels.firstName = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Last Name') {
+    //       this.PersonalInfoLabels.lastName = '';
+    //     }
+    //   })
+    // })
+
+    // this.SharedInformationService.getAdditionalFields().subscribe(res=>{
+
+    //   res.data.results.filter(item => {
+    //     if(item.fieldName == 'PersonalAdditional1'){
+    //       this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
+    //     }
+    //     if(item.fieldName == 'PersonalAdditional2'){
+    //       this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
+    //     }
+    //   })
+    // })
   }
 
   severity(event) {
@@ -358,8 +358,8 @@ export class PersonalInformationComponent implements OnInit {
       reader.onload = () => {
         this.imageUrl = reader.result;
 
-        // this.selectedImageFile = this.imageUrl; 
-        // this.BasicInfoForm.get("image").patchValue({file: this.selectedImageFile}); 
+        // this.selectedImageFile = this.imageUrl;
+        // this.BasicInfoForm.get("image").patchValue({file: this.selectedImageFile});
         // this.BasicInfoForm.patchValue({
         //   file: reader.result
         // });
@@ -396,7 +396,7 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   concateFullName() {
-    
+
     this.personalInformationModel.employeeMasterRequestDTO.fullName =
       this.personalInformationModel.employeeMasterRequestDTO.title + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +

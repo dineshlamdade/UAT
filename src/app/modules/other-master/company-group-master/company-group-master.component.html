@@ -182,7 +182,7 @@
                         <th scope="col" class="wd-8">Group Id</th>
                         <th scope="col" class="wd-10">Code</th>
                         <th scope="col" class="wd-14">Name</th>
-                        <th scope="col" class="wd-12">Short Name</th>
+                        <th scope="col" class="wd-10">Short Name</th>
                         <th scope="col" class="wd-10">Scale</th>
                         <th scope="col" class="wd-10">Start Date</th>
                         <th scope="col" class="wd-10">End Date</th>
@@ -193,15 +193,15 @@
                     <tbody>
 
                       <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
-                        <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
+                        <td class="wd-8"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
                         </td>
-                        <td class="wd-10"><span tooltip="{{summary.companyGroupId}}">{{summary.companyGroupId}}</span>
+                        <td class="wd-8"><span tooltip="{{summary.companyGroupId}}">{{summary.companyGroupId}}</span>
                         </td>
                         <td class="wd-10"><span
                             tooltip="{{summary.companyGroupCode}}">{{summary.companyGroupCode}}</span>
                         </td>
 
-                        <td class="wd-10"><span
+                        <td class="wd-14"><span
                             tooltip="{{summary.companyGroupName}}">{{summary.companyGroupName}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.shortName}}">{{summary.shortName}}</span>
