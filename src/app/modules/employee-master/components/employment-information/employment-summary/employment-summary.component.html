@@ -45,46 +45,56 @@
             <th rowspan="2" class=" font700">Remaining Service</th>
             <th rowspan="2" class="">Exit Date</th>
             <th rowspan="2" class=" font700">Employment Status</th>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
             <th>Date Of Joining(DOJ)</th>
             <th>Original Hire(DOJ)</th>
             <th>Gratuity</th>
-          </tr>
+        </tr>
     </ng-template>
     <ng-template pTemplate="body" let-element>
         <tr>
-            <td class="primeng-table-header-center"><span>
+            <td class="primeng-table-header-center">
+                <span>
                     {{element.CompanyName}}
-                </span></td>
+                </span>
+            </td>
 
-            <td class="primeng-table-header-center"><span>
+            <td class="primeng-table-header-center">
+                <span>
                     {{element.joiningDate}}
-                </span></td>
+                </span>
+            </td>
 
-            <td class="primeng-table-header-center"><span>
-                    {{element.rejoinee}} </span></td>
+            <td class="primeng-table-header-center">
+                <span>
+                    {{element.rejoinee}} </span>
+            </td>
 
-            <td class="primeng-table-header-center"><span>
-                    {{element.originalHireDate}}</span></td>
+            <td class="primeng-table-header-center">
+                <span>
+                    {{element.originalHireDate}}</span>
+            </td>
 
-            <td class="primeng-table-header-center"><span>
+            <td class="primeng-table-header-center">
+                <span>
                     {{element.employmentAge}}
-                </span></td>
+                </span>
+            </td>
 
             <td>
-        <tr>
-            <td class="primeng-table-header-center pd-5" tooltip="{{element.serviceAge}}">
-                {{element.serviceAgeShort}}
-            </td>
-            <td class="primeng-table-header-center pd-5" tooltip="{{element.originalDOJService}}">
-                {{element.originalDOJServiceShort}}
-            </td>
-            <td class="primeng-table-header-center pd-5" tooltip="{{element.gratuityPeriod}}">
-                {{element.gratuityPeriodShort}}
-            </td>
-        </tr>
-        <!-- <div class="pd-5" >
+                <tr>
+                    <td class="primeng-table-header-center pd-5" tooltip="{{element.serviceAge}}">
+                        {{element.serviceAgeShort}}
+                    </td>
+                    <td class="primeng-table-header-center pd-5" tooltip="{{element.originalDOJService}}">
+                        {{element.originalDOJServiceShort}}
+                    </td>
+                    <td class="primeng-table-header-center pd-5" tooltip="{{element.gratuityPeriod}}">
+                        {{element.gratuityPeriodShort}}
+                    </td>
+                </tr>
+                <!-- <div class="pd-5" >
                     <div rowspan="1" tooltip="{{element.serviceAge}}">
                         {{element.serviceAgeShort}}
                     </div>
@@ -102,8 +112,8 @@
                     </div>
                 </div> -->
 
-        </td>
-        <!-- <td class="primeng-table-header-center" tooltip="{{element.serviceAge}}"><span>
+            </td>
+            <!-- <td class="primeng-table-header-center" tooltip="{{element.serviceAge}}"><span>
                     {{element.serviceAgeShort}}
                 </span></td>
 
@@ -115,18 +125,24 @@
                     {{element.gratuityPeriodShort}}
                 </span></td> -->
 
-        <td class="primeng-table-header-center" tooltip="{{element.remainingMonthOrDays}}"><span>
+            <td class="primeng-table-header-center" tooltip="{{element.remainingMonthOrDays}}">
+                <span>
                 {{element.remainingMonthOrDaysShort}}
-            </span></td>
+            </span>
+            </td>
 
-        <td class="primeng-table-header-center"><span>
+            <td class="primeng-table-header-center">
+                <span>
                 {{element.lastWorkingDate}}
-            </span></td>
+            </span>
+            </td>
 
-        <td class="primeng-table-header-center"><span>
-                {{element.employeeStatus}} </span></td>
+            <td class="primeng-table-header-center">
+                <span>
+                {{element.employeeStatus}} </span>
+            </td>
 
-        <!-- <td class="primeng-table-header-center"><span><i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
+            <!-- <td class="primeng-table-header-center"><span><i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
                         tooltip="Edit"></i>
 
                     <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1" tooltip="View"></i></span>

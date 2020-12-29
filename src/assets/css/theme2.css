@@ -1067,6 +1067,7 @@ strong {
     width: 27%!important;
 }
 
+
 /* Custom Width css End */
 
 
@@ -1403,17 +1404,15 @@ button:focus {
     padding-left: 28px!important;
 }
 
-
-
-.country-code{
+.country-code {
     margin-right: -15px;
 }
 
 .form-control.is-invalid {
     background-image: none!important;
-  }
+}
 
-  .disabled-btn-bg-green{
+.disabled-btn-bg-green {
     background-color: #94c1c1!important;
 }
 
@@ -1425,9 +1424,9 @@ button:focus {
     z-index: 2;
     color: #662d8c !important;
     cursor: pointer;
-  }
+}
 
-  .p-inputtext {
+.p-inputtext {
     font-family: "Montserrat", sans-serif!important;
     font-size: 12px !important;
     color: #495057 !important;
@@ -1436,7 +1435,7 @@ button:focus {
     line-height: 1.5 !important;
     border: 1px solid #E8E9E9 !important;
     border-radius: .25rem !important;
-    transition: background-color .2s,color .2s,border-color .2s,box-shadow .2s !important;
+    transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s !important;
     appearance: none !important;
     border-radius: 3px !important;
 }
@@ -1448,7 +1447,8 @@ button:focus {
     width: 100% !important;
 }
 
-.p-inputtext:disabled, .form-control[readonly] {
+.p-inputtext:disabled,
+.form-control[readonly] {
     /* background-color: #f4f4f4!important; */
     border: 1px solid #ddd!important;
     opacity: 1 !important;
@@ -1477,9 +1477,10 @@ button:focus {
     align-items: center !important;
     vertical-align: bottom !important;
     text-align: center !important;
-    overflow: hidden  !important;
+    overflow: hidden !important;
     position: relative !important;
 }
+
 .pi {
     font-family: 'primeicons' !important;
     /* speak: none; */
@@ -1493,61 +1494,62 @@ button:focus {
     -moz-osx-font-smoothing: grayscale !important;
 }
 
-.code-line{
+.code-line {
     margin-top: 44px;
-  
-  }
-  
-  .thumbnail {
-      /* // position: absolute; */
-      width: 123px;
-      height: 100%;
-      overflow: hidden;
-      cursor: pointer;
-      /* // border: ridge 3px #e7deec; */
-    }
-  .thumbnail img {
-      cursor: pointer;
-      /* // position: absolute; */
-      left: 52px;
-      top: 71px;
-      width: 100%;
-      height: auto;
-      display: block;
-      border: ridge;
-      /* // -webkit-transform: translate(-50%,-50%);
+}
+
+.thumbnail {
+    /* // position: absolute; */
+    width: 123px;
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    /* // border: ridge 3px #e7deec; */
+}
+
+.thumbnail img {
+    cursor: pointer;
+    /* // position: absolute; */
+    left: 52px;
+    top: 71px;
+    width: 100%;
+    height: auto;
+    display: block;
+    border: ridge;
+    /* // -webkit-transform: translate(-50%,-50%);
       //     -ms-transform: translate(-50%,-50%);
       //         transform: translate(-50%,-50%); */
-    }
-  
-    .image-size-info{
-      font-size: 11px;
-      text-align: center;
-    }
-    .disabled-btn-bg-green{
-      background-color: #94c1c1!important;
-  }
-  
-  .small-size{
+}
+
+.image-size-info {
+    font-size: 11px;
+    text-align: center;
+}
+
+.disabled-btn-bg-green {
+    background-color: #94c1c1!important;
+}
+
+.small-size {
     font-size: 7px;
-  }
-  
-  .form-control.is-invalid {
+}
+
+.form-control.is-invalid {
     background-image: none!important;
-  }
+}
 
-  .primeng-table-header-center{
+.primeng-table-header-center {
     text-align: center !important;
-  }
+}
 
-  .p-button.p-button-icon-only {
+.p-button.p-button-icon-only {
     width: 2.357rem;
     padding: 0 11px !important;
     max-width: 43px;
 }
 
-.p-button-label{
-    visibility: hidden !important; 
+.p-button-label {
+    visibility: hidden !important;
 }
 
 .p-inputtext:invalid {
@@ -1557,13 +1559,13 @@ button:focus {
     background-repeat: no-repeat;
     background-position: center right calc(0.375em + 0.1875rem);
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-  }
+}
 
-  input {
+input {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
+}
 
 .form-control {
     color: #0c0d0e!important;
@@ -1734,7 +1736,6 @@ button:focus {
         color: orangered;
     }
 }
-
 
 
 /*-----------------------------*/
@@ -2121,13 +2122,32 @@ button:focus {
         margin-left: 0px;
     }
 }
-.tabview_fixed_deposit{
-  display: grid;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  grid-template-rows: 40px 1fr;
-  grid-template-columns: 2fr 2fr!important;
-  font-family: Montserrat, sans-serif!important;
+
+.tabview_fixed_deposit {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    grid-template-rows: 40px 1fr;
+    grid-template-columns: 2fr 2fr!important;
+    font-family: Montserrat, sans-serif!important;
 }
 
+.p-datatable .p-datatable-thead>tr>th {
+    padding-top: 5px!important;
+    padding-bottom: 5px!important;
+    padding-left: 5px!important;
+    text-align: center!important;
+    padding-right: 5px!important;
+    border-bottom: 1px solid #ddd!important;
+    border-left: 1px solid #ddd!important;
+    border-top: 1px solid #ddd!important;
+    border-right: 1px solid #ddd!important;
+    color: #fff!important;
+    background: #8d8b8d!important;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+    text-align: center!important;
+    border: 1px solid #ddd!important;
+}
