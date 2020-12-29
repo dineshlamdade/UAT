@@ -331,10 +331,14 @@
                     (completeMethod)="filterHighestEducation($event)" [dropdown]="true"
                     formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Reporting To">
-                    <option value="ABC">ABC</option>
-                    <option value="PQR">PQR</option>
-                    <option value="XYZ">XYZ</option>
+                <select class="form-control" placeholder="Select Reporting to"
+                    (completeMethod)="searchReportingTo(employee)"
+                    (change)="validatReportingDate();enableReportingDate();"
+                    formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
+                    <option value="" selected disabled>Select Reporting to</option>
+                    <option *ngFor="let employee of filteredReportingToList" [value]="employee">
+                        {{employee}}
+                    </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
                 <input type="text" class="form-control" formControlName="reportingToDescriptionControl"
@@ -350,7 +354,8 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="reportingFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.reportingFromDate">
+                            [(ngModel)]="positionDetailsModel.reportingFromDate"
+                            (bsValueChange)="validateReportingToDate()">
                     </div>
                 </div>
 

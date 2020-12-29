@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form>
+                    <form [formGroup]="ReJoiningForm" (ngSubmit)="RejoiningFormSubmit(ReJoiningInformationModel)">
                         <!-- Member Details -->
                         <fieldset>
                             <legend><i class="fa fa-users"></i>
@@ -18,6 +18,9 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
+                                                formControlName="rejoiningDate"
+                                                [(ngModel)]="ReJoiningInformationModel.rejoiningDate" [max]="tomorrow"
+                                                (change)="assignReJoiningDateTo(ReJoiningInformationModel.rejoiningDate)"
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -29,11 +32,19 @@
                                             Continuation Of Service </label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="Yes">
+                                                <input type="radio" class="custom-control-input" value="Yes"
+                                                (change)="selectionContinuationService($event)"
+                                                formControlName="ContinuationService"
+                                                [ngClass]="{'boolean-true' : continuationServiceBoolean == 'Yes',
+                        'boolean-false': continuationServiceBoolean == 'No'}">
                                                 <span class="custom-control-label">Yes</span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="No">
+                                                <input type="radio" class="custom-control-input" value="No"
+                                                (change)="selectionContinuationService($event)"
+                                                formControlName="ContinuationService"
+                                                [ngClass]="{'boolean-false' : continuationServiceBoolean == 'Yes',
+                        'boolean-true': continuationServiceBoolean == 'No'}">
                                                 <span class="custom-control-label">
                                                     No</span>
                                             </label>
@@ -50,6 +61,8 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
+                                                formControlName="originalHireDate"
+                                                [(ngModel)]="ReJoiningInformationModel.originalHireDate"
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -64,6 +77,8 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
+                                                formControlName="joiningDateForGratuity"
+                        [(ngModel)]="ReJoiningInformationModel.joiningDateForGratuity" 
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -71,9 +86,13 @@
 
                                 <div class="col-sm-6 col-md-3 mt-10">
                                     <label class="form-label">Company</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
+                                    <select class="form-control" placeholder="Select Company"
+                                        formControlName="companyName" [(ngModel)]="ReJoiningInformationModel.companyName" >
+                                        <option value="" selected disabled>Select Company</option>
+                                        <option *ngFor="let option of companyListForJoining" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </fieldset>
@@ -89,11 +108,17 @@
                                             Probation </label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="false">
+                                                <input type="radio" class="custom-control-input" value="false"
+                                                formControlName="probationPeriod" (change)="probationPeriod($event)" 
+                                                [ngClass]="{'months-true' : probationMonthsDays == 'false',
+                        'months-false': probationMonthsDays == 'true'}">
                                                 <span class="custom-control-label">Months</span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="true">
+                                                <input type="radio" class="custom-control-input" value="true"
+                                                formControlName="probationPeriod" (change)="probationPeriod($event)" 
+                                                [ngClass]="{'months-false' : probationMonthsDays == 'false',
+                        'months-true': probationMonthsDays == 'true'}">
                                                 <span class="custom-control-label">
                                                     Days</span>
                                             </label>
@@ -102,17 +127,23 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <label class="form-label">Months</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
-                                </div>
-
-                                <!-- <div class="col-sm-6 col-lg-3">
-                                    <label class="form-label">
+                                    <label *ngIf="probationMonthsDays == 'false'" class="form-label">Months</label>
+                                    <select *ngIf="probationMonthsDays == 'false'" class="form-control" placeholder="Select Months"
+                                    [(ngModel)]="probationPeriodMonthModel"
+                                    formControlName="probationPeriodMonth"
+                                    (change)="calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, ReJoiningInformationModel.rejoiningDate)">
+                                        <option value="" selected disabled>Select Months</option>
+                                        <option *ngFor="let option of monthsList" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select>
+                                    <label *ngIf="probationMonthsDays == 'true'" class="form-label">
                                         Days</label>
-                                    <input type="text" class="form-control">
-                                </div> -->
+                                    <input *ngIf="probationMonthsDays == 'true'" type="text" class="form-control"
+                                    formControlName="probationPeriodDays" [(ngModel)]="probationPeriodDaysModel"
+                                    (change)="calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, JoiningInformationModel.joiningDate)">
+                                
+                                </div>
 
                                 <div class="col-sm-6 col-lg-3">
                                     <div class="form-group">
@@ -120,11 +151,17 @@
                                             Notice Period </label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="false">
+                                                <input type="radio" class="custom-control-input" value="false"
+                                                (change)="noticePeriod($event)" formControlName="noticePeriod"
+                                                [ngClass]="{'months-true' : noticeMonthsDays == 'false',
+                                                'months-false': noticeMonthsDays == 'true'}">
                                                 <span class="custom-control-label">Months</span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="true">
+                                                <input type="radio" class="custom-control-input" value="true"
+                                                (change)="noticePeriod($event)" formControlName="noticePeriod"
+                                                [ngClass]="{'months-false' : noticeMonthsDays == 'false',
+                    'months-true': noticeMonthsDays == 'true'}">
                                                 <span class="custom-control-label">
                                                     Days</span>
                                             </label>
@@ -133,17 +170,20 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <label class="form-label">Months</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
-                                </div>
+                                    <label *ngIf="noticeMonthsDays == 'false'" class="form-label">Months</label>
+                                    <select *ngIf="noticeMonthsDays == 'false'" class="form-control" placeholder="Select Months"
+                                    [(ngModel)]="noticePeriodMonthModel" formControlName="noticePeriodMonth">
+                                   <option value="" selected disabled>Select Months</option>
+                                        <option *ngFor="let option of monthsList" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select>
 
-                                <!-- <div class="col-sm-6 col-lg-3">
-                                    <label class="form-label">
+                                    <label *ngIf="noticeMonthsDays == 'true'" class="form-label">
                                         Days</label>
-                                    <input type="text" class="form-control">
-                                </div> -->
+                                    <input *ngIf="noticeMonthsDays == 'true'" type="text" class="form-control"
+                                    formControlName="noticePeriodDays" [(ngModel)]="noticePeriodDaysModel">
+                                </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
                                     <label class="form-label">Expected Confirmation Date</label>
@@ -154,6 +194,8 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
+                                                formControlName="expectedConfirmationDate"
+                        [(ngModel)]="ReJoiningInformationModel.expectedConfirmationDate"
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -162,7 +204,9 @@
                                 <div class="col-sm-6 col-lg-3 mt-10">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control"
+                                    [(ngModel)]="ReJoiningInformationModel.expectedConfirmationRemark"
+                        formControlName="expectedRemark">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
@@ -174,6 +218,7 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
+                                                formControlName="confirmationDate" [(ngModel)]="ReJoiningInformationModel.confirmationDate"
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -182,7 +227,9 @@
                                 <div class="col-sm-6 col-lg-3 mt-10">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control"
+                                    [(ngModel)]="ReJoiningInformationModel.confirmationRemark"
+                        formControlName="confirmationRemark">
                                 </div>
                             </div>
                         </fieldset>
@@ -246,8 +293,10 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
-                                    <button type="submit"
+                                    <button type="submit" [disabled]="ReJoiningForm.invalid || ReJoiningForm.untouched"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
+                                        [ngClass]="{'disabled-btn-bg-green' : ReJoiningForm.invalid || ReJoiningForm.untouched,
+                           'btn-bg-green': !ReJoiningForm.invalid}"
                                         tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
                                 </div>
                             </div>

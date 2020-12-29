@@ -23,7 +23,8 @@
                                     [checked]="tabIndex==0" />
                                 <label class="nav" for="joining" (click)="hideSummaryGrid = true"
                                     [routerLink]="['/employee-master/employment-information/joining-information']"
-                                    (click)="hiddenSummary = false">
+                                    (click)="hiddenSummary = false"
+                                   >
                                     <span>
                                         Joining
                                     </span>
@@ -52,6 +53,7 @@
                                 <input name="nav" type="radio" class="about-radio" id="exit" [checked]="tabIndex==2" />
                                 <label class="nav" for="exit" (click)="hideSummaryGrid = true"
                                     [routerLink]="['/employee-master/employment-information/exit-information']"
+                                    
                                     (click)="hiddenSummary = false">
                                     <span>
                                         Exit
@@ -61,7 +63,9 @@
 
                                 <div class="emptabs about-page">
                                     <div class="tabview-contents">
-                                        <router-outlet></router-outlet>
+                                        <router-outlet> 
+                                            
+                                        </router-outlet>
                                     </div>
                                 </div>
                             </div>

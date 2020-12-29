@@ -23,7 +23,7 @@ export class ReJoiningInformationComponent implements OnInit {
   ReJoiningInformationModel = new ReJoiningInformationModel('','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   monthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   employeeMasterId: number;
-  companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
+ // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
   RejoiningInformationInitiateSubscription: Subscription;
   employementInfoId: any;
   probationMonthsDays: any = 'false';
@@ -41,6 +41,7 @@ export class ReJoiningInformationComponent implements OnInit {
   info: any;
   projectedRetirementDate: any;
   tomorrow = new Date();
+  companyListForJoining: Array<any> = [];
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
@@ -81,7 +82,7 @@ export class ReJoiningInformationComponent implements OnInit {
       projectedRetirementDate: [''],
       probationPeriod: [''],
       noticePeriod: [''],
-      ContinuationService: ['']
+      ContinuationService: ['No']
     });
 
     const empId = localStorage.getItem('employeeMasterId')
@@ -90,6 +91,19 @@ export class ReJoiningInformationComponent implements OnInit {
     // this.employementInfoId = Number(empInfoId);
     this.probationPeriodMonthModel = '';
     this.noticePeriodMonthModel = '';
+    //get group companies infomartion
+    this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
+      debugger
+      let list=res.data.results;
+      list.forEach(element => {
+        debugger
+        this.companyListForJoining.push(element.companyName);
+      });
+      
+    })
+    
+    //checking demo
+    this.getReJoiningFormInformation();
     if(this.confirmMsg){
     this.getReJoiningFormInformation();
     }
@@ -192,26 +206,40 @@ export class ReJoiningInformationComponent implements OnInit {
   }
 
   getReJoiningFormInformation() {
-    
+    //for testing
+    this.employementInfoId=4;
     this.EmploymentInformationService.getReJoiningInformation(this.employementInfoId).subscribe(res => {
       
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
+        debugger
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId)
         if (this.ReJoiningInformationModel.isNoticePeriodInMonth == 1) {
           this.noticeMonthsDays = 'false';
+          this.ReJoiningForm.get('noticePeriod').setValue('false');
           this.noticePeriodMonthModel = res.data.results[0].noticePeriodMonth;
         } else {
           this.noticeMonthsDays = 'true';
+          this.ReJoiningForm.get('noticePeriod').setValue('true');
           this.noticePeriodDaysModel = res.data.results[0].noticePeriodDays;
         }
         if (this.ReJoiningInformationModel.isProbationInMonth == 1) {
           this.probationMonthsDays = 'false';
+          this.ReJoiningForm.get('probationPeriod').setValue('false');
           this.probationPeriodMonthModel = res.data.results[0].probationPeriodMonth;
         } else {
           this.probationMonthsDays = 'true';
+          this.ReJoiningForm.get('probationPeriod').setValue('true');
           this.probationPeriodDaysModel = res.data.results[0].probationPeriodDays;
         }
+        debugger
+        if(res.data.results[0].isContinuationOfService==1){
+          this.ReJoiningForm.get('ContinuationService').setValue('Yes');
+        }
+        else{
+          this.ReJoiningForm.get('ContinuationService').setValue('No');
+        }
+        
       }
       
       if(!this.ReJoiningInformationModel.projectedRetirementDate){
@@ -222,11 +250,12 @@ export class ReJoiningInformationComponent implements OnInit {
         this.ReJoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
       }
     })
+    this.ReJoiningForm.markAsUntouched();
   }
 
   probationPeriod(event) {
-    
-    if (event.value == "true") {
+    const probationPeriod = this.ReJoiningForm.get('probationPeriod');
+    if (probationPeriod.value == "true") {
       this.probationMonthsDays = "true";
       this.probationPeriodDaysModel = '';
     } else {
@@ -235,7 +264,8 @@ export class ReJoiningInformationComponent implements OnInit {
     }
   }
   noticePeriod(event) {
-    if (event.value == "true") {
+    const noticePeriod = this.ReJoiningForm.get('noticePeriod');
+    if (noticePeriod.value == "true") {
       this.noticeMonthsDays = "true";
       this.noticePeriodMonthModel = '';
     } else {

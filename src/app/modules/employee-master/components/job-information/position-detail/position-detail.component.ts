@@ -46,6 +46,8 @@ export class PositionDetailComponent implements OnInit {
   filteredDesignation1List: Array<any> = [];
   filteredDesignation2List: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
+  reportingToList: Array<any> = [];
+  filteredReportingToList: Array<any> = [];
 
   selectAction: any;
   description: any;
@@ -105,7 +107,7 @@ export class PositionDetailComponent implements OnInit {
     this.employeeMasterId = Number(empId);
 
     //get payroll area code from local storage
-    debugger
+    
     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
     this.payrollAreaCode = new String(payrollAreaCode);
 
@@ -163,6 +165,20 @@ export class PositionDetailComponent implements OnInit {
         }
       });
     })
+
+    //get Reporting to DD values(All active emp list)
+    this.JobInformationService.getAllEmployees().subscribe(res => {
+     debugger
+      this.reportingToList = [];
+      this.filteredReportingToList = [];
+      const location = res.data.results;
+
+      location.filter((item) => {
+          this.reportingToList.push(item.fullName);
+          this.filteredReportingToList.push(item.fullName)
+      });
+    })
+
     this.getPositionForm()
 
   }
@@ -249,6 +265,17 @@ export class PositionDetailComponent implements OnInit {
         }
         else {
           this.disableDesignation2Dates();
+        }
+
+        //reporting to
+        if (this.positionDetailsModel.reportingTo != null) {
+          const reportingFromDate = this.PositionForm.get('reportingFromDateControl');
+          reportingFromDate.enable();
+          const reportingToDate = this.PositionForm.get('reportingToDateControl');
+          reportingToDate.enable();
+        }
+        else {
+          this.disableReportingDates();
         }
       }
     }, (error: any) => {
@@ -609,6 +636,17 @@ export class PositionDetailComponent implements OnInit {
     this.enableEmployeeTaxCategoryDate()
   }
 
+  reportingToObject(employee) {
+    debugger
+    const toSelect = this.filteredReportingToList.find(
+      (c) => c === this.PositionForm.get('reportingToControl')
+    );
+   // this.positionDetailsModel.employeeTaxCategoryDescription = toSelect.description;
+   // this.PositionForm.get('employeeTaxCategoryDescriptionControl').setValue(toSelect.description);
+    this.positionDetailsModel.reportingTo = toSelect;
+    this.enableReportingDate()
+  }
+
   searchEmpType(employeeType) {
 
     this.positionDetailsModel.employeeTypeDescription = null;
@@ -700,9 +738,23 @@ export class PositionDetailComponent implements OnInit {
     this.designation2List = desi2;
   }
 
+  searchReportingTo(reportingTo) {
+    this.positionDetailsModel.reportingTo = null;
+    this.positionDetailsModel.reportingFromDate = null;
+    this.positionDetailsModel.reportingToDate = null;
+
+    this.disableReportingDates();
+
+    reportingTo = reportingTo.toLowerCase();
+    const ifsc = this.filteredReportingToList.filter((item) => {
+      return JSON.stringify(item).toLowerCase().includes(reportingTo);
+    });
+    this.reportingToList = ifsc;
+  }
+
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
-    debugger
+    
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {

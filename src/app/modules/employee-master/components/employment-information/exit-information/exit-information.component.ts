@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ExitInformationModel } from './../../../dto-models/employment-forms-models/exit-information.model';
@@ -18,21 +18,27 @@ export class ExitInformationComponent implements OnInit {
   ExitForm: FormGroup;
   ExitInformation = new ExitInformationModel('', '', '', '', '', '', '', '');
   employeeMasterId: number;
-  employeeExitInfoId: any;
+  employeeExitInfoId: number;
+  reasonForLeavingList = 'Personal reason,Family reason,Persue new skills,Health issue'.split(',');
+  birthDate: any;
 
 
-
+@Input() data:any;
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
     private EventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
-
+    
+   
+    
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
-
+    
+    const birthDate = localStorage.getItem('birthDate')
+    this.birthDate = new Date(birthDate);
 
     this.ExitForm = this.formBuilder.group({
       resignationDate: [''],
@@ -42,7 +48,21 @@ export class ExitInformationComponent implements OnInit {
       Exitremark: [''],
       projectedRetirementDate: ['']
     });
+
+    this.EmploymentInformationService.getNumber().subscribe(number =>{
+      
+      this.employeeExitInfoId=number.text;
+      console.log('employeeExitInfoId::', this.employeeExitInfoId);
+      this.getExitInformationData(this.employeeExitInfoId);
+    })
+  //  this.getExitInformationData(this.employeeExitInfoId);
+
   }
+
+  add_years(dt, n) {
+    return new Date(dt.setFullYear(dt.getFullYear() + n));
+  }
+
 
   ExitFormSubmit(ExitInformation) {
     // if (ExitInformation.employmentStatusBoolean) {
@@ -93,7 +113,7 @@ export class ExitInformationComponent implements OnInit {
     // }
 
   }
-  
+
   putExitSubmit(ExitInformation) {
     // if (ExitInformation.employmentStatusBoolean) {
     //   this.employmentStatusBoolean = ExitInformation.employmentStatusBoolean
@@ -115,6 +135,30 @@ export class ExitInformationComponent implements OnInit {
 
       this.ExitForm.reset();
     })
+  }
+
+  getExitInformationData(employeeExitInfoId) {
+    
+    this.EmploymentInformationService.getExitInformation(employeeExitInfoId).subscribe(res => {
+      
+
+      if (res.data.results[0]) {
+        this.ExitInformation = res.data.results[0];
+        
+        if (res.data.results[0].projectedRetirementDate) {
+
+          this.ExitInformation.projectedRetirementDate = res.data.results[0].retirementDate;
+        }
+        else {
+          this.ExitInformation.projectedRetirementDate = this.add_years(this.birthDate, 58);
+          // this.ExitForm.get('projectedRetirementDate').setValue(this.ExitInformation.projectedRetirementDate);
+        }
+      }
+      
+    }, (error: any) => {
+      this.ExitInformation.projectedRetirementDate = this.add_years(this.birthDate, 58);
+    })
+    this.ExitForm.markAsUntouched();
   }
 
 }

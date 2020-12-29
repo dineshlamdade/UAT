@@ -19,10 +19,11 @@ export class TransferInformationComponent implements OnInit {
   selectTransferTo: any;
   employeeMasterId: number;
   setSubmitTransferExitFormSubscription: Subscription;
-  employeeTransferId: any;
+  employeeTransferId: number;
   temp: any[];
   JoiningRejoiningDate: any;
-
+ // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
+ companyListForJoining: Array<any> = [];
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
@@ -42,6 +43,24 @@ export class TransferInformationComponent implements OnInit {
       effectiveDate: [''],
       transferRemark: [''],
     });
+
+    //get group companies infomartion
+    this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
+      debugger
+      let list=res.data.results;
+      list.forEach(element => {
+        debugger
+        this.companyListForJoining.push(element.companyName);
+      });
+      
+    })
+    this.EmploymentInformationService.getNumber().subscribe(number =>{
+      
+      this.employeeTransferId=number.text;
+      console.log('employeeTransferId::', this.employeeTransferId);
+      this.getTranferToData(this.employeeTransferId);
+    })
+   
   }
 
 
@@ -103,15 +122,17 @@ export class TransferInformationComponent implements OnInit {
   }
 
 
-  getTranferToData() {
+  getTranferToData(employeeTransferId) {
     if ('') {
       this.JoiningRejoiningDate = localStorage.getItem('joiningDate');
     } else {
       this.JoiningRejoiningDate = localStorage.getItem('rejoiningDate');
     }
-    // this.EmploymentInformationService.getTransferToInformation(this.employeeMasterId).subscribe(res => {
-    //   this.TransferToInformation = res.data.results[0];
-    // })
+    //get transfer info service 1
+    this.EmploymentInformationService.getTransferToInformation(employeeTransferId).subscribe(res => {
+      this.TransferToInformation = res.data.results[0];
+    })
+    this.TransferForm.markAsUntouched();
   }
 
 

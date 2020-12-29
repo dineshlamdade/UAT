@@ -22,7 +22,7 @@ export class JoiningInformationComponent implements OnInit {
   JoiningInformationModel = new JoiningInformationModel('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
   monthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   employeeMasterId: number;
-  companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
+  //companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
   joiningInformationInitiateSubscription: Subscription;
   employementInfoId: any;
   probationMonthsDays: any = 'false';
@@ -37,6 +37,8 @@ export class JoiningInformationComponent implements OnInit {
   info: any;
   projectedRetirementDate: any;
   tomorrow = new Date();
+  companyListForJoining: Array<any> = [];
+  certificateViewFlag: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
@@ -78,9 +80,36 @@ export class JoiningInformationComponent implements OnInit {
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.getJoiningFormInformation();
 
-    if (this.confirmMsg == 'viewJoining') {
+   
+
+    //get group companies infomartion
+    this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
+      
+      let list=res.data.results;
+      list.forEach(element => {
+        
+        this.companyListForJoining.push(element.companyName);
+      });
+      
+    })
+    this.getJoiningFormInformation();
+    
+    this.EmploymentInformationService.getViewFlag().subscribe(number =>{
+      debugger
+      this.certificateViewFlag=number;
+      console.log('certificateViewFlag::', this.certificateViewFlag);
+      this.disableFields(this.certificateViewFlag);
+     
+    })
+    // if (this.confirmMsg == 'viewJoining') {
+      
+     
+  }
+
+  disableFields(certificateViewFlag){
+    debugger
+    if (certificateViewFlag == true) {
       const temp1 = this.JoiningForm.get('joiningDate');
       temp1.disable();
       const temp2 = this.JoiningForm.get('originalHireDate');
@@ -191,16 +220,20 @@ export class JoiningInformationComponent implements OnInit {
         if (res.data.results.length > 0) {
           if (this.JoiningInformationModel.isNoticePeriodInMonth == 1) {
             this.noticeMonthsDays = 'false';
+            this.JoiningForm.get('noticePeriod').setValue('false');
             this.noticePeriodMonthModel = res.data.results[0].noticePeriodMonth;
           } else {
             this.noticeMonthsDays = 'true';
+            this.JoiningForm.get('noticePeriod').setValue('true');
             this.noticePeriodDaysModel = res.data.results[0].noticePeriodDays;
           }
           if (this.JoiningInformationModel.isProbationInMonth == 1) {
             this.probationMonthsDays = 'false';
+            this.JoiningForm.get('probationPeriod').setValue('false');
             this.probationPeriodMonthModel = res.data.results[0].probationPeriodMonth;
           } else {
             this.probationMonthsDays = 'true';
+            this.JoiningForm.get('probationPeriod').setValue('true');
             this.probationPeriodDaysModel = res.data.results[0].probationPeriodDays;
           }
         }
@@ -215,10 +248,12 @@ export class JoiningInformationComponent implements OnInit {
         this.JoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
       }
     })
+    this.JoiningForm.markAsUntouched();
   }
 
   probationPeriod(event) {
-    if (event.value == "true") {
+    const probationPeriod = this.JoiningForm.get('probationPeriod');
+    if (probationPeriod.value == "true") {
       this.probationMonthsDays = "true";
       this.probationPeriodDaysModel = '';
     } else {
@@ -226,8 +261,10 @@ export class JoiningInformationComponent implements OnInit {
       this.probationPeriodMonthModel = '';
     }
   }
+
   noticePeriod(event) {
-    if (event.value == "true") {
+    const noticePeriod = this.JoiningForm.get('noticePeriod');
+    if (noticePeriod.value == "true") {
       this.noticeMonthsDays = "true";
       this.noticePeriodMonthModel = '';
     } else {
