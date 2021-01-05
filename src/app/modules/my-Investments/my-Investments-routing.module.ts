@@ -16,7 +16,7 @@ import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/p
 import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
 import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
 import { IDSATTBComponent } from './VI-A/IDSA-TTB/IDSA-TTB.component';
-
+import { AuthGuard } from './../auth/auth.guard';
 const routes: Routes = [
 
   {
@@ -103,7 +103,7 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
     ],
-
+    canActivate: [AuthGuard]
 
   // { path: '', pathMatch: 'full', redirectTo: '/investment' },
    },

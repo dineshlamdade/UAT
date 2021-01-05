@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { MasterComponent } from './master.component';
+import { LoanMasterComponent } from './loan-master.component';
 
-describe('MasterComponent', () => {
-  let component: MasterComponent;
-  let fixture: ComponentFixture<MasterComponent>;
+describe('LoanMasterComponent', () => {
+  let component: LoanMasterComponent;
+  let fixture: ComponentFixture<LoanMasterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MasterComponent ]
+      declarations: [ LoanMasterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MasterComponent);
+    fixture = TestBed.createComponent(LoanMasterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

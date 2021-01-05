@@ -5,6 +5,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
 import { AlertServiceService } from './../../../core/services/alert-service.service';
 import { AuthService } from './../auth.service';
+import jwt_decode from 'jwt-decode';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,10 +18,16 @@ import { AuthService } from './../auth.service';
 export class LoginComponent implements OnInit {
   public email: string;
   public password: string;
+  public activateDiv: string = "profile";
+  public otp: number;
+  public roleId: number;
+public token:any = 'eyJhbGciOiJSUzI1NiJ9.eyJwcml2aWxlZ2VzIjpbeyJYLVRlbmFudElkIjoiUGF5c3F1YXJlRGVmYXVsdCIsImNvbXBhbnlHcm91cE1hc3RlcklkIjoxLCJjb21wYW55TmFtZSI6IldoaXRlSGVkZ2UiLCJnbG9iYWxDb21wYW55TWFzdGVySWQiOjEsImFwcGxpY2F0aW9uUm9sZUlkIjoyLCJ1c2VyTmFtZSI6IlJhZ2h1SyIsImVtcGxveWVlTWFzdGVySWQiOjJ9LHsiWC1UZW5hbnRJZCI6IlBheXNxdWFyZURlZmF1bHQiLCJjb21wYW55R3JvdXBNYXN0ZXJJZCI6MSwiY29tcGFueU5hbWUiOiJUQVRBIE1PVE9SUyIsImdsb2JhbENvbXBhbnlNYXN0ZXJJZCI6MywiYXBwbGljYXRpb25Sb2xlSWQiOjMsInVzZXJOYW1lIjoiUmFnaHVLIiwiZW1wbG95ZWVNYXN0ZXJJZCI6MH1dLCJzdWIiOiIyIiwiaXNzIjoiaHR0cDovL3BheXNxdWFyZS5jb20iLCJleHAiOjE2MDkzMzAzNDMsImlhdCI6MTYwOTMyOTc0MywianRpIjoiNjRiOTk5MjEtNTk4Mi00N2JkLWE4MzctODBkMTMzODkxMjU4In0.mLfM1fLqpCGto2NTrVZMKRBkE0-qiT4VpJHAUuZF9HhZHVTeEwlP9OsdRwbSKzzUZO6nW-I6p4T0q6vbut0Sh5uf6zh_WKOpotx6Czc7ULjuJACkipxGBBl-s6tTeQi4-VrXz6Xcdea67ACDbEPidG7u7tlFdncKMq6Z_wKOs72WR_vugXGHl8_RzRfWsDJp0uX6lQNwzWvX_MJxiFHd3cqryeaF55MfYkWluyPyPk_5xXUmoTWAbAsQ1yaLHUG_8Xy17ktBHObFu94DxDOTDMumjwdiQF6lKagPeuItydja7JBENW5A1Ca0ZNs1CPvD9MOnToqDSuAChSvWZq60PQ';
+
   timeLeft: number = 600;
-  minLeft: number;
-  secLeft: number;
+  minLeft: number = 10;
+  secLeft: number = 0;
   interval;
+  public companyArray: Array<any> = [];
   public locales = [
     { label: '🇺🇸 English (US)', value: 'en-US' },
     // { label: '🇬🇧 English (UK)', value: 'en-GB' },
@@ -28,8 +35,6 @@ export class LoginComponent implements OnInit {
   ];
   public selectedLanguage: any;
   public locale = this.locales[0].value;
-  public otpDiv: boolean;
-  public otp: number;
 
   constructor(private translocoService: TranslocoService,
               private service: AuthService,
@@ -51,7 +56,9 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-this.otpDiv = false;
+    this.token = jwt_decode(this.token)
+      console.log(this.token)
+      this.companyArray = this.token.privileges;
   }
 
   signIn() {
@@ -64,8 +71,7 @@ this.otpDiv = false;
     this.service.postLogin(data)
     .subscribe((res) => {
       console.log(res);
-      this.otpDiv = true;
-      console.log(this.otpDiv);
+      this.activateDiv = "otp";
       this.alertService.sweetalertMasterSuccess(res['status']['message'],'');
 
       this.interval = setInterval(() => {
@@ -105,9 +111,13 @@ this.otpDiv = false;
     this.service.postOTP(data)
     .subscribe((res) => {
       console.log(res);
+      this.activateDiv = "profile"
       // localStorage.setItem('token', res.data.results[0].token);
       console.log(res.data.results[0].token);
-      this.router.navigate(['dashboard']);
+      this.token = jwt_decode(res.data.results[0].token)
+      console.log(this.token)
+      this.companyArray = this.token.privileges;
+      
       this.alertService.sweetalertMasterSuccess('Login successfull','');
       // this.alertService.sweetalertError('Something went wrong. Please try again.');
     },
@@ -122,6 +132,24 @@ this.otpDiv = false;
             }
     });
 
+  }
+
+  submitProfileID(){
+console.log(this.roleId)
+this.service.getApplicationRoleID(this.roleId).subscribe((res)=>{
+  console.log(res)
+//this.router.navigate(['dashboard']);
+},
+(err) => {
+        console.log(err.error);
+        if ( err instanceof HttpErrorResponse) {
+          if ( err.error.status.code === '400') {
+            this.alertService.sweetalertError(
+               err.error.status.message,
+            );
+          }
+        }
+});
   }
 
   resendOTP() {

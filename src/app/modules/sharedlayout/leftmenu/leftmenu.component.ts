@@ -1,18 +1,23 @@
+import { MenuListsService } from './menuLists.service';
+import { from } from 'rxjs';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-leftmenu',
   templateUrl: './leftmenu.component.html',
   styleUrls: ['./leftmenu.component.scss'],
 })
 export class LeftmenuComponent implements OnInit {
-public menuDetails: Array<any>;
+public menuDetails: Array<any> = [];
+public allMenuDetails: Array<any> = [];
   public isCollapsed = true;
 
   public isEmployeeMaster = true;
   public isProjectCollapsed = true;
   public isJobportalCollapsed = true;
+  public isCompanySettingsCollapsed = true;
 
   public isInvestmentCollapsed = true;
   public isOtherMaster = true;
@@ -37,11 +42,15 @@ public menuDetails: Array<any>;
   public menuIconSelect: any;
   public staticscard = true;
   public friendscard = true;
-  constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
+  constructor(private router: Router, @Inject(AppComponent) private app: AppComponent,
+  private menuService: MenuListsService
+  ) {
+    console.log(this.router.url)
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
     if ((this.router.url).includes('investment')) {
+      //this.allMenuDetails[1].collapsed = false
       this.isInvestmentCollapsed = false;
     }
     if ((this.router.url).includes('otherMaster')) {
@@ -53,47 +62,24 @@ public menuDetails: Array<any>;
   }
 
   public ngOnInit(): void {
-    this.menuDetails = [{
-      collapsed: false,
-      icon: 'icon-rocket',
-      name: 'Dashboard',
-      routerlink: '/dashboard',
-      },
-      {
-      collapsed: true,
-      icon: 'icon-credit-card',
-        name: 'Investment',
-        subDetails: [{
-          name: '80C-LIC',
-          routerlink: '/investment/80C-LIC',
-        },
-        {
-          name: '80C-PPF',
-          routerlink: '/otherMaster/companyRegistrationDetails',
-        },
-        {
-          name: 'Compliance Head',
-          routerlink: '/otherMaster/complianceHead',
-        }],
-      },
-      {
-        collapsed: true,
-        icon: 'icon-rocket',
-          name: 'Other Master',
-          subDetails: [{
-            name: 'Company Group Master',
-            routerlink: '/otherMaster/companyGroupMaster',
-          },
-          {
-            name: 'Company Registration Details',
-            routerlink: '/otherMaster/companyRegistrationDetails',
-          },
-          {
-            name: 'Compliance Head',
-            routerlink: '/otherMaster/complianceHead',
-          }],
-        },
-    ];
+
+   /////////////////////////////////////////////// console.log(data)
+    // for (let a =0; a<data.results.length;a++) {
+    // let result = data.results[a].accessibleMenuDetail;
+    // let parent = this.allMenuDetails.findIndex(x => x.name === result.mainMenuName);
+    // let child = this.allMenuDetails[parent].subDetails.findIndex(x => x.name === result.subMenuOrFormName1);
+    // if(this.allMenuDetails[parent].subDetails[child].subDetails){
+    //   let grandChild = this.allMenuDetails[parent].subDetails[child].subDetails.findIndex(x => x.name === result.subMenuOrFormName2);
+    //   if (this.menuDetails.find(x => x.name == result.mainMenuName)){
+    //     let menuChild = this.menuDetails
+    //     if (this.menuDetails.find(x => x.name == result.mainMenuName)){
+
+    //     }
+    //   }
+    // }
+    // }
+   console.log(this.menuService.getMenuUrl())
+
   }
 
   ngAfterViewInit() {
@@ -197,7 +183,7 @@ public menuDetails: Array<any>;
           }
         }
       }
-      console.log(this.toggle3);
+      //console.log(this.toggle3);
     });
   }
 

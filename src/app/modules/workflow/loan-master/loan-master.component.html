@@ -1,0 +1,718 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <!-- <div class="tabview tabview_fixed_deposit"> -->
+              <div class="fourtabview">
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
+                <div class="tabs about-page">
+                  <div class="tabview-contents">
+                    <div class="row mt-10">
+                      <div class="col-12">
+                        <div class="table-responsive Custom_Table">
+                          <table class="table table-striped table-hover table-bordered m-b-0">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Description</th>
+                                <!-- <th scope="col" class="wd-20">Account Holder Name</th> -->
+                                <th scope="col">Method of Recovery</th>
+                                <th scope="col">Rate of interest(%)</th>
+                                <th scope="col">No. of Installment</th>
+                                  <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let summary of summaryGridData; let i = index">
+                                <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
+                                  {{summary.institution}}
+                                </td>
+                                <td class="wd-20">{{summary.accountNumber}}
+                                </td>
+                                <!-- <td class="wd-20">
+                                  <span tooltip="{{summary.accountHolderName}}">
+                                    {{summary.accountHolderName}}
+                                  </span>
+                                </td> -->
+                                <td class="wd-15 align-right">
+                                  <span class="padding-right-12">
+                                    {{summary.declaredAmount | number:'1.2-2'}}
+                                  </span>
+                                </td>
+                                <td class="wd-15 align-right">
+                                  <span class="padding-right-12"]>
+                                    {{summary.actualAmount | number:'1.2-2'}}
+                                  </span>
+                                </td>
+                                <td class="wd-15 align-right">
+                                  <span class="padding-right-12"]>
+                                    {{summary.actualAmount | number:'1.2-2'}}
+                                  </span>
+                                </td>
+                                <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                    (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
+                                    <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
+                                    <i class="fa fa-trash font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                              </tr>
+                              <tr *ngIf="!summaryGridData?.length">
+                                <td colspan="6">
+                                  <span class="font-14 font500 align-center text-red">No Data
+                                    Available</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <label class="nav" for="summary">
+                  <span> Summary </span>
+                </label>
+                <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
+                  [checked]="tabIndex == 1" />
+                <div class="tabs about-page">
+                  <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
+                    <div class="tabview-contents" >
+                      <div class="row mt-37">
+                        <div class="col-12">
+                           <fieldset>
+                              <legend>General</legend>
+                              <div class="row">
+                              <div class="col-sm-6 col-md-3">
+                                 <label class="form-label">Code</label>
+                                 <input type="text" formControlName="loanCode" class="form-control align-right" 
+                                 [ngClass]="{'is-invalid' : generalForm.get('loanCode').status == 'INVALID'}">
+                                 <div *ngIf="submitted && generalForm.loanCode.errors" class="invalid-feedback">
+                                    <div *ngIf="generalForm.loanCode.errors.required">mandatory</div>
+                                 </div>
+                              </div>
+                                 <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" formControlName="loanDescription" class="form-control align-right">
+                                    <div *ngIf="submitted && generalForm.loanDescription.errors" class="invalid-feedback">
+                                       <div *ngIf="generalForm.loanDescription.errors.required">mandatory</div>
+                                    </div>
+                                 </div>
+                                 <div class="col-sm-6 col-md-3">
+                                    <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">
+                                      Minimum Net Pay (MNP)-Loan Head
+                                    </label>
+                                    <div class="custom-controls-stacked ml-15 mt-10">
+                                       <label class="custom-control custom-radio custom-control-inline">
+                                       <input formControlName="minimumNetPayLoan" type="radio"
+                                          class="custom-control-input" name="minimumNetPayLoan" value=1 checked>
+                                       <span class="custom-control-label">Yes</span>
+                                       </label>
+                                       <label class="custom-control custom-radio custom-control-inline">
+                                       <input formControlName="minimumNetPayLoan" type="radio"
+                                          class="custom-control-input" name="minimumNetPayLoan" value=0>
+                                       <span class="custom-control-label">No</span>
+                                       </label>
+                                    </div>
+                                 </div>
+                                 <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Annual Amount</label>
+                                    <input type="text" formControlName="approvalWorkFlowSDM"
+                                      class="form-control align-right">
+                                    
+                                 </div>
+                              </div>
+
+                              <div class="row mt-15">
+                                <div class="col-sm-6 col-md-3">
+                                   <label class="form-label">Approval Workflow</label>
+                                   <select
+                                       formControlName="approvalWorkFlowSDM" class="form-control custom-select"
+                                       [ngClass]="{ 'is-invalid': submitted && generalForm.approvalWorkFlowSDM.errors }">
+                                     <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                       [value]="frequencyOfPayment.value">
+                                       {{frequencyOfPayment.label}}
+                                     </option>
+                                   </select>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                   <label class="form-label">Approval SDM</label>
+                                   <select
+                                       formControlName="approvalWorkFlowSDM" class="form-control custom-select"
+                                       [ngClass]="{ 'is-invalid': submitted && generalForm.approvalWorkFlowSDM.errors }">
+                                     <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                       [value]="frequencyOfPayment.value">
+                                       {{frequencyOfPayment.label}}
+                                     </option>
+                                   </select>
+                                </div>
+                              </div>
+                           </fieldset>
+
+                           <fieldset>
+                            <legend>Loan Eligibility</legend>
+                            
+                            <div class="row mt-15">
+                                  <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Service Period</label>
+                                    <select
+                                        formControlName="servicePeriod" class="form-control custom-select"
+                                        [ngClass]="{ 'is-invalid': submitted && generalForm.servicePeriod.errors }">
+                                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                        [value]="frequencyOfPayment.value">
+                                        {{frequencyOfPayment.label}}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">% of underlying Asset</label>
+                                    <select
+                                        formControlName="underliningAsset" class="form-control custom-select"
+                                        [ngClass]="{ 'is-invalid': submitted && generalForm.underliningAsset.errors }">
+                                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                        [value]="frequencyOfPayment.value">
+                                        {{frequencyOfPayment.label}}
+                                      </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                  <label class="form-label">Number of times of salary</label>
+                                  <select
+                                      formControlName="noOfTimesOfSalary" class="form-control custom-select"
+                                      [ngClass]="{ 'is-invalid': submitted && generalForm.noOfTimesOfSalary.errors }">
+                                    <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                      [value]="frequencyOfPayment.value">
+                                      {{frequencyOfPayment.label}}
+                                    </option>
+                                  </select>
+                                </div>
+                                  <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Salary Definition</label>
+                                    <select
+                                        formControlName="salaryDefinition" class="form-control custom-select"
+                                        [ngClass]="{ 'is-invalid': submitted && generalForm.salaryDefinition.errors }">
+                                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                        [value]="frequencyOfPayment.value">
+                                        {{frequencyOfPayment.label}}
+                                      </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-15">
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Maximum Amount Allowed</label>
+                                <select style="margin-top: 6.3%;"
+                                    formControlName="maxAmountLoan" class="form-control custom-select"
+                                    [ngClass]="{ 'is-invalid': submitted && generalForm.maxAmountLoan.errors }">
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                              </div>
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Gap - Earlier Loan & New Loan Application (Months)</label>
+                                <select
+                                    formControlName="gapBetTwoLoanApp" class="form-control custom-select"
+                                    [ngClass]="{ 'is-invalid': submitted && generalForm.gapBetTwoLoanApp.errors }">
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                              <label class="form-label">Gap - End of Earlier Loan & New Loan Application (Months)</label>
+                              <select
+                                  formControlName="gapEndOfEarlierLoanAndNewLoanApp" class="form-control custom-select"
+                                  [ngClass]="{ 'is-invalid': submitted && generalForm.gapEndOfEarlierLoanAndNewLoanApp.errors }">
+                                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                  [value]="frequencyOfPayment.value">
+                                  {{frequencyOfPayment.label}}
+                                </option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="row mt-15">
+                          <div class="col-6">
+                            <div class="table-responsive Custom_Table">
+                              <table class="table table-striped table-hover table-bordered m-b-0">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col">Number of loans</th>
+                                      <th scope="col">In Months</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let summary of summaryGridData; let i = index">
+                                    <td class="wd-40">{{summary.accountNumber}}
+                                    </td>
+                                    <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                        (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
+                                        <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
+                                        <i class="fa fa-trash font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <input type="number" class="form-control align-right">
+                                    </td>
+                                    <td>
+                                      <input type="number" class="form-control align-right">
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2" class="align-right font700 font-16 text-light-green cursor-pointer">
+                                      <i
+                                      class="fa fa-plus-circle font-20"
+                                      tooltip="Add"
+                                      (click)="addRowInList(declarationService, j)"
+                                    ></i>
+                                    <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                                    </td>
+                                  </tr>
+                                  
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-10 row">
+                          <div class="col-md-6">
+                             <h3 class="font-14 text-purple font-bold">Minimum Remaining Service</h3>
+                          </div>
+                          <div class="col-md-6">
+                             <span class="font-bold text-link float-right"></span>
+                          </div>
+                       </div>
+                        <div class="row mt-10">
+                          <div class="col-sm-6 col-md-3">
+                            <label class="form-label">Loan Application</label>
+                            <select
+                                formControlName="minRemainingServiceLoanApplication" class="form-control custom-select">
+                              <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                [value]="frequencyOfPayment.value">
+                                {{frequencyOfPayment.label}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-6 col-md-3">
+                            <label class="form-label">Loan Completion</label>
+                            <select
+                                formControlName="minRemainingServiceLoanCompletion" class="form-control custom-select">
+                              <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                [value]="frequencyOfPayment.value">
+                                {{frequencyOfPayment.label}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                         </fieldset>
+
+                         <div class="row mt-15">
+                          <div class="col-12">
+                             <div class="float-right mb-15">
+                                <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                  <b><i class="fa fa-step-forward"></i></b> Next</button>
+                             </div>
+                          </div>
+                       </div>
+                        </div>
+                     </div>
+                  </div> 
+                  </form>
+                </div>
+                <label class="nav" for="Master">
+                  <span> General </span>
+                </label>
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 2" />
+                  <div class="tabs about-page">
+                    <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
+                      <div class="tabview-contents">
+                        <div class="row mt-37">
+                          <div class="col-12">
+                             <fieldset>
+                                <legend>Interest Charges</legend>
+                                <div class="row">
+                                  <div class="col-sm-6 col-md-3">
+                                      <label class="form-label">Rate (%) Per Annum</label>
+                                      <select
+                                          formControlName="intRate" class="form-control custom-select">
+                                        <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                          [value]="frequencyOfPayment.value">
+                                          {{frequencyOfPayment.label}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                      <label class="form-label">Method of Computation</label>
+                                      <select
+                                          formControlName="intRate" class="form-control custom-select">
+                                          <option [ngValue]="null">--Select--</option>
+                                        <option *ngFor="let option of methodOfComputation">
+                                          {{option}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">Date of Transactions</label>
+                                        <select
+                                            formControlName="intDateOfTransactions" class="form-control custom-select">
+                                          <option [ngValue]="null">--Select--</option>
+                                          <option *ngFor="let option of dateOfTransactions">
+                                            {{option}}
+                                          </option>
+                                        </select>
+                                      </div>
+                                      <div class="col-sm-6 col-md-3">
+                                          <label class="form-label">Cycle of Disbursement </label>
+                                          <select
+                                              formControlName="intCycleOfDisbursement" class="form-control custom-select">
+                                            <option [ngValue]="null">--Select--</option>
+                                            <option *ngFor="let option of cycleOfDisbursement">
+                                              {{option}}
+                                            </option>
+                                          </select>
+                                      </div>
+                                </div>
+  
+                                <div class="row mt-15">
+                                  <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Cycle of Last Installment</label>
+                                    <select
+                                        formControlName="intRate" class="form-control custom-select">
+                                        <option [ngValue]="null">--Select--</option>
+                                        <option *ngFor="let option of cycleOfLastInstallment">
+                                        {{option}}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div class="col-sm-6 col-md-3">
+                                    <label class="form-label">Cycle of Adhoc Payments</label>
+                                    <select
+                                        formControlName="intAdhocPayments" class="form-control custom-select">
+                                        <option [ngValue]="null">--Select--</option>
+                                        <option *ngFor="let option of cycleOfAdhocPayments">
+                                        {{option}}
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div class="col-sm-6 col-md-3">
+                                      <label class="form-label">Before Principal Repayment Starts</label>
+                                      <select
+                                          formControlName="intBeforePriRepaymentsSatrts" class="form-control custom-select">
+                                          <option [ngValue]="null">--Select--</option>
+                                          <option *ngFor="let option of beforePrincipalRepaymentStarts">
+                                          {{option}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                 
+                             </fieldset>
+  
+                             <fieldset>
+                              <legend>Principal Repayment</legend>
+                              
+                              <div class="row mt-15">
+                                    <div class="col-sm-6 col-md-3">
+                                      <label class="form-label">No of Installment</label>
+                                      <select
+                                          formControlName="recoveryNoOfInstallments" class="form-control custom-select">
+                                          <option [ngValue]="null">--Select--</option>
+                                          <option *ngFor="let option of beforePrincipalRepaymentStarts">
+                                          {{option}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                      <label class="form-label">Method</label>
+                                      <select
+                                          formControlName="underliningAsset" class="form-control custom-select">
+                                          <option [ngValue]="null">--Select--</option>
+                                          <option *ngFor="let option of principalRepaymentMethod">
+                                          {{option}}
+                                        </option>
+                                      </select>
+                                  </div>
+                                  <div class="col-sm-6 col-md-3" *ngIf="generalForm.get('underliningAsset').value === 'Principal First & then Interest'">
+                                    <label class="form-label">No. of installments for Interest Recovery</label>
+                                    <select
+                                        formControlName="noOfTimesOfSalary" class="form-control custom-select">
+                                        <option [ngValue]="null">--Select--</option>
+                                        <option *ngFor="let option of beforePrincipalRepaymentStarts">
+                                        {{option}}
+                                      </option>
+                                    </select>
+                                  </div>
+                                    <div class="col-sm-6 col-md-3">
+                                      <label class="form-label">Month</label>
+                                     <input type="number" formControlName="noOfTimesOfSalary" class="form-control align-right">
+                                     <label class="form-label">Recovery Starts</label>
+                                      <select style="margin-top: 6.3%;"
+                                          formControlName="maxAmountLoan" class="form-control custom-select">
+                                          <option [ngValue]="null">--Select--</option>
+                                          <option *ngFor="let option of principalRepaymentRecoveryStarts">
+                                          {{option}}
+                                        </option>
+                                      </select>
+                                  </div>
+                              </div>
+                           </fieldset>
+  
+                           <div class="row mt-15">
+                            <div class="col-12">
+                               <div class="float-right mb-15">
+                                  
+                                <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                  <b><i class="fa fa-step-backward"></i></b> Previous</button> &nbsp;
+                                  <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                    <b><i class="fa fa-step-forward"></i></b> Next</button>
+                               </div>
+                            </div>
+                         </div>
+                          </div>
+                       </div>
+                    </div> 
+                    </form>
+                  </div>
+                <label class="nav" for="Declaration">
+                  <span>Recovery </span>
+                </label>
+                <input name="nav" type="radio" class="about-radio" id="payment" (change)="changeTabIndex(3)"
+                [checked]="tabIndex == 3" />
+              <div class="tabs about-page">
+                <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
+                  <div class="tabview-contents">
+                    <div class="row mt-37">
+                      <div class="col-12">
+                        <fieldset>
+                          <legend>Payment</legend>
+                          
+                      <div class="mb-10 row">
+                        <div class="col-md-3">
+                          <h3 class="font-14 text-purple font-bold">Adhoc Payments</h3>
+                        </div>
+                        <div class="col-md-6">
+                          <h3 class="font-14 text-purple font-bold">Skipped Payments - Recovery in next Cycle</h3>
+                      </div>
+                        <div class="col-md-6">
+                          <span class="font-bold text-link float-right"></span>
+                        </div>
+                    </div>
+                      <div class="row mt-10">
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">Treatment</label>
+                          <select
+                              formControlName="adhocPaymentsTreatment;" class="form-control custom-select">
+                              <option [ngValue]="null">--Select--</option>
+                              <option *ngFor="let option of adhocPaymentsTreatment">
+                              {{option}}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">Principal</label>
+                          <select
+                              formControlName="minRemainingServiceLoanCompletion" class="form-control custom-select">
+                              <option [ngValue]="null">--Select--</option>
+                              <option *ngFor="let option of skippedPaymentPrincipal">
+                              {{option}}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                          <label class="form-label">Interest</label>
+                          <select
+                              formControlName="minRemainingServiceLoanCompletion" class="form-control custom-select">
+                              <option [ngValue]="null">--Select--</option>
+                              <option *ngFor="let option of skippedPaymentInterest">
+                              {{option}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                        </fieldset>
+                        <fieldset>
+                        <legend>Assignment</legend>
+                        
+                            <div class="mb-10 row">
+                              <div class="col-md-6">
+                                <h3 class="font-14 text-purple font-bold">Deduction Heads</h3>
+                              </div>
+                              <div class="col-md-6">
+                                <h3 class="font-14 text-purple font-bold">Earning Head</h3>
+                              </div>
+                                <div class="col-md-6">
+                                  <span class="font-bold text-link float-right"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-10">
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Interest</label>
+                                <select
+                                    formControlName="assignmentsIntHead" class="form-control custom-select"
+                                    >
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                              </div>
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Principal</label>
+                                <select
+                                    formControlName="assignmentPriHead" class="form-control custom-select">
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                              </div>
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Loan Payment</label>
+                                <select
+                                    formControlName="assignmentsLoanPayment" class="form-control custom-select"
+                                    >
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="mb-10 row">
+                              <div class="col-md-6">
+                                <h3 class="font-14 text-purple font-bold">Tax settings Perquisites</h3>
+                              </div>
+                            </div>
+                            <div class="row mt-10">
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Head</label>
+                                <select
+                                    formControlName="taxSettingPerquisiteType" class="form-control custom-select">
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                              </div>
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Loan Category</label>
+                                <select
+                                    formControlName="taxSettingPerquisiteSubCategory" class="form-control custom-select">
+                                    <option [ngValue]="null">--Select--</option>
+                                    <option *ngFor="let option of taxSettingsLoanCategory">
+                                    {{option}}
+                                  </option>
+                                </select>
+                              </div>
+                              <div class="col-sm-6 col-md-3">
+                                <label class="form-label">Calculation on</label>
+                                <select
+                                    formControlName="taxSettingCalculatePerquisiteOn" class="form-control custom-select">
+                                  <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                                    [value]="frequencyOfPayment.value">
+                                    {{frequencyOfPayment.label}}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                          <legend>Guarantor Details</legend>
+                          <div class="row mt-10">
+                            <div class="col-sm-6 col-md-3">
+                              <label class="form-label">No. of Guarantor</label>
+                              <select
+                                  formControlName="noOfGuarantor" class="form-control custom-select">
+                                  <option [ngValue]="null">--Select--</option>
+                                  <option *ngFor="let option of guarantorDetails">
+                                  {{option}}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </fieldset>
+                        <div class="row mt-15">
+                          <div class="col-6">
+                            <div class="table-responsive Custom_Table">
+                              <table class="table table-striped table-hover table-bordered m-b-0">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col">Document name</th>
+                                      <th scope="col">Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let summary of summaryGridData; let i = index">
+                                    <td class="wd-40">{{summary.accountNumber}}
+                                    </td>
+                                    <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                        (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
+                                        <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
+                                        <i class="fa fa-trash font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <input type="number" class="form-control align-right">
+                                    </td>
+                                    <td>
+                                      <input type="number" class="form-control align-right">
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="2" class="align-right font700 font-16 text-light-green cursor-pointer">
+                                      <i
+                                      class="fa fa-plus-circle font-20"
+                                      tooltip="Add"
+                                      (click)="addRowInList(declarationService, j)"
+                                    ></i>
+                                    <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                                    </td>
+                                  </tr>
+                                  
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mt-15">
+                          <div class="col-12">
+                             <div class="float-right mb-15">
+                                
+                              <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                <b><i class="fa fa-step-backward"></i></b> Previous</button> &nbsp;
+                                <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                  <b><i class="fa fa-save"></i></b> Save</button>
+                             </div>
+                          </div>
+                       </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <label class="nav" for="payment">
+                <span>Payment </span>
+              </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

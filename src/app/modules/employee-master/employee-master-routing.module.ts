@@ -32,7 +32,7 @@ import { ProjectDetailComponent } from './components/job-information/project-det
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
 import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
-
+import { AuthGuard } from './../auth/auth.guard';
 const routes: Routes = [
 
   {
@@ -209,9 +209,12 @@ const routes: Routes = [
         ]
       },
 
-    ]
+    ],
+   
   },
-  { path: '', pathMatch: 'full', redirectTo: '/employee-master' },
+  { path: '', pathMatch: 'full', redirectTo: '/employee-master',
+   },
+  
 ];
 
 @NgModule({

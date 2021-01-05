@@ -5,6 +5,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './modules/auth/auth.service';
 import { BnNgIdleService } from 'bn-ng-idle';
+import { AlertServiceService } from './core/services/alert-service.service';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
   public timberClass: boolean;
   public blueClass: boolean;
   public amethystClass: boolean;
+  public token: any;
   public selectedLanguage: any;
   public locales = [
     { label: '🇺🇸 English (US)', value: 'en-US' },
@@ -33,7 +35,8 @@ export class AppComponent implements OnInit {
               private titleService: Title,
               private authService: AuthService,
               private translocoService: TranslocoService,
-              private bnIdle: BnNgIdleService) {
+              private bnIdle: BnNgIdleService,
+              private alertService: AlertServiceService) {
       this.selectedLanguage = localStorage.getItem('selectedLanguage');
       // generate a regex from the locales we support
       if (this.selectedLanguage) {
@@ -43,20 +46,39 @@ export class AppComponent implements OnInit {
           this.updateLocale(this.selectedLanguage);
         }
       }
-      this.bnIdle.startWatching(2).subscribe((res) => {
-        if(res) {
-            console.log("session expired");
-        }
-      })
+      // if (this.router.getCurrentNavigation() === null) {
+      //   if (!this.authService.isLoggedIn()) {
+      //     this.router.navigate(['/login']);
+      //   } else {
+      //     this.router.navigate(['/dashboard']);
+      //   }
+      //   }
+        // if (this.authService.isLoggedIn()) {
+        //   this.token = this.authService.getprivileges();
+        // const expiryDate = (new Date(this.token.exp * 1000)).getTime();
+        // // const initalDate = (new Date(this.token.iat * 1000)).getTime();
+        // const initalDate = (new Date()).getTime()
+        // let t = (expiryDate - initalDate)/10000
+        // console.log(this.token);
+        // console.log(t);
+        // this.bnIdle.startWatching(t%10).subscribe((res) => {
+          
+        //   if(res) {
+        //     this.alertService.sweetalertWarning('Session will expire after 9 min');
+        //   }
+        // })
+        // // this.bnIdle.startWatching(t).subscribe((res) => {
+        // //   if(res) {
+        // //     this.alertService.sweetalertWarning('Session has expired, Please login again');
+        // //     this.authService.logout();
+        // //   }
+        // // })
+        // }
+        
+
      }
   public ngOnInit(): void {
-    // if (this.router.getCurrentNavigation() === null) {
-    // if (!this.authService.isLoggedIn()) {
-    //   this.router.navigate(['/login']);
-    // } else {
-    //   this.router.navigate(['/dashboard']);
-    // }
-    // }
+   
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('offcanvas-active');
     body.classList.add('font-montserrat');

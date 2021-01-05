@@ -73,6 +73,7 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
     EightyCModule,
     ProfileModule,
     SettingsModule,
+    workflowModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,

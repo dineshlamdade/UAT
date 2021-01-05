@@ -1,5 +1,5 @@
+import { LoanMasterComponent } from './loan-master/loan-master.component';
 import { workflowRoutingModule } from './workflow.routing.module';
-import { MasterComponent } from './master/master.component';
 
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -15,6 +15,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
+
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { workflowService } from './workflow.service';
@@ -22,7 +23,7 @@ import { workflowService } from './workflow.service';
 
 @NgModule({
   declarations: [
-      MasterComponent,
+    LoanMasterComponent
   ],
   imports: [
       workflowRoutingModule,

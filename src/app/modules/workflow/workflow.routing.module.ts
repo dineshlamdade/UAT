@@ -1,4 +1,4 @@
-import { MasterComponent } from './master/master.component';
+import { LoanMasterComponent } from './loan-master/loan-master.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -8,8 +8,8 @@ const routes: Routes = [
     path: '',
     children: [
       {
-      path:   'master',
-      component:  MasterComponent,
+      path:   'loan-master',
+      component:  LoanMasterComponent,
       data: { title: ':: DelziaHR :: Leave' },
       },
 
