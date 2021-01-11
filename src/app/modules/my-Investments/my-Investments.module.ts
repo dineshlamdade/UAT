@@ -15,15 +15,20 @@ import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
+
 import { MatSliderModule } from '@angular/material/slider';
 import { EightyCComponent } from './eighty-c/eighty-c.component';
+import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingloandeclarationComponent } from './housingloan/housingloandeclaration/housingloandeclaration.component';
+import { HousingloanmasterComponent } from './housingloan/housingloanmaster/housingloanmaster.component';
+import { HousingloansummaryComponent } from './housingloan/housingloansummary/housingloansummary.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { NPSComponent } from './VI-A/nps/nps.component';
-import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
-import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
 import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
-
+import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
+import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
+import { NPSComponent } from './VI-A/nps/nps.component';
+import { PrimeNGModule } from 'src/app/app.primeNG.module';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
@@ -32,6 +37,10 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     NpsSummaryComponent,
     NpsMasterComponent,
     NpsDeclarationComponent,
+    HousingloanComponent,
+    HousingloanmasterComponent,
+    HousingloansummaryComponent,
+    HousingloandeclarationComponent,
   ],
   imports: [
     CommonModule,
@@ -56,9 +65,11 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
+
   ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [ DatePipe, NumberFormatPipe ],
 
 })
 export class MyInvestmentsModule { }

@@ -42,6 +42,10 @@ import { OtherMasterModule } from './modules/other-master/other-master.module';
 
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
+
+
 
 @NgModule({
   declarations: [
@@ -54,6 +58,8 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
     MyInvestmentsModule,
