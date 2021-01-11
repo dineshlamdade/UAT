@@ -161,4 +161,7 @@ export class ExitInformationComponent implements OnInit {
     this.ExitForm.markAsUntouched();
   }
 
+  resetForm(){
+    this.ExitForm.reset();
+  }
 }

@@ -19,7 +19,7 @@
                                             formControlName="companyName"
                                             [(ngModel)]="previousEmploymentInformation.previousEmployerName"
                                             (keyup)="checkValidations()"
-                                            matTooltip="{{previousEmploymentInformation.previousEmployerName}}"
+                                            tooltip="{{previousEmploymentInformation.previousEmployerName}}"
                                             [ngClass]="{'is-invalid' : previousEmploymentInfoForm.get('companyName').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3">
@@ -57,7 +57,7 @@
                                         <label class="form-label">Remark</label>
                                         <input type="text" class="form-control" placeholder="Enter Remark"
                                             formControlName="remark" [(ngModel)]="previousEmploymentInformation.remark"
-                                            matTooltip="{{previousEmploymentInformation.remark}}">
+                                            tooltip="{{previousEmploymentInformation.remark}}">
                                     </div>
                                 </div>
 
@@ -71,7 +71,7 @@
                                             <input type="text" class="form-control" placeholder="Enter Designation"
                                                 formControlName="designation"
                                                 [(ngModel)]="previousEmploymentInformation.previousDesignation"
-                                                matTooltip="{{previousEmploymentInformation.previousDesignation}}">
+                                                tooltip="{{previousEmploymentInformation.previousDesignation}}">
                                         </div>
 
                                         <div class="col-sm-6 col-md-4">
@@ -79,7 +79,7 @@
                                             <input type="text" class="form-control" placeholder="Enter Job Profile"
                                                 formControlName="jobProfile"
                                                 [(ngModel)]="previousEmploymentInformation.previousJobProfile"
-                                                matTooltip="{{previousEmploymentInformation.previousJobProfile}}">
+                                                tooltip="{{previousEmploymentInformation.previousJobProfile}}">
                                         </div>
 
                                         <div class="col-sm-3 col-md-4">

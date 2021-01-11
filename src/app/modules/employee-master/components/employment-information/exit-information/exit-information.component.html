@@ -18,8 +18,7 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control"
-                                                formControlName="projectedRetirementDate"
+                                                class="form-control" formControlName="projectedRetirementDate"
                                                 [(ngModel)]="ExitInformation.projectedRetirementDate"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
@@ -37,8 +36,8 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="resignationDate" [min]="JoiningRejoiningDate"
                                                 (change)="calcExpectedLeavingDate(ExitInformation.resignationDate)"
-                                                [(ngModel)]="ExitInformation.resignationDate"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                [(ngModel)]="ExitInformation.resignationDate" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -53,8 +52,8 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="expectedLeavingDate"
-                                                [(ngModel)]="ExitInformation.expectedLeavingDate"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                [(ngModel)]="ExitInformation.expectedLeavingDate" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -68,9 +67,10 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="lastWorkingDate" [min]="ExitInformation.resignationDate"
-                                                [(ngModel)]="ExitInformation.lastWorkingDate"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="lastWorkingDate"
+                                                [min]="ExitInformation.resignationDate"
+                                                [(ngModel)]="ExitInformation.lastWorkingDate" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -78,21 +78,20 @@
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Reason For Leaving</label>
                                     <select class="form-control" placeholder="Select Reason"
-                                    formControlName="reasonForLeaving"
-                                    [(ngModel)]="ExitInformation.reasonForLeaving">
-                                    <option value="" selected disabled>Select Reason</option>
-                                    <option *ngFor="let option of reasonForLeavingList" [value]="option">
-                                        {{option}}
-                                    </option>
-                                </select>
+                                        formControlName="reasonForLeaving"
+                                        [(ngModel)]="ExitInformation.reasonForLeaving">
+                                        <option value="" selected disabled>Select Reason</option>
+                                        <option *ngFor="let option of reasonForLeavingList" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select>
                                 </div>
 
                                 <div class="col-sm-6 col-lg-3">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control"
-                                    formControlName="Exitremark" [isRequired]="false"
-                                    [(ngModel)]="ExitInformation.remark">
+                                    <input type="text" class="form-control" formControlName="Exitremark"
+                                        [isRequired]="false" [(ngModel)]="ExitInformation.remark">
                                 </div>
 
                                 <div class="col-sm-6 col-md-5">
@@ -125,11 +124,15 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
+                                    <button type="button" tooltip="Reset" (click)="resetForm()"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-15"><b><i
+                                                class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+
                                     <button type="submit" [disabled]="ExitForm.invalid || ExitForm.untouched"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                         [ngClass]="{'disabled-btn-bg-green' : ExitForm.invalid || ExitForm.untouched,
-                                        'btn-bg-green': !ExitForm.invalid}"
-                                         tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                        'btn-bg-green': !ExitForm.invalid}" tooltip="Save"><b><i
+                                                class="fa fa-floppy-o"></i></b>Save</button>
                                 </div>
                             </div>
                         </div>

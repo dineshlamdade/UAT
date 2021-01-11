@@ -122,15 +122,15 @@
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-12">
                                                             <label class="form-label">{{ 'ContactInformationForm.Address1' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 1" formControlName="localAddress1" [(ngModel)]="localAddressInformation.address1" (keyup)="checkLocalAddress()" matTooltip="{{localAddressInformation.address1}}" [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
+                                                            <input type="text" class="form-control" placeholder="Enter Address 1" formControlName="localAddress1" [(ngModel)]="localAddressInformation.address1" (keyup)="checkLocalAddress()" tooltip="{{localAddressInformation.address1}}" [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{ 'ContactInformationForm.Address2' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 2" formControlName="localAddress2" [(ngModel)]="localAddressInformation.address2" (keyup)="checkLocalAddress()" matTooltip="{{localAddressInformation.address2}}">
+                                                            <input type="text" class="form-control" placeholder="Enter Address 2" formControlName="localAddress2" [(ngModel)]="localAddressInformation.address2" (keyup)="checkLocalAddress()" tooltip="{{localAddressInformation.address2}}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{ 'ContactInformationForm.Address3' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 3" formControlName="localAddress3" [(ngModel)]="localAddressInformation.address3" (keyup)="checkLocalAddress()" matTooltip="{{localAddressInformation.address3}}">
+                                                            <input type="text" class="form-control" placeholder="Enter Address 3" formControlName="localAddress3" [(ngModel)]="localAddressInformation.address3" (keyup)="checkLocalAddress()" tooltip="{{localAddressInformation.address3}}">
                                                         </div>
 
                                                         <div class="col-sm-6 col-md-6 mt-10">
@@ -167,13 +167,13 @@
                                                 </fieldset>
                                             </div>
                                             <div class="copy-from-btn">
-                                                <i class="fa fa-arrow-circle-right" style="font-size: 29px;" matTooltip="Copy from Local to Permanent Address" (click)="ConfirmationFromLocalToPermanent()"></i>
-                                                <!-- <mat-icon matTooltip="Copy from Local to Permanent Address"
+                                                <i class="fa fa-arrow-circle-right" style="font-size: 29px;" tooltip="Copy from Local to Permanent Address" (click)="ConfirmationFromLocalToPermanent()"></i>
+                                                <!-- <mat-icon tooltip="Copy from Local to Permanent Address"
                                                     (click)="ConfirmationFromLocalToPermanent()">
                                                     arrow_forward</mat-icon> -->
                                                 <br>
-                                                <i class="fa fa-arrow-circle-left" style="font-size: 29px;" matTooltip="Copy from Permanent to Local Address" (click)="ConfirmationFromPermanentToLocal()"></i>
-                                                <!-- <mat-icon matTooltip="Copy from Permanent to Local Address"
+                                                <i class="fa fa-arrow-circle-left" style="font-size: 29px;" tooltip="Copy from Permanent to Local Address" (click)="ConfirmationFromPermanentToLocal()"></i>
+                                                <!-- <mat-icon tooltip="Copy from Permanent to Local Address"
                                                     (click)="ConfirmationFromPermanentToLocal()">
                                                     arrow_back</mat-icon> -->
                                             </div>
@@ -186,15 +186,15 @@
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-12">
                                                             <label class="form-label">{{ 'ContactInformationForm.Address1' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 1" formControlName="permanentAddress1" [(ngModel)]="permanentAddressInformation.address1" (keyup)="checkLocalAddress()" matTooltip="{{permanentAddressInformation.address1}}" [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
+                                                            <input type="text" class="form-control" placeholder="Enter Address 1" formControlName="permanentAddress1" [(ngModel)]="permanentAddressInformation.address1" (keyup)="checkLocalAddress()" tooltip="{{permanentAddressInformation.address1}}" [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{ 'ContactInformationForm.Address2' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 2" formControlName="permanentAddress2" [(ngModel)]="permanentAddressInformation.address2" (keyup)="checkLocalAddress()" matTooltip="{{permanentAddressInformation.address2}}">
+                                                            <input type="text" class="form-control" placeholder="Enter Address 2" formControlName="permanentAddress2" [(ngModel)]="permanentAddressInformation.address2" (keyup)="checkLocalAddress()" tooltip="{{permanentAddressInformation.address2}}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{ 'ContactInformationForm.Address3' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 3" formControlName="permanentAddress3" [(ngModel)]="permanentAddressInformation.address3" (keyup)="checkLocalAddress()" matTooltip="{{permanentAddressInformation.address3}}">
+                                                            <input type="text" class="form-control" placeholder="Enter Address 3" formControlName="permanentAddress3" [(ngModel)]="permanentAddressInformation.address3" (keyup)="checkLocalAddress()" tooltip="{{permanentAddressInformation.address3}}">
                                                         </div>
 
                                                         <div class="col-sm-6 col-md-6 mt-10">

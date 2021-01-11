@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { ConfirmationModalComponent } from '../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
 import { PersonalInfoLabels } from '../../dto-models/personal-info-labels.model';
+import { Router } from '@angular/router';
 
 // import { CommonDataService } from './../../core/services/common-data-service/common-data.service';
 
@@ -31,7 +32,7 @@ export class PersonalInformationComponent implements OnInit {
   // personalInformationModel: Array<PersonalInformationModel> =[];
   personalInformationModel = new PersonalInformationModel('', '', '', '', '', '', '', '', '', '', '');
   internationalWorkerRequestDTO = new internationalWorkerRequestDTO('', '', '', '', '', '')
-  PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '','','')
+  PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '', '', '')
   bloodGroups = 'A+,A-,B+,B-,AB+,AB-,O+,O-'.split(',');
   maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
   physicallyChallengedDropdown = 'Visual,Hearing,Locomotive'.split(',');
@@ -68,17 +69,20 @@ export class PersonalInformationComponent implements OnInit {
   cocValidTill1: Date;
   cocValidTill2: Date;
   ToEmpMasterSubscription: Subscription;
+  addJoineeSubscription: Subscription;
   selectionEmploymentBoolean: any;
   public today = new Date();
   changesLabelArray: Array<any> = [];
-
+  rejoinee: boolean;
+  sameCode: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private PersonalInformationService: PersonalInformationService,
     private EventEmitterService: EventEmitterService,
     public dialog: MatDialog, public datepipe: DatePipe,
-    private SharedInformationService: SharedInformationService) { }
+    private SharedInformationService: SharedInformationService,
+    private router: Router,) { }
 
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
@@ -159,8 +163,8 @@ export class PersonalInformationComponent implements OnInit {
         if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
           this.PersonalInfoLabels.lastName = item.customLabelName;
         }
-        
-        
+
+
         // Hide Labels As per Company setting
         if (item.isDisplay == false && item.defaultLabelName == 'Title') {
           this.PersonalInfoLabels.title = '';
@@ -183,16 +187,46 @@ export class PersonalInformationComponent implements OnInit {
       })
     })
 
-    this.SharedInformationService.getAdditionalFields().subscribe(res=>{
-      
+    this.SharedInformationService.getAdditionalFields().subscribe(res => {
+
       res.data.results.filter(item => {
-        if(item.fieldName == 'PersonalAdditional1'){
+        if (item.fieldName == 'PersonalAdditional1') {
           this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
         }
-        if(item.fieldName == 'PersonalAdditional2'){
+        if (item.fieldName == 'PersonalAdditional2') {
           this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
         }
       })
+    })
+
+    this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(res => {
+      debugger
+      this.rejoinee = res.rejoinee;
+      this.sameCode = res.sameCode;
+    
+      if (this.rejoinee == false) {
+        localStorage.clear();
+        this.resetForm();
+      }
+
+      if (this.rejoinee == true) {
+        localStorage.clear();
+        this.resetForm();
+        localStorage.setItem('employeeMasterId', res.employeeMasterId);
+        this.employeeMasterId = res.employeeMasterId
+        this.getEmployeeData();
+        this.personalInformationModel.employeeMasterRequestDTO.rejoinee = this.rejoinee;
+        this.personalInformationModel.employeeMasterRequestDTO.sameCode = this.sameCode;
+        if (this.sameCode == false) {
+          const sameCode = this.BasicInfoForm.get('employeeCode');
+          sameCode.enable();
+        }
+
+        if (this.sameCode == true) {
+          const sameCode = this.BasicInfoForm.get('employeeCode');
+          sameCode.disable();
+        }
+      }
     })
   }
 
@@ -254,7 +288,9 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
         this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
+        if( this.personalInformationModel.employeeMasterRequestDTO.rejoinee == true){
+          this.router.navigate(['/employee-master/employment-information/re-joining-information']);
+        }
         this.BasicInfoForm.markAsUntouched();
         this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
       }, (error: any) => {
@@ -396,7 +432,7 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   concateFullName() {
-    
+
     this.personalInformationModel.employeeMasterRequestDTO.fullName =
       this.personalInformationModel.employeeMasterRequestDTO.title + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
@@ -417,12 +453,12 @@ export class PersonalInformationComponent implements OnInit {
     const severityLevel = this.BasicInfoForm.get('severityLevel');
     severityLevel.disable();
     const isOnCOC = this.BasicInfoForm.get('isOnCOC');
-      isOnCOC.disable();
-      this.personalInformationModel.employeeMasterRequestDTO.title = '';
-      this.personalInformationModel.employeeMasterRequestDTO.firstName = '';
-      this.personalInformationModel.employeeMasterRequestDTO.middleName = '';
-      this.personalInformationModel.employeeMasterRequestDTO.lastName = '';
-
+    isOnCOC.disable();
+    this.personalInformationModel.employeeMasterRequestDTO.title = '';
+    this.personalInformationModel.employeeMasterRequestDTO.firstName = '';
+    this.personalInformationModel.employeeMasterRequestDTO.middleName = '';
+    this.personalInformationModel.employeeMasterRequestDTO.lastName = '';
+    this.employeeMasterId = null;
   }
   clearMarriageDate(maritalStatusBoolean) {
     if (maritalStatusBoolean.text !== 'Married') {
@@ -467,15 +503,15 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  enableSeverity(){
-    if(this.personalInformationModel.disabilityType){
+  enableSeverity() {
+    if (this.personalInformationModel.disabilityType) {
       const severityLevel = this.BasicInfoForm.get('severityLevel');
       severityLevel.enable();
     }
   }
 
-  enableWhetherOnCOC(){
-    if(this.internationalWorkerRequestDTO.countryOfOrigin){
+  enableWhetherOnCOC() {
+    if (this.internationalWorkerRequestDTO.countryOfOrigin) {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.enable();
     }

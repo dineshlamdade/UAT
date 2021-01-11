@@ -56,22 +56,22 @@
   }
   .thumbnail {
     position: absolute;
-    width: 117px;
-    height: 171px;
+    width: 174px;
+    height: 252px;
     overflow: hidden;
     cursor: pointer;
-    margin-left: 5px;
+    margin-left: 10px;
     }
     .thumbnail img {
-        cursor: pointer;
-        position: absolute;
-        left: 59px;
-        top: 58px;
-        width: 100%;
-        height: auto;
-        display: block;
-        border: ridge;
-        transform: translate(-50%, -50%);
+      cursor: pointer;
+    position: absolute;
+    left: 85px;
+    top: 94px;
+    width: 158px;
+    height: 155px;
+    display: block;
+    border: ridge;
+    transform: translate(-50%, -50%);
     }
     .borderRequired {
       border: 1px dashed #d50000 !important;
@@ -370,7 +370,9 @@
   .full-name {
     color: #807c7cd9;
   }
-  
+  .margin-top{
+    margin-top: 164px;
+  }
   .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -380,12 +382,11 @@
   }
 
   .image-size-info{
-      width: 123px;
-      position: absolute;
-      text-align: center;
-      margin-top: 140px;
-      color: rgb(105 67 161);
-      font-size: 12px;
+    position: absolute;
+    text-align: center;
+    margin-top: 178px;
+    color: #6943a1;
+    font-size: 15px;
   }
   .img-add-icon{
     font-size: 41px;
@@ -522,5 +523,9 @@
     }
     .new-basic-labeled-input .wj-control.wj-state-invalid ~ .wj-error {
         visibility: visible;
+    }
+
+    .margin-left{
+      margin-left: 201px;
     }
 //   }

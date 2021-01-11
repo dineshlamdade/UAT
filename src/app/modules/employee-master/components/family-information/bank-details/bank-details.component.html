@@ -39,10 +39,18 @@
                                     </span></td>
 
                                 <td><span>
-                                        <p-autoComplete [(ngModel)]="bank.state" [suggestions]="filteredStates"
+                                        <select class="form-control custom-select" placeholder="Select"
+                                            [(ngModel)]="bank.state" (completeMethod)="filterStates($event)">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let state of states" [value]="state">
+                                                {{state}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [(ngModel)]="bank.state" [suggestions]="filteredStates"
                                             placeholder="Select" (completeMethod)="filterStates($event)"
                                             [dropdown]="true">
-                                        </p-autoComplete>
+                                        </p-autoComplete> -->
                                     </span></td>
 
                                 <td><span>

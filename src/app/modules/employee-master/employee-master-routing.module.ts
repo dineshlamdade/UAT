@@ -30,6 +30,7 @@ import { MinimumWagesDetailComponent } from './components/job-information/minimu
 import { OrganizationDetailComponent } from './components/job-information/organization-detail/organization-detail.component';
 import { PositionDetailComponent } from './components/job-information/position-detail/position-detail.component';
 import { ProjectDetailComponent } from './components/job-information/project-detail/project-detail.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { PayrollAreaInformationComponent } from './components/payroll-area-information/payroll-area-information.component';
 import { PersonalInformationComponent } from './components/personal-information/personal-information.component';
 import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
@@ -211,9 +212,14 @@ const routes: Routes = [
             path: 'employment-summary',
             component: EmploymentSummaryComponent,
             data: { title: ':: DelziaHR :: employment-summary' },
-          }
+          },
         ]
       },
+      {
+        path: 'landing-page',
+        component: LandingPageComponent,
+        data: { title: ':: DelziaHR :: landing-page' },
+      }
 
     ]
   },

@@ -12,14 +12,15 @@
                             <div class="row">
                                 <div class="row">
                                     &nbsp;&nbsp;
-                                    <div class="circle thumbnail" (click)="fileInput.click($event, fileInput)">
+                                    <div class="circle thumbnail margin-top-img"
+                                        (click)="fileInput.click($event, fileInput)">
                                         <div class="avatar-edit">
                                             <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
                                                 (change)="uploadFile($event, fileInput)" hidden
                                                 [(ngModel)]="selectedImg" formControlName="image" />
                                         </div>
                                         <img [src]="imageUrl">
-                                        <h4 class="image-size-info" tooltip="Size should be
+                                        <h4 class="image-size-info img-height" tooltip="Size should be
                                         less than 1 MB">Select Image <p class="small-size">(Size should be
                                                 less than 1 MB)</p>
                                         </h4>
@@ -54,34 +55,69 @@
 
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">Relationship</label>
-                                        <p-autoComplete [suggestions]="filteredRelationshipList"
+                                        <select class="form-control custom-select" placeholder="Select"
+                                            (completeMethod)="filterRelationship($event)" formControlName="relation"
+                                            [(ngModel)]="familyMemberInfoRequestDTO.relation"
+                                            placeholder="Enter Relationship" #relation
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
+                                            (change)="populateGender(relation)">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let relationOption of relationshipList"
+                                                [value]="relationOption">
+                                                {{relationOption}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [suggestions]="filteredRelationshipList"
                                             (completeMethod)="filterRelationship($event)" formControlName="relation"
                                             [(ngModel)]="familyMemberInfoRequestDTO.relation"
                                             placeholder="Enter Relationship" #relation [dropdown]="true"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
                                             (onSelect)="populateGender(relation)">
-                                        </p-autoComplete>
+                                        </p-autoComplete> -->
 
                                         <!-- <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">Gender</label>
-                                        <p-autoComplete [suggestions]="filteredallGendersList"
+                                        <!-- <p-autoComplete [suggestions]="filteredallGendersList"
                                             (completeMethod)="filterGender($event)" formControlName="gender"
                                             [dropdown]="true" [(ngModel)]="familyMemberInfoRequestDTO.gender"
                                             placeholder="Select"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
-                                        </p-autoComplete>
+                                        </p-autoComplete> -->
+
+                                        <select class="form-control custom-select" placeholder="Select"
+                                            (completeMethod)="filterGender($event)" formControlName="gender"
+                                            [dropdown]="true" [(ngModel)]="familyMemberInfoRequestDTO.gender"
+                                            placeholder="Select"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let gender of allGenders" [value]="gender">
+                                                {{gender}}
+                                            </option>
+                                        </select>
                                     </div>
 
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">Marital Status</label>
-                                        <p-autoComplete [suggestions]="filteredmaritalStatusList"
+                                        <select class="form-control custom-select" placeholder="Select"
                                             (completeMethod)="filterMaritalStatus($event)"
                                             formControlName="maritalStatus" [dropdown]="true"
                                             [(ngModel)]="familyMemberInfoRequestDTO.maritalStatus" placeholder="Select"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('maritalStatus').status == 'INVALID'}">
-                                        </p-autoComplete>
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let marital of maritalStatusList" [value]="marital">
+                                                {{marital}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [suggestions]="filteredmaritalStatusList"
+                                            (completeMethod)="filterMaritalStatus($event)"
+                                            formControlName="maritalStatus" [dropdown]="true"
+                                            [(ngModel)]="familyMemberInfoRequestDTO.maritalStatus" placeholder="Select"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('maritalStatus').status == 'INVALID'}">
+                                        </p-autoComplete> -->
                                     </div>
 
                                     <div class="col-sm-6 col-md-4">
@@ -108,21 +144,32 @@
 
                                     <div class="col-sm-6 col-md-4 mt-15">
                                         <label class="form-label">Age Bracket</label>
-                                        <p-autoComplete [suggestions]="filteredageBracketList"
+                                        <select class="form-control custom-select" placeholder="Select"
                                             (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
                                             [(ngModel)]="familyMemberInfoRequestDTO.ageBracket" [dropdown]="true"
                                             (change)="validateIsdependant()" placeholder="Select"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
-                                        </p-autoComplete>
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let ageBracket of ageBracketList" [value]="ageBracket">
+                                                {{ageBracket}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [suggestions]="filteredageBracketList"
+                                            (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
+                                            [(ngModel)]="familyMemberInfoRequestDTO.ageBracket" [dropdown]="true"
+                                            (change)="validateIsdependant()" placeholder="Select"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
+                                        </p-autoComplete> -->
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-6 col-md-3 mt-15">
+                                <div class="col-sm-6 col-md-3 mt-15 row-margin-left">
                                     <div class="form-group  mt-15">
                                         <legend>
-                                            Department On Employee</legend>
+                                            Dependent On Employee</legend>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="yes"
@@ -172,7 +219,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row row-margin-left">
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="example-checkbox1"
@@ -181,7 +228,7 @@
                                         <span class="custom-control-label">Active</span>
                                     </label>
                                 </div>
-                                <div class="col-sm-6 col-md-3 mt-15">
+                                <div class="col-sm-6 col-md-3 mt-15 ml-35">
                                     <label class="form-label">Remark</label>
                                     <input type="text" class="form-control" placeholder="Enter Remark"
                                         formControlName="remark" [(ngModel)]="familyMemberInfoRequestDTO.remark">
@@ -198,11 +245,21 @@
                                     <label class="form-label">Phone No.</label>
                                     <div class="row">
                                         <div class="col-sm-3 col-md-4 country-code">
-                                            <p-autoComplete [suggestions]="filteredcountryCode" #copyAddress
+                                            <select class="form-control custom-select" placeholder="Select"
                                                 [(ngModel)]="addressCountryCode" [dropdown]="true"
                                                 (completeMethod)="filtercountryCode($event)"
                                                 formControlName="addressDetailsCountryCode" placeholder="Select">
-                                            </p-autoComplete>
+                                                <option value="" selected disabled>Select</option>
+                                                <option *ngFor="let code of countryCode" [value]="code">
+                                                    {{code}}
+                                                </option>
+                                            </select>
+
+                                            <!-- <p-autoComplete [suggestions]="filteredcountryCode" #copyAddress
+                                                [(ngModel)]="addressCountryCode" [dropdown]="true"
+                                                (completeMethod)="filtercountryCode($event)"
+                                                formControlName="addressDetailsCountryCode" placeholder="Select">
+                                            </p-autoComplete> -->
                                         </div>
                                         <div class="col-sm-3 col-md-6">
                                             <input type="text" class="form-control" placeholder="Enter Phone No."
@@ -215,11 +272,20 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Copy From</label>
-                                    <p-autoComplete [suggestions]="filteredCopyFromAddressList" #copyAddress
+                                    <select class="form-control custom-select" placeholder="Select"
+                                        (completeMethod)="filterCopyFromList($event)" formControlName="copyFrom"
+                                        (onSelect)="getAddressFromCopyList($event)" placeholder="Select">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let copyFrom of CopyFromAddressList" [value]="copyFrom">
+                                            {{copyFrom}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredCopyFromAddressList" #copyAddress
                                         (completeMethod)="filterCopyFromList($event)" formControlName="copyFrom"
                                         (onSelect)="getAddressFromCopyList($event)" placeholder="Select"
                                         [dropdown]="true">
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
 
                                 </div>
                             </div>
@@ -301,11 +367,21 @@
                                     <label class="form-label">Phone No.</label>
                                     <div class="row">
                                         <div class="col-sm-3 col-md-5 country-code">
-                                            <p-autoComplete [suggestions]="filteredcountryCode"
+                                            <select class="form-control custom-select" placeholder="Select"
                                                 [(ngModel)]="guardianCountryCode" [dropdown]="true"
                                                 (completeMethod)="filtercountryCode($event)"
                                                 formControlName="guardianCountryCode" placeholder="Select">
-                                            </p-autoComplete>
+                                                <option value="" selected disabled>Select</option>
+                                                <option *ngFor="let code of countryCode" [value]="code">
+                                                    {{code}}
+                                                </option>
+                                            </select>
+
+                                            <!-- <p-autoComplete [suggestions]="filteredcountryCode"
+                                                [(ngModel)]="guardianCountryCode" [dropdown]="true"
+                                                (completeMethod)="filtercountryCode($event)"
+                                                formControlName="guardianCountryCode" placeholder="Select">
+                                            </p-autoComplete> -->
                                         </div>
                                         <div class="col-sm-3 col-md-6">
                                             <input type="text" class="form-control" placeholder="Enter Mobile No."
@@ -404,7 +480,7 @@
                         </div>
 
                         <legend>Summary</legend>
-                        <div class="row mt-20">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive Custom_Table">
                                     <table class="table table-striped table-hover table-bordered m-b-0">

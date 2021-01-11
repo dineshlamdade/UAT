@@ -35,6 +35,7 @@ export class EventEmitterService {
   private JobInformationInitiate = new Subject<any>();
   private NextJobTab = new Subject<any>();
   private NextToAssignment = new Subject<any>();
+  private AddjoineeSubject = new Subject<any>();
 
 
 
@@ -248,5 +249,12 @@ export class EventEmitterService {
   }
   setNextToAssignment() {
     return this.NextToAssignment.asObservable();
+  }
+
+  getAddjoinee(user){
+    this.AddjoineeSubject.next(user);
+  }
+  setAddjoinee() {
+    return this.AddjoineeSubject.asObservable();
   }
 }

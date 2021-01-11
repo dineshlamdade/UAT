@@ -21,10 +21,9 @@
                                                 formControlName="joiningDate"
                                                 [(ngModel)]="JoiningInformationModel.joiningDate"
                                                 (change)="assignJoiningDateTo(JoiningInformationModel.joiningDate)"
-                                                [max]="tomorrow" class="form-control" placeholder="  /   /"
-                                                bsDatepicker
+                                                [max]="tomorrow" class="form-control" placeholder="  /   /" bsDatepicker
                                                 [readonly]="certificateViewFlag">
-                                                
+
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +89,7 @@
                                                     (change)="probationPeriod($event)" formControlName="probationPeriod"
                                                     [ngClass]="{'months-true' : probationMonthsDays == 'false',
                         'months-false': probationMonthsDays == 'true'}">
-                                                <span class="custom-control-label">Months</span>
+                                                <span class="custom-control-label"><b>Months</b></span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="true"
@@ -98,7 +97,7 @@
                                                     [ngClass]="{'months-false' : probationMonthsDays == 'false',
                         'months-true': probationMonthsDays == 'true'}">
                                                 <span class="custom-control-label">
-                                                    Days</span>
+                                                    <b>Days</b></span>
                                             </label>
                                         </div>
                                     </div>
@@ -106,20 +105,21 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label *ngIf="probationMonthsDays == 'false'" class="form-label">Months</label>
-                                    <select *ngIf="probationMonthsDays == 'false'" class="form-control" placeholder="Select Months"
-                                        [(ngModel)]="probationPeriodMonthModel" formControlName="probationPeriodMonth"
+                                    <select *ngIf="probationMonthsDays == 'false'" class="form-control"
+                                        placeholder="Select Months" [(ngModel)]="probationPeriodMonthModel"
+                                        formControlName="probationPeriodMonth"
                                         (change)="calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, JoiningInformationModel.joiningDate)">
                                         <option value="" selected disabled>Select Months</option>
                                         <option *ngFor="let option of monthsList" [value]="option">
-                                          {{option}}
+                                            {{option}}
                                         </option>
                                     </select>
 
                                     <label *ngIf="probationMonthsDays == 'true'" class="form-label">
                                         Days</label>
                                     <input *ngIf="probationMonthsDays == 'true'" type="text" class="form-control"
-                                    formControlName="probationPeriodDays" [(ngModel)]="probationPeriodDaysModel"
-                                    (change)="calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, JoiningInformationModel.joiningDate)">
+                                        formControlName="probationPeriodDays" [(ngModel)]="probationPeriodDaysModel"
+                                        (change)="calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, JoiningInformationModel.joiningDate)">
                                 </div>
 
                                 <!-- Notice Period -->
@@ -133,7 +133,7 @@
                                                     (change)="noticePeriod($event)" formControlName="noticePeriod"
                                                     [ngClass]="{'months-true' : noticeMonthsDays == 'false',
                         'months-false': noticeMonthsDays == 'true'}">
-                                                <span class="custom-control-label">Months</span>
+                                                <span class="custom-control-label"><b>Months</b></span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="true"
@@ -141,7 +141,7 @@
                                                     [ngClass]="{'months-false' : noticeMonthsDays == 'false',
                         'months-true': noticeMonthsDays == 'true'}">
                                                 <span class="custom-control-label">
-                                                    Days</span>
+                                                    <b>Days</b></span>
                                             </label>
                                         </div>
                                     </div>
@@ -149,9 +149,10 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label *ngIf="noticeMonthsDays == 'false'" class="form-label">Months</label>
-                                    <select *ngIf="noticeMonthsDays == 'false'" class="form-control" placeholder="Select Months"
-                                    [(ngModel)]="noticePeriodMonthModel"  formControlName="noticePeriodMonth" 
-                                    (change)="setNoticePeriodMonthModel(noticePeriodMonthModel)">
+                                    <select *ngIf="noticeMonthsDays == 'false'" class="form-control"
+                                        placeholder="Select Months" [(ngModel)]="noticePeriodMonthModel"
+                                        formControlName="noticePeriodMonth"
+                                        (change)="setNoticePeriodMonthModel(noticePeriodMonthModel)">
                                         <option value="" selected disabled>Select Months</option>
                                         <option *ngFor="let option of monthsList" [value]="option">
                                             {{option}}
@@ -160,8 +161,8 @@
                                     <label *ngIf="noticeMonthsDays == 'true'" class="form-label">
                                         Days</label>
                                     <input *ngIf="noticeMonthsDays == 'true'" type="text" class="form-control"
-                                    formControlName="noticePeriodDays" [(ngModel)]="noticePeriodDaysModel"
-                                    (change)="setNoticePeriodDaysModel(noticePeriodDaysModel)">
+                                        formControlName="noticePeriodDays" [(ngModel)]="noticePeriodDaysModel"
+                                        (change)="setNoticePeriodDaysModel(noticePeriodDaysModel)">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
@@ -175,8 +176,8 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="expectedConfirmationDate"
                                                 [(ngModel)]="JoiningInformationModel.expectedConfirmationDate"
-                                                (change)="confirmationPopup()"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                (change)="confirmationPopup()" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -184,9 +185,8 @@
                                 <div class="col-sm-6 col-lg-3 mt-10">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control"
-                                    formControlName="expectedRemark"
-                                    [(ngModel)]="JoiningInformationModel.expectedConfirmationRemark">
+                                    <input type="text" class="form-control" formControlName="expectedRemark"
+                                        [(ngModel)]="JoiningInformationModel.expectedConfirmationRemark">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
@@ -198,9 +198,11 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="confirmationDate" [(ngModel)]="JoiningInformationModel.confirmationDate"
-                                                [min]="JoiningInformationModel.joiningDate" (change)="disableExpectedConfirmationDate()"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="confirmationDate"
+                                                [(ngModel)]="JoiningInformationModel.confirmationDate"
+                                                [min]="JoiningInformationModel.joiningDate"
+                                                (change)="disableExpectedConfirmationDate()" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -208,9 +210,8 @@
                                 <div class="col-sm-6 col-lg-3 mt-10">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control"
-                                    formControlName="confirmationRemark"
-                                    [(ngModel)]="JoiningInformationModel.confirmationRemark">
+                                    <input type="text" class="form-control" formControlName="confirmationRemark"
+                                        [(ngModel)]="JoiningInformationModel.confirmationRemark">
                                 </div>
                             </div>
                         </fieldset>
@@ -218,11 +219,15 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
+                                    <button type="button" tooltip="Reset" (click)="resetForm()"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-15"><b><i
+                                                class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+
                                     <button type="submit" [disabled]="JoiningForm.invalid || JoiningForm.untouched"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                         [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
-                           'btn-bg-green': !JoiningForm.invalid}"
-                                        tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                           'btn-bg-green': !JoiningForm.invalid}" tooltip="Save"><b><i
+                                                class="fa fa-floppy-o"></i></b>Save</button>
                                 </div>
                             </div>
                         </div>

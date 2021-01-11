@@ -4,7 +4,7 @@ import { PayrollAreaInformationService } from '../../employee-master-services/pa
 import { EmployeeSummaryBean } from './../../dto-models/employee-summary.model';
 import { EmployeeSummaryService } from './../../employee-master-services/employee-summary.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-
+import { AuthService } from './../../../auth/auth.service';
 
 @Component({
   selector: 'app-employee-summary',
@@ -22,7 +22,10 @@ export class EmployeeSummaryComponent implements OnInit {
   payrollAreaCode: any;
 
 
-  constructor(private EmployeeSummaryService: EmployeeSummaryService,private PayrollAreaService: PayrollAreaInformationService, private EventEmitterService: EventEmitterService) { }
+  constructor(private EmployeeSummaryService: EmployeeSummaryService,
+    private PayrollAreaService: PayrollAreaInformationService, 
+    private EventEmitterService: EventEmitterService,
+    private AuthService: AuthService) { }
 
   ngOnInit(): void {
 
@@ -31,6 +34,8 @@ export class EmployeeSummaryComponent implements OnInit {
     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
     this.payrollAreaCode = new String(payrollAreaCode);
 
+    // console.log(this.AuthService.getprivileges());
+    
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
@@ -42,9 +47,9 @@ export class EmployeeSummaryComponent implements OnInit {
     }
   }
 
-//get payroll area aasigned to that employee
+  //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
-    
+
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
@@ -67,10 +72,10 @@ export class EmployeeSummaryComponent implements OnInit {
   getSummaryForm() {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId,this.payrollAreaCode).subscribe(res => {
-      
+    this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
+
       if (res.data.results[0]) {
-        
+
         this.EmployeeSummary.identitySummaryBean = res.data.results[0].employeeSummaryBean.identitySummaryBean;
         if (res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage) {
           this.imageUrl = 'data:' + res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage.type + ';base64,' + res.data.results[0].employeeSummaryBean.identitySummaryBean.employeeProfileImage.profilePicture;
