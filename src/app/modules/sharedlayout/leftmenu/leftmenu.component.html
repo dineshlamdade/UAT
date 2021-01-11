@@ -515,6 +515,24 @@
 
                 </ul>
             </li>
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a href="javascript:void(0)" (click)="ischaptersettingCollapsed = !ischaptersettingCollapsed" [attr.aria-expanded]="!ischaptersettingCollapsed" aria-controls="investmentsCollapsed" class="has-arrow arrow-c"><i class="fa fa-cogs" aria-hidden="true"></i><span>Company Settings</span></a>
+                <ul class="collapse" id="ischaptersettingCollapsed" [collapse]="ischaptersettingCollapsed" [isAnimated]="true">
+                   <!--  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                        <a class="submenu" [routerLink]="['/investments-houseRent']" href="javascript:void(0)">House Rent</a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-houseLoan']" href="javascript:void(0)">House Loan</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-chapterSixA']" href="javascript:void(0)">Chapter VI-A</a></li> -->
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/bc']" href="javascript:void(0)">Business Cycle</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/headcreation']" href="javascript:void(0)">Head Creation</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/attributecreation']" href="javascript:void(0)">Attribute Creation</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/attributeselection']" href="javascript:void(0)">Attribute Selection</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/payrollheadgroupcreation']" href="javascript:void(0)">Payroll Head Group Creation</a></li>
+                </ul>
+            </li>
+
+
         </ul>
     </nav>
 </div>

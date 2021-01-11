@@ -57,18 +57,43 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
+
+//////////////////////addaed by bharati////
+//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
+
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
+import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
+import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
+import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
+
+////////////////////////////////////
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     SettingsComponent,
-
+    //////////////////////////
+   // payrollComponent,
+    // HeadcreationComponent,
+    // AttributecreationComponent,
+    // AttributeselectionComponent,
+    // PayrollheadgroupcreationComponent,
+///////////////////////////////////////
   ],
   imports: [
     BrowserModule,
     AuthModule,
     DashboardModule,
     PayrollModule,
+/////////////////
+  //  payrollModule,
+    CompanySettingModule,
+////////////////////////////////
     MyInvestmentsModule,
     EightyCModule,
     ProfileModule,
@@ -103,6 +128,8 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 	 AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
+
+   
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,
