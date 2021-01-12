@@ -10,7 +10,7 @@ import {TableModule} from 'primeng/table';
   exports: [
     AutoCompleteModule,
     DropdownModule,
-    TableModule
+    TableModule,
   ]
 })
 export class PrimeNGModule {}

@@ -19,6 +19,8 @@ public menuDetails: Array<any>;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
+  public isCollapsedLMS = true;
+  public isCollapsedWorkflowSettings = true;
   public contactTab: boolean;
   public chatTab = true;
   public toggle1: boolean;
@@ -35,6 +37,7 @@ public menuDetails: Array<any>;
   public menuIconSelect: any;
   public staticscard = true;
   public friendscard = true;
+  ischaptersettingCollapsed=true;
   constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
@@ -48,6 +51,9 @@ public menuDetails: Array<any>;
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
     }
+    if ((this.router.url).includes('companysetting')) {
+      this.ischaptersettingCollapsed = false;
+    }
   }
 
   public ngOnInit(): void {
@@ -57,6 +63,28 @@ public menuDetails: Array<any>;
       name: 'Dashboard',
       routerlink: '/dashboard',
       },
+      ////////////////////
+      {
+        collapsed: true,
+        icon: 'icon-credit-card',
+          name: 'Company Settings',
+          subDetails: [{
+            name: 'payroll',
+            routerlink: '/companysetting/payroll',
+          },
+          // {
+          //   name: '80C-PPF',
+          //   routerlink: '/otherMaster/companyRegistrationDetails',
+          // },
+          // {
+          //   name: 'Compliance Head',
+          //   routerlink: '/otherMaster/complianceHead',
+          // }
+        ],
+        },
+
+      //////////////////////////////
+
       {
       collapsed: true,
       icon: 'icon-credit-card',

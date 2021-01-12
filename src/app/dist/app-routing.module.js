@@ -12,15 +12,21 @@ var router_1 = require("@angular/router");
 var routes = [
     { path: 'auth', loadChildren: './modules/auth/auth.module#AuthModule' },
     { path: '', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
-    { path: '', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
+    { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
     { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
     { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
-    { path: 'investment',
-        loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' },
-    { path: 'otherMaster',
-        loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
+    {
+        path: 'investment',
+        loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
+    },
+    {
+        path: 'employee-master',
+        loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
+    },
+    { path: 'investment', loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' },
+    { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
     { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
-    { path: '**', redirectTo: '/dashboard' },
+    { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {

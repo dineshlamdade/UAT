@@ -12,7 +12,7 @@ export class StatuatoryComplianceService {
 
   getLocationInformationOrCountryList() {
 
-    return this._HTTP.get(environment.baseUrl8082+ '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+    return this._HTTP.get(environment.baseUrl8082 + '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
       .pipe(map((res: any) => {
         return res;
       }))
@@ -43,7 +43,7 @@ export class StatuatoryComplianceService {
 
   getAddressFromPIN(postalCode) {
 
-    return this._HTTP.get(environment.baseUrl8082+ '/pincode-details-check/' + postalCode, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+    return this._HTTP.get(environment.baseUrl8082 + '/pincode-details-check/' + postalCode, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
       .pipe(map((res: any) => {
         return res;
       }))
