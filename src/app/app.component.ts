@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { BnNgIdleService } from 'bn-ng-idle';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './modules/auth/auth.service';
-import { BnNgIdleService } from 'bn-ng-idle';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +33,8 @@ export class AppComponent implements OnInit {
               private titleService: Title,
               private authService: AuthService,
               private translocoService: TranslocoService,
-              private bnIdle: BnNgIdleService) {
+              private bnIdle: BnNgIdleService
+              ) {
       this.selectedLanguage = localStorage.getItem('selectedLanguage');
       // generate a regex from the locales we support
       if (this.selectedLanguage) {
