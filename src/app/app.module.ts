@@ -57,11 +57,15 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
+import { CompanySettingModule } from './modules/company-setting/company-setting.module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     SettingsComponent,
+    
 
   ],
   imports: [
@@ -103,6 +107,7 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 	 AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
+    CompanySettingModule
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,

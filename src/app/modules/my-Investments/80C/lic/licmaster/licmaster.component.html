@@ -101,6 +101,7 @@
                        <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is mandatory</div>
                     </div>
                  </div>
+                 
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Premium Amount</label>
                     <input type="text" formControlName="premiumAmount" class="form-control align-right" (change)='calculateAnnualAmount()'

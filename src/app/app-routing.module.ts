@@ -13,17 +13,20 @@ const routes: Routes = [
  { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
+  { path: 'company-setting', loadChildren: './modules/company-setting/company-setting.module#CompanySettingModule' },
   {
     path: 'investment',
     loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
   },
   { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
   { path: 'workflow', loadChildren: './modules/workflow/workflow.module#workflowModule' },
+  
   {
     path: 'employee-master',
     loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
   },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
+  
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 ];

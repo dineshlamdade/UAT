@@ -7,7 +7,9 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts"
+    "src/polyfills.ts",
+   // "/src/app/modules/company-setting/company-setting.module.ts"
+
   ],
   "include": [
     "src/**/*.d.ts",
