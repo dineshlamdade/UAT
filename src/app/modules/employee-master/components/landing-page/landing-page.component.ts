@@ -70,8 +70,11 @@ export class LandingPageComponent implements OnInit {
       }
     })
     this.employeeItem = employeeObject[0];
-    if(this.employeeItem.isActive == 1){
+    if(this.employeeItem.isActive == 0){
       this.validRejoinee = true;
+    }
+    if(this.employeeItem.isActive == 1){
+      this.validRejoinee = false;
     }
   }
 }

@@ -20,21 +20,20 @@
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="joining"
-                                    [checked]="tabIndex==0" />
+                                    [checked]="tabIndex==0" disabled="selectionEmploymentBoolean"/>
                                 <label class="nav" for="joining" (click)="hideSummaryGrid = true"
                                     [routerLink]="['/employee-master/employment-information/joining-information']"
-                                    (click)="hiddenSummary = false"
-                                   >
+                                    (click)="hiddenSummary = false" [disabled]="selectionEmploymentBoolean">
                                     <span>
                                         Joining
                                     </span>
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="rejoining"
-                                    [checked]="tabIndex==1" />
+                                    [checked]="tabIndex==1" disabled="!selectionEmploymentBoolean"/>
                                 <label class="nav" for="rejoining" (click)="hideSummaryGrid = true"
                                     [routerLink]="['/employee-master/employment-information/re-joining-information']"
-                                    (click)="hiddenSummary = false">
+                                    (click)="hiddenSummary = false" [disabled]="!selectionEmploymentBoolean">
                                     <span>
                                         Re - Joining
                                     </span>
@@ -44,7 +43,7 @@
                                     [checked]="tabIndex==1" />
                                 <label class="nav" for="transfer" (click)="hideSummaryGrid = true"
                                     [routerLink]="['/employee-master/employment-information/transfer-information']"
-                                    (click)="hiddenSummary = false">
+                                    (click)="hiddenSummary = false" [disabled]="!employementJoiningInfoId">
                                     <span>
                                         Transfer
                                     </span>
@@ -53,8 +52,7 @@
                                 <input name="nav" type="radio" class="about-radio" id="exit" [checked]="tabIndex==2" />
                                 <label class="nav" for="exit" (click)="hideSummaryGrid = true"
                                     [routerLink]="['/employee-master/employment-information/exit-information']"
-                                    
-                                    (click)="hiddenSummary = false">
+                                    (click)="hiddenSummary = false" [disabled]="!employementJoiningInfoId">
                                     <span>
                                         Exit
                                     </span>

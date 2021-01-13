@@ -73,8 +73,8 @@ export class PersonalInformationComponent implements OnInit {
   selectionEmploymentBoolean: any;
   public today = new Date();
   changesLabelArray: Array<any> = [];
-  rejoinee: boolean;
-  sameCode: boolean;
+  rejoinee: boolean = false;
+  sameCode: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
@@ -144,69 +144,70 @@ export class PersonalInformationComponent implements OnInit {
       })
     })
 
-    this.SharedInformationService.getGlobalLabels().subscribe(res => {
+    // this.SharedInformationService.getGlobalLabels().subscribe(res => {
 
-      this.changesLabelArray = res.data.results.filter(item => {
-        // Change Label's name as per Company setting
-        if (item.isDisplay == true && item.defaultLabelName == 'Title') {
-          this.PersonalInfoLabels.title = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
-          this.PersonalInfoLabels.firstName = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'Date of Birth') {
-          this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'Middle Name') {
-          this.PersonalInfoLabels.middleName = item.customLabelName;
-        }
-        if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
-          this.PersonalInfoLabels.lastName = item.customLabelName;
-        }
+    //   this.changesLabelArray = res.data.results.filter(item => {
+    //     // Change Label's name as per Company setting
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Title') {
+    //       this.PersonalInfoLabels.title = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
+    //       this.PersonalInfoLabels.firstName = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Date of Birth') {
+    //       this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Middle Name') {
+    //       this.PersonalInfoLabels.middleName = item.customLabelName;
+    //     }
+    //     if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
+    //       this.PersonalInfoLabels.lastName = item.customLabelName;
+    //     }
 
 
-        // Hide Labels As per Company setting
-        if (item.isDisplay == false && item.defaultLabelName == 'Title') {
-          this.PersonalInfoLabels.title = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
-          this.PersonalInfoLabels.gender = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Date of Birth') {
-          this.PersonalInfoLabels.dateOfBirth = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Middle Name') {
-          this.PersonalInfoLabels.middleName = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'First Name') {
-          this.PersonalInfoLabels.firstName = '';
-        }
-        if (item.isDisplay == false && item.defaultLabelName == 'Last Name') {
-          this.PersonalInfoLabels.lastName = '';
-        }
-      })
-    })
+    //     // Hide Labels As per Company setting
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Title') {
+    //       this.PersonalInfoLabels.title = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
+    //       this.PersonalInfoLabels.gender = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Date of Birth') {
+    //       this.PersonalInfoLabels.dateOfBirth = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Middle Name') {
+    //       this.PersonalInfoLabels.middleName = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'First Name') {
+    //       this.PersonalInfoLabels.firstName = '';
+    //     }
+    //     if (item.isDisplay == false && item.defaultLabelName == 'Last Name') {
+    //       this.PersonalInfoLabels.lastName = '';
+    //     }
+    //   })
+    // })
 
-    this.SharedInformationService.getAdditionalFields().subscribe(res => {
+    // this.SharedInformationService.getAdditionalFields().subscribe(res => {
 
-      res.data.results.filter(item => {
-        if (item.fieldName == 'PersonalAdditional1') {
-          this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
-        }
-        if (item.fieldName == 'PersonalAdditional2') {
-          this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
-        }
-      })
-    })
+    //   res.data.results.filter(item => {
+    //     if (item.fieldName == 'PersonalAdditional1') {
+    //       this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
+    //     }
+    //     if (item.fieldName == 'PersonalAdditional2') {
+    //       this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
+    //     }
+    //   })
+    // })
 
     this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(res => {
       debugger
       this.rejoinee = res.rejoinee;
       this.sameCode = res.sameCode;
-    
+
       if (this.rejoinee == false) {
         localStorage.clear();
         this.resetForm();
+        this.employeeMasterId = null;
       }
 
       if (this.rejoinee == true) {
@@ -215,12 +216,15 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeMasterId', res.employeeMasterId);
         this.employeeMasterId = res.employeeMasterId
         this.getEmployeeData();
-        this.personalInformationModel.employeeMasterRequestDTO.rejoinee = this.rejoinee;
-        this.personalInformationModel.employeeMasterRequestDTO.sameCode = this.sameCode;
-        if (this.sameCode == false) {
-          const sameCode = this.BasicInfoForm.get('employeeCode');
-          sameCode.enable();
-        }
+
+        // setTimeout(() => {
+          if (this.sameCode == false) {
+            const employeeCode = this.BasicInfoForm.get('employeeCode');
+            employeeCode.enable();
+            this.BasicInfoForm.get('employeeCode').setValue(null);
+            this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
+          }
+        // }, 300)
 
         if (this.sameCode == true) {
           const sameCode = this.BasicInfoForm.get('employeeCode');
@@ -237,7 +241,14 @@ export class PersonalInformationComponent implements OnInit {
 
   // Personal Info Form Submit Function
   personalInfoSubmit(personalInformationModel) {
-
+    debugger
+    if (this.rejoinee == true) {
+      personalInformationModel.employeeMasterRequestDTO.rejoinee = this.rejoinee;
+      personalInformationModel.employeeMasterRequestDTO.sameCode = this.sameCode;
+    } else {
+      personalInformationModel.employeeMasterRequestDTO.rejoinee = false;
+      personalInformationModel.employeeMasterRequestDTO.sameCode = false;
+    }
     personalInformationModel.employeeMasterRequestDTO.dateOfBirth =
       this.datepipe.transform(personalInformationModel.employeeMasterRequestDTO.dateOfBirth, "dd-MMM-yyyy");
 
@@ -288,7 +299,7 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
         this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        if( this.personalInformationModel.employeeMasterRequestDTO.rejoinee == true){
+        if (this.personalInformationModel.employeeMasterRequestDTO.rejoinee == true) {
           this.router.navigate(['/employee-master/employment-information/re-joining-information']);
         }
         this.BasicInfoForm.markAsUntouched();
@@ -334,6 +345,12 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel = res.data.results[0];
     this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
 
+    if (this.rejoinee==true && this.sameCode == false) {
+      const employeeCode = this.BasicInfoForm.get('employeeCode');
+      employeeCode.enable();
+      this.BasicInfoForm.get('employeeCode').setValue(null);
+      this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
+    }
     this.EventEmitterService.getBirthDateToEmploymentForm(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
     if (res.data.results[0].imageResponseDTO) {
       this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;

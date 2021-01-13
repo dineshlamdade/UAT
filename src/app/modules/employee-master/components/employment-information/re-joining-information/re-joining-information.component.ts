@@ -7,6 +7,8 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 import { Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { JoiningInformationComponent } from '../joining-information/joining-information.component';
+import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 
@@ -20,11 +22,12 @@ export class ReJoiningInformationComponent implements OnInit {
   ReJoiningForm: FormGroup;
   probationDaysMonths: any;
   noticeDaysMonths: any;
-  ReJoiningInformationModel = new ReJoiningInformationModel('','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  ReJoiningInformationModel = new ReJoiningInformationModel('','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   monthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   employeeMasterId: number;
  // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
   RejoiningInformationInitiateSubscription: Subscription;
+  RejoiningDataSubscription: Subscription;
   employementInfoId: any;
   probationMonthsDays: any = 'false';
   noticeMonthsDays: any =  'true';
@@ -39,33 +42,36 @@ export class ReJoiningInformationComponent implements OnInit {
   @Input() birthDate: any;
   confirmMsg: any;
   info: any;
-  projectedRetirementDate: any;
+  // projectedRetirementDate: any;
   tomorrow = new Date();
   companyListForJoining: Array<any> = [];
+  viewReJoining: boolean = false;
+  public today = new Date();
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
     public datepipe: DatePipe, private EventEmitterService: EventEmitterService,
-    private matDialog: MatDialog,
+    private matDialog: MatDialog, private router: Router,
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData: any,
-    public dialog: MatDialog,) {
+    public dialog: MatDialog,
+    private CommonDataService: SharedInformationService) {
       this.tomorrow.setDate(this.tomorrow.getDate());
 
-      if(dialogData){
-        this.confirmMsg = dialogData.pageValue;
-        this.info = dialogData.info;
-        this.projectedRetirementDate = dialogData.projectedRetirementDate;
-        this.employementInfoId = dialogData.employementReJoiningInfoId;
-      }
+      // if(dialogData){
+      //   this.confirmMsg = dialogData.pageValue;
+      //   this.info = dialogData.info;
+      //   // this.projectedRetirementDate = dialogData.projectedRetirementDate;
+      //   this.employementInfoId = dialogData.employementReJoiningInfoId;
+      // }
      }
 
   ngOnInit(): void {
     
-    if(!this.confirmMsg){
-      let dateOfBirth = new Date(this.birthDate);
-      this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-      this.ReJoiningInformationModel.rejoiningDate = '';
-    }
+    // if(!this.confirmMsg){
+    //   let dateOfBirth = new Date(this.birthDate);
+    //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
+    //   this.ReJoiningInformationModel.rejoiningDate = '';
+    // }
     this.ReJoiningForm = this.formBuilder.group({
       rejoiningDate: ['', Validators.required],
       originalHireDate: [''],
@@ -102,48 +108,54 @@ export class ReJoiningInformationComponent implements OnInit {
       
     })
     
+    this.RejoiningDataSubscription = this.EventEmitterService.setReJoiningData().subscribe(res => {
+      debugger
+      if (res) {
+        this.getReJoiningFormInformation();
+        if(res.viewReJoining == true){
+          this.viewReJoining = res.viewReJoining;
+          const temp1 = this.ReJoiningForm.get('rejoiningDate');
+          temp1.disable();
+          const temp2 = this.ReJoiningForm.get('originalHireDate');
+          temp2.disable();
+          const temp3 = this.ReJoiningForm.get('joiningDateForGratuity');
+          temp3.disable();
+          const temp4 = this.ReJoiningForm.get('companyName');
+          temp4.disable();
+          const temp5 = this.ReJoiningForm.get('probationPeriodMonth');
+          temp5.disable();
+          const temp6 = this.ReJoiningForm.get('probationPeriodDays');
+          temp6.disable();
+          const temp7 = this.ReJoiningForm.get('noticePeriodMonth');
+          temp7.disable();
+          const temp8 = this.ReJoiningForm.get('noticePeriodDays');
+          temp8.disable();
+          const temp9 = this.ReJoiningForm.get('expectedConfirmationDate');
+          temp9.disable();
+          const temp10 = this.ReJoiningForm.get('expectedRemark');
+          temp10.disable();
+          const temp11 = this.ReJoiningForm.get('confirmationDate');
+          temp11.disable();
+          const temp12 = this.ReJoiningForm.get('confirmationRemark');
+          temp12.disable();
+          // const temp13 = this.ReJoiningForm.get('projectedRetirementDate');
+          // temp13.disable();
+          const temp14 = this.ReJoiningForm.get('probationPeriod');
+          temp14.disable();
+          const temp15 = this.ReJoiningForm.get('noticePeriod');
+          temp15.disable();
+          const temp16 = this.ReJoiningForm.get('ContinuationService');
+          temp16.disable();
+        }
+      }
+    })
     //checking demo
-    this.getReJoiningFormInformation();
-    if(this.confirmMsg){
-    this.getReJoiningFormInformation();
-    }
-    if(this.confirmMsg == 'viewReJoining'){
-      const temp1 = this.ReJoiningForm.get('rejoiningDate');
-      temp1.disable();
-      const temp2 = this.ReJoiningForm.get('originalHireDate');
-      temp2.disable();
-      const temp3 = this.ReJoiningForm.get('joiningDateForGratuity');
-      temp3.disable();
-      const temp4 = this.ReJoiningForm.get('companyName');
-      temp4.disable();
-      const temp5 = this.ReJoiningForm.get('probationPeriodMonth');
-      temp5.disable();
-      const temp6 = this.ReJoiningForm.get('probationPeriodDays');
-      temp6.disable();
-      const temp7 = this.ReJoiningForm.get('noticePeriodMonth');
-      temp7.disable();
-      const temp8 = this.ReJoiningForm.get('noticePeriodDays');
-      temp8.disable();
-      const temp9 = this.ReJoiningForm.get('expectedConfirmationDate');
-      temp9.disable();
-      const temp10 = this.ReJoiningForm.get('expectedRemark');
-      temp10.disable();
-      const temp11 = this.ReJoiningForm.get('confirmationDate');
-      temp11.disable();
-      const temp12 = this.ReJoiningForm.get('confirmationRemark');
-      temp12.disable();
-      const temp13 = this.ReJoiningForm.get('projectedRetirementDate');
-      temp13.disable();
-      const temp14 = this.ReJoiningForm.get('probationPeriod');
-      temp14.disable();
-      const temp15 = this.ReJoiningForm.get('noticePeriod');
-      temp15.disable();
-      const temp16 = this.ReJoiningForm.get('ContinuationService');
-      temp16.disable();
-    }
+    // this.getReJoiningFormInformation();
+  
   }
 
   RejoiningFormSubmit(ReJoiningInformationModel) {
+    debugger
     let Rejoining: any;
     Rejoining = this.ReJoiningInformationModel;
     ReJoiningInformationModel.employeeMasterId = this.employeeMasterId;
@@ -175,7 +187,7 @@ export class ReJoiningInformationComponent implements OnInit {
     ReJoiningInformationModel.joiningDateForGratuity = this.datepipe.transform(ReJoiningInformationModel.joiningDateForGratuity, "dd-MMM-yyyy");
     ReJoiningInformationModel.expectedConfirmationDate = this.datepipe.transform(ReJoiningInformationModel.expectedConfirmationDate, "dd-MMM-yyyy");
     ReJoiningInformationModel.confirmationDate = this.datepipe.transform(ReJoiningInformationModel.confirmationDate, "dd-MMM-yyyy");  
-    ReJoiningInformationModel.projectedRetirementDate = this.datepipe.transform(ReJoiningInformationModel.projectedRetirementDate, "dd-MMM-yyyy");
+    // ReJoiningInformationModel.projectedRetirementDate = this.datepipe.transform(ReJoiningInformationModel.projectedRetirementDate, "dd-MMM-yyyy");
 
     
     if (this.employementInfoId && this.employementInfoId > 1) {
@@ -186,9 +198,13 @@ export class ReJoiningInformationComponent implements OnInit {
         this.ReJoiningInformationModel = res.data.results[0];
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId);
         this.EventEmitterService.getcloseCurrentForm();
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         if(this.confirmMsg){
           this.onNoClick();
         }
+        this.router.navigate(['/employee-master/employment-information/employment-summary']);
+      }, (error: any) => {
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
     } else {
       this.EmploymentInformationService.postReJoiningInformation(ReJoiningInformationModel).subscribe(res => {
@@ -198,18 +214,24 @@ export class ReJoiningInformationComponent implements OnInit {
         this.employementInfoId = this.ReJoiningInformationModel.employementInfoId;
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId);
         this.EventEmitterService.getcloseCurrentForm();
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         if(this.confirmMsg){
           this.onNoClick();
         }
+        this.router.navigate(['/employee-master/employment-information/employment-summary']);
+      }, (error: any) => {
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
     }
   }
 
   getReJoiningFormInformation() {
     //for testing
-    this.employementInfoId=4;
+    // this.employementInfoId=4;
+    const employementInfoId = localStorage.getItem('RejoiningEmployementInfoId')
+    this.employementInfoId = Number(employementInfoId);
     this.EmploymentInformationService.getReJoiningInformation(this.employementInfoId).subscribe(res => {
-      
+      debugger
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
         debugger
@@ -242,13 +264,13 @@ export class ReJoiningInformationComponent implements OnInit {
         
       }
       
-      if(!this.ReJoiningInformationModel.projectedRetirementDate){
-        let dateOfBirth = new Date(this.birthDate);
-        this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-      }
-      if(this.confirmMsg){
-        this.ReJoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
-      }
+      // if(!this.ReJoiningInformationModel.projectedRetirementDate){
+      //   let dateOfBirth = new Date(this.birthDate);
+      //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
+      // }
+      // if(this.confirmMsg){
+      //   this.ReJoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
+      // }
     })
     this.ReJoiningForm.markAsUntouched();
   }
@@ -351,10 +373,10 @@ export class ReJoiningInformationComponent implements OnInit {
   }
 
   disableExpectedConfirmationDate(){
-    if(this.ReJoiningInformationModel.confirmationDate){
-      const projectedRetirementDate = this.ReJoiningForm.get('expectedConfirmationDate')
-      projectedRetirementDate.disable();
-    }
+    // if(this.ReJoiningInformationModel.confirmationDate){
+    //   const projectedRetirementDate = this.ReJoiningForm.get('expectedConfirmationDate')
+    //   projectedRetirementDate.disable();
+    // }
   }
   onNoClick(): void {
     this.matDialog.closeAll();

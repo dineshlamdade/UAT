@@ -36,7 +36,10 @@ export class EventEmitterService {
   private NextJobTab = new Subject<any>();
   private NextToAssignment = new Subject<any>();
   private AddjoineeSubject = new Subject<any>();
-
+  private JoiningDataSubject = new Subject<any>();
+  private ReJoiningDataSubject = new Subject<any>();
+  private TransferToDataSubject = new Subject<any>();
+  private ExitDataSubject = new Subject<any>();
 
 
   constructor() { }
@@ -256,5 +259,33 @@ export class EventEmitterService {
   }
   setAddjoinee() {
     return this.AddjoineeSubject.asObservable();
+  }
+
+  getJoiningData(joinee){
+    this.JoiningDataSubject.next(joinee);
+  }
+  setJoiningData() {
+    return this.JoiningDataSubject.asObservable();
+  }
+
+  getReJoiningData(rejoinee){
+    this.ReJoiningDataSubject.next(rejoinee);
+  }
+  setReJoiningData() {
+    return this.ReJoiningDataSubject.asObservable();
+  }
+
+  getTransferToData(TransferTo){
+    this.TransferToDataSubject.next(TransferTo);
+  }
+  setTransferToData() {
+    return this.TransferToDataSubject.asObservable();
+  }
+
+  getExitData(ExitData){
+    this.ExitDataSubject.next(ExitData);
+  }
+  setExitData() {
+    return this.ExitDataSubject.asObservable();
   }
 }

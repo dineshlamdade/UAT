@@ -1,11 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
+import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
+
+
 
 @Component({
   selector: 'app-employment-summary',
   templateUrl: './employment-summary.component.html',
-  styleUrls: ['./employment-summary.component.scss']
+  styleUrls: ['./employment-summary.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EmploymentSummaryComponent implements OnInit {
   employeeMasterId: any;
@@ -17,14 +21,21 @@ export class EmploymentSummaryComponent implements OnInit {
   employementReJoiningInfoId: any;
 
   employeeTransferId: any;
- employeeExitInfoId:any; 
+  employeeExitInfoId: any;
 
   ReJoiningTabBoolean: boolean = false;
   JoiningTabBoolean: boolean = true;
 
-  constructor(private EmploymentInformationService: EmploymentInformationService, private router: Router,) { }
+  constructor(private EmploymentInformationService: EmploymentInformationService, private router: Router,
+    private EventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
+    const empId = localStorage.getItem('employeeMasterId')
+    this.employeeMasterId = Number(empId);
+
+    this.getSummaryEmploymentInfo();
+    this.TransactionHistorySummary();
+    
     let employementJoiningInfoId = Number(localStorage.getItem('employementJoiningInfoId'));
     this.employementJoiningInfoId = employementJoiningInfoId;
     if (employementJoiningInfoId > 0) {
@@ -37,50 +48,49 @@ export class EmploymentSummaryComponent implements OnInit {
     let employementReJoiningInfoId = Number(localStorage.getItem('RejoiningEmployementInfoId'));
     if (employementReJoiningInfoId > 0) {
       this.employementReJoiningInfoId = true;
-    } else{
+    } else {
       this.employementReJoiningInfoId = false;
     }
 
-    const empId = localStorage.getItem('employeeMasterId')
-      this.employeeMasterId = Number(empId);
-      
-      this.getSummaryEmploymentInfo();
-      this.TransactionHistorySummary();
+
   }
   getSummaryEmploymentInfo() {
-    
+
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
       debugger
-      res.data.results.forEach(element => {
-        let obj = {
+      this.EmploymentInformationSumarry = res.data.results;
+      console.log(this.EmploymentInformationSumarry);
       
-          // 'Employement Info Id': res.data.results[0].employementInfoId,
-          // 'EmployeeMaster Id': res.data.results[0].employeeMasterId,
-          'CompanyName': element.companyName,
-          'joiningDate': element.joiningDate,
-          'rejoinee': element.rejoinee,
-          'originalHireDate': element.originalHireDate,
-          'employmentAge': element.employmentAge,
-         
-          'serviceAge': element.serviceAge,
-          'serviceAgeShort': element.serviceAgeShort,
-          'gratuityPeriod': element.gratuityPeriod,
-          'originalDOJService':element.originalDOJService,
-          'originalDOJServiceShort':element.originalDOJServiceShort,
-          'gratuityPeriodShort': element.gratuityPeriodShort,
-          'remainingMonthOrDays': element.remainingMonthOrDays,
-          'remainingMonthOrDaysShort': element.remainingMonthOrDaysShort,
-  
-          'Confirmation Date': element.confirmationDate,
-          'lastWorkingDate': element.lastWorkingDate,
-          'employeeStatus': element.employeeStatus,
-          // 'EmployeeExit Info Id': res.data.results[0].employeeExitInfoId,
-         
-        }
-        this.EmploymentInformationSumarry.push(obj);
-      });
+      // res.data.results.forEach(element => {
+      //   let obj = {
+
+      //     // 'Employement Info Id': res.data.results[0].employementInfoId,
+      //     // 'EmployeeMaster Id': res.data.results[0].employeeMasterId,
+      //     'CompanyName': element.companyName,
+      //     'joiningDate': element.joiningDate,
+      //     'rejoinee': element.rejoinee,
+      //     'originalHireDate': element.originalHireDate,
+      //     'employmentAge': element.employmentAge,
+
+      //     'serviceAge': element.serviceAge,
+      //     'serviceAgeShort': element.serviceAgeShort,
+      //     'gratuityPeriod': element.gratuityPeriod,
+      //     'originalDOJService': element.originalDOJService,
+      //     'originalDOJServiceShort': element.originalDOJServiceShort,
+      //     'gratuityPeriodShort': element.gratuityPeriodShort,
+      //     'remainingMonthOrDays': element.remainingMonthOrDays,
+      //     'remainingMonthOrDaysShort': element.remainingMonthOrDaysShort,
+
+      //     'Confirmation Date': element.confirmationDate,
+      //     'lastWorkingDate': element.lastWorkingDate,
+      //     'employeeStatus': element.employeeStatus,
+      //     // 'EmployeeExit Info Id': res.data.results[0].employeeExitInfoId,
+
+      //   }
+      //   this.EmploymentInformationSumarry.push(obj);
+      // });
       // let obj = {
-      
+
       //   // 'Employement Info Id': res.data.results[0].employementInfoId,
       //   // 'EmployeeMaster Id': res.data.results[0].employeeMasterId,
       //   'CompanyName': res.data.results[0].companyName,
@@ -88,7 +98,7 @@ export class EmploymentSummaryComponent implements OnInit {
       //   'rejoinee': res.data.results[0].rejoinee,
       //   'originalHireDate': res.data.results[0].originalHireDate,
       //   'employmentAge': res.data.results[0].employmentAge,
-       
+
       //   'serviceAge': res.data.results[0].serviceAge,
       //   'serviceAgeShort': res.data.results[0].serviceAgeShort,
       //   'gratuityPeriod': res.data.results[0].gratuityPeriod,
@@ -100,7 +110,7 @@ export class EmploymentSummaryComponent implements OnInit {
       //   'lastWorkingDate': res.data.results[0].lastWorkingDate,
       //   'employeeStatus': res.data.results[0].employeeStatus,
       //   // 'EmployeeExit Info Id': res.data.results[0].employeeExitInfoId,
-       
+
       // }
       // this.EmploymentInformationSumarry.push(obj);
 
@@ -116,7 +126,7 @@ export class EmploymentSummaryComponent implements OnInit {
 
   TransactionHistorySummary() {
     this.EmploymentInformationService.getTransactionHistory(this.employeeMasterId).subscribe(res => {
-      
+
       this.TransactionHistory = res.data.results[0].employmentInfoHistoryBean;
 
       let joining = this.TransactionHistory.filter(data => {
@@ -124,7 +134,7 @@ export class EmploymentSummaryComponent implements OnInit {
           return data;
         }
       })
-      
+
       let Rejoining = this.TransactionHistory.filter(data => {
         if (data.transaction == 'Re-Joining') {
           return data;
@@ -194,67 +204,87 @@ export class EmploymentSummaryComponent implements OnInit {
 
   //edit transaction history- navigate to respective page
   EditPopup(element) {
-    
+
     debugger
     if (element.transaction == 'Re-Joining') {
-   
+
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getReJoiningData(element);
+      }, 500)
     }
     if (element.transaction == 'Joining') {
-     
+
       this.router.navigate(['/employee-master/employment-information/joining-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getJoiningData(element);
+      }, 500)
     }
     if (element.transaction == 'Transfer') {
-      const transferId=element.transferId;
-      this.EmploymentInformationService.sendId(transferId);
+
       this.router.navigate(['/employee-master/employment-information/transfer-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getTransferToData(element);
+      }, 500)
     }
     if (element.transaction == 'Exit') {
-      
-     const exitId=element.exitId;
-      this.EmploymentInformationService.sendId(exitId);
+
       this.router.navigate(['/employee-master/employment-information/exit-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getExitData(element);
+      }, 500)
     }
     if (element.transaction == 'Rejoining Confirmaton' && element.rejoiningConfirmationId > 0) {
-      
+
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
     }
     if (element.transaction == 'Confirmaton' && element.joiningConfirmationId > 0) {
-  
+
       this.router.navigate(['/employee-master/employment-information/joining-information']);
     }
   }
 
   //edit transaction history- navigate to respective page
   viewPopup(element) {
-    
+
     debugger
     if (element.transaction == 'Re-Joining') {
-   
+      element.viewReJoining = true;
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
+
+      setTimeout(() => {
+        this.EventEmitterService.getReJoiningData(element);
+      }, 500)
     }
     if (element.transaction == 'Joining') {
-      
-      this.EmploymentInformationService.setViewFlag(true);
+      element.viewJoining = true;
+      // this.EmploymentInformationService.setViewFlag(true);
       this.router.navigate(['/employee-master/employment-information/joining-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getJoiningData(element);
+      }, 500)
     }
     if (element.transaction == 'Transfer') {
-      const transferId=element.transferId;
-      this.EmploymentInformationService.sendId(transferId);
+      element.viewTransfer = true;
       this.router.navigate(['/employee-master/employment-information/transfer-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getTransferToData(element);
+      }, 500)
     }
     if (element.transaction == 'Exit') {
-      
-     const exitId=element.exitId;
-      this.EmploymentInformationService.sendId(exitId);
+
+      element.viewExit = true;
       this.router.navigate(['/employee-master/employment-information/exit-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getExitData(element);
+      }, 500)
     }
     if (element.transaction == 'Rejoining Confirmaton' && element.rejoiningConfirmationId > 0) {
-      
+
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
     }
     if (element.transaction == 'Confirmaton' && element.joiningConfirmationId > 0) {
-  
+
       this.router.navigate(['/employee-master/employment-information/joining-information']);
     }
   }

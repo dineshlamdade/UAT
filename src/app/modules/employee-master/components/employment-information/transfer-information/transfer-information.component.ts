@@ -5,6 +5,8 @@ import { TransferToModel } from './../../../dto-models/employment-forms-models/t
 import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service'
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 
 
 @Component({
@@ -19,21 +21,20 @@ export class TransferInformationComponent implements OnInit {
   selectTransferTo: any;
   employeeMasterId: number;
   setSubmitTransferExitFormSubscription: Subscription;
+  transferToSubscription: Subscription;
   employeeTransferId: number;
   temp: any[];
-  JoiningRejoiningDate: any;
- // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
- companyListForJoining: Array<any> = [];
-
+  JoiningDate: any;
+  // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
+  companyListForJoining: Array<any> = [];
+  viewTransfer: boolean = false;
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
-    private EventEmitterService: EventEmitterService) { }
+    private EventEmitterService: EventEmitterService,
+    private router: Router, private CommonDataService: SharedInformationService) { }
 
   ngOnInit(): void {
-
-
-
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
@@ -42,31 +43,48 @@ export class TransferInformationComponent implements OnInit {
       transferTo: [''],
       effectiveDate: [''],
       transferRemark: [''],
-    });
-
+    }); debugger
+    const JoiningDate = localStorage.getItem('joiningDate');
+    this.JoiningDate = new Date(JoiningDate)
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
       debugger
-      let list=res.data.results;
+      let list = res.data.results;
       list.forEach(element => {
         debugger
         this.companyListForJoining.push(element.companyName);
       });
-      
+
     })
-    this.EmploymentInformationService.getNumber().subscribe(number =>{
-      
-      this.employeeTransferId=number.text;
-      console.log('employeeTransferId::', this.employeeTransferId);
+    this.EmploymentInformationService.getNumber().subscribe(number => {
+
+      this.employeeTransferId = number.text;
       this.getTranferToData(this.employeeTransferId);
     })
-   
+
+    this.transferToSubscription = this.EventEmitterService.setTransferToData().subscribe(res => {
+      debugger
+      if (res) {
+        this.employeeTransferId = res.transferId
+        this.viewTransfer = res.viewTransfer;
+        this.getTranferToData(this.employeeTransferId);
+
+        if(this.viewTransfer == true){
+          const transferTo = this.TransferForm.get('transferTo');
+          transferTo.disable();
+          const effectiveDate = this.TransferForm.get('effectiveDate');
+          effectiveDate.disable();
+          const transferRemark = this.TransferForm.get('transferRemark');
+          transferRemark.disable();
+        }
+      }
+    })
   }
 
 
 
   transferToFormSubmit(TransferToInformation) {
-
+    debugger
     TransferToInformation.employeeMasterId = this.employeeMasterId
     TransferToInformation.effectiveDate = this.datepipe.transform(TransferToInformation.effectiveDate, "dd-MMM-yyyy");
     TransferToInformation.companyId = 1;
@@ -84,12 +102,20 @@ export class TransferInformationComponent implements OnInit {
     //     this.dialog.closeAll();
     //   })
     // } else {
-    this.EmploymentInformationService.postTransferToForm(TransferToInformation).subscribe(res => {
-      // this.TransferToInformation = res.data.results[0];
-      // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
+    if (this.employeeTransferId) {
+      this.putTransferFormSubmit(TransferToInformation);
+    } else {
+      this.EmploymentInformationService.postTransferToForm(TransferToInformation).subscribe(res => {
+        // this.TransferToInformation = res.data.results[0];
+        // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.TransferForm.reset();
+        this.router.navigate(['/employee-master/employment-information/employment-summary']);
+      }, (error: any) => {
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+      })
+    }
 
-      this.TransferForm.reset();
-    })
     // }
   }
   putTransferFormSubmit(TransferToInformation) {
@@ -102,7 +128,11 @@ export class TransferInformationComponent implements OnInit {
       // this.TransferToInformation = res.data.results[0];
       // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
 
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.TransferForm.reset();
+      this.router.navigate(['/employee-master/employment-information/employment-summary']);
+    }, (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
     // } 
     // else {
@@ -124,9 +154,9 @@ export class TransferInformationComponent implements OnInit {
 
   getTranferToData(employeeTransferId) {
     if ('') {
-      this.JoiningRejoiningDate = localStorage.getItem('joiningDate');
+      this.JoiningDate = localStorage.getItem('joiningDate');
     } else {
-      this.JoiningRejoiningDate = localStorage.getItem('rejoiningDate');
+      this.JoiningDate = localStorage.getItem('rejoiningDate');
     }
     //get transfer info service 1
     this.EmploymentInformationService.getTransferToInformation(employeeTransferId).subscribe(res => {
