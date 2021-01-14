@@ -4,7 +4,6 @@ import {  FormArray, AbstractControl } from '@angular/forms';
 import { DatePipe,DOCUMENT } from '@angular/common';
 import { MyInvestmentsService } from '../../my-Investments/my-Investments.service';
 import { payroll } from './payroll.service';
-
 import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import {FileService} from '../../my-Investments/file.service';
@@ -99,7 +98,7 @@ export class payrollComponent implements OnInit {
   @ViewChild('template2') template2: TemplateRef<any>;
   @ViewChild('multiSelect') multiSelect;
   FrequencyList:Array<any> = [];
-  BusinessYear: Array<any> = []; 
+  BusinessYear: Array<any> = [];
   ServicesList: Array<any> = [];
   //ServicesList: serviceDetails[];
   CycleDefinitionList: Array<any> = [];
@@ -136,7 +135,7 @@ export class payrollComponent implements OnInit {
   flag:boolean;
   name:string;
   business:string;
-  Frequency:string; 
+  Frequency:string;
   fromDate:string;
   toDate:string;
   editformDate:string;
@@ -145,7 +144,7 @@ export class payrollComponent implements OnInit {
   BusinessYearformorecycle:number;
   Previewname:string;
   Previewbusiness:string;
-  PreviewFrequency:string; 
+  PreviewFrequency:string;
   PreviewfromDate:string;
   PreviewtoDate:string;
   businessCycleDefinitionId:number;
@@ -188,7 +187,7 @@ export class payrollComponent implements OnInit {
         });
 
 this.ServicesList=[];
-        
+
         this.CycleDefinationForm = this.formBuilder.group({
             id: new FormControl(null, ),
             name:['',[Validators.required, Validators.maxLength(10)]],//['', [Validators.required, Validators.maxLength(10)]],
@@ -219,7 +218,7 @@ this.ServicesList=[];
         businessYear: new FormControl('', Validators.required),
     });
 
- 
+
         // this.form = this.formBuilder.group({
         //     institutionName: new FormControl(null, Validators.required),
         //     policyNo: new FormControl(null, Validators.required),
@@ -285,7 +284,7 @@ this.ServicesList=[];
             {label: '2030', value: '2030'},
 
         ];
-    
+
 
         this.frequencyOfPayment = [
             {label: 'Weekly', value: 'Monthly'},
@@ -294,7 +293,7 @@ this.ServicesList=[];
             {label: 'Daily', value: 'Quarterly'},
             {label: 'Semi Monthly', value: 'Semi'},
             {label: 'Monthly', value: 'yearly'},
-            {label: 'Adhoc', value: 'AD'}           
+            {label: 'Adhoc', value: 'AD'}
 
       ];
 
@@ -336,12 +335,12 @@ scrollToTop() {
       this.getAllBusinessyear();
       this.getAllCycleDefinition();
       this.getAllCycleCreation();
-      
+
      // getAllServices(): void {
         this.payrollService.getAllServicesName().subscribe(res => {
             debugger
             this.dropdownList = res.data.results;
-          });  
+          });
       //}
 
     // this.dropdownList = [
@@ -353,9 +352,9 @@ scrollToTop() {
     //     { id: 2, label: 'Contacted' },
     //     { id: 3, label: 'Interviewed' },
     //     { id: 4, label: 'Hired' }
-    //   ];  
+    //   ];
     debugger;
-      // this.selectedItems = [     
+      // this.selectedItems = [
       // ];
       this.dropdownSettings = {
         singleSelection: false,
@@ -366,7 +365,7 @@ scrollToTop() {
         itemsShowLimit: 2,
         allowSearchFilter: true
       };
-    
+
 
     //   this.dropdownList = [
     //     { id: 1, label: 'New' },
@@ -374,7 +373,7 @@ scrollToTop() {
     //     { id: 3, label: 'Interviewed' },
     //     { id: 4, label: 'Hired' }
     //   ];
-    
+
     //   this.dropdownSettings = {
     //     singleSelection: false,
     //     idField: 'id',
@@ -383,7 +382,7 @@ scrollToTop() {
     //     unSelectAllText: 'UnSelect All',
     //     itemsShowLimit: 2,
     //     allowSearchFilter: true
-    //   };    
+    //   };
 
       this.enableAddRow = 0;
       this.enableCheckboxFlag = 1;
@@ -458,11 +457,11 @@ onStatusChange(event)
     this.CycleDefinationForm.controls['addDays'].setValidators([Validators.required]);
   }
   else{
-   // 
+   //
     //this.CycleDefinationForm.patchValue:[{' addDays': null, disabled: true }],
 //     const control = new FormControl('Nancy');
 
-    this.CycleDefinationForm.patchValue({addDays:null}); 
+    this.CycleDefinationForm.patchValue({addDays:null});
 
     this.CycleDefinationForm.get('addDays').clearValidators();
  this.CycleDefinationForm.get('addDays').updateValueAndValidity();
@@ -489,7 +488,7 @@ onItemSelect(item: any) {
   onItemDeSelect(item: any) {
     debugger
    // this.CycleDefinationForm.controls.serviceName.push(item.serviceName)
-  // this.ServicesList=[];  
+  // this.ServicesList=[];
    var index=this.ServicesList.indexOf(item.serviceName)
    if (index > -1) {
     this.ServicesList.splice(index,1)
@@ -499,7 +498,7 @@ onItemSelect(item: any) {
 
   onSelectAll(items: any) {
 debugger
-    // this.ServicesList.forEach(function(f){           
+    // this.ServicesList.forEach(function(f){
     //   addCycleDefinition.serviceName.push(f);
     // });
 
@@ -515,22 +514,22 @@ debugger
     debugger;
    this.minDate1=event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
    this.minDate=event.getTime() ;
-//    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) { 
-//       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });     
+//    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) {
+//       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });
 //     }
 
   }
 
   OntoDateChange(event): void {
     debugger
-    this.todisabletodate=false;    
+    this.todisabletodate=false;
   }
-  
+
   ResetBusiness():void{
     this.BusinessYearform.reset();
     this.updateFlag=false;
   }
-  
+
 
   resetCycledefinition():void{
     debugger;
@@ -542,7 +541,7 @@ debugger
 
   CancelBusiness():void{
     this.disabled=true;
-    this.CycleDefinationForm.reset(); 
+    this.CycleDefinationForm.reset();
     this.updateFlag=false;
     this.CycleupdateFlag=false;
     this.CycleupdateFlag1=false;
@@ -552,7 +551,7 @@ debugger
     this.payrollService.getFrequency().subscribe(res => {
         debugger
         this.FrequencyList = res.data.results;
-      });  
+      });
   }
 
   //get all Businessyear
@@ -560,14 +559,14 @@ debugger
     this.payrollService.getAllBusinessYear().subscribe(res => {
         debugger
         this.BusinessyearList = res.data.results;
-      });  
+      });
   }
   //get all cycle-definition
   getAllCycleDefinition(): void {
     this.payrollService.getAllCycleDefinition().subscribe(res => {
         debugger
         this.CycleDefinitionList = res.data.results;
-      });  
+      });
   }
 
    //get all cycle-Creation
@@ -575,33 +574,33 @@ debugger
     this.payrollService.getAllCycleCreation().subscribe(res => {
         debugger
         this.CycleCreationList = res.data.results;
-      });  
+      });
   }
 
     //add & update new BusinessYear
   addBusinessYear(): void{
       debugger
-        const addBusinessYear:saveBusinessYear=Object.assign({},this.BusinessYearform.value);   
+        const addBusinessYear:saveBusinessYear=Object.assign({},this.BusinessYearform.value);
         if( addBusinessYear.id==undefined || addBusinessYear.id==0)
         {
             addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
             addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
             this.payrollService.AddBusinessYear(addBusinessYear).subscribe((res:any )=> {
-            debugger       
-        
+            debugger
+
             this.sweetalertMasterSuccess("Success..!!", res.status.message);
             this.getAllBusinessyear();
             this.BusinessYearform.reset();
             },
              (error: any) => {
                 this.sweetalertError(error["error"]["status"]["message"]);
-              });           
-        }   
+              });
+        }
         else{
             debugger
           //Update BusinessYear service
           addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
-          addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");          
+          addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
           this.payrollService.UpdateBusinessYear(addBusinessYear.id,addBusinessYear).subscribe((res:any )=> {
           debugger
           this.sweetalertMasterSuccess("Updated..!!", res.status.message);
@@ -612,37 +611,37 @@ debugger
           (error: any) => {
              this.sweetalertError(error["error"]["status"]["message"]);
              // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
-           });                 
+           });
         }
   }
 
  //add new cycle-definition & update
   addCycleDefinition(): void{
     debugger
-      const addCycleDefinition:saveCycleDefinition=Object.assign({},this.CycleDefinationForm.value);   
+      const addCycleDefinition:saveCycleDefinition=Object.assign({},this.CycleDefinationForm.value);
       if( addCycleDefinition.id==undefined || addCycleDefinition.id==0)
-      {        
-        const employerContributionMethod = this.CycleDefinationForm.get('serviceName');    
+      {
+        const employerContributionMethod = this.CycleDefinationForm.get('serviceName');
          addCycleDefinition.serviceName=[];
-          this.ServicesList.forEach(function(f){           
+          this.ServicesList.forEach(function(f){
         addCycleDefinition.serviceName.push(f);
-      });    
+      });
           this.payrollService.AddCycleDefinition(addCycleDefinition).subscribe((res:any )=> {
-          debugger   
-      
-          this.sweetalertMasterSuccess("Success..!!", res.status.message);        
+          debugger
+
+          this.sweetalertMasterSuccess("Success..!!", res.status.message);
           this.getAllCycleDefinition();
             },
            (error: any) => {
-              this.sweetalertError(error["error"]["status"]["message"]);       
+              this.sweetalertError(error["error"]["status"]["message"]);
             });
-          this.ServicesList=[];    
-          this.CycleDefinationForm.reset();                          
-      }   
+          this.ServicesList=[];
+          this.CycleDefinationForm.reset();
+      }
       else{
           debugger
        this.serviceName=[];
-       this.serviceName.push(addCycleDefinition.services)    
+       this.serviceName.push(addCycleDefinition.services)
        addCycleDefinition.serviceName=this.serviceName;
         this.payrollService.UpdateCycleDefinition(addCycleDefinition.id,addCycleDefinition).subscribe((res:any )=> {
         debugger
@@ -653,8 +652,8 @@ debugger
         this.CycleupdateFlag1=false;
         },
         (error: any) => {
-           this.sweetalertError(error["error"]["status"]["message"]);      
-         });                 
+           this.sweetalertError(error["error"]["status"]["message"]);
+         });
       }
 }
 
@@ -664,14 +663,14 @@ addCycleCreation(): void{
     this.previewCycleList=[];
     const addCycleCreation:saveCycleCreation=Object.assign({},this.CycleCreationForm1.value);
     if( addCycleCreation.id==undefined || addCycleCreation.id==0)
-    {       
+    {
         this.payrollService.AddCycleCreation(addCycleCreation).subscribe((res:any )=> {
         debugger
        this.previewCycleList=res.data.results;
             this.businessCycleDefinitionId=res.data.results[0].businessCycleDefinition.id;
-            this.Previewname=res.data.results[0].businessCycleDefinition.name; 
+            this.Previewname=res.data.results[0].businessCycleDefinition.name;
             this.Previewbusiness=res.data.results[0].businessYear;
-            this.PreviewFrequency=res.data.results[0].businessCycleDefinition.frequency.name; 
+            this.PreviewFrequency=res.data.results[0].businessCycleDefinition.frequency.name;
             this.PreviewfromDate=res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
             this.PreviewtoDate=res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
             this.StausCode=res.status.code;
@@ -682,18 +681,18 @@ addCycleCreation(): void{
             {
               this.flag=false;
             }
-    
+
         this.getAllCycleCreation();
         this.CycleCreationForm1.reset();
         this.UploadModal2(this.template2);
         },
          (error: any) => {
             this.sweetalertError(error["error"]["status"]["message"]);
-          
-          });           
-    }   
+
+          });
+    }
     else{
-                   
+
     }
 }
 
@@ -703,11 +702,11 @@ addCycleCreation(): void{
 
   }
   getBussinessyearName(name):void {
-    this.Name=name; 
+    this.Name=name;
   }
 
   getCycleCreationName(name):void {
-    this.CycleCreationName=name; 
+    this.CycleCreationName=name;
   }
   getBussinessyear(bussinessyear:number,businessCycleDefinitionid):void
   {
@@ -717,13 +716,13 @@ addCycleCreation(): void{
   }
 
   getCycleName(name):void {
-    this.CycleName=name; 
+    this.CycleName=name;
   }
-  
+
   DeleteCycleDefinitionById(id): void {
-    debugger; 
+    debugger;
     this.CycleupdateFlag=false;
-    this.CycleupdateFlag1=false;            
+    this.CycleupdateFlag1=false;
     this.payrollService.DeleteCycleDefinitionById(id)
       .subscribe(response => { //: saveBusinessYear[]
           debugger
@@ -731,10 +730,10 @@ addCycleCreation(): void{
           this.BusinessYearform.reset();
         });
     }
-    
+
   DeleteBussinessyearById(id): void {
-    debugger; 
-    this.updateFlag=false;       
+    debugger;
+    this.updateFlag=false;
     this.payrollService.DeleteBusinessYearById(id)
       .subscribe(response => { //: saveBusinessYear[]
           debugger
@@ -744,9 +743,9 @@ addCycleCreation(): void{
     }
 
     DeleteCycleCreationById(businessCycleDefinitionId,BusinessYear)
-    {      
-      debugger; 
-      this.updateFlag=false;       
+    {
+      debugger;
+      this.updateFlag=false;
       this.payrollService.DeleteCycleCreationById(businessCycleDefinitionId,BusinessYear)
         .subscribe(response => { //: saveBusinessYear[]
             debugger
@@ -756,9 +755,9 @@ addCycleCreation(): void{
     }
 
     deletePreviewCycleDiscard()
-    {      
-      debugger; 
-      this.updateFlag=false;       
+    {
+      debugger;
+      this.updateFlag=false;
       this.payrollService.DeletePreviewCycleDiscard(this.businessCycleDefinitionId,this.Previewbusiness)
         .subscribe(response => { //: saveBusinessYear[]
             debugger
@@ -777,54 +776,54 @@ addCycleCreation(): void{
 
     ForcetoYearEndofcycleCreation():void{
       debugger
-     // this.updateFlag=false;  
-     this.data.forEach(element => { 
+     // this.updateFlag=false;
+     this.data.forEach(element => {
            element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
        });
      const cycledata1:UpdateflagCycleCreation=Object.assign({});
      cycledata1.businessCycleList=this.data;
      cycledata1.adjustedToNextCycle=this.adjustedToNextCycle;
-  
-      this.payrollService.EdittoDate(this.businessCycleDefinitionId,this.businessYearUpdate,cycledata1) 
-        .subscribe((res:any) => { 
+
+      this.payrollService.EdittoDate(this.businessCycleDefinitionId,this.businessYearUpdate,cycledata1)
+        .subscribe((res:any) => {
             debugger
             this.sweetalertMasterSuccess("Success..!!", res.status.message);
-            this.todisabletodate=true;       
+            this.todisabletodate=true;
         },
         (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);       
-        });     
-  
+          this.sweetalertError(error["error"]["status"]["message"]);
+        });
+
     }
-    
+
   EdittoDateofcycle():void{
     debugger
-    //this.updateFlag=false;  
-   this.data.forEach(element => { 
+    //this.updateFlag=false;
+   this.data.forEach(element => {
          element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
      });
    const cycledata1:UpdateflagCycleCreation=Object.assign({});
    cycledata1.businessCycleList=this.data;
    cycledata1.adjustedToNextCycle=this.adjustedToNextCycle;
 
-    this.payrollService.EdittoDate(this.businessCycleDefinitionId,this.businessYearUpdate,cycledata1) 
-      .subscribe((res:any) => { 
+    this.payrollService.EdittoDate(this.businessCycleDefinitionId,this.businessYearUpdate,cycledata1)
+      .subscribe((res:any) => {
           debugger
           this.sweetalertMasterSuccess("Success..!!", res.status.message);
-          this.todisabletodate=true;       
+          this.todisabletodate=true;
       },
       (error: any) => {
-        this.sweetalertError(error["error"]["status"]["message"]);       
-      });     
+        this.sweetalertError(error["error"]["status"]["message"]);
+      });
 
   }
 
     GetCycleCreationById(businessCycleDefinitionId,BusinessYear)
-    {      
-      debugger; 
+    {
+      debugger;
       this.todisabletodate=true;
-      this.updateFlag=false;  
-      this.CycleDefinitionByid=[];     
+      this.updateFlag=false;
+      this.CycleDefinitionByid=[];
       this.payrollService.getCycleCreationById(businessCycleDefinitionId,BusinessYear)
         .subscribe(response => { //: saveBusinessYear[]
             debugger
@@ -834,16 +833,16 @@ addCycleCreation(): void{
           //     element.fromDate = new Date(element.fromDate);
           //     element.toDate = new Date(element.toDate);
           // });
-         
-          
+
+
             // this.CycleCreationForm.patchValue({ fromDate: response.data.results[0].fromDate });
             // this.CycleCreationForm.patchValue({ toDate: response.data.results[0].toDate });
             //this.demoData=response['result'][0];
             // this.editformDate=response.data.results[0].fromDate;
 
-            this.name=response.data.results[0].businessCycleDefinition.name; 
+            this.name=response.data.results[0].businessCycleDefinition.name;
             this.business=response.data.results[0].businessYear;
-            this.Frequency=response.data.results[0].businessCycleDefinition.frequency.name; 
+            this.Frequency=response.data.results[0].businessCycleDefinition.frequency.name;
             this.fromDate=response.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
             this.toDate=response.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
 
@@ -851,7 +850,7 @@ addCycleCreation(): void{
             this.businessYearUpdate=BusinessYear;
             this.data=this.CycleDefinitionByid;
             this.adjustedToNextCycle=false;
-         
+
             // this.getAllCycleCreation();
             // this.CycleCreationForm.reset();
           });
@@ -860,8 +859,8 @@ addCycleCreation(): void{
 
 
   GetBussinessyearById(id): void {
-    debugger;   
-    this.updateFlag=true; 
+    debugger;
+    this.updateFlag=true;
     this.payrollService.GetBusinessYearById(id)
       .subscribe(response => { //: saveBusinessYear[]
           debugger
@@ -878,11 +877,11 @@ addCycleCreation(): void{
       }
 
       GetCycleDefinitionbyIdDisable(id): void {
-        this.CycleupdateFlag=true; 
-        this.CycleupdateFlag1=false; 
+        this.CycleupdateFlag=true;
+        this.CycleupdateFlag1=false;
         this.disabled= false;
         this.payrollService.GetCycleDefinitionById(id)
-        .subscribe(response => { 
+        .subscribe(response => {
         this.CycleDefinationForm.patchValue({ id: response.data.results[0].id });
         this.CycleDefinationForm.patchValue({ name: response.data.results[0].name });
        this.CycleDefinationForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.id });
@@ -894,11 +893,11 @@ addCycleCreation(): void{
       }
 
 
-      
+
   GetCycleDefinitionbyId(id): void {
-    debugger;   
-    this.CycleupdateFlag=true; 
-    this.CycleupdateFlag1=true; 
+    debugger;
+    this.CycleupdateFlag=true;
+    this.CycleupdateFlag1=true;
     this.payrollService.GetCycleDefinitionById(id)
       .subscribe(response => { //: saveBusinessYear[]
           debugger
@@ -914,14 +913,14 @@ addCycleCreation(): void{
         //this.selectedItems.push(response.data.results[0].serviceName);
 //////////////////////////////////////////////////////////////////////////////////////////////
         // this.ServicesList=[];
-        // this.ServicesList.push(response.data.results[0].serviceName)        
+        // this.ServicesList.push(response.data.results[0].serviceName)
         // this.CycleDefinationForm.patchValue({ serviceName:  this.ServicesList});
         // this.dropdownList= this.ServicesList;
 ////////////////////////////////////////////////////////////////////////////////////////
     //this.CycleDefinationForm.patchValue({ serviceName:  this.ServicesList});
    //   this.selectedItems=(this.ServicesList);
 
-      
+
        // this.CycleDefinationForm.get('serviceName').setValue(response.data.results[0].serviceName);
      // this.CycleDefinationForm.patchValue({ serviceName: this.ServicesList.push(response.data.results[0].serviceName) });
       // this.selectedItems.push(response.data.results[0].serviceName);
@@ -932,13 +931,13 @@ addCycleCreation(): void{
       }
 
       CreateMoreCycleforNextYear()
-      { 
+      {
         debugger
         const addCycleCreation:saveCycleCreation=Object.assign({},this.CycleCreationForm1.value);
          addCycleCreation.businessCycleDefinitionId=this.businessCycleDefinitionIdforMoreCycle;
          addCycleCreation.businessYear=this.BusinessYearformorecycle;
             if( addCycleCreation.id==undefined || addCycleCreation.id==0)
-            {       
+            {
                 this.payrollService.AddCycleCreation(addCycleCreation).subscribe((res:any )=> {
                 debugger
                 this.sweetalertMasterSuccess("Success..!!", res.status.message);
@@ -948,8 +947,8 @@ addCycleCreation(): void{
                 (error: any) => {
                     this.sweetalertError(error["error"]["status"]["message"]);
                     // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
-                  });           
-            } 
+                  });
+            }
         }
 
   getPhonesFormControls(): AbstractControl[] {
@@ -958,7 +957,7 @@ addCycleCreation(): void{
     (<FormArray> this.form1.get('ToDate')).controls
   }
 
-  
+
   addPhone(): void {
     (this.form1.get('Description') as FormArray).push(
       this.formBuilder.control(null)
@@ -981,7 +980,7 @@ addCycleCreation(): void{
       debugger
     container.monthSelectHandler = (event: any): void => {
       container._store.dispatch(container._actions.select(event.date));
-    };     
+    };
     container.setViewMode('month');
   }
   ///////////////////////////////////////Bharati////////////////////////////
@@ -989,7 +988,7 @@ addCycleCreation(): void{
 //       debugger
 //     container.monthSelectHandler = (event: any): void => {
 //       container._store.dispatch(container._actions.select(event.date));
-//     };     
+//     };
 //     container.setViewMode('Date');
 //   }
   // ---------------------Summary ----------------------
@@ -1481,7 +1480,7 @@ this.getAllCycleDefinition();
         );
     }
 
-    
+
     UploadModalYesNo(template: TemplateRef<any>) {
       this.modalRef1 = this.modalService.show(
           template,

@@ -14,7 +14,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatSliderModule } from '@angular/material/slider';
 
 import { payrollComponent } from './bc/bc.component';
@@ -51,6 +51,7 @@ import { CompanySettingComponent } from './companysetting.component';
     CarouselModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
