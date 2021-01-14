@@ -39,7 +39,7 @@ const routes: Routes = [
             component: PayrollheadgroupcreationComponent,
             data: { title: ':: Epic :: Company Settings' }
           },
-    
+
     ],
 
 

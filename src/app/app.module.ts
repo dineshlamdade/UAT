@@ -46,13 +46,11 @@ import { EmployeeMasterModule } from './modules/employee-master/employee-master.
 import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
-
-import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-import { PayrollModule } from './modules/payroll/payroll.module';
-
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
+import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+import { PayrollModule } from './modules/payroll/payroll.module';
 
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
@@ -129,7 +127,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
-   
+
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,
