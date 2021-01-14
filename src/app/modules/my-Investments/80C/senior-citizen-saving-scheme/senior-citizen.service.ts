@@ -75,7 +75,6 @@ export class SeniorCitizenService {
     for (let file of files) {
       formData.append('transactionDocuments', file);
     }
-    //formData.append('licDocuments', files);
     formData.append('transactionWithDocumentBeanJson', JSON.stringify(data));
 
     console.log('formData', formData);
@@ -85,7 +84,7 @@ export class SeniorCitizenService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + '/seniorCitizenSavingScheme-transaction/uploadseniorCitizenSavingSchemeDocuments',formData,
+      this.apiUrl + 'seniorCitizenSavingScheme-transaction/uploadseniorCitizenSavingSchemeDocuments',formData,
       {
 
       });

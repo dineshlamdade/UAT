@@ -9,36 +9,37 @@
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Famliy Member Name</label>
-                    <select name="Frequency_of_Payment" id="familyMemberName" formControlName="familyMemberName"
+                    <select name="family_Member_Name" id="familyMemberName" formControlName="familyMemberName" (change)='OnSelectionfamilyMemberGroup()'
                       class="form-control custom-select"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.familyMemberName.errors }">
                       <option [ngValue]="null">Select</option>
-                       <option *ngFor="let familyMemberName of familyMemberNameList" [value]="familyMemberName.value">
+                       <option *ngFor="let familyMemberName of familyMemberName"
+                        [value]="familyMemberName.value">
                         {{familyMemberName.label}}
                       </option>
                     </select>
                     <div *ngIf="submitted && masterForm.familyMemberName.errors" class="invalid-feedback">
-                      <div *ngIf="masterForm.familyMemberName.errors.required">family Member Name is mandatory</div>
+                      <div *ngIf="masterForm.familyMemberName.errors.required">family Member Name Is Mandatory</div>
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Relationship</label>
                     <input type="text" formControlName="relationship" class="form-control" disabled
-                      [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
+                       [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
                     <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
-                      <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
+                       <div *ngIf="masterForm.relationship.errors.required">Relationship Is Mandatory</div>
                     </div>
-                  </div>
+                 </div>
 
                   <div class="col-sm-6 col-md-5">
                     <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">Is Family Member Claiming Deduction [Sec.80-U]?</label>
                     <div class="custom-controls-stacked ml-15 mt-10">
                       <label class="custom-control custom-radio custom-control-inline">
-                        <input formControlName="isFamilyMemberClaimingDeduction" type="radio" class="custom-control-input" name="isFamilyMemberClaimingDeduction" value=1 checked>
+                        <input type="radio" class="custom-control-input" name="isClaiming80U" value=True checked>
                         <span class="custom-control-label">Yes</span>
                       </label>
                       <label class="custom-control custom-radio custom-control-inline">
-                        <input formControlName="isFamilyMemberClaimingDeduction" type="radio" class="custom-control-input" name="isFamilyMemberClaimingDeduction" value=0>
+                        <input  type="radio" class="custom-control-input" name="isClaiming80U" value=False>
                         <span class="custom-control-label">No</span>
                       </label>
                     </div>
@@ -56,21 +57,21 @@
                       </option>
                     </select>
                     <div *ngIf="submitted && masterForm.disabilityType.errors" class="invalid-feedback">
-                      <div *ngIf="masterForm.disabilityType.errors.required">Frequency of Payment is mandatory</div>
+                      <div *ngIf="masterForm.disabilityType.errors.required">Disability Type Is Mandatory</div>
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Severity Level</label>
-                    <select name="Severity_Level" id="SeverityLevel" formControlName="severityLevel"
+                    <select name="Severity_Level" id="severity" formControlName="severity"
                       class="form-control custom-select"
-                      [ngClass]="{ 'is-invalid': submitted && masterForm.severityLevel.errors }">
+                      [ngClass]="{ 'is-invalid': submitted && masterForm.severity.errors }">
                       <option [ngValue]="null">Select</option>
-                      <option *ngFor="let severityLevel of severityLevelList" [value]="severityLevel.value">
-                        {{severityLevel.label}}
+                      <option *ngFor="let severity of severityLevelList" [value]="severity.value">
+                        {{severity.label}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && masterForm.severityLevel.errors" class="invalid-feedback">
-                      <div *ngIf="masterForm.severityLevel.errors.required">Severity Level is mandatory</div>
+                    <div *ngIf="submitted && masterForm.severity.errors" class="invalid-feedback">
+                      <div *ngIf="masterForm.severity.errors.required">Severity Level Is Mandatory</div>
                     </div>
                   </div>
               </div>
@@ -81,12 +82,11 @@
                           <thead class="thead-dark">
                              <tr>
                                 <th scope="col" class="wd-9">Sr No.</th>
-                                <th scope="col" class="wd-14">Start Date</th>
-                                <th scope="col" class="wd-14">End Date</th>
-                                <th scope="col" class="wd-20">Frequency</th>
-                                <th scope="col" class="wd-19">Premium Amount</th>
-                                <th scope="col" class="wd-14">Annual Amount</th>
-                                <th scope="col" class="wd-10" tooltip="Electronic Clearing Service">ECS</th>
+                                <th scope="col" class="wd-15">Family Member Name</th>
+                                <th scope="col" class="wd-15">Relationship</th>
+                                <th scope="col" class="wd-15">Is Family Member Claiming Deduction</th>
+                                <th scope="col" class="wd-15">Disablity Type</th>
+                                <th scope="col" class="wd-15">Severity Level</th>
                              </tr>
                           </thead>
                           <tbody>
@@ -101,9 +101,14 @@
                                    {{summary.familyMemberName}}
                                    </span>
                                 </td>
+                                <td class="wd-20">
+                                  <span tooltip="{{summary.relationship}}">
+                                  {{summary.relationship}}
+                                  </span>
+                               </td>
                                 <td class="wd-10">
-                                  <span tooltip="{{summary.isFamilyMemberClaimingDeduction==1?'Yes':'No'}}">
-                                  {{summary.isFamilyMemberClaimingDeduction==1?'Yes':'No'}}
+                                  <span tooltip="{{summary.isClaiming80U==1?'Yes':'No'}}">
+                                  {{summary.isClaiming80U==1?'Yes':'No'}}
                                   </span>
                                </td>
                                 <td class="wd-20">
@@ -112,8 +117,8 @@
                                   </span>
                                </td>
                                <td class="wd-20">
-                                <span tooltip="{{summary.severityLevel}}">
-                                {{summary.severityLevel}}
+                                <span tooltip="{{summary.severity}}">
+                                {{summary.severity}}
                                 </span>
                              </td>
                              </tr>
@@ -194,16 +199,10 @@
                   <thead class="thead-dark">
                       <tr>
                           <th scope="col" class="wd-15">Family Member Name</th>
-                          <th scope="col" class="wd-15">relationship</th>
-                          <th scope="col" class="wd-15">Disability Type</th>
-                          <th scope="col" class="wd-15">Severity Level List</th>
+                          <th scope="col" class="wd-15">Relationship</th>
+                          <th scope="col" class="wd-15">Disablity Type</th>
+                          <th scope="col" class="wd-15">Severity Level</th>
                           <th scope="col" class="wd-15">Action</th>
-                          <!-- <th scope="col" class="wd-10">Policy Start Date</th>
-                          <th scope="col" class="wd-10">Policy End Date</th>
-                          <th scope="col" class="wd-10">Frequency</th>
-                          <th scope="col" class="wd-10">Premium Amount</th>
-                          <th scope="col" class="wd-10">Status</th> -->
-
                       </tr>
                   </thead>
                   <tbody>
@@ -214,17 +213,7 @@
                           </td>
                           <td class="wd-10"><span tooltip="{{summary.disabilityType}}">{{summary.disabilityType}}</span>
                           </td>
-                          <td class="wd-10"><span tooltip="{{summary.severityLevel}}">{{summary.severityLevel}}</span>
-                          </td>
-                          <!-- <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date :"dd-MMM-yyyy"}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount | number:'1.2-2'}}</span>
-                          </td> -->
-                          <td class="wd-10"><span tooltip="Submitted">Submitted</span>
+                          <td class="wd-10"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
                           </td>
                           <td class="wd-5">
                               <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;&nbsp;
@@ -280,7 +269,7 @@
                             </span>
                          </div>
                          <div>
-                            <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
+                            <i class="fa fa-times text-red font-18" (click)="removeSelectedMasterDocument(index)"></i>
                          </div>
                       </label>
                    </div>

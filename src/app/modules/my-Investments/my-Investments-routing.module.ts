@@ -16,6 +16,10 @@ import { SeniorCitizenSavingSchemeComponent } from './80C/senior-citizen-saving-
 import { TuitionFeesComponent } from './80C/tuition-fees/tuition-fees.component';
 import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
 import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
+import { ElectricVehicleComponent } from './VI-A/electric-vehicle/electric-vehicle.component';
+import { EducationalLoanComponent } from './VI-A/educational-loan/educational-loan.component';
+import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.component';
+import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
 
 const routes: Routes = [
 
@@ -101,6 +105,26 @@ const routes: Routes = [
         path:   'Chapter-VI-A-HandicappedDependent',
         component:  HandicappedDependentComponent,
         data: { title: ':: DelziaHR :: Chapter-VI-A-HandicappedDependent{Sec.80-DD}' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOnLoanForPurchaseOfElectricVehicle',
+        component:  ElectricVehicleComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOnLoanForPurchaseOfElectricVehicle(Sec.80-EEB)' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOnEducationalLoan',
+        component:  EducationalLoanComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOnEducationalLoan{Sec.80-E}' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOn80TTA',
+        component:  InterestOnTtaComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTA{Sec.80TTA}' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOn80TTB',
+        component:  InterestOnDepositTtbComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTA{Sec.80TTB}' },
       },
     ],
    },

@@ -3,6 +3,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FixedDepositsService } from '../../../80C/fixed-deposits/fixed-deposits.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+import { PhysicallyHandicappedService } from '../physically-handicapped.service';
 
 @Component({
   selector: 'app-physically-handicapped-summary',
@@ -11,19 +12,20 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 export class PhysicallyHandicappedSummaryComponent implements OnInit {
 
-  @Input() institution: string;
-  @Input() accountNumber: string;
+  @Input() employeeName: string;
+  @Input() severity: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(institution: string, accountNumber: string) {
+
+  onEditSummary(employeeName: string, severity: string) {
     this.tabIndex = 2;
     const data = {
-      institution: institution,
-      accountNumber: accountNumber,
+      employeeName: employeeName,
+      severity: severity,
       tabIndex: this.tabIndex,
     };
-    this.institution = institution;
-    this.accountNumber = accountNumber;
+    this.employeeName = employeeName;
+    this.severity = severity;
 
     this.myEvent.emit(data);
   }
@@ -43,11 +45,13 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   public limit : number;
-  public benefitaAvailable : number;
+  public benifitDeclared: number;
+  public benifitActual: number;
+
 
   constructor(
     private service: MyInvestmentsService,
-    private fixedDepositsService:FixedDepositsService,
+    private physicallyHandicappedService:PhysicallyHandicappedService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -60,63 +64,18 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.fixedDepositsService.getFDSummary().subscribe((res) => {
+    this.physicallyHandicappedService.getPhysicallyHandicappedSummary().subscribe((res) => {
       if (res.data.results.length > 0) {
-        this.summaryGridData = res.data.results[0].transactionDetailList;
+        this.summaryGridData = res.data.results;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].futureNewPolicyDeclaredAmount
-        );
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-        console.log(res);
         this.limit = res.data.results[0].limit;
-        this.benefitaAvailable = res.data.results[0].benefitaAvailable;
+        this.benifitDeclared = res.data.results[0].benifitDeclared;
+        this.benifitActual = res.data.results[0].benifitActual;
       }
     });
   }
 
-
-  // Post New Future Policy Data API call
-  public addFuturePolicy(): void {
-    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
-      .toString()
-      .replace(',', '');
-
-    const data = {
-      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
-    };
-
-    //console.log('addFuturePolicy Data..', data);
-    this.fixedDepositsService
-      .getFDSummaryFuturePolicy(data)
-      .subscribe((res) => {
-        if (res.data.length > 0 ) {
-          //console.log('addFuturePolicy Res..', res);
-          this.summaryGridData = res.data.results[0].transactionDetailList;
-          this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-          this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-            res.data.results[0].futureNewPolicyDeclaredAmount
-          );
-          this.grandTotalDeclaredAmount =
-            res.data.results[0].grandTotalDeclaredAmount;
-          this.grandTotalActualAmount =
-            res.data.results[0].grandTotalActualAmount;
-        }
-        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-      });
-  }
-
-  // On Change Future New Policy Declared Amount with formate
-  onChangeFutureNewPolicyDeclaredAmount() {
-    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-      this.futureNewPolicyDeclaredAmount
-    );
-    this.addFuturePolicy();
-  }
 
   jumpToMasterPage(n: number) {
     //console.log(n);
@@ -125,12 +84,18 @@ export class PhysicallyHandicappedSummaryComponent implements OnInit {
   }
 
   // On onEditSummary
-  onEditSummary1(institution: string, accountNumber: string) {
+  onEditSummary1(employeeName: string, severity: string) {
     this.tabIndex = 2;
-    this.institution = institution;
-    this.accountNumber = accountNumber;
-    console.log('institution::', institution);
-    console.log('accountNumber::', accountNumber);
+    this.employeeName = employeeName;
+    this.severity = severity;
+    console.log('employeeName::', employeeName);
+    console.log('severity::', severity);
   }
+
+ //limit of actual and declared
+ onChangelimit() {
+  this.benifitActual = Math.min(this.totalActualAmount, this.limit);
+  this.benifitDeclared = Math.min(this.totalDeclaredAmount, this.limit);
+}
 }
 

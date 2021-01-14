@@ -103,6 +103,7 @@ export class LicdeclarationComponent implements OnInit {
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
   public isDisabled: boolean;
+  public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
   public documentRemark: any;
@@ -207,13 +208,15 @@ export class LicdeclarationComponent implements OnInit {
     console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
-      const input = this.data;
-      this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
+      const dataValues = this.data;
+      this.globalInstitution = dataValues.institution;
+      this.globalPolicy = dataValues.policyNo;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.getTransactionFilterData(dataValues.institution, dataValues.policyNo, 'All');
       this.isDisabled = false;
+      this.canEdit = dataValues.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -822,7 +825,6 @@ export class LicdeclarationComponent implements OnInit {
   deleteRow(j: number) {
     const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
     // console.log('rowcount::', rowCount);
-    // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
@@ -1366,7 +1368,8 @@ export class LicdeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
+    this.Service.getTransactionByProofSubmissionId
+    (proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
         this.urlArray =

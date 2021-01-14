@@ -15,22 +15,27 @@
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
               <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
-                <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
+                <span tooltip="{{summary.employeeName}}">{{summary.employeeName}}</span>
               </td>
-              <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+              <td class="padding-right-12"><span tooltip="{{summary.severity}}">{{summary.severity}}</span>
               </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{summary.declaredAmount | number:'1.2-2'}}">
-                  {{summary.declaredAmount | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{summary.totalDeclaredAmount | number:'1.2-2'}}">
+                  {{summary.totalDeclaredAmount | number:'1.2-2'}}
                 </span>
-              </td>
+              <!-- </td>
               <td class="wd-15 align-right">
-                <span class="padding-right-12" tooltip="{{summary.actualAmount | number:'1.2-2'}}">
-                  {{summary.actualAmount | number:'1.2-2'}}
+                <span class="padding-right-12" tooltip="{{summary.totalDeclaredAmount | number:'1.2-2'}}">
+                  {{summary.totalDeclaredAmount | number:'1.2-2'}}
+                </span>
+              </td> -->
+              <td class="wd-15 align-right">
+                <span class="padding-right-12" tooltip="{{summary.totalActualAmount | number:'1.2-2'}}">
+                  {{summary.totalActualAmount | number:'1.2-2'}}
                 </span>
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                  (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
+                  (click)="onEditSummary(summary.employeeName, summary.severity)" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
@@ -45,32 +50,54 @@
               </td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="2" class="align-right font700">Limit &nbsp; <span class="Letterbadge">A</span></td>
+              <td colspan="2" class="align-right font700">
+                Total &nbsp; <span class="Letterbadge">A</span>
+              </td>
               <td class="align-right">
-                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
-                  {{limit}}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}"
+                >
+                  {{ totalDeclaredAmount | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right">
-                <!-- <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
-                  {{totalActualAmount | number:'1.2-2'}}
-                </span> -->
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ totalActualAmount | number: '1.2-2' }}"
+                >
+                  {{ totalActualAmount | number: "1.2-2" }}
+                </span>
+              </td>
+              <td>
+            </tr>
+            <tr class="table-light-color">
+              <td colspan="2" class="align-right font700">Limit&nbsp; <span class="Letterbadge">B</span></td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
+                  {{limit | number:'1.2-2'}}
+                </span>
+              </td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{limit | number:'1.2-2'}}">
+                  {{limit | number:'1.2-2'}}
+                </span>
               </td>
               <td></td>
             </tr>
+
             <tr class="table-light-color">
-              <td colspan="2" class="align-right font700">Benefit Available [Sec.80-U] &nbsp;
-                <span class="Letterbadge">B</span>
-              </td>
-              <td>
-                <span class="padding-right-12" tooltip="{{benefitaAvailable | number:'1.2-2'}}">
-                  {{benefitaAvailable | number:'1.2-2'}}
+              <td colspan="2" class="align-right font700">Benefit Available [Sec.80-U] &nbsp; <span class="Letterbadge">B</span></td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{benifitDeclared | number:'1.2-2'}}">
+                  {{benifitDeclared | number:'1.2-2'}}
                 </span>
-                <!-- <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                  (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder="0.00"
-                  class="form-control width120 inline_center align-right"> -->
               </td>
-              <td></td>
+              <td class="align-right">
+                <span class="padding-right-12" tooltip="{{benifitActual | number:'1.2-2'}}">
+                  {{benifitActual | number:'1.2-2'}}
+                </span>
+              </td>
               <td></td>
             </tr>
           </tbody>

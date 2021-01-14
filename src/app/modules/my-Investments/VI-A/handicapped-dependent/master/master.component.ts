@@ -20,7 +20,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { NpsService } from '../../nps/nps.service';
+import { HandicappedDependentService } from '../handicapped-dependent.service';
 
 @Component({
   selector: 'app-master',
@@ -66,7 +66,6 @@ export class MasterComponent implements OnInit {
   public familyRelationSame: boolean;
 
   public documentRemark: any;
-  public isFamilyMemberClaimingDeduction = true;
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -107,10 +106,15 @@ export class MasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public disability : string;
+  public severity : string;
+  public isClaiming80U: boolean = true;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private myInvestmentsService: MyInvestmentsService,
-    private npsService: NpsService,
+    private handicappedDependentService: HandicappedDependentService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -121,12 +125,7 @@ export class MasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
-    this.familyMemberNameList = [
-      // { label: 'Monthly', value: 'Monthly' },
-      // { label: 'Quarterly', value: 'Quarterly' },
-      // { label: 'Half-Yearly', value: 'Halfyearly' },
-      // { label: 'Yearly', value: 'Yearly' },
-    ];
+
     this.disabilityTypeList = [
       { label: 'Hearing impairment', value: 'Hearing impairment' },
       { label: 'Mental retardation', value: 'Mental retardation' },
@@ -153,12 +152,14 @@ export class MasterComponent implements OnInit {
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
-  public ngOnInit(): void {
+ public ngOnInit(): void {
     this.initiateMasterForm();
+    this.getFinacialYear();
     this.getMasterFamilyInfo();
-    this.getNpsIdentityInformation();
+    // this.getIdentityInformation();
+    // this.getInstitutesFromGlobal();
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-    this.deactivateRemark();
+    // this.deactivateRemark();
     this.getPreviousEmployer();
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -176,27 +177,22 @@ export class MasterComponent implements OnInit {
   initiateMasterForm() {
     this.form = this.formBuilder.group({
 
-      familyMemberName: new FormControl(null, Validators.required),
-      relationship: new FormControl({ value: null, disabled: true },Validators.required),
-      isFamilyMemberClaimingDeduction: new FormControl(0),
       disabilityType: new FormControl(null, Validators.required),
-      severityLevel: new FormControl(null, Validators.required),
-
-      active: new FormControl(true, Validators.required),
-      remark: new FormControl(null),
-      // frequencyOfPayment: new FormControl(null, Validators.required),
-      // premiumAmount: new FormControl(null, Validators.required),
-      // annualAmount: new FormControl(
-      //   { value: null, disabled: true },
-      //   Validators.required
-      // ),
-      masterPaymentDetailId: new FormControl(0),
-      investmentGroup1MasterId: new FormControl(0),
-      depositType: new FormControl('recurring'),
+      severity: new FormControl(null, Validators.required),
+      familyMemberName: new FormControl(null, Validators.required),
+      relationship: new FormControl({value: null, disabled: true },Validators.required),
+      familyMemberInfoId: new FormControl(null, Validators.required),
     });
   }
 
-   // Family Member List API call
+  // Business Financial Year API Call
+  getFinacialYear() {
+    this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
+      this.financialYearStart = res.data.results[0].fromDate;
+    });
+  }
+
+  // Family Member List API call
   getMasterFamilyInfo() {
     this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
       console.log('getFamilyInfo', res);
@@ -206,35 +202,35 @@ export class MasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Self') {
+        if (element.relation !== 'Self') {
           this.familyMemberName.push(obj);
         }
       });
     });
   }
 
-  //NPS Identity Information API Call
-  getNpsIdentityInformation() {
-    this.npsService.getIdentityInformation().subscribe((res) => {
-      console.log('get Identity Information', res);
-      this.form.patchValue({
-        pran: res.data.results[0].employeePersonalInfoResponseDTO.pran,
-      });
-    });
+  // Family relationship shown on Policyholder selection
+  OnSelectionfamilyMemberGroup() {
+    const toSelect = this.familyMemberGroup.find(
+      (element) => element.familyMemberName == this.form.get('familyMemberName').value
+    );
+    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+    // this.form.get('familyMemberName').setValue(toSelect.familyMemberName);
+    this.form.get('relationship').setValue(toSelect.relation);
   }
 
   // Get All Institutes From Global Table
-  // getInstitutesFromGlobal() {
-  //   this.myInvestmentsService.getAllInstitutesFromGlobal().subscribe((res) => {
-  //     res.data.results.forEach((element: { insurerName: any }) => {
-  //       const obj = {
-  //         label: element.insurerName,
-  //         value: element.insurerName,
-  //       };
-  //       this.institutionNameList.push(obj);
-  //     });
-  //   });
-  // }
+  getInstitutesFromGlobal() {
+    this.myInvestmentsService.getAllInstitutesFromGlobal().subscribe((res) => {
+      res.data.results.forEach((element: { insurerName: any }) => {
+        const obj = {
+          label: element.insurerName,
+          value: element.insurerName,
+        };
+        this.familyMemberNameList.push(obj);
+      });
+    });
+  }
 
   // Get All Previous Employer
   getPreviousEmployer() {
@@ -252,97 +248,94 @@ export class MasterComponent implements OnInit {
   }
 
 
-
-
-
-
   // Get Master Page Data API call
   masterPage() {
-    this.npsService.getNpsMaster().subscribe((res) => {
+    this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
+      this.disability = res.data.results[0].disability;
+      this.severity = res.data.results[0].severity;
       this.masterGridData.forEach((element) => {
-        // element.policyStartDate = new Date(element.policyStartDate);
-        // element.policyEndDate = new Date(element.policyEndDate);
-        // element.fromDate = new Date(element.fromDate);
-        // element.toDate = new Date(element.toDate);
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+        // remove saved family member from dropdown
+        const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+        if (index > -1) {
+          this.familyMemberName.splice(index, 1);
+        }
       });
     });
   }
 
   // Post Master Page Data API call
-  public addMaster(formData: any, formDirective: FormGroupDirective): void {
+  public addMaster(formData: any, formDirective: FormGroupDirective,): void {
     this.submitted = true;
-    this.Index = -1;
-        formDirective.resetForm();
-        this.form.reset();
-        this.form.get('active').setValue(true);
-        this.form.get('isFamilyMemberClaimingDeduction').setValue(0);
-        this.showUpdateButton = false;
-        this.paymentDetailGridData = [];
-        this.masterfilesArray = [];
-        this.submitted = false;
-}
 
-  //   if (this.form.invalid) {
-  //     return;
-  //   }
+    if (this.form.invalid) {
+      return;
 
-  //   if (this.masterfilesArray.length === 0) {
-  //     this.alertService.sweetalertWarning(
-  //       'National Pension Scheme Document needed to Create Master.'
-  //     );
-  //     return;
-  //   } else {
-  //     const from = this.datePipe.transform(
-  //       this.form.get('fromDate').value,
-  //       'yyyy-MM-dd'
-  //     );
-  //     const to = this.datePipe.transform(
-  //       this.form.get('toDate').value,
-  //       'yyyy-MM-dd'
-  //     );
-  //     const data = this.form.getRawValue();
+    }
 
-  //     data.fromDate = from;
-  //     data.toDate = to;
-  //     data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+    if (this.masterfilesArray.length === 0) {
+      this.alertService.sweetalertWarning(
+        'Handicapped Dependent Document needed to Create Master.'
+      );
+      return;
+    } else {
 
-  //     console.log('National Pension Scheme ::', data);
+      const data = this.form.getRawValue();
+      // {
+      //   handicappedDependantDetail : this.form.getRawValue()
+      // };
 
-  //     this.npsService
-  //       .uploadMultipleNpsDepositMasterFiles(this.masterfilesArray, data)
-  //       .subscribe((res) => {
-  //         console.log(res);
-  //         if (res) {
-  //           if (res.data.results.length > 0) {
-  //             this.masterGridData = res.data.results;
-  //             this.masterGridData.forEach((element) => {
-  //               element.policyStartDate = new Date(element.policyStartDate);
-  //               element.policyEndDate = new Date(element.policyEndDate);
-  //               element.fromDate = new Date(element.fromDate);
-  //               element.toDate = new Date(element.toDate);
-  //             });
-  //             this.alertService.sweetalertMasterSuccess(
-  //               'Record saved Successfully.',
-  //               'Go to "Declaration & Actual" Page to see Schedule.'
-  //             );
-  //           } else {
-  //             // this.alertService.sweetalertWarning(res.status.messsage);
-  //             this.alertService.sweetalertError(
-  //               'This Policy Holder Already Added'
-  //             );
-  //           }
-  //         } else {
-  //           this.alertService.sweetalertError(
-  //             'Something went wrong. Please try again.'
-  //           );
-  //         }
-  //       });
+      console.log('Handicapped Dependent ::', data);
 
-  //
-  //   }
-  // }
+      this.handicappedDependentService
+        .uploadMultipleHandicappedDependentMasterFiles(this.masterfilesArray, data)
+        .subscribe((res) => {
+          console.log(res);
+          if (res) {
+            if (res.data.results.length > 0) {
+              this.masterGridData = res.data.results;
+              console.log('Handicapped Master ::', res.data.results);
+              // this.masterGridData = res.data.results[0].documentInformationList;
+              this.masterGridData.forEach((element) => {
+              });
+              this.alertService.sweetalertMasterSuccess(
+                'Record saved Successfully.',
+                'Go to "Declaration & Actual" Page to see Schedule.'
+              );
+            } else {
+              // this.alertService.sweetalertWarning(res.status.messsage);
+              this.alertService.sweetalertError(
+                'This Policy Holder Already Added'
+              );
+            }
+          } else {
+            this.alertService.sweetalertError(
+              'Something went wrong. Please try again.'
+            );
+          }
+        });
+
+      this.Index = -1;
+      formDirective.resetForm();
+      this.form.reset();
+      // this.form.get('active').setValue(true);
+      // this.form.get('isClaiming80U').setValue(0);
+      this.showUpdateButton = false;
+      this.paymentDetailGridData = [];
+      this.masterfilesArray = [];
+      this.submitted = false;
+
+    }
+    // this.form.patchValue({
+    //   accountType: 'Tier_1',
+    // });
+    // this.getIdentityInformation();
+  }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
@@ -355,65 +348,10 @@ export class MasterComponent implements OnInit {
   }
 
   // Remove LicMaster Document
-  removeSelectedLicMasterDocument(index: number) {
+  removeSelectedMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
     console.log('this.filesArray::', this.masterfilesArray);
     console.log('this.filesArray.size::', this.masterfilesArray.length);
-  }
-
-  // // Calculate annual amount on basis of premium and frquency
-  // calculateAnnualAmount() {
-  //   if (
-  //     this.form.value.premiumAmount != null &&
-  //     this.form.value.frequencyOfPayment != null
-  //   ) {
-  //     let installment = this.form.value.premiumAmount;
-
-  //     installment = installment.toString().replace(',', '');
-
-  //     // console.log(installment);
-  //     if (!this.form.value.frequencyOfPayment) {
-  //       installment = 0;
-  //     }
-  //     if (this.form.value.frequencyOfPayment === 'Monthly') {
-  //       installment = installment * 12;
-  //     } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-  //       installment = installment * 4;
-  //     } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-  //       installment = installment * 2;
-  //     } else {
-  //       installment = installment * 1;
-  //     }
-  //     const formatedPremiumAmount = this.numberFormat.transform(
-  //       this.form.value.premiumAmount
-  //     );
-  //     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-  //     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-  //     this.form.get('annualAmount').setValue(installment);
-  //   }
-  // }
-
-  // Family relationship shown on Policyholder selection
-  OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find(
-      (c) => c.familyMemberName === this.form.get('accountHolderName').value
-    );
-    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    this.form.get('relationship').setValue(toSelect.relation);
-  }
-
-  // Deactivate the Remark
-  deactivateRemark() {
-    if (this.form.value.active === false) {
-      // this.form.get('remark').enable();
-      this.hideRemarkDiv = true;
-      this.form.get('remark').setValidators([Validators.required]);
-    } else {
-      this.form.get('remark').clearValidators();
-      this.hideRemarkDiv = false;
-      // this.form.get('remark').disable();
-      this.form.get('remark').reset();
-    }
   }
 
   // On Master Edit functionality
@@ -424,24 +362,20 @@ export class MasterComponent implements OnInit {
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isClear = true;
+    this.masterfilesArray = this.masterGridData[i].documentInformationList
+
   }
 
   // On Edit Cancel
   cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('isFamilyMemberClaimingDeduction').setValue(0);
+    this.form.get('isClaiming80U').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
   }
-
 
   // On Master Edit functionality
   viewMaster(i: number) {
@@ -451,11 +385,6 @@ export class MasterComponent implements OnInit {
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isCancel = true;
   }
 
@@ -463,7 +392,7 @@ export class MasterComponent implements OnInit {
   cancelView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('isFamilyMemberClaimingDeduction').setValue(0);
+    this.form.get('isClaiming80U').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;
@@ -473,5 +402,9 @@ export class MasterComponent implements OnInit {
       template,
       Object.assign({}, { class: 'gray modal-md' })
     );
+  }
+
+  resetForm() {
+    this.form.reset();
   }
 }

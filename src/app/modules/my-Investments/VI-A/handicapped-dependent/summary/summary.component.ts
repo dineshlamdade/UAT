@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { NpsService } from '../../nps/nps.service';
+import { HandicappedDependentService } from '../handicapped-dependent.service';
 
 @Component({
   selector: 'app-summary',
@@ -12,18 +12,19 @@ import { NpsService } from '../../nps/nps.service';
 export class SummaryComponent implements OnInit {
 
   @Input() familyMemberName: string;
-  @Input() disablityType: string;
+  @Input() disabilityType: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(familyMemberName: string, disablityType: string) {
+
+  onEditSummary(familyMemberName: string, disabilityType: string) {
     this.tabIndex = 2;
     const data = {
       familyMemberName: familyMemberName,
-      disablityType: disablityType,
+      disabilityType: disabilityType,
       tabIndex: this.tabIndex,
     };
     this.familyMemberName = familyMemberName;
-    this.disablityType = disablityType;
+    this.disabilityType = disabilityType;
     this.myEvent.emit(data);
   }
 
@@ -40,14 +41,14 @@ export class SummaryComponent implements OnInit {
   public grandTabStatus: boolean;
   public selectedInstitution: string;
 
-  // public previousEmployerB: string;
-  public limitB : number;
-  public benefitAvailable : number;
 
+  public limit : number;
+  public benefitActualAmount : number;
+  public benefitDeclaredAmount : number;
 
   constructor(
     private service: MyInvestmentsService,
-    private npsService: NpsService,
+    private handicappedDependentService: HandicappedDependentService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {  }
@@ -59,48 +60,17 @@ export class SummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.npsService.getNpsSummary().subscribe((res) => {
-      this.summaryGridData = res.data.results[0].transactionDetailList;
+    this.handicappedDependentService.getHandicappedSummary().subscribe((res) => {
+      this.summaryGridData = res.data.results[0].handicappedDependentTransactionList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-
-      this.grandTotalDeclaredAmount =
-        res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-      this.onNPSChangeLimit();
+      this.limit = res.data.results[0].limit;
+      this.benefitActualAmount = res.data.results[0].benefitActualAmount;
+      this.benefitDeclaredAmount = res.data.results[0].benefitDeclaredAmount;
+      this.onChangelimit();
     });
   }
 
-  // Post New Future Policy Data API call
-  // public addFuturePolicy(): void {
-  //   this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
-  //   const data = {
-  //     futureNewPolicyDeclaredAmount: this. futureNewPolicyDeclaredAmount,
-  //   };
-
-  //   console.log('addFuturePolicy Data..', data);
-  //   this.npsService
-  //     .getNpsSummaryFuturePlan(data)
-  //     .subscribe((res) => {
-  //       //console.log('addFuturePolicy Res..', res);
-  //       this.summaryGridData = res.data.results[0].transactionDetailList;
-  //       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-  //       this.totalActualAmount = res.data.results[0].totalActualAmount;
-  //       this.grandTotalDeclaredAmount =
-  //       res.data.results[0].grandTotalDeclaredAmount;
-  //     this.grandTotalActualAmount =
-  //       res.data.results[0].grandTotalActualAmount;
-  //     // this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-
-  //     });
-  // }
-
-  // On Change Future New Policy Declared Amount with formate
-  // onChangeFutureNewPolicyDeclaredAmount() {
-
-  //   this.onNPSChangeLimit();
-  //   this.addFuturePolicy();
-  // }
 
   jumpToMasterPage(n: number) {
     //console.log(n);
@@ -109,16 +79,17 @@ export class SummaryComponent implements OnInit {
   }
 
   // On onEditSummary
-  onEditSummary1(familyMemberName: string, disablityType: string) {
+  onEditSummary1(familyMemberName: string, disabilityType: string) {
     this.tabIndex = 2;
     this.familyMemberName = familyMemberName;
-    this.disablityType = disablityType;
+    this.disabilityType = disabilityType;
     console.log('familyMemberName::', familyMemberName);
-    console.log('disablityType::', disablityType);
+    console.log('disabilityType::', disabilityType);
   }
 
-  onNPSChangeLimit() {
-    this.benefitAvailable = Math.min(this.totalDeclaredAmount, this.limitB);
-    // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitAvailable;
+  //limit of actual and declared
+  onChangelimit() {
+    this.benefitDeclaredAmount = Math.min(this.totalDeclaredAmount, this.limit);
+    this.benefitActualAmount = Math.min(this.totalActualAmount, this.limit);
   }
 }

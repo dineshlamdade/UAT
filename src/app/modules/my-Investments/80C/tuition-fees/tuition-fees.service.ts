@@ -9,7 +9,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class TuitionFeesService {
 
-  apiUrl = environment.apiBaseUrl;
+ apiUrl = environment.apiBaseUrl;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -22,24 +22,15 @@ export class TuitionFeesService {
     ));
   }
 
-  // getTSNabardSummaryFuturePolicy(data) {
-  //   return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction/SummaryFuturePolicy', data)
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
-  // }
+  getTuitionFeesSummaryFuturePolicy(data) {
+    return this._HTTP.post(this.apiUrl + 'tuitionFees-transaction/SummaryFuturePolicy', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
 
    //Declaration services
-
-  //service to be created
-  // getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-  //   return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
-  // }
-
 
   getTransactionFilterData() {
     return this._HTTP.get(this.apiUrl + 'tuitionFees-transaction/')
@@ -100,10 +91,12 @@ export class TuitionFeesService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'fdmorethan5years-transaction/uploadfdmorethan5yearsTransactionDocuments',formData,
+      this.apiUrl + 'tuitionFees-transaction/uploadtuitionFeesTransactionDocuments',formData,
       {
 
       });
   }
 }
+
+
 
