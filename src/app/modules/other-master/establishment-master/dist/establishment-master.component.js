@@ -9,20 +9,19 @@ exports.__esModule = true;
 exports.EstablishmentMasterComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
 var EstablishmentMasterComponent = /** @class */ (function () {
-    function EstablishmentMasterComponent(formBuilder, statuatoryComplianceService, establishmentMasterService, companyMasterService, datePipe) {
+    function EstablishmentMasterComponent(formBuilder, statuatoryComplianceService, establishmentMasterService, companyMasterService, alertService, datePipe) {
         this.formBuilder = formBuilder;
         this.statuatoryComplianceService = statuatoryComplianceService;
         this.establishmentMasterService = establishmentMasterService;
         this.companyMasterService = companyMasterService;
+        this.alertService = alertService;
         this.datePipe = datePipe;
         this.form = forms_1.FormGroup;
         this.summaryHtmlDataList = [];
         this.issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
         this.primaryBusinessActivityList = ['Payroll', 'PayRoll', 'IT', 'HR1', '22'];
         this.officePremisesOwnershipList = ['Owned', 'RENT', 'Lease'];
-        //typeOfEstablishmentList = ['ESTD1','permant','EST-Banglore','Type1','Perm','Tesst'];
         this.showButtonSaveAndReset = true;
         this.registrationNumberList = [];
         this.companyRegistrationIdList = [];
@@ -141,7 +140,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
             this.establishmentMasterService.putEstablishmentMaster(data).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
-                    _this.sweetalertMasterSuccess('Establishment Master Details Updated Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Establishment Master Details Updated Successfully.', '');
                     _this.form.reset();
                     _this.isSaveAndReset = true;
                     _this.showButtonSaveAndReset = true;
@@ -149,10 +148,10 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -175,15 +174,15 @@ var EstablishmentMasterComponent = /** @class */ (function () {
             this.establishmentMasterService.postEstablishmentMaster(data).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
-                    _this.sweetalertMasterSuccess('Establishment Master Details Saved Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Establishment Master Details Saved Successfully.', '');
                     _this.form.reset();
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -195,7 +194,6 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         //  this.selectedRegionMasterCode = temp.masterId;
         console.log(temp.companyMasterId);
         this.companyMasterId = temp.companyMasterId;
-        this.form.patchValue({});
     };
     EstablishmentMasterComponent.prototype.onSelectIssuedBy = function () { };
     EstablishmentMasterComponent.prototype.editMaster = function (i, establishmentMasterId) {
@@ -205,7 +203,6 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         this.form.reset();
         this.establishmentMasterId = establishmentMasterId;
         this.form.patchValue(this.masterGridDataList[i]);
-        console.log(this.masterGridDataList[i]);
         this.form.enable();
         this.form.get('regionMasterId').disable();
     };
@@ -216,11 +213,6 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         this.showButtonSaveAndReset = false;
         this.form.reset();
         this.form.patchValue(this.masterGridDataList[i]);
-        this.form.patchValue({
-        // companyRegistrationId: this.masterGridDataList[i].companyMasterResponseDto.code,
-        // companyName: this.masterGridDataList[i].companyMasterResponseDto.companyName,
-        // companyGroupName:this.masterGridDataList[i].companyMasterResponseDto.companyGroupName,
-        });
         this.form.disable();
     };
     EstablishmentMasterComponent.prototype.cancelView = function () {
@@ -249,7 +241,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                 _this.form.get('state').setValue(res.data.results[0].state);
                 _this.form.get('city').setValue(res.data.results[0].city);
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -263,50 +255,8 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         var _this = this;
         console.log(evt);
         this.selectedRegionMasterCode = evt;
-        console.log(this.regionMasterDetails);
         var tempObj = this.regionMasterDetails.find(function (o) { return o.masterCode == _this.form.get('regionMasterId').value.trim(); });
         console.log(tempObj);
-    };
-    EstablishmentMasterComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    EstablishmentMasterComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    EstablishmentMasterComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
     };
     EstablishmentMasterComponent = __decorate([
         core_1.Component({

@@ -29,7 +29,7 @@
                         </select>
                       </div> -->
 
-                      <!-- <div class="col-sm-3">
+                      <div class="col-sm-3">
                         <label class="form-label">IFSC Code</label>
                         <p-autoComplete [(ngModel)]="bankIFSC"
                             [suggestions]="ifscCodeList" placeholder="Search IFSC"
@@ -44,7 +44,23 @@
                             </ng-template>
                         </p-autoComplete>
                         <i class="fa fa-chevron-down down-arrow-icon"></i>
-                    </div> -->
+                    </div>
+                    <!-- <div class="col-sm-3">
+                      <label class="form-label">IFSC Code</label>
+                      <p-autoComplete [(ngModel)]="bankIFSC"
+                          [suggestions]="ifscCodeList" placeholder="Search IFSC"
+                          (completeMethod)="searchIFSC($event, bankIFSC)"
+                          formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
+                          onSelectIFSCCode(bankIFSC)">
+                          <ng-template let-ifsc pTemplate="item">
+                              <div class="country-item">
+                                  <div>
+                                      {{ifsc}}</div>
+                              </div>
+                          </ng-template>
+                      </p-autoComplete>
+                      <i class="fa fa-chevron-down down-arrow-icon"></i>
+                  </div> -->
 
                       <!-- <div class="col-sm-6 col-md-3">
                         <label class="form-label">IFSC CODE</label>

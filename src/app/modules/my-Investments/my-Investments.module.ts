@@ -46,6 +46,7 @@ import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/in
 import { InterestOnTtbSummaryComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-summary/interest-on-ttb-summary.component';
 import { InterestOnTtbMasterComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-master/interest-on-ttb-master.component';
 import { InterestOnTtbDeclarationComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-declaration/interest-on-ttb-declaration.component';
+import { PrimeNGModule } from 'src/app/app.primeNG.module';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { InterestOnTtbDeclarationComponent } from './VI-A/interest-on-deposit-tt
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

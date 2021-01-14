@@ -1,3 +1,4 @@
+import { InterestDepositSavingAccountComponent } from './VI-A/interest-deposit-savingAccount/interest-deposit-savingAccount.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LicComponent } from './80C/lic/lic.component';
@@ -20,6 +21,9 @@ import { ElectricVehicleComponent } from './VI-A/electric-vehicle/electric-vehic
 import { EducationalLoanComponent } from './VI-A/educational-loan/educational-loan.component';
 import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.component';
 import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
+import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
+import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
+import { IDSATTBComponent } from './VI-A/IDSA-TTB/IDSA-TTB.component';
 
 const routes: Routes = [
 
@@ -125,6 +129,26 @@ const routes: Routes = [
         path:   'Chapter-VI-A-InterestOn80TTB',
         component:  InterestOnDepositTtbComponent,
         data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTA{Sec.80TTB}' },
+      },
+      {
+        path:   'childHostelAllowance',
+        component:  ChildHostelAllowanceComponent,
+        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      },
+      {
+        path:   'childEducationAllowance',
+        component:  ChildEducationAllowanceComponent,
+        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      },
+      {
+        path:   'interestDepositSavingAccountTTA',
+        component:  InterestDepositSavingAccountComponent,
+        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      },
+      {
+        path:   'interestDepositSavingAccountTTB',
+        component:  IDSATTBComponent,
+        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
     ],
    },

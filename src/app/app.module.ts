@@ -1,3 +1,7 @@
+import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
+import { workflowModule } from './modules/workflow/workflow.module';
+import { OtherMasterModule } from './modules/other-master/other-master.module';
+
 import { DragDropModule } from '@angular/cdk/drag-drop';
 // transloco
 // import your locales
@@ -11,12 +15,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-//import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+// import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
-import { CalendarModule, DateAdapter} from 'angular-calendar';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CountToModule } from 'angular-count-to';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
@@ -28,19 +32,44 @@ import { ProfileComponent } from './modules/profile/profile.component';
 import { ProfileModule } from './modules/profile/profile.module';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SettingsModule } from './modules/settings/settings.module';
+import { BnNgIdleService } from 'bn-ng-idle';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
 
 import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
-import { TokenInterceptorService} from './modules/auth/token-interceptor/token-interceptor.service';
+import { TokenInterceptorService } from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { PayrollModule } from './modules/payroll/payroll.module';
-import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-import { OtherMasterModule } from './modules/other-master/other-master.module';
 
+import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
+
+import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
+import { PayrollModule } from './modules/payroll/payroll.module';
+
+import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
+import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+
+import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
+import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
+import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
+
+//////////////////////addaed by bharati////
+//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
+
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
+import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
+import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
+import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
+
+////////////////////////////////////
+
 
 
 @NgModule({
@@ -48,17 +77,26 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     AppComponent,
     ProfileComponent,
     SettingsComponent,
-
-
+    //////////////////////////
+   // payrollComponent,
+    // HeadcreationComponent,
+    // AttributecreationComponent,
+    // AttributeselectionComponent,
+    // PayrollheadgroupcreationComponent,
+///////////////////////////////////////
   ],
   imports: [
     BrowserModule,
     AuthModule,
     DashboardModule,
     PayrollModule,
+/////////////////
+  //  payrollModule,
+    CompanySettingModule,
+////////////////////////////////
     MyInvestmentsModule,
     EightyCModule,
-    ProfileModule ,
+    ProfileModule,
     SettingsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -82,9 +120,19 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
     DashboardModule,
     MyInvestmentsModule,
     PayrollModule,
-    OtherMasterModule
+
+    EmployeeMasterModule,
+    PrimeNGModule,
+    AccordionModule,
+    OtherMasterModule,
+	 AdminApprovalModule,
+    UploadexcelModule,
+    EmployeemasterlistpageModule,
+
+   
   ],
   providers: [BsDatepickerModule,
+    BnNgIdleService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
@@ -95,16 +143,16 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
         defaultLang: 'en',
         fallbackLang: 'fr',
 
-        prodMode: false
-      } as TranslocoConfig
+        prodMode: false,
+      } as TranslocoConfig,
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass:  TokenInterceptorService,
+      useClass: TokenInterceptorService,
       multi: true,
     },
-   ],
+  ],
 
-    bootstrap: [AppComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

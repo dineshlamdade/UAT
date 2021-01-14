@@ -25,6 +25,14 @@ import { StatutoryComplianceComponent } from './statutory-compliance/statutory-c
 import { EstablishmentMasterComponent } from './establishment-master/establishment-master.component';
 import { ComplianceMasterComponent } from './compliance-master/compliance-master.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BankMasterAtGroupComponent } from './bank-master-at-group/bank-master-at-group.component';
+import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { PrimeNGModule } from 'src/app/app.primeNG.module';
+import { JobMasterComponent } from './job-master/job-master.component';
+
 
 @NgModule({
   declarations: [
@@ -35,8 +43,15 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     StatutoryComplianceComponent,
     EstablishmentMasterComponent,
     ComplianceMasterComponent,
+    BankMasterAtGroupComponent,
+    BankMasterAtCompanyComponent,
+    JobMasterComponent,
   ],
   imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+
     CommonModule,
     OtherMasterRoutingModule,
     ReactiveFormsModule,
@@ -58,10 +73,14 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CarouselModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
+
     }),
+
     SharedlayoutModule,
     OtherMasterRoutingModule,
+    PrimeNGModule,
   ],
+
 
   providers: [ DatePipe, NumberFormatPipe],
 })

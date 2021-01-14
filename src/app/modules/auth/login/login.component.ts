@@ -86,11 +86,9 @@ this.otpDiv = false;
     (err) => {
       console.log(err.error);
       if ( err instanceof HttpErrorResponse) {
-        if ( err.error.status.code === '401') {
           this.alertService.sweetalertError(
             err.error.status.message,
           );
-        }
       }
     },
     );
@@ -98,6 +96,7 @@ this.otpDiv = false;
   }
 
   submitOTP() {
+    //mobileNumber;
     const data = {
       emailId: this.email,
       otp: this.otp,
@@ -117,7 +116,7 @@ this.otpDiv = false;
             if ( err instanceof HttpErrorResponse) {
               if ( err.error.status.code === '400') {
                 this.alertService.sweetalertError(
-                  'Invalid correct OTP,' + err.error.status.message,
+                   err.error.status.message,
                 );
               }
             }

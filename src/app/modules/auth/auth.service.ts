@@ -10,8 +10,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-public apiUrl = environment.apiBaseUrl;
-// public apiUrl = environment.baseUrl8080;
+// public apiUrl = environment.apiBaseUrl;
+public apiUrl = environment.baseUrl8080;
 private readonly JWT_TOKEN = '%qycutr';
     private readonly REFRESH_TOKEN = '';
     public loggedUser: string;

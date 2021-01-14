@@ -20,7 +20,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { InterestOnTtaService } from '../../interest-on-tta/interest-on-tta.service';
+import { InterestOnTtbService } from '../interest-on-ttb.service';
 
 @Component({
   selector: 'app-interest-on-ttb-master',
@@ -28,7 +28,6 @@ import { InterestOnTtaService } from '../../interest-on-tta/interest-on-tta.serv
   styleUrls: ['./interest-on-ttb-master.component.scss']
 })
 export class InterestOnTtbMasterComponent implements OnInit {
-
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -121,7 +120,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private myInvestmentsService: MyInvestmentsService,
-    private interestOnTtaService: InterestOnTtaService,
+    private interestOnTtbService: InterestOnTtbService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -206,7 +205,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
       // State Code List API call
       getMasterStateList() {
-        this.interestOnTtaService.getStateInfoList().subscribe((res) => {
+        this.interestOnTtbService.getStateInfoList().subscribe((res) => {
           res.data.results.forEach((element) => {
             const obj = {
               label: element,
@@ -222,7 +221,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
     getMasterIFSCCodeList() {
       const state = this.masterForm.state.value;
       if (state !== null) {
-        this.interestOnTtaService.getIFSCCodeList(state).subscribe((res) => {
+        this.interestOnTtbService.getIFSCCodeList(state).subscribe((res) => {
           res.data.results[0].forEach((element) => {
             const obj = {
               label: element,
@@ -248,7 +247,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
   // Identity Information API Call
   // getIdentityInformation() {
-  //   this.interestOnTtaService.getIdentityInformation().subscribe((res) => {
+  //   this.interestOnTtbService.getIdentityInformation().subscribe((res) => {
   //     console.log('get Identity Information', res);
   //     this.form.patchValue({
   //       pran: res.data.results[0].employeePersonalInfoResponseDTO.pran,
@@ -272,7 +271,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
+    this.interestOnTtbService.get80TTBMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
     });
@@ -301,8 +300,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
       console.log('Interest On 80TTA ::', data);
 
-      this.interestOnTtaService
-        .uploadMultiple80TTAMasterFiles(this.masterfilesArray, data)
+      this.interestOnTtbService
+        .uploadMultiple80TTBMasterFiles(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
           if (res) {
