@@ -9,10 +9,11 @@ import { Observable } from 'rxjs';
 })
 
 export class payroll {
-  url = 'http://localhost:8083/hrms/v1/';
+  // url = 'http://localhost:8083/hrms/v1/';
+      url = 'http://deliziahruat.paysquare.com:8086/hrms/v1/';
 
   constructor(private _HTTP: HttpClient) { }
-  
+
   //get all frequency list
   getFrequency() {
     debugger
@@ -65,7 +66,7 @@ export class payroll {
   }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //CYCLE DEFINITION
-  
+
 //get all cycle-definition
   getAllCycleDefinition() {
     debugger
@@ -109,7 +110,7 @@ export class payroll {
           return res;
         }));
     }
-  
+
     //update cycle-definition
     UpdateCycleDefinition(id: number, data: saveCycleDefinition): Observable<number | {}> {
       debugger
@@ -120,7 +121,7 @@ export class payroll {
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //CYCLE Creation
-  
+
 //get all cycle-Creation
 getAllCycleCreation() {
   debugger
@@ -136,7 +137,7 @@ getAllCycleCreation() {
         .pipe(map((res: any) => {
           return res;
         }));
-    }  
+    }
 
        //get cycle-Creation by id
       getCycleCreationById(businessCycleDefinitionId:number,BusinessYear:string) {
@@ -162,8 +163,8 @@ getAllCycleCreation() {
             .pipe(map((res: any) => {
               return res;
             }));
-        }   
-        
+        }
+
         //Edit toDate of cycle-Creation
         EdittoDate(businessCycleDefinitionId:number,BusinessYear:string,data:any) : Observable<number | {}> {
           debugger

@@ -5,4 +5,5 @@ export const environment = {
     apiBaseUrl: 'http://deliziahruat.paysquare.com:8085/hrms/v1/',
     baseUrl8080: 'http://deliziahruat.paysquare.com:8080/hrms/v1/',
 
+
 }
