@@ -22,6 +22,7 @@
                                                     formControlName="aadhaarNo"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.aadhaar"
                                                     minlength="1" maxlength="12"
+                                                    [ngClass]="{'is-invalid' : IdentityInfoForm.get('aadhaarNo').status == 'INVALID'}"
                                                     (keyup)="updateAadhaarName(IdentityInformation.employeeMasterRequestDTO.aadhaar)">
                                             </div>
 
@@ -38,6 +39,7 @@
                                                     class="form-label">{{ 'IdentityInformationForm.pan' | transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter PAN"
                                                     formControlName="pan"
+                                                    [ngClass]="{'is-invalid' : IdentityInfoForm.get('pan').status == 'INVALID'}"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.pan"
                                                     pattern="[a-zA-Z]{3}[P]{1}[a-zA-Z]{1}[0-9]{4}[a-zA-Z]{1}"
                                                     minlength="1" maxlength="10"
@@ -58,6 +60,7 @@
                                                     class="form-label">{{ 'IdentityInformationForm.uan' | transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter UAN"
                                                     minlength="1" maxlength="12" formControlName="uan"
+                                                    [ngClass]="{'is-invalid' : IdentityInfoForm.get('uan').status == 'INVALID'}"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.uan"
                                                     (keyup)="updateUANName(IdentityInformation.employeeMasterRequestDTO.uan)">
                                             </div>
@@ -117,6 +120,7 @@
                                                     class="form-label">{{ 'IdentityInformationForm.pranForNPS' | transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter PRAN"
                                                     minlength="1" maxlength="12" formControlName="pranForNPS"
+                                                    [ngClass]="{'is-invalid' : IdentityInfoForm.get('pranForNPS').status == 'INVALID'}"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.pran">
                                             </div>
 

@@ -269,7 +269,7 @@ export class BankInformationComponent implements OnInit {
   // }
 
   postBankInfoForm(BankInformationModel) {
-    debugger
+    
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
 
@@ -284,7 +284,7 @@ export class BankInformationComponent implements OnInit {
   }
 
   updateBankGridRow(BankInformationModel) {
-    debugger
+    
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
 

@@ -125,7 +125,7 @@ export class PersonalInformationComponent implements OnInit {
     }
 
     this.clearBirthDateSubsribtion = this.EventEmitterService.setClearBirthDate().subscribe(res => {
-      debugger
+      
       // this.clearBirthDate.reset();
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
       this.validBirthDate = null;
@@ -150,6 +150,11 @@ export class PersonalInformationComponent implements OnInit {
         }
       })
     })
+    
+    if(this.internationalWorkerRequestDTO.cocNumber != '' || this.internationalWorkerRequestDTO.cocValidTill != ''){
+      const isOnCOC = this.BasicInfoForm.get('isOnCOC');
+      isOnCOC.enable();
+    }
 
     // this.SharedInformationService.getGlobalLabels().subscribe(res => {
 
@@ -207,7 +212,7 @@ export class PersonalInformationComponent implements OnInit {
     // })
 
     this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(res => {
-      debugger
+      
       this.rejoinee = res.rejoinee;
       this.sameCode = res.sameCode;
 
@@ -259,7 +264,7 @@ export class PersonalInformationComponent implements OnInit {
 
   // Personal Info Form Submit Function
   personalInfoSubmit(personalInformationModel) {
-    debugger
+    
     if (this.rejoinee == false) {
       personalInformationModel.employeeMasterId = null;
       personalInformationModel.employeeMasterRequestDTO.employeeMasterId = null;
@@ -389,6 +394,7 @@ export class PersonalInformationComponent implements OnInit {
     if (res.data.results[0].imageResponseDTO) {
       this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
     }
+   
     // this.severity(this.personalInformationModel.severityLevel);
     // this.BasicInfoForm.patchValue({ severityLevel: this.personalInformationModel.severityLevel });
     if (res.data.results[0].isPhysicallyChallenged == 0) {
@@ -407,6 +413,11 @@ export class PersonalInformationComponent implements OnInit {
       this.weatherOnCOC1 = 'Yes'
     }
     this.internationalWorkerRequestDTO = res.data.results[0].internationalWorkerResponseDTO;
+    
+    if(this.internationalWorkerRequestDTO.cocNumber != '' || this.internationalWorkerRequestDTO.cocValidTill != ''){
+      const isOnCOC = this.BasicInfoForm.get('isOnCOC');
+      isOnCOC.enable();
+    }
   }
   // getImage(employeeMasterId) {
   //   this.PersonalInformationService.getImage(employeeMasterId).subscribe((res: any) => {
@@ -477,7 +488,8 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   validateWeatherOnCOC(weatherOnCOC) {
-    if (weatherOnCOC.text == 'No') {
+    
+    if (weatherOnCOC == 'No') {
       this.internationalWorkerRequestDTO.cocNumber = '';
       this.internationalWorkerRequestDTO.cocValidTill = '';
     }
@@ -533,7 +545,7 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   birthD(validDate) {
-    debugger
+    
     if (validDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
         disableClose: true, width: '664px', height: '241px',

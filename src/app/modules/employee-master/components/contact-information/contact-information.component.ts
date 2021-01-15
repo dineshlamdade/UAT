@@ -78,7 +78,7 @@ export class ContactInformationComponent implements OnInit {
       emergencyContactName: [''],
       emergencyContactNumber: ['', Validators.pattern(/^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)],
       emergencyCountryCode: [''],
-      localAddress1:['', Validators.required],
+      localAddress1: ['', Validators.required],
       localAddress2: [''],
       localAddress3: [''],
       localCountry: [''],
@@ -96,28 +96,10 @@ export class ContactInformationComponent implements OnInit {
       permanentDistrict: [''],
       permanentCity: [''],
       permanentVillege: [''],
-      communicationAddress: [{ value: null, disabled: true }, Validators.required]
+      communicationAddress: [Validators.required]
     });
     this.getCountryInfo();
     this.getContactInfoData();
-
-    // get API for contact information
-    // this.initiateContactForm = this.EventEmitterService.setcontactFormInitiate().subscribe(res => {
-    //   
-    //   this.permanentAddressInformation.country = '';
-    //   this.localAddressInformation.country = '';
-    //   this.ngOfficialCountryCode = '';
-    //   this.ngPersonalCountryCode = '';
-    //   this.ngEmergencyCountryCode = '';
-
-    // })
-
-    // this.shareCountryDataSubcription = this.EventEmitterService.setCountryData().subscribe(res => {
-    //   if (res) {
-    //     this.countries = res.countryList;
-    //     this.countryCode = res.countryCode;
-    //   }
-    // })
 
     // Response from address copy confirmation dialog
     this.EventEmitterService.getCopyFromConfirmation().subscribe(res => {
@@ -128,31 +110,28 @@ export class ContactInformationComponent implements OnInit {
       }
     })
 
+    if (this.localAddressInformation.address1 == '' && this.permanentAddressInformation.address1 == '') {
+      const communicationAddress = this.ContactInfoForm.get('communicationAddress');
+      communicationAddress.disable();
+    }
+    if (this.localAddressInformation.address1 != '' && this.permanentAddressInformation.address1 != '') {
+      const communicationAddress = this.ContactInfoForm.get('communicationAddress');
+      communicationAddress.enable();
+    }
   }
   getCountryInfo() {
     this.SharedInformationService.getLocationInformation().subscribe(res => {
       this.countries = res.data.results;
-
-      // setTimeout(() => {
-      //   this.permanentAddressInformation.country = '';
-      //   this.localAddressInformation.country = '';
-      // })
     })
     this.SharedInformationService.getCountryCodes().subscribe(res => {
       this.countryCode = res.data.results;
-
-      // setTimeout(() => {
-      //   this.ngOfficialCountryCode = '';
-      //   this.ngPersonalCountryCode = '';
-      //   this.ngEmergencyCountryCode = '';
-      // })
     })
   }
 
 
   // getting selected communication Address value
   selectionChallenged(event) {
-    
+
     this.communicationAddress = event.target.defaultValue;
   }
   // Contact Form submit Post API call
@@ -263,12 +242,19 @@ export class ContactInformationComponent implements OnInit {
       }
     }
 
-
+    if (this.localAddressInformation.address1 == '' && this.permanentAddressInformation.address1 == '') {
+      const communicationAddress = this.ContactInfoForm.get('communicationAddress');
+      communicationAddress.disable();
+    }
+    if (this.localAddressInformation.address1 != '' && this.permanentAddressInformation.address1 != '') {
+      const communicationAddress = this.ContactInfoForm.get('communicationAddress');
+      communicationAddress.enable();
+    }
     this.contactInformation.employeeMasterRequestDTO.officialEmailId = res.data.results[0]['employeeMasterResponseDTO'].officialEmailId;
     this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactName1 = res.data.results[0]['employeePersonalInfoResponseDTO'].emergencyContactName1;
     this.contactInformation.employeePersonalInfoRequestDTO.personalEmailID = res.data.results[0]['employeePersonalInfoResponseDTO'].personalEmailID;
 
-    
+
     // Personal mobile number countryCode extraction
     if (res.data.results[0]['employeeMasterResponseDTO'].personalMobileNumber) {
       this.contactInformation.employeeMasterRequestDTO.personalMobileNumber = res.data.results[0]['employeeMasterResponseDTO'].personalMobileNumber.slice(res.data.results[0]['employeeMasterResponseDTO'].personalMobileNumber.length - 10)
@@ -496,33 +482,33 @@ export class ContactInformationComponent implements OnInit {
     }
   }
 
-  sweetalertMasterSuccess(message:any, text:any) {
+  sweetalertMasterSuccess(message: any, text: any) {
     Swal.fire({
-        title: message,
-        text: text,
-        showCloseButton: true,
-        showCancelButton: false,
-        toast:true,
-        position:'top-end',
-        showConfirmButton:false,
-        icon:'success',
-        timer: 15000,
-        timerProgressBar: true,
+      title: message,
+      text: text,
+      showCloseButton: true,
+      showCancelButton: false,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      icon: 'success',
+      timer: 15000,
+      timerProgressBar: true,
     })
-}
+  }
 
-sweetalertError(message:any) {
+  sweetalertError(message: any) {
     Swal.fire({
-        title: message,
-        showCloseButton: true,
-        showCancelButton: false,
-        toast:true,
-        position:'top-end',
-        showConfirmButton:false,
-        icon:'error',
-        timer: 15000,
-        timerProgressBar: true,
+      title: message,
+      showCloseButton: true,
+      showCancelButton: false,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      icon: 'error',
+      timer: 15000,
+      timerProgressBar: true,
     })
-}
+  }
 }
 

@@ -103,8 +103,8 @@ export class EventEmitterService {
     return this.PreviousEmploymentInfoInitiate.asObservable();
   }
 
-  getConfirmDeleteIdentityForm() {
-    this.ConfirmDeleteIdentityForm.next();
+  getConfirmDeleteIdentityForm(visa) {
+    this.ConfirmDeleteIdentityForm.next(visa);
   }
   setConfirmDeleteIdentityForm() {
     return this.ConfirmDeleteIdentityForm.asObservable();

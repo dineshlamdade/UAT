@@ -241,7 +241,7 @@
                                         <label class="form-label">{{ 'PersonalInformationForm.weatherOnCOC' | transloco
                                             }}</label>
                                         <select class="form-control" formControlName="isOnCOC" placeholder="Select"
-                                            [(ngModel)]="weatherOnCOC1" (change)="validateWeatherOnCOC(whetherOption)">
+                                            [(ngModel)]="weatherOnCOC1" (change)="validateWeatherOnCOC(weatherOnCOC1)">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let whetherOption of weatherOnCOCOptions"
                                                 [value]="whetherOption">

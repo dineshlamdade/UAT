@@ -56,7 +56,8 @@ export class employeePersonalInfoRequestDTO {
         public validTill: any,
         public employeeMasterId: any,
         public createdBy: any,
-        public lastModifiedBy: any
+        public lastModifiedBy: any,
+        public employeeVisaDetailId: any
     ){}
  }
         

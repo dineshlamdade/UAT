@@ -24,7 +24,7 @@ export class ConfirmationModalComponent implements OnInit {
   sameCode: boolean;
   user: any;
   JoineeModel = new JoineeModel('', '','')
-
+  visa: any;
 
 
   constructor(public dialogRef: MatDialogRef<ConfirmationModalComponent>,
@@ -36,6 +36,7 @@ export class ConfirmationModalComponent implements OnInit {
     this.payrollEditItem = data.payrollEditItem;
     this.employee = data.employee;
     this.user = data.user;
+    this.visa = data.visa;
   }
 
   ngOnInit() {
@@ -46,7 +47,7 @@ export class ConfirmationModalComponent implements OnInit {
     this.dialogRef.close();
     this.EventEmitterService.setCopyFromConfirmation(this.confirmMsg);
     if (this.confirmMsg == 'IdentityForm') {
-      this.EventEmitterService.getConfirmDeleteIdentityForm();
+      this.EventEmitterService.getConfirmDeleteIdentityForm(this.visa);
     }
     if (this.confirmMsg == 'PreviousEmpForm') {
       this.EventEmitterService.getConfirmDeletePreviousEmpForm(this.employee);

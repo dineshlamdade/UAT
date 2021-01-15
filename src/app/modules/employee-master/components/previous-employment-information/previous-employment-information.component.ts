@@ -114,7 +114,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
 
   getPreviousEmployees() {
     this.PreviousEmpInformationService.getPreviousEmpInformation(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.previousSmmaryGridData = res.data.results[0];
       // this.pushToGrid(this.summaryGridData);
       if (this.previousSmmaryGridData.length > 0) {
@@ -162,7 +162,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   }
 
   postEmploymentInfoForm(previousEmploymentInformation){
-    debugger
+    
     previousEmploymentInformation.employeeMasterId = this.employeeMasterId;
     previousEmploymentInformation.dateOfJoining = this.datepipe.transform(previousEmploymentInformation.dateOfJoining, 'dd-MMM-yyyy');
     previousEmploymentInformation.dateOfRelieving = this.datepipe.transform(previousEmploymentInformation.dateOfRelieving, 'dd-MMM-yyyy');
@@ -177,7 +177,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   }
 
   updateEmpGridRow(previousEmploymentInformation){
-    debugger
+    
     previousEmploymentInformation.employeeMasterId = this.employeeMasterId;
     previousEmploymentInformation.dateOfJoining = this.datepipe.transform(previousEmploymentInformation.dateOfJoining, 'dd-MMM-yyyy');
     previousEmploymentInformation.dateOfRelieving = this.datepipe.transform(previousEmploymentInformation.dateOfRelieving, 'dd-MMM-yyyy');
