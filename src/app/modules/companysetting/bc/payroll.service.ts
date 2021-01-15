@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { saveBusinessYear,saveCycleDefinition ,saveCycleCreation} from './payroll.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { Observable } from 'rxjs';
 
 export class payroll {
   // url = 'http://localhost:8083/hrms/v1/';
-      url = 'http://deliziahruat.paysquare.com:8086/hrms/v1/';
+  // url = 'http://deliziahruat.paysquare.com:8086/hrms/v1/';
+      public url = environment.baseUrl8086;
 
   constructor(private _HTTP: HttpClient) { }
 

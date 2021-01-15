@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -12,7 +13,9 @@ import { Observable } from 'rxjs';
   })
 
 export class attributeselection {
-    url = 'http://localhost:8084/hrms/v1/';
+    //url = 'http://localhost:8084/hrms/v1/';
+    public url = environment.baseUrl8084;
+
     constructor(private _HTTP: HttpClient) { }
 
      // get All AttributeCreation

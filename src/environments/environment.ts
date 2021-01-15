@@ -11,6 +11,8 @@ export const environment = {
   baseUrl8080: 'http://deliziahruat.paysquare.com:8080/hrms/v1/',
   apiBaseUrl: 'http://localhost:8085/hrms/v1/',
   apiBaseUrlEmployee: 'http://localhost:8082/hrms/v1/',
+  baseUrl8086:  'http://localhost:8086/hrms/v1/',
+  baseUrl8084:  'http://localhost:8084/hrms/v1/',
 };
 
 /*
