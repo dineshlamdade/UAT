@@ -9,11 +9,11 @@ exports.__esModule = true;
 exports.ComplianceHeadComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
 var ComplianceHeadComponent = /** @class */ (function () {
-    function ComplianceHeadComponent(complianceHeadService, formBuilder) {
+    function ComplianceHeadComponent(complianceHeadService, formBuilder, alertService) {
         this.complianceHeadService = complianceHeadService;
         this.formBuilder = formBuilder;
+        this.alertService = alertService;
         this.countries = [];
         this.summaryHtmlDataList = [];
         this.masterGridDataList = [];
@@ -32,28 +32,26 @@ var ComplianceHeadComponent = /** @class */ (function () {
     }
     ComplianceHeadComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.refreshHtmlTableData();
         this.complianceHeadService.getLocationInformationOrCountryList().subscribe(function (res) {
             _this.countries = res.data.results;
         });
+        this.refreshHtmlTableData();
     };
     ComplianceHeadComponent.prototype.save = function () {
         var _this = this;
-        console.log('clcicked on new record save button');
         var data = this.form.getRawValue();
-        console.log(data);
         this.complianceHeadService.postComplianceHead(data).subscribe(function (res) {
             console.log(res);
             if (res.data.results.length > 0) {
-                _this.sweetalertMasterSuccess('Compliance Head Saved Successfully.', '');
+                _this.alertService.sweetalertMasterSuccess('Compliance Head Saved Successfully.', '');
                 _this.form.reset();
                 _this.refreshHtmlTableData();
             }
             else {
-                _this.sweetalertWarning(res.status.messsage);
+                _this.alertService.sweetalertWarning(res.status.messsage);
             }
         }, function (error) {
-            _this.sweetalertError(error["error"]["status"]["messsage"]);
+            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         });
     };
     ComplianceHeadComponent.prototype.cancelView = function (i) {
@@ -77,7 +75,6 @@ var ComplianceHeadComponent = /** @class */ (function () {
             console.log(res);
             _this.masterGridDataList = res.data.results;
             var i = 1;
-            console.log('html table data');
             console.log(res.data.results);
             res.data.results.forEach(function (element) {
                 var obj = {
@@ -89,67 +86,7 @@ var ComplianceHeadComponent = /** @class */ (function () {
                     authorityHandling: element.authorityHandling
                 };
                 _this.summaryHtmlDataList.push(obj);
-                console.log(_this.summaryHtmlDataList);
             });
-        });
-    };
-    ComplianceHeadComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    ComplianceHeadComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    ComplianceHeadComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    ComplianceHeadComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    ComplianceHeadComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
         });
     };
     ComplianceHeadComponent = __decorate([

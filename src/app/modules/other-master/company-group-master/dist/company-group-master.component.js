@@ -9,13 +9,12 @@ exports.__esModule = true;
 exports.CompanyGroupMasterComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
-//
 var CompanyGroupMasterComponent = /** @class */ (function () {
-    function CompanyGroupMasterComponent(formBuilder, companyGroupMasterService, datePipe) {
+    function CompanyGroupMasterComponent(formBuilder, companyGroupMasterService, datePipe, alertService) {
         this.formBuilder = formBuilder;
         this.companyGroupMasterService = companyGroupMasterService;
         this.datePipe = datePipe;
+        this.alertService = alertService;
         this.showButtonSaveAndReset = true;
         // isEditMode: boolean = false;
         this.masterGridDataList = [];
@@ -110,7 +109,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
                 console.log(res);
                 if (res.data.results.length > 0) {
                     console.log('data is updated');
-                    _this.sweetalertMasterSuccess('Company Group Master Updated Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Company Group Master Updated Successfully.', '');
                     //  this.isEditMode = false;
                     _this.form.get('companyGroupCode').disable();
                     _this.saveFormValidation();
@@ -120,10 +119,10 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -144,15 +143,15 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
             this.companyGroupMasterService.postCompanyGroupMaster(data).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
-                    _this.sweetalertMasterSuccess('Company Group Master Saved Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Company Group Master Saved Successfully.', '');
                     _this.form.reset();
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -308,65 +307,65 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
     //  this.form.get['remark'].updateValueAndValidity();
     //  this.form.get('reasonForExit').setValidator([Validators.required]);
     //  this.form.get('reasonForExit').updateValueAndValidity();
-    CompanyGroupMasterComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    CompanyGroupMasterComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyGroupMasterComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyGroupMasterComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyGroupMasterComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
+    // sweetalert7(message: any) {
+    //   Swal.fire({
+    //     text: message,
+    //   });
+    // }
+    // sweetalertWarning(message: any) {
+    //   Swal.fire({
+    //     title: message,
+    //     showCloseButton: true,
+    //     showCancelButton: false,
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     background: '#e68a00',
+    //     icon: 'warning',
+    //     timer: 15000,
+    //     timerProgressBar: true,
+    //   });
+    // }
+    // sweetalertInfo(message: any) {
+    //   Swal.fire({
+    //     title: message,
+    //     showCloseButton: true,
+    //     showCancelButton: false,
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     icon: 'info',
+    //     timer: 15000,
+    //     timerProgressBar: true,
+    //   });
+    // }
+    // sweetalertMasterSuccess(message: any, text: any) {
+    //   Swal.fire({
+    //     title: message,
+    //     text: text,
+    //     showCloseButton: true,
+    //     showCancelButton: false,
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     icon: 'success',
+    //     timer: 15000,
+    //     timerProgressBar: true,
+    //   });
+    // }
+    // sweetalertError(message: any) {
+    //   Swal.fire({
+    //     title: message,
+    //     showCloseButton: true,
+    //     showCancelButton: false,
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     icon: 'error',
+    //     timer: 15000,
+    //     timerProgressBar: true,
+    //   });
+    // }
     CompanyGroupMasterComponent.prototype.deactivateRemark = function () {
         if (this.form.get('companyGroupActive').value === false) {
             this.form.get('remark').enable();

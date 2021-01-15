@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
 
   public ngOnInit(): void {
     this.userInfo = this.service.getprivileges();
+    console.log(this.userInfo);
     this.userName = this.userInfo.privileges[0].userName;
   }
 

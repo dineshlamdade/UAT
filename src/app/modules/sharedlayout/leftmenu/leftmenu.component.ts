@@ -9,7 +9,7 @@ import { EventEmitterService } from './../../employee-master/employee-master-ser
   styleUrls: ['./leftmenu.component.scss'],
 })
 export class LeftmenuComponent implements OnInit {
-public menuDetails: Array<any>;
+  public menuDetails: Array<any>;
   public isCollapsed = true;
 
   public isEmployeeMaster = true;
@@ -21,6 +21,8 @@ public menuDetails: Array<any>;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
+  public isCollapsedLMS = true;
+  public isCollapsedWorkflowSettings = true;
   public contactTab: boolean;
   public chatTab = true;
   public toggle1: boolean;
@@ -39,10 +41,11 @@ public menuDetails: Array<any>;
   public friendscard = true;
   updateEmpIdSubscription: Subscription;
   employeeMasterId: number;
-
+  ischaptersettingCollapsed = true;
 
   constructor(private router: Router, @Inject(AppComponent) private app: AppComponent,
-  private EventEmitterService: EventEmitterService) {
+    private EventEmitterService: EventEmitterService) {
+
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
@@ -55,6 +58,12 @@ public menuDetails: Array<any>;
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
     }
+    if ((this.router.url).includes('companysetting')) {
+      this.ischaptersettingCollapsed = false;
+    }
+    if ((this.router.url).includes('employee-master')) {
+      this.isEmployeeMaster = false;
+    }
   }
 
   public ngOnInit(): void {
@@ -63,41 +72,63 @@ public menuDetails: Array<any>;
       icon: 'icon-rocket',
       name: 'Dashboard',
       routerlink: '/dashboard',
-      },
-      {
+    },
+    ////////////////////
+    {
       collapsed: true,
       icon: 'icon-credit-card',
-        name: 'Investment',
-        subDetails: [{
-          name: '80C-LIC',
-          routerlink: '/investment/80C-LIC',
-        },
-        {
-          name: '80C-PPF',
-          routerlink: '/otherMaster/companyRegistrationDetails',
-        },
-        {
-          name: 'Compliance Head',
-          routerlink: '/otherMaster/complianceHead',
-        }],
+      name: 'Company Settings',
+      subDetails: [{
+        name: 'payroll',
+        routerlink: '/companysetting/payroll',
+      },
+        // {
+        //   name: '80C-PPF',
+        //   routerlink: '/otherMaster/companyRegistrationDetails',
+        // },
+        // {
+        //   name: 'Compliance Head',
+        //   routerlink: '/otherMaster/complianceHead',
+        // }
+      ],
+    },
+
+    //////////////////////////////
+
+    {
+      collapsed: true,
+      icon: 'icon-credit-card',
+      name: 'Investment',
+      subDetails: [{
+        name: '80C-LIC',
+        routerlink: '/investment/80C-LIC',
       },
       {
-        collapsed: true,
-        icon: 'icon-rocket',
-          name: 'Other Master',
-          subDetails: [{
-            name: 'Company Group Master',
-            routerlink: '/otherMaster/companyGroupMaster',
-          },
-          {
-            name: 'Company Registration Details',
-            routerlink: '/otherMaster/companyRegistrationDetails',
-          },
-          {
-            name: 'Compliance Head',
-            routerlink: '/otherMaster/complianceHead',
-          }],
-        },
+        name: '80C-PPF',
+        routerlink: '/otherMaster/companyRegistrationDetails',
+      },
+      {
+        name: 'Compliance Head',
+        routerlink: '/otherMaster/complianceHead',
+      }],
+    },
+    {
+      collapsed: true,
+      icon: 'icon-rocket',
+      name: 'Other Master',
+      subDetails: [{
+        name: 'Company Group Master',
+        routerlink: '/otherMaster/companyGroupMaster',
+      },
+      {
+        name: 'Company Registration Details',
+        routerlink: '/otherMaster/companyRegistrationDetails',
+      },
+      {
+        name: 'Compliance Head',
+        routerlink: '/otherMaster/complianceHead',
+      }],
+    },
     ];
 
     this.updateEmpIdSubscription = this.EventEmitterService.setUpdateEmployeeId().subscribe(res => {
@@ -114,7 +145,7 @@ public menuDetails: Array<any>;
       return true;
     }
   }
-  
+
   ngAfterViewInit() {
     const pThis: any = this;
     setTimeout(() => {

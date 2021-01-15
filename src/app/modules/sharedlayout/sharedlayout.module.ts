@@ -15,9 +15,10 @@ import { MenuItem } from 'primeng/api';
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeGb, 'en-GB');
 import { PrimeNGModule } from './../../app.primeNG.module';
+import { LeftadminmenuComponent} from './leftadminmenu/leftadminmenu';
 
 @NgModule({
-  declarations: [FooterComponent, HeaderComponent, LeftmenuComponent],
+  declarations: [FooterComponent, HeaderComponent, LeftmenuComponent,LeftadminmenuComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -31,6 +32,7 @@ import { PrimeNGModule } from './../../app.primeNG.module';
     CommonModule,
     FormsModule,
     LeftmenuComponent,
+    LeftadminmenuComponent,
     HeaderComponent,
     FooterComponent,
   ],

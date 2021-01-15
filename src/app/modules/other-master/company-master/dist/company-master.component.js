@@ -9,15 +9,15 @@ exports.__esModule = true;
 exports.CompanyMasterComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
 var company_master_dto_1 = require("./dto-models/company-master-dto");
 var CompanyMasterComponent = /** @class */ (function () {
-    function CompanyMasterComponent(cd, formBuilder, datePipe, companyMasterService, companyGroupMasterService) {
+    function CompanyMasterComponent(cd, formBuilder, datePipe, companyMasterService, companyGroupMasterService, alertService) {
         this.cd = cd;
         this.formBuilder = formBuilder;
         this.datePipe = datePipe;
         this.companyMasterService = companyMasterService;
         this.companyGroupMasterService = companyGroupMasterService;
+        this.alertService = alertService;
         this.companyMasterform = forms_1.FormGroup;
         this.imageUrl = "./assets/emp-master-images/empIcon5.png";
         this.employeeMasterRequestDTO = new company_master_dto_1.EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
@@ -100,30 +100,21 @@ var CompanyMasterComponent = /** @class */ (function () {
         // this.isEditMode = false;
         this.companyMasterService.getLanguagesList().subscribe(function (res) {
             _this.languageList = res.data.results;
-            // setTimeout(() => {
-            //   this.employeeLanguageRequestModel.language = '';
-            // }, 100)
         });
         this.companyMasterService.getCurrencyList().subscribe(function (res) {
             _this.currencyList = res.data.results;
-            // setTimeout(() => {
-            //     this.previousEmploymentInformation.currency = '';
-            // }, 1)
         }, function (error) {
-            _this.sweetalertError(error["error"]["status"]["messsage"]);
+            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         }, function () {
             _this.companyMasterform.patchValue({
                 currency: _this.currencyList[2]
             });
         });
         this.employeeMasterRequestDTO.currency = this.currencyList[2];
-        // this.companyMasterform.get('companyActive').setValue(true);
         this.employeeMasterRequestDTO.companyActive = true;
         this.companyMasterService.getLocationInformationOrCountryList().subscribe(function (res) {
             _this.countries = res.data.results;
         });
-        // this.companyMasterService.getCompanyMasterDataById(7).subscribe(res =>{
-        // });
         this.companyGroupMasterService.getCompanygroupdropdownReasonForExitMaster().subscribe(function (res) {
             // console.log(res);
             res.data.results.forEach(function (element) {
@@ -301,7 +292,6 @@ var CompanyMasterComponent = /** @class */ (function () {
                     website: element.website
                 };
                 _this.summaryHtmlDataList.push(obj);
-                // console.log(this.summaryHtmlDataList);
             });
         });
         console.log('summary');
@@ -316,8 +306,6 @@ var CompanyMasterComponent = /** @class */ (function () {
                 _this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupName: element.companyGroupName });
             });
         });
-        console.log(this.groupNameScaleNameStartDateObject);
-        console.log('--');
     };
     CompanyMasterComponent.prototype.cancelViewMasterForm = function () {
         this.showButtonSaveAndReset = true;
@@ -333,8 +321,6 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.saveFormValidation();
     };
     CompanyMasterComponent.prototype.onChangeEndDate = function (evt) {
-        console.log(evt);
-        console.log(this.companyMasterform.get('endDate').value);
         var from = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'yyyy-MM-dd');
         var to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
         if (from > to) {
@@ -451,7 +437,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterService.postCompanyMaster(formData).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
-                    _this.sweetalertMasterSuccess('Company  Master Updated Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Company  Master Updated Successfully.', '');
                     _this.employeeMasterRequestDTO = new company_master_dto_1.EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
                     _this.saveFormValidation();
                     // this.companyMasterform.reset();
@@ -461,10 +447,10 @@ var CompanyMasterComponent = /** @class */ (function () {
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -534,16 +520,16 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterService.postCompanyMaster(formData).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
-                    _this.sweetalertMasterSuccess('Company  Master Saved Successfully.', '');
+                    _this.alertService.sweetalertMasterSuccess('Company  Master Saved Successfully.', '');
                     _this.saveFormValidation();
                     // this.companyMasterform.reset();
                     _this.refreshHtmlTableData();
                 }
                 else {
-                    _this.sweetalertWarning(res.status.messsage);
+                    _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -565,7 +551,7 @@ var CompanyMasterComponent = /** @class */ (function () {
                 _this.companyMasterform.get('state').setValue(res.data.results[0].state);
                 _this.companyMasterform.get('city').setValue(res.data.results[0].city);
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["messsage"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -581,47 +567,6 @@ var CompanyMasterComponent = /** @class */ (function () {
                 this.deactivateRemark();
             }
         }
-    };
-    CompanyMasterComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyMasterComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    CompanyMasterComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
     };
     // selected image bindind
     CompanyMasterComponent.prototype.uploadFile = function (event, uploadFile) {
@@ -705,23 +650,9 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.selectedImageFileLogo1 = undefined;
         this.selectedImageFileLogo2 = undefined;
         this.selectedImageFileLogo3 = undefined;
-        // this.companyMasterform = this.formBuilder.group({
-        //   code: new FormControl('', Validators.required),
-        //   companyName: new FormControl('', Validators.required),
-        //   shortName: new FormControl( '', Validators.required),
-        //   companyGroupName: new FormControl('', Validators.required ),
-        //   typeOfEstablishment: new FormControl('', Validators.required ),
-        //   industryType: new FormControl('', Validators.required),
-        //   scale: new FormControl('', Validators.required ),
-        //   coClassification: new FormControl('', Validators.required),
-        //   startDate: new FormControl('', [Validators.required] ),
-        //   emailId: new FormControl('' , [  Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-        //   website: new FormControl('',  [  Validators.pattern("(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?")]),
-        // });
         this.isEditMode = false;
         this.companyMasterform.reset();
         this.companyMasterform.enable();
-        //  this.employeeMasterRequestDTO.contractor = 'No';
         this.companyMasterform.get('companyActive').setValue(true);
         this.companyMasterform.controls['endDate'].clearValidators();
         this.companyMasterform.controls['remark'].clearValidators();
@@ -741,7 +672,6 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.companyMasterform.controls["scale"].updateValueAndValidity();
         this.companyMasterform.controls["startDate"].setValidators(forms_1.Validators.required);
         this.companyMasterform.controls["startDate"].updateValueAndValidity();
-        //   this.companyMasterform.get('companyGroupActive').setValue(true);
         this.companyMasterform.get('endDate').disable();
         this.companyMasterform.get('reason').disable();
         this.companyMasterform.get('remark').disable();

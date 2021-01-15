@@ -69,7 +69,7 @@ export class NpsSummaryComponent implements OnInit {
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-      this.onNPSChangeLimit();
+      this.onChangeLimit();
     });
   }
 
@@ -85,6 +85,7 @@ export class NpsSummaryComponent implements OnInit {
       .getNpsSummaryFuturePlan(data)
       .subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
+        if (res.data.length > 0 ) {
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -95,8 +96,8 @@ export class NpsSummaryComponent implements OnInit {
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount =
         res.data.results[0].grandTotalActualAmount;
-      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-
+        }
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
       });
   }
 
@@ -106,7 +107,7 @@ export class NpsSummaryComponent implements OnInit {
     this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
       this.futureNewPolicyDeclaredAmount
     );
-    this.onNPSChangeLimit();
+    this.onChangeLimit();
     this.addFuturePolicy();
   }
 
@@ -125,7 +126,7 @@ export class NpsSummaryComponent implements OnInit {
     console.log('policyNo::', policyNo);
   }
 
-  onNPSChangeLimit() {
+  onChangeLimit() {
     this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
     this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.deductionE;
   }

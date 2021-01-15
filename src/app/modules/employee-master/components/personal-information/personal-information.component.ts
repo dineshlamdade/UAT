@@ -199,55 +199,17 @@ export class PersonalInformationComponent implements OnInit {
     //   })
     // })
 
-    // this.SharedInformationService.getAdditionalFields().subscribe(res => {
+    // this.SharedInformationService.getAdditionalFields().subscribe(res=>{
 
     //   res.data.results.filter(item => {
-    //     if (item.fieldName == 'PersonalAdditional1') {
+    //     if(item.fieldName == 'PersonalAdditional1'){
     //       this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
     //     }
-    //     if (item.fieldName == 'PersonalAdditional2') {
+    //     if(item.fieldName == 'PersonalAdditional2'){
     //       this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
     //     }
     //   })
     // })
-
-    this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(res => {
-      
-      this.rejoinee = res.rejoinee;
-      this.sameCode = res.sameCode;
-
-      if (this.rejoinee == false) {
-        localStorage.clear();
-        this.resetForm();
-        this.employeeMasterId = null;
-        this.personalInformationModel.employeeMasterId = null;
-        this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
-      }
-
-      if (this.rejoinee == true) {
-        localStorage.clear();
-        this.resetForm();
-        localStorage.setItem('employeeMasterId', res.employeeMasterId);
-        this.employeeMasterId = res.employeeMasterId
-        this.getEmployeeData();
-
-        // setTimeout(() => {
-        if (this.sameCode == false) {
-          const employeeCode = this.BasicInfoForm.get('employeeCode');
-          employeeCode.enable();
-          this.BasicInfoForm.get('employeeCode').setValue(null);
-          this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
-          this.personalInformationModel.employeeMasterId = null;
-        }
-        // }, 300)
-
-        if (this.sameCode == true) {
-          const sameCode = this.BasicInfoForm.get('employeeCode');
-          sameCode.disable();
-        }
-        localStorage.setItem('rejoinee', 'true');
-      }
-    })
   }
 
   severity(event) {
@@ -456,8 +418,8 @@ export class PersonalInformationComponent implements OnInit {
       reader.onload = () => {
         this.imageUrl = reader.result;
 
-        // this.selectedImageFile = this.imageUrl; 
-        // this.BasicInfoForm.get("image").patchValue({file: this.selectedImageFile}); 
+        // this.selectedImageFile = this.imageUrl;
+        // this.BasicInfoForm.get("image").patchValue({file: this.selectedImageFile});
         // this.BasicInfoForm.patchValue({
         //   file: reader.result
         // });

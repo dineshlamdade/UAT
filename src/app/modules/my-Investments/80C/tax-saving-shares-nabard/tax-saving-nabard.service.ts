@@ -77,29 +77,6 @@ export class TaxSavingNabardService {
     }));
   }
 
-  // uploadMultipleNSCMasterFiles(files: File[], data:any): Observable<any> {
-  //   var formData: any = new FormData();
-  //   console.log('in uploadMultipleFiles Service::', files);
-  //   for (let file of files) {
-  //     formData.append('group2MasterDocuments', file);
-  //   }
-  //   //formData.append('licDocuments', files);
-  //   formData.append('investmentGroup2MasterRequestDTO', JSON.stringify(data));
-
-  //   console.log('formData', formData);
-
-  //   formData.forEach((value, key) => {
-  //     console.log(key," ",value)
-  //   });
-  //   //return null;
-  //   return this._HTTP.post<any>(
-  //     this.apiUrl + 'nscMaster-detail',
-  //     formData,
-  //     {
-
-  //     });
-  // }
-
   uploadTSNabardTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);

@@ -1,0 +1,170 @@
+<app-leftadminmenu> </app-leftadminmenu>
+<div class="page">
+    <app-header></app-header>
+
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="apprtabview">
+                                <input name="nav" type="radio" class="about-radio" id="Employee_Master" checked />
+                                <div class="apprtabs about-page">
+                                    <div class="apprtabview-contents">
+                                        <h1>
+                                            Employee Master
+                                        </h1>
+                                    </div>
+                                </div>
+                                <label class="nav" for="Employee_Master">
+                  <span> Employee Master </span>
+                </label>
+                                <input name="nav" type="radio" class="nav home-radio" id="Payroll" />
+                                <div class="apprtabs home-page">
+                                    <div class="apprtabview-contents">
+                                        <h4>Payroll Content in this tab</h4>
+                                    </div>
+                                </div>
+                                <label class="nav" for="Payroll">
+                  <span> Payroll </span>
+                </label>
+                                <input name="nav" type="radio" class="about-radio" id="Investment" />
+                                <div class="apprtabs about-page">
+                                    <div class="apprtabview-contents">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <fieldset>
+                                                    <legend>IT Sections & Employee Selection</legend>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 class="font-14 text-purple font-bold">Purpose</h3>
+                                                            <div class="card p-10 box-border">
+                                                                <div class="row">
+                                                                    <div class="col-md-2">
+                                                                        <div class="custom-controls-stacked">
+                                                                            <label class="custom-control custom-radio">
+                                                                            <input type="radio" class="custom-control-input" name="example-radios"
+                                                                                value="option1" checked>
+                                                                            <div class="custom-control-label">Employee Select</div>
+                                                                        </label>
+                                                                        </div>
+
+
+                                                                        <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
+                                                                        </ng-multiselect-dropdown>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <!-- <label class="form-label">Job Field</label> -->
+                                                                        <div class="custom-controls-stacked">
+                                                                            <label class="custom-control custom-radio">
+                                          <input type="radio" class="custom-control-input" name="example-radios"
+                                              value="option1" checked>
+                                          <div class="custom-control-label">Job Field</div>
+                                      </label>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [data]="JFdropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
+                                                                                </ng-multiselect-dropdown>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [data]="JF2dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
+                                                                                </ng-multiselect-dropdown>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <!-- <label class="form-label">Employee List</label> -->
+                                                                        <div class="custom-controls-stacked">
+                                                                            <label class="custom-control custom-radio">
+                                                                              <input type="radio" class="custom-control-input" name="example-radios"
+                                                                                  value="option1" checked>
+                                                                              <div class="custom-control-label">Employee List</div>
+                                                                          </label>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group mb-3">
+                                                                                    <input type="file" class="dropify" accept=".jpg , .jpeg, .pdf , .png">
+                                                                                    <!-- <small id="fileHelp" class="form-text text-muted text-red">*File size upto 1000 KB</small> -->
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <button class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Upload"><b><i class="fa fa-upload"></i></b> Upload</button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-10">
+                                                        <div class="col-md-3">
+                                                            <h3 class="font-14 text-purple font-bold">IT Sections</h3>
+                                                            <div class="card p-10 box-border">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+
+                                                                        <label class="custom-control custom-radio">
+                                                                          IT Sections
+                                                                    </label>
+
+
+
+                                                                        <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [data]="dropdownList3" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
+                                                                        </ng-multiselect-dropdown>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3"></div>
+                                                        <div class="col-md-3"></div>
+                                                        <div class="col-md-3"></div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="nav" for="Investment">
+                  <span> Investment </span>
+                </label>
+                                <input name="nav" type="radio" class="about-radio" id="Reimbursement" />
+                                <div class="apprtabs about-page">
+                                    <div class="apprtabview-contents">
+                                        <h4>Reimbursement Content in this tab</h4>
+
+
+                                        <p-pickList [source]="sourceProducts" [target]="targetProducts" sourceHeader="Available" targetHeader="Selected" dragdrop="true" [responsive]="true" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" filterBy="name" sourceFilterPlaceholder="Search by name"
+                                            targetFilterPlaceholder="Search by name">
+                                            <ng-template let-product pTemplate="item">
+                                                <div class="product-item">
+                                                    abcd
+                                                </div>
+                                            </ng-template>
+                                        </p-pickList>
+
+                                    </div>
+                                </div>
+                                <label class="nav" for="Reimbursement">
+                  <span> Reimbursement </span>
+                </label>
+                                <input name="nav" type="radio" class="about-radio" id="DocumentVault" />
+                                <div class="apprtabs about-page">
+                                    <div class="apprtabview-contents">
+                                        <h4>Document Vault</h4>
+                                    </div>
+                                </div>
+                                <label class="nav" for="DocumentVault">
+                  <span> Document Vault </span>
+                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

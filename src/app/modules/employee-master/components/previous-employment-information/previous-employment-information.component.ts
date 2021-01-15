@@ -241,6 +241,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   // }
 
   editEmpGridRow(employee) {
+    this.viewEmploymentInfoForm = false;
     this.previousEmploymentInformation.previousEmployerName = employee.previousEmployerName;
     this.previousEmploymentInformation.previousDesignation = employee.previousDesignation;
     this.previousEmploymentInformation.dateOfJoining = employee.dateOfJoining;
