@@ -9,61 +9,49 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="emptabview">
-                                <input name="nav" type="radio" class="about-radio" id="summary"
-                                    [checked]="tabIndex==0" />
-                                <label class="nav" for="summary" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/employment-information/employment-summary']"
-                                    (click)="hiddenSummary = false">
+                                <input name="nav" type="radio" class="about-radio" id="summary" />
+                                <label class="nav" for="summary"
+                                    [routerLink]="['/employee-master/employment-information/employment-summary']">
                                     <span>
                                         Summary
                                     </span>
                                 </label>
 
-                                <input name="nav" type="radio" class="about-radio" id="joining"
-                                    [checked]="tabIndex==0" disabled="selectionEmploymentBoolean"/>
-                                <label class="nav" for="joining" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/employment-information/joining-information']"
-                                    (click)="hiddenSummary = false" [disabled]="selectionEmploymentBoolean">
+                                <input name="joining" type="radio" class="about-radio" id="joining" />
+                                <label class="nav" for="joining" [class.disabled]="employementJoiningInfoId"
+                                    [routerLink]="['/employee-master/employment-information/joining-information']">
                                     <span>
                                         Joining
                                     </span>
                                 </label>
 
-                                <input name="nav" type="radio" class="about-radio" id="rejoining"
-                                    [checked]="tabIndex==1" disabled="!selectionEmploymentBoolean"/>
-                                <label class="nav" for="rejoining" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/employment-information/re-joining-information']"
-                                    (click)="hiddenSummary = false" [disabled]="!selectionEmploymentBoolean">
+                                <input name="rejoining" type="radio" class="about-radio" id="rejoining" />
+                                <label class="nav" for="rejoining" [class.disabled]="!rejoiningBoolean"
+                                    [routerLink]="['/employee-master/employment-information/re-joining-information']">
                                     <span>
                                         Re - Joining
                                     </span>
                                 </label>
 
-                                <input name="nav" type="radio" class="about-radio" id="transfer"
-                                    [checked]="tabIndex==1" />
-                                <label class="nav" for="transfer" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/employment-information/transfer-information']"
-                                    (click)="hiddenSummary = false" [disabled]="!employementJoiningInfoId">
+                                <input name="transfer" type="radio" class="about-radio" id="transfer" />
+                                <label class="nav" for="transfer" 
+                                    [routerLink]="['/employee-master/employment-information/transfer-information']">
                                     <span>
                                         Transfer
                                     </span>
                                 </label>
 
-                                <input name="nav" type="radio" class="about-radio" id="exit" [checked]="tabIndex==2" />
-                                <label class="nav" for="exit" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/employment-information/exit-information']"
-                                    (click)="hiddenSummary = false" [disabled]="!employementJoiningInfoId">
+                                <input name="exit" type="radio" class="about-radio" id="exit" />
+                                <label class="nav" for="exit"
+                                    [routerLink]="['/employee-master/employment-information/exit-information']">
                                     <span>
                                         Exit
                                     </span>
                                 </label>
 
-
                                 <div class="emptabs about-page">
                                     <div class="tabview-contents">
-                                        <router-outlet> 
-                                            
-                                        </router-outlet>
+                                        <router-outlet></router-outlet>
                                     </div>
                                 </div>
                             </div>

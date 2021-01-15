@@ -95,7 +95,9 @@ export class ConfirmationModalComponent implements OnInit {
   clearBirthDate() {
     debugger
     if (this.confirmMsg == 'EmployeeAgeConfirmation') {
+      this.dialogRef.close();
       this.EventEmitterService.getClearBirthDate();
+      // this.confirmMsg = '';
     }
   }
 }

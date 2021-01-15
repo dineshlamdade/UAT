@@ -21,7 +21,8 @@
                                                 formControlName="rejoiningDate"
                                                 [(ngModel)]="ReJoiningInformationModel.rejoiningDate" [maxDate]="today"
                                                 (bsValueChange)="assignReJoiningDateTo(ReJoiningInformationModel.rejoiningDate)"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                class="form-control" placeholder="  /   /" bsDatepicker
+                                                [ngClass]="{'is-invalid' : ReJoiningForm.get('rejoiningDate').status == 'INVALID'}">
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +87,8 @@
                                     <label class="form-label">Company</label>
                                     <select class="form-control" placeholder="Select Company"
                                         formControlName="companyName"
-                                        [(ngModel)]="ReJoiningInformationModel.companyName">
+                                        [(ngModel)]="ReJoiningInformationModel.companyName"
+                                        [ngClass]="{'is-invalid' : ReJoiningForm.get('companyName').status == 'INVALID'}">
                                         <option value="" selected disabled>Select Company</option>
                                         <option *ngFor="let option of companyListForJoining" [value]="option">
                                             {{option}}
@@ -140,7 +142,7 @@
                                         Days</label>
                                     <input *ngIf="probationMonthsDays == 'true'" type="text" class="form-control"
                                         formControlName="probationPeriodDays" [(ngModel)]="probationPeriodDaysModel"
-                                        (change)="calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, JoiningInformationModel.joiningDate)">
+                                        (change)="calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, ReJoiningInformationModel.rejoiningDate)">
 
                                 </div>
 
@@ -238,7 +240,7 @@
                         <br>
                         <legend class="stint-font">Previous Stint Summary
                         </legend>
-                        <p-table [value]="EducationSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
+                        <p-table [value]="PreviousStintInfoData" [scrollable]="true" [style]="{width:'1000px'}"
                             scrollHeight="200px">
                             <ng-template pTemplate="colgroup" let-education>
                                 <colgroup>
@@ -247,7 +249,7 @@
                                     <col style="width:120px">
                                     <col style="width:170px">
                                     <col style="width:175px">
-                                    <col style="width:110px">
+                                    <!-- <col style="width:110px"> -->
                                 </colgroup>
                             </ng-template>
                             <ng-template pTemplate="header">
@@ -257,28 +259,28 @@
                                     <th class="primeng-table-header-center">Company</th>
                                     <th class="primeng-table-header-center">Last Working Date</th>
                                     <th class="primeng-table-header-center">Reason For Leaving</th>
-                                    <th class="primeng-table-header-center">Action</th>
+                                    <!-- <th class="primeng-table-header-center">Action</th> -->
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-education>
+                            <ng-template pTemplate="body" let-stint>
                                 <tr>
                                     <td class="primeng-table-header-center"><span>
-                                            12345
+                                            {{stint.employeeCode}}
                                         </span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                            Joining Date
+                                        {{stint.joiningDate}}
                                         </span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                            Company</span></td>
+                                        {{stint.company}}</span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                            Last Working Date</span></td>
+                                        {{stint.lastWorkingDate}}</span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                            Reason For Leaving</span></td>
-                                    <td class="primeng-table-header-center"><span><i
+                                        {{stint.reasonForLeaving}}</span></td>
+                                    <!-- <td class="primeng-table-header-center"><span><i
                                                 class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
                                                 tooltip="Edit"></i>
 
@@ -286,7 +288,7 @@
                                                 tooltip="View"></i></span>
 
                                         <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Delete"></i>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </ng-template>
                         </p-table>

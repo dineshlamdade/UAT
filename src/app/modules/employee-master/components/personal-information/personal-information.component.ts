@@ -75,6 +75,9 @@ export class PersonalInformationComponent implements OnInit {
   changesLabelArray: Array<any> = [];
   rejoinee: boolean = false;
   sameCode: boolean = false;
+  validBirthDate: boolean;
+  saveNextBoolean: boolean = false;
+
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
@@ -122,8 +125,12 @@ export class PersonalInformationComponent implements OnInit {
     }
 
     this.clearBirthDateSubsribtion = this.EventEmitterService.setClearBirthDate().subscribe(res => {
-      this.clearBirthDate.reset();
-      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = '';
+      debugger
+      // this.clearBirthDate.reset();
+      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
+      this.validBirthDate = null;
+      this.BasicInfoForm.get('birthDate').reset();
+
     })
 
     this.PersonalInformationService.getLocationInformation().subscribe(res => {
@@ -208,6 +215,8 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.clear();
         this.resetForm();
         this.employeeMasterId = null;
+        this.personalInformationModel.employeeMasterId = null;
+        this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
       }
 
       if (this.rejoinee == true) {
@@ -218,18 +227,20 @@ export class PersonalInformationComponent implements OnInit {
         this.getEmployeeData();
 
         // setTimeout(() => {
-          if (this.sameCode == false) {
-            const employeeCode = this.BasicInfoForm.get('employeeCode');
-            employeeCode.enable();
-            this.BasicInfoForm.get('employeeCode').setValue(null);
-            this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
-          }
+        if (this.sameCode == false) {
+          const employeeCode = this.BasicInfoForm.get('employeeCode');
+          employeeCode.enable();
+          this.BasicInfoForm.get('employeeCode').setValue(null);
+          this.personalInformationModel.employeeMasterRequestDTO.employeeCode = null;
+          this.personalInformationModel.employeeMasterId = null;
+        }
         // }, 300)
 
         if (this.sameCode == true) {
           const sameCode = this.BasicInfoForm.get('employeeCode');
           sameCode.disable();
         }
+        localStorage.setItem('rejoinee', 'true');
       }
     })
   }
@@ -239,9 +250,20 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel.severityLevel = event;
   }
 
+  saveNextPersonalInfoSubmit(personalInformationModel) {
+    this.saveNextBoolean = true;
+
+    this.personalInfoSubmit(personalInformationModel);
+  }
+
+
   // Personal Info Form Submit Function
   personalInfoSubmit(personalInformationModel) {
     debugger
+    if (this.rejoinee == false) {
+      personalInformationModel.employeeMasterId = null;
+      personalInformationModel.employeeMasterRequestDTO.employeeMasterId = null;
+    }
     if (this.rejoinee == true) {
       personalInformationModel.employeeMasterRequestDTO.rejoinee = this.rejoinee;
       personalInformationModel.employeeMasterRequestDTO.sameCode = this.sameCode;
@@ -299,13 +321,19 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
         this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        if (this.personalInformationModel.employeeMasterRequestDTO.rejoinee == true) {
+
+        if (this.rejoinee == true) {
           this.router.navigate(['/employee-master/employment-information/re-joining-information']);
+        }
+        if (this.saveNextBoolean == true) {
+          this.saveNextBoolean = false;
+          this.router.navigate(['/employee-master/employment-information/employment-summary']);
         }
         this.BasicInfoForm.markAsUntouched();
         this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
       }, (error: any) => {
         this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
     } else {
@@ -323,8 +351,14 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode);
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
         this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.BasicInfoForm.markAsUntouched();
+        if (this.saveNextBoolean == true) {
+          this.saveNextBoolean = false;
+          this.router.navigate(['/employee-master/employment-information/employment-summary']);
+        }
+        // this.router.navigate(['/employee-master/employment-information/joining-information']);
       }, (error: any) => {
         this.sweetalertError(error["error"]["status"]["messsage"]);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
@@ -345,7 +379,7 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel = res.data.results[0];
     this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
 
-    if (this.rejoinee==true && this.sameCode == false) {
+    if (this.rejoinee == true && this.sameCode == false) {
       const employeeCode = this.BasicInfoForm.get('employeeCode');
       employeeCode.enable();
       this.BasicInfoForm.get('employeeCode').setValue(null);
@@ -484,26 +518,32 @@ export class PersonalInformationComponent implements OnInit {
   }
   birthDateValidation() {
 
-    let dateObj = new Date();
-    dateObj = this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth;
-    var month = dateObj.getMonth() + 1; //months from 1-12
-    var day = dateObj.getDate();
-    var year = dateObj.getFullYear();
+    if (this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
+      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) {
+      let dateObj = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
+      // dateObj = this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth;
+      var month = dateObj.getMonth() + 1; //months from 1-12
+      var day = dateObj.getDate();
+      var year = dateObj.getFullYear();
 
-    return new Date(year + 18, month - 1, day) <= new Date();
+      this.validBirthDate = new Date(year + 18, month - 1, day) <= new Date();
+      if (this.validBirthDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
+        this.birthD(this.validBirthDate);
+      }
+    }
   }
-  birthD() {
-
-    if (this.birthDateValidation() == false) {
+  birthD(validDate) {
+    debugger
+    if (validDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
         disableClose: true, width: '664px', height: '241px',
         data: { pageValue: 'EmployeeAgeConfirmation', info: 'Employee age is less than 18 years, Do you still want to proceed?' }
       });
     }
   }
-  get clearBirthDate(): any {
-    return this.BasicInfoForm.get('birthDate');
-  }
+  // get clearBirthDate(): any {
+  //   return this.BasicInfoForm.get('birthDate');
+  // }
   validateNationalty(nationality) {
     nationality = nationality[0].toUpperCase() + nationality.substr(1).toLowerCase();
 

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 
@@ -8,8 +9,7 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 @Component({
   selector: 'app-employment-summary',
   templateUrl: './employment-summary.component.html',
-  styleUrls: ['./employment-summary.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./employment-summary.component.scss']
 })
 export class EmploymentSummaryComponent implements OnInit {
   employeeMasterId: any;
@@ -19,7 +19,7 @@ export class EmploymentSummaryComponent implements OnInit {
   TransactionHistoryData: any[];
   employementJoiningInfoId: any;
   employementReJoiningInfoId: any;
-
+  summarySubscription: Subscription;
   employeeTransferId: any;
   employeeExitInfoId: any;
 
@@ -27,14 +27,15 @@ export class EmploymentSummaryComponent implements OnInit {
   JoiningTabBoolean: boolean = true;
 
   constructor(private EmploymentInformationService: EmploymentInformationService, private router: Router,
-    private EventEmitterService: EventEmitterService) { }
-
-  ngOnInit(): void {
+    private EventEmitterService: EventEmitterService) {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
     this.getSummaryEmploymentInfo();
     this.TransactionHistorySummary();
+  }
+
+  ngOnInit(): void {
     
     let employementJoiningInfoId = Number(localStorage.getItem('employementJoiningInfoId'));
     this.employementJoiningInfoId = employementJoiningInfoId;
@@ -52,15 +53,22 @@ export class EmploymentSummaryComponent implements OnInit {
       this.employementReJoiningInfoId = false;
     }
 
+    // this.summarySubscription = this.EventEmitterService.setNavigateToEmploymentSummary().subscribe(res => {
+    //   debugger
+    //   const empId = localStorage.getItem('employeeMasterId')
+    //   this.employeeMasterId = Number(empId);
 
+    //   this.getSummaryEmploymentInfo();
+    //   this.TransactionHistorySummary();
+    // })
   }
+
   getSummaryEmploymentInfo() {
 
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
-      debugger
-      this.EmploymentInformationSumarry = res.data.results;
-      console.log(this.EmploymentInformationSumarry);
       
+      this.EmploymentInformationSumarry = res.data.results;
+
       // res.data.results.forEach(element => {
       //   let obj = {
 
@@ -126,8 +134,8 @@ export class EmploymentSummaryComponent implements OnInit {
 
   TransactionHistorySummary() {
     this.EmploymentInformationService.getTransactionHistory(this.employeeMasterId).subscribe(res => {
-
-      this.TransactionHistory = res.data.results[0].employmentInfoHistoryBean;
+      debugger
+      this.TransactionHistory = res.data.results[0];
 
       let joining = this.TransactionHistory.filter(data => {
         if (data.transaction == 'Joining') {
@@ -205,7 +213,6 @@ export class EmploymentSummaryComponent implements OnInit {
   //edit transaction history- navigate to respective page
   EditPopup(element) {
 
-    debugger
     if (element.transaction == 'Re-Joining') {
 
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
@@ -247,7 +254,6 @@ export class EmploymentSummaryComponent implements OnInit {
   //edit transaction history- navigate to respective page
   viewPopup(element) {
 
-    debugger
     if (element.transaction == 'Re-Joining') {
       element.viewReJoining = true;
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);

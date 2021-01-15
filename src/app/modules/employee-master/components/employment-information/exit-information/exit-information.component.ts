@@ -20,7 +20,7 @@ export class ExitInformationComponent implements OnInit {
   ExitForm: FormGroup;
   ExitInformation = new ExitInformationModel('', '', '', '', '', '', '', '');
   employeeMasterId: number;
-  employeeExitInfoId: number;
+  employeeExitInfoId: any;
   reasonForLeavingList = 'Personal reason,Family reason,Persue new skills,Health issue'.split(',');
   birthDate: any;
   viewExit: boolean = false;
@@ -39,7 +39,7 @@ export class ExitInformationComponent implements OnInit {
 
     const JoiningDate = localStorage.getItem('joiningDate');
     this.JoiningDate = new Date(JoiningDate)
-    
+
     this.ExitForm = this.formBuilder.group({
       resignationDate: [''],
       expectedLeavingDate: [''],
@@ -48,18 +48,17 @@ export class ExitInformationComponent implements OnInit {
       Exitremark: [''],
       projectedRetirementDate: ['']
     });
-    debugger
+
     const birthDate = localStorage.getItem('birthDate')
     this.birthDate = new Date(birthDate);
 
     this.ExitInformation.projectedRetirementDate = this.add_years(this.birthDate, 58).toString();
 
-    this.ExitInformation.projectedRetirementDate = this.datepipe.transform( this.ExitInformation.projectedRetirementDate, "dd-MMM-yyyy");
-    
+    this.ExitInformation.projectedRetirementDate = this.datepipe.transform(this.ExitInformation.projectedRetirementDate, "dd-MMM-yyyy");
+
     this.EmploymentInformationService.getNumber().subscribe(number => {
 
       this.employeeExitInfoId = number.text;
-      console.log('employeeExitInfoId::', this.employeeExitInfoId);
       this.getExitInformationData(this.employeeExitInfoId);
     })
     //  this.getExitInformationData(this.employeeExitInfoId);
@@ -140,11 +139,11 @@ export class ExitInformationComponent implements OnInit {
         // this.ExitInformation = res.data.results[0];
 
         this.employeeExitInfoId = res.data.results[0].employeeExitInfoId;
-        // localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
+        localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.ExitForm.reset();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
-
+        // this.EventEmitterService.getRejoineeStatusCode(true);
       }, (error: any) => {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
@@ -171,6 +170,7 @@ export class ExitInformationComponent implements OnInit {
       // localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.ExitForm.reset();
+      // this.EventEmitterService.getRejoineeStatusCode(true);
       this.router.navigate(['/employee-master/employment-information/employment-summary']);
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);

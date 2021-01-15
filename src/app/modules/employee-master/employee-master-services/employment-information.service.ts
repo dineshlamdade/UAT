@@ -65,6 +65,14 @@ export class EmploymentInformationService {
       }))
   }
 
+  getPreviousStintInfo(employeeMasterId) {
+
+    return this.httpClient.get(environment.baseUrl8082 + '/employment-info/previous/stint/' + employeeMasterId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
 
   // TransferTo Information API Calls
   postTransferToForm(TransferToInformation) {

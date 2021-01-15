@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
+import { EventEmitterService } from './../../employee-master/employee-master-services/event-emitter/event-emitter.service';
 @Component({
   selector: 'app-leftmenu',
   templateUrl: './leftmenu.component.html',
@@ -35,7 +37,12 @@ public menuDetails: Array<any>;
   public menuIconSelect: any;
   public staticscard = true;
   public friendscard = true;
-  constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
+  updateEmpIdSubscription: Subscription;
+  employeeMasterId: number;
+
+
+  constructor(private router: Router, @Inject(AppComponent) private app: AppComponent,
+  private EventEmitterService: EventEmitterService) {
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
@@ -92,8 +99,22 @@ public menuDetails: Array<any>;
           }],
         },
     ];
+
+    this.updateEmpIdSubscription = this.EventEmitterService.setUpdateEmployeeId().subscribe(res => {
+      this.employeeMasterId = res;
+      this.checkEmpId();
+    })
   }
 
+  checkEmpId() {
+    const empId = localStorage.getItem('employeeMasterId')
+    this.employeeMasterId = Number(empId);
+
+    if (this.employeeMasterId) {
+      return true;
+    }
+  }
+  
   ngAfterViewInit() {
     const pThis: any = this;
     setTimeout(() => {
@@ -416,5 +437,4 @@ public menuDetails: Array<any>;
   CardRemoveFriends() {
     this.friendscard = false;
   }
-
 }

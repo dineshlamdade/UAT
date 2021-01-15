@@ -11,7 +11,10 @@
   .emptabview input[type="radio"] {
     display: none;
   }
-  
+  .disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
   .emptabview label.nav {
     display: flex;
     align-items: center;

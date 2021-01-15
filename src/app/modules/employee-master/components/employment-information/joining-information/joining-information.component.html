@@ -22,7 +22,7 @@
                                                 [(ngModel)]="JoiningInformationModel.joiningDate"
                                                 (bsValueChange)="assignJoiningDateTo(JoiningInformationModel.joiningDate)"
                                                 [maxDate]="today" class="form-control" placeholder="  /   /"
-                                                bsDatepicker>
+                                                bsDatepicker [ngClass]="{'is-invalid' : JoiningForm.get('joiningDate').status == 'INVALID'}">
 
                                         </div>
                                     </div>
@@ -64,7 +64,8 @@
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Company</label>
                                     <select class="form-control" placeholder="Select Company"
-                                        formControlName="companyName" [(ngModel)]="JoiningInformationModel.companyName">
+                                        formControlName="companyName" [(ngModel)]="JoiningInformationModel.companyName"
+                                        [ngClass]="{'is-invalid' : JoiningForm.get('companyName').status == 'INVALID'}">
                                         <option value="" selected disabled>Select Company</option>
                                         <option *ngFor="let option of companyListForJoining" [value]="option">
                                             {{option}}
@@ -200,7 +201,7 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="confirmationDate"
                                                 [(ngModel)]="JoiningInformationModel.confirmationDate"
-                                                [min]="JoiningInformationModel.joiningDate"
+                                                [minDate]="JoiningInformationModel.joiningDate"
                                                 (bsValueChange)="disableExpectedConfirmationDate()" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>

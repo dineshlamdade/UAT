@@ -71,7 +71,7 @@ export class JoiningInformationComponent implements OnInit {
       joiningDate: ['', Validators.required],
       originalHireDate: [''],
       joiningDateForGratuity: [''],
-      companyName: [''],
+      companyName: ['', Validators.required],
       probationPeriodMonth: [''],
       probationPeriodDays: [''],
       noticePeriodMonth: [''],
@@ -97,6 +97,9 @@ export class JoiningInformationComponent implements OnInit {
       list.forEach(element => {
         this.companyListForJoining.push(element.companyName);
       });
+      if(this.companyListForJoining.length == 1){
+        this.JoiningInformationModel.companyName = this.companyListForJoining[0];
+      }
     })
     // this.getJoiningFormInformation();
 
@@ -307,22 +310,24 @@ export class JoiningInformationComponent implements OnInit {
   add_years(dt, n) {
     return new Date(dt.setFullYear(dt.getFullYear() + n));
   }
-  calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, rejoiningDate) {
-
-    localStorage.setItem('rejoiningDate', rejoiningDate);
-    let localrejoiningDate = localStorage.getItem('rejoiningDate');
-    let expectedConfirmationDate = new Date(localrejoiningDate);
+  calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, joiningDate) {
+    debugger
+    probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
+    localStorage.setItem('joiningDate', joiningDate);
+    let localjoiningDate = localStorage.getItem('joiningDate');
+    let expectedConfirmationDate = new Date(localjoiningDate);
     let assignDate;
     expectedConfirmationDate.setMonth(expectedConfirmationDate.getMonth() + probationPeriodMonthModel); // for Months
     assignDate = expectedConfirmationDate.toISOString().slice(0, 10);
     assignDate = this.datepipe.transform(expectedConfirmationDate, 'dd-MMM-yyyy');
     this.JoiningInformationModel.expectedConfirmationDate = assignDate;
   }
-  calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, localrejoiningDate) {
+  calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, joiningDate) {
 
-    localStorage.setItem('localrejoiningDate', localrejoiningDate);
-    let locallocalrejoiningDate = localStorage.getItem('localrejoiningDate');
-    let expectedConfirmationDate = new Date(localrejoiningDate);
+    probationPeriodDaysModel = parseInt(probationPeriodDaysModel);
+    localStorage.setItem('joiningDate', joiningDate);
+    let localjoiningDate = localStorage.getItem('joiningDate');
+    let expectedConfirmationDate = new Date(joiningDate);
 
     var probationDays = Number(probationPeriodDaysModel);
     expectedConfirmationDate.setDate(expectedConfirmationDate.getDate() + probationDays);  // for Days
