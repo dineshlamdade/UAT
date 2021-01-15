@@ -20,7 +20,8 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="rejoiningDate"
                                                 [(ngModel)]="ReJoiningInformationModel.rejoiningDate" [maxDate]="today"
-                                                (bsValueChange)="assignReJoiningDateTo(ReJoiningInformationModel.rejoiningDate)"
+                                                (bsValueChange)="assignReJoiningDateTo(ReJoiningInformationModel.rejoiningDate);
+                                                calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, ReJoiningInformationModel.rejoiningDate)"
                                                 class="form-control" placeholder="  /   /" bsDatepicker
                                                 [ngClass]="{'is-invalid' : ReJoiningForm.get('rejoiningDate').status == 'INVALID'}">
                                         </div>
@@ -269,17 +270,17 @@
                                         </span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                        {{stint.joiningDate}}
+                                            {{stint.joiningDate}}
                                         </span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                        {{stint.company}}</span></td>
+                                            {{stint.company}}</span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                        {{stint.lastWorkingDate}}</span></td>
+                                            {{stint.lastWorkingDate}}</span></td>
 
                                     <td class="primeng-table-header-center"><span>
-                                        {{stint.reasonForLeaving}}</span></td>
+                                            {{stint.reasonForLeaving}}</span></td>
                                     <!-- <td class="primeng-table-header-center"><span><i
                                                 class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
                                                 tooltip="Edit"></i>
@@ -309,7 +310,7 @@
                                     <button type="button" tooltip="Cancel" *ngIf="viewReJoining"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
-                                            class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
+                                                class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
                                 </div>
                             </div>
                         </div>

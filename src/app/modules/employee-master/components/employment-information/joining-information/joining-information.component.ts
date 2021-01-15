@@ -92,7 +92,7 @@ export class JoiningInformationComponent implements OnInit {
 
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
-      debugger
+      
       let list = res.data.results;
       list.forEach(element => {
         this.companyListForJoining.push(element.companyName);
@@ -104,7 +104,7 @@ export class JoiningInformationComponent implements OnInit {
     // this.getJoiningFormInformation();
 
     // this.EmploymentInformationService.getViewFlag().subscribe(number => {
-    //   debugger
+    //   
     //   this.certificateViewFlag = number;
     //   // console.log('certificateViewFlag::', this.certificateViewFlag);
     //   this.disableFields(this.certificateViewFlag);
@@ -112,7 +112,7 @@ export class JoiningInformationComponent implements OnInit {
     // })
     // if (this.confirmMsg == 'viewJoining') {
     this.joiningDataSubscription = this.EventEmitterService.setJoiningData().subscribe(res => {
-      debugger
+      
       if (res) {
         this.getJoiningFormInformation();
         if(res.viewJoining == true){
@@ -124,7 +124,7 @@ export class JoiningInformationComponent implements OnInit {
   }
 
   disableFields() {
-    debugger
+    
     // if (certificateViewFlag == true) {
       const temp1 = this.JoiningForm.get('joiningDate');
       temp1.disable();
@@ -162,7 +162,7 @@ export class JoiningInformationComponent implements OnInit {
   // }
 
   joiningFormSubmit(JoiningInformationModel) {
-    debugger
+    
     JoiningInformationModel.employeeMasterId = this.employeeMasterId;
     if (this.probationMonthsDays == 'false') {
       JoiningInformationModel.isProbationInMonth = 1;
@@ -236,7 +236,7 @@ export class JoiningInformationComponent implements OnInit {
   getJoiningFormInformation() {
 
     this.EmploymentInformationService.getJoiningInformation(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.employementInfoId = res.data.results[0].employementInfoId;
       localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
       if (res.data.results[0]) {
@@ -311,16 +311,18 @@ export class JoiningInformationComponent implements OnInit {
     return new Date(dt.setFullYear(dt.getFullYear() + n));
   }
   calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, joiningDate) {
-    debugger
-    probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
-    localStorage.setItem('joiningDate', joiningDate);
-    let localjoiningDate = localStorage.getItem('joiningDate');
-    let expectedConfirmationDate = new Date(localjoiningDate);
-    let assignDate;
-    expectedConfirmationDate.setMonth(expectedConfirmationDate.getMonth() + probationPeriodMonthModel); // for Months
-    assignDate = expectedConfirmationDate.toISOString().slice(0, 10);
-    assignDate = this.datepipe.transform(expectedConfirmationDate, 'dd-MMM-yyyy');
-    this.JoiningInformationModel.expectedConfirmationDate = assignDate;
+    
+    if(probationPeriodMonthModel){
+      probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
+      localStorage.setItem('joiningDate', joiningDate);
+      let localjoiningDate = localStorage.getItem('joiningDate');
+      let expectedConfirmationDate = new Date(localjoiningDate);
+      let assignDate;
+      expectedConfirmationDate.setMonth(expectedConfirmationDate.getMonth() + probationPeriodMonthModel); // for Months
+      assignDate = expectedConfirmationDate.toISOString().slice(0, 10);
+      assignDate = this.datepipe.transform(expectedConfirmationDate, 'dd-MMM-yyyy');
+      this.JoiningInformationModel.expectedConfirmationDate = assignDate;
+    }
   }
   calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, joiningDate) {
 

@@ -358,7 +358,7 @@ export class PersonalInformationComponent implements OnInit {
           this.saveNextBoolean = false;
           this.router.navigate(['/employee-master/employment-information/employment-summary']);
         }
-        // this.router.navigate(['/employee-master/employment-information/joining-information']);
+        this.router.navigate(['/employee-master/employment-information/joining-information']);
       }, (error: any) => {
         this.sweetalertError(error["error"]["status"]["messsage"]);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")

@@ -13,8 +13,8 @@
                                 <!-- <div class="tabview"> -->
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3">
-                                        <label
-                                            class="form-label">{{ 'PreviousEmploymentInfo.companyName' | transloco }}</label>
+                                        <label class="form-label">{{ 'PreviousEmploymentInfo.companyName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Employer Name"
                                             formControlName="companyName"
                                             [(ngModel)]="previousEmploymentInformation.previousEmployerName"
@@ -149,7 +149,7 @@
                                                 [disabled]="!previousEmploymentInformation.previousEmployerName"
                                                 [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
                                         'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
-                                                (click)="addPush=true;pushToGrid(previousEmploymentInformation);"
+                                                (click)="postEmploymentInfoForm(previousEmploymentInformation);"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
                                                 tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Save</button>
 
@@ -161,6 +161,14 @@
                                                 (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
                                                 tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+
+                                            <button type="button"
+                                                *ngIf="viewEmploymentInfoForm || previousEmploymentInformation.employeePreviousEmploymentId"
+                                                (click)="closePreviousEmpGridRow();"
+                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                Cancel</button>
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
@@ -196,6 +204,10 @@
                                                     <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
                                                             tooltip="Edit"
                                                             (click)="editEmpGridRow(employee)"></i>&nbsp;&nbsp;
+
+                                                        <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10"
+                                                            tooltip="View" (click)="viewEmpGridRow(employee)"></i>
+
                                                         <i class="fa fa-times font-16 text-red cursor-pointer"
                                                             tooltip="Delete"
                                                             (click)="deleteEmpGridRowDiaglog(employee)"></i>

@@ -22,15 +22,15 @@ export class ReJoiningInformationComponent implements OnInit {
   ReJoiningForm: FormGroup;
   probationDaysMonths: any;
   noticeDaysMonths: any;
-  ReJoiningInformationModel = new ReJoiningInformationModel('','', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  ReJoiningInformationModel = new ReJoiningInformationModel('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   monthsList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   employeeMasterId: number;
- // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
+  // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
   RejoiningInformationInitiateSubscription: Subscription;
   RejoiningDataSubscription: Subscription;
   employementInfoId: any;
   probationMonthsDays: any = 'false';
-  noticeMonthsDays: any =  'true';
+  noticeMonthsDays: any = 'true';
   noticePeriodMonthModel: any;
   noticePeriodDaysModel: any;
   probationPeriodMonthModel: any;
@@ -55,12 +55,12 @@ export class ReJoiningInformationComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public dialogData: any,
     public dialog: MatDialog,
     private CommonDataService: SharedInformationService) {
-      this.tomorrow.setDate(this.tomorrow.getDate());
+    this.tomorrow.setDate(this.tomorrow.getDate());
 
-     }
+  }
 
   ngOnInit(): void {
-    
+
     // if(!this.confirmMsg){
     //   let dateOfBirth = new Date(this.birthDate);
     //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
@@ -87,8 +87,8 @@ export class ReJoiningInformationComponent implements OnInit {
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    debugger
-    if(!this.employeeMasterId || this.employeeMasterId == 0){
+    
+    if (!this.employeeMasterId || this.employeeMasterId == 0) {
       this.router.navigate(['/employee-master/personal-information']);
     }
     // const empInfoId = localStorage.getItem('RejoiningEmployementInfoId')
@@ -97,25 +97,25 @@ export class ReJoiningInformationComponent implements OnInit {
     this.noticePeriodMonthModel = '';
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
-      let list=res.data.results;
+      let list = res.data.results;
       list.forEach(element => {
         this.companyListForJoining.push(element.companyName);
       });
-      if(this.companyListForJoining.length == 1){
+      if (this.companyListForJoining.length == 1) {
         this.ReJoiningInformationModel.companyName = this.companyListForJoining[0];
       }
     })
 
     this.EmploymentInformationService.getPreviousStintInfo(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.PreviousStintInfoData = res.data.results[0];
     })
-    
+
     this.RejoiningDataSubscription = this.EventEmitterService.setReJoiningData().subscribe(res => {
-      
+
       if (res) {
         this.getReJoiningFormInformation();
-        if(res.viewReJoining == true){
+        if (res.viewReJoining == true) {
           this.viewReJoining = res.viewReJoining;
           const temp1 = this.ReJoiningForm.get('rejoiningDate');
           temp1.disable();
@@ -154,11 +154,11 @@ export class ReJoiningInformationComponent implements OnInit {
     })
     //checking demo
     // this.getReJoiningFormInformation();
-  
+
   }
 
   RejoiningFormSubmit(ReJoiningInformationModel) {
-    debugger
+    
     let Rejoining: any;
     Rejoining = this.ReJoiningInformationModel;
     ReJoiningInformationModel.employeeMasterId = this.employeeMasterId;
@@ -189,12 +189,12 @@ export class ReJoiningInformationComponent implements OnInit {
     ReJoiningInformationModel.originalHireDate = this.datepipe.transform(ReJoiningInformationModel.originalHireDate, "dd-MMM-yyyy");
     ReJoiningInformationModel.joiningDateForGratuity = this.datepipe.transform(ReJoiningInformationModel.joiningDateForGratuity, "dd-MMM-yyyy");
     ReJoiningInformationModel.expectedConfirmationDate = this.datepipe.transform(ReJoiningInformationModel.expectedConfirmationDate, "dd-MMM-yyyy");
-    ReJoiningInformationModel.confirmationDate = this.datepipe.transform(ReJoiningInformationModel.confirmationDate, "dd-MMM-yyyy");  
+    ReJoiningInformationModel.confirmationDate = this.datepipe.transform(ReJoiningInformationModel.confirmationDate, "dd-MMM-yyyy");
     // ReJoiningInformationModel.projectedRetirementDate = this.datepipe.transform(ReJoiningInformationModel.projectedRetirementDate, "dd-MMM-yyyy");
 
-    
+
     if (this.employementInfoId && this.employementInfoId > 1) {
-      ReJoiningInformationModel.employementInfoId =  this.employementInfoId;
+      ReJoiningInformationModel.employementInfoId = this.employementInfoId;
       this.EmploymentInformationService.updateReJoiningInformation(ReJoiningInformationModel).subscribe(res => {
 
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
@@ -202,7 +202,7 @@ export class ReJoiningInformationComponent implements OnInit {
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId);
         this.EventEmitterService.getcloseCurrentForm();
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        if(this.confirmMsg){
+        if (this.confirmMsg) {
           this.onNoClick();
         }
         localStorage.removeItem('rejoinee');
@@ -219,7 +219,7 @@ export class ReJoiningInformationComponent implements OnInit {
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId);
         this.EventEmitterService.getcloseCurrentForm();
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-        if(this.confirmMsg){
+        if (this.confirmMsg) {
           this.onNoClick();
         }
         localStorage.removeItem('rejoinee');
@@ -236,10 +236,10 @@ export class ReJoiningInformationComponent implements OnInit {
     const employementInfoId = localStorage.getItem('RejoiningEmployementInfoId')
     this.employementInfoId = Number(employementInfoId);
     this.EmploymentInformationService.getReJoiningInformation(this.employementInfoId).subscribe(res => {
-      debugger
+      
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
-        debugger
+        
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId)
         if (this.ReJoiningInformationModel.isNoticePeriodInMonth == 1) {
           this.noticeMonthsDays = 'false';
@@ -259,16 +259,16 @@ export class ReJoiningInformationComponent implements OnInit {
           this.ReJoiningForm.get('probationPeriod').setValue('true');
           this.probationPeriodDaysModel = res.data.results[0].probationPeriodDays;
         }
-        debugger
-        if(res.data.results[0].isContinuationOfService==1){
+        
+        if (res.data.results[0].isContinuationOfService == 1) {
           this.ReJoiningForm.get('ContinuationService').setValue('Yes');
         }
-        else{
+        else {
           this.ReJoiningForm.get('ContinuationService').setValue('No');
         }
-        
+
       }
-      
+
       // if(!this.ReJoiningInformationModel.projectedRetirementDate){
       //   let dateOfBirth = new Date(this.birthDate);
       //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
@@ -307,8 +307,8 @@ export class ReJoiningInformationComponent implements OnInit {
   }
   selectionContinuationService(event) {
     this.continuationServiceBoolean = event.value;
-    
-    if(this.PreviousStintInfoData.length>0){
+
+    if (this.PreviousStintInfoData.length > 0) {
       if (this.continuationServiceBoolean == 'Yes') {
         this.ReJoiningInformationModel.originalHireDate = this.PreviousStintInfoData[0].originalHireDate;
         this.ReJoiningInformationModel.joiningDateForGratuity = this.PreviousStintInfoData[0].originalHireDate;
@@ -325,7 +325,7 @@ export class ReJoiningInformationComponent implements OnInit {
   //   setTimeout(() => {
   //     this.EmploymentInformationService.getPreviousStintInfoBySearch(value).subscribe(res => {
   //       this.PreviousStintInfoData = res.data.results[0];
-        
+
   //       if (this.continuationServiceBoolean == 'Yes' && this.PreviousStintInfoData.length>0) {
   //         this.ReJoiningInformationModel.originalHireDate = res.data.results[0][0].originalHireDate;
   //         this.ReJoiningInformationModel.joiningDateForGratuity = res.data.results[0][0].originalHireDate;
@@ -355,19 +355,21 @@ export class ReJoiningInformationComponent implements OnInit {
   }
 
   calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, rejoiningDate) {
-    
-    probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
-    localStorage.setItem('rejoiningDate', rejoiningDate);
-    let localrejoiningDate = localStorage.getItem('rejoiningDate');
-    let expectedConfirmationDate = new Date(localrejoiningDate);
-    let assignDate;
-    expectedConfirmationDate.setMonth(expectedConfirmationDate.getMonth() + probationPeriodMonthModel); // for Months
-    assignDate = expectedConfirmationDate.toISOString().slice(0, 10);
-    assignDate = this.datepipe.transform(expectedConfirmationDate, 'dd-MMM-yyyy');
-    this.ReJoiningInformationModel.expectedConfirmationDate = assignDate;
+
+    if (probationPeriodMonthModel) {
+      probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
+      localStorage.setItem('rejoiningDate', rejoiningDate);
+      let localrejoiningDate = localStorage.getItem('rejoiningDate');
+      let expectedConfirmationDate = new Date(localrejoiningDate);
+      let assignDate;
+      expectedConfirmationDate.setMonth(expectedConfirmationDate.getMonth() + probationPeriodMonthModel); // for Months
+      assignDate = expectedConfirmationDate.toISOString().slice(0, 10);
+      assignDate = this.datepipe.transform(expectedConfirmationDate, 'dd-MMM-yyyy');
+      this.ReJoiningInformationModel.expectedConfirmationDate = assignDate;
+    }
   }
   calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, rejoiningDate) {
-    
+
     probationPeriodDaysModel = parseInt(probationPeriodDaysModel);
     localStorage.setItem('rejoiningDate', rejoiningDate);
     let localrejoiningDate = localStorage.getItem('rejoiningDate');
@@ -379,7 +381,7 @@ export class ReJoiningInformationComponent implements OnInit {
     this.ReJoiningInformationModel.expectedConfirmationDate = expectedConfirmationDate;
   }
 
-  disableExpectedConfirmationDate(){
+  disableExpectedConfirmationDate() {
     // if(this.ReJoiningInformationModel.confirmationDate){
     //   const projectedRetirementDate = this.ReJoiningForm.get('expectedConfirmationDate')
     //   projectedRetirementDate.disable();

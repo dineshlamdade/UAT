@@ -20,10 +20,11 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="joiningDate"
                                                 [(ngModel)]="JoiningInformationModel.joiningDate"
-                                                (bsValueChange)="assignJoiningDateTo(JoiningInformationModel.joiningDate)"
+                                                (bsValueChange)="assignJoiningDateTo(JoiningInformationModel.joiningDate);
+                                                calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, JoiningInformationModel.joiningDate)"
                                                 [maxDate]="today" class="form-control" placeholder="  /   /"
-                                                bsDatepicker [ngClass]="{'is-invalid' : JoiningForm.get('joiningDate').status == 'INVALID'}">
-
+                                                bsDatepicker
+                                                [ngClass]="{'is-invalid' : JoiningForm.get('joiningDate').status == 'INVALID'}">
                                         </div>
                                     </div>
                                 </div>
