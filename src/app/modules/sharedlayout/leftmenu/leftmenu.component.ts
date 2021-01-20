@@ -16,6 +16,7 @@ public menuDetails: Array<any>;
 
   public isInvestmentCollapsed = true;
   public isOtherMaster = true;
+  isUploadExcel= true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
@@ -49,6 +50,9 @@ public menuDetails: Array<any>;
     }
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
+    }
+    if ((this.router.url).includes('uploadexcel')) {
+      this.isUploadExcel = false;
     }
   }
 

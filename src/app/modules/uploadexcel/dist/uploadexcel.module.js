@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.UploadexcelModule = void 0;
+var upload_excel_home_service_1 = require("./uploadexcelhome/upload-excel-home.service");
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var uploadexcel_component_1 = require("./uploadexcel.component");
@@ -17,6 +18,8 @@ var panelmenu_1 = require("primeng/panelmenu");
 var scrollpanel_1 = require("primeng/scrollpanel");
 var tooltip_1 = require("ngx-bootstrap/tooltip");
 var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
+var forms_1 = require("@angular/forms");
+var excel_service_1 = require("./uploadexcelhome/excel.service");
 var UploadexcelModule = /** @class */ (function () {
     function UploadexcelModule() {
     }
@@ -33,6 +36,11 @@ var UploadexcelModule = /** @class */ (function () {
                 scrollpanel_1.ScrollPanelModule,
                 tooltip_1.TooltipModule.forRoot(),
                 ng_multiselect_dropdown_1.NgMultiSelectDropDownModule.forRoot(),
+                forms_1.ReactiveFormsModule,
+                forms_1.FormsModule
+            ],
+            providers: [excel_service_1.ExcelService,
+                upload_excel_home_service_1.UploadExcelHomeService,
             ]
         })
     ], UploadexcelModule);

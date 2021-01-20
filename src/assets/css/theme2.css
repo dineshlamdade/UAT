@@ -1122,6 +1122,13 @@ strong {
   height: 137px!important;
 }
 
+.height-607
+{
+height: 607px!important;
+overflow-y: scroll!important;
+}
+
+
 
 /* Custom Width css End */
 
@@ -1279,7 +1286,7 @@ strong {
   right: -6px;
   color: green; */
   position: absolute;
-  right: -314px;
+  right: -287px;
   top: 2px;
   color: green;
 }
@@ -2431,3 +2438,13 @@ width: 100%;
   font-weight: 500!important;
   font-size: 12px!important;
 }
+
+/* added by Anant */
+/* .Custom_Table1 .table td,
+.table th {
+  padding-top: 0px!important;
+  padding-bottom: 5px!important;
+  padding-left: 5px!important;
+  padding-right: 5px!important;
+  font-size: 12px!important;
+} */
