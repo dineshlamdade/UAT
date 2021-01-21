@@ -178,6 +178,7 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="expectedConfirmationDate"
                                                 [(ngModel)]="JoiningInformationModel.expectedConfirmationDate"
+                                                [minDate]="JoiningInformationModel.joiningDate"
                                                 (change)="confirmationPopup()" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
@@ -188,7 +189,8 @@
                                     <label class="form-label">
                                         Remark</label>
                                     <input type="text" class="form-control" formControlName="expectedRemark"
-                                        [(ngModel)]="JoiningInformationModel.expectedConfirmationRemark">
+                                        [(ngModel)]="JoiningInformationModel.expectedConfirmationRemark"
+                                        tooltip="{{JoiningInformationModel.expectedConfirmationRemark}}">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
@@ -202,8 +204,7 @@
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="confirmationDate"
                                                 [(ngModel)]="JoiningInformationModel.confirmationDate"
-                                                [minDate]="JoiningInformationModel.joiningDate"
-                                                (bsValueChange)="disableExpectedConfirmationDate()" class="form-control"
+                                                [minDate]="JoiningInformationModel.joiningDate" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -213,7 +214,8 @@
                                     <label class="form-label">
                                         Remark</label>
                                     <input type="text" class="form-control" formControlName="confirmationRemark"
-                                        [(ngModel)]="JoiningInformationModel.confirmationRemark">
+                                        [(ngModel)]="JoiningInformationModel.confirmationRemark"
+                                        tooltip="{{JoiningInformationModel.confirmationRemark}}">
                                 </div>
                             </div>
                         </fieldset>
@@ -221,17 +223,24 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
-                                    <button type="button" tooltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
+                                    <button type="button" toltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-15"><b><i
                                                 class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
 
                                     <button type="submit" [disabled]="JoiningForm.invalid || JoiningForm.untouched"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                         [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
-                           'btn-bg-green': !JoiningForm.invalid}" tooltip="Save" [hidden]="viewJoining"><b><i
+                           'btn-bg-green': !JoiningForm.invalid}" tooltip="Save"
+                                        [hidden]="viewJoining || editJoining"><b><i
                                                 class="fa fa-floppy-o"></i></b>Save</button>
 
-                                    <button type="button" tooltip="Cancel" *ngIf="viewJoining"
+                                    <button type="submit" *ngIf="editJoining"
+                                        [disabled]="JoiningForm.invalid || JoiningForm.untouched" [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
+                                        'btn-bg-green': !JoiningForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                    <button type="button" tooltip="Cancel" *ngIf="viewJoining || editJoining"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
                                                 class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>

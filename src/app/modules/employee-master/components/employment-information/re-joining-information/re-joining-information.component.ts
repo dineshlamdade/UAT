@@ -46,6 +46,7 @@ export class ReJoiningInformationComponent implements OnInit {
   tomorrow = new Date();
   companyListForJoining: Array<any> = [];
   viewReJoining: boolean = false;
+  editReJoining: boolean = false;
   public today = new Date();
 
   constructor(private formBuilder: FormBuilder,
@@ -114,6 +115,7 @@ export class ReJoiningInformationComponent implements OnInit {
     this.RejoiningDataSubscription = this.EventEmitterService.setReJoiningData().subscribe(res => {
 
       if (res) {
+        this.editReJoining = res.editReJoining;
         this.getReJoiningFormInformation();
         if (res.viewReJoining == true) {
           this.viewReJoining = res.viewReJoining;

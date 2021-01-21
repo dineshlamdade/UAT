@@ -36,7 +36,7 @@ export class EmploymentSummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     let employementJoiningInfoId = Number(localStorage.getItem('employementJoiningInfoId'));
     this.employementJoiningInfoId = employementJoiningInfoId;
     if (employementJoiningInfoId > 0) {
@@ -54,7 +54,7 @@ export class EmploymentSummaryComponent implements OnInit {
     }
 
     // this.summarySubscription = this.EventEmitterService.setNavigateToEmploymentSummary().subscribe(res => {
-    //   debugger
+    //   
     //   const empId = localStorage.getItem('employeeMasterId')
     //   this.employeeMasterId = Number(empId);
 
@@ -66,7 +66,7 @@ export class EmploymentSummaryComponent implements OnInit {
   getSummaryEmploymentInfo() {
 
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
-      
+
       this.EmploymentInformationSumarry = res.data.results;
 
       // res.data.results.forEach(element => {
@@ -134,7 +134,7 @@ export class EmploymentSummaryComponent implements OnInit {
 
   TransactionHistorySummary() {
     this.EmploymentInformationService.getTransactionHistory(this.employeeMasterId).subscribe(res => {
-      debugger
+
       this.TransactionHistory = res.data.results[0];
 
       let joining = this.TransactionHistory.filter(data => {
@@ -214,6 +214,7 @@ export class EmploymentSummaryComponent implements OnInit {
   EditPopup(element) {
 
     if (element.transaction == 'Re-Joining') {
+      element.editReJoining = true;
 
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
       setTimeout(() => {
@@ -221,6 +222,7 @@ export class EmploymentSummaryComponent implements OnInit {
       }, 500)
     }
     if (element.transaction == 'Joining') {
+      element.editJoining = true;
 
       this.router.navigate(['/employee-master/employment-information/joining-information']);
       setTimeout(() => {
@@ -228,13 +230,14 @@ export class EmploymentSummaryComponent implements OnInit {
       }, 500)
     }
     if (element.transaction == 'Transfer') {
-
+      element.editTransfer = true;
       this.router.navigate(['/employee-master/employment-information/transfer-information']);
       setTimeout(() => {
         this.EventEmitterService.getTransferToData(element);
       }, 500)
     }
     if (element.transaction == 'Exit') {
+      element.editExit = true;
 
       this.router.navigate(['/employee-master/employment-information/exit-information']);
       setTimeout(() => {
@@ -242,12 +245,22 @@ export class EmploymentSummaryComponent implements OnInit {
       }, 500)
     }
     if (element.transaction == 'Rejoining Confirmaton' && element.rejoiningConfirmationId > 0) {
+      element.editReJoining = true;
 
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
+
+      setTimeout(() => {
+        this.EventEmitterService.getReJoiningData(element);
+      }, 500)
     }
     if (element.transaction == 'Confirmaton' && element.joiningConfirmationId > 0) {
+      element.editJoining = true;
 
       this.router.navigate(['/employee-master/employment-information/joining-information']);
+
+      setTimeout(() => {
+        this.EventEmitterService.getJoiningData(element);
+      }, 500)
     }
   }
 
@@ -287,11 +300,21 @@ export class EmploymentSummaryComponent implements OnInit {
     }
     if (element.transaction == 'Rejoining Confirmaton' && element.rejoiningConfirmationId > 0) {
 
+      element.viewReJoining = true;
       this.router.navigate(['/employee-master/employment-information/re-joining-information']);
+
+      setTimeout(() => {
+        this.EventEmitterService.getReJoiningData(element);
+      }, 500)
     }
     if (element.transaction == 'Confirmaton' && element.joiningConfirmationId > 0) {
 
+      element.viewJoining = true;
+      // this.EmploymentInformationService.setViewFlag(true);
       this.router.navigate(['/employee-master/employment-information/joining-information']);
+      setTimeout(() => {
+        this.EventEmitterService.getJoiningData(element);
+      }, 500)
     }
   }
 }

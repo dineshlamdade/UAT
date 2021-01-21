@@ -242,7 +242,7 @@ export class IdentityInformationComponent implements OnInit {
     })
   }
   dataBinding(res) {
-
+    debugger
     if (res.data.results[0].employeeESICDTOResponseDTO) {
       this.IdentityInformation.employeeESICDTORequestDTO = res.data.results[0].employeeESICDTOResponseDTO;
     }

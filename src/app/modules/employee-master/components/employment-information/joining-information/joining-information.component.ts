@@ -44,6 +44,7 @@ export class JoiningInformationComponent implements OnInit {
   companyListForJoining: Array<any> = [];
   certificateViewFlag: boolean = false;
   viewJoining: boolean = false;
+  editJoining: boolean = false;
   public today = new Date();
 
   constructor(private formBuilder: FormBuilder,
@@ -115,6 +116,7 @@ export class JoiningInformationComponent implements OnInit {
       
       if (res) {
         this.getJoiningFormInformation();
+        this.editJoining = res.editJoining;
         if(res.viewJoining == true){
           this.viewJoining = res.viewJoining;
           this.disableFields();
@@ -241,6 +243,7 @@ export class JoiningInformationComponent implements OnInit {
       localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
       if (res.data.results[0]) {
         this.JoiningInformationModel = res.data.results[0];
+        this.JoiningInformationModel.joiningDate = new Date(this.JoiningInformationModel.joiningDate);
         // this.JoiningInformationModel.companyName = res.data.results[0].companyName;
         if (res.data.results.length > 0) {
           if (this.JoiningInformationModel.isNoticePeriodInMonth == 1) {

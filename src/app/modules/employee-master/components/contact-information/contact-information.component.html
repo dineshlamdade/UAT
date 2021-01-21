@@ -57,7 +57,6 @@
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Email" formControlName="officialEmail"
                                                             pattern="\S+@\S+\.\S+"
-                                                            (change)="validateOfficialEmail(contactInformation.employeeMasterRequestDTO.officialEmailId)"
                                                             [(ngModel)]="contactInformation.employeeMasterRequestDTO.officialEmailId"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('officialEmail').status == 'INVALID'}">
                                                     </div>

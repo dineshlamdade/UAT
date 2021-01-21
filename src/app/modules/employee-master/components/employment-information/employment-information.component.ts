@@ -36,7 +36,7 @@ export class EmploymentInformationComponent implements OnInit {
       rejoining: [''],
       transfer: [''],
       exit: [''],
-    });debugger
+    });
     this.new = localStorage.getItem('rejoinee');
      if(this.new == 'true'){
        this.rejoiningBoolean = true;
@@ -45,7 +45,6 @@ export class EmploymentInformationComponent implements OnInit {
       this.rejoiningBoolean = false;
      }
     // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
-    //   debugger
     //   this.rejoiningBoolean = res.data.results[0];
     // })
 
@@ -63,7 +62,7 @@ export class EmploymentInformationComponent implements OnInit {
     }
 
     this.statusSubscription = this.EventEmitterService.setRejoineeStatusCode().subscribe(res => {
-      debugger
+      
       this.rejoiningBoolean = res.rejoinee;
       // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
       //   debugger

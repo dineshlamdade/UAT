@@ -140,7 +140,8 @@
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
                                                 tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
-                                            <button type="button" *ngIf="viewBankForm || BankInformationModel.employeeBankInfoId"
+                                            <button type="button"
+                                                *ngIf="viewBankForm || BankInformationModel.employeeBankInfoId"
                                                 (click)="closeBankGridRow(BankInformationModel);"
                                                 class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
@@ -175,6 +176,10 @@
                                                     <th scope="col" class="font700 wd-20">Action</th>
                                                 </tr>
                                             </thead>
+                                            <tr *ngIf="bankSummaryGridData.length == 0">
+                                                <td colspan="5"><span class="font-14 font500 align-center text-red">No
+                                                        data found</span></td>
+                                            </tr>
                                             <tbody>
                                                 <tr *ngFor="let bank of bankSummaryGridData">
                                                     <td><span>{{bank.country}}</span></td>

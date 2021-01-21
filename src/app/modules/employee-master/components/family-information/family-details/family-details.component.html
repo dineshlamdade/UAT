@@ -492,6 +492,10 @@
                                                 <th scope="col" class="font700 wd-20">Action</th>
                                             </tr>
                                         </thead>
+                                        <tr *ngIf="FamilySummaryGridData.length == 0">
+                                            <td colspan="4"><span class="font-14 font500 align-center text-red">No
+                                                    data found</span></td>
+                                        </tr>
                                         <tbody>
                                             <tr *ngFor="let family of FamilySummaryGridData">
                                                 <td><span>{{family.familyMemberName}}</span></td>

@@ -98,7 +98,7 @@ export class LanguageDetailComponent implements OnInit {
   getAllLanguageSummary() {
 
     this.EducationSkillsInformationService.getAllLanguageSummary(this.employeeMasterId).subscribe(res => {
-      
+
       this.LanguageSummaryGridData = res.data.results[0];
 
       // this.validatingHigherQualification();
@@ -106,13 +106,14 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   postLanguageForm(employeeLanguageRequestModel) {
-    
+
     employeeLanguageRequestModel.employeeMasterId = this.employeeMasterId
 
     this.EducationSkillsInformationService.postLanguageInfoForm(employeeLanguageRequestModel).subscribe(res => {
-      
+
       this.getAllLanguageSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.resetLanguageForm()
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -128,6 +129,9 @@ export class LanguageDetailComponent implements OnInit {
       this.getAllLanguageSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.employeeLanguageRequestModel.employeeLanguageinfoId = 0;
+      this.resetLanguageForm();
+      this.LanguageEditFlag = false;
+      this.LanguageviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -135,7 +139,7 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   editLanguageRow(language) {
-    
+
     this.LanguageEditFlag = true;
     this.LanguageviewFlag = false;
     this.employeeLanguageRequestModel.employeeLanguageinfoId = language.employeeLanguageinfoId;
@@ -155,7 +159,7 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   viewLanguageRow(language) {
-    
+
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = true;
     this.employeeLanguageRequestModel = language;
@@ -170,7 +174,7 @@ export class LanguageDetailComponent implements OnInit {
     temp4.disable();
   }
   deleteLanguageRow(language) {
-    
+
     this.languageId = language.employeeLanguageinfoId;
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,
@@ -179,7 +183,7 @@ export class LanguageDetailComponent implements OnInit {
     });
   }
 
-  cancelSkillView() {
+  cancelLanguageView() {
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = false;
     this.resetLanguageForm();
@@ -217,6 +221,8 @@ export class LanguageDetailComponent implements OnInit {
 
   resetLanguageForm() {
     this.LanguageInfoForm.reset();
+    this.LanguageEditFlag = false;
+    this.LanguageviewFlag = false;
   }
 
 

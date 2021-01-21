@@ -28,6 +28,7 @@ export class TransferInformationComponent implements OnInit {
   // companyListForJoining = 'Accenture,TCS,Amdocs,Cognizant,Infosys,WhiteHedge,CloudHedge,Zensar,Google,Straviso,Anar Solutions,Microsoft'.split(',');
   companyListForJoining: Array<any> = [];
   viewTransfer: boolean = false;
+  editTransfer: boolean = false;
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
@@ -43,15 +44,15 @@ export class TransferInformationComponent implements OnInit {
       transferTo: [''],
       effectiveDate: [''],
       transferRemark: [''],
-    }); debugger
+    }); 
     const JoiningDate = localStorage.getItem('joiningDate');
     this.JoiningDate = new Date(JoiningDate)
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
-      debugger
+      
       let list = res.data.results;
       list.forEach(element => {
-        debugger
+        
         this.companyListForJoining.push(element.companyName);
       });
 
@@ -63,10 +64,11 @@ export class TransferInformationComponent implements OnInit {
     })
 
     this.transferToSubscription = this.EventEmitterService.setTransferToData().subscribe(res => {
-      debugger
+      
       if (res) {
         this.employeeTransferId = res.transferId
         this.viewTransfer = res.viewTransfer;
+        this.editTransfer = res.editTransfer;
         this.getTranferToData(this.employeeTransferId);
 
         if(this.viewTransfer == true){

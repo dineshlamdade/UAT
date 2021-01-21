@@ -102,12 +102,17 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="BankAccountDataSource.length==0">No
+                        data found</span>
 
                     <div class="row mt-15">
                         <div class="col-12">
                             <div class="float-right mb-25">
 
                                 <button type="submit" (click)="saveBankDetails(BankAccountDataSource)"
+                                    [disabled]="BankAccountDataSource.length==0" [ngClass]="{'disabled-btn-bg-green' : BankAccountDataSource.length==0,
+                                'btn-bg-green': BankAccountDataSource.length>0}"
                                     class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                     tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
                             </div>

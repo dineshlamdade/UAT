@@ -101,10 +101,10 @@ export class SkillsDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-      
+
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
-          
+
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
           this.getAllEducationSummary();
         })
@@ -121,9 +121,9 @@ export class SkillsDetailComponent implements OnInit {
 
 
   getAllEducationSummary() {
-    
+
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-      
+
       this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
@@ -146,14 +146,14 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   postEducationForm(employeeEducationRequestModel) {
-    
+
     employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
 
     employeeEducationRequestModel.startDate = this.datepipe.transform(employeeEducationRequestModel.startDate, 'dd-MMM-yyyy');
     employeeEducationRequestModel.endDate = this.datepipe.transform(employeeEducationRequestModel.endDate, 'dd-MMM-yyyy');
 
     this.EducationSkillsInformationService.postEducationInfoForm(employeeEducationRequestModel).subscribe(res => {
-      
+
       this.getAllEducationSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetEducationForm();
@@ -182,7 +182,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   editEducationRow(education) {
-    
+
     this.educationEditFlag = true;
     this.educationviewFlag = false;
     this.validateQualification = false;
@@ -234,7 +234,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   viewEducationRow(education) {
-    
+
     this.educationviewFlag = true;
     this.educationEditFlag = false;
     this.validateQualification = true;
@@ -284,7 +284,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   deleteEducationRow(education) {
-    
+
     this.educationId = education.employeeEducationID;
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,
@@ -294,7 +294,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   cancelEducationEditView() {
-    
+
     this.educationEditFlag = false;
     this.educationviewFlag = false;
     this.validateQualification = false;
@@ -450,6 +450,8 @@ export class SkillsDetailComponent implements OnInit {
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -466,6 +468,8 @@ export class SkillsDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
       this.employeeSkillDetailsRequestModel.employeeSkillInfoId = 0;
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -580,5 +584,7 @@ export class SkillsDetailComponent implements OnInit {
 
   resetSkillForm() {
     this.SkillInfoForm.reset();
+    this.skillEditFlag = false;
+    this.skillviewFlag = false;
   }
 }

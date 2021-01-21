@@ -121,7 +121,8 @@
                                                     class="form-control" placeholder="Select Birth Date" bsDatepicker
                                                     [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
-                                                    (bsValueChange)="birthDateValidation();"
+                                                    (click)="birthDateClickEvent($event)"
+                                                    (ngModelChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth);"
                                                     [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}">
                                             </div>
                                         </div>
@@ -154,7 +155,8 @@
                                             }}</label>
                                         <select class="form-control" formControlName="maritalStatus"
                                             [(ngModel)]="personalInformationModel.maritialStatus"
-                                            (change)="clearMarriageDate(status)" placeholder="Select">
+                                            (change)="clearMarriageDate(personalInformationModel.maritialStatus)"
+                                            placeholder="Select">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let status of maritalStatus" [value]="status">
                                                 {{status}}
@@ -184,7 +186,7 @@
                                             'PersonalInformationForm.physicallyChallengedBoolean' | transloco }}</label>
                                         <select class="form-control" formControlName="physicallyChallengedBoolean"
                                             [(ngModel)]="Physically" placeholder="Select"
-                                            (change)="validatePhysically(option)">
+                                            (change)="validatePhysically(Physically)">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let option of physicallyChallengedBoolean" [value]="option">
                                                 {{option}}
@@ -306,19 +308,24 @@
                                 <div class="row mt-15">
                                     <div class="col-12">
                                         <div class="float-right mb-15">
-                                            <button type="button" tooltip="Previous"
+                                            <button type="button" tooltip="Previous" [disabled]="!employeeMasterId"
+                                                [ngClass]="{'next-previous-disabled' : !employeeMasterId,
+                                   'bg-teal-400': employeeMasterId}"
                                                 [routerLink]="['/employee-master/employee-summary']"
-                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-chevron-circle-left"
                                                         aria-hidden="true"></i></b>Previous</button>
 
-                                            <button type="button" tooltip="Next"
+                                            <button type="button" tooltip="Next" [disabled]="!employeeMasterId"
+                                                [ngClass]="{'next-previous-disabled' : !employeeMasterId,
+                                            'bg-teal-400': employeeMasterId}"
                                                 [routerLink]="['/employee-master/employment-information/employment-summary']"
-                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-chevron-circle-right"
                                                         aria-hidden="true"></i></b>Next</button>
 
-                                            <button type="button" (click)="saveNextPersonalInfoSubmit(personalInformationModel)"
+                                            <button type="button"
+                                                (click)="saveNextPersonalInfoSubmit(personalInformationModel)"
                                                 [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched,

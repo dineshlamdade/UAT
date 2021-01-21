@@ -414,8 +414,8 @@ export class FamilyDetailsComponent implements OnInit {
 
   birthDateValidation() {
     
-    let dateObj = new Date();
-    dateObj = this.familyMemberInfoRequestDTO.dateOfBirth;
+    let dateObj = new Date(this.familyMemberInfoRequestDTO.dateOfBirth);
+    // dateObj = this.familyMemberInfoRequestDTO.dateOfBirth;
     var month = dateObj.getMonth() + 1; //months from 1-12
     var day = dateObj.getDate();
     var year = dateObj.getFullYear();

@@ -6,17 +6,26 @@
                     <form [formGroup]="EducationInfoForm">
                         <!-- Member Details -->
                         <fieldset>
-                            <legend><i class="fa fa-mortar-board"></i>
+                            <legend>
                                 Education Information</legend>
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Education</label>
-                                    <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
+                                    <select class="form-control" placeholder="Select" formControlName="education"
+                                        [(ngModel)]="employeeEducationRequestModel.education"
+                                        (onSelect)="IlliterateValidation()">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let education of highestEducationList" [value]="education">
+                                            {{education}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                                         (completeMethod)="filterHighestEducation($event)" [dropdown]="true"
                                         formControlName="education"
                                         [(ngModel)]="employeeEducationRequestModel.education"
                                         (onSelect)="IlliterateValidation()">
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
@@ -56,11 +65,19 @@
 
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Course Type</label>
-                                    <p-autoComplete [suggestions]="filteredcourseTypeList"
+                                    <select class="form-control" placeholder="Select" formControlName="courseType"
+                                        [(ngModel)]="employeeEducationRequestModel.courseType">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let courseType of courseTypeList" [value]="courseType">
+                                            {{courseType}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredcourseTypeList"
                                         (completeMethod)="filtercourseType($event)" [dropdown]="true"
                                         placeholder="Select" formControlName="courseType"
                                         [(ngModel)]="employeeEducationRequestModel.courseType">
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
@@ -122,44 +139,43 @@
                                             checked [(ngModel)]="employeeEducationRequestModel.isHighestQualification"
                                             formControlName="isHighestQualificationBoolean"
                                             (change)="highestEducationBoolean(employeeEducationRequestModel.isHighestQualification)">
-                                        <span class="custom-control-label">Is Highest Level Qualification</span>
+                                        <span class="custom-control-label"><b>Highest level qualification</b></span>
                                     </label>
-                                </div>
-                            </div>
-
-                            <div class="row mt-15">
-                                <div class="col-12">
-                                    <div class="float-right mb-15">
-                                        <button type="submit" (click)="postEducationForm(employeeEducationRequestModel)"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                                            [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
-                                            'btn-bg-green':!EducationInfoForm.invalid}"
-                                            [hidden]="educationEditFlag || educationviewFlag"
-                                            [disabled]="EducationInfoForm.invalid"><b><i
-                                                    class="fa fa-floppy-o"></i></b>Save</button>
-
-                                        <button type="submit" [disabled]="EducationInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
-                                        'btn-bg-green':!EducationInfoForm.invalid}"
-                                            (click)="updateEducationForm(employeeEducationRequestModel)"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                            tooltip="Update" *ngIf="educationEditFlag"><b><i
-                                                    class="fa fa-floppy-o"></i></b>Update</button>
-
-                                        <button type="button" tooltip="Reset" (click)="resetEducationForm()"
-                                            [hidden]="educationviewFlag"
-                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
-
-                                        <button type="button" *ngIf="educationEditFlag || educationviewFlag"
-                                            (click)="cancelEducationEditView()"
-                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
-                                    </div>
                                 </div>
                             </div>
                         </fieldset>
                     </form>
-                    <br>
+                    <div class="row mt-15">
+                        <div class="col-12">
+                            <div class="float-right mb-15">
+                                <button type="submit" (click)="postEducationForm(employeeEducationRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                                    [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
+                                    'btn-bg-green':!EducationInfoForm.invalid}"
+                                    [hidden]="educationEditFlag || educationviewFlag"
+                                    [disabled]="EducationInfoForm.invalid"><b><i
+                                            class="fa fa-floppy-o"></i></b>Save</button>
+
+                                <button type="submit" [disabled]="EducationInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
+                                'btn-bg-green':!EducationInfoForm.invalid}"
+                                    (click)="updateEducationForm(employeeEducationRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Update"
+                                    *ngIf="educationEditFlag"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                <button type="button" tooltip="Reset" (click)="resetEducationForm()"
+                                    [hidden]="educationviewFlag"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
+
+                                <button type="button" *ngIf="educationEditFlag || educationviewFlag"
+                                    (click)="cancelEducationEditView()"
+                                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     <legend style="font-size: 17px !important;">Summary</legend>
                     <p-table [value]="EducationSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
@@ -170,9 +186,9 @@
                                 <col style="width:120px">
                                 <col style="width:170px">
                                 <col style="width:175px">
-                                <col style="width:170px">
+                                <col style="width:200px">
                                 <col style="width:145px">
-                                <col style="width:150px">
+                                <col style="width:100px">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -220,6 +236,9 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="EducationSummaryData.length==0">No
+                        data found</span>
                 </div>
             </div>
         </div>

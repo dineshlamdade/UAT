@@ -54,13 +54,19 @@
                                                 class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
 
                                     <button type="submit" [disabled]="TransferForm.invalid || TransferForm.untouched"
-                                        [hidden]="viewTransfer"
+                                        [hidden]="viewTransfer || editTransfer"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                         [ngClass]="{'disabled-btn-bg-green' : TransferForm.invalid || TransferForm.untouched,
                                         'btn-bg-green': !TransferForm.invalid}" tooltip="Save"><b><i
                                                 class="fa fa-floppy-o"></i></b>Save</button>
 
-                                    <button type="button" tooltip="Cancel" *ngIf="viewTransfer"
+                                    <button type="submit" *ngIf="editTransfer"
+                                        [disabled]="TransferForm.invalid || TransferForm.untouched" [ngClass]="{'disabled-btn-bg-green' : TransferForm.invalid || TransferForm.untouched,
+                                        'btn-bg-green': !TransferForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                    <button type="button" tooltip="Cancel" *ngIf="viewTransfer || editTransfer"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
                                                 class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>

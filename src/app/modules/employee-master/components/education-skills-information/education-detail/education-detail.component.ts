@@ -102,19 +102,12 @@ export class EducationDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-
+      debugger
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
 
-          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
           this.getAllEducationSummary();
-        })
-      }
-      if (res == 'skillsItemDelete') {
-        this.EducationSkillsInformationService.deleteSkillsGridItem(this.skillId).subscribe(res => {
-
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-          this.getAllSkillsSummary();
         })
       }
     })
@@ -124,13 +117,13 @@ export class EducationDetailComponent implements OnInit {
   getAllEducationSummary() {
 
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-
-      this.EducationSummaryGridData = res.data.results[0];
+      debugger
+      // this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
     }, (error: any) => {
       if (error["error"]["status"]["messsage"] == 'EmployeeSkillDetails details list is empty') {
-        this.EducationSummaryGridData = [];
+        this.EducationSummaryData = [];
       }
     })
   }
@@ -158,6 +151,8 @@ export class EducationDetailComponent implements OnInit {
       this.getAllEducationSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetEducationForm();
+      this.educationEditFlag = false;
+      this.educationviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -176,6 +171,8 @@ export class EducationDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetEducationForm();
       this.employeeEducationRequestModel.employeeEducationID = 0;
+      this.educationEditFlag = false;
+      this.educationviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -334,6 +331,8 @@ export class EducationDetailComponent implements OnInit {
 
   resetEducationForm() {
     this.EducationInfoForm.reset();
+    this.educationEditFlag = false;
+    this.educationviewFlag = false;
   }
 
 
@@ -451,6 +450,8 @@ export class EducationDetailComponent implements OnInit {
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -467,6 +468,8 @@ export class EducationDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
       this.employeeSkillDetailsRequestModel.employeeSkillInfoId = 0;
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })

@@ -86,10 +86,10 @@
                                             <label class="form-label">CTC - Per Annum</label>
                                             <div class="row">
                                                 <div class="col-sm-3 col-md-5 country-code">
-                                                    <select class="form-control selectpicker"
-                                                        placeholder="Select Currency" formControlName="currency"
+                                                    <select class="form-control selectpicker" placeholder="Select"
+                                                        formControlName="currency" (change)="validateCTCperAnum()"
                                                         [(ngModel)]="previousEmploymentInformation.currency">
-                                                        <option value="" data-hidden="true">Select Curr</option>
+                                                        <option value="" data-hidden="true">Select</option>
                                                         <option *ngFor="let currency of currencyArray"
                                                             [value]="currency">
                                                             {{currency}}
@@ -151,16 +151,16 @@
                                         'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
                                                 (click)="postEmploymentInfoForm(previousEmploymentInformation);"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
 
                                             <button type="button"
                                                 *ngIf="previousEmploymentInformation.employeePreviousEmploymentId"
-                                                [disabled]="!previousEmploymentInformation.previousEmployerName" [hidden]="viewEmploymentInfoForm"
-                                                [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
+                                                [disabled]="!previousEmploymentInformation.previousEmployerName"
+                                                [hidden]="viewEmploymentInfoForm" [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
                                         'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
                                                 (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+                                                tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
 
                                             <button type="button"
@@ -170,7 +170,8 @@
                                                 tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
                                                 Cancel</button>
 
-                                            <button type="button" tooltip="Reset" (click)="resetForm()" [hidden]="viewEmploymentInfoForm"
+                                            <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                [hidden]="viewEmploymentInfoForm"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
                                         </div>
@@ -190,9 +191,13 @@
                                                     <th scope="col" class="font700 wd-30">Joining Date</th>
                                                     <th scope="col" class="font700 wd-20">Leaving Date</th>
                                                     <th scope="col" class="font700 wd-20">CTC Per Annum</th>
-                                                    <th scope="col" class="font700 wd-20">Actions</th>
+                                                    <th scope="col" class="font700 wd-10">Actions</th>
                                                 </tr>
                                             </thead>
+                                            <tr *ngIf="previousSmmaryGridData.length == 0">
+                                                <td colspan="6"><span class="font-14 font500 align-center text-red">No
+                                                        data found</span></td>
+                                            </tr>
                                             <tbody>
                                                 <tr *ngFor="let employee of previousSmmaryGridData">
                                                     <td><span>{{employee.previousEmployerName}}</span></td>

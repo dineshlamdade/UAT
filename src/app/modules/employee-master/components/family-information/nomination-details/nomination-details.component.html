@@ -3,8 +3,9 @@
         <div class="col-12"> -->
     <div class="card">
         <div class="card-body">
-            <legend class="nomination-title">Nomination</legend>
             <legend>All nomination details are in %</legend>
+
+            <legend class="nomination-title">Nomination</legend>
             <div class="row">
                 <div class="col-md-12">
                     <!-- <div class="card"> -->
@@ -38,6 +39,7 @@
                                 <th class="primeng-table-header-center">Personal Accident Annuation</th>
                             </tr>
                         </ng-template>
+
                         <ng-template pTemplate="body" let-nomination>
                             <tr>
                                 <td><span>
@@ -111,7 +113,7 @@
                                     </span></td>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="footer">
+                        <ng-template pTemplate="footer" *ngIf="nominationDataSource">
                             <tr>
                                 <td class="p-text-right">Totals %</td>
                                 <td class="primeng-table-header-center">{{getTotalPF()}}</td>
@@ -139,6 +141,9 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="nominationDataSource.length==0">No
+                        data found</span>
 
 
                     <br><br>
@@ -201,6 +206,9 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="FamilyMemberList.length==0">No
+                        data found</span>
                     <!-- </div> -->
 
 
@@ -296,6 +304,10 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="esicDataSource.length==0">No
+                        data found</span>
+
 
                     <div class="row mt-15">
                         <div class="col-12">
