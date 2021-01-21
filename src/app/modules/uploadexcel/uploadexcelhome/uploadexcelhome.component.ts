@@ -28,6 +28,7 @@ export class UploadexcelhomeComponent implements OnInit {
   public tempMergeSelectedArrayList = [];
   public formData: any;
   public fileInput: any;
+
   public selectedMergedGroupList = [];
   public employeeMasterModuleList = [
     { checked: false, group: 0, disabled: false, assignValue: '', id: '1', title: 'Personal Information' },
@@ -165,10 +166,34 @@ export class UploadexcelhomeComponent implements OnInit {
       this.masterGetExcelTableFieldsResponse = res;
       //console.log(res);
       let counter = 0;
+
       res.data.results.forEach((element) => {
+        let flagForEmployeeCode = false;
+        let flagForCompanyName = false;
         this.leftSideBarMenuList.push({ id: counter++, name: element.sheetName });
+
         for (let i = 0; i < element.fields.length; i++) {
-          this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].fieldName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0 });
+          if (element.fields[i].fieldName == 'NA') {
+
+          } else {
+
+
+            if (element.fields[i].fieldName == 'Employee Code' || element.fields[i].fieldName == 'Company Name') {
+              if (element.fields[i].fieldName == 'Employee Code' && flagForEmployeeCode == false) {
+                this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].fieldName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0 });
+                flagForEmployeeCode = true;
+              }
+              if (element.fields[i].fieldName == 'Company  Name' && flagForCompanyName == false) {
+                this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].fieldName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0 });
+                flagForCompanyName = true;
+              }
+
+            } else {
+              this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].fieldName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0 });
+            }
+          }
+
+
           //  this.sequenceArray[i] = (i + 1);
           // this.sequenceArray.push({value: i, disable: false});
         }
@@ -183,53 +208,11 @@ export class UploadexcelhomeComponent implements OnInit {
 
   }
 
-  onChangeSequenceCheckBox(seq, myselect, id) {
-    console.log('id', id);
-    // console.log('onChangeSequenceCheckBox()');
-    // console.log(seq);
-    // console.log(myselect);
 
-    this.selectedPersonalInformationFields.sort((a, b) => a.Sequence - b.Sequence);
-    console.log('array sorting done', this.selectedPersonalInformationFields);
 
-    if (id.tab === 'Personal Information') {
-      const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === id.fieldName);
-      if (index == -1) {
-        this.selectedPersonalInformationFields.push(id);
-        this.selectedCounterPersonalInformationList.push(myselect);
-      } else {
-        this.selectedPersonalInformationFields[index].Sequence = id.Sequence.toString();
-      }
-      let flag = false;
-      for (let j = 0; j < this.selectedPersonalInformationFields.length; j++) {
-        const k = j + 1;
-        if (this.selectedPersonalInformationFields[j].Sequence === k.toString()) {
-        } else {
-          flag = true;
-        }
-      }
-      if (flag == true) {
-        this.alertService.sweetalertError('Sequence are not properly allocated.');
-      }
-    }
-    // this.selectedCounterList.push(myselect);
-    //  console.log('selectedCounterList ',this.selectedCounterList);
-    const index = this.sequenceArray.indexOf((p) => p == seq);
-    if (index !== -1) {
-      return false;
-    }
-    const delIndex = this.sequenceArray.findIndex((o) => o == seq);
-
-    // this.sequenceArrayHide.splice(delIndex, 1);
-
-  }
-  onClickSequenceCheckBox(s, summary) {
-    console.log('on change onChangeSequenceCheckBox');
-    console.log(s);
-    console.log(summary);
-  }
   getAllExcelTemplate() {
     this.summaryOfExcelTemplate = [];
+    this.masterOfExcelTemplate= {};
     const companyId = 1;
     this.uploadeExcelHomeService.getAllExcelTemplate(companyId).subscribe((res) => {
       this.masterOfExcelTemplate = res.data.results;
@@ -449,134 +432,102 @@ export class UploadexcelhomeComponent implements OnInit {
 
 
     if (checked == true) {
-      let indx = this.filterDropDownList.findIndex(o=>o == tabName);
-      if(indx == -1){
+      let indx = this.filterDropDownList.findIndex(o => o == tabName);
+      if (indx == -1) {
         this.filterDropDownList.push(tabName);
       }
+
 
       let counter = 1;
       for (let i = 0; i < this.fieldNameArrayList.length; i++) {
         if (this.fieldNameArrayList[i].tab === tabName) {
           this.sequenceArray.push({ disable: false, value: counter++ });
         }
+
       }
+      this.onChangFilterDropDown(tabName);
+      this.form.patchValue({
+        filterTemplateDropDown: tabName
+      });
     } else {
       const index = this.filterDropDownList.findIndex((o) => o == tabName);
       this.filterDropDownList.splice(index, 1);
+
+      for (let i = this.checkBoxHtmlDataList.length - 1; i >= 0; --i) {
+        if (this.checkBoxHtmlDataList[i].tab == tabName) {
+          this.checkBoxHtmlDataList.splice(i, 1);
+        }
+      }
+
+      for (let k = this.selectedSummaryCheckBoxHtmlDataList.length - 1; k >= 0; --k) {
+        if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+          this.selectedSummaryCheckBoxHtmlDataList.splice(k, 1);
+        }
+      }
     }
   }
 
   leftSideCheckBoxChangePersonalInfo(evt: any) {
     console.log('in leftSideCheckBoxChangePersonalInfo');
-    console.log(evt);
-    console.log(evt.target.value);
+    console.log(evt.target.checked);
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Personal Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Personal Information');
-
-    } else {
-      // let index = this.filterDropDownList.findIndex(o => o === 'Personal Information');
-      // this.filterDropDownList.splice(index, 1);
-      for (let i = this.checkBoxHtmlDataList.length - 1; i >= 0; --i) {
-        if (this.checkBoxHtmlDataList[i].tab == 'Personal Information') {
-          this.checkBoxHtmlDataList.splice(i, 1);
-        }
-      }
-    }
   }
 
   leftSideCheckBoxChangeContactInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Contact Information');
-    if (evt.target.checked == true) {
-      //  this.filterDropDownList.push('Contact Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Contact Information');
-      this.filterDropDownList.splice(index, 1);
-    }
+
   }
   leftSideCheckBoxChangeIdentityInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Identity Information');
-    if (evt.target.checked == true) {
-      /// this.filterDropDownList.push('Identity Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Identity Information');
-      this.filterDropDownList.splice(index, 1);
-    }
+
   }
   leftSideCheckBoxChangePreviousEmploymentInfo(evt: any) {
+
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Previous Employment  Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Previous Employment Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Previous Employment  Information');
-      this.filterDropDownList.splice(index, 1);
-    }
+
   }
   leftSideCheckBoxChangeEmploymentInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Employment Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Previous Employment Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Employment Information');
-      this.filterDropDownList.splice(index, 1);
-    }
+
   }
   leftSideCheckBoxChangeComplianceInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Compliance Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Previous Employment Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Compliance Information');
-      this.filterDropDownList.splice(index, 1);
-    }
   }
   leftSideCheckBoxChangeEducationAndSkillInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Education & Skill Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Previous Employment Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Education & Skill Information');
-      this.filterDropDownList.splice(index, 1);
-    }
   }
   leftSideCheckBoxChangeFamilyInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Family Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Previous Employment Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Family Information');
-      this.filterDropDownList.splice(index, 1);
-    }
+
   }
   leftSideCheckBoxChangePayrollInfo(evt: any) {
     this.onChangeCheckBoxLeftMenu(evt.target.checked, 'Payroll Information');
-    if (evt.target.checked == true) {
-      // this.filterDropDownList.push('Previous Employment Information');
-    } else {
-      const index = this.filterDropDownList.findIndex((o) => o == 'Payroll Information');
-      this.filterDropDownList.splice(index, 1);
-    }
   }
   incrementCounter(row: any, isChecked: boolean, tabName: string) {
-    console.log('row.sequece', row.Sequence);
+    console.log('row ', row);
+    console.log(this.selectedPersonalInformationFields)
     // it checked that field name is already exist, if yes, then change sequence else push element.
     const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === row.fieldName);
+    console.log('index is ', index);
     if (index == -1) {
       this.selectedPersonalInformationFields.push(row);
     } else {
       this.selectedPersonalInformationFields[index].Sequence = row.Sequence;
     }
+    console.log('check this', row);
     let largestElement = 0;
     if (row.Sequence === 0) {
       for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
         if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
-          if (largestElement <  Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence)) {
-            largestElement =  Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence);
+          if (largestElement < Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence)) {
+            largestElement = Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence);
           }
         }
       }
       largestElement = Number(largestElement) + 1;
+      console.log(' this.selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
       const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
+      console.log('index  ', index);
       this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
     }
 
@@ -596,85 +547,142 @@ export class UploadexcelhomeComponent implements OnInit {
 
   }
 
-  summaryCheckBoxHtmlDataListChanged(evt: any, row: any) {
+  onChangeSequenceCheckBox(seq, myselect, row) {
+
+    this.selectedPersonalInformationFields.sort((a, b) => a.Sequence - b.Sequence);
+    console.log('array sorting done', this.selectedPersonalInformationFields);
+
+    if (row.tab === this.form.get('filterTemplateDropDown').value) {
+      const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === row.fieldName);
+      if (index == -1) {
+        this.selectedPersonalInformationFields.push(row);
+        this.selectedCounterPersonalInformationList.push(myselect);
+      } else {
+        this.selectedPersonalInformationFields[index].Sequence = row.Sequence.toString();
+      }
+      let flag = false;
+      for (let j = 0; j < this.selectedPersonalInformationFields.length; j++) {
+        const k = j + 1;
+        if (this.selectedPersonalInformationFields[j].Sequence === k.toString()) {
+        } else {
+          flag = true;
+        }
+      }
+      if (flag == true) {
+        this.alertService.sweetalertError('Sequence are not properly allocated.');
+      }
+    }
+    const index = this.sequenceArray.indexOf((p) => p == seq);
+    if (index !== -1) {
+      return false;
+    }
+    const delIndex = this.sequenceArray.findIndex((o) => o == seq);
+  }
+
+  summaryCheckBoxHtmlDataListChanged(evt: any, row?: any) {
     console.log('in summaryCheckBoxHtmlDataListChanged ', evt);
     console.log('row', row);
-    if (evt== true) {
-      this.selectedSummaryCheckBoxHtmlDataList.push(row);
-      row.isChecked = true;
-      this.incrementCounter(row, evt, row.tab);
-      // if (row.tab === 'Personal Information') {
+    if (row === 'All') {
+      if (evt == true) {
+        for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+          if (this.fieldNameArrayList[i].tab == this.form.get('filterTemplateDropDown').value && this.fieldNameArrayList[i].isMandatory == 0) {
+            // this.fieldNameArrayList[i].checked = true;
+            this.fieldNameArrayList[i].isChecked = true;
+            this.selectedSummaryCheckBoxHtmlDataList.push(this.fieldNameArrayList[i]);
+            this.incrementCounter(this.fieldNameArrayList[i], true, this.form.get('filterTemplateDropDown').value);
+          }
+        }
+      } else {
+        console.log('add uncheck logic here');
 
-      //   const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === row.fieldName);
-      //   if (index == -1) {
-      //     this.selectedPersonalInformationFields.push(row);
-      //   } else {
-      //     this.selectedPersonalInformationFields[index].Sequence = row.Sequence;
-      //   }
-      //   let largestElement = 0;
-      //   if (row.Sequence === 0) {
-      //     for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
-      //       if( this.selectedSummaryCheckBoxHtmlDataList[k].tab == 'Personal Information'){
-      //         if(largestElement < this.selectedSummaryCheckBoxHtmlDataList[k].Sequence){
-      //           largestElement = this.selectedSummaryCheckBoxHtmlDataList[k].Sequence;
-      //         }
-      //       }
-      //     }
-      //     largestElement = Number(largestElement) + 1;
-      //     const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
-      //     this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
-      //   }
-      // }
-
-      // if (row.tab == 'Compliance Information') {
-      //    // it checked that field name is already exist, if yes, then change sequence else push element.
-      //    const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === row.fieldName);
-      //    if (index == -1) {
-      //      this.selectedPersonalInformationFields.push(row);
-      //    } else {
-      //      this.selectedPersonalInformationFields[index].Sequence = row.Sequence;
-      //    }
-      //    let largestElement = 0;
-      //    if (row.Sequence === 0) {
-      //      for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
-      //        if( this.selectedSummaryCheckBoxHtmlDataList[k].tab == 'Compliance Information'){
-      //          if(largestElement < this.selectedSummaryCheckBoxHtmlDataList[k].Sequence){
-      //            largestElement = this.selectedSummaryCheckBoxHtmlDataList[k].Sequence;
-      //          }
-      //        }
-      //      }
-      //      largestElement = Number(largestElement) + 1;
-      //      const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
-      //      this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
-      //    }
-
-      // }
-      /// this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
-      // this.selectedSummaryCheckBoxHtmlDataList.forEach((elment,index)=>{
-      //   if(elment ==row){
-      //    this.selectedSummaryCheckBoxHtmlDataList[index].Sequence=largestElement;
-      //   }
-      // })
-
+        for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+          if (this.fieldNameArrayList[i].tab == this.form.get('filterTemplateDropDown').value && this.fieldNameArrayList[i].isMandatory == 0) {
+            // this.fieldNameArrayList[i].checked = true;
+            this.fieldNameArrayList[i].isChecked = false;
+            ///  this.selectedSummaryCheckBoxHtmlDataList.push(this.fieldNameArrayList[i]);
+            this.summaryCheckBoxHtmlDataListChanged(false, this.fieldNameArrayList[i]);
+          }
+        }
+      }
     } else {
-      row.isChecked = false;
-      this.decrementCounter(row, evt, row.tab);
-      // if(row.tab== 'Compliance Information'){
-      //   row.isChecked = false;
-      //   console.log('summaryCheckBoxHtmlDataListChanged() in else', row.isChecked);
-      //   const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o === row);
-      //   console.log(index);
-      //   this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = 0;
-      //   this.selectedSummaryCheckBoxHtmlDataList.splice(index, 1);
-      //   let count = 1;
-      //   this.selectedSummaryCheckBoxHtmlDataList.forEach((value, index) => {
-      //     if(value.tab == 'Compliance Information') {
-      //       this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = (count++).toString();
-      //     }
-      //   });
 
-      // }
+      if (evt == true && row !== 'All') {
+        this.selectedSummaryCheckBoxHtmlDataList.push(row);
+        row.isChecked = true;
+        this.incrementCounter(row, evt, row.tab);
+        // if (row.tab === 'Personal Information') {
 
+        //   const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === row.fieldName);
+        //   if (index == -1) {
+        //     this.selectedPersonalInformationFields.push(row);
+        //   } else {
+        //     this.selectedPersonalInformationFields[index].Sequence = row.Sequence;
+        //   }
+        //   let largestElement = 0;
+        //   if (row.Sequence === 0) {
+        //     for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+        //       if( this.selectedSummaryCheckBoxHtmlDataList[k].tab == 'Personal Information'){
+        //         if(largestElement < this.selectedSummaryCheckBoxHtmlDataList[k].Sequence){
+        //           largestElement = this.selectedSummaryCheckBoxHtmlDataList[k].Sequence;
+        //         }
+        //       }
+        //     }
+        //     largestElement = Number(largestElement) + 1;
+        //     const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
+        //     this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
+        //   }
+        // }
+
+        // if (row.tab == 'Compliance Information') {
+        //    // it checked that field name is already exist, if yes, then change sequence else push element.
+        //    const index = this.selectedPersonalInformationFields.findIndex((o) => o.fieldName === row.fieldName);
+        //    if (index == -1) {
+        //      this.selectedPersonalInformationFields.push(row);
+        //    } else {
+        //      this.selectedPersonalInformationFields[index].Sequence = row.Sequence;
+        //    }
+        //    let largestElement = 0;
+        //    if (row.Sequence === 0) {
+        //      for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+        //        if( this.selectedSummaryCheckBoxHtmlDataList[k].tab == 'Compliance Information'){
+        //          if(largestElement < this.selectedSummaryCheckBoxHtmlDataList[k].Sequence){
+        //            largestElement = this.selectedSummaryCheckBoxHtmlDataList[k].Sequence;
+        //          }
+        //        }
+        //      }
+        //      largestElement = Number(largestElement) + 1;
+        //      const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
+        //      this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
+        //    }
+
+        // }
+        /// this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
+        // this.selectedSummaryCheckBoxHtmlDataList.forEach((elment,index)=>{
+        //   if(elment ==row){
+        //    this.selectedSummaryCheckBoxHtmlDataList[index].Sequence=largestElement;
+        //   }
+        // })
+
+      } else {
+        row.isChecked = false;
+        this.decrementCounter(row, evt, row.tab);
+        // if(row.tab== 'Compliance Information'){
+        //   row.isChecked = false;
+        //   console.log('summaryCheckBoxHtmlDataListChanged() in else', row.isChecked);
+        //   const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o === row);
+        //   console.log(index);
+        //   this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = 0;
+        //   this.selectedSummaryCheckBoxHtmlDataList.splice(index, 1);
+        //   let count = 1;
+        //   this.selectedSummaryCheckBoxHtmlDataList.forEach((value, index) => {
+        //     if(value.tab == 'Compliance Information') {
+        //       this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = (count++).toString();
+        //     }
+        //   });
+
+        // }
+
+      }
     }
     console.log(this.selectedSummaryCheckBoxHtmlDataList);
     //this.selectedSummaryCheckBoxHtmlDataList.forEach(list => list.tab === this.assignValue);
@@ -728,34 +736,43 @@ export class UploadexcelhomeComponent implements OnInit {
     console.log(this.checkBoxHtmlDataList);
     this.checkBoxHtmlDataList1 = [];
 
-      console.log('filter', this.fieldNameArrayList);
-      this.global.filter((o) => {
-        if (o.tab === evt) {
-          this.checkBoxHtmlDataList1.push(o);
-        }
-      });
-      console.log('checkBoxHtmlDataList1', this.checkBoxHtmlDataList1);
-      this.fieldNameArrayList = [];
-      this.fieldNameArrayList = this.checkBoxHtmlDataList1;
-      console.log('fieldNameArrayList', this.fieldNameArrayList);
-
-      let counter = 1;
-
-      for (let i = 0; i < this.fieldNameArrayList.length; i++) {
-        if (this.fieldNameArrayList[i].tab === evt) {
-          if(this.fieldNameArrayList[i].isMandatory ==1){
-            this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[i]);
-          }
-          this.sequenceArray.push({ disable: false, value: counter++ });
-        }
-
+    console.log('filter', this.fieldNameArrayList);
+    this.global.filter((o) => {
+      if (o.tab === evt) {
+        this.checkBoxHtmlDataList1.push(o);
       }
+    });
+    console.log('checkBoxHtmlDataList1', this.checkBoxHtmlDataList1);
+    this.fieldNameArrayList = [];
+    this.fieldNameArrayList = this.checkBoxHtmlDataList1;
+    console.log('fieldNameArrayList', this.fieldNameArrayList);
 
+    let counter = 1;
 
+    for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+      if (this.fieldNameArrayList[i].tab === evt) {
+        if (this.fieldNameArrayList[i].isMandatory == 1) {
+          this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[i]);
+        }
+        this.sequenceArray.push({ disable: false, value: counter++ });
+      }
+    }
   }
+
   public exportAsXLSX(): void {
     this.excelService.exportAsExcelFile(this.excelDataList, 'suggested-orders');
   }
+  test(){
+    console.log('in test');
+    for(let i =0; i<this.summaryCheckBoxHtmlDataListChanged.length; i++){
+      if(this.summaryCheckBoxHtmlDataListChanged[i].tab === this.form.get('filterTemplateDropDown').value){
+        this.selectedSummaryCheckBoxHtmlDataList.sort((a, b) => a.Sequence - b.Sequence);
+      }
+    }
+
+    console.log('array sorting done ',this.form.get('filterTemplateDropDown').value,'  ', this.selectedSummaryCheckBoxHtmlDataList);
+  }
+
   onClickEmployeeMaster(evt: any) {
     // this.checkedEmployeeMaster = false;
     console.log('in onClickEmployeeMaster', evt.target.checked);
@@ -818,21 +835,15 @@ export class UploadexcelhomeComponent implements OnInit {
   saveMaster() {
     this.sheetsize = 0;
     this.json = [];
-
-
     let temp = [];
     const sheet1 = [];
-
-
     for (let q = 0; q < this.employeeMasterModuleList.length; q++) {
       if (this.employeeMasterModuleList[q].group > 0) {
         this.selectedSummaryCheckBoxHtmlDataList.forEach((element) => {
           if (this.employeeMasterModuleList[q].title == element.tab) {
             element.tab = this.employeeMasterModuleList[q].assignValue;
           }
-
         });
-
       }
     }
     console.log('After merge selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
@@ -924,9 +935,7 @@ export class UploadexcelhomeComponent implements OnInit {
       companyId: 1,
       module: 'EmpMaster',
       sheetSize: this.sheetsize.toString(),
-      // sheet1: sheet1[0],
-
-
+      // sheet1: sheet1[0]
     };
 
 
@@ -941,7 +950,7 @@ export class UploadexcelhomeComponent implements OnInit {
 
     this.uploadeExcelHomeService.postExcelTemplateGeneration(object3).subscribe((res) => {
       if (res.data.results.length > 0) {
-        this.alertService.sweetalertWarning(res.status.messsage);
+        this.alertService.sweetalertMasterSuccess(res.status.messsage,'');
 
       } else {
         this.alertService.sweetalertWarning(res.status.messsage);
@@ -996,9 +1005,16 @@ export class UploadexcelhomeComponent implements OnInit {
     console.log('formData', this.formData);
   }
   buttonNext() {
-    console.log('clicked on next');
 
-  }
+    if(this.filterDropDownList.length>1){
+      let index = this.filterDropDownList.findIndex(o=> o == this.form.get('filterTemplateDropDown').value);
+      console.log('index is ', index);
+      if(index == this.filterDropDownList.length-1){
+        console.log('dont do anything');
+      } else {
+        this.onChangFilterDropDown(this.filterDropDownList[index+1]);
+      }
+    }}
   buttonPrevious() {
     console.log('clicked on previous');
     // console.log(this.selectedCounterList);

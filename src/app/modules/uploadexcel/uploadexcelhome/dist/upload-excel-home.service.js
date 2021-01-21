@@ -33,13 +33,6 @@ var UploadExcelHomeService = /** @class */ (function () {
             return res;
         }));
     };
-    // check below code for delete
-    // deleteEducationGridItem(deleteEducationId) {
-    //   return this.httpClient.delete(environment.baseUrl8082 + '/education-skill-details/education/' + deleteEducationId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
-    //     .pipe(map((res: any) => {
-    //       return res;
-    //     }))
-    // }
     // i have hardcoded company id to 1 in .ts file
     UploadExcelHomeService.prototype.getAllExcelTemplate = function (companyId) {
         return this._HTTP.get(environment_1.environment.baseUrl8082 + '/excel-template/all/' + companyId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
@@ -47,9 +40,6 @@ var UploadExcelHomeService = /** @class */ (function () {
             return res;
         }));
     };
-    // http://localhost:8083/hrms/v1/excel-upload
-    // Key :file
-    // Value :excel file
     UploadExcelHomeService.prototype.postExcelUpload = function (data) {
         var headers = new http_1.HttpHeaders()
             .set('Content-Type', 'application/json')

@@ -16,7 +16,7 @@
               <button type="submit"
                 class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-2"
                 tooltip="Guidline">
-                <b> <i class="fa fa-question-circle"></i></b> Guidline
+                <b> <i class="fa fa-question-circle"></i></b> Guideline
               </button>
               <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                 tooltip="Upload">
@@ -149,7 +149,7 @@
                                 <div id="page">
                                   <div *ngIf="checkedEmployeeMaster == true">
                                     <input class="toggle-box" id="identifier-4" type="checkbox" />
-                                    <label for="identifier-4">Employee Master1</label>
+                                    <label for="identifier-4">Employee Master</label>
                                     <div class="ml-30">
                                       <a class="p-0">
                                         <label class="custom-control custom-checkbox mr-15">
@@ -163,7 +163,7 @@
                                           <input type="checkbox" class="custom-control-input" name="example-checkbox1"
                                             (change)="leftSideCheckBoxChangePersonalInfo($event)"
                                             value="Personal Information" />
-                                          <span class="custom-control-label selectedfield">Personal Information
+                                          <span class="custom-control-label">Personal Information
                                             <span class="notificationbadge ml-2">{{counterPersonalInformation}}</span>
                                           </span>
                                         </label>
@@ -491,25 +491,25 @@
                                       <tr>
                                         <th scope="col" class="wd-10">
                                           <label class="custom-control custom-checkbox checkbox-center">
-                                            <input type="checkbox" class="custom-control-input" name="select" />
+                                            <input type="checkbox" class="custom-control-input" name="select"  (change)="summaryCheckBoxHtmlDataListChanged($event.target.checked,'All')" />
                                             <span class="custom-control-label"></span>
                                           </label>
                                         </th>
                                         <th>Sequence</th>
                                         <th scope="col" class="wd-30">Tab</th>
                                         <th scope="col" class="wd-30">Field Name</th>
-                                        <th scope="col" class="wd-30">Dropdown Value</th>
+                                        <!-- <th scope="col" class="wd-30">Dropdown Value</th> -->
                                       </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody *ngIf="filterDropDownList.length > 0">
                                       <tr *ngFor="let summary of fieldNameArrayList; let i = index">
                                         <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
                                           <span> <label class="custom-control custom-checkbox checkbox-center">
                                               <input type="checkbox" class="custom-control-input" name="select"
                                                 (change)="summaryCheckBoxHtmlDataListChanged($event.target.checked,summary)"
-                                                [checked]="summary.isChecked ==true" />
+                                                [checked]="summary.isChecked ==true"  [disabled]="summary.isMandatory==1"/>
                                               <span class="custom-control-label"></span>
-                                              <span style="color: red;">{{i+1}}</span>
+                                              <!-- <span style="color: red;">{{i+1}}</span> -->
                                             </label></span>
 
                                         </td>
@@ -518,15 +518,13 @@
                                         </td> -->
                                         <td [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
                                           <select #myselect class="form-control custom-select invalid-check-box"
-                                            (click)="onClickSequenceCheckBox(summary.Sequence,myselect.value)"
                                             [(ngModel)]="summary.Sequence"
                                             (change)="onChangeSequenceCheckBox(summary.Sequence,myselect.value,summary)"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" >
                                             <option value="null"></option>
                                             <option *ngFor="let item of sequenceArray" [disabled]=item.disable>
                                               {{item.value}}</option>
                                           </select>
-
                                         </td>
 
                                         <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']"><span
@@ -536,10 +534,10 @@
                                             tooltip="{{summary.fieldName}}">{{summary.fieldName}}</span>
                                         </td>
 
-                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
+                                        <!-- <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
                                           <span tooltip="{{ summary.isdropdownValue==0 ? 'Yes' : 'No'}}">
                                             {{summary.isdropdownValue==1 ? 'Yes' : 'No'}}</span>
-                                        </td>
+                                        </td> -->
 
                                         <!-- <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
                                           <span  tooltip="{{summary.tab}}"> {{summary.tab}}</span>
@@ -557,6 +555,11 @@
                                   <button type="button" tooltip="Previous" (click)="buttonPrevious()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
                                         class="fa fa-angle-double-left"></i></b> Previous</button>
+
+
+                                        <!-- when next button is disable/enable it's css  Sneha -->
+                                        <!-- when previous button is disable/enable it's ccss  Sneha -->
+
                                   <button type="button" tooltip="Next" (click)="buttonNext()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
                                         class="fa fa-angle-double-right"></i></b> Next</button>
@@ -610,6 +613,15 @@
                           <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left"
                             tooltip="Save" (click)="saveMaster()">
                             <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
+                            <!-- Save button css not working Sneha -->
+
+                            <button type="submit" [disabled]="form.invalid"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            (click)="saveMaster()"
+                            [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
+                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
 
                           <button type="button" tooltip="Reset" (click)="cancelView()"
                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
@@ -694,7 +706,7 @@
 
 
                         <!-- <div class="mb-0"> -->
-                        <h3 class="font-14 text-purple font-bold">Summary1</h3>
+                        <h3 class="font-14 text-purple font-bold">Summary</h3>
                         <!-- </div> -->
                         <!-- <div class=""> -->
                         <div class="table-responsive Custom_Table height-200">
@@ -1022,7 +1034,7 @@
       <div class="row">
         <div class="col-md-12">
           <h3 class="font-14 text-purple font-bold pt-2 mb-10" id="UploadModalLabel">
-            Employee Master 2
+            Employee Master
           </h3>
           <div id="mergetab">
 
@@ -1033,8 +1045,8 @@
               <a class="p-0" *ngFor="let emp of employeeMasterModuleList">
                 <label class="custom-control custom-checkbox mr-15">
                   <!-- <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Select All" /> -->
-                  <input type="checkbox" class="custom-control-input" (change)="onmergeSelected($event,emp)"
-                    name={{emp.id}} [value]=emp.id [checked]=emp.checked [disabled]=emp.disabled />{{emp.title}}
+                  <input type="checkbox"  (change)="onmergeSelected($event,emp)"
+                    name={{emp.id}} [value]=emp.id [checked]=emp.checked [disabled]=emp.disabled /> &nbsp;&nbsp;{{emp.title}}
                   <!-- <span class="custom-control-label">Select All</span> -->
                 </label>
               </a>
@@ -1413,6 +1425,8 @@
                                 <span class="custom-control-label"></span>
                               </label>
                             </th>
+                            <!-- Sequence madhe max 2 digit yenar aahe tar tya chi length Sneha -->
+                             <!-- td chi width pan kami pahije hoti Sneha -->
                             <th scope="col" class="wd-10">Sequence</th>
                             <th scope="col" class="wd-30">Tab</th>
                             <th scope="col" class="wd-30">Field Name</th>
@@ -1725,7 +1739,7 @@
                     </div>
                     <div class="float-right">
                       <button type="button" tooltip="Previous"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" ><b><i
                             class="fa fa-angle-double-left"></i></b> Previous</button>
                       <button type="button" tooltip="Next"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i

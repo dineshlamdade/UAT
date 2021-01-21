@@ -33,14 +33,7 @@ deleteExcelTemplate(templateMasterId) {
       return res;
     }));
 }
-// check below code for delete
-// deleteEducationGridItem(deleteEducationId) {
 
-//   return this.httpClient.delete(environment.baseUrl8082 + '/education-skill-details/education/' + deleteEducationId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
-//     .pipe(map((res: any) => {
-//       return res;
-//     }))
-// }
 // i have hardcoded company id to 1 in .ts file
 getAllExcelTemplate(companyId:number){
   return this._HTTP.get(environment.baseUrl8082 + '/excel-template/all/'+ companyId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
@@ -48,9 +41,7 @@ getAllExcelTemplate(companyId:number){
     return res;
   }));
 }
-// http://localhost:8083/hrms/v1/excel-upload
-// Key :file
-// Value :excel file
+
 postExcelUpload(data) {
 
   const headers = new HttpHeaders()
