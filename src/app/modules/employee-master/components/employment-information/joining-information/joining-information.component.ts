@@ -46,6 +46,9 @@ export class JoiningInformationComponent implements OnInit {
   viewJoining: boolean = false;
   editJoining: boolean = false;
   public today = new Date();
+  saveNextBoolean: boolean = false;
+
+
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
@@ -212,6 +215,10 @@ export class JoiningInformationComponent implements OnInit {
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
+        if (this.saveNextBoolean == true) {
+          this.saveNextBoolean = false;
+          this.router.navigate(['/employee-master/contact-information']);
+        }
       }, (error: any) => {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
@@ -352,6 +359,12 @@ export class JoiningInformationComponent implements OnInit {
         data: { pageValue: 'JoiningForm', info: 'Do you really want to extend the probation period?' }
       });
     }
+  }
+
+  saveNextJoiningSubmit(JoiningInformationModel) {
+    this.saveNextBoolean = true;
+
+    this.joiningFormSubmit(JoiningInformationModel);
   }
 
   disableExpectedConfirmationDate() {

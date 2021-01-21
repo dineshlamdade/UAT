@@ -43,7 +43,7 @@
                                                             <div class="col-sm-3 col-md-7 ml-2">
                                                                 <input type="text" class="form-control"
                                                                     placeholder="Enter Mobile No." minlength="1"
-                                                                    maxlength="10"
+                                                                    maxlength="10" (keypress)="keyPress($event)"
                                                                     formControlName="officialMobileNumber"
                                                                     [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('officialMobileNumber').status == 'INVALID'}">
@@ -89,7 +89,7 @@
                                                             <div class="col-sm-3 col-md-7 ml-2">
                                                                 <input type="text" class="form-control"
                                                                     placeholder="Enter Mobile No." minlength="1"
-                                                                    maxlength="10"
+                                                                    maxlength="10" (keypress)="keyPress($event)"
                                                                     formControlName="personalmobileNumber"
                                                                     (change)="validatePersonalMobile(ngPersonalCountryCode)"
                                                                     [(ngModel)]="contactInformation.employeeMasterRequestDTO.personalMobileNumber"
@@ -144,6 +144,7 @@
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Mobile No." minlength="1" maxlength="10"
                                                             formControlName="emergencyContactNumber"
+                                                            (keypress)="keyPress($event)"
                                                             [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'}">
                                                     </div>
@@ -219,7 +220,7 @@
                                                                 placeholder="Enter PIN" minlength="1" maxlength="6"
                                                                 formControlName="localPin"
                                                                 [(ngModel)]="localAddressInformation.postalCode"
-                                                                pattern="[0-9]{6}"
+                                                                pattern="[0-9]{6}" (keypress)="keyPress($event)"
                                                                 (keyup)="checkLocalAddress(); getLocalAddressFromPIN();"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('localPin').status == 'INVALID'}">
                                                         </div>
@@ -337,7 +338,7 @@
                                                                 placeholder="Enter PIN" minlength="1" maxlength="6"
                                                                 formControlName="permanentPin"
                                                                 [(ngModel)]="permanentAddressInformation.postalCode"
-                                                                pattern="[0-9]{6}"
+                                                                pattern="[0-9]{6}" (keypress)="keyPress($event)"
                                                                 (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentPin').status == 'INVALID'}">
                                                         </div>
@@ -430,6 +431,27 @@
                                 <div class="row mt-15">
                                     <div class="col-12">
                                         <div class="float-right mb-15">
+                                            <button type="button" tooltip="Previous"
+                                                [routerLink]="['/employee-master/employment-information/joining-information']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                        class="fa fa-chevron-circle-left"
+                                                        aria-hidden="true"></i></b>Previous</button>
+
+                                            <button type="button" tooltip="Next"
+                                                [routerLink]="['/employee-master/bank-information']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                        class="fa fa-chevron-circle-right"
+                                                        aria-hidden="true"></i></b>Next</button>
+
+                                            <button type="button" (click)="contactSaveNextSubmit(contactInformation)"
+                                                [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                                tooltip="Save & Next"
+                                                [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
+                                                'btn-bg-green': !ContactInfoForm.invalid || communicationAddress}"><b><i
+                                                        class="fa fa-floppy-o"></i></b>
+                                                Save & Next</button>
+
                                             <button type="submit"
                                                 [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched"
                                                 (click)="contactFormSubmit(contactInformation)" [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,

@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { PayrollAreaRequestModel } from './../../dto-models/payroll-area-information.model';
 import { PayrollAreaInformationService } from './../../employee-master-services/payroll-area-information.service';
 import { SharedInformationService } from '../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 
@@ -74,12 +75,16 @@ export class PayrollAreaInformationComponent implements OnInit {
   payrollAreaBackFromDate: any;
   TotalPercentCheckOnSave: number = 0;
   bankAccountList: Array<any> = [];
+  saveNextBoolean: boolean = false;
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
     public dialog: MatDialog, private PayrollAreaService: PayrollAreaInformationService,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    private router: Router,
     private CommonDataService: SharedInformationService) {
 
     if (data?.payrollFlag) {
@@ -199,6 +204,12 @@ export class PayrollAreaInformationComponent implements OnInit {
     })
   }
 
+  PayrollSaveNextSubmit(PayrollAreaRequestModel) {
+    this.saveNextBoolean = true;
+
+    this.savePayrollArea(PayrollAreaRequestModel);
+  }
+
 
   savePayrollArea(PayrollAreaRequestModel) {
 
@@ -241,6 +252,10 @@ export class PayrollAreaInformationComponent implements OnInit {
       this.PayrollAreaRequestModel.payFromDate = '';
       this.percentOrAmountModel = 'percentOfNetPay';
       this.PayrollAreaRequestModel.priority = '';
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/job-information/organization-details']);
+      }
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })

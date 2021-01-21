@@ -16,3 +16,8 @@
 .form-control.is-invalid {
     background-image: none!important;
   }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}

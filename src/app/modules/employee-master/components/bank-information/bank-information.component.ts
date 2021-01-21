@@ -12,6 +12,7 @@ import { BankInformationService } from './../../employee-master-services/bank-in
 import { startWith, map } from 'rxjs/operators';
 import { MustMatch } from './password-match.validator';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bank-information',
@@ -23,7 +24,7 @@ export class BankInformationComponent implements OnInit {
 
   bankInfoForm: FormGroup;
   GridBankInfoForm: FormGroup;
-  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '', '')
+  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '', '','')
   BankInformationArray: Array<any> = [];
   shareCountryDataSubcription: Subscription;
   countryList: Array<any> = [];
@@ -68,10 +69,13 @@ export class BankInformationComponent implements OnInit {
   searchTerm = new Subject<string>();
   autoCompleteControl;
   showOptios: boolean = false;
+  saveNextBoolean: boolean = false;
+
+
 
   constructor(private formBuilder: FormBuilder, private EventEmitterService: EventEmitterService,
     public datepipe: DatePipe, private BankInformationService: BankInformationService,
-    private CommonDataService: SharedInformationService) { }
+    private CommonDataService: SharedInformationService, private router: Router,) { }
 
   ngOnInit(): void {
 
@@ -267,17 +271,26 @@ export class BankInformationComponent implements OnInit {
   //     }
   //   })
   // }
+  BankSaveNextSubmit(BankInformationModel){
+    this.saveNextBoolean = true;
+
+    this.postBankInfoForm(BankInformationModel);
+  }
 
   postBankInfoForm(BankInformationModel) {
     
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
-
+    BankInformationModel.state = this.stateModel;
     this.BankInformationService.postBankInfoForm(BankInformationModel).subscribe(res => {
 
       this.getBankAccounts();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetForm();
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/payroll-area-information']);
+      }
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -287,7 +300,7 @@ export class BankInformationComponent implements OnInit {
     
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
-
+    BankInformationModel.state = this.stateModel;
     this.BankInformationService.putBankInfoForm(BankInformationModel).subscribe(res => {
 
       this.getBankAccounts();
@@ -354,7 +367,7 @@ export class BankInformationComponent implements OnInit {
     this.BankInformationModel.nameAsPerBank = bank.nameAsPerBank;
     this.BankInformationModel.accountNo = bank.accountNo;
     this.BankInformationModel.employeeBankInfoId = bank.employeeBankInfoId
-
+    this.stateModel = bank.state;
     const temp1 = this.bankInfoForm.get('country');
     temp1.enable();
     const temp2 = this.bankInfoForm.get('state');
@@ -385,7 +398,7 @@ export class BankInformationComponent implements OnInit {
     this.BankInformationModel.nameAsPerBank = bank.nameAsPerBank;
     this.BankInformationModel.accountNo = bank.accountNo;
     this.BankInformationModel.employeeBankInfoId = bank.employeeBankInfoId
-
+    this.stateModel = bank.state;
     const temp1 = this.bankInfoForm.get('country');
     temp1.disable();
     const temp2 = this.bankInfoForm.get('state');
@@ -447,7 +460,7 @@ export class BankInformationComponent implements OnInit {
 
   validateAccountNo(accountNo) {
     if (this.maxAccNumber) {
-      if (accountNo.length < this.maxAccNumber) {
+      if (accountNo.length < this.maxAccNumber || accountNo.length > this.maxAccNumber) {
         this.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
       } else {
         this.accountNumberCountError = '';

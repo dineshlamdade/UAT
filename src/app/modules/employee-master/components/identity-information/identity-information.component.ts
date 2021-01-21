@@ -14,6 +14,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 
 
@@ -74,6 +75,8 @@ export class IdentityInformationComponent implements OnInit {
   public today = new Date();
   editVisaDialogFlag: any;
   visaItem: any;
+  saveNextBoolean: boolean = false
+
 
   constructor(private formBuilder: FormBuilder,
     public datepipe: DatePipe,
@@ -81,6 +84,7 @@ export class IdentityInformationComponent implements OnInit {
     private EventEmitterService: EventEmitterService,
     private SharedInformationService: SharedInformationService,
     private modalService: BsModalService,
+    private router: Router,
     public dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public VisaDialog: any,) {
 
@@ -165,13 +169,13 @@ export class IdentityInformationComponent implements OnInit {
     //   }
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(element => {
-      
+
 
       // (<wjcCore.CollectionView>this.flex.collectionView).remove(this.item);
       this.deleteInternationalWorkerID.push(element.employeeVisaDetailId);
       this.IdentityInfoForm.markAsTouched();
       this.data.find(res => {
-        
+
         const index = this.data.findIndex(x => res.employeeVisaDetailId == element.employeeVisaDetailId);
         if (res.employeeVisaDetailId == element.employeeVisaDetailId) {
           this.data.splice(index, 1);
@@ -179,6 +183,12 @@ export class IdentityInformationComponent implements OnInit {
       })
       // this.VisaInformation.countryName = '';
     })
+  }
+
+  IdentitySaveNextSubmit(IdentityInformation) {
+    this.saveNextBoolean = true;
+
+    this.IdentityInfoFormSubmit(IdentityInformation);
   }
 
 
@@ -223,11 +233,16 @@ export class IdentityInformationComponent implements OnInit {
       if (this.deleteInternationalWorkerID.length > 0) {
         this.deleteInternationalWorkerID.forEach(id => {
           this.IdentityInformationService.deleteGridRow(this.employeeMasterId, id).subscribe(res => {
-            if (res.data.results[0]) {
-              this.data = res.data.results[0];
-            }
+            this.getIdentityInfoData();
+            // if (res.data.results[0]) {
+            //   this.data = res.data.results[0];
+            // }
           })
         })
+      }
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/compliance-information/compliance-summary']);
       }
     }, (error: any) => {
       this.sweetalertError(error["error"]["status"]["messsage"]);
@@ -255,7 +270,7 @@ export class IdentityInformationComponent implements OnInit {
   }
 
   editVisaInfo(visa) {
-    
+
     this.VisaInformation.countryName = visa.countryName;
     this.VisaInformation.visaType = visa.visaType;
     this.VisaInformation.validTill = visa.validTill;
@@ -288,7 +303,7 @@ export class IdentityInformationComponent implements OnInit {
 
   pushToGrid() {
     let data = [];
-    
+
     if (!this.VisaInformation.employeeVisaDetailId) {
       this.tableCountries = []; this.typeOfVisa = []; this.validTill = [];
       this.tableCountries.push(this.VisaInformation.countryName);
@@ -324,7 +339,7 @@ export class IdentityInformationComponent implements OnInit {
       }
     } else {
       this.data.find(res => {
-        
+
         if (res.employeeVisaDetailId == this.VisaInformation.employeeVisaDetailId) {
           res.countryName = this.VisaInformation.countryName;
           res.visaType = this.VisaInformation.visaType;
@@ -347,7 +362,8 @@ export class IdentityInformationComponent implements OnInit {
   // }
 
   updateAadhaarName(aadhaar) {
-    if (this.IdentityInfoForm.controls.aadhaarNo.valid == true) {
+    debugger
+    if (this.IdentityInfoForm.controls.aadhaarNo.valid == true && aadhaar) {
       this.IdentityInformation.employeeMasterRequestDTO.nameAsPerAADHAAR = this.fullName;
     }
     if (aadhaar.length == 0 || this.IdentityInfoForm.controls.aadhaarNo.valid == false) {
@@ -440,4 +456,13 @@ export class IdentityInformationComponent implements OnInit {
     })
   }
 
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
 }

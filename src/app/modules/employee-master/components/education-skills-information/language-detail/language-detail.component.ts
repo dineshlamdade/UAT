@@ -71,7 +71,7 @@ export class LanguageDetailComponent implements OnInit {
 
     this.getLanguagesList();
     this.getAllLanguageSummary();
-
+    this.disableLanguageOptions();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
 
@@ -132,6 +132,7 @@ export class LanguageDetailComponent implements OnInit {
       this.resetLanguageForm();
       this.LanguageEditFlag = false;
       this.LanguageviewFlag = false;
+      this.disableLanguageOptions();
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -150,12 +151,7 @@ export class LanguageDetailComponent implements OnInit {
 
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.enable();
-    const temp2 = this.LanguageInfoForm.get('languageRead');
-    temp2.enable();
-    const temp3 = this.LanguageInfoForm.get('languageWrite');
-    temp3.enable();
-    const temp4 = this.LanguageInfoForm.get('languageSpeak');
-    temp4.enable();
+   this.enableLanguageOptions();
   }
 
   viewLanguageRow(language) {
@@ -166,13 +162,9 @@ export class LanguageDetailComponent implements OnInit {
 
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.disable();
-    const temp2 = this.LanguageInfoForm.get('languageRead');
-    temp2.disable();
-    const temp3 = this.LanguageInfoForm.get('languageWrite');
-    temp3.disable();
-    const temp4 = this.LanguageInfoForm.get('languageSpeak');
-    temp4.disable();
+    this.disableLanguageOptions();
   }
+
   deleteLanguageRow(language) {
 
     this.languageId = language.employeeLanguageinfoId;
@@ -190,12 +182,7 @@ export class LanguageDetailComponent implements OnInit {
     this.employeeLanguageRequestModel.employeeLanguageinfoId = 0;
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.enable();
-    const temp2 = this.LanguageInfoForm.get('languageRead');
-    temp2.enable();
-    const temp3 = this.LanguageInfoForm.get('languageWrite');
-    temp3.enable();
-    const temp4 = this.LanguageInfoForm.get('languageSpeak');
-    temp4.enable();
+    this.disableLanguageOptions();
     this.getAllLanguageSummary();
   }
 
@@ -217,16 +204,35 @@ export class LanguageDetailComponent implements OnInit {
     this.employeeLanguageRequestModel.read = '';
     this.employeeLanguageRequestModel.write = '';
     this.employeeLanguageRequestModel.speak = '';
+
+    this.enableLanguageOptions();
   }
 
   resetLanguageForm() {
     this.LanguageInfoForm.reset();
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = false;
+    this.disableLanguageOptions();
   }
 
 
   // Certificates Information
 
+  disableLanguageOptions() {
+    const temp2 = this.LanguageInfoForm.get('languageRead');
+    temp2.disable();
+    const temp3 = this.LanguageInfoForm.get('languageWrite');
+    temp3.disable();
+    const temp4 = this.LanguageInfoForm.get('languageSpeak');
+    temp4.disable();
+  }
 
+  enableLanguageOptions(){
+    const temp2 = this.LanguageInfoForm.get('languageRead');
+    temp2.enable();
+    const temp3 = this.LanguageInfoForm.get('languageWrite');
+    temp3.enable();
+    const temp4 = this.LanguageInfoForm.get('languageSpeak');
+    temp4.enable();
+  }
 }

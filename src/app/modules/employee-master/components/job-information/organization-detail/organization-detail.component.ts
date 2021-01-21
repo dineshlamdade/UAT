@@ -89,7 +89,7 @@ export class OrganizationDetailComponent implements OnInit {
   subCostCode: any;
   profitDescription: any;
   profitCentreCode: any;
-
+  // saveNextBoolean: boolean = false;
   payrollAreaCode: any;
 
   constructor(public datepipe: DatePipe,
@@ -431,6 +431,12 @@ export class OrganizationDetailComponent implements OnInit {
     this.OrganizationForm.markAsUntouched();
   }
 
+  // organizationSaveNextSubmit(organizationDetailsModel){
+  //   this.saveNextBoolean = true;
+
+  //   this.OrganizationFormSubmit(organizationDetailsModel);
+  // }
+
   OrganizationFormSubmit(organizationDetailsModel) {
 
     if (this.establishmentDescription == null) {
@@ -546,6 +552,10 @@ export class OrganizationDetailComponent implements OnInit {
       // this.getOrganizationForm();
          //redirecting page to summary page
          this.router.navigate(['/employee-master/job-information/job-summary']);
+        //  if (this.saveNextBoolean == true) {
+        //   this.saveNextBoolean = false;
+        //   this.router.navigate(['/employee-master/identity-information']);
+        // }
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })

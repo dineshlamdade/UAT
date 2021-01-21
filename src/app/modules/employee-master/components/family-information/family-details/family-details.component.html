@@ -454,6 +454,26 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mb-15">
+                                    <button type="button" tooltip="Previous"
+                                        [routerLink]="['/employee-master/previous-employment-information']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                class="fa fa-chevron-circle-left"
+                                                aria-hidden="true"></i></b>Previous</button>
+
+                                    <button type="button" tooltip="Next"
+                                        [routerLink]="['/employee-master/education-skills-information/education-details']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                class="fa fa-chevron-circle-right"
+                                                aria-hidden="true"></i></b>Next</button>
+
+                                    <button type="button" (click)="familySaveNextSubmit(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
+                                    guardianDetailRequestDTO)" [hidden]="updateFormFlag || familyViewItem"
+                                        [disabled]="FamilyDetailsInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green' : FamilyDetailsInfoForm.invalid,
+                                    'btn-bg-green': !FamilyDetailsInfoForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                        tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                                        Save & Next</button>
+
                                     <button type="submit" [disabled]="FamilyDetailsInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green' : FamilyDetailsInfoForm.invalid,
                                     'btn-bg-green': !FamilyDetailsInfoForm.invalid}" (click)="pushFamilyDetailsToGrid(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
                     guardianDetailRequestDTO);" class="custom_button custom_btn btn-labeled btn-labeled-left"

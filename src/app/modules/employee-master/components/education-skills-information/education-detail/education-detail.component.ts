@@ -8,6 +8,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -53,10 +54,15 @@ export class EducationDetailComponent implements OnInit {
   skillId: number;
   skillEditFlag: boolean = false;
   skillviewFlag: boolean = false;
+  saveNextBoolean: boolean = false
+
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
     public dialog: MatDialog,
+    private router: Router,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private EducationSkillsInformationService: EducationSkillsInformationService,
@@ -139,6 +145,14 @@ export class EducationDetailComponent implements OnInit {
     })
   }
 
+  educationSaveNextSubmit(employeeEducationRequestModel) {
+
+    this.saveNextBoolean = true;
+
+    this.postEducationForm(employeeEducationRequestModel);
+  }
+
+
   postEducationForm(employeeEducationRequestModel) {
 
     employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
@@ -153,6 +167,10 @@ export class EducationDetailComponent implements OnInit {
       this.resetEducationForm();
       this.educationEditFlag = false;
       this.educationviewFlag = false;
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/employee-summary']);
+      }
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })

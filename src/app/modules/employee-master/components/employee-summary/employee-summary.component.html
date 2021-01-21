@@ -48,13 +48,15 @@
                                             tooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
                                             <b> {{ (EmployeeSummary.identitySummaryBean.fullName?.length>15)?
                                                 (EmployeeSummary.identitySummaryBean.fullName
-                                                 | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
+                                                | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
                                             </b>
                                         </p>
                                         <p class="image-size-info margin-top"
                                             tooltip="{{EmployeeSummary.identitySummaryBean.designation}}">
 
-                                            {{ (EmployeeSummary.identitySummaryBean.designation?.length>15)? (EmployeeSummary.identitySummaryBean.designation | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.designation) }}
+                                            {{ (EmployeeSummary.identitySummaryBean.designation?.length>15)?
+                                            (EmployeeSummary.identitySummaryBean.designation |
+                                            slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.designation) }}
                                         </p>
                                         <!-- <h4 class="image-size-info" tooltip="Size should be
                                         less than 1 MB">Select Image <p class="small-size">(Size should be
@@ -75,12 +77,16 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
-                                                        {{ (EmployeeSummary.identitySummaryBean.fullName?.length>25)? (EmployeeSummary.identitySummaryBean.fullName | slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
+                                                        {{ (EmployeeSummary.identitySummaryBean.fullName?.length>25)?
+                                                        (EmployeeSummary.identitySummaryBean.fullName |
+                                                        slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.fullName)
+                                                        }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.companyName' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.identitySummaryBean.companyName}}
                                                     </div>
@@ -97,7 +103,8 @@
                                                 <div class="row" style="width: 1381px;">
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.designation' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.identitySummaryBean.designation}}
                                                     </div>
@@ -116,7 +123,11 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.identitySummaryBean.officialEmailId}}">
-                                                        {{ (EmployeeSummary.identitySummaryBean.officialEmailId?.length>25)? (EmployeeSummary.identitySummaryBean.officialEmailId | slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.officialEmailId) }}
+                                                        {{
+                                                        (EmployeeSummary.identitySummaryBean.officialEmailId?.length>25)?
+                                                        (EmployeeSummary.identitySummaryBean.officialEmailId |
+                                                        slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.officialEmailId)
+                                                        }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,12 +150,16 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.personalSummaryBean.dateOfBirth}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)? (EmployeeSummary.personalSummaryBean.dateOfBirth | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirth) }}
+                                                        {{ (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)?
+                                                        (EmployeeSummary.personalSummaryBean.dateOfBirth |
+                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirth)
+                                                        }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.bloodGroup' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.personalSummaryBean.bloodGroup}}
                                                     </div>
@@ -166,8 +181,10 @@
                                                     </div>
 
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.emergencyContactNo' | transloco }}
-                                                            :</strong></div>
+                                                        <strong>{{ 'EmployoymentSummary.emergencyContactNo' | transloco
+                                                            }}
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.personalSummaryBean.emergencyContactNo}}
                                                     </div>
@@ -200,13 +217,15 @@
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.passportNo' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.personalSummaryBean.passportNo}}
                                                     </div>
 
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.physicallyChallenged' | transloco }}
+                                                        <strong>{{ 'EmployoymentSummary.physicallyChallenged' |
+                                                            transloco }}
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1">
@@ -214,19 +233,26 @@
                                                     </div>
 
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.communicationAddress' | transloco }}
+                                                        <strong>{{ 'EmployoymentSummary.communicationAddress' |
+                                                            transloco }}
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.personalSummaryBean.communicationAddress}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.communicationAddress?.length>30)? (EmployeeSummary.personalSummaryBean.communicationAddress | slice:0:30)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress) }}
+                                                        {{
+                                                        (EmployeeSummary.personalSummaryBean.communicationAddress?.length>30)?
+                                                        (EmployeeSummary.personalSummaryBean.communicationAddress |
+                                                        slice:0:30)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress)
+                                                        }}
                                                     </div>
                                                     <!-- {{ (EmployeeSummary.personalSummaryBean.communicationAddress?.length>25)?
                                                             (EmployeeSummary.personalSummaryBean.communicationAddress
                                                              | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress) }} -->
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.highestQualification' | transloco }}
-                                                            :</strong></div>
+                                                        <strong>{{ 'EmployoymentSummary.highestQualification' |
+                                                            transloco }}
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.personalSummaryBean.highestQualification}}
                                                     </div>
@@ -238,7 +264,10 @@
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.personalSummaryBean.language}}">
 
-                                                        {{ (EmployeeSummary.personalSummaryBean.language?.length>25)? (EmployeeSummary.personalSummaryBean.language | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.language) }}
+                                                        {{ (EmployeeSummary.personalSummaryBean.language?.length>25)?
+                                                        (EmployeeSummary.personalSummaryBean.language |
+                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.language)
+                                                        }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -247,7 +276,10 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.personalSummaryBean.skills}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.skills?.length>25)? (EmployeeSummary.personalSummaryBean.skills | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.skills) }}
+                                                        {{ (EmployeeSummary.personalSummaryBean.skills?.length>25)?
+                                                        (EmployeeSummary.personalSummaryBean.skills |
+                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.skills)
+                                                        }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -269,12 +301,17 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.workSummaryBean.dateOfJoining}}">
-                                                        {{ (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)? (EmployeeSummary.workSummaryBean.dateOfJoining | slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoining) }}
+                                                        {{ (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)?
+                                                        (EmployeeSummary.workSummaryBean.dateOfJoining |
+                                                        slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoining)
+                                                        }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.originalHiringDate' | transloco }}
-                                                            :</strong></div>
+                                                        <strong>{{ 'EmployoymentSummary.originalHiringDate' | transloco
+                                                            }}
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.workSummaryBean.originalHiringDate}}
                                                     </div>
@@ -296,7 +333,8 @@
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.reasonOfLeaving' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.workSummaryBean.reasonOfLeaving}}
                                                     </div>
@@ -341,7 +379,8 @@
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.employmentType' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.workSummaryBean.employmentType}}</div>
 
@@ -353,7 +392,8 @@
                                                         {{EmployeeSummary.workSummaryBean.taxCategory}}</div>
 
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.strategicBusinessUnit' | transloco }}
+                                                        <strong>{{ 'EmployoymentSummary.strategicBusinessUnit' |
+                                                            transloco }}
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1">
@@ -362,7 +402,8 @@
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.project' | transloco }}
-                                                            :</strong></div>
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.workSummaryBean.project}}</div>
 
@@ -414,26 +455,37 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.nominationSummaryBean.providentFund}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.providentFund?.length>25)? (EmployeeSummary.nominationSummaryBean.providentFund | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.providentFund) }}
+                                                        {{
+                                                        (EmployeeSummary.nominationSummaryBean.providentFund?.length>25)?
+                                                        (EmployeeSummary.nominationSummaryBean.providentFund |
+                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.providentFund)
+                                                        }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.employeePensionScheme' | transloco }}:</strong>
+                                                        <strong>{{ 'EmployoymentSummary.employeePensionScheme' |
+                                                            transloco }}:</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.nominationSummaryBean.eps}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.eps?.length>25)? (EmployeeSummary.nominationSummaryBean.eps | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.eps) }}
+                                                        {{ (EmployeeSummary.nominationSummaryBean.eps?.length>25)?
+                                                        (EmployeeSummary.nominationSummaryBean.eps |
+                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.eps) }}
                                                     </div>
 
                                                 </div>
                                                 <div class="vl"></div>
                                                 <div class="row" style="width: 1381px;">
                                                     <div class="col-5 py-1">
-                                                        <strong>{{ 'EmployoymentSummary.superAnnuationFund' | transloco }}
-                                                            :</strong></div>
+                                                        <strong>{{ 'EmployoymentSummary.superAnnuationFund' | transloco
+                                                            }}
+                                                            :</strong>
+                                                    </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.nominationSummaryBean.sa}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.sa?.length>25)? (EmployeeSummary.nominationSummaryBean.sa | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.sa) }}
+                                                        {{ (EmployeeSummary.nominationSummaryBean.sa?.length>25)?
+                                                        (EmployeeSummary.nominationSummaryBean.sa |
+                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.sa) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -442,7 +494,10 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.nominationSummaryBean.gratuity}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.gratuity?.length>25)? (EmployeeSummary.nominationSummaryBean.gratuity | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.gratuity) }}
+                                                        {{ (EmployeeSummary.nominationSummaryBean.gratuity?.length>25)?
+                                                        (EmployeeSummary.nominationSummaryBean.gratuity |
+                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.gratuity)
+                                                        }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -451,12 +506,26 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.nominationSummaryBean.salary}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.salary?.length>25)? (EmployeeSummary.nominationSummaryBean.salary | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.salary) }}
+                                                        {{ (EmployeeSummary.nominationSummaryBean.salary?.length>25)?
+                                                        (EmployeeSummary.nominationSummaryBean.salary |
+                                                        slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.salary)
+                                                        }}
                                                     </div>
                                                 </div>
                                             </div>
                                             <br>
                                         </fieldset>
+                                        <div class="row mt-15">
+                                            <div class="col-12">
+                                                <div class="float-right mb-15">
+                                                    <button type="button" tooltip="Next"
+                                                        [routerLink]="['/employee-master/personal-information']"
+                                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                                class="fa fa-chevron-circle-right"
+                                                                aria-hidden="true"></i></b>Next</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

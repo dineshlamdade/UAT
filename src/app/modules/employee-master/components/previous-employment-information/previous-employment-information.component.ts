@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -64,12 +65,16 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   CTCANNUM: any;
   public today = new Date();
   viewEmploymentInfoForm: boolean = false;
+  JoiningDate: any;
+  saveNextBoolean: boolean = false
+
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
     private PreviousEmpInformationService: PreviousEmploymentInformationService,
-    public dialog: MatDialog, private CommonDataService: SharedInformationService) {
+    public dialog: MatDialog, private CommonDataService: SharedInformationService,
+    private router: Router) {
     this.tomorrow.setDate(this.tomorrow.getDate());
   }
 
@@ -101,7 +106,8 @@ export class PreviousEmploymentInformationComponent implements OnInit {
       }, 1)
     })
 
-
+    const JoiningDate = localStorage.getItem('joiningDate');
+    this.JoiningDate = new Date(JoiningDate)
     // this.initiatePreviousEmploymentInfoForm = this.EventEmitterService.setPreviousEmploymentInfoInitiate().subscribe(res => {
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePreviousEmpForm().subscribe(res => {
@@ -160,6 +166,13 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   //     }
   //   })
   // }
+  PreviousEmpSaveNextSubmit(previousEmploymentInformation) {
+    this.saveNextBoolean = true;
+
+    this.postEmploymentInfoForm(previousEmploymentInformation);
+  }
+
+
 
   postEmploymentInfoForm(previousEmploymentInformation) {
     debugger
@@ -176,6 +189,10 @@ export class PreviousEmploymentInformationComponent implements OnInit {
       this.getPreviousEmployees();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetForm();
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/family-information/family-details']);
+      }
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })

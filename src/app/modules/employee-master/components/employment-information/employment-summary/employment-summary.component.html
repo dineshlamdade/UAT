@@ -54,10 +54,6 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-element>
-            <tr *ngIf="EmploymentInformationSumarry.length == 0">
-                <td colspan="5"><span class="font-14 font500 align-center text-red">No
-                        data found</span></td>
-            </tr>
             <tr>
                 <td class="primeng-table-header-center">
                     <span tooltip="{{element.companyName}}">
@@ -90,7 +86,7 @@
                 <!-- <td>
                 <tr> -->
                 <td class="primeng-table-header-center pd-5">
-                    <span tooltip="{{element.serviceAgeShort}}">
+                    <span tooltip="{{element.serviceAge}}">
                         {{element.serviceAgeShort}}
                     </span>
                 </td>
@@ -101,7 +97,7 @@
                 </td>
                 <td class="primeng-table-header-center pd-5">
                     <span tooltip="{{element.gratuityPeriod}}">
-                        {{element.gratuityPeriod}}
+                        {{element.gratuityPeriodShort}}
                     </span>
                 </td>
                 <!-- </tr> -->
@@ -161,6 +157,9 @@
             </tr>
         </ng-template>
     </p-table>
+    <span class="font-14 font500 align-center text-red no-data-center" *ngIf="EmploymentInformationSumarry.length==0">No
+        data found</span>
+
     <br>
     <br>
     <legend style="font-size: 17px !important;">Milestones Summary
@@ -174,10 +173,6 @@
             </colgroup>
         </ng-template>
         <ng-template pTemplate="header">
-            <tr *ngIf="TransactionHistory.length == 0">
-                <td colspan="5"><span class="font-14 font500 align-center text-red">No
-                        data found</span></td>
-            </tr>
             <tr>
                 <th class="primeng-table-header-center">Date</th>
                 <th class="primeng-table-header-center">Type Of Transacton</th>
@@ -204,4 +199,6 @@
             </tr>
         </ng-template>
     </p-table>
+    <span class="font-14 font500 align-center text-red no-data-center" *ngIf="TransactionHistory.length==0">No
+        data found</span>
 </div>

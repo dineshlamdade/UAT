@@ -70,13 +70,15 @@
                                         <label class="form-label">{{ PersonalInfoLabels.middleName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Middle Name"
                                             formControlName="middleName" (change)="concateFullName()"
-                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.middleName">
+                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.middleName"
+                                            [ngClass]="{'is-invalid' : BasicInfoForm.get('middleName').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10" [hidden]="PersonalInfoLabels.lastName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.lastName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Last Name"
                                             formControlName="lastName" (change)="concateFullName()"
-                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.lastName">
+                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.lastName"
+                                            [ngClass]="{'is-invalid' : BasicInfoForm.get('lastName').status == 'INVALID'}">
                                     </div>
                                 </div>
 
@@ -319,7 +321,7 @@
                                             <button type="button" tooltip="Next" [disabled]="!employeeMasterId"
                                                 [ngClass]="{'next-previous-disabled' : !employeeMasterId,
                                             'bg-teal-400': employeeMasterId}"
-                                                [routerLink]="['/employee-master/employment-information/employment-summary']"
+                                                [routerLink]="['/employee-master/employment-information/joining-information']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-chevron-circle-right"
                                                         aria-hidden="true"></i></b>Next</button>

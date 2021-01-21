@@ -223,12 +223,27 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
-                                    <button type="button" toltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
-                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-15"><b><i
-                                                class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+                                    <button type="button" tooltip="Previous" [routerLink]="['/employee-master/personal-information']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                class="fa fa-chevron-circle-left"
+                                                aria-hidden="true"></i></b>Previous</button>
+
+                                    <button type="button" tooltip="Next"
+                                        [routerLink]="['/employee-master/contact-information']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 mr-15 bg-teal-400"><b><i
+                                                class="fa fa-chevron-circle-right"
+                                                aria-hidden="true"></i></b>Next</button>
+
+                                    <button type="button" (click)="saveNextJoiningSubmit(JoiningInformationModel)"
+                                        [disabled]="JoiningForm.invalid || JoiningForm.untouched"
+                                        [hidden]="viewJoining || editJoining"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                        tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
+                                        'btn-bg-green': !JoiningForm.invalid}"><b><i class="fa fa-floppy-o"></i></b>
+                                        Save & Next</button>
 
                                     <button type="submit" [disabled]="JoiningForm.invalid || JoiningForm.untouched"
-                                        class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mr-15"
                                         [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
                            'btn-bg-green': !JoiningForm.invalid}" tooltip="Save"
                                         [hidden]="viewJoining || editJoining"><b><i
@@ -237,8 +252,13 @@
                                     <button type="submit" *ngIf="editJoining"
                                         [disabled]="JoiningForm.invalid || JoiningForm.untouched" [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
                                         'btn-bg-green': !JoiningForm.invalid}"
-                                        class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
                                         tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                    <button type="button" toltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i
+                                                class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+
 
                                     <button type="button" tooltip="Cancel" *ngIf="viewJoining || editJoining"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"

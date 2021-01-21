@@ -43,7 +43,7 @@ export class ConfirmationModalComponent implements OnInit {
   }
 
   confirmCopy() {
-    
+    debugger
     this.dialogRef.close();
     this.EventEmitterService.setCopyFromConfirmation(this.confirmMsg);
     if (this.confirmMsg == 'IdentityForm') {

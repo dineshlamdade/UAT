@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 
 
@@ -52,13 +53,14 @@ export class ContactInformationComponent implements OnInit {
   ngEmergencyCountryCode: any;
   autoCompleteControl: any;
   newData: Array<any> = [];
-
+  saveNextBoolean: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     public dialog: MatDialog, private EventEmitterService: EventEmitterService,
     private ContactInformationService: ContactInformationService,
-    private SharedInformationService: SharedInformationService) {
+    private SharedInformationService: SharedInformationService,
+    private router: Router) {
 
   }
 
@@ -104,8 +106,10 @@ export class ContactInformationComponent implements OnInit {
     this.EventEmitterService.getCopyFromConfirmation().subscribe(res => {
       if (res == 'LocalToPermanent') {
         this.copyFromLocalToPermanent();
+        this.checkLocalAddress();
       } else {
         this.copyFromPermanentToLocal();
+        this.checkLocalAddress();
       }
     })
 
@@ -133,6 +137,13 @@ export class ContactInformationComponent implements OnInit {
 
     this.communicationAddress = event.target.defaultValue;
   }
+  contactSaveNextSubmit(contactInformation){
+
+    this.saveNextBoolean = true;
+
+    this.contactFormSubmit(contactInformation);
+  }
+
   // Contact Form submit Post API call
   contactFormSubmit(contactInformation) {
     debugger
@@ -153,7 +164,7 @@ export class ContactInformationComponent implements OnInit {
     } else {
       contactInformation.employeeMasterRequestDTO.personalMobileNumber = '';
     }
-    
+
     if (contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && this.ngEmergencyCountryCode) {
       this.ContactInfoForm.value.emergencyContactNumber = this.ContactInfoForm.value.emergencyCountryCode + ' ' +
         contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber
@@ -211,14 +222,16 @@ export class ContactInformationComponent implements OnInit {
 
     // post call for ContactInformation
     return this.ContactInformationService.postContactInfoForm(contactInformation).subscribe((res) => {
-      // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
       this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.dataBinding(res);
 
       this.ContactInfoForm.markAsUntouched();
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/bank-information']);
+      }
     }, (error: any) => {
       this.sweetalertError(error["error"]["status"]["messsage"]);
-      // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
     })
   }
 
@@ -532,6 +545,15 @@ export class ContactInformationComponent implements OnInit {
       timer: 15000,
       timerProgressBar: true,
     })
+  }
+  keyPress(event: any) {
+    
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }
 
