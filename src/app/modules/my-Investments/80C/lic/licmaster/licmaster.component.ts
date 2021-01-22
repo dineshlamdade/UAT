@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -32,7 +33,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 
 export class LicmasterComponent implements OnInit {
-
+  @Input() public policyNumber: string;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -137,7 +138,7 @@ export class LicmasterComponent implements OnInit {
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
-      premiumAmount: new FormControl(null, Validators.required),
+      premiumAmount: new FormControl(null, [Validators.required, Validators.pattern("^[0-9]+$")]),
       annualAmount: new FormControl(
         { value: null, disabled: true },
         Validators.required
@@ -320,6 +321,9 @@ export class LicmasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
+      if (this.policyNumber !== undefined || this.policyNumber !== null) {
+        this.getInstituteDetails(this.policyNumber)
+      }
     });
   }
 
@@ -517,6 +521,17 @@ export class LicmasterComponent implements OnInit {
       template,
       Object.assign({}, { class: 'gray modal-md' })
     );
+  }
+
+  resetForm() {
+    this.form.reset();
+  }
+
+  getInstituteDetails(policNo) {
+    const institude = this.masterGridData.find(
+      (element) => element.policyNo === policNo.number
+    );
+    this.form.patchValue(institude);
   }
 
 }

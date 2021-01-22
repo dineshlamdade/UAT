@@ -1,15 +1,20 @@
 <form [formGroup]="projectForm" (ngSubmit)="projectDetailsSubmit(projectDetailsModel)">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
-        <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+        <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
             (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
-            [(ngModel)]="payrollAreaCode">
-        </p-autoComplete>
-        <!-- <select class="form-control" placeholder="Select Payroll Area">
-          <option value="ABC">ABC</option>
-          <option value="PQR">PQR</option>
-          <option value="XYZ">XYZ</option>
-      </select> -->
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+        </p-autoComplete> -->
+        
+        <select class="form-control" placeholder="Select Payroll Area"
+            (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select Payroll Area</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
+                {{option}}
+            </option>
+        </select>
+
     </div>
     <br>
     <div class="row row-cards">
@@ -112,7 +117,7 @@
                         On - Bench </label>
                     <div class="custom-controls-stacked">
                         <label class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" value="yes" checked
+                            <input type="radio" class="custom-control-input" value="yes"
                                 formControlName="isOnBenchControl" [(ngModel)]="isOnBenchBoolean"
                                 (change)="enableBenchDate();validateSaveBenchDates();">
                             <span class="custom-control-label">Yes</span>
@@ -166,12 +171,12 @@
                 <button type="button" tooltip="Previous"
                     [routerLink]="['/employee-master/job-information/minimum-wages-details']"
                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                            class="fa fa-refresh" aria-hidden="true"></i></b>Previous</button>
+                            class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>Previous</button>
 
                 <button type="button" tooltip="Next"
                     [routerLink]="['/employee-master/job-information/deputation-details']"
                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                            class="fa fa-refresh" aria-hidden="true"></i></b>Next</button>
+                            class="fa fa-chevron-circle-right" aria-hidden="true"></i></b>Next</button>
             </div>
         </div>
     </div>

@@ -15,7 +15,6 @@ export class FixedDepositsService {
 
   getFDSummary() {
     return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/summary')
-    // return this._HTTP.get(this.apiUrl + 'nscMaster-detail/nscMasterSummary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -75,29 +74,6 @@ export class FixedDepositsService {
       return res;
     }));
   }
-
-  // uploadMultipleNSCMasterFiles(files: File[], data:any): Observable<any> {
-  //   var formData: any = new FormData();
-  //   console.log('in uploadMultipleFiles Service::', files);
-  //   for (let file of files) {
-  //     formData.append('group2MasterDocuments', file);
-  //   }
-  //   //formData.append('licDocuments', files);
-  //   formData.append('investmentGroup2MasterRequestDTO', JSON.stringify(data));
-
-  //   console.log('formData', formData);
-
-  //   formData.forEach((value, key) => {
-  //     console.log(key," ",value)
-  //   });
-  //   //return null;
-  //   return this._HTTP.post<any>(
-  //     this.apiUrl + 'nscMaster-detail',
-  //     formData,
-  //     {
-
-  //     });
-  // }
 
   uploadFDTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();

@@ -11,7 +11,7 @@
 </div> -->
     <div class="ml-2 pl-1 pr-0">
       <label class="form-label mt-2"
-        >Institution <span class="text-red">*</span></label
+        >Institution <span class="text-red"></span></label
       >
     </div>
     <div class="col-md-3 pr-0">
@@ -68,12 +68,12 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Policy No.</label>
+        <label class="form-label mt-1">Institution & Policy No :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label
           class="font-12 text-ellipsis mt-1"
-          placement="left"
+          placement="top"
           [adaptivePosition]="false"
           tooltip="{{ item.policyNo }}"
         >
@@ -81,12 +81,12 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Policy Holder Name</label>
+        <label class="form-label mt-1 pl-10">Policy Holder Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label
           class="font-12 text-ellipsis mt-1"
-          placement="left"
+          placement="top"
           [adaptivePosition]="false"
           tooltip="{{ item.policyholdername }}"
         >
@@ -94,12 +94,12 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Frequency</label>
+        <label class="form-label mt-1">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label
           class="font-12 text-ellipsis mt-1"
-          placement="left"
+          placement="top"
           [adaptivePosition]="false"
           tooltip="{{ item.frequency }}"
         >
@@ -122,7 +122,7 @@
                       type="checkbox"
                       class="custom-control-input"
                       [ngModel]="isCheckAll"
-                      [disabled]="isDisabled"
+                      [disabled]="canEdit && isDisabled"
                       name="select"
                       value="isCheckAll{{ j }}"
                       (change)="checkUncheckAll(item, j)"
@@ -348,7 +348,7 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
+              <tr *ngIf="!isDisabled && canEdit">
                 <td
                   *ngIf="previousEmployeeList?.length"
                   colspan="12"
@@ -638,7 +638,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
+  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
         <button
@@ -818,7 +818,9 @@
                     </span>
                   </td>
                   <td>
+                    <span tooltip="{{documentSummary.licMasterList[0].institution}}">
                     {{ documentSummary.licMasterList[0].institution }}
+                  </span>
                   </td>
                   <td>
                     <span
@@ -903,7 +905,7 @@
                       ></iframe>
                     </div>
                     &nbsp;&nbsp;
-                    <i
+                    <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
                         declarationEditUpload(
@@ -952,7 +954,7 @@
           *ngFor="let proofSubmissionFile of proofSubmissionFileList"
         >
           <div class="col-md-11">
-            <div class="labelbox" tooltip="Document 1">
+            <div class="labelbox" tooltip="Document">
               <i class="fa fa-paperclip text-orange"></i> &nbsp;
               {{ proofSubmissionFile.fileName }}
             </div>
@@ -996,7 +998,7 @@
     <div *ngFor="let item of editTransactionUpload; let j = index">
       <div class="row mt-25 d-flex">
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Institution & Policy No.</label>
+          <label class="form-label mt-1">Institution & Policy No:</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1007,7 +1009,7 @@
           >
         </div>
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1 pl-10">Policy Holder Name</label>
+          <label class="form-label mt-1 pl-10">Policy Holder Name:</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1018,7 +1020,7 @@
           >
         </div>
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Frequency</label>
+          <label class="form-label mt-1">Frequency:</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1098,9 +1100,7 @@
                     </select>
                   </td>
                   <td>
-                    <span
-                      >{{ summary.isECS === 1 ? "Yes" : "No" }}
-                      {{ summary.declaredAmount }}</span
+                    <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span
                     >
                   </td>
                   <td>

@@ -16,6 +16,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class LicComponent implements OnInit {
 
   public tabIndex = 0;
+  public policyNumber: string;
   public windowScrolled: boolean;
   public data: any;
 
@@ -29,6 +30,12 @@ export class LicComponent implements OnInit {
     this.data = event;
     console.log('data::',this.data);
   }
+
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.policyNumber = event;
+  }
+
 
   changeTabIndex(index: number)
   {

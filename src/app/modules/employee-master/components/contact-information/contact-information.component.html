@@ -12,7 +12,8 @@
 
                                 <!-- Contact Details Section -->
                                 <fieldset>
-                                    <legend><i class="icon-call-out"></i>&nbsp;&nbsp;{{ 'ContactInformationForm.ContactDetails' | transloco }}
+                                    <legend><i class="icon-call-out"></i>&nbsp;&nbsp;{{
+                                        'ContactInformationForm.ContactDetails' | transloco }}
                                     </legend>
                                     <div class="col-12">
                                         <legend>{{ 'ContactInformationForm.official' | transloco }}</legend>
@@ -21,11 +22,17 @@
                                             <div class="col-6">
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-6">
-                                                        <label class="form-label">{{ 'ContactInformationForm.officialMobileNumber' | transloco }}</label>
+                                                        <label class="form-label">{{
+                                                            'ContactInformationForm.officialMobileNumber' | transloco
+                                                            }}</label>
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
-                                                                <select class="form-control selectpicker" placeholder="Select ISD" formControlName="officialCountryCode" [(ngModel)]="ngOfficialCountryCode">
-                                                                    <option value="" data-hidden="true">Please select
+                                                                <select class="form-control selectpicker"
+                                                                    placeholder="Select"
+                                                                    formControlName="officialCountryCode"
+                                                                    [(ngModel)]="ngOfficialCountryCode"
+                                                                    [ngClass]="{'is-invalid' : ContactInfoForm.get('officialCountryCode').status == 'INVALID'}">
+                                                                    <option value="" data-hidden="true">select
                                                                     </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
@@ -34,13 +41,25 @@
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3 col-md-7 ml-2">
-                                                                <input type="text" class="form-control" placeholder="Enter Mobile No." minlength="1" maxlength="10" formControlName="officialMobileNumber" [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber">
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Enter Mobile No." minlength="1"
+                                                                    maxlength="10"
+                                                                    formControlName="officialMobileNumber"
+                                                                    [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber"
+                                                                    [ngClass]="{'is-invalid' : ContactInfoForm.get('officialMobileNumber').status == 'INVALID'}">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4">
-                                                        <label class="form-label">{{ 'ContactInformationForm.officialemail' | transloco }}</label>
-                                                        <input type="text" class="form-control" placeholder="Enter Email" formControlName="officialEmail" pattern="\S+@\S+\.\S+" (change)="validateOfficialEmail(contactInformation.employeeMasterRequestDTO.officialEmailId)" [(ngModel)]="contactInformation.employeeMasterRequestDTO.officialEmailId">
+                                                        <label class="form-label">{{
+                                                            'ContactInformationForm.officialemail' | transloco
+                                                            }}</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Enter Email" formControlName="officialEmail"
+                                                            pattern="\S+@\S+\.\S+"
+                                                            (change)="validateOfficialEmail(contactInformation.employeeMasterRequestDTO.officialEmailId)"
+                                                            [(ngModel)]="contactInformation.employeeMasterRequestDTO.officialEmailId"
+                                                            [ngClass]="{'is-invalid' : ContactInfoForm.get('officialEmail').status == 'INVALID'}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -50,11 +69,17 @@
                                                 <legend>{{ 'ContactInformationForm.personal' | transloco }}</legend>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-6">
-                                                        <label class="form-label">{{ 'ContactInformationForm.officialMobileNumber' | transloco }}</label>
+                                                        <label class="form-label">{{
+                                                            'ContactInformationForm.officialMobileNumber' | transloco
+                                                            }}</label>
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
-                                                                <select class="form-control" placeholder="Select ISD" formControlName="personalCountryCode" [(ngModel)]="ngPersonalCountryCode" (change)="validatePersonalMobile(ngPersonalCountryCode)" [ngClass]="{'is-invalid' : ContactInfoForm.get('personalCountryCode').status == 'INVALID'}">
-                                                                    <option value="" selected disabled>Enter ISD
+                                                                <select class="form-control" placeholder="Select"
+                                                                    formControlName="personalCountryCode"
+                                                                    [(ngModel)]="ngPersonalCountryCode"
+                                                                    (change)="validatePersonalMobile(ngPersonalCountryCode)"
+                                                                    [ngClass]="{'is-invalid' : ContactInfoForm.get('personalCountryCode').status == 'INVALID'}">
+                                                                    <option value="" selected disabled>Select
                                                                     </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
@@ -63,14 +88,25 @@
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-3 col-md-7 ml-2">
-                                                                <input type="text" class="form-control" placeholder="Enter Mobile No." minlength="1" maxlength="10" formControlName="personalmobileNumber" (change)="validatePersonalMobile(ngPersonalCountryCode)" [(ngModel)]="contactInformation.employeeMasterRequestDTO.personalMobileNumber"
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Enter Mobile No." minlength="1"
+                                                                    maxlength="10"
+                                                                    formControlName="personalmobileNumber"
+                                                                    (change)="validatePersonalMobile(ngPersonalCountryCode)"
+                                                                    [(ngModel)]="contactInformation.employeeMasterRequestDTO.personalMobileNumber"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('personalmobileNumber').status == 'INVALID'}">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4">
-                                                        <label class="form-label">{{ 'ContactInformationForm.officialemail' | transloco }}</label>
-                                                        <input type="text" class="form-control" placeholder="Enter Email" formControlName="personalEmail" pattern="\S+@\S+\.\S+" [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.personalEmailID">
+                                                        <label class="form-label">{{
+                                                            'ContactInformationForm.officialemail' | transloco
+                                                            }}</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Enter Email" formControlName="personalEmail"
+                                                            pattern="\S+@\S+\.\S+"
+                                                            [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.personalEmailID"
+                                                            [ngClass]="{'is-invalid' : ContactInfoForm.get('personalEmail').status == 'INVALID'}">
                                                     </div>
                                                 </div>
 
@@ -84,23 +120,33 @@
                                     <div class="col-6">
                                         <div class="row">
                                             <div class="col-sm-4 col-md-4">
-                                                <label class="form-label">{{ 'ContactInformationForm.emergencyContactName' | transloco }}</label>
-                                                <input type="text" class="form-control" placeholder="Enter Name" formControlName="emergencyContactName" [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactName1">
+                                                <label class="form-label">{{
+                                                    'ContactInformationForm.emergencyContactName' | transloco }}</label>
+                                                <input type="text" class="form-control" placeholder="Enter Name"
+                                                    formControlName="emergencyContactName"
+                                                    [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactName1">
                                             </div>
 
                                             <div class="col-sm-3 col-md-6 ">
-                                                <label class="form-label">{{ 'ContactInformationForm.officialMobileNumber' | transloco }}</label>
+                                                <label class="form-label">{{
+                                                    'ContactInformationForm.officialMobileNumber' | transloco }}</label>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-5 country-code ">
-                                                        <select class="form-control" placeholder="Select Gender" formControlName="emergencyCountryCode" [(ngModel)]="ngEmergencyCountryCode">
-                                                            <option value="" selected disabled>Enter ISD</option>
+                                                        <select class="form-control" placeholder="Select"
+                                                            formControlName="emergencyCountryCode"
+                                                            [(ngModel)]="ngEmergencyCountryCode">
+                                                            <option value="" selected disabled>Select</option>
                                                             <option *ngFor="let code of countryCode" [value]="code">
                                                                 {{code}}
                                                             </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3 col-md-7 ml-2">
-                                                        <input type="text" class="form-control" placeholder="Enter Mobile No." minlength="1" maxlength="10" formControlName="emergencyContactNumber" [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Enter Mobile No." minlength="1" maxlength="10"
+                                                            formControlName="emergencyContactNumber"
+                                                            [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber"
+                                                            [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,7 +157,8 @@
 
                                 <!-- Address Section -->
                                 <fieldset>
-                                    <legend><i class="icon-pointer"></i> {{ 'ContactInformationForm.addressDetails' | transloco }}</legend>
+                                    <legend><i class="icon-pointer"></i> {{ 'ContactInformationForm.addressDetails' |
+                                        transloco }}</legend>
 
                                     <div class="col-12">
                                         <div class="row center-fieldset">
@@ -121,21 +168,45 @@
                                                     </legend>
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-12">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Address1' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 1" formControlName="localAddress1" [(ngModel)]="localAddressInformation.address1" (keyup)="checkLocalAddress()" matTooltip="{{localAddressInformation.address1}}" [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Address1' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Address 1"
+                                                                formControlName="localAddress1"
+                                                                [(ngModel)]="localAddressInformation.address1"
+                                                                (keyup)="checkLocalAddress()"
+                                                                tooltip="{{localAddressInformation.address1}}"
+                                                                [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Address2' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 2" formControlName="localAddress2" [(ngModel)]="localAddressInformation.address2" (keyup)="checkLocalAddress()" matTooltip="{{localAddressInformation.address2}}">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Address2' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Address 2"
+                                                                formControlName="localAddress2"
+                                                                [(ngModel)]="localAddressInformation.address2"
+                                                                (keyup)="checkLocalAddress()"
+                                                                tooltip="{{localAddressInformation.address2}}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Address3' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 3" formControlName="localAddress3" [(ngModel)]="localAddressInformation.address3" (keyup)="checkLocalAddress()" matTooltip="{{localAddressInformation.address3}}">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Address3' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Address 3"
+                                                                formControlName="localAddress3"
+                                                                [(ngModel)]="localAddressInformation.address3"
+                                                                (keyup)="checkLocalAddress()"
+                                                                tooltip="{{localAddressInformation.address3}}">
                                                         </div>
 
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Country' | transloco }}</label>
-                                                            <select class="form-control" placeholder="Select Country" formControlName="localCountry" [(ngModel)]="localAddressInformation.country" (change)="checkLocalAddress(); clearLocalAddressFields()">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Country' | transloco }}</label>
+                                                            <select class="form-control" placeholder="Select"
+                                                                formControlName="localCountry"
+                                                                [(ngModel)]="localAddressInformation.country"
+                                                                (change)="checkLocalAddress(); clearLocalAddressFields()">
+                                                                <option value="" selected disabled>Select</option>
                                                                 <option *ngFor="let country of countries"
                                                                     [value]="country">
                                                                     {{country}}
@@ -143,37 +214,66 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-6 col-md- mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Pin' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6" formControlName="localPin" [(ngModel)]="localAddressInformation.postalCode" pattern="[0-9]{6}" (keyup)="checkLocalAddress(); getLocalAddressFromPIN();">
+                                                            <label class="form-label">{{ 'ContactInformationForm.Pin' |
+                                                                transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter PIN" minlength="1" maxlength="6"
+                                                                formControlName="localPin"
+                                                                [(ngModel)]="localAddressInformation.postalCode"
+                                                                pattern="[0-9]{6}"
+                                                                (keyup)="checkLocalAddress(); getLocalAddressFromPIN();"
+                                                                [ngClass]="{'is-invalid' : ContactInfoForm.get('localPin').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.State' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter State" formControlName="localState" [(ngModel)]="localAddressInformation.state" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{ 'ContactInformationForm.State'
+                                                                | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter State" formControlName="localState"
+                                                                [(ngModel)]="localAddressInformation.state"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.District' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter District" formControlName="localDistrict" [(ngModel)]="localAddressInformation.district" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.District' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter District"
+                                                                formControlName="localDistrict"
+                                                                [(ngModel)]="localAddressInformation.district"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.City' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter City" formControlName="localCity" [(ngModel)]="localAddressInformation.city" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{ 'ContactInformationForm.City' |
+                                                                transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter City" formControlName="localCity"
+                                                                [(ngModel)]="localAddressInformation.city"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Village' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Village" formControlName="localVillege" [(ngModel)]="localAddressInformation.village" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Village' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Village"
+                                                                formControlName="localVillege"
+                                                                [(ngModel)]="localAddressInformation.village"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                     </div>
 
                                                 </fieldset>
                                             </div>
                                             <div class="copy-from-btn">
-                                                <i class="fa fa-arrow-circle-right" style="font-size: 29px;" matTooltip="Copy from Local to Permanent Address" (click)="ConfirmationFromLocalToPermanent()"></i>
-                                                <!-- <mat-icon matTooltip="Copy from Local to Permanent Address"
+                                                <i class="fa fa-arrow-circle-right" style="font-size: 29px;"
+                                                    tooltip="Copy from Local to Permanent Address"
+                                                    (click)="ConfirmationFromLocalToPermanent()"></i>
+                                                <!-- <mat-icon tooltip="Copy from Local to Permanent Address"
                                                     (click)="ConfirmationFromLocalToPermanent()">
                                                     arrow_forward</mat-icon> -->
                                                 <br>
-                                                <i class="fa fa-arrow-circle-left" style="font-size: 29px;" matTooltip="Copy from Permanent to Local Address" (click)="ConfirmationFromPermanentToLocal()"></i>
-                                                <!-- <mat-icon matTooltip="Copy from Permanent to Local Address"
+                                                <i class="fa fa-arrow-circle-left" style="font-size: 29px;"
+                                                    tooltip="Copy from Permanent to Local Address"
+                                                    (click)="ConfirmationFromPermanentToLocal()"></i>
+                                                <!-- <mat-icon tooltip="Copy from Permanent to Local Address"
                                                     (click)="ConfirmationFromPermanentToLocal()">
                                                     arrow_back</mat-icon> -->
                                             </div>
@@ -185,22 +285,45 @@
 
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-12">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Address1' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 1" formControlName="permanentAddress1" [(ngModel)]="permanentAddressInformation.address1" (keyup)="checkLocalAddress()" matTooltip="{{permanentAddressInformation.address1}}" [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Address1' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Address 1"
+                                                                formControlName="permanentAddress1"
+                                                                [(ngModel)]="permanentAddressInformation.address1"
+                                                                (keyup)="checkLocalAddress()"
+                                                                tooltip="{{permanentAddressInformation.address1}}"
+                                                                [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Address2' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 2" formControlName="permanentAddress2" [(ngModel)]="permanentAddressInformation.address2" (keyup)="checkLocalAddress()" matTooltip="{{permanentAddressInformation.address2}}">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Address2' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Address 2"
+                                                                formControlName="permanentAddress2"
+                                                                [(ngModel)]="permanentAddressInformation.address2"
+                                                                (keyup)="checkLocalAddress()"
+                                                                tooltip="{{permanentAddressInformation.address2}}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Address3' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Address 3" formControlName="permanentAddress3" [(ngModel)]="permanentAddressInformation.address3" (keyup)="checkLocalAddress()" matTooltip="{{permanentAddressInformation.address3}}">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Address3' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Address 3"
+                                                                formControlName="permanentAddress3"
+                                                                [(ngModel)]="permanentAddressInformation.address3"
+                                                                (keyup)="checkLocalAddress()"
+                                                                tooltip="{{permanentAddressInformation.address3}}">
                                                         </div>
 
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Country' | transloco }}</label>
-                                                            <select class="form-control" placeholder="Select Country" formControlName="permanentCountry" [(ngModel)]="permanentAddressInformation.country" (change)="checkLocalAddress(); clearPermanentAddressFields();">
-                                                                <option value="" selected disabled>Select Country
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Country' | transloco }}</label>
+                                                            <select class="form-control" placeholder="Select"
+                                                                formControlName="permanentCountry"
+                                                                [(ngModel)]="permanentAddressInformation.country"
+                                                                (change)="checkLocalAddress(); clearPermanentAddressFields();">
+                                                                <option value="" selected disabled>Select
                                                                 </option>
                                                                 <option *ngFor="let country of countries"
                                                                     [value]="country">
@@ -209,24 +332,50 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-6 col-md- mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Pin' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter PIN" minlength="1" maxlength="6" formControlName="permanentPin" [(ngModel)]="permanentAddressInformation.postalCode" pattern="[0-9]{6}" (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();">
+                                                            <label class="form-label">{{ 'ContactInformationForm.Pin' |
+                                                                transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter PIN" minlength="1" maxlength="6"
+                                                                formControlName="permanentPin"
+                                                                [(ngModel)]="permanentAddressInformation.postalCode"
+                                                                pattern="[0-9]{6}"
+                                                                (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();"
+                                                                [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentPin').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.State' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter State" formControlName="permanentState" [(ngModel)]="permanentAddressInformation.state" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{ 'ContactInformationForm.State'
+                                                                | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter State"
+                                                                formControlName="permanentState"
+                                                                [(ngModel)]="permanentAddressInformation.state"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.District' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter District" formControlName="permanentDistrict" [(ngModel)]="permanentAddressInformation.district" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.District' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter District"
+                                                                formControlName="permanentDistrict"
+                                                                [(ngModel)]="permanentAddressInformation.district"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.City' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter City" formControlName="permanentCity" [(ngModel)]="permanentAddressInformation.city" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{ 'ContactInformationForm.City' |
+                                                                transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter City" formControlName="permanentCity"
+                                                                [(ngModel)]="permanentAddressInformation.city"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Village' | transloco }}</label>
-                                                            <input type="text" class="form-control" placeholder="Enter Village" formControlName="permanentVillege" [(ngModel)]="permanentAddressInformation.village" (keyup)="checkLocalAddress()">
+                                                            <label class="form-label">{{
+                                                                'ContactInformationForm.Village' | transloco }}</label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Enter Village"
+                                                                formControlName="permanentVillege"
+                                                                [(ngModel)]="permanentAddressInformation.village"
+                                                                (keyup)="checkLocalAddress()">
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -236,7 +385,8 @@
 
                                     <br>
                                     <div class="form-group">
-                                        <legend [ngClass]="{'invalid-feedback' : ContactInfoForm.get('communicationAddress').status == 'INVALID'}">
+                                        <legend
+                                            [ngClass]="{'invalid-feedback' : ContactInfoForm.get('communicationAddress').status == 'INVALID'}">
                                             {{ 'ContactInformationForm.communicationAddress' | transloco }}</legend>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
@@ -281,11 +431,16 @@
                                 <div class="row mt-15">
                                     <div class="col-12">
                                         <div class="float-right mb-15">
-                                            <button type="submit" [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched" (click)="contactFormSubmit(contactInformation)" [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
-                                               'btn-bg-green': !ContactInfoForm.invalid || communicationAddress}" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> Save</button>
+                                            <button type="submit"
+                                                [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched"
+                                                (click)="contactFormSubmit(contactInformation)" [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
+                                               'btn-bg-green': !ContactInfoForm.invalid || communicationAddress}"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> Save</button>
 
 
-                                            <button type="button" tooltip="Reset" (click)="resetForm()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"

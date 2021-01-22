@@ -23,6 +23,30 @@ import { NPSComponent } from './VI-A/nps/nps.component';
 import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
 import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
 import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
+import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
+import { PhysicallyHandicappedSummaryComponent } from './VI-A/physically-handicapped/physically-handicapped-summary/physically-handicapped-summary.component';
+import { PhysicallyHandicappedDeclarationAndActualComponent } from './VI-A/physically-handicapped/physically-handicapped-declaration-and-actual/physically-handicapped-declaration-and-actual.component';
+import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
+import { SummaryComponent } from './VI-A/handicapped-dependent/summary/summary.component';
+import { MasterComponent } from './VI-A/handicapped-dependent/master/master.component';
+import { DeclarationAndActualComponent } from './VI-A/handicapped-dependent/declaration-and-actual/declaration-and-actual.component';
+import { ElectricVehicleComponent } from './VI-A/electric-vehicle/electric-vehicle.component';
+import { ElectricVehicleSummaryComponent } from './VI-A/electric-vehicle/electric-vehicle-summary/electric-vehicle-summary.component';
+import { ElectricVehicleMasterComponent } from './VI-A/electric-vehicle/electric-vehicle-master/electric-vehicle-master.component';
+import { ElectricVehicleDeclarationComponent } from './VI-A/electric-vehicle/electric-vehicle-declaration/electric-vehicle-declaration.component';
+import { EducationalLoanComponent } from './VI-A/educational-loan/educational-loan.component';
+import { EducationalLoanSummaryComponent } from './VI-A/educational-loan/educational-loan-summary/educational-loan-summary.component';
+import { EducationalLoanMasterComponent } from './VI-A/educational-loan/educational-loan-master/educational-loan-master.component';
+import { EducationalLoanDeclarationComponent } from './VI-A/educational-loan/educational-loan-declaration/educational-loan-declaration.component';
+import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.component';
+import { InterestOnTtaSummaryComponent } from './VI-A/interest-on-tta/interest-on-tta-summary/interest-on-tta-summary.component';
+import { InterestOnTtaMasterComponent } from './VI-A/interest-on-tta/interest-on-tta-master/interest-on-tta-master.component';
+import { InterestOnTtaDeclarationComponent } from './VI-A/interest-on-tta/interest-on-tta-declaration/interest-on-tta-declaration.component';
+import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
+import { InterestOnTtbSummaryComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-summary/interest-on-ttb-summary.component';
+import { InterestOnTtbMasterComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-master/interest-on-ttb-master.component';
+import { InterestOnTtbDeclarationComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-declaration/interest-on-ttb-declaration.component';
+import { PrimeNGModule } from 'src/app/app.primeNG.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +56,30 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     NpsSummaryComponent,
     NpsMasterComponent,
     NpsDeclarationComponent,
-  ],
+    PhysicallyHandicappedComponent,
+    PhysicallyHandicappedSummaryComponent,
+    PhysicallyHandicappedDeclarationAndActualComponent,
+    HandicappedDependentComponent,
+    SummaryComponent,
+    MasterComponent,
+    DeclarationAndActualComponent,
+    ElectricVehicleComponent,
+    ElectricVehicleSummaryComponent,
+    ElectricVehicleMasterComponent,
+    ElectricVehicleDeclarationComponent,
+    EducationalLoanComponent,
+    EducationalLoanSummaryComponent,
+    EducationalLoanMasterComponent,
+    EducationalLoanDeclarationComponent,
+    InterestOnTtaComponent,
+    InterestOnTtaSummaryComponent,
+    InterestOnTtaMasterComponent,
+    InterestOnTtaDeclarationComponent,
+    InterestOnDepositTtbComponent,
+    InterestOnTtbSummaryComponent,
+    InterestOnTtbMasterComponent,
+    InterestOnTtbDeclarationComponent,
+   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -56,6 +103,7 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

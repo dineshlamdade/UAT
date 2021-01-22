@@ -4,6 +4,7 @@ export class ReJoiningInformationModel {
         public rejoiningDate: any,
         public originalHireDate: any,
         public joiningDateForGratuity:any,
+        public companyName: any,
         public isProbationInMonth: any,
         public probationPeriodMonth: any,
         public isProbationInDays: any,
@@ -18,6 +19,6 @@ export class ReJoiningInformationModel {
         public confirmationRemark: any,
         public employeeMasterId:any,
         public employementInfoId: any,
-        public projectedRetirementDate: any
+        // public projectedRetirementDate: any
     ){} 
 }

@@ -1,6 +1,6 @@
 export class PersonalInformationModel {
     // public internationalWorkerRequestDTO = new internationalWorkerRequestDTO('','','','','');
-    public employeeMasterRequestDTO = new employeeMasterRequestDTO('','','','','','','','','','','','','','','','');
+    public employeeMasterRequestDTO = new employeeMasterRequestDTO('','','','','','','','','','','','','','','','','','');
     
     constructor(
         public bloodGroup: any,
@@ -35,7 +35,8 @@ export class PersonalInformationModel {
         public createdBy:any,
         public lastModifiedBy:any,
         public isDraft:any,
-        
+        public sameCode: any,
+        public rejoinee: any
     ){}
 
  }

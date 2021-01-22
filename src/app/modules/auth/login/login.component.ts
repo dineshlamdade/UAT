@@ -80,7 +80,7 @@ this.otpDiv = false;
           window.location.reload();
         }
       }, 1000);
-       
+
         // this.alertService.sweetalertError('Something went wrong. Please try again.');
     },
     (err) => {

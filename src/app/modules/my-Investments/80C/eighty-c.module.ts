@@ -59,6 +59,12 @@ import { TaxSavingNabardActualComponent } from './tax-saving-shares-nabard/tax-s
 import { PostOfficeTermDepositComponent } from './post-office-term-deposit/post-office-term-deposit.component';
 import { PostOfficeTermDepositSummaryComponent } from './post-office-term-deposit/post-office-term-deposit-summary/post-office-term-deposit-summary.component';
 import { PostOfficeTermDepositDeclarationComponent } from './post-office-term-deposit/post-office-term-deposit-declaration/post-office-term-deposit-declaration.component';
+import { SeniorCitizenSavingSchemeComponent } from './senior-citizen-saving-scheme/senior-citizen-saving-scheme.component';
+import { SeniorCitizenSummaryComponent } from './senior-citizen-saving-scheme/senior-citizen-summary/senior-citizen-summary.component';
+import { SeniorCitizenDeclarationComponent } from './senior-citizen-saving-scheme/senior-citizen-declaration/senior-citizen-declaration.component';
+import { TuitionFeesComponent } from './tuition-fees/tuition-fees.component';
+import { TuitionFeesSummaryComponent } from './tuition-fees/tuition-fees-summary/tuition-fees-summary.component';
+import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-declaration/tuition-fees-declaration.component';
 
 @NgModule({
   declarations: [
@@ -103,6 +109,13 @@ import { PostOfficeTermDepositDeclarationComponent } from './post-office-term-de
     PostOfficeTermDepositComponent,
     PostOfficeTermDepositSummaryComponent,
     PostOfficeTermDepositDeclarationComponent,
+    SeniorCitizenSavingSchemeComponent,
+    SeniorCitizenSummaryComponent,
+    SeniorCitizenDeclarationComponent,
+    TuitionFeesComponent,
+    TuitionFeesSummaryComponent,
+    TuitionFeesDeclarationComponent,
+
      ],
   imports: [
     CommonModule,

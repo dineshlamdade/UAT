@@ -373,55 +373,79 @@
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
                 <a href="javascript:void(0)" (click)="isEmployeeMaster = !isEmployeeMaster"
                     [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
-                    aria-expanded="true"><i
-                        class="icon-credit-card"></i><span>{{ 'EmployeeMaster.employeeMaster' | transloco }}</span></a>
+                    aria-expanded="true"><i class="icon-credit-card"></i><span>{{ 'EmployeeMaster.employeeMaster' |
+                        transloco }}</span></a>
                 <ul class="collapse" id="collapseBasic" [collapse]="isEmployeeMaster" [isAnimated]="true">
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
                             [routerLink]="['/employee-master/employee-summary']"><span>Employee Summary</span></a>
                     </li>
 
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/personal-information']"><span>{{ 'EmployeeMaster.personalInformation' | transloco }}</span></a>
+                            [routerLink]="['/employee-master/personal-information']"><span>{{
+                                'EmployeeMaster.personalInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/contact-information']"><span>{{ 'EmployeeMaster.contactInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/employment-information/employment-summary']"><span>{{
+                                'EmployeeMaster.employmentInformation' |
+                                transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/identity-information']"><span>{{ 'EmployeeMaster.identityInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/contact-information']"><span>{{
+                                'EmployeeMaster.contactInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/employment-information/employment-summary']"><span>{{ 'EmployeeMaster.employmentInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/bank-information']"><span>{{
+                                'EmployeeMaster.bankInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/previous-employment-information']"><span>{{ 'EmployeeMaster.previousEmploymentInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/payroll-area-information']"><span>{{
+                                'EmployeeMaster.payrollInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/job-information']"><span>{{ 'EmployeeMaster.jobInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/job-information/job-summary']"><span>{{
+                                'EmployeeMaster.jobInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/bank-information']"><span>{{ 'EmployeeMaster.bankInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/identity-information']"><span>{{
+                                'EmployeeMaster.identityInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/family-information']"><span>{{ 'EmployeeMaster.familyInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/compliance-information/compliance-summary']"><span>{{
+                                'EmployeeMaster.complianceInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/compliance-information/compliance-summary']"><span>{{ 'EmployeeMaster.complianceInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/previous-employment-information']"><span>{{
+                                'EmployeeMaster.previousEmploymentInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/education-skills-information']"><span>{{ 'EmployeeMaster.education&skillsInformation' | transloco }}</span></a>
+
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/family-information/family-details']"><span>{{
+                                'EmployeeMaster.familyInformation' | transloco }}</span></a>
                     </li>
 
-                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/employee-master/payroll-area-information']"><span>{{ 'EmployeeMaster.payrollInformation' | transloco }}</span></a>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"
+                        [class.disabled]="!checkEmpId()"><a class="submenu"
+                            [routerLink]="['/employee-master/education-skills-information/education-details']"><span>{{
+                                'EmployeeMaster.education&skillsInformation' | transloco }}</span></a>
                     </li>
                 </ul>
             </li>
@@ -515,6 +539,24 @@
 
                 </ul>
             </li>
+
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a href="javascript:void(0)" (click)="ischaptersettingCollapsed = !ischaptersettingCollapsed" [attr.aria-expanded]="!ischaptersettingCollapsed" aria-controls="investmentsCollapsed" class="has-arrow arrow-c"><i class="fa fa-cogs" aria-hidden="true"></i><span>Company Settings</span></a>
+                <ul class="collapse" id="ischaptersettingCollapsed" [collapse]="ischaptersettingCollapsed" [isAnimated]="true">
+                   <!--  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                        <a class="submenu" [routerLink]="['/investments-houseRent']" href="javascript:void(0)">House Rent</a>
+                    </li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-houseLoan']" href="javascript:void(0)">House Loan</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-chapterSixA']" href="javascript:void(0)">Chapter VI-A</a></li> -->
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/bc']" href="javascript:void(0)">Business Cycle</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/headcreation']" href="javascript:void(0)">Head Creation</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/attributecreation']" href="javascript:void(0)">Attribute Creation</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/attributeselection']" href="javascript:void(0)">Attribute Selection</a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/payrollheadgroupcreation']" href="javascript:void(0)">Payroll Head Group Creation</a></li>
+                </ul>
+            </li>
+
+
         </ul>
     </nav>
 </div>

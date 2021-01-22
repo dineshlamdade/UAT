@@ -10,25 +10,10 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 export class PPFSummaryComponent implements OnInit {
 
-
-
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
-
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution : institution,
-      policyNo : policyNo,
-      tabIndex : this.tabIndex
-    };
-    this.institution = institution;
-    this.policyNo = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
-    this.myEvent.emit(data);
-  }
+  @Output() policyNumber = new EventEmitter<any>();
 
       public summaryGridData: Array<any> = [];
       public tabIndex = 0;
@@ -54,6 +39,23 @@ export class PPFSummaryComponent implements OnInit {
     // Summary get Call on Page Load
     this.summaryPage();
 
+  }
+
+
+  redirectToDeclarationActual(institution: string, policyNo: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution : institution,
+      policyNo : policyNo,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)
+    };
+    this.institution = institution;
+    this.policyNo = policyNo;
+    //console.log('institution::', institution);
+    //console.log('policyNo::', policyNo);
+    // console.log('View redirect to declaration',data)
+    this.myEvent.emit(data);
   }
 
   // ---------------------Summary ----------------------
@@ -99,19 +101,28 @@ export class PPFSummaryComponent implements OnInit {
       this.addFuturePolicy();
     }
 
-    jumpToMasterPage(n: number) {
-        //console.log(n);
-        this.tabIndex = 1;
-        //this.editMaster(3);
+    // jumpToMasterPage(n: number) {
+    //     //console.log(n);
+    //     this.tabIndex = 1;
+    //     //this.editMaster(3);
+    // }
+
+    jumpToMasterPage(policyNo: string) {
+      this.tabIndex = 1;
+      const data = {
+        number : policyNo,
+        tabIndex : this.tabIndex
+      };;
+      this.policyNumber.emit(data);
     }
 
   // On onEditSummary
-    onEditSummary1(institution: string, policyNo: string) {
-      this.tabIndex = 2;
-      this.institution = institution;
-      this.policyNo = policyNo;
-      console.log('institution::', institution);
-      console.log('policyNo::', policyNo);
-    }
+    // onEditSummary1(institution: string, policyNo: string) {
+    //   this.tabIndex = 2;
+    //   this.institution = institution;
+    //   this.policyNo = policyNo;
+    //   console.log('institution::', institution);
+    //   console.log('policyNo::', policyNo);
+    // }
 
 }
