@@ -13,6 +13,7 @@ const routes: Routes = [
  { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
+  
   { path: 'company-setting', loadChildren: './modules/company-setting/company-setting.module#CompanySettingModule' },
   {
     path: 'investment',

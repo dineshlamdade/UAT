@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { CompanySettingRoutingModule } from './company-setting-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PayrollComponent } from '../payroll/payroll.component';
@@ -19,6 +18,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ToastrModule } from 'ngx-toastr';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { FinancialMasterComponent } from './payroll/financial-master/financial-master.component';
 
 
 
@@ -26,7 +27,8 @@ import { ToastrModule } from 'ngx-toastr';
 @NgModule({
   declarations: [
     GarnishmentMasterComponent,
-    CompanySettingComponent
+    CompanySettingComponent,
+    FinancialMasterComponent
   ],
   imports: [
     CommonModule,
@@ -52,6 +54,7 @@ import { ToastrModule } from 'ngx-toastr';
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
+    NgMultiSelectDropDownModule,
     
   ]
 })
