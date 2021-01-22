@@ -71,7 +71,7 @@
             </p-autoComplete> -->
             <select class="form-control" placeholder="Select Type Of Work"
             (completeMethod)="searchSkill(minumumWagesDetailsModel.workType)"
-            (change)="enableWorkDate();validateWorkDates();"
+            (change)="enableWorkDate();"
             formControlName="workTypeControl" [(ngModel)]="minumumWagesDetailsModel.workType">
               <option value="" selected disabled>Select Skill</option>
               <option *ngFor="let work of filteredWorkList" [value]="work">

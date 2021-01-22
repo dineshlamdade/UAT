@@ -347,6 +347,7 @@ export class MinimumWagesDetailComponent implements OnInit {
     this.minimumWagesForm.controls['skillEndDateControl'].setValidators([Validators.required]);
   }
   enableSkillDate() {
+    
     const skillStartDate = this.minimumWagesForm.get('skillStartDateControl');
     skillStartDate.enable();
     const skillEndDate = this.minimumWagesForm.get('skillEndDateControl');
@@ -393,20 +394,22 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
 
   validateWorkDates() {
-    debugger
     this.minimumWagesForm.controls['workStartDateControl'].setValidators([Validators.required]);
     this.minimumWagesForm.controls['workEndDateControl'].setValidators([Validators.required]);
   }
   enableWorkDate() {
-    const workStartDate = this.minimumWagesForm.get('workStartDateControl');
-    workStartDate.enable();
-    const workEndDate = this.minimumWagesForm.get('workEndDateControl');
-    workEndDate.enable();
     if (this.minumumWagesDetailsModel.workType == '' || this.minumumWagesDetailsModel.workType == null) {
       this.minumumWagesDetailsModel.workStartDate = null;
       this.minumumWagesDetailsModel.workEndDate = null;
       this.disableWorkDates();
     }
+    else{
+      const workStartDate = this.minimumWagesForm.get('workStartDateControl');
+      workStartDate.enable();
+      const workEndDate = this.minimumWagesForm.get('workEndDateControl');
+      workEndDate.enable();
+      this.validateWorkDates();
+    } 
   }
 
   disableWorkDates() {
@@ -426,15 +429,17 @@ export class MinimumWagesDetailComponent implements OnInit {
         this.payrollAreaList.push(item.payrollAreaCode);
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
       });
+      if (this.payrollAreaList.length == 1) {
+        this.payrollAreaCode = this.payrollAreaList[0];
+        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+      }
+      else {
+        //get payroll area code from local storage
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        this.payrollAreaCode = new String(payrollAreaCode);
+      }
     })
-    if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
-    }
-    else {
-      //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-    }
+  
   }
 
   filterpayrollArea(event) {

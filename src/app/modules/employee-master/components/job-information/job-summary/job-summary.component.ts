@@ -70,32 +70,32 @@ export class JobSummaryComponent implements OnInit {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-       //get payroll area code from local storage
-       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-       this.payrollAreaCode = new String(payrollAreaCode);
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
     }
   }
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
-    this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
+    this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+      debugger
       res.data.results[0].forEach(item => {
 
         this.payrollAreaList.push(item.payrollAreaCode);
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
       });
+      if (this.payrollAreaList.length == 1) {
+        this.payrollAreaCode = this.payrollAreaList[0];
+        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+      }
+      else {
+        //get payroll area code from local storage
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        this.payrollAreaCode = new String(payrollAreaCode);
+      }
     })
-
-    if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
-    }
-    else {
-      //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-    }
-
   }
 
   filterpayrollArea(event) {
@@ -113,7 +113,7 @@ export class JobSummaryComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
-    
+
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     this.getGridSummary()
@@ -135,9 +135,9 @@ export class JobSummaryComponent implements OnInit {
       this.router.navigate(['/employee-master/job-information/project-details']);
     }
   }
-//reset summary grid
-  resetSummary(){
-    this.summaryGridData=[];
+  //reset summary grid
+  resetSummary() {
+    this.summaryGridData = [];
   }
 
 }
