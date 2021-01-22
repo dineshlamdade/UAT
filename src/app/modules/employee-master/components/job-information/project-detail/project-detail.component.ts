@@ -308,15 +308,18 @@ export class ProjectDetailComponent implements OnInit {
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
       });
+
+      if (this.payrollAreaList.length == 1) {
+        this.payrollAreaCode = this.payrollAreaList[0];
+        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+      }
+      else {
+        //get payroll area code from local storage
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        this.payrollAreaCode = new String(payrollAreaCode);
+      }
     })
-    if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
-    }
-    else {
-      //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-    }
+  
   }
 
   filterpayrollArea(event) {

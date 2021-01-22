@@ -419,7 +419,7 @@ export class OrganizationDetailComponent implements OnInit {
 
       this.resetOrganizationForm();
     })
-    debugger
+    
     if (this.payrollAreaList.length == 1) {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
@@ -482,7 +482,7 @@ export class OrganizationDetailComponent implements OnInit {
       organizationDetailsModel.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      debugger
+      
      //get payroll area code from local storage
      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
      this.payrollAreaCode = new String(payrollAreaCode);
@@ -1267,7 +1267,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   //get payroll area assigned to that employee
   getPayrollAreaInformation() {
-    debugger
+    
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
@@ -1275,16 +1275,17 @@ export class OrganizationDetailComponent implements OnInit {
         this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
       });
+      if (this.payrollAreaList.length == 1) {
+        this.payrollAreaCode = this.payrollAreaList[0];
+        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+      }
+      else {
+        //get payroll area code from local storage
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        this.payrollAreaCode = new String(payrollAreaCode);
+      }
     })
-    debugger
-    if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
-    }
-    else {
-      //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-    }
+   
   }
 
   filterpayrollArea(event) {
@@ -1302,7 +1303,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
-    debugger
+    
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     this.resetOrganizationForm();
