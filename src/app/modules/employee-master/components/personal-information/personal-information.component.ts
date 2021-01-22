@@ -92,9 +92,9 @@ export class PersonalInformationComponent implements OnInit {
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
       employeeCode: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	_,/,-])[a-zA-Z0-9•	_,/,-]+$/)])],
-      alternateCode: [''],
+      alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	_,/,-])[a-zA-Z0-9•	_,/,-]+$/)])],
       title: [''],
-      firstName: ['', Validators.compose([Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)])],
       middleName: ['', Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)],
       lastName: ['', Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)],
       fullName: [{ value: null, disabled: true },],
@@ -122,11 +122,15 @@ export class PersonalInformationComponent implements OnInit {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
+    this.Physically = 'No';
+    this.expatBoolean1 = 'No';
+    this.personalInformationModel.disabilityType = '';
+    
     if (this.employeeMasterId) {
       this.getEmployeeData();
     }
-    this.Physically = 'No';
-    this.expatBoolean1 = 'No';
+
+
 
     this.clearBirthDateSubsribtion = this.EventEmitterService.setClearBirthDate().subscribe(res => {
 
@@ -362,6 +366,9 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
     if(!this.personalInformationModel.nationality){
       this.personalInformationModel.nationality = '';
+    }
+    if(!this.personalInformationModel.disabilityType){
+      this.personalInformationModel.disabilityType = '';
     }
     if (this.rejoinee == true && this.sameCode == false) {
       const employeeCode = this.BasicInfoForm.get('employeeCode');

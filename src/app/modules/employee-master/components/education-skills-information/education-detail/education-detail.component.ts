@@ -108,7 +108,7 @@ export class EducationDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-      debugger
+      
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
 
@@ -123,7 +123,7 @@ export class EducationDetailComponent implements OnInit {
   getAllEducationSummary() {
 
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       // this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();

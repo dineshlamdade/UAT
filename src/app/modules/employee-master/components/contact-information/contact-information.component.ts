@@ -146,7 +146,7 @@ export class ContactInformationComponent implements OnInit {
 
   // Contact Form submit Post API call
   contactFormSubmit(contactInformation) {
-    debugger
+    
     // Concatnation of mobile number and country code
     if (contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && this.ngOfficialCountryCode) {
 
@@ -375,6 +375,7 @@ export class ContactInformationComponent implements OnInit {
     this.localAddressInformation.city = this.permanentAddressInformation.city;
     this.localAddressInformation.village = this.permanentAddressInformation.village;
     this.ContactInfoForm.markAsTouched();
+    this.checkLocalAddress()
   }
 
   ConfirmationFromLocalToPermanent(): void {
@@ -406,7 +407,7 @@ export class ContactInformationComponent implements OnInit {
     }
   }
   checkLocalAddress() {
-    debugger
+    
     let local;
     let permanent;
     // if (this.permanentAddressInformation.country == null) {

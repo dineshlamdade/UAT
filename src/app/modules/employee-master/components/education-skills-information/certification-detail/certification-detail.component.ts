@@ -135,8 +135,6 @@ export class CertificationDetailComponent implements OnInit {
           }
         })
       })
-      console.log(this.ToFilteredCertificateAllList);
-
     })
   }
 
@@ -145,6 +143,8 @@ export class CertificationDetailComponent implements OnInit {
     this.EducationSkillsInformationService.getAllCertificateMapping().subscribe(res => {
       
       this.ToFilteredCertificateAllList = res.data.results;
+      this.certificateModel = '';
+      this.CertificateInfoForm.get('cerificateName').setValue('');
       // this.getCertificateList();
     })
   }
@@ -231,11 +231,11 @@ export class CertificationDetailComponent implements OnInit {
   onSelectionName(certificate) {
     
     this.employeeCertificateRequestModel.cerificateNumber = '';
-    if (certificate.certificateMasterDetails.renewable == false) {
+    if (certificate == "false") {
       this.renewableModel = 'no';
       // this.employeeCertificateRequestModel.renewable = 0;
     }
-    if (certificate.certificateMasterDetails.renewable == true) {
+    if (certificate == "true") {
       this.renewableModel = 'yes';
       // this.employeeCertificateRequestModel.renewable = 1;
     }

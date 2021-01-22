@@ -431,9 +431,9 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   getAllSkillsSummary() {
-    debugger
+    
     this.EducationSkillsInformationService.getAllSkillsSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.SkillSummaryGridData = res.data.results[0];
       this.SkillSummaryData = res.data.results[0];
 
@@ -442,11 +442,11 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   postSkillsForm(employeeSkillDetailsRequestModel) {
-    debugger
+    
     employeeSkillDetailsRequestModel.employeeMasterId = this.employeeMasterId;
 
     this.EducationSkillsInformationService.postSkillsInfoForm(employeeSkillDetailsRequestModel).subscribe(res => {
-      debugger
+      
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
@@ -459,11 +459,11 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   updateSkillsForm(employeeSkillDetailsRequestModel) {
-    debugger
+    
     employeeSkillDetailsRequestModel.employeeMasterId = this.employeeMasterId;
 
     this.EducationSkillsInformationService.putSkillsInfoForm(employeeSkillDetailsRequestModel).subscribe(res => {
-      debugger
+      
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
@@ -477,7 +477,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   editSkillRow(skill) {
-    debugger
+    
     this.skillEditFlag = true;
     this.skillviewFlag = false;
     this.employeeSkillDetailsRequestModel.employeeSkillInfoId = skill.employeeSkillInfoId;
@@ -494,7 +494,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   viewSkillRow(skill) {
-    debugger
+    
     this.skillEditFlag = false;
     this.skillviewFlag = true;
     this.employeeSkillDetailsRequestModel.employeeSkillInfoId = skill.employeeSkillInfoId;
@@ -511,7 +511,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   deleteSkillRow(skill) {
-    debugger
+    
     this.skillId = skill.employeeSkillInfoId;
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,

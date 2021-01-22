@@ -47,7 +47,8 @@
                                         <label class="form-label">{{ PersonalInfoLabels.alternateEmployeeCode }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Alternate Code"
                                             formControlName="alternateCode"
-                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.alternateEmployeeCode">
+                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.alternateEmployeeCode"
+                                            [ngClass]="{'is-invalid' : BasicInfoForm.get('alternateCode').status == 'INVALID'}">
                                     </div>
 
                                 </div>

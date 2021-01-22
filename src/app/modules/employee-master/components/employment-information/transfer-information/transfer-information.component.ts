@@ -86,7 +86,7 @@ export class TransferInformationComponent implements OnInit {
 
 
   transferToFormSubmit(TransferToInformation) {
-    debugger
+    
     TransferToInformation.employeeMasterId = this.employeeMasterId
     TransferToInformation.effectiveDate = this.datepipe.transform(TransferToInformation.effectiveDate, "dd-MMM-yyyy");
     TransferToInformation.companyId = 1;

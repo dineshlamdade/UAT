@@ -175,7 +175,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
 
 
   postEmploymentInfoForm(previousEmploymentInformation) {
-    debugger
+    
     previousEmploymentInformation.employeeMasterId = this.employeeMasterId;
     previousEmploymentInformation.dateOfJoining = this.datepipe.transform(previousEmploymentInformation.dateOfJoining, 'dd-MMM-yyyy');
     previousEmploymentInformation.dateOfRelieving = this.datepipe.transform(previousEmploymentInformation.dateOfRelieving, 'dd-MMM-yyyy');

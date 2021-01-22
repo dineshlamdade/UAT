@@ -19,7 +19,7 @@
                                             <select class="form-control custom-select" placeholder="Select"
                                                 formControlName="payrollAreaCode"
                                                 [(ngModel)]="PayrollAreaRequestModel.payrollAreaCode"
-                                                (change)="bankDetailsEnable()">
+                                                (change)="bankDetailsEnable(); payrollAssignValues(PayrollAreaRequestModel.payrollAreaCode)">
                                                 <option value="" selected disabled>Select</option>
                                                 <option *ngFor="let payroll of payrollAreaList" [value]="payroll">
                                                     {{payroll}}
@@ -295,7 +295,7 @@
                                                                 class="fa fa-chevron-circle-right"
                                                                 aria-hidden="true"></i></b>Next</button>
 
-                                                    <button type="button"
+                                                    <button type="button" [hidden]="payrollEditFlag || payrollviewFlag"
                                                         (click)="PayrollSaveNextSubmit(PayrollAreaRequestModel)"
                                                         [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
                                                         [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
@@ -304,7 +304,7 @@
                                                         tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
                                                         Save & Next</button>
 
-                                                    <button type="button"
+                                                    <button type="button" [hidden]="payrollEditFlag || payrollviewFlag"
                                                         [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
                                                         [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
                                                          'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid || !disableAddButtonMultipleBankFalse}"
@@ -313,12 +313,23 @@
                                                         tooltip="Save"><b><i
                                                                 class="fa fa-floppy-o"></i></b>Save</button>
 
-                                                    <!-- <button type="button"
-                                                        (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
+                                                    <button type="button" *ngIf="payrollEditFlag"
+                                                        (click)="addPush=true;updatePayrollArea(PayrollAreaRequestModel);"
+                                                        [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
+                                                        [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
+                                                         'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid || !disableAddButtonMultipleBankFalse}"
                                                         class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button> -->
+                                                        tooltip="Update"><b><i
+                                                                class="fa fa-floppy-o"></i></b>Update</button>
 
-                                                    <button type="button" tooltip="Reset"
+                                                    <button type="button"
+                                                        *ngIf="payrollviewFlag || PayrollAreaRequestModel.payrollAreaInformationId"
+                                                        (click)="cancelSkillView();"
+                                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                        tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                        Cancel</button>
+
+                                                    <button type="button" tooltip="Reset" [hidden]="payrollviewFlag"
                                                         (click)="resetPayrollAreaForm()"
                                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                                 class="fa fa-refresh"
@@ -348,14 +359,15 @@
                                                         </thead>
                                                         <tr *ngIf="PayrollAreaSummaryGridData.length == 0">
                                                             <td colspan="12"><span
-                                                                    class="font-14 font500 align-center text-red">No data
+                                                                    class="font-14 font500 align-center text-red">No
+                                                                    data
                                                                     found</span></td>
                                                         </tr>
                                                         <tbody>
                                                             <tr *ngFor="let bank of PayrollAreaSummaryGridData">
                                                                 <td><span>{{bank.typeOfPayment}}</span></td>
                                                                 <td><span>{{bank.bankName}}</span></td>
-                                                                <td><span>{{bank.bankAccount}}</span></td>
+                                                                <td><span>{{bank.bankAccountNumber}}</span></td>
                                                                 <td><span>{{bank.percentageOfNetPay}}</span></td>
                                                                 <td><span>{{bank.priority}}</span></td>
                                                                 <td><span>{{bank.payFromDate}}</span></td>
@@ -429,7 +441,7 @@
                                                             <td><span>{{payroll.payrollAreaToDate}}</span></td>
                                                             <td><span>{{payroll.typeOfPayment}}</span></td>
                                                             <td><span>{{payroll.bankName}}</span></td>
-                                                            <td><span>{{payroll.bankAccount}}</span></td>
+                                                            <td><span>{{payroll.bankAccountNumber}}</span></td>
                                                             <td><span>{{payroll.percentageOfNetPay}}</span></td>
                                                             <td><span>{{payroll.amount}}</span></td>
 

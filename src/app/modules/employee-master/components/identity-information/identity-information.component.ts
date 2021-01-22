@@ -257,7 +257,7 @@ export class IdentityInformationComponent implements OnInit {
     })
   }
   dataBinding(res) {
-    debugger
+    
     if (res.data.results[0].employeeESICDTOResponseDTO) {
       this.IdentityInformation.employeeESICDTORequestDTO = res.data.results[0].employeeESICDTOResponseDTO;
     }
@@ -362,7 +362,7 @@ export class IdentityInformationComponent implements OnInit {
   // }
 
   updateAadhaarName(aadhaar) {
-    debugger
+    
     if (this.IdentityInfoForm.controls.aadhaarNo.valid == true && aadhaar) {
       this.IdentityInformation.employeeMasterRequestDTO.nameAsPerAADHAAR = this.fullName;
     }

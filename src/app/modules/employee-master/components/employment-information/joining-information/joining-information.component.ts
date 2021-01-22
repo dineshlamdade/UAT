@@ -207,6 +207,7 @@ export class JoiningInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.JoiningInformationModel = res.data.results[0];
         this.employementInfoId = this.JoiningInformationModel.employementInfoId;
+        localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
         this.EventEmitterService.getcloseCurrentForm();
         if (this.confirmMsg) {
           this.onNoClick();
@@ -234,6 +235,8 @@ export class JoiningInformationComponent implements OnInit {
           this.onNoClick();
         }
         this.employementInfoId = res.data.results[0].employementInfoId;
+        localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
+
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId);
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {

@@ -381,7 +381,7 @@ export class NominationDetailsComponent implements OnInit {
     // })
   }
   filterCity(state, ESIC) {
-    debugger
+    
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {

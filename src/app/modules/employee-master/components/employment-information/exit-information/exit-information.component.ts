@@ -65,7 +65,7 @@ export class ExitInformationComponent implements OnInit {
     //  this.getExitInformationData(this.employeeExitInfoId);
 
     this.exitSubscription = this.EventEmitterService.setExitData().subscribe(res => {
-      debugger
+      
       if (res) {
         this.employeeExitInfoId = res.exitId
         this.editExit = res.editExit;
@@ -102,7 +102,7 @@ export class ExitInformationComponent implements OnInit {
     //   this.employmentStatusBoolean = ExitInformation.employmentStatusBoolean
     // }
 
-    debugger
+    
     ExitInformation.resignationDate = this.datepipe.transform(ExitInformation.resignationDate, "dd-MMM-yyyy");
     ExitInformation.expectedLeavingDate = this.datepipe.transform(ExitInformation.expectedLeavingDate, "dd-MMM-yyyy");
     ExitInformation.lastWorkingDate = this.datepipe.transform(ExitInformation.lastWorkingDate, "dd-MMM-yyyy");
@@ -184,7 +184,7 @@ export class ExitInformationComponent implements OnInit {
 
     this.EmploymentInformationService.getExitInformation(employeeExitInfoId).subscribe(res => {
 
-      debugger
+      
       if (res.data.results[0]) {
         this.ExitInformation = res.data.results[0];
 
