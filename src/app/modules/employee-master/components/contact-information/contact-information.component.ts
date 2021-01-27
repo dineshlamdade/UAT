@@ -386,7 +386,7 @@ export class ContactInformationComponent implements OnInit {
       || this.permanentAddressInformation.city != '' || this.permanentAddressInformation.village != '') {
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
         width: '664px', height: '241px',
-        data: { pageValue: 'LocalToPermanent', info: 'Address will get changed. Do you want to override changes “Yes” or “No“?' }
+        data: { pageValue: 'LocalToPermanent', info: 'Address will get changed. Do you want to override changes?' }
       });
     } else {
       this.copyFromLocalToPermanent();

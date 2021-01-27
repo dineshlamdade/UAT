@@ -91,12 +91,12 @@ export class PersonalInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
-      employeeCode: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	_,/,-])[a-zA-Z0-9•	_,/,-]+$/)])],
+      employeeCode: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
       alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	_,/,-])[a-zA-Z0-9•	_,/,-]+$/)])],
       title: [''],
-      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)])],
-      middleName: ['', Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)],
-      lastName: ['', Validators.pattern(/^([a-zA-Z0-9\p{isLatin}]+[\ \-]?)+[a-zA-Z0-9]+$/)],
+      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)])],
+      middleName: ['', Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)],
+      lastName: ['', Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)],
       fullName: [{ value: null, disabled: true },],
       displayName: [''],
       birthDate: [this.tomorrow, Validators.required],
@@ -400,7 +400,7 @@ export class PersonalInformationComponent implements OnInit {
     }
     this.internationalWorkerRequestDTO = res.data.results[0].internationalWorkerResponseDTO;
 
-    if (this.internationalWorkerRequestDTO.cocNumber || this.internationalWorkerRequestDTO.cocValidTill) {
+    if (this.internationalWorkerRequestDTO.countryOfOrigin) {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.enable();
     }
@@ -481,6 +481,9 @@ export class PersonalInformationComponent implements OnInit {
       this.internationalWorkerRequestDTO.cocValidTill = '';
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.disable();
+    }
+    if(!this.internationalWorkerRequestDTO.countryOfOrigin){
+      this.internationalWorkerRequestDTO.countryOfOrigin = '';
     }
   }
   validateWeatherOnCOC(weatherOnCOC) {
@@ -571,6 +574,10 @@ export class PersonalInformationComponent implements OnInit {
   // }
   validateNationalty(nationality) {
     
+    if(this.personalInformationModel.nationality){
+      this.BasicInfoForm.markAsTouched();
+    } 
+
     nationality = nationality[0].toUpperCase() + nationality.substr(1).toLowerCase();
 
     const country = this.countryList.filter((item) => {
@@ -632,4 +639,31 @@ export class PersonalInformationComponent implements OnInit {
     
     this.birthdateClickboolean = true;
   }
+
+  validateSaverityLevel(severityLevel){
+    
+    if(severityLevel>100){
+      this.sweetalertError('Severity Level should be up to 100%');
+    }
+  }
+
+  validateDropdown(){
+    
+    if(this.personalInformationModel.employeeMasterRequestDTO.gender){
+      this.BasicInfoForm.markAsTouched();
+    }
+
+    if(this.personalInformationModel.bloodGroup){
+      this.BasicInfoForm.markAsTouched();
+    }
+
+    if(this.personalInformationModel.nationality){
+      this.BasicInfoForm.markAsTouched();
+    } 
+    if(this.personalInformationModel.maritialStatus){
+      this.BasicInfoForm.markAsTouched();
+    }
+  }
+
+  
 }
