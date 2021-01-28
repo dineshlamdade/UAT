@@ -90,14 +90,21 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.accountNumber' | transloco }}</label>
-                                        <input id="password" class="form-control" placeholder="Enter Account No."
+                                        <input class="form-control" placeholder="Enter Account No."
                                             formControlName="accountNumber" [(ngModel)]="BankInformationModel.accountNo"
                                             minlength="1" maxlength="{{maxAccNumber}}"
-                                            [type]="accountNo ? 'number' : 'password'"
+                                            [type]="accountNo ? 'text' : 'password'" (keypress)="keyPress($event)"
                                             (keyup)="validateAccountNo(BankInformationModel.accountNo)"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('accountNumber').status == 'INVALID'}">
-                                        <mat-icon matSuffix (click)="accountNo = !accountNo" class="field-icon">
+                                        <mat-icon matSuffix class="field-icon" (click)="toggleFieldTextType()"
+                                            [ngClass]="{
+                                            'visibility': !accountNo,
+                                            'visibility_off': accountNo
+                                          }">
                                             {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
+                                        <!-- <i class="fa"
+                                            [ngClass]="{'fa-eye-slash': !accountNo, 'fa-eye': accountNo}"
+                                            (click)="toggleFieldTextType()"></i> -->
                                         <mat-error style="font-size: 11px;">
                                             {{accountNumberCountError}}</mat-error>
                                     </div>
@@ -107,8 +114,8 @@
                                         <input class="form-control" placeholder="Re-Enter Account no." #confirmPassword
                                             formControlName="confirmAccountNo"
                                             (change)="matchAccountNo(confirmPassword.value)" minlength="1"
-                                            maxlength="{{maxAccNumber}}"
-                                            [type]="confirmAccountNo1 ? 'number' : 'password'"
+                                            maxlength="{{maxAccNumber}}" (keypress)="keyPress($event)"
+                                            [type]="confirmAccountNo1 ? 'text' : 'password'"
                                             [(ngModel)]="confirmAccountNumber"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('confirmAccountNo').status == 'INVALID'}">
                                         <mat-icon matSuffix (click)="confirmAccountNo1 = !confirmAccountNo1"
@@ -116,8 +123,7 @@
                                             {{confirmAccountNo1 ? 'visibility' : 'visibility_off'}}
                                         </mat-icon>
 
-                                        <mat-error style="font-size: 11px;"
-                                            *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch') || confirmAccountNumber?.length>0
+                                        <mat-error style="font-size: 11px;" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch') || confirmAccountNumber?.length>0
                                             && bankInfoForm.get('confirmAccountNo').status == 'INVALID'">
                                             {{ 'BankInfoForm.accountNoMatchError' | transloco }}</mat-error>
                                         <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo

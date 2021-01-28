@@ -213,6 +213,9 @@ export class LanguageDetailComponent implements OnInit {
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = false;
     this.disableLanguageOptions();
+    this.employeeLanguageRequestModel.employeeLanguageinfoId = 0;
+    this.employeeLanguageRequestModel.language = '';
+    this.LanguageInfoForm.get('language').setValue('');
   }
 
 

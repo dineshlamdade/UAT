@@ -14,7 +14,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-education-detail',
   templateUrl: './education-detail.component.html',
-  styleUrls: ['./education-detail.component.scss']
+  styleUrls: ['./education-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EducationDetailComponent implements OnInit {
   EducationInfoForm: FormGroup;
@@ -55,7 +56,7 @@ export class EducationDetailComponent implements OnInit {
   skillEditFlag: boolean = false;
   skillviewFlag: boolean = false;
   saveNextBoolean: boolean = false
-
+  public today = new Date();
 
 
 

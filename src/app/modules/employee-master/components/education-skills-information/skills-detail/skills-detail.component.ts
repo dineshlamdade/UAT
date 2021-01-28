@@ -528,9 +528,9 @@ export class SkillsDetailComponent implements OnInit {
     const temp1 = this.SkillInfoForm.get('skillName');
     temp1.enable();
     const temp2 = this.SkillInfoForm.get('skillDescription');
-    temp2.enable();
+    temp2.disable();
     const temp3 = this.SkillInfoForm.get('proficiency');
-    temp3.enable();
+    temp3.disable();
     this.getAllSkillsSummary();
   }
 
@@ -586,5 +586,13 @@ export class SkillsDetailComponent implements OnInit {
     this.SkillInfoForm.reset();
     this.skillEditFlag = false;
     this.skillviewFlag = false;
+    this.employeeSkillDetailsRequestModel.employeeSkillInfoId = 0;
+    const temp2 = this.SkillInfoForm.get('skillDescription');
+    temp2.disable();
+    const temp3 = this.SkillInfoForm.get('proficiency');
+    temp3.disable();
+
+    this.employeeSkillDetailsRequestModel.skillName = '';
+    this.SkillInfoForm.get('skillName').setValue('');
   }
 }

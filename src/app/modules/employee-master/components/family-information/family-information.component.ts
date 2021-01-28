@@ -12,7 +12,10 @@ export class FamilyInformationComponent implements OnInit {
   FamilySummaryGridData: Array<any> = [];
   employeeMasterId: number;
   hideSummaryGrid: boolean = false;
-
+  familyTab: boolean = true;
+  nominationTab: boolean = false;
+  bankTab: boolean = false;
+  public tabIndex = 0;
   
   constructor(private FamilyInformationService: FamilyInformationService) { }
 
@@ -38,6 +41,24 @@ export class FamilyInformationComponent implements OnInit {
         }
       })
     })
+  }
+
+  familyTabValidation(){
+    this.familyTab=true;
+    this.nominationTab=false;
+    this.bankTab=false;
+  }
+
+  nominationTabValidation(){
+    this.familyTab=false;
+    this.nominationTab=true;
+    this.bankTab=false;
+  }
+
+  bankTabValidation(){
+    this.familyTab=false;
+    this.nominationTab=false;
+    this.bankTab=true;
   }
 
 }

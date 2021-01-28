@@ -113,10 +113,10 @@
                         <div class="col-12">
                             <div class="float-right mb-15">
                                 <button type="submit" (click)="postLanguageForm(employeeLanguageRequestModel)"
-                                    class="custom_button custom_btn btn-labeled btn-labeled-left" [ngClass]="{'disabled-btn-bg-green':!employeeLanguageRequestModel.read ||
-                            !employeeLanguageRequestModel.write || !employeeLanguageRequestModel.speak,
-                                'btn-bg-green':employeeLanguageRequestModel.read && employeeLanguageRequestModel.write ||
-                            employeeLanguageRequestModel.speak}" [disabled]="!employeeLanguageRequestModel.read || !employeeLanguageRequestModel.write ||
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" [ngClass]="{'disabled-btn-bg-green':!employeeLanguageRequestModel.read &&
+                            !employeeLanguageRequestModel.write && !employeeLanguageRequestModel.speak,
+                                'btn-bg-green':employeeLanguageRequestModel.read || employeeLanguageRequestModel.write ||
+                            employeeLanguageRequestModel.speak}" [disabled]="!employeeLanguageRequestModel.read && !employeeLanguageRequestModel.write &&
                             !employeeLanguageRequestModel.speak" tooltip="Save"
                                     [hidden]="LanguageEditFlag || LanguageviewFlag"><b><i
                                             class="fa fa-floppy-o"></i></b>Save</button>

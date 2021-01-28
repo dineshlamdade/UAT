@@ -11,7 +11,13 @@
                             <div class="educatiotabview">
                                 <input name="nav" type="radio" class="about-radio" id="educationDetails"
                                     [checked]="tabIndex==0" />
-                                <label class="nav" for="educationDetails" (click)="hideSummaryGrid = true"
+                                <div class="tabs educationtabs about-page" *ngIf="educationTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="educationDetails"
+                                    (click)="hideSummaryGrid = true;educationTabValidation()"
                                     [routerLink]="['/employee-master/education-skills-information/education-details']">
                                     <span>
                                         Education
@@ -20,7 +26,12 @@
 
                                 <input name="nav" type="radio" class="about-radio" id="skillsDetails"
                                     [checked]="tabIndex==1" />
-                                <label class="nav" for="skillsDetails" (click)="hideSummaryGrid = true"
+                                <div class="tabs educationtabs about-page">
+                                    <div class="tabview-contents" *ngIf="skillTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="skillsDetails" (click)="hideSummaryGrid = true;skillTabValidation()"
                                     [routerLink]="['/employee-master/education-skills-information/skills-details']">
                                     <span>
                                         Skills
@@ -29,7 +40,13 @@
 
                                 <input name="nav" type="radio" class="about-radio" id="languageDetails"
                                     [checked]="tabIndex==2" />
-                                <label class="nav" for="languageDetails" (click)="hideSummaryGrid = true"
+                                <div class="tabs educationtabs about-page">
+                                    <div class="tabview-contents" *ngIf="languageTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="languageDetails"
+                                    (click)="hideSummaryGrid = true;languageTabValidation()"
                                     [routerLink]="['/employee-master/education-skills-information/language-details']">
                                     <span>
                                         Language
@@ -38,7 +55,13 @@
 
                                 <input name="nav" type="radio" class="about-radio" id="CertificationDetails"
                                     [checked]="tabIndex==3" />
-                                <label class="nav" for="CertificationDetails" (click)="hideSummaryGrid = true"
+                                <div class="tabs educationtabs about-page">
+                                    <div class="tabview-contents" *ngIf="certificationTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="CertificationDetails"
+                                    (click)="hideSummaryGrid = true;certificationTabValidation()"
                                     [routerLink]="['/employee-master/education-skills-information/certification-details']">
                                     <span>
                                         Certification
@@ -46,11 +69,11 @@
                                 </label>
 
 
-                                <div class="educationtabs about-page">
+                                <!-- <div class="tabs about-page">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

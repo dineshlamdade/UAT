@@ -13,6 +13,7 @@ import { PayrollAreaRequestModel } from './../../dto-models/payroll-area-informa
 import { PayrollAreaInformationService } from './../../employee-master-services/payroll-area-information.service';
 import { SharedInformationService } from '../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
+import { PreviousEmploymentInformationService } from '../../employee-master-services/previous-employment-information/previous-employment-information.service';
 
 
 
@@ -79,6 +80,9 @@ export class PayrollAreaInformationComponent implements OnInit {
   payrollEditFlag: boolean = false;
   payrollviewFlag: boolean = false;
   public today = new Date();
+  JoiningDate: any;
+  currencyArray: Array<any> = [];
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
@@ -86,7 +90,8 @@ export class PayrollAreaInformationComponent implements OnInit {
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
-    private CommonDataService: SharedInformationService) {
+    private CommonDataService: SharedInformationService,
+    private PreviousEmpInformationService: PreviousEmploymentInformationService,) {
 
     if (data?.payrollFlag) {
       this.payrollFlag = data.payrollFlag;
@@ -132,6 +137,11 @@ export class PayrollAreaInformationComponent implements OnInit {
       banktoDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
       currency: ['']
     });
+
+    const JoiningDate = localStorage.getItem('joiningDate');
+    this.JoiningDate = new Date(JoiningDate)
+
+
     if (!this.multipleBankBoolean) {
       const temp13 = this.PayrollAreaInfoForm.get('percent');
       temp13.disable();
@@ -205,14 +215,20 @@ export class PayrollAreaInformationComponent implements OnInit {
         })
       }
     })
+
+    this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
+      this.currencyArray = res.data.results;
+    })
   }
 
   payrollAssignValues(payrollAreaCode){
 
     this.payrollAreaArray.forEach(element =>{
       if(element.payrollAreaCode == payrollAreaCode){
+        
         this.PayrollAreaRequestModel.description = element.headGroupDefinitionResponse.description;
         this.PayrollAreaRequestModel.currency = element.currency;
+        this.PayrollAreaInfoForm.get('currency').setValue(element.currency);
       }
     })
   }
@@ -466,7 +482,7 @@ export class PayrollAreaInformationComponent implements OnInit {
       this.PayrollAreaRequestModel.isPercentOfNetPay = 1;
       this.PayrollAreaRequestModel.isAmount = 0;
       this.PayrollAreaRequestModel.amount = '';
-      this.PayrollAreaRequestModel.currency = '';
+      // this.PayrollAreaRequestModel.currency = '';
       const temp13 = this.PayrollAreaInfoForm.get('priority');
       temp13.disable();
       this.PayrollAreaRequestModel.priority = ''

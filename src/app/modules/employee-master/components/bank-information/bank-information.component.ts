@@ -24,7 +24,7 @@ export class BankInformationComponent implements OnInit {
 
   bankInfoForm: FormGroup;
   GridBankInfoForm: FormGroup;
-  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '', '','')
+  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '', '', '')
   BankInformationArray: Array<any> = [];
   shareCountryDataSubcription: Subscription;
   countryList: Array<any> = [];
@@ -70,7 +70,7 @@ export class BankInformationComponent implements OnInit {
   autoCompleteControl;
   showOptios: boolean = false;
   saveNextBoolean: boolean = false;
-
+  accountNo: boolean;
 
 
   constructor(private formBuilder: FormBuilder, private EventEmitterService: EventEmitterService,
@@ -187,7 +187,7 @@ export class BankInformationComponent implements OnInit {
       this.showOptios = true;
     }
   }
- 
+
   searchStates(searchTerm) {
     this.BankInformationModel.bankName = '';
     this.BankInformationModel.branchName = '';
@@ -271,14 +271,14 @@ export class BankInformationComponent implements OnInit {
   //     }
   //   })
   // }
-  BankSaveNextSubmit(BankInformationModel){
+  BankSaveNextSubmit(BankInformationModel) {
     this.saveNextBoolean = true;
 
     this.postBankInfoForm(BankInformationModel);
   }
 
   postBankInfoForm(BankInformationModel) {
-    
+
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
     BankInformationModel.state = this.stateModel;
@@ -297,7 +297,7 @@ export class BankInformationComponent implements OnInit {
   }
 
   updateBankGridRow(BankInformationModel) {
-    
+
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
     BankInformationModel.state = this.stateModel;
@@ -358,7 +358,7 @@ export class BankInformationComponent implements OnInit {
   // }
 
   editBankGridRow(bank) {
-    
+
     this.BankInformationModel.country = bank.country;
     this.BankInformationModel.bankIFSC = bank.bankIFSC;
     this.BankInformationModel.bankName = bank.bankName;
@@ -423,7 +423,7 @@ export class BankInformationComponent implements OnInit {
 
   closeBankGridRow(BankInformationModel) {
     this.viewBankForm = false;
-   this.resetForm();
+    this.resetForm();
 
     const temp1 = this.bankInfoForm.get('country');
     temp1.enable();
@@ -448,11 +448,31 @@ export class BankInformationComponent implements OnInit {
   resetForm() {
     this.bankInfoForm.reset();
     this.clearFormData();
+
+    this.BankInformationModel.country = 'India';
+    this.bankInfoForm.get('country').setValue('India');
+
+    this.stateModel = '';
+    this.bankInfoForm.get('state').setValue('');
   }
 
   matchAccountNo(confirmPassword) {
     if (confirmPassword == this.BankInformationModel.accountNo) {
       this.accountNoMatched = true;
+
+      this.BankInformationService.accountNoVerification(confirmPassword, 0).subscribe(res => {
+        // DelayNode
+        debugger
+        // this.CommonDataService.sweetalertMasterSuccess(res.status.messsage, res.status.result);
+        // if(res.status.messsage == 'Account Number  Already Exists '){
+        //   this.BankInformationModel.accountNo = '';
+        //   this.confirmAccountNumber = '';
+        // }
+      }, (error: any) => {
+        debugger
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+      })
+
     } else {
       this.accountNoMatched = false;
     }
@@ -480,5 +500,19 @@ export class BankInformationComponent implements OnInit {
     this.BankInformationModel.accountNo = '';
     this.BankInformationModel.nameAsPerBank = '';
     this.BankInformationModel.employeeBankInfoId = '';
+  }
+
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  toggleFieldTextType(){
+    this.accountNo = !this.accountNo
   }
 }

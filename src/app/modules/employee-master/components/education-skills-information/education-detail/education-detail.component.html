@@ -51,7 +51,7 @@
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Specialization 1</label>
                                     <input type="text" class="form-control" placeholder="Enter Specialization 1"
-                                        formControlName="specialization1" (keyup)="comparespecialization()"
+                                        formControlName="specialization1" (change)="comparespecialization()"
                                         [(ngModel)]="employeeEducationRequestModel.specialisation1">
                                 </div>
 
@@ -59,7 +59,7 @@
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Specialization 2</label>
                                     <input type="text" class="form-control" placeholder="Enter Specialization 2"
-                                        formControlName="specialization2" (keyup)="comparespecialization()"
+                                        formControlName="specialization2" (change)="comparespecialization()"
                                         [(ngModel)]="employeeEducationRequestModel.specialisation2">
                                 </div>
 
@@ -97,7 +97,7 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 class="form-control" placeholder="  /   /" bsDatepicker
-                                                formControlName="startDate"
+                                                formControlName="startDate" [maxDate]="today"
                                                 [(ngModel)]="employeeEducationRequestModel.startDate">
                                         </div>
                                     </div>
@@ -124,7 +124,6 @@
                                     <label class="form-label">Percentage/CGPA/Grade</label>
                                     <input type="number" class="form-control" placeholder="Enter Percentage/CGPA/Grade"
                                         formControlName="percentageOrCGPAOrGrade"
-                                        (change)="employeeEducationRequestModel.percentageOrCGPAOrGrade < 0 ? employeeEducationRequestModel.percentageOrCGPAOrGrade = '' : employeeEducationRequestModel.percentageOrCGPAOrGrade; employeeEducationRequestModel.percentageOrCGPAOrGrade > 100 ? employeeEducationRequestModel.percentageOrCGPAOrGrade = '' : employeeEducationRequestModel.percentageOrCGPAOrGrade;"
                                         [(ngModel)]="employeeEducationRequestModel.percentageOrCGPAOrGrade">
                                 </div>
 
@@ -151,7 +150,7 @@
                             <div class="float-right mb-15">
                                 <button type="button" tooltip="Previous"
                                     [routerLink]="['/employee-master/family-information/family-details']"
-                                    class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 mr-15 bg-teal-400"><b><i
                                             class="fa fa-chevron-circle-left"
                                             aria-hidden="true"></i></b>Previous</button>
 

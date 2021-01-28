@@ -25,6 +25,8 @@ export class EmploymentSummaryComponent implements OnInit {
 
   ReJoiningTabBoolean: boolean = false;
   JoiningTabBoolean: boolean = true;
+  joiningDate: any;
+
 
   constructor(private EmploymentInformationService: EmploymentInformationService, private router: Router,
     private EventEmitterService: EventEmitterService) {
@@ -66,9 +68,10 @@ export class EmploymentSummaryComponent implements OnInit {
   getSummaryEmploymentInfo() {
 
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
-
+      debugger
       this.EmploymentInformationSumarry = res.data.results;
-
+      this.joiningDate = res.data.results[0].joiningDate;
+      localStorage.setItem('joiningDate', res.data.results[0].joiningDate);
       // res.data.results.forEach(element => {
       //   let obj = {
 

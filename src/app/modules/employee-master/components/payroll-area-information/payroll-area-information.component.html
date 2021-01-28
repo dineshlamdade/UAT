@@ -92,7 +92,7 @@
                                                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                         data-provide="datepicker" data-date-autoclose="true"
                                                         class="form-control" placeholder="  /   /" bsDatepicker
-                                                        [maxDate]="today" formControlName="fromDate"
+                                                        [minDate]="JoiningDate" formControlName="fromDate"
                                                         [(ngModel)]="PayrollAreaRequestModel.payrollAreaFromDate">
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                                 <select class="form-control custom-select" placeholder="Select"
                                                     formControlName="bankAccount"
                                                     [(ngModel)]="PayrollAreaRequestModel.bankAccountNumber"
-                                                    [type]="accountNo ? 'number' : 'password'">
+                                                    [type]="password">
                                                     <option value="" selected disabled>Select</option>
                                                     <option *ngFor="let bankAccount of bankAccountList"
                                                         [value]="bankAccount.accountNo">
@@ -220,12 +220,22 @@
 
                                             <div class="col-sm-6 col-md-3 mt-15"
                                                 *ngIf="percentOrAmountModel == 'amount'">
-                                                <label class="form-label">Fix Amount</label>
+                                                <label class="form-label">Amount</label>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-5 country-code">
-                                                        <input type="text" class="form-control" placeholder="Currency"
+                                                        <select class="form-control selectpicker" placeholder="Select"
                                                             formControlName="currency"
                                                             [(ngModel)]="PayrollAreaRequestModel.currency">
+                                                            <option value="" data-hidden="true">Select</option>
+                                                            <option *ngFor="let currency of currencyArray"
+                                                                [value]="currency">
+                                                                {{currency}}
+                                                            </option>
+                                                        </select>
+
+                                                        <!-- <input type="text" class="form-control" placeholder="Currency"
+                                                            formControlName="currency"
+                                                            [(ngModel)]="PayrollAreaRequestModel.currency"> -->
                                                     </div>
                                                     <div class="col-sm-3 col-md-7">
                                                         <input type="text" class="form-control"
@@ -254,7 +264,7 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="  /   /" bsDatepicker
-                                                            [maxDate]="today" formControlName="bankfromDate"
+                                                            [minDate]="JoiningDate" formControlName="bankfromDate"
                                                             [(ngModel)]="PayrollAreaRequestModel.payFromDate"
                                                             [min]="payrollAreaBackFromDate">
                                                     </div>
@@ -262,7 +272,7 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-15">
-                                                <label class="form-label">From Date</label>
+                                                <label class="form-label">To Date</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -272,7 +282,7 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="  /   /" bsDatepicker
-                                                            [maxDate]="today" formControlName="banktoDate"
+                                                            formControlName="banktoDate"
                                                             [(ngModel)]="PayrollAreaRequestModel.payToDate"
                                                             [min]="PayrollAreaInfoForm.controls.bankfromDate?.value">
                                                     </div>
