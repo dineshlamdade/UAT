@@ -19,6 +19,6 @@ export class JoiningInformationModel {
         public confirmationRemark: any,
         public employeeMasterId:any,
         public employementInfoId: any,
-        public projectedRetirementDate: any
+        // public projectedRetirementDate: any
     ){} 
 }

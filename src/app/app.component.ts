@@ -5,7 +5,6 @@ import { TranslocoService } from '@ngneat/transloco';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './modules/auth/auth.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

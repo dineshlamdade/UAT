@@ -15,7 +15,7 @@ export class EventEmitterService {
   private PreviousEmploymentInfoInitiate = new Subject<any>();
   private ConfirmDeleteIdentityForm = new Subject<any>();
   private ConfirmDeletePreviousEmpForm = new Subject<any>();
-  private EmploymentInfoInitiate = new Subject<any>();
+  private NavigateToEmploymentSummary = new Subject<any>();
   private JoiningInformationForm = new Subject<any>();
   private ReJoiningInformationForm = new Subject<any>();
   private closeCurrentForm = new Subject<any>();
@@ -35,8 +35,12 @@ export class EventEmitterService {
   private JobInformationInitiate = new Subject<any>();
   private NextJobTab = new Subject<any>();
   private NextToAssignment = new Subject<any>();
-
-
+  private AddjoineeSubject = new Subject<any>();
+  private JoiningDataSubject = new Subject<any>();
+  private ReJoiningDataSubject = new Subject<any>();
+  private TransferToDataSubject = new Subject<any>();
+  private ExitDataSubject = new Subject<any>();
+  private RejoineeStatusCodeSubject = new Subject<any>();
 
   constructor() { }
 
@@ -99,8 +103,8 @@ export class EventEmitterService {
     return this.PreviousEmploymentInfoInitiate.asObservable();
   }
 
-  getConfirmDeleteIdentityForm() {
-    this.ConfirmDeleteIdentityForm.next();
+  getConfirmDeleteIdentityForm(visa) {
+    this.ConfirmDeleteIdentityForm.next(visa);
   }
   setConfirmDeleteIdentityForm() {
     return this.ConfirmDeleteIdentityForm.asObservable();
@@ -113,11 +117,11 @@ export class EventEmitterService {
     return this.ConfirmDeletePreviousEmpForm.asObservable();
   }
 
-  getEmploymentInfoInitiate() {
-    this.EmploymentInfoInitiate.next();
+  getNavigateToEmploymentSummary() {
+    this.NavigateToEmploymentSummary.next();
   }
-  setEmploymentInfoInitiate() {
-    return this.EmploymentInfoInitiate.asObservable();
+  setNavigateToEmploymentSummary() {
+    return this.NavigateToEmploymentSummary.asObservable();
   }
 
   getJoiningInformationForm() {
@@ -248,5 +252,48 @@ export class EventEmitterService {
   }
   setNextToAssignment() {
     return this.NextToAssignment.asObservable();
+  }
+
+  getAddjoinee(user){
+    this.AddjoineeSubject.next(user);
+  }
+  setAddjoinee() {
+    return this.AddjoineeSubject.asObservable();
+  }
+
+  getJoiningData(joinee){
+    this.JoiningDataSubject.next(joinee);
+  }
+  setJoiningData() {
+    return this.JoiningDataSubject.asObservable();
+  }
+
+  getReJoiningData(rejoinee){
+    this.ReJoiningDataSubject.next(rejoinee);
+  }
+  setReJoiningData() {
+    return this.ReJoiningDataSubject.asObservable();
+  }
+
+  getTransferToData(TransferTo){
+    this.TransferToDataSubject.next(TransferTo);
+  }
+  setTransferToData() {
+    return this.TransferToDataSubject.asObservable();
+  }
+
+  getExitData(ExitData){
+    this.ExitDataSubject.next(ExitData);
+  }
+  setExitData() {
+    return this.ExitDataSubject.asObservable();
+  }
+
+  getRejoineeStatusCode(rejoinee){
+    this.RejoineeStatusCodeSubject.next(rejoinee);
+  }
+
+  setRejoineeStatusCode() {
+    return this.RejoineeStatusCodeSubject.asObservable();
   }
 }

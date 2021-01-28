@@ -3,13 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { SaveHeadCreation} from './headcreation.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class headcreation {
-  url = 'http://localhost:8084/hrms/v1/';
+  // url = 'http://localhost:8084/hrms/v1/';
+  public url = environment.baseUrl8084;
 
   constructor(private _HTTP: HttpClient) { }
 

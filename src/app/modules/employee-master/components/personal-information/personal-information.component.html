@@ -100,11 +100,10 @@
                                     <!-- <div class="row"> -->
                                     <div class="col-sm-6 col-md-3  mt-10" [hidden]="PersonalInfoLabels.gender == ''">
                                         <label class="form-label">{{ PersonalInfoLabels.gender }}</label>
-                                        <select class="form-control" placeholder="Select Gender"
-                                            formControlName="gender"
+                                        <select class="form-control" placeholder="Select" formControlName="gender"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.gender"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('gender').status == 'INVALID'}">
-                                            <option value="" selected disabled>Select Gender</option>
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let gender of allGenders" [value]="gender">
                                                 {{gender}}
                                             </option>
@@ -122,42 +121,41 @@
                                                     class="form-control" placeholder="Select Birth Date" bsDatepicker
                                                     [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
-                                                    (bsValueChange)="birthDateValidation(); birthD();"
+                                                    (bsValueChange)="birthDateValidation();"
                                                     [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3  mt-10">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.bloodGroup' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.bloodGroup' | transloco
+                                            }}</label>
                                         <select class="form-control" formControlName="bloodGroup"
-                                            [(ngModel)]="personalInformationModel.bloodGroup"
-                                            placeholder="Select Blood Group">
-                                            <option value="" selected disabled>Select Blood Group</option>
+                                            [(ngModel)]="personalInformationModel.bloodGroup" placeholder="Select">
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let bloodGroup of bloodGroups" [value]="bloodGroup">
                                                 {{bloodGroup}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3  mt-10">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.nationality' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.nationality' | transloco
+                                            }}</label>
                                         <select class="form-control" formControlName="nationality"
                                             [(ngModel)]="personalInformationModel.nationality"
-                                            (change)="validateNationalty(country)" placeholder="Select Nationality">
-                                            <option value="" selected disabled>Select Nationality</option>
+                                            (change)="validateNationalty(country)" placeholder="Select">
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let country of countryList" [value]="country">
                                                 {{country}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.maritalStatus' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.maritalStatus' | transloco
+                                            }}</label>
                                         <select class="form-control" formControlName="maritalStatus"
                                             [(ngModel)]="personalInformationModel.maritialStatus"
-                                            (change)="clearMarriageDate(status)" placeholder="Select Marital Status">
-                                            <option value="" selected disabled>Select Marital Status</option>
+                                            (change)="clearMarriageDate(status)" placeholder="Select">
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let status of maritalStatus" [value]="status">
                                                 {{status}}
                                             </option>
@@ -165,8 +163,8 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10"
                                         *ngIf="personalInformationModel.maritialStatus == 'Married'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.marriageDate' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.marriageDate' | transloco
+                                            }}</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -182,24 +180,25 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.physicallyChallengedBoolean' | transloco }}</label>
+                                        <label class="form-label">{{
+                                            'PersonalInformationForm.physicallyChallengedBoolean' | transloco }}</label>
                                         <select class="form-control" formControlName="physicallyChallengedBoolean"
-                                            [(ngModel)]="Physically" placeholder="Select Option"
+                                            [(ngModel)]="Physically" placeholder="Select"
                                             (change)="validatePhysically(option)">
-                                            <option value="" selected disabled>Select Option</option>
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let option of physicallyChallengedBoolean" [value]="option">
                                                 {{option}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10" *ngIf="Physically == 'Yes'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.physicallyChallengedDropdown' | transloco }}</label>
+                                        <label class="form-label">{{
+                                            'PersonalInformationForm.physicallyChallengedDropdown' | transloco
+                                            }}</label>
                                         <select class="form-control" formControlName="physicallyChallengedOption"
-                                            [(ngModel)]="personalInformationModel.disabilityType"
-                                            placeholder="Select Disability Type" (change)="enableSeverity()">
-                                            <option value="" selected disabled>Select Disability Type</option>
+                                            [(ngModel)]="personalInformationModel.disabilityType" placeholder="Select"
+                                            (change)="enableSeverity()">
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let physically of physicallyChallengedDropdown"
                                                 [value]="physically">
                                                 {{physically}}
@@ -207,43 +206,43 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10" *ngIf="Physically == 'Yes'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.securityLevel' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.securityLevel' | transloco
+                                            }}</label>
                                         <input type="number" class="form-control" placeholder="Enter Severity Level"
                                             formControlName="severityLevel" maxlength="3" max="100"
                                             (change)="personalInformationModel.severityLevel < 0 ? personalInformationModel.severityLevel = '' : personalInformationModel.severityLevel; personalInformationModel.severityLevel > 100 ? personalInformationModel.severityLevel = '' : personalInformationModel.severityLevel;"
                                             [(ngModel)]="personalInformationModel.severityLevel">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.expat' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.expat' | transloco
+                                            }}</label>
                                         <select class="form-control" formControlName="isExpatWorker"
-                                            [(ngModel)]="expatBoolean1" placeholder="Select Option"
+                                            [(ngModel)]="expatBoolean1" placeholder="Select"
                                             (change)="validateExpatBoolean(expatBoolean1)">
-                                            <option value="" selected disabled>Select Option1</option>
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let expat of expatBooleanOptions" [value]="expat">
                                                 {{expat}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10" *ngIf="expatBoolean1 == 'Yes'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.countryOfOrigin' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.countryOfOrigin' |
+                                            transloco }}</label>
                                         <select class="form-control" formControlName="countryOfOrigin"
                                             [(ngModel)]="internationalWorkerRequestDTO.countryOfOrigin"
-                                            (change)="enableWhetherOnCOC()">
-                                            <option value="" selected disabled>Select Country Of Origin</option>
+                                            (change)="enableWhetherOnCOC()" placeholder="Select">
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let originCountry of countryList" [value]="originCountry">
                                                 {{originCountry}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10" *ngIf="expatBoolean1 == 'Yes'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.weatherOnCOC' | transloco }}</label>
-                                        <select class="form-control" formControlName="isOnCOC"
-                                            [(ngModel)]="weatherOnCOC1" (change)="validateWeatherOnCOC(whetherOption)">
-                                            <option value="" selected disabled>Select Option</option>
+                                        <label class="form-label">{{ 'PersonalInformationForm.weatherOnCOC' | transloco
+                                            }}</label>
+                                        <select class="form-control" formControlName="isOnCOC" placeholder="Select"
+                                            [(ngModel)]="weatherOnCOC1" (change)="validateWeatherOnCOC(weatherOnCOC1)">
+                                            <option value="" selected disabled>Select</option>
                                             <option *ngFor="let whetherOption of weatherOnCOCOptions"
                                                 [value]="whetherOption">
                                                 {{whetherOption}}
@@ -252,16 +251,16 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10"
                                         [hidden]="!weatherOnCOC1 || weatherOnCOC1 == 'No'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.cocNo' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.cocNo' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter COC No."
                                             formControlName="cocNo"
                                             [(ngModel)]="internationalWorkerRequestDTO.cocNumber">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10"
                                         [hidden]="!weatherOnCOC1 || weatherOnCOC1 == 'No'">
-                                        <label
-                                            class="form-label">{{ 'PersonalInformationForm.cocValidTill' | transloco }}</label>
+                                        <label class="form-label">{{ 'PersonalInformationForm.cocValidTill' | transloco
+                                            }}</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -307,9 +306,28 @@
                                 <div class="row mt-15">
                                     <div class="col-12">
                                         <div class="float-right mb-15">
+                                            <button type="button" tooltip="Previous"
+                                                [routerLink]="['/employee-master/employee-summary']"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                        class="fa fa-chevron-circle-left"
+                                                        aria-hidden="true"></i></b>Previous</button>
+
+                                            <button type="button" tooltip="Next"
+                                                [routerLink]="['/employee-master/employment-information/employment-summary']"
+                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                        class="fa fa-chevron-circle-right"
+                                                        aria-hidden="true"></i></b>Next</button>
+
+                                            <button type="button" (click)="saveNextPersonalInfoSubmit(personalInformationModel)"
+                                                [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
+                                                tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched,
+                                   'btn-bg-green': !BasicInfoForm.invalid}"><b><i class="fa fa-floppy-o"></i></b>
+                                                Save & Next</button>
+
                                             <button type="submit"
                                                 [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched"
-                                                class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched,
                            'btn-bg-green': !BasicInfoForm.invalid}"><b><i class="fa fa-floppy-o"></i></b> Save</button>
 

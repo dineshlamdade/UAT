@@ -1122,6 +1122,10 @@ strong {
   height: 137px!important;
 }
 
+.wd-27 {
+    width: 27%!important;
+}
+
 
 /* Custom Width css End */
 
@@ -1500,7 +1504,7 @@ button:focus {
 .country-code{
   margin-right: -15px;
 }
-
+[hidden] { display: none !important;}
 .form-control.is-invalid {
   background-image: none!important;
 }
@@ -1572,6 +1576,7 @@ button:focus {
   overflow: hidden  !important;
   position: relative !important;
 }
+
 .pi {
   font-family: 'primeicons' !important;
   /* speak: none; */

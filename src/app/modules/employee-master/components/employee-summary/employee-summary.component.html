@@ -8,30 +8,53 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form [formGroup]="BasicInfoForm" (ngSubmit)="personalInfoSubmit(personalInformationModel)">
+                            <form [formGroup]="BasicInfoForm">
                                 <!-- <div class="tabview"> -->
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="pull-right">
+                                            <label class="form-label">Payroll Area</label>
+                                            <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+                                            (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
+                                            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+                                        </p-autoComplete> -->
+
+                                            <select class="form-control" placeholder="Select Payroll Area"
+                                                (completeMethod)="filterpayrollArea(payrollAreaCode)"
+                                                (change)="selectPayrollArea(payrollAreaCode)"
+                                                [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+                                                <option value="" selected disabled>Select Payroll Area</option>
+                                                <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
+                                                    {{option}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+
+
                                     <!-- <div class="card-body col-sm-6"> -->
                                     &nbsp;&nbsp;
-                                    <div class="circle thumbnail mt-20" (click)="fileInput.click($event, fileInput)">
+                                    <div class="circle thumbnail mt-20">
                                         <div class="avatar-edit">
                                             <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
                                                 (change)="uploadFile($event, fileInput)" hidden
                                                 [(ngModel)]="selectedImg" formControlName="image" />
                                         </div>
                                         <img [src]="imageUrl" alt="">
-                                        <p class="image-size-info" style="font-size: 13px;"
-                                            matTooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
-                                            <b> {{ (EmployeeSummary.identitySummaryBean.fullName?.length>15)? 
-                                                      (EmployeeSummary.identitySummaryBean.fullName
-                                                       | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
-                                            </b></p>
-                                        <p class="image-size-info" style="margin-top: 164px;"
-                                            matTooltip="{{EmployeeSummary.identitySummaryBean.designation}}">
+                                        <p class="image-size-info"
+                                            tooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
+                                            <b> {{ (EmployeeSummary.identitySummaryBean.fullName?.length>15)?
+                                                (EmployeeSummary.identitySummaryBean.fullName
+                                                 | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
+                                            </b>
+                                        </p>
+                                        <p class="image-size-info margin-top"
+                                            tooltip="{{EmployeeSummary.identitySummaryBean.designation}}">
 
-                                            {{ (EmployeeSummary.identitySummaryBean.designation?.length>15)? 
-                                              (EmployeeSummary.identitySummaryBean.designation
-                                               | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.designation) }}
+                                            {{ (EmployeeSummary.identitySummaryBean.designation?.length>15)? (EmployeeSummary.identitySummaryBean.designation | slice:0:15)+'...':(EmployeeSummary.identitySummaryBean.designation) }}
                                         </p>
                                         <!-- <h4 class="image-size-info" tooltip="Size should be
                                         less than 1 MB">Select Image <p class="small-size">(Size should be
@@ -40,7 +63,7 @@
                                     </div>
 
 
-                                    <div class="col-10 ml-125">
+                                    <div class="col-10 margin-left">
                                         <fieldset>
                                             <legend>Identity Details</legend>
 
@@ -51,10 +74,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
-                                                        {{ (EmployeeSummary.identitySummaryBean.fullName?.length>25)? 
-                                                                        (EmployeeSummary.identitySummaryBean.fullName
-                                                                         | slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
+                                                        tooltip="{{EmployeeSummary.identitySummaryBean.fullName}}">
+                                                        {{ (EmployeeSummary.identitySummaryBean.fullName?.length>25)? (EmployeeSummary.identitySummaryBean.fullName | slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.fullName) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -94,10 +115,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.identitySummaryBean.officialEmailId}}">
-                                                        {{ (EmployeeSummary.identitySummaryBean.officialEmailId?.length>25)? 
-                                                                        (EmployeeSummary.identitySummaryBean.officialEmailId
-                                                                         | slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.officialEmailId) }}
+                                                        tooltip="{{EmployeeSummary.identitySummaryBean.officialEmailId}}">
+                                                        {{ (EmployeeSummary.identitySummaryBean.officialEmailId?.length>25)? (EmployeeSummary.identitySummaryBean.officialEmailId | slice:0:25)+'...':(EmployeeSummary.identitySummaryBean.officialEmailId) }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,7 +125,7 @@
 
                                     <br>
                                     <!-- Personal Information -->
-                                    <div class="col-12" style="margin-top: 45px;">
+                                    <div class="col-12 mt-80">
                                         <fieldset>
                                             <legend>
                                                 {{ 'EmployoymentSummary.personalInformation' | transloco }}
@@ -119,10 +138,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.personalSummaryBean.dateOfBirth}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)? 
-                                                                    (EmployeeSummary.personalSummaryBean.dateOfBirth
-                                                                     | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirth) }}
+                                                        tooltip="{{EmployeeSummary.personalSummaryBean.dateOfBirth}}">
+                                                        {{ (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)? (EmployeeSummary.personalSummaryBean.dateOfBirth | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirth) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -201,12 +218,10 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.personalSummaryBean.communicationAddress}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.communicationAddress?.length>30)? 
-                                                            (EmployeeSummary.personalSummaryBean.communicationAddress
-                                                             | slice:0:30)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress) }}
+                                                        tooltip="{{EmployeeSummary.personalSummaryBean.communicationAddress}}">
+                                                        {{ (EmployeeSummary.personalSummaryBean.communicationAddress?.length>30)? (EmployeeSummary.personalSummaryBean.communicationAddress | slice:0:30)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress) }}
                                                     </div>
-                                                    <!-- {{ (EmployeeSummary.personalSummaryBean.communicationAddress?.length>25)? 
+                                                    <!-- {{ (EmployeeSummary.personalSummaryBean.communicationAddress?.length>25)?
                                                             (EmployeeSummary.personalSummaryBean.communicationAddress
                                                              | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.communicationAddress) }} -->
                                                     <div class="col-5 py-1">
@@ -221,11 +236,9 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.personalSummaryBean.language}}">
+                                                        tooltip="{{EmployeeSummary.personalSummaryBean.language}}">
 
-                                                        {{ (EmployeeSummary.personalSummaryBean.language?.length>25)? 
-                                                                    (EmployeeSummary.personalSummaryBean.language
-                                                                     | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.language) }}
+                                                        {{ (EmployeeSummary.personalSummaryBean.language?.length>25)? (EmployeeSummary.personalSummaryBean.language | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.language) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -233,10 +246,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.personalSummaryBean.skills}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.skills?.length>25)? 
-                                                                    (EmployeeSummary.personalSummaryBean.skills
-                                                                     | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.skills) }}
+                                                        tooltip="{{EmployeeSummary.personalSummaryBean.skills}}">
+                                                        {{ (EmployeeSummary.personalSummaryBean.skills?.length>25)? (EmployeeSummary.personalSummaryBean.skills | slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.skills) }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,10 +268,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.workSummaryBean.dateOfJoining}}">
-                                                        {{ (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)? 
-                                                                            (EmployeeSummary.workSummaryBean.dateOfJoining
-                                                                             | slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoining) }}
+                                                        tooltip="{{EmployeeSummary.workSummaryBean.dateOfJoining}}">
+                                                        {{ (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)? (EmployeeSummary.workSummaryBean.dateOfJoining | slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoining) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -404,20 +413,16 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.nominationSummaryBean.providentFund}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.providentFund?.length>25)? 
-                                                                            (EmployeeSummary.nominationSummaryBean.providentFund
-                                                                             | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.providentFund) }}
+                                                        tooltip="{{EmployeeSummary.nominationSummaryBean.providentFund}}">
+                                                        {{ (EmployeeSummary.nominationSummaryBean.providentFund?.length>25)? (EmployeeSummary.nominationSummaryBean.providentFund | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.providentFund) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
                                                         <strong>{{ 'EmployoymentSummary.employeePensionScheme' | transloco }}:</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.nominationSummaryBean.eps}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.eps?.length>25)? 
-                                                                            (EmployeeSummary.nominationSummaryBean.eps
-                                                                             | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.eps) }}
+                                                        tooltip="{{EmployeeSummary.nominationSummaryBean.eps}}">
+                                                        {{ (EmployeeSummary.nominationSummaryBean.eps?.length>25)? (EmployeeSummary.nominationSummaryBean.eps | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.eps) }}
                                                     </div>
 
                                                 </div>
@@ -427,10 +432,8 @@
                                                         <strong>{{ 'EmployoymentSummary.superAnnuationFund' | transloco }}
                                                             :</strong></div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.nominationSummaryBean.sa}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.sa?.length>25)? 
-                                                                            (EmployeeSummary.nominationSummaryBean.sa
-                                                                             | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.sa) }}
+                                                        tooltip="{{EmployeeSummary.nominationSummaryBean.sa}}">
+                                                        {{ (EmployeeSummary.nominationSummaryBean.sa?.length>25)? (EmployeeSummary.nominationSummaryBean.sa | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.sa) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -438,10 +441,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.nominationSummaryBean.gratuity}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.gratuity?.length>25)? 
-                                                                            (EmployeeSummary.nominationSummaryBean.gratuity
-                                                                             | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.gratuity) }}
+                                                        tooltip="{{EmployeeSummary.nominationSummaryBean.gratuity}}">
+                                                        {{ (EmployeeSummary.nominationSummaryBean.gratuity?.length>25)? (EmployeeSummary.nominationSummaryBean.gratuity | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.gratuity) }}
                                                     </div>
 
                                                     <div class="col-5 py-1">
@@ -449,10 +450,8 @@
                                                             :</strong>
                                                     </div>
                                                     <div class="col-7 py-1"
-                                                        matTooltip="{{EmployeeSummary.nominationSummaryBean.salary}}">
-                                                        {{ (EmployeeSummary.nominationSummaryBean.salary?.length>25)? 
-                                                                            (EmployeeSummary.nominationSummaryBean.salary
-                                                                             | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.salary) }}
+                                                        tooltip="{{EmployeeSummary.nominationSummaryBean.salary}}">
+                                                        {{ (EmployeeSummary.nominationSummaryBean.salary?.length>25)? (EmployeeSummary.nominationSummaryBean.salary | slice:0:25)+'...':(EmployeeSummary.nominationSummaryBean.salary) }}
                                                     </div>
                                                 </div>
                                             </div>

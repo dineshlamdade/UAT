@@ -13,19 +13,37 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.Country' | transloco }}</label>
-                                        <p-autoComplete [(ngModel)]="BankInformationModel.country"
+                                        <select class="form-control custom-select"
+                                            [(ngModel)]="BankInformationModel.country" [suggestions]="filteredCountries"
+                                            (completeMethod)="filterCountry($event)" formControlName="country"
+                                            placeholder="Select">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let country of countryList" [value]="country">
+                                                {{country}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [(ngModel)]="BankInformationModel.country"
                                             [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"
-                                            formControlName="country" placeholder="Select Country">
+                                            formControlName="country" placeholder="Select">
                                         </p-autoComplete>
-                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                        <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.state' | transloco }}</label>
-                                        <p-autoComplete [(ngModel)]="stateModel" [suggestions]="filteredStates"
+                                        <select class="form-control custom-select" [(ngModel)]="stateModel"
+                                            [suggestions]="filteredStates" placeholder="Select"
+                                            (completeMethod)="filterStates($event)" formControlName="state">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let state of states" [value]="state">
+                                                {{state}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [(ngModel)]="stateModel" [suggestions]="filteredStates"
                                             placeholder="Select State" (completeMethod)="filterStates($event)"
                                             formControlName="state">
-                                        </p-autoComplete>
-                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                        </p-autoComplete> -->
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
@@ -47,28 +65,28 @@
                                         <label class="form-label">{{ 'BankInfoForm.bankName' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Bank Name"
                                             formControlName="bankName" [(ngModel)]="BankInformationModel.bankName"
-                                            matTooltip="{{BankInformationModel.bankName}}">
+                                            tooltip="{{BankInformationModel.bankName}}">
                                     </div>
 
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.branchName' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Branch"
                                             formControlName="branchName" [(ngModel)]="BankInformationModel.branchName"
-                                            matTooltip="{{BankInformationModel.branchName}}">
+                                            tooltip="{{BankInformationModel.branchName}}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.branchAddress' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Branch Address"
                                             formControlName="branchAddress"
                                             [(ngModel)]="BankInformationModel.branchAddress"
-                                            matTooltip="{{BankInformationModel.branchAddress}}">
+                                            tooltip="{{BankInformationModel.branchAddress}}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.nameAsPerBank' | transloco }}</label>
                                         <input type="text" class="form-control"
                                             placeholder="Enter Name As per Bank Account" formControlName="nameAsPerBank"
                                             [(ngModel)]="BankInformationModel.nameAsPerBank"
-                                            matTooltip="{{BankInformationModel.nameAsPerBank}}">
+                                            tooltip="{{BankInformationModel.nameAsPerBank}}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.accountNumber' | transloco }}</label>
@@ -83,8 +101,8 @@
                                             {{accountNumberCountError}}</mat-error>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
-                                        <label
-                                            class="form-label">{{ 'BankInfoForm.confirmAccountNumber' | transloco }}</label>
+                                        <label class="form-label">{{ 'BankInfoForm.confirmAccountNumber' | transloco
+                                            }}</label>
                                         <input class="form-control" placeholder="Re-Enter Account no." #confirmPassword
                                             formControlName="confirmAccountNo"
                                             (change)="matchAccountNo(confirmPassword.value)" minlength="1"
@@ -112,10 +130,9 @@
                                             <button type="button"
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
                                                 [hidden]="BankInformationModel.employeeBankInfoId || viewBankForm"
-                                                [disabled]="addButton == false || accountNoMatched ==false"
-                                                [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false,
+                                                [disabled]="addButton == false || accountNoMatched ==false" [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false,
                                                 'btn-bg-green':addButton == true || accountNoMatched == true}"
-                                                tooltip="Save" (click)="pushDataToGrid()"><b><i
+                                                tooltip="Save" (click)="postBankInfoForm(BankInformationModel)"><b><i
                                                         class="fa fa-floppy-o"></i></b>Save</button>
 
                                             <button type="button" (click)="updateBankGridRow(BankInformationModel);"
@@ -123,10 +140,16 @@
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
                                                 tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
-                                            <button type="button" (click)="closeBankGridRow(BankInformationModel);"
+                                            <button type="button" *ngIf="viewBankForm || BankInformationModel.employeeBankInfoId"
+                                                (click)="closeBankGridRow(BankInformationModel);"
+                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                Cancel</button>
+
+                                            <!-- <button type="button" (click)="closeBankGridRow(BankInformationModel);"
                                                 *ngIf="viewBankForm"
                                                 class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Cancel"><b><i class="fa fa-floppy-o"></i></b>Cancel</button>
+                                                tooltip="Cancel"><b><i class="fa fa-floppy-o"></i></b>Cancel</button> -->
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 [hidden]="viewBankForm"
@@ -139,7 +162,7 @@
                             </form>
 
                             <legend>Bank Account Summary</legend>
-                            <div class="row mt-20">
+                            <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive Custom_Table">
                                         <table class="table table-striped table-hover table-bordered m-b-0">

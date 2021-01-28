@@ -6,6 +6,7 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 import { JobInformationService } from '../../../employee-master-services/job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-detail',
@@ -23,15 +24,16 @@ export class ProjectDetailComponent implements OnInit {
   employeeMasterId: number;
   employeeProjectDetailId: any;
   confirmMsg: any;
-  isOnBenchBoolean: any;
+  isOnBenchBoolean: any = 'no';
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
-  payrollAreaCode: '';
+  payrollAreaCode: any;
   joiningDate: any;
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
-    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService) {
+    private formBuilder: FormBuilder, private PayrollAreaService: PayrollAreaInformationService, private router: Router,
+    private CommonDataService: SharedInformationService) {
     this.tomorrow.setDate(this.tomorrow.getDate());
 
   }
@@ -65,23 +67,14 @@ export class ProjectDetailComponent implements OnInit {
 
   //get project details service calling
   getProjectFormForm() {
-
+    debugger
     this.JobInformationService.getProjectDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       if (res.data.results[0]) {
-        debugger
+
         this.employeeProjectDetailId = res.data.results[0].employeeProjectDetailId;
         this.projectDetailsModel = res.data.results[0];
 
-        //changing String to date format
-        // this.projectDetailsModel.projectFromDate = new Date(res.data.results[0].projectFromDate);
-        // this.projectDetailsModel.projectToDate = new Date(res.data.results[0].projectToDate);
-
-        // this.projectDetailsModel.billableFromDate = new Date(res.data.results[0].billableFromDate);
-        // this.projectDetailsModel.billableToDate = new Date(res.data.results[0].billableToDate);
-
-        // this.projectDetailsModel.benchFromDate = new Date(res.data.results[0].benchFromDate);
-        // this.projectDetailsModel.benchToDate = new Date(res.data.results[0].benchToDate);
 
         //bench 
         if (this.projectDetailsModel.isOnBench == 1) {
@@ -142,7 +135,9 @@ export class ProjectDetailComponent implements OnInit {
       this.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      this.payrollAreaCode = this.payrollAreaCode;
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
     }
     this.projectForm.markAsUntouched();
   }
@@ -159,16 +154,11 @@ export class ProjectDetailComponent implements OnInit {
       projectDetailsModel.payrollAreaCode = this.payrollAreaList[0];
     }
     else {
-      projectDetailsModel.payrollAreaCode = this.payrollAreaCode;
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+      projectDetailsModel.payrollAreaCode = new String(payrollAreaCode);
     }
-
-    // if (this.projectDetailsModel.isOnBench == 'yes') {
-    //   this.projectDetailsModel.isOnBench = 1;
-
-    // }
-    // if (this.projectDetailsModel.isOnBench == 'no') {
-    //   this.projectDetailsModel.isOnBench = 0;
-    // }
 
     if (this.isOnBenchBoolean == 'yes') {
       this.projectDetailsModel.isOnBench = 1;
@@ -191,8 +181,9 @@ export class ProjectDetailComponent implements OnInit {
       this.projectDetailsModel = res.data.results[0];
       this.employeeProjectDetailId = this.projectDetailsModel.employeeProjectDetailId;
 
-      this.getProjectFormForm();
-      this.EventEmitterService.getJobInformationInitiate();
+      //this.getProjectFormForm();
+      //redirecting page to summary page
+      this.router.navigate(['/employee-master/job-information/job-summary']);
 
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -227,8 +218,10 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   disableProjectDates() {
+    this.projectForm.get('projectFromDateControl').setValue(null);
     const projectFromDate = this.projectForm.get('projectFromDateControl');
     projectFromDate.disable();
+    this.projectForm.get('projectToDateControl').setValue(null);
     const projectToDate = this.projectForm.get('projectToDateControl');
     projectToDate.disable();
   }
@@ -259,8 +252,10 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   disableBillableDates() {
+    this.projectForm.get('billableFromDateControl').setValue(null);
     const billableFromDate = this.projectForm.get('billableFromDateControl');
     billableFromDate.disable();
+    this.projectForm.get('billableToDateControl').setValue(null);
     const billableToDate = this.projectForm.get('billableToDateControl');
     billableToDate.disable();
   }
@@ -280,8 +275,6 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   enableBenchDate() {
-    // if (this.projectDetailsModel.isOnBench == 'yes') {
-      debugger
     if (this.isOnBenchBoolean == 'yes') {
       const benchFromDate = this.projectForm.get('benchFromDateControl');
       benchFromDate.enable();
@@ -289,9 +282,8 @@ export class ProjectDetailComponent implements OnInit {
       benchToDate.enable();
     }
 
-    // if (this.projectDetailsModel.isOnBench == '' || this.projectDetailsModel.isOnBench == null || this.projectDetailsModel.isOnBench == 'no') {
     if (this.isOnBenchBoolean == '' || this.isOnBenchBoolean == null || this.isOnBenchBoolean == 'no') {
-     debugger
+
       this.projectDetailsModel.benchFromDate = null;
       this.projectDetailsModel.benchToDate = null;
       this.disableBenchDates();
@@ -317,7 +309,14 @@ export class ProjectDetailComponent implements OnInit {
 
       });
     })
-
+    if (this.payrollAreaList.length == 1) {
+      this.payrollAreaCode = this.payrollAreaList[0];
+    }
+    else {
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+    }
   }
 
   filterpayrollArea(event) {
@@ -335,14 +334,18 @@ export class ProjectDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
+    localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     this.resetProjectForm();
     this.getProjectFormForm();
   }
 
   resetProjectForm() {
+    debugger
     this.projectForm.reset();
     this.employeeProjectDetailId = 0;
+    this.isOnBenchBoolean = 'no';
+    this.projectForm.get('isOnBenchControl').setValue("no");
 
     //disable dates
     this.disableBenchDates();

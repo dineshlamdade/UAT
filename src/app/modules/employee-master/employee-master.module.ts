@@ -62,6 +62,8 @@ import { ExitInformationComponent } from './components/employment-information/ex
 import { EmployeeSummaryComponent } from './components/employee-summary/employee-summary.component';
 import { EmploymentSummaryComponent } from './components/employment-information/employment-summary/employment-summary.component';
 import { ComplianceSummaryComponent } from './components/compliance-information/compliance-summary/compliance-summary.component';
+import { JobSummaryComponent } from './components/job-information/job-summary/job-summary.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 @NgModule({
     declarations: [
@@ -98,7 +100,9 @@ import { ComplianceSummaryComponent } from './components/compliance-information/
         ExitInformationComponent,
         EmployeeSummaryComponent,
         EmploymentSummaryComponent,
-        ComplianceSummaryComponent
+        ComplianceSummaryComponent,
+        JobSummaryComponent,
+        LandingPageComponent
     ],
     imports: [
         CommonModule,

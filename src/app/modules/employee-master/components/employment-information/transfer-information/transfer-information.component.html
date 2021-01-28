@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form>
+                    <form [formGroup]="TransferForm" (ngSubmit)="transferToFormSubmit(TransferToInformation)">
                         <!-- Member Details -->
                         <fieldset>
                             <legend><i class="fa fa-users"></i>
@@ -11,9 +11,13 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Transfer To</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
+                                    <select class="form-control" placeholder="Select Company"
+                                        formControlName="transferTo" [(ngModel)]="TransferToInformation.transferTo">
+                                        <option value="" selected disabled>Select Company</option>
+                                        <option *ngFor="let option of companyListForJoining" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
@@ -25,7 +29,9 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="effectiveDate" [minDate]="JoiningDate"
+                                                [(ngModel)]="TransferToInformation.effectiveDate" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -33,7 +39,8 @@
                                 <div class="col-sm-6 col-lg-3">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" [(ngModel)]="TransferToInformation.remark"
+                                        formControlName="transferRemark">
                                 </div>
                             </div>
                         </fieldset>
@@ -41,9 +48,22 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
-                                    <button type="submit"
+                                    <button type="button" tooltip="Reset" (click)="resetTranferToForm()"
+                                        [hidden]="viewTransfer"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-15"><b><i
+                                                class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+
+                                    <button type="submit" [disabled]="TransferForm.invalid || TransferForm.untouched"
+                                        [hidden]="viewTransfer"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
-                                        tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                        [ngClass]="{'disabled-btn-bg-green' : TransferForm.invalid || TransferForm.untouched,
+                                        'btn-bg-green': !TransferForm.invalid}" tooltip="Save"><b><i
+                                                class="fa fa-floppy-o"></i></b>Save</button>
+
+                                    <button type="button" tooltip="Cancel" *ngIf="viewTransfer"
+                                        [routerLink]="['/employee-master/employment-information/employment-summary']"
+                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
+                                                class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
                                 </div>
                             </div>
                         </div>

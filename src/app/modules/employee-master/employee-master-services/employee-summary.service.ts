@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { map } from 'rxjs/operators';
 
@@ -12,12 +12,16 @@ export class EmployeeSummaryService {
 
   constructor(private httpClient: HttpClient) { }
 
+//get employee profile summary API
+  getEmployeeSummaryInfo(employeeMasterId,payrollAreaCode){
+    const params = new HttpParams()
+    .set('payrollAreaCode', payrollAreaCode);
 
-  getEmployeeSummaryInfo(employeeMasterId){
-
-    return this.httpClient.get(environment.baseUrl8082 + '/employee-summary/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-summary/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'},params})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
+
+  
 }

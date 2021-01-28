@@ -1,16 +1,19 @@
 <form [formGroup]="PositionForm" (ngSubmit)="positionFormSubmit(positionDetailsModel)">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
-        <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+        <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
             (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
-            [(ngModel)]="payrollAreaCode">
-        </p-autoComplete>
-        <!-- <select class="form-control" placeholder="Select Payroll Area">
-          <option value="ABC">ABC</option>
-          <option value="PQR">PQR</option>
-          <option value="XYZ">XYZ</option>
-      </select> -->
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+        </p-autoComplete> -->
 
+        <select class="form-control" placeholder="Select Payroll Area"
+            (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select Payroll Area</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
+                {{option}}
+            </option>
+        </select>
     </div>
     <br>
     <div class="row row-cards">
@@ -328,10 +331,14 @@
                     (completeMethod)="filterHighestEducation($event)" [dropdown]="true"
                     formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Reporting To">
-                    <option value="ABC">ABC</option>
-                    <option value="PQR">PQR</option>
-                    <option value="XYZ">XYZ</option>
+                <select class="form-control" placeholder="Select Reporting to"
+                    (completeMethod)="searchReportingTo(employee)"
+                    (change)="validatReportingDate();enableReportingDate();"
+                    formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
+                    <option value="" selected disabled>Select Reporting to</option>
+                    <option *ngFor="let employee of filteredReportingToList" [value]="employee">
+                        {{employee}}
+                    </option>
                 </select>
                 <label class="form-label mt-10">Description</label>
                 <input type="text" class="form-control" formControlName="reportingToDescriptionControl"
@@ -347,7 +354,8 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="reportingFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.reportingFromDate">
+                            [(ngModel)]="positionDetailsModel.reportingFromDate"
+                            (bsValueChange)="validateReportingToDate()">
                     </div>
                 </div>
 
@@ -448,12 +456,12 @@
                 <button type="button" tooltip="Previous"
                     [routerLink]="['/employee-master/job-information/organization-details']"
                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                            class="fa fa-refresh" aria-hidden="true"></i></b>Previous</button>
+                            class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>Previous</button>
 
                 <button type="button" tooltip="Next"
                     [routerLink]="['/employee-master/job-information/minimum-wages-details']"
                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                            class="fa fa-refresh" aria-hidden="true"></i></b>Next</button>
+                            class="fa fa-chevron-circle-right" aria-hidden="true"></i></b>Next</button>
             </div>
         </div>
     </div>
