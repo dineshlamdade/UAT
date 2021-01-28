@@ -8,18 +8,18 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form [formGroup]="BasicInfoForm">
+                            <!-- <form [formGroup]="BasicInfoForm"> -->
                                 <!-- <div class="tabview"> -->
                                 <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="pull-right">
+                                    <!-- <div class="col-md-12"> -->
+                                        <div class="col-sm-6 col-md-3 mt-10">
                                             <label class="form-label">Payroll Area</label>
                                             <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
                                             (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
                                             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
                                         </p-autoComplete> -->
 
-                                            <select class="form-control" placeholder="Select Payroll Area"
+                                            <!-- <select class="form-control" placeholder="Select Payroll Area"
                                                 (completeMethod)="filterpayrollArea(payrollAreaCode)"
                                                 (change)="selectPayrollArea(payrollAreaCode)"
                                                 [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
@@ -27,9 +27,26 @@
                                                 <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
                                                     {{option}}
                                                 </option>
+                                            </select> -->
+                                          
+
+                                            <select class="form-control" placeholder="Select"
+                                            (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+                                            (change)="selectPayrollArea(payrollAreaCode)"
+                                                [(ngModel)]="payrollAreaCode">
+                                                <option value="" selected disabled>Select</option>
+                                                <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                                                    {{option.payrollAreaCode}}
+                                                </option>
                                             </select>
                                         </div>
-                                    </div>
+
+                                        <div class="col-sm-6 col-md-3 mt-10" >
+                                            <label class="form-label">Company Name</label>
+                                            <input type="text" class="form-control" [(ngModel)]="companyName"
+                                                [ngModelOptions]="{standalone: true}" disabled>
+                                        </div>
+                                    <!-- </div> -->
                                 </div>
                                 <div class="row">
 
@@ -528,7 +545,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            <!-- </form> -->
                         </div>
                     </div>
                 </div>

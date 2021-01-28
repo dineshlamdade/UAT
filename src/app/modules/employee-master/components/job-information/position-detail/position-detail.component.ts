@@ -57,6 +57,7 @@ export class PositionDetailComponent implements OnInit {
   designation1Desc: any;
   designation2Desc: any;
   payrollAreaCode: any;
+  companyName:any;
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
@@ -103,13 +104,20 @@ export class PositionDetailComponent implements OnInit {
     });
 
     this.payrollAreaCode = '';
+    this.companyName='';
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
     //get payroll area code from local storage
-    
     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
     this.payrollAreaCode = new String(payrollAreaCode);
+
+     //get company name from local storage
+   const companyName = localStorage.getItem('jobInformationCompanyName')
+   if(companyName!=null){
+    this.companyName = new String(companyName);
+   }
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -283,12 +291,21 @@ export class PositionDetailComponent implements OnInit {
       this.resetPositionForm();
     })
     if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
+      //this.payrollAreaCode = this.payrollAreaList[0];
+
+      this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+      localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
     }
     else {
      //get payroll area code from local storage
      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
      this.payrollAreaCode = new String(payrollAreaCode);
+
+       //get company from local storage
+       const companyName = localStorage.getItem('jobInformationCompanyName')
+       if(companyName!=null){
+         this.companyName = new String(companyName);
+       }
     }
     this.PositionForm.markAsUntouched();
   }
@@ -758,18 +775,36 @@ export class PositionDetailComponent implements OnInit {
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
-        this.payrollAreaList.push(item.payrollAreaCode);
-        this.filteredPayrollAreaList.push(item.payrollAreaCode);
+        // this.payrollAreaList.push(item.payrollAreaCode);
+        // this.filteredPayrollAreaList.push(item.payrollAreaCode);
+
+        this.payrollAreaList.push(item);
+        this.filteredPayrollAreaList.push(item);
 
       });
       if (this.payrollAreaList.length == 1) {
-        this.payrollAreaCode = this.payrollAreaList[0];
-        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+        // this.payrollAreaCode = this.payrollAreaList[0];
+        // localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+
+          //set default payroll area
+          this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+          localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+  
+           //set default company
+           let result=res.data.results[0];
+           this.companyName = result[0].payrollAreaId.companyId.companyName;
+           localStorage.setItem('jobInformationCompanyName',  this.companyName);
       }
       else {
         //get payroll area code from local storage
         const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
         this.payrollAreaCode = new String(payrollAreaCode);
+
+        //get company from local storage
+        const companyName = localStorage.getItem('jobInformationCompanyName')
+        if(companyName!=null){
+          this.companyName = new String(companyName);
+        }
       }
     })
     
@@ -793,6 +828,13 @@ export class PositionDetailComponent implements OnInit {
   selectPayrollArea(event) {
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
+
+    const toSelect = this.filteredPayrollAreaList.find(
+      (c) => c.payrollAreaCode ===  this.payrollAreaCode
+    );
+    this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    localStorage.setItem('jobInformationCompanyName',  this.companyName);
+
     this.resetPositionForm();
     this.getPositionForm();
   }
