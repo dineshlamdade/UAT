@@ -28,6 +28,7 @@ export class ProjectDetailComponent implements OnInit {
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaCode: any;
+  companyName:any;
   joiningDate: any;
 
   constructor(public datepipe: DatePipe,
@@ -53,11 +54,18 @@ export class ProjectDetailComponent implements OnInit {
     });
 
     this.payrollAreaCode = null;
+    this.companyName='';
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
+
+      //get company name from local storage
+   const companyName = localStorage.getItem('jobInformationCompanyName')
+   if(companyName!=null){
+    this.companyName = new String(companyName);
+   }
 
     //get payroll area's list
     this.getPayrollAreaInformation();
@@ -151,13 +159,25 @@ export class ProjectDetailComponent implements OnInit {
     projectDetailsModel.employeeMasterId = this.employeeMasterId;
     projectDetailsModel.employeeProjectDetailId = this.employeeProjectDetailId;
     if (this.payrollAreaList.length == 1) {
-      projectDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+     // projectDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+     this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+     localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
     }
     else {
       //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-      projectDetailsModel.payrollAreaCode = new String(payrollAreaCode);
+      // const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      // this.payrollAreaCode = new String(payrollAreaCode);
+      // projectDetailsModel.payrollAreaCode = new String(payrollAreaCode);
+
+       //get payroll area code from local storage
+       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+       this.payrollAreaCode = new String(payrollAreaCode);
+
+         //get company from local storage
+         const companyName = localStorage.getItem('jobInformationCompanyName')
+         if(companyName!=null){
+           this.companyName = new String(companyName);
+         }
     }
 
     if (this.isOnBenchBoolean == 'yes') {
@@ -304,19 +324,37 @@ export class ProjectDetailComponent implements OnInit {
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
-        this.payrollAreaList.push(item.payrollAreaCode);
-        this.filteredPayrollAreaList.push(item.payrollAreaCode);
+        // this.payrollAreaList.push(item.payrollAreaCode);
+        // this.filteredPayrollAreaList.push(item.payrollAreaCode);
+
+        this.payrollAreaList.push(item);
+        this.filteredPayrollAreaList.push(item);
 
       });
 
       if (this.payrollAreaList.length == 1) {
-        this.payrollAreaCode = this.payrollAreaList[0];
-        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+        // this.payrollAreaCode = this.payrollAreaList[0];
+        // localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+
+         //set default payroll area
+         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+         localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+ 
+          //set default company
+          let result=res.data.results[0];
+          this.companyName = result[0].payrollAreaId.companyId.companyName;
+          localStorage.setItem('jobInformationCompanyName',  this.companyName);
       }
       else {
         //get payroll area code from local storage
         const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
         this.payrollAreaCode = new String(payrollAreaCode);
+
+         //get company from local storage
+         const companyName = localStorage.getItem('jobInformationCompanyName')
+         if(companyName!=null){
+           this.companyName = new String(companyName);
+         }
       }
     })
   
@@ -339,6 +377,13 @@ export class ProjectDetailComponent implements OnInit {
   selectPayrollArea(event) {
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
+
+    const toSelect = this.filteredPayrollAreaList.find(
+      (c) => c.payrollAreaCode ===  this.payrollAreaCode
+    );
+    this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    localStorage.setItem('jobInformationCompanyName',  this.companyName);
+
     this.resetProjectForm();
     this.getProjectFormForm();
   }
