@@ -20,7 +20,7 @@
                 <div class="tabs about-page">
                   <app-electric-vehicle-summary *ngIf="tabIndex == 0"
                     (myEvent)="changeTabIndexForRedirect($event)"
-                    (policyNumber)="redirectToMaster($event)">
+                    (loanAccountNumber)="redirectToMaster($event)">
                   </app-electric-vehicle-summary>
                 </div>
                 <label class="nav" for="summary">
@@ -36,8 +36,7 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-electric-vehicle-master *ngIf="tabIndex == 1" > </app-electric-vehicle-master>
-                  <!-- <app-licmaster *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-licmaster> -->
+                <app-electric-vehicle-master *ngIf="tabIndex == 1" [loanAccountNumber]="loanAccountNumber"> </app-electric-vehicle-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>

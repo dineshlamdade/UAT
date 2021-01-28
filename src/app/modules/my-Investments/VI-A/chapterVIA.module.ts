@@ -24,6 +24,47 @@ import { IDSAMasterComponent } from './interest-deposit-savingAccount/IDSA-maste
 import { IDSADeclarationComponent } from './interest-deposit-savingAccount/IDSA-declaration/IDSA-declaration.component';
 import { IDSATTBMasterComponent } from './IDSA-TTB/IDSA-TTB-master/IDSA-TTB-master.component';
 import { IDSATTBDeclarationComponent } from './IDSA-TTB/IDSA-TTB-declaration/IDSA-TTB-declaration.component';
+import { NPSComponent } from './nps/nps.component';
+import { NpsSummaryComponent } from './nps/nps-summary/nps-summary.component';
+import { NpsMasterComponent } from './nps/nps-master/nps-master.component';
+import { NpsDeclarationComponent } from './nps/nps-declaration/nps-declaration.component';
+import { PhysicallyHandicappedComponent } from './physically-handicapped/physically-handicapped.component';
+import { PhysicallyHandicappedSummaryComponent } from './physically-handicapped/physically-handicapped-summary/physically-handicapped-summary.component';
+import { PhysicallyHandicappedDeclarationAndActualComponent } from './physically-handicapped/physically-handicapped-declaration-and-actual/physically-handicapped-declaration-and-actual.component';
+import { HandicappedDependentComponent } from './handicapped-dependent/handicapped-dependent.component';
+import { SummaryComponent } from './handicapped-dependent/summary/summary.component';
+import { MasterComponent } from './handicapped-dependent/master/master.component';
+import { DeclarationAndActualComponent } from './handicapped-dependent/declaration-and-actual/declaration-and-actual.component';
+import { ElectricVehicleComponent } from './electric-vehicle/electric-vehicle.component';
+import { ElectricVehicleSummaryComponent } from './electric-vehicle/electric-vehicle-summary/electric-vehicle-summary.component';
+import { ElectricVehicleMasterComponent } from './electric-vehicle/electric-vehicle-master/electric-vehicle-master.component';
+import { ElectricVehicleDeclarationComponent } from './electric-vehicle/electric-vehicle-declaration/electric-vehicle-declaration.component';
+import { EducationalLoanComponent } from './educational-loan/educational-loan.component';
+import { EducationalLoanSummaryComponent } from './educational-loan/educational-loan-summary/educational-loan-summary.component';
+import { EducationalLoanMasterComponent } from './educational-loan/educational-loan-master/educational-loan-master.component';
+import { EducationalLoanDeclarationComponent } from './educational-loan/educational-loan-declaration/educational-loan-declaration.component';
+import { InterestOnTtaComponent } from './interest-on-tta/interest-on-tta.component';
+import { InterestOnTtaSummaryComponent } from './interest-on-tta/interest-on-tta-summary/interest-on-tta-summary.component';
+import { InterestOnTtaMasterComponent } from './interest-on-tta/interest-on-tta-master/interest-on-tta-master.component';
+import { InterestOnTtaDeclarationComponent } from './interest-on-tta/interest-on-tta-declaration/interest-on-tta-declaration.component';
+import { InterestOnTtbSummaryComponent } from './interest-on-deposit-ttb/interest-on-ttb-summary/interest-on-ttb-summary.component';
+import { InterestOnDepositTtbComponent } from './interest-on-deposit-ttb/interest-on-deposit-ttb.component';
+import { InterestOnTtbMasterComponent } from './interest-on-deposit-ttb/interest-on-ttb-master/interest-on-ttb-master.component';
+import { InterestOnTtbDeclarationComponent } from './interest-on-deposit-ttb/interest-on-ttb-declaration/interest-on-ttb-declaration.component';
+import { DonationsForScientificResearchComponent } from './donations-for-scientific-research/donations-for-scientific-research.component';
+import { GgaSummaryComponent } from './donations-for-scientific-research/gga-summary/gga-summary.component';
+import { GgaDeclarationAndActualComponent } from './donations-for-scientific-research/gga-declaration-and-actual/gga-declaration-and-actual.component';
+import { MyInvestmentsModule } from '../my-Investments.module';
+import { PrimeNGModule } from '../../../app.primeNG.module';
+import { GGCComponent } from './ggc/ggc.component';
+import { GgcDeclarationActualComponent } from './ggc/ggc-declaration-actual/ggc-declaration-actual.component';
+import { GgcSummaryComponent } from './ggc/ggc-summary/ggc-summary.component';
+import { Mediclaim80DComponent } from './mediclaim80-d/mediclaim80-d.component';
+import { MediclaimSummaryComponent } from './mediclaim80-d/mediclaim-summary/mediclaim-summary.component';
+import { MediclaimMasterComponent } from './mediclaim80-d/mediclaim-master/mediclaim-master.component';
+import { MediclaimDeclarationComponent } from './mediclaim80-d/mediclaim-declaration/mediclaim-declaration.component';
+
+
 @NgModule({
   declarations: [
       InterestDepositSavingAccountComponent,
@@ -33,7 +74,44 @@ import { IDSATTBDeclarationComponent } from './IDSA-TTB/IDSA-TTB-declaration/IDS
       IDSATTBComponent,
       IDSATTBSummaryComponent,
       IDSATTBMasterComponent,
-      IDSATTBDeclarationComponent
+      IDSATTBDeclarationComponent,
+      NPSComponent,
+      NpsSummaryComponent,
+      NpsMasterComponent,
+      NpsDeclarationComponent,
+      PhysicallyHandicappedComponent,
+      PhysicallyHandicappedSummaryComponent,
+      PhysicallyHandicappedDeclarationAndActualComponent,
+      HandicappedDependentComponent,
+      SummaryComponent,
+      MasterComponent,
+      DeclarationAndActualComponent,
+      ElectricVehicleComponent,
+      ElectricVehicleSummaryComponent,
+      ElectricVehicleMasterComponent,
+      ElectricVehicleDeclarationComponent,
+      EducationalLoanComponent,
+      EducationalLoanSummaryComponent,
+      EducationalLoanMasterComponent,
+      EducationalLoanDeclarationComponent,
+      InterestOnTtaComponent,
+      InterestOnTtaSummaryComponent,
+      InterestOnTtaMasterComponent,
+      InterestOnTtaDeclarationComponent,
+      InterestOnDepositTtbComponent,
+      InterestOnTtbSummaryComponent,
+      InterestOnTtbMasterComponent,
+      InterestOnTtbDeclarationComponent,
+      DonationsForScientificResearchComponent,
+      GgaSummaryComponent,
+      GgaDeclarationAndActualComponent,
+      GGCComponent,
+      GgcSummaryComponent,
+      GgcDeclarationActualComponent,
+      Mediclaim80DComponent,
+      MediclaimSummaryComponent,
+      MediclaimMasterComponent,
+      MediclaimDeclarationComponent,
      ],
   imports: [
     CommonModule,
@@ -58,6 +136,8 @@ import { IDSATTBDeclarationComponent } from './IDSA-TTB/IDSA-TTB-declaration/IDS
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
+    MyInvestmentsModule,
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

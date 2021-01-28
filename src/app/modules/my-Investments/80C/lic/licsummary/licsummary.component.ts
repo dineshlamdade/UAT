@@ -24,7 +24,7 @@ export class LicsummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-  @Input() institution: string;
+   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() policyNumber = new EventEmitter<any>();

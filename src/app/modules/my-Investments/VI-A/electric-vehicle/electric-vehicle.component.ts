@@ -15,7 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class ElectricVehicleComponent implements OnInit {
   public tabIndex = 0;
-  public policyNumber: string;
+  public loanAccountNumber: string;
   public windowScrolled: boolean;
   public data: any;
 
@@ -32,7 +32,7 @@ export class ElectricVehicleComponent implements OnInit {
 
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
-    this.policyNumber = event;
+    this.loanAccountNumber = event;
   }
 
 

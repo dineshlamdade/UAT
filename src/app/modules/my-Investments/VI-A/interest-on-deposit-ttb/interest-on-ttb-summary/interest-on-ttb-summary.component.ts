@@ -3,6 +3,7 @@ import { AlertServiceService } from '../../../../../core/services/alert-service.
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { InterestOnTtaService } from '../../../VI-A/interest-on-tta/interest-on-tta.service';
+import { InterestOnTtbService } from '../interest-on-ttb.service';
 
 @Component({
   selector: 'app-interest-on-ttb-summary',
@@ -52,7 +53,7 @@ export class InterestOnTtbSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private interestOnTtaService: InterestOnTtaService   ,
+    private interestOnTtbService: InterestOnTtbService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {  }
@@ -64,13 +65,11 @@ export class InterestOnTtbSummaryComponent implements OnInit {
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
-    this.interestOnTtaService.get80TTASummary().subscribe((res) => {
-      this.summaryGridData = res.data.results[0];
+    this.interestOnTtbService.get80TTBSummary().subscribe((res) => {
+      this.summaryGridData = res.data.results[0].interestOnSavingDeposit80TTTransactionList.interestOnSavingDeposit80TTTransactionList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.limit = res.data.results[0].limit;
-      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.benefitActualAmount = res.data.results[0].benefitActualAmount;
       this.benefitDeclaredAmount = res.data.results[0].benefitDeclaredAmount;
       this.onChangeLimit();
@@ -93,8 +92,8 @@ export class InterestOnTtbSummaryComponent implements OnInit {
   }
 
   onChangeLimit() {
-    this.DeclaredAmountBenefit = Math.min(this.grandTotalDeclaredAmount, this.limit);
-    this.ActualAmountBenefit = Math.min(this.grandTotalActualAmount, this.limit);
+    this.benefitDeclaredAmount = Math.min(this.totalDeclaredAmount, this.limit);
+    this.benefitActualAmount = Math.min(this.totalActualAmount, this.limit);
     // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitAvailable;
   }
 }
