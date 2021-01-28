@@ -18,6 +18,15 @@ export class JobInformationComponent implements OnInit {
   joiningDate: any;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
+  jobSummaryTab: boolean = true;
+  organizationTab: boolean = false;
+  positionTab: boolean = false;
+  minimumWagesTab: boolean = false;
+  projectTab: boolean = false;
+  deputationTab: boolean = false;
+  public tabIndex = 0;
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
@@ -65,7 +74,7 @@ export class JobInformationComponent implements OnInit {
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
 
-    
+
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
@@ -102,7 +111,7 @@ export class JobInformationComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
-    
+
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     this.getGridSummary()
@@ -123,6 +132,62 @@ export class JobInformationComponent implements OnInit {
     else if (job === "Project Details") {
       this.router.navigate(['/employee-master/job-information/project-details']);
     }
+  }
+
+
+  jobSummaryTabValidation() {
+    this.jobSummaryTab = true;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = false;
+    // this.router.navigate(['/employee-master/education-skills-information/education-details']);
+  }
+
+  organizationTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = true;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = false;
+  }
+
+  positionTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = true;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = false;
+  }
+
+  minimumWagesTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = true;
+    this.projectTab = false;
+    this.deputationTab = false;
+  }
+
+  projectTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = true;
+    this.deputationTab = false;
+  }
+
+  deputationTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = true;
   }
 
 }
