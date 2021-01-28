@@ -684,9 +684,9 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
 }
 
 
-/**/
 
-.four_tabview {
+
+.fourtabview {
     display: grid;
     height: 100%;
     width: 100%;
@@ -696,11 +696,11 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
     font-family: Montserrat, sans-serif!important;
 }
 
-.four_tabview input[type="radio"] {
+.fourtabview input[type="radio"] {
     display: none;
 }
 
-.four_tabview label.nav {
+.fourtabview label.nav {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -714,18 +714,18 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
     font-family: Montserrat, sans-serif!important;
 }
 
-.four_tabview input[type="radio"]:checked+.four_tabs+label.nav {
+.fourtabview input[type="radio"]:checked+.apprtabs+label.nav {
     /* background: linear-gradient(-45deg, #D6ED17FF, #acbe0e); */
     background: #38b449;
     color: #ffffff;
     padding-left: 0px;
 }
 
-.four_tabview input[type="radio"]:checked+.four_tabs+label.nav span {
+.fourtabview input[type="radio"]:checked+.apprtabs+label.nav span {
     padding-left: 0px;
 }
 
-.four_tabview label.nav span {
+.fourtabview label.nav span {
     padding-left: 0px;
     position: relative;
     font-size: 16px!important;
@@ -733,30 +733,30 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
     font-family: Montserrat, sans-serif!important;
 }
 
-.four_tabs {
+.fourtabview {
     grid-column-start: 1;
     grid-row-start: 2;
-    grid-column-end: span 4;
+    grid-column-end: span 5;
     padding: 0px 0px;
     /* display: flex; */
     align-items: center;
 }
 
-input[type="radio"]+.four_tabs {
+input[type="radio"]+.fourtabview {
     transition: transform 0.2s;
     transform: translateX(100%);
 }
 
-input[type="radio"]:checked+.four_tabs {
+input[type="radio"]:checked+.fourtabview {
     transform: translateX(0%);
 }
 
-input[type="radio"]:checked+.four_tabs .four_tabview-contents>* {
+input[type="radio"]:checked+.fourtabview .tabview-contents>* {
     opacity: 1;
     transform: translateY(0px);
 }
 
-.four_tabview-contents {
+.fourtabview-contents {
     max-width: 100%;
     padding: 20px;
     margin: 15px;
@@ -766,7 +766,6 @@ input[type="radio"]:checked+.four_tabs .four_tabview-contents>* {
 }
 
 
-/**/
 
 
 /* tabview css End here */

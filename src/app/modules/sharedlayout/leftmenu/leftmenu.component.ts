@@ -78,7 +78,7 @@ public allMenuDetails: Array<any> = [];
     //   }
     // }
     // }
-   console.log(this.menuService.getMenuUrl())
+  // console.log(this.menuService.getMenuUrl())
 
   }
 

@@ -81,7 +81,7 @@
                 <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
                   [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
+                  <form class="card" role="form" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
                     <div class="tabview-contents" >
                       <div class="row mt-37">
                         <div class="col-12">
@@ -92,9 +92,8 @@
                                  <label class="form-label">Code</label>
                                  <input type="text" formControlName="loanCode" class="form-control align-right" 
                                  [ngClass]="{'is-invalid' : generalForm.get('loanCode').status == 'INVALID'}">
-                                 <div *ngIf="submitted && generalForm.loanCode.errors" class="invalid-feedback">
-                                    <div *ngIf="generalForm.loanCode.errors.required">mandatory</div>
-                                 </div>
+                                    <div style="color: red;" *ngIf="generalForm.get('loanCode').status == 'INVALID'">
+                                      <small>mandatory*</small></div>
                               </div>
                                  <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Description</label>
@@ -104,7 +103,7 @@
                                     </div>
                                  </div>
                                  <div class="col-sm-6 col-md-3">
-                                    <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">
+                                    <label class="form-label ml-15" placement="left">
                                       Minimum Net Pay (MNP)-Loan Head
                                     </label>
                                     <div class="custom-controls-stacked ml-15 mt-10">
@@ -121,9 +120,10 @@
                                     </div>
                                  </div>
                                  <div class="col-sm-6 col-md-3">
-                                    <label class="form-label">Annual Amount</label>
-                                    <input type="text" formControlName="approvalWorkFlowSDM"
-                                      class="form-control align-right">
+                                    <label class="form-label">Loan Application Template</label>
+                                    <input type='file' class="form-control-sm" id="templateUpload" name='templateUpload' accept=".jpg" #fileInput1
+                                      form (change)="templateUpload($event, fileInput1)"
+                                      [(ngModel)]="loanApplicationtemplate" [ngModelOptions]="{standalone: true}" style="font-size: x-small;" />
                                     
                                  </div>
                               </div>
@@ -329,10 +329,10 @@
                 <label class="nav" for="Master">
                   <span> General </span>
                 </label>
-                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                <input name="nav" [disabled]="generalForm.get('loanCode').status == 'INVALID'"  type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                   <div class="tabs about-page">
-                    <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
+                    <form class="card" role="form" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
                       <div class="tabview-contents">
                         <div class="row mt-37">
                           <div class="col-12">
@@ -433,7 +433,7 @@
                                     <div class="col-sm-6 col-md-3">
                                       <label class="form-label">Method</label>
                                       <select
-                                          formControlName="underliningAsset" class="form-control custom-select">
+                                          formControlName="recoveryMethod" class="form-control custom-select">
                                           <option [ngValue]="null">--Select--</option>
                                           <option *ngFor="let option of principalRepaymentMethod">
                                           {{option}}
@@ -443,24 +443,36 @@
                                   <div class="col-sm-6 col-md-3" *ngIf="generalForm.get('underliningAsset').value === 'Principal First & then Interest'">
                                     <label class="form-label">No. of installments for Interest Recovery</label>
                                     <select
-                                        formControlName="noOfTimesOfSalary" class="form-control custom-select">
+                                        formControlName="firstPriThanIntNoOfInstallmentForIntRecovery" class="form-control custom-select">
                                         <option [ngValue]="null">--Select--</option>
                                         <option *ngFor="let option of beforePrincipalRepaymentStarts">
                                         {{option}}
                                       </option>
                                     </select>
                                   </div>
-                                    <div class="col-sm-6 col-md-3">
-                                      <label class="form-label">Month</label>
-                                     <input type="number" formControlName="noOfTimesOfSalary" class="form-control align-right">
-                                     <label class="form-label">Recovery Starts</label>
-                                      <select style="margin-top: 6.3%;"
-                                          formControlName="maxAmountLoan" class="form-control custom-select">
-                                          <option [ngValue]="null">--Select--</option>
-                                          <option *ngFor="let option of principalRepaymentRecoveryStarts">
-                                          {{option}}
-                                        </option>
-                                      </select>
+                                  <div class="col-3">
+                                    <div class="row">
+                                      <div class="col-sm-3 col-md-3 country-code  pr-0">
+                                        <label class="form-label">Month</label>
+                                        <select
+                                            formControlName="maxAmountLoan" class="form-control custom-select">
+                                            <option [ngValue]="null">-Select-</option>
+                                            <option *ngFor="let option of principalRepaymentMonth">
+                                            {{option}}
+                                          </option>
+                                        </select>
+                                      </div>
+                                      <div class="col-sm-3 col-md-9">
+                                        <label class="form-label">Recovery Starts</label>
+                                        <select
+                                            formControlName="recoveryToStartDisbursements" class="form-control custom-select">
+                                            <option [ngValue]="null">--Select--</option>
+                                            <option *ngFor="let option of principalRepaymentRecoveryStarts">
+                                            {{option}}
+                                          </option>
+                                        </select>
+                                       </div>
+                                    </div>
                                   </div>
                               </div>
                            </fieldset>
@@ -469,9 +481,9 @@
                             <div class="col-12">
                                <div class="float-right mb-15">
                                   
-                                <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                <button (click)="tabIndex = 1; scrollToTop()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
                                   <b><i class="fa fa-step-backward"></i></b> Previous</button> &nbsp;
-                                  <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                  <button (click)="submitRecovery()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
                                     <b><i class="fa fa-step-forward"></i></b> Next</button>
                                </div>
                             </div>
@@ -484,10 +496,10 @@
                 <label class="nav" for="Declaration">
                   <span>Recovery </span>
                 </label>
-                <input name="nav" type="radio" class="about-radio" id="payment" (change)="changeTabIndex(3)"
+                <input name="nav"  [disabled]="generalForm.get('loanCode').status == 'INVALID'" type="radio" class="about-radio" id="payment" (change)="changeTabIndex(3)"
                 [checked]="tabIndex == 3" />
               <div class="tabs about-page">
-                <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
+                <form class="card" role="form" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
                   <div class="tabview-contents">
                     <div class="row mt-37">
                       <div class="col-12">
@@ -509,12 +521,12 @@
                         <div class="col-sm-6 col-md-3">
                           <label class="form-label">Treatment</label>
                           <select
-                              formControlName="adhocPaymentsTreatment;" class="form-control custom-select">
-                              <option [ngValue]="null">--Select--</option>
-                              <option *ngFor="let option of adhocPaymentsTreatment">
-                              {{option}}
-                            </option>
-                          </select>
+                          formControlName="adhocPaymentsTreatment" class="form-control custom-select">
+                          <option [ngValue]="null">--Select--</option>
+                          <option *ngFor="let option of adhocPaymentsTreatment">
+                          {{option}}
+                        </option>
+                      </select>
                         </div>
                         <div class="col-sm-6 col-md-3">
                           <label class="form-label">Principal</label>
@@ -556,8 +568,7 @@
                               <div class="col-sm-6 col-md-3">
                                 <label class="form-label">Interest</label>
                                 <select
-                                    formControlName="assignmentsIntHead" class="form-control custom-select"
-                                    >
+                                    formControlName="assignmentsIntHead" class="form-control custom-select" >
                                   <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                                     [value]="frequencyOfPayment.value">
                                     {{frequencyOfPayment.label}}
@@ -577,8 +588,7 @@
                               <div class="col-sm-6 col-md-3">
                                 <label class="form-label">Loan Payment</label>
                                 <select
-                                    formControlName="assignmentsLoanPayment" class="form-control custom-select"
-                                    >
+                                    formControlName="assignmentsLoanPayment" class="form-control custom-select">
                                   <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                                     [value]="frequencyOfPayment.value">
                                     {{frequencyOfPayment.label}}
@@ -605,7 +615,7 @@
                               <div class="col-sm-6 col-md-3">
                                 <label class="form-label">Loan Category</label>
                                 <select
-                                    formControlName="taxSettingPerquisiteSubCategory" class="form-control custom-select">
+                                    formControlName="taxSettingPerquisiteType" class="form-control custom-select">
                                     <option [ngValue]="null">--Select--</option>
                                     <option *ngFor="let option of taxSettingsLoanCategory">
                                     {{option}}
@@ -686,9 +696,9 @@
                           <div class="col-12">
                              <div class="float-right mb-15">
                                 
-                              <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                              <button (click)="tabIndex = 2; scrollToTop()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
                                 <b><i class="fa fa-step-backward"></i></b> Previous</button> &nbsp;
-                                <button (click)="submitGeneral()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
+                                <button (click)="save()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save">
                                   <b><i class="fa fa-save"></i></b> Save</button>
                              </div>
                           </div>

@@ -40,7 +40,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       //     break;
       //  }
       case  401 : {
-        this.alertService.sweetalertError('Invalid Tocken Please, Please Try Again !!!!', );
+        this.alertService.sweetalertError('Invalid Token Please, Please Try Again !!!!', );
         break;
      }
        case  404 : {
@@ -52,8 +52,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       break;
    }
      default : {
-      console.log('default error');
-      this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
+      //this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
       break;
  }
 

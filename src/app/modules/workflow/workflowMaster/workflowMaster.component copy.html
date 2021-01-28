@@ -1,0 +1,473 @@
+<app-leftmenu></app-leftmenu>
+  <div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+       <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
+            <div class="row">
+             <div class="col-12">
+                <div class="card">
+                   <div class="card-body p-0">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <label class="form-label">Code</label>
+                        <input type="text" formControlName="workflowCode" class="form-control"
+                        [ngClass]="{'is-invalid' : form.get('workflowCode').status == 'INVALID'}">
+                      </div>
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Description</label>
+                        <input type="text" formControlName="description" class="form-control"
+                        [ngClass]="{'is-invalid' : form.get('description').status == 'INVALID'}">
+                      </div>
+
+
+                    <div class="col-sm-3">
+                      <label class="form-label ml-15" placement="left">
+                        Auto Approval
+                      </label>
+                      <div class="custom-controls-stacked ml-15 mt-10">
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input formControlName="autoApproval" type="radio"
+                            class="custom-control-input" [value]="true">
+                         <span class="custom-control-label">Yes</span>
+                         </label>
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input formControlName="autoApproval" type="radio"
+                            class="custom-control-input" [value]="false">
+                         <span class="custom-control-label">No</span>
+                         </label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <label class="form-label ml-15" placement="left">
+                        Defined Manager
+                      </label>
+                      <div class="custom-controls-stacked ml-15 mt-10">
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input formControlName="defined" type="radio"
+                            class="custom-control-input" [value]="true">
+                         <span class="custom-control-label">Yes</span>
+                         </label>
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input formControlName="defined" type="radio"
+                            class="custom-control-input" [value]="false">
+                         <span class="custom-control-label">No</span>
+                         </label>
+                      </div>
+                      <!-- <label class="form-label">Method of Approval</label>
+                      <select
+                          formControlName="numberOfApprover" class="form-control custom-select">
+                          <option [ngValue]="null"></option>
+                          <option *ngFor="let data of methodOfApprovalArray">
+                          {{data}}
+                        </option>
+                      </select> -->
+                    </div>
+
+
+
+                  </div>
+                  <!-- end of row -->
+                  <div class="row mt-15">
+                      <div class="col-sm-3" *ngIf="form.get('defined').value === false">
+                        <label class="form-label">Number of Approval</label>
+                        <select
+                            formControlName="numberOfApprover" class="form-control custom-select"
+                            [ngClass]="{'is-invalid' : form.get('numberOfApprover').status == 'INVALID'}">
+                            <option [ngValue]="null"></option>
+                            <option *ngFor="let data of noOfApprovers"  [value]=data>
+                            {{data}}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-sm-3" *ngIf="form.get('defined').value === true">
+                        <label class="form-label">Template Defined</label>
+                        <select
+                            formControlName="definedTemplateId" class="form-control custom-select"
+                            [ngClass]="{'is-invalid' : form.get('definedTemplateId').status == 'INVALID'}">
+                            <option [ngValue]="null"></option>
+                            <option *ngFor="let data of templatedefinedArray" [value]=data.templateId>
+                            {{data.templateCode}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3">
+                        <label class="form-label ml-15" placement="left">
+                          Change of Approver by Manager
+                        </label>
+                        <div class="custom-controls-stacked ml-15 mt-10">
+                           <label class="custom-control custom-radio custom-control-inline">
+                           <input formControlName="changeOfApproverByManager" type="radio"
+                              class="custom-control-input" [value]="true">
+                           <span class="custom-control-label">Yes</span>
+                           </label>
+                           <label class="custom-control custom-radio custom-control-inline">
+                           <input formControlName="changeOfApproverByManager" type="radio"
+                              class="custom-control-input" [value]="false">
+                           <span class="custom-control-label">No</span>
+                           </label>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  
+                    <!-- end of row -->
+                    <div class="row mt-15">
+                     
+                      <div class="col-sm-3">
+                        <label class="form-label">Active</label>
+                        <input type="checkbox" formControlName="active">
+                      </div>
+
+                      <div class="col-sm-3" *ngIf="form.get('active').value === false">
+                        <label class="form-label">Remark</label>
+                        <textarea formControlName="remark" class="form-control" [ngClass]="{'is-invalid' : form.get('remark').status == 'INVALID'}"></textarea>
+                      </div>
+                 </div>
+                  <!-- end of row -->
+                 
+
+
+
+                </div> <!-- card body -->
+              </div>
+            </div>
+          </div>
+
+
+       
+        </form>
+
+
+          <div class="row" *ngIf="form.get('numberOfApprover').value">
+            <div class="col-12">
+              <div class="card">
+                <div class="mb-0">
+                </div>
+                <!-- <div class="" formArrayName="approverMasterRequestDTO" > -->
+                  <div class="table-responsive Custom_Table">
+                    <table class="table table-striped table-hover table-bordered m-b-0">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col" class="wd-8">Approver Level</th>
+                          <th scope="col" class="wd-8">Sequence</th>
+                          <th scope="col" class="wd-20">Method of Approval</th>
+                          <th scope="col" class="wd-5">Level of Reporting Manager</th>
+                          <th scope="col" class="wd-15">SDM</th>
+                          <th scope="col" class="wd-5">Treatment- Unactioned Application</th>
+                          <th scope="col" class="wd-12">Post- No. of Days</th>
+                          <th scope="col" class="wd-5">Action</th>
+                          <!-- <th *ngIf="arrayApproverMaster.length > form.get('numberOfApprover').value" scope="col" class="wd-5">Action</th> -->
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr *ngFor="let item of arrayApproverMaster; let i = index;"> 
+                          
+                          <td> {{i+1}}
+                            <!-- <select  class="form-control custom-select">
+                              <option *ngFor="let data of sequence">
+                              {{data}}
+                              </option>
+                            </select> -->
+                          </td>
+
+                          <td>
+                            <select [(ngModel)]="item.sequence" class="form-control custom-select" (change)="sequenceTableValidation(i,item)"
+                            [ngClass]="{'is-invalid' : item.sequence > form.get('numberOfApprover').value}">
+                              <option *ngFor="let data of sequence[i]" [value]=data>
+                              {{data}}
+                              </option>
+                            </select>
+                        </td>
+
+                          <td>
+                            <select [(ngModel)]="item.approverMethod" [ngClass]="{'is-invalid' : item.approverMethod === null}"  (change)="approverMethodValidation(i)"  class="form-control custom-select">
+                                <option *ngFor="let data of methodOfApprovalArray">
+                                {{data}}
+                                </option>
+                            </select>
+                          </td>
+
+                          <td>
+                            <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}" [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select">
+                                <option *ngFor="let data of levelOfRM">
+                                {{data}}
+                                </option>
+                            </select>
+                          </td>
+                          <td>
+                            <select [(ngModel)]="item.sdm" [ngClass]="{'is-invalid' : (item.sdm === null)}"  [disabled]="item.approverMethod == 'Reporting Manager'" class="form-control custom-select">
+                                <option *ngFor="let data of dummyArray">
+                                {{data}}
+                                </option>
+                            </select>
+                          </td>
+                          <td>
+                            <select [(ngModel)]="item.treatmentUnActionedPlan" [ngClass]="{'is-invalid' : (item.treatmentUnActionedPlan === null)}" (change)="unactionedAppValidation(i)" class="form-control custom-select">
+                              <option *ngFor="let data of treatmentUnActionedPlanArray">
+                              {{data}}
+                              </option>
+                            </select>
+                          </td>
+                          <td>
+                            <input type="text"  [(ngModel)]="item.numberOfDays" min="0" class="form-control" [ngClass]="{'is-invalid' : (item.numberOfDays === null)}">
+                          </td>
+                          <td>
+                            <i *ngIf="item.treatmentUnActionedPlan === 'Reassign'" class="fa fa-plus-circle font-16 text-blue cursor-pointer ml-3"
+                            tooltip="Add further Details" (click)="reassignedValidation(template, item.sequence)"></i>
+                            <i *ngIf="deleteApproverListsButtonShow" class="fa fa-trash font-16 text-red cursor-pointer ml-3"
+                            tooltip="Delete" (click)="hideApproverDeleteOption(i)"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+                
+               
+              </div>
+            </div>
+          </div>
+          <div class="row mt-15">
+            <div class="col-12">
+               <div class="float-right mb-15">
+                <button *ngIf="!cancelButtonShow" (click)="submit()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+                  <b><i class="fa fa-save"></i></b>
+                  <span *ngIf="form.get('workflowMasterHeaderId').value === 0"> Save</span>
+                  <span *ngIf="form.get('workflowMasterHeaderId').value !=0">Update</span>
+                </button>           
+              <button *ngIf="(form.get('workflowMasterHeaderId').value ===0)" (click)="reset()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                <b><i class="fa fa-refresh"></i></b> Reset</button> &nbsp;
+               
+                <button *ngIf="cancelButtonShow" (click)="reset()" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10">
+                  <b><i class="fa fa-close"></i></b> Cancel</button> &nbsp;
+             </div>
+             </div>
+           </div>
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="mb-0">
+              <h3 class="font-14 text-purple font-bold">Summary</h3>
+           </div>
+              <div class="table-responsive Custom_Table">
+                <table class="table table-striped table-hover table-bordered m-b-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="wd-8">Sr No.</th>
+                      <th scope="col" class="wd-5">Code</th>
+                      <th scope="col" class="wd-20">Description</th>
+                      <th scope="col" class="wd-5">No. of Approvers</th>
+                      <th scope="col" class="wd-15">Auto Approval</th>
+                      <!-- <th scope="col" class="wd-5">Active</th> -->
+                      <th scope="col" class="wd-8">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let item of summary; let i = index"> 
+                      
+                      <td> {{i+1}}
+                      </td>
+                      <td>
+                       {{item.workflowMasterHeaderResponseDTO.workflowCode}}
+                      </td>
+                      <td>
+                        {{item.workflowMasterHeaderResponseDTO.description}}
+                      </td>
+                      
+                      <td>
+                        {{item.workflowMasterHeaderResponseDTO.numberOfApprover}}
+                      </td>
+                      <td [ngStyle]="{
+                        color: item.workflowMasterHeaderResponseDTO.autoApproval
+                          ? 'hsl(141, 53%, 53%)'
+                          : 'hsl(348, 100%, 61%)'
+                      }">
+                        {{item.workflowMasterHeaderResponseDTO.autoApproval | yesNo}}
+                      </td>
+                      <!-- <td [ngStyle]="{
+                        color: item.workflowMasterHeaderResponseDTO.active
+                          ? 'hsl(141, 53%, 53%)'
+                          : 'hsl(348, 100%, 61%)'
+                      }">
+                        {{item.workflowMasterHeaderResponseDTO.active | yesNo}}
+                      </td> -->
+                      <td>
+                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                          (click)="edit(item)" tooltip="Edit"></i>
+                      <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="view(item)"
+                        tooltip="View"></i>
+                        <i class="fa fa-trash font-16 text-red cursor-pointer ml-3" *ngIf="(!item.assigned) || (item.assigned === 0)"
+                        tooltip="Delete" (click)="delete(item)"></i>
+                    </td>
+                    </tr>
+                    <tr *ngIf="!summary.length">
+                      <td colspan="10">
+                        <span class="font-14 font500 align-center text-red">No Data Available</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+
+    <ng-template #template>
+      <div class="modal-header">
+         <h5 class="modal-title" id="UploadModalLabel">Add Reassign Application details for Approver Level {{approverLevel}}</h5>
+         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+         <div class="card">
+            <div class="card-body">
+               <div class="row clearfix">
+                <div class="table-responsive Custom_Table">
+                  <table class="table table-striped table-hover table-bordered m-b-0">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" class="wd-8">Approver Level</th>
+                        <th scope="col" class="wd-5">Sequence</th>
+                        <th scope="col" class="wd-20">Method of Approval</th>
+                        <th scope="col" class="wd-5">Level of Reporting Manager</th>
+                        <th scope="col" class="wd-15">SDM</th>
+                        <th scope="col" class="wd-5">Treatment- Unactioned Application</th>
+                        <th scope="col" class="wd-12">Post- No. of Days</th>
+                        <th scope="col" class="wd-5">Action</th>
+                        <th *ngIf="arrayApproverMaster.length > form.get('numberOfApprover').value" scope="col" class="wd-5">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr *ngFor="let item of reassignedSequenceArray; let i = index;"> 
+                        
+                        <td> {{i+1}}
+                          <!-- <select  class="form-control custom-select">
+                            <option *ngFor="let data of sequence">
+                            {{data}}
+                            </option>
+                          </select> -->
+                        </td>
+
+                        <td>
+                          {{item.sequence}}
+                      </td>
+
+                        <td>
+                          <select [(ngModel)]="item.approverMethod" [ngClass]="{'is-invalid' : item.approverMethod === null}"  (change)="approverMethodValidation(i)"  class="form-control custom-select">
+                              <option *ngFor="let data of methodOfApprovalArray">
+                              {{data}}
+                              </option>
+                          </select>
+                        </td>
+
+                        <td>
+                          <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}" [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select">
+                              <option *ngFor="let data of levelOfRM">
+                              {{data}}
+                              </option>
+                          </select>
+                        </td>
+                        <td>
+                          <select [(ngModel)]="item.sdm" [ngClass]="{'is-invalid' : (item.sdm === null)}"  [disabled]="item.approverMethod == 'Reporting Manager'" class="form-control custom-select">
+                              <option *ngFor="let data of dummyArray">
+                              {{data}}
+                              </option>
+                          </select>
+                        </td>
+                        <td>
+                          <select [(ngModel)]="item.treatmentUnActionedPlan" [ngClass]="{'is-invalid' : (item.treatmentUnActionedPlan === null)}" (change)="unactionedAppValidation(i)" class="form-control custom-select">
+                            <option *ngFor="let data of treatmentUnActionedPlanArray">
+                            {{data}}
+                            </option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="number"  [(ngModel)]="item.numberOfDays" min="0" class="form-control" [ngClass]="{'is-invalid' : (item.numberOfDays === null)}">
+                        </td>
+                        <td>
+                          <i *ngIf="item.treatmentUnActionedPlan === 'Reassign'" class="fa fa-plus-circle font-16 text-blue cursor-pointer ml-3"
+                          tooltip="Add further Details" (click)="reassignedValidation(template, i)"></i>
+                          <i *ngIf="deleteApproverListsButtonShow" class="fa fa-trash font-16 text-red cursor-pointer ml-3"
+                          tooltip="Delete" (click)="hideApproverDeleteOption(i)"></i>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let item of reassignedSequenceArrayForm; let i = index;"> 
+                        
+                        <td> {{i+1}}
+                          <!-- <select  class="form-control custom-select">
+                            <option *ngFor="let data of sequence">
+                            {{data}}
+                            </option>
+                          </select> -->
+                        </td>
+
+                        <td>
+                          {{item.sequence}}
+                      </td>
+
+                        <td>
+                          <select [(ngModel)]="item.approverMethod" [ngClass]="{'is-invalid' : item.approverMethod === null}"  (change)="approverMethodValidation(i)"  class="form-control custom-select">
+                              <option *ngFor="let data of methodOfApprovalArray">
+                              {{data}}
+                              </option>
+                          </select>
+                        </td>
+
+                        <td>
+                          <select [(ngModel)]="item.levelOfRM" [ngClass]="{'is-invalid' : (item.levelOfRM === null)}" [disabled]="item.approverMethod == 'Manager through SDM'" class="form-control custom-select">
+                              <option *ngFor="let data of levelOfRM">
+                              {{data}}
+                              </option>
+                          </select>
+                        </td>
+                        <td>
+                          <select [(ngModel)]="item.sdm" [ngClass]="{'is-invalid' : (item.sdm === null)}"  [disabled]="item.approverMethod == 'Reporting Manager'" class="form-control custom-select">
+                              <option *ngFor="let data of dummyArray">
+                              {{data}}
+                              </option>
+                          </select>
+                        </td>
+                        <td>
+                          <select [(ngModel)]="item.treatmentUnActionedPlan" [ngClass]="{'is-invalid' : (item.treatmentUnActionedPlan === null)}" (change)="unactionedAppValidation(i)" class="form-control custom-select">
+                            <option *ngFor="let data of treatmentUnActionedPlanArray">
+                            {{data}}
+                            </option>
+                          </select>
+                        </td>
+                        <td>
+                          <input type="number"  [(ngModel)]="item.numberOfDays" min="0" class="form-control" [ngClass]="{'is-invalid' : (item.numberOfDays === null)}">
+                        </td>
+                        <td>
+                          <i *ngIf="item.treatmentUnActionedPlan === 'Reassign'" class="fa fa-plus-circle font-16 text-blue cursor-pointer ml-3"
+                          tooltip="Add further Details" (click)="reassignedValidation(template, i)"></i>
+                          <i *ngIf="deleteApproverListsButtonShow" class="fa fa-trash font-16 text-red cursor-pointer ml-3"
+                          tooltip="Delete" (click)="hideApproverDeleteOption(i)"></i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+                  <div class="col-md-12">
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+      </div>
+   </ng-template>

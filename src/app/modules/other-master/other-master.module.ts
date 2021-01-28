@@ -1,3 +1,4 @@
+import { CertificationMasterComponent } from './certificationMaster/certificationMaster.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { OtherMasterRoutingModule } from './other-master-routing.module';
@@ -35,6 +36,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     StatutoryComplianceComponent,
     EstablishmentMasterComponent,
     ComplianceMasterComponent,
+    CertificationMasterComponent
   ],
   imports: [
     CommonModule,

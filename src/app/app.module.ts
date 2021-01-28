@@ -1,3 +1,4 @@
+import { compannySettingsModule } from './modules/company-settings/company-settings.module';
 import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
@@ -70,6 +71,7 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
     DashboardModule,
     PayrollModule,
     MyInvestmentsModule,
+    compannySettingsModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,

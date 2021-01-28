@@ -1,3 +1,4 @@
+import { CertificationMasterComponent } from './certificationMaster/certificationMaster.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 // import { CompanyMasterComponent } from '../create-company/company-master/company-master.component';
@@ -46,6 +47,12 @@ const routes: Routes = [
     component: ComplianceMasterComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
+  {
+    path: 'certificationMaster',
+    component: CertificationMasterComponent,
+    data: { title: ':: Delizia-HR :: Home' },
+  },
+
 
 
 ];

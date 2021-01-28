@@ -8,6 +8,8 @@ export const environment = {
   baseUrl: 'http://localhost:8080/hrms/v1/',
   baseUrl8082: 'http://localhost:8082/hrms/v1',
   baseUrl8083: 'http://localhost:8083/hrms/v1',
+  baseUrl8088: 'http://localhost:8088/hrms/v1/',
+  baseUrl8087: 'http://localhost:8087/hrms/v1/',
   // baseUrl8082: 'http://deliziahruat.paysquare.com:8082/hrms/v1/',
   // baseUrl8083: 'http://deliziahruat.paysquare.com:8083/hrms/v1/',
    baseUrl8080: 'http://deliziahruat.paysquare.com:8080/hrms/v1/',

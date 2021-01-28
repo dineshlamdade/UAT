@@ -24,6 +24,7 @@ const routes: Routes = [
     loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
   },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
+  { path: 'company-settings', loadChildren: './modules/company-settings/company-settings.routing' },
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 ];

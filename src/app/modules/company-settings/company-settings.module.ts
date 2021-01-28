@@ -1,11 +1,7 @@
-import { PrimeNGModule } from './../../app.primeNG.module';
-import { MatIconModule } from '@angular/material/icon';
-import { AngularMaterialComponent } from './angularMaterial/angularMaterial.component';
-import { PtimeNGPracticeComponent } from './ptimeNGPractice/ptimeNGPractice.component';
-import { YesNoPipe } from './../../core/utility/pipes/yesNo.pipe';
-import { WorkflowMasterComponent } from './workflowMaster/workflowMaster.component';
-import { workflowRoutingModule } from './workflow.routing.module';
-import {MatStepperModule} from '@angular/material/stepper';
+import { CompanySettingsRoutes } from './company-settings.routing';
+import { CompanySettingsService } from './company-settings.service';
+import { LoanMasterComponent } from './loan-master/loan-master.component';
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,32 +19,17 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
-import { workflowService } from './workflow.service';
-import {StepsModule} from 'primeng/steps';
-import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
-import { MatButtonModule } from '@angular/material/button';
-import { MatRippleModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+
+
 @NgModule({
   declarations: [
-    WorkflowMasterComponent,
-    PtimeNGPracticeComponent,
-    AngularMaterialComponent,
-    YesNoPipe,
+    LoanMasterComponent
   ],
   imports: [
-      workflowRoutingModule,
+      CompanySettingsRoutes,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    MatStepperModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRippleModule,
-    MatIconModule,
-    StepsModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
@@ -68,8 +49,7 @@ import { MatInputModule } from '@angular/material/input';
     SharedlayoutModule,
   ],
 
-  providers: [ DatePipe, NumberFormatPipe, workflowService,
-  {provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}}],
+  providers: [ DatePipe, NumberFormatPipe, CompanySettingsService],
 
 })
-export class workflowModule { }
+export class compannySettingsModule { }

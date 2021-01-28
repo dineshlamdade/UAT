@@ -575,7 +575,7 @@ getMenuUrl() {
     }
 
     
-    console.log(menuURl)
+    //console.log(menuURl)
     return menuURl;
 }
 

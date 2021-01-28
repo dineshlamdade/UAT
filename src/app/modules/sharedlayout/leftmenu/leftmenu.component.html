@@ -381,6 +381,9 @@
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/hr-reports']" href="javascript:void(0)"><span>Expense
                                 Reimbursement</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                        [routerLink]="['/payroll/payroll-area-master']" href="javascript:void(0)"><span>Payroll Area Master
+                            </span></a></li>
                 </ul>
             </li>
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
@@ -390,7 +393,7 @@
                         class="icon-credit-card"></i><span>Company Settings </span></a>
                 <ul class="collapse" id="companySettingsCollapsed" [collapse]="isCompanySettingsCollapsed" [isAnimated]="true">
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-                            [routerLink]="['/loan-master']" href="javascript:void(0)"><span>Loan Master</span></a></li>
+                            [routerLink]="['/company-settings/loan-master']" href="javascript:void(0)"><span>Loan Master</span></a></li>
                 </ul>
             </li>
 
@@ -531,6 +534,8 @@
                     </li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/otherMaster/complianceMaster']"><span>Compliance Master</span></a></li>
+                    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+                        [routerLink]="['/otherMaster/certificationMaster']"><span>Certification Master</span></a></li>
 
 
                 </ul>
