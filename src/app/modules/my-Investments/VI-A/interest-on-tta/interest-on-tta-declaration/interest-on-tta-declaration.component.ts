@@ -38,7 +38,7 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
 })
 export class InterestOnTtaDeclarationComponent implements OnInit {
 
-  @Input() landerName: string;
+  @Input() bankName: string;
   @Input() policyNo: string;
   @Input() data: any;
 
@@ -61,14 +61,15 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
-  public lenderNameList: Array<any> = [];
+  // public bankNameList: Array<any> = [];
+  public interestOnSavingDeposit80TTTransactionList: Array<any> = [];
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
   public editReceiptAmount: string;
 
-  public transactionPolicyList: Array<any> = [];
-  public transactionInstitutionListWithPolicies: Array<any> = [];
+  public bankNameList: Array<any> = [];
+  public transactionBankNameList: Array<any> = [];
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
   public editfilesArray: File[] = [];
@@ -88,6 +89,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public enableCheckboxFlag3: boolean;
   public addRow1: boolean;
   public addRow2: number;
+  public ttarequest : Array<any> = [];
   public previousEmployeeList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
@@ -121,7 +123,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
   public dueDate: Date;
-  public dateOfPayment: Date;
+  public interestReceivedDate : Date;
   public date3: Date;
   public loaded = 0;
   public selectedFiles: FileList;
@@ -158,11 +160,12 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public transactionStatustList: any;
-  public globalInstitution: String = 'ALL';
+  public globalBank: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public selectedMasterId: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -203,20 +206,9 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
-      this.globalInstitution = input.institution;
-      this.globalPolicy = input.accountNumber;
-      this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
-
-      const data = {
-        label: 'All',
-        value: 'All',
-      };
-
-      this.transactionPolicyList = [];
-      this.transactionPolicyList.push(data);
-      this.lenderNameList = [];
-      this.lenderNameList.push(data);
+      this.globalBank = input.bankName;
+      this.getBankNameList();
+      this.getTransactionFilterData(input.bankName);
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -266,11 +258,11 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].groupTransactionList[i].previousEmployerId =
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].groupTransactionList[i].previousEmployerId
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].previousEmployerId
     );
   }
   // -----------on Page referesh transactionStatustList------------
@@ -286,72 +278,55 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
-    this.lenderNameList = [];
-
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
-
-    this.lenderNameList.push(data);
-
-    this.getInstitutionListWithPolicyNo();
-
+    this.getBankNameList();
     this.resetAll();
-    this.selectedTransactionInstName('All');
   }
 
-  public getInstitutionListWithPolicyNo() {
+  public getBankNameList() {
     this.interestOnTtaService
       .get80TTAWithBankNameList()
       .subscribe((res) => {
-        console.log('getInstitutionListWithPolicyNo', res);
-        this.transactionInstitutionListWithPolicies = res.data.results;
-
+        console.log('getBankNameList', res);
+        this.transactionBankNameList = res.data.results;
         res.data.results.forEach((element) => {
           const obj = {
-            label: element.institution,
-            value: element.institution,
+            label: element.bankName,
+            value: element.interestOnSavingsDeposit80TTMasterId
           };
-          this.lenderNameList.push(obj);
+          this.bankNameList.push(obj);
         });
+        this.selectedTransactionBankName(0);
       });
   }
-  // --------- On institution selection show all transactions list accordingly all policies--------
-  selectedTransactionInstName(institutionName: any) {
-    this.globalInstitution = institutionName;
-    this.getTransactionFilterData(this.globalInstitution, null, null);
-    this.globalSelectedAmount = this.numberFormat.transform(0);
+    // --------- On bankName selection show all transactions list accordingly all banks--------
+      selectedTransactionBankName(bankMasterId: number) {
+        const selectedBank = this.transactionBankNameList.find(item => item.interestOnSavingsDeposit80TTMasterId == bankMasterId);
+        this.globalBank = selectedBank.bankName;
+        this.selectedMasterId = selectedBank.interestOnSavingsDeposit80TTMasterId;
+        this.getTransactionFilterData(this.globalBank);
+        this.globalSelectedAmount = this.numberFormat.transform(0);
 
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+       // --------- On bankName selection show all transactions list accordingly all banks--------
+          // selectedTransactionBankName(bankNames: any) {
+          //   // console.log("event", event);
+          // // this.selectedMasterId =
+          // this.globalBank = bankNames;
+          // this.getTransactionFilterData(this.globalBank);
+          // this.globalSelectedAmount = this.numberFormat.transform(0);
 
-    this.transactionPolicyList = [];
-    this.transactionPolicyList.push(data);
+          // this.transactionBankNameList.forEach((element) => {
+          //   if (bankNames === element.bankName) {
+          //     element.banks.forEach((item) => {
+          //       const bankObj = {
+          //         label: item,
+          //         value: item,
+          //       };
+          //       this.bankNameList.push(bankObj);
+          //     });
+          //   }
+          // });
 
-    this.transactionInstitutionListWithPolicies.forEach((element) => {
-      if (institutionName === element.institution) {
-        element.policies.forEach((policy) => {
-          const policyObj = {
-            label: policy,
-            value: policy,
-          };
-          this.transactionPolicyList.push(policyObj);
-        });
-      } else if (institutionName === 'All') {
-        element.policies.forEach((policy) => {
-          const policyObj = {
-            label: policy,
-            value: policy,
-          };
-          this.transactionPolicyList.push(policyObj);
-        });
-      }
-    });
-
-    if (institutionName == 'All') {
+    if (bankMasterId == 0) {
       this.grandTabStatus = true;
       this.isDisabled = true;
     } else {
@@ -362,22 +337,18 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.resetAll();
   }
 
-  // -------- On Policy selection show all transactions list accordingly all policies---------
+  // -------- On Policy selection show all transactions list accordingly all banks---------
   selectedPolicy(policy: any) {
     this.globalPolicy = policy;
     this.getTransactionFilterData(
-      this.globalInstitution,
-      this.globalPolicy,
-      null
+      this.globalBank
     );
   }
 
-  // ------- On Transaction Status selection show all transactions list accordingly all policies------
+  // ------- On Transaction Status selection show all transactions list accordingly all banks------
   selectedTransactionStatus(transactionStatus: any) {
     this.getTransactionFilterData(
-      this.globalInstitution,
-      this.globalPolicy,
-      transactionStatus
+      this.globalBank
     );
   }
 
@@ -400,30 +371,30 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     let formatedSelectedAmount: string;
     console.log(
       'in IS ECS::',
-      this.transactionDetail[j].groupTransactionList[i].isECS
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].isECS
     );
     if (checked) {
-      if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
-        this.transactionDetail[j].groupTransactionList[i].actualAmount =
+      if (this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].isECS === 1) {
+        this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].groupTransactionList[
+        this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
           i
-        ].dateOfPayment = new Date(data.dueDate);
+        ].interestReceivedDate  = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
-          this.transactionDetail[j].groupTransactionList[i].actualAmount
+          this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
         );
         console.log(
-          'in IS dateOfPayment::',
-          this.transactionDetail[j].groupTransactionList[i].dateOfPayment
+          'in IS interestReceivedDate ::',
+          this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate
         );
       } else {
-        this.transactionDetail[j].groupTransactionList[i].actualAmount =
+        this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount =
           data.declaredAmount;
       }
 
       formatedActualAmount = Number(
-        this.transactionDetail[j].groupTransactionList[i].actualAmount
+        this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
@@ -437,14 +408,14 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
-        this.transactionDetail[j].groupTransactionList[i].actualAmount
+        this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
-      this.transactionDetail[j].groupTransactionList[
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-      this.transactionDetail[j].groupTransactionList[i].dateOfPayment = null;
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate  = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
@@ -457,7 +428,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -485,8 +456,8 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       // console.log('CHECK ALL IS TRUE ');
       this.isCheckAll = true;
       this.enableSelectAll = true;
-      this.enableCheckboxFlag2 = item.institutionName;
-      item.groupTransactionList.forEach((element) => {
+      this.enableCheckboxFlag2 = item.bankNames;
+      item.interestOnSavingDeposit80TTTransactionList.forEach((element) => {
         this.uploadGridData.push(element.interestOnSavingDeposit80TTTransactionId);
       });
       this.enableFileUpload = true;
@@ -500,7 +471,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: any;
       dueDate: Date;
     },
@@ -510,21 +481,21 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].groupTransactionList[
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].groupTransactionList[i].declaredAmount
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].groupTransactionList[
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -542,14 +513,14 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: number;
       dueDate: any;
     },
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].groupTransactionList[i].dueDate = summary.dueDate;
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].dueDate = summary.dueDate;
   }
 
   // ------------Actual Amount change-----------
@@ -557,7 +528,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: number;
       dueDate: Date;
     },
@@ -567,33 +538,33 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Actual Amount change::" , summary);
 
-    this.transactionDetail[j].groupTransactionList[
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].groupTransactionList[i].actualAmount);
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].groupTransactionList[i].actualAmount
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
     );
     // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].groupTransactionList[
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].actualAmount = formatedActualAmount;
 
     if (
-      this.transactionDetail[j].groupTransactionList[i].actualAmount !==
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount !==
         Number(0) ||
-      this.transactionDetail[j].groupTransactionList[i].actualAmount !== null
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount !== null
     ) {
-      // console.log(`in if::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+      // console.log(`in if::`,this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+      // console.log(`in else::`,this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount);
       this.isDisabled = true;
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -610,37 +581,36 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
-  //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
+  //   interestReceivedDate : Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   addRowInList(
     summarynew: {
       interestOnSavingDeposit80TTTransactionId: number;
-      interestOnSavingDeposit80TTMasterId: number;
       previousEmployerId: number;
-      dueDate: Date;
       declaredAmount: any;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: any;
-      isECS: number;
+
     },
+
     j: number
   ) {
     this.declarationService = new DeclarationService(summarynew);
-    this.globalAddRowIndex -= 1;
+    // this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.declarationService.interestOnSavingDeposit80TTTransactionId = this.globalAddRowIndex;
+    this.declarationService.interestOnSavingDeposit80TTTransactionId = 0;
     this.declarationService.declaredAmount = null;
-    this.declarationService.dueDate = null;
     this.declarationService.actualAmount = null;
-    this.declarationService.dateOfPayment = null;
+    this.declarationService.interestReceivedDate  = null;
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
-    this.declarationService.interestOnSavingDeposit80TTMasterId = this.transactionDetail[
-      j
-    ].groupTransactionList[0].interestOnSavingDeposit80TTMasterId;
-    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
-    console.log('addRow::', this.transactionDetail[j].groupTransactionList);
+    if (this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList == null) {
+      this.declarationService.interestOnSavingDeposit80TTMasterId = this.selectedMasterId;
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList = [];
+    }
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.push(this.declarationService);
+    console.log('addRow::', this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList);
   }
 
   sweetalertWarning(msg: string) {
@@ -653,13 +623,13 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].groupTransactionList.length == 1) {
+    if (this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].groupTransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.splice(rowCount, 1);
       return true;
     }
   }
@@ -668,7 +638,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: any;
-      dateOfPayment: any;
+      interestReceivedDate : any;
       dueDate: any;
       actualAmount: any;
     },
@@ -682,8 +652,8 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.declarationService.actualAmount -
-      this.transactionDetail[j].groupTransactionList[i].actualAmount;
-    this.transactionDetail[j].groupTransactionList[i] = this.declarationService;
+      this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount;
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i] = this.declarationService;
     this.declarationService = new DeclarationService();
   }
 
@@ -699,7 +669,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].groupTransactionList.push(this.declarationService);
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.push(this.declarationService);
     this.declarationService = new DeclarationService();
   }
 
@@ -708,27 +678,28 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     console.log(this.transactionDetail);
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
-      element.groupTransactionList.forEach((element) => {
-        element.dateOfPayment = this.datePipe.transform(
-          element.dateOfPayment,
+      element.interestOnSavingDeposit80TTTransactionList.forEach((element) => {
+        element.interestReceivedDate  = this.datePipe.transform(
+          element.interestReceivedDate ,
           'yyyy-MM-dd'
         );
       });
     });
     const data = this.transactionDetail;
+
     this.interestOnTtaService
       .post80TTATransaction(data)
       .subscribe((res) => {
         console.log(res);
         this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
+          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
         this.transactionDetail.forEach((element) => {
-          element.groupTransactionList.forEach((element) => {
-            element.dateOfPayment = new Date(element.dateOfPayment);
+          element.interestOnSavingDeposit80TTTransactionList.forEach((element) => {
+            element.interestReceivedDate  = new Date(element.interestReceivedDate );
           });
         });
       });
@@ -782,17 +753,11 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   }
 
   upload() {
-
-    if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
-      );
-      return;
-    }
     console.log('this.transactionDetail::', this.transactionDetail);
-
     this.transactionDetail.forEach((element) => {
-      element.groupTransactionList.forEach((innerElement) => {
+      if (element.interestOnSavingDeposit80TTTransactionList !== null) {
+      element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
+
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -809,27 +774,50 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
         }
 
         const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
+          innerElement.interestReceivedDate ,
           'yyyy-MM-dd'
         );
-        const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd'
-        );
+        // const dueDate = this.datePipe.transform(
+        //   innerElement.dueDate,
+        //   'yyyy-MM-dd'
+        // );
 
-        innerElement.dateOfPayment = dateOfPaymnet;
-        innerElement.dueDate = dueDate;
+        innerElement.interestReceivedDate  = dateOfPaymnet;
+        // innerElement.dueDate = dueDate;
       });
+    }
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
-    const data = {
-      investmentGroupTransactionDetail: this.transactionDetail,
-      groupTransactionIDs: this.uploadGridData,
-      receiptAmount: this.receiptAmount,
-      documentRemark: this.documentRemark,
-    };
-    console.log('data::', data);
+    // const data =   this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList;
+    console.log('transactionDetail::', this.transactionDetail);
+
+
+    this.transactionDetail.forEach(element => {
+      const data = {
+        interestOnSavingDeposit80TTTransactionList : element.interestOnSavingDeposit80TTTransactionList,
+        interestOnSavingDeposit80TTMasterId: element.interestOnSavingDeposit80TTMasterId,
+      };
+      if (element.interestOnSavingDeposit80TTTransactionList !== null){
+        this.ttarequest.push(data);
+      }
+      console.log('ttarequest::', this.ttarequest);
+
+    })
+    // const data =
+    // [
+    //   {
+    //     interestOnSavingDeposit80TTTransactionList : this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList,
+    //     interestOnSavingDeposit80TTMasterId: this.transactionDetail[0].interestOnSavingDeposit80TTMasterId,
+    //   }
+    // ];
+    console.log('ttarequest::', this.ttarequest);
+
+    // const data = {
+    //   interestOnSavingDeposit80TTTransactionList: this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList,
+    //   // groupTransactionIDs: this.uploadGridData,
+    //   receiptAmount: this.receiptAmount,
+    //   documentRemark: this.documentRemark,
+    // };
 
     // this.fileService.uploadSingleFile(this.currentFileUpload, data)
     // .pipe(tap(event => {
@@ -838,12 +826,12 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     //     }
     // }))
     this.interestOnTtaService
-      .upload80TTATransactionwithDocument(this.filesArray, data)
+      .upload80TTATransactionwithDocument(this.ttarequest)
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
           this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
+            res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -851,10 +839,10 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
           this.transactionDetail.forEach((element) => {
-            element.groupTransactionList.forEach((innerElement) => {
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
+            element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
+              if (innerElement.interestReceivedDate  !== null) {
+                innerElement.interestReceivedDate  = new Date(
+                  innerElement.interestReceivedDate
                 );
               }
               if (this.employeeJoiningDate < innerElement.dueDate) {
@@ -905,9 +893,9 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
      // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId =
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].previousEmployerId =
       event.target.value;
-    console.log('previous emp id::', this.editTransactionUpload[j].groupTransactionList[i].previousEmployerId);
+    console.log('previous emp id::', this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].previousEmployerId);
   }
 
   // ------------ ON change of DueDate in Edit Modal----------
@@ -915,15 +903,15 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: number;
       dueDate: any;
     },
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].groupTransactionList[i].dueDate = summary.dueDate;
-    console.log('onDueDateChangeInEditCase::',  this.editTransactionUpload[j].groupTransactionList[i].dueDate);
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].dueDate = summary.dueDate;
+    console.log('onDueDateChangeInEditCase::',  this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].dueDate);
   }
 
   // --------------- ON change of declared Amount Edit Modal-------------
@@ -931,7 +919,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: any;
       dueDate: Date;
     },
@@ -941,17 +929,17 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
 
-    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].groupTransactionList[i].declaredAmount
+      this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount
     );
     console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].groupTransactionList[i].declaredAmount = formatedDeclaredAmount;
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
-    this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -967,16 +955,16 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: number;
       dueDate: any;
     },
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment =
-      summary.dateOfPayment;
-    console.log(this.editTransactionUpload[j].groupTransactionList[i].dateOfPayment);
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate  =
+      summary.interestReceivedDate ;
+    console.log(this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate );
   }
 
    // ------------Actual Amount change Edit Modal-----------
@@ -984,7 +972,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate: Date;
       actualAmount: number;
       dueDate: Date;
     },
@@ -994,35 +982,35 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     console.log("onActualAmountChangeInEditCaseActual Amount change::" , summary);
 
-    this.editTransactionUpload[j].groupTransactionList[
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    console.log("Actual Amount changed::" , this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
+    console.log("Actual Amount changed::" , this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount);
 
     const formatedActualAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].groupTransactionList[i].actualAmount
+      this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
     );
     console.log(`formatedActualAmount::`,formatedActualAmount);
 
-    this.editTransactionUpload[j].groupTransactionList[
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[
       i
     ].actualAmount = formatedActualAmount;
 
     if (
-      this.editTransactionUpload[j].groupTransactionList[i].actualAmount !==
+      this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount !==
         Number(0) ||
-      this.editTransactionUpload[j].groupTransactionList[i].actualAmount !== null
+      this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount !== null
     ) {
-      console.log(`in if::`,this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
+      console.log(`in if::`,this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount);
 
     } else {
-      console.log(`in else::`,this.editTransactionUpload[j].groupTransactionList[i].actualAmount);
+      console.log(`in else::`,this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount);
 
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
+    this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -1068,14 +1056,14 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   }
   copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
     dueDate = new Date(dueDate);
-    // item.groupTransactionList.dateOfPayment = dueDate;
-    this.transactionDetail[0].groupTransactionList[i].dateOfPayment = dueDate;
-    this.declarationService.dateOfPayment = this.transactionDetail[0].groupTransactionList[
+    // item.interestOnSavingDeposit80TTTransactionList.interestReceivedDate  = dueDate;
+    this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate  = dueDate;
+    this.declarationService.interestReceivedDate  = this.transactionDetail[0].interestOnSavingDeposit80TTTransactionList[
       i
-    ].dateOfPayment;
-    // this.dateOfPayment = dueDate;
+    ].interestReceivedDate ;
+    // this.interestReceivedDate  = dueDate;
     alert('hiiii');
-    console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
+    console.log('Date OF PAyment' + this.declarationService.interestReceivedDate );
   }
 
   // Remove Selected LicTransaction Document Edit Maodal
@@ -1104,7 +1092,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload =
-          res.data.results[0].investmentGroupTransactionDetail;
+          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1152,46 +1140,38 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
   // Common Function for filter to call API
   getTransactionFilterData(
-    landerName: String,
-    policyNo: String,
-    transactionStatus: String
+    bankName: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
 
     this.interestOnTtaService
-      .getTransactionFilterData()
+      .getTransactionFilterData(bankName)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
         this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
+          res.data.results[0].interestOnSavingDeposit80TTTransactionList;
         this.documentDetailList = res.data.results[0].documentInformation;
         this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
-
+        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].interestOnSavingDeposit80TTTransactionList.length;
         this.initialArrayIndex = [];
-
         this.transactionDetail.forEach((element) => {
-          this.initialArrayIndex.push(element.groupTransactionList.length);
-
-          element.groupTransactionList.forEach((innerElement) => {
-            if (innerElement.dateOfPayment !== null) {
-              innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-            }
-
-            // if(this.employeeJoiningDate < innerElement.dueDate) {
-            //   innerElement.active = false;
-            // }
-
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount
-            );
-            innerElement.actualAmount = this.numberFormat.transform(
-              innerElement.actualAmount
-            );
-          });
+          if (element.interestOnSavingDeposit80TTTransactionList !== null) {
+            this.initialArrayIndex.push(element.interestOnSavingDeposit80TTTransactionList.length);
+            element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
+              if (innerElement.interestReceivedDate  !== null) {
+                innerElement.interestReceivedDate  = new Date(innerElement.interestReceivedDate );
+              }
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount
+              );
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount
+              );
+            });
+          }
         });
       });
   }
@@ -1201,7 +1181,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     console.log('uploadUpdateTransaction editTransactionUpload::', this.editTransactionUpload);
 
     this.editTransactionUpload.forEach((element) => {
-      element.groupTransactionList.forEach((innerElement) => {
+      element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -1218,7 +1198,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
         }
 
         const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
+          innerElement.interestReceivedDate ,
           'yyyy-MM-dd'
         );
         const dueDate = this.datePipe.transform(
@@ -1226,32 +1206,33 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           'yyyy-MM-dd'
         );
 
-        innerElement.dateOfPayment = dateOfPaymnet;
+        innerElement.interestReceivedDate  = dateOfPaymnet;
         innerElement.dueDate = dueDate;
         this.uploadGridData.push(innerElement.interestOnSavingDeposit80TTTransactionId);
       });
     });
     this.editTransactionUpload.forEach((element) => {
-      element.groupTransactionList.forEach((innerElement) => {
+      element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
         const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
+          innerElement.interestReceivedDate ,
           'yyyy-MM-dd'
         );
-        innerElement.dateOfPayment = dateOfPaymnet;
+        innerElement.interestReceivedDate  = dateOfPaymnet;
       });
     });
 
     const data = {
-      investmentGroupTransactionDetail: this.editTransactionUpload,
+      interestOnSavingDeposit80TTTransactionList: this.editTransactionUpload,
       groupTransactionIDs: this.uploadGridData,
       //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      interestOnSavingDeposit80TTMasterId: this.transactionDetail[0].interestOnSavingDeposit80TTMasterId,
     };
     console.log('uploadUpdateTransaction data::', data);
 
     this.interestOnTtaService
-      .upload80TTATransactionwithDocument(this.editfilesArray, data)
+      .upload80TTATransactionwithDocument(data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
         if (res.data.results.length > 0) {
@@ -1262,7 +1243,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           );
 
           this.transactionDetail =
-            res.data.results[0].investmentGroupTransactionDetail;
+            res.data.results[0].interestOnSavingDeposit80TTTransactionList;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal =
             res.data.results[0].grandDeclarationTotal;
@@ -1273,13 +1254,13 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           this.initialArrayIndex = [];
 
           this.transactionDetail.forEach((element) => {
-            this.initialArrayIndex.push(element.groupTransactionList.length);
+            this.initialArrayIndex.push(element.interestOnSavingDeposit80TTTransactionList.length);
 
-            element.groupTransactionList.forEach((innerElement) => {
+            element.interestOnSavingDeposit80TTTransactionList.forEach((innerElement) => {
 
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
+              if (innerElement.interestReceivedDate  !== null) {
+                innerElement.interestReceivedDate  = new Date(
+                  innerElement.interestReceivedDate
                 );
               }
               innerElement.declaredAmount = this.numberFormat.transform(
@@ -1320,30 +1301,30 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      interestReceivedDate : Date;
       actualAmount: number;
       dueDate: any;
     },
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
-      summary.dateOfPayment;
-    console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
+    this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate  =
+      summary.interestReceivedDate ;
+    console.log(this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].interestReceivedDate );
   }
 }
 
 class DeclarationService {
   public interestOnSavingDeposit80TTTransactionId = 0;
-  public interestOnSavingDeposit80TTMasterId: number;
+  public interestOnSavingDeposit80TTMasterId;
   public bankName: string;
   public previousEmployerId = 0;
-  public dueDate: Date;
   public declaredAmount: number;
-  public dateOfPayment: Date;
-  public dateOfSubmission: Date;
-  public interestReceivedDate: Date;
   public actualAmount: number;
+  // public interestReceivedDate : Date;
+  // public interestReceivedDate : Date;
+  public interestReceivedDate : Date;
+
   public transactionStatus: 'Pending';
   public amountRejected: number;
   public amountApproved: number;

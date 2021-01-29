@@ -9,51 +9,78 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="emptabview">
-                                <input name="nav" type="radio" class="about-radio" id="summary" />
-                                <label class="nav" for="summary"
+                                <input name="nav" type="radio" class="about-radio" id="summary" [checked]="tabIndex==0"/>
+                                <div class="tabs emptabs about-page" *ngIf="EmpSummaryTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="summary" (click)="EmpSummaryTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/employment-summary']">
                                     <span>
                                         Summary
                                     </span>
                                 </label>
 
-                                <input name="joining" type="radio" class="about-radio" id="joining" />
+                                <input name="joining" type="radio" class="about-radio" id="joining" [checked]="tabIndex==1"/>
+                                <div class="tabs emptabs about-page" *ngIf="joiningTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
                                 <label class="nav" for="joining" [class.disabled]="employementJoiningInfoId"
+                                (click)="joiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/joining-information']">
                                     <span>
                                         Joining
                                     </span>
                                 </label>
 
-                                <input name="rejoining" type="radio" class="about-radio" id="rejoining" />
+                                <input name="rejoining" type="radio" class="about-radio" id="rejoining" [checked]="tabIndex==2"/>
+                                <div class="tabs emptabs about-page" *ngIf="reJoiningTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
                                 <label class="nav" for="rejoining" [class.disabled]="!rejoiningBoolean"
+                                (click)="reJoiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/re-joining-information']">
                                     <span>
                                         Re - Joining
                                     </span>
                                 </label>
 
-                                <input name="transfer" type="radio" class="about-radio" id="transfer" />
-                                <label class="nav" for="transfer" 
+                                <input name="transfer" type="radio" class="about-radio" id="transfer" [checked]="tabIndex==3"/>
+                                <div class="tabs emptabs about-page" *ngIf="transferTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="transfer" (click)="transferTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/transfer-information']">
                                     <span>
                                         Transfer
                                     </span>
                                 </label>
 
-                                <input name="exit" type="radio" class="about-radio" id="exit" />
-                                <label class="nav" for="exit"
+                                <input name="exit" type="radio" class="about-radio" id="exit" [checked]="tabIndex==4"/>
+                                <div class="tabs emptabs about-page" *ngIf="exitTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="exit" (click)="exitTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/exit-information']">
                                     <span>
                                         Exit
                                     </span>
                                 </label>
 
-                                <div class="emptabs about-page">
+                                <!-- <div class="emptabs about-page">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

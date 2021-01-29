@@ -56,7 +56,11 @@ export class PositionDetailComponent implements OnInit {
   designation2Code: any;
   designation1Desc: any;
   designation2Desc: any;
+  reportingToCode:any;
+  reportingToDesc:any;
+  
   payrollAreaCode: any;
+  companyName:any;
 
   constructor(public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
@@ -103,13 +107,20 @@ export class PositionDetailComponent implements OnInit {
     });
 
     this.payrollAreaCode = '';
+    this.companyName='';
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
     //get payroll area code from local storage
-    
     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
     this.payrollAreaCode = new String(payrollAreaCode);
+
+     //get company name from local storage
+   const companyName = localStorage.getItem('jobInformationCompanyName')
+   if(companyName!=null){
+    this.companyName = new String(companyName);
+   }
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -174,8 +185,8 @@ export class PositionDetailComponent implements OnInit {
       const location = res.data.results;
 
       location.filter((item) => {
-          this.reportingToList.push(item.fullName);
-          this.filteredReportingToList.push(item.fullName)
+          this.reportingToList.push(item);
+          this.filteredReportingToList.push(item)
       });
     })
 
@@ -198,6 +209,8 @@ export class PositionDetailComponent implements OnInit {
         this.designation1Code = res.data.results[0].designation1Code;
         this.designation2Desc = res.data.results[0].designation2Description;
         this.designation2Code = res.data.results[0].designation2Code;
+        this.reportingToDesc = res.data.results[0].reportingToDescription;
+        this.reportingToCode=   res.data.results[0].reportingValue;
 
         //emmployee type
         if (this.positionDetailsModel.employeeType != null) {
@@ -283,18 +296,27 @@ export class PositionDetailComponent implements OnInit {
       this.resetPositionForm();
     })
     if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
+      //this.payrollAreaCode = this.payrollAreaList[0];
+
+      this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+      localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
     }
     else {
      //get payroll area code from local storage
      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
      this.payrollAreaCode = new String(payrollAreaCode);
+
+       //get company from local storage
+       const companyName = localStorage.getItem('jobInformationCompanyName')
+       if(companyName!=null){
+         this.companyName = new String(companyName);
+       }
     }
     this.PositionForm.markAsUntouched();
   }
 
   positionFormSubmit(positionDetailsModel) {
-
+debugger
     if (this.designation1Desc == null) {
       positionDetailsModel.designation1MasterId = null;
     }
@@ -303,6 +325,9 @@ export class PositionDetailComponent implements OnInit {
     }
     if (this.description == null) {
       positionDetailsModel.gradeMasterId = null;
+    }
+    if (this.reportingToDesc == null) {
+      positionDetailsModel.reportingTo = null;
     }
     if (positionDetailsModel.employeeTaxCategory == '') {
       positionDetailsModel.employeeTaxCategory = null;
@@ -313,11 +338,15 @@ export class PositionDetailComponent implements OnInit {
     if (positionDetailsModel.employeeType == '') {
       positionDetailsModel.employeeType = null;
     }
-
+    // if (positionDetailsModel.reportingTo == '') {
+    //   positionDetailsModel.reportingTo = null;
+    // }
     positionDetailsModel.employeeMasterId = this.employeeMasterId;
     positionDetailsModel.employeePositionDetailId = this.employeePositionDetailId;
     if (this.payrollAreaList.length == 1) {
-      positionDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+     // positionDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+     this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+     localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
     }
     else {
      //get payroll area code from local storage
@@ -325,6 +354,8 @@ export class PositionDetailComponent implements OnInit {
      this.payrollAreaCode = new String(payrollAreaCode);
      positionDetailsModel.payrollAreaCode=new String(payrollAreaCode);
     }
+
+    positionDetailsModel.payrollAreaCode=new String( this.payrollAreaCode);
 
     positionDetailsModel.employeeTypeFromDate = this.datepipe.transform(positionDetailsModel.employeeTypeFromDate, "dd-MMM-yyyy");
     positionDetailsModel.employeeTypeToDate = this.datepipe.transform(positionDetailsModel.employeeTypeToDate, "dd-MMM-yyyy");
@@ -354,6 +385,9 @@ export class PositionDetailComponent implements OnInit {
     //designation2Description
     delete positionDetailsModel.designation2Code;
     delete positionDetailsModel.designation2Description;
+
+    //reporting to
+    delete positionDetailsModel.reportingValue;
 
     this.JobInformationService.postPositionDetails(positionDetailsModel).subscribe(res => {
 
@@ -564,7 +598,7 @@ export class PositionDetailComponent implements OnInit {
     reportingFromDate.enable();
     const reportingToDate = this.PositionForm.get('reportingToDateControl');
     reportingToDate.enable();
-    if (this.positionDetailsModel.reportingTo == '' || this.positionDetailsModel.reportingTo == null) {
+    if (this.reportingToCode== '' || this.reportingToCode == null) {
       this.positionDetailsModel.reportingFromDate = null;
       this.positionDetailsModel.reportingToDate = null;
       this.disableReportingDates();
@@ -638,13 +672,28 @@ export class PositionDetailComponent implements OnInit {
 
   reportingToObject(employee) {
     debugger
+  //   const toSelect = this.filteredReportingToList.find(
+  //     (c) => c === this.PositionForm.get('reportingToControl')
+  //   );
+  //  // this.positionDetailsModel.employeeTaxCategoryDescription = toSelect.description;
+  //  // this.PositionForm.get('employeeTaxCategoryDescriptionControl').setValue(toSelect.description);
+  //   this.positionDetailsModel.reportingTo = toSelect;
+  //   this.enableReportingDate()
+
+//new
+
     const toSelect = this.filteredReportingToList.find(
-      (c) => c === this.PositionForm.get('reportingToControl')
+      (c) => c.fullNameAndEmployeeCode === this.PositionForm.get('reportingToControl').value
     );
-   // this.positionDetailsModel.employeeTaxCategoryDescription = toSelect.description;
-   // this.PositionForm.get('employeeTaxCategoryDescriptionControl').setValue(toSelect.description);
-    this.positionDetailsModel.reportingTo = toSelect;
-    this.enableReportingDate()
+    this.reportingToDesc = toSelect.displayName;
+    this.positionDetailsModel.reportingTo = toSelect.employeeMasterId;
+    this.positionDetailsModel.reportingToDescription=toSelect.displayName;
+
+    //this.PositionForm.get('reportingToDescriptionControl').setValue(toSelect.displayName);
+   // this.positionDetailsModel.reportingTo = toSelect.employeeMasterId;
+    this.PositionForm.get('reportingToControl').setValue(toSelect.fullNameAndEmployeeCode);
+    this.enableReportingDate();
+  
   }
 
   searchEmpType(employeeType) {
@@ -755,22 +804,42 @@ export class PositionDetailComponent implements OnInit {
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
     
-    this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
-        this.payrollAreaList.push(item.payrollAreaCode);
-        this.filteredPayrollAreaList.push(item.payrollAreaCode);
+        // this.payrollAreaList.push(item.payrollAreaCode);
+        // this.filteredPayrollAreaList.push(item.payrollAreaCode);
+
+        this.payrollAreaList.push(item);
+        this.filteredPayrollAreaList.push(item);
 
       });
+      if (this.payrollAreaList.length == 1) {
+        // this.payrollAreaCode = this.payrollAreaList[0];
+        // localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+
+          //set default payroll area
+          this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+          localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+  
+           //set default company
+           let result=res.data.results[0];
+           this.companyName = result[0].payrollAreaId.companyId.companyName;
+           localStorage.setItem('jobInformationCompanyName',  this.companyName);
+      }
+      else {
+        //get payroll area code from local storage
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        this.payrollAreaCode = new String(payrollAreaCode);
+
+        //get company from local storage
+        const companyName = localStorage.getItem('jobInformationCompanyName')
+        if(companyName!=null){
+          this.companyName = new String(companyName);
+        }
+      }
     })
-    if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
-    }
-    else {
-      //get payroll area code from local storage
-      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-      this.payrollAreaCode = new String(payrollAreaCode);
-    }
+    
 
   }
 
@@ -791,6 +860,13 @@ export class PositionDetailComponent implements OnInit {
   selectPayrollArea(event) {
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
+
+    const toSelect = this.filteredPayrollAreaList.find(
+      (c) => c.payrollAreaCode ===  this.payrollAreaCode
+    );
+    this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    localStorage.setItem('jobInformationCompanyName',  this.companyName);
+
     this.resetPositionForm();
     this.getPositionForm();
   }
@@ -801,8 +877,13 @@ export class PositionDetailComponent implements OnInit {
     //set fields to null for -form clearing
     this.employeePositionDetailId = 0;
     this.gradeCode = null;
+    this.description=null;
+    this.designation1Code=null;
+    this.designation2Code=null;
     this.designation1Desc = null;
     this.designation2Desc = null;
+    this.reportingToCode=null;
+    this.reportingToDesc=null;
 
     //disbale dates
     this.disableDesignation1Dates();

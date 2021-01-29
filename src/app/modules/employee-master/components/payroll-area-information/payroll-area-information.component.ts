@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs';
 import { PayrollAreaRequestModel } from './../../dto-models/payroll-area-information.model';
 import { PayrollAreaInformationService } from './../../employee-master-services/payroll-area-information.service';
 import { SharedInformationService } from '../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
+import { PreviousEmploymentInformationService } from '../../employee-master-services/previous-employment-information/previous-employment-information.service';
 
 
 
@@ -34,9 +36,9 @@ export class PayrollAreaInformationComponent implements OnInit {
   paymentModeList = 'Bank,Cheque,Demand Draft'.split(',');
   filteredpaymentModeList: Array<any> = [];
   typeOfPaymentList = 'Salary,Reimbursement'.split(',');
-  payrollAreaList = 'pa01-staff,pa02-worker,pa03-angola,pa03-allangols'.split(',');
+  // payrollAreaList = 'pa01-staff,pa02-worker,pa03-angola,pa03-allangols'.split(',');
   filteredtypeOfPaymentList: Array<any> = [];
-  // payrollAreaList: Array<any> = [];
+  payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
   percentOrAmountModel: any = 'percentOfNetPay';
   PayrollAreaSummaryGridData: Array<any> = [];
@@ -64,7 +66,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   additionalPayrollButton: boolean = true;
   TotalPercentLimit: any = 100;
   payrollAreaArray: Array<any> = [];
-  multipleBankBoolean: boolean = false;
+  multipleBankBoolean: boolean = true;
   required100: boolean = false;
   amountValid: boolean;
   validateBankGridRow: boolean;
@@ -73,6 +75,13 @@ export class PayrollAreaInformationComponent implements OnInit {
   disableAddButtonMultipleBankFalse: boolean;
   payrollAreaBackFromDate: any;
   TotalPercentCheckOnSave: number = 0;
+  bankAccountList: Array<any> = [];
+  saveNextBoolean: boolean = false;
+  payrollEditFlag: boolean = false;
+  payrollviewFlag: boolean = false;
+  public today = new Date();
+  JoiningDate: any;
+  currencyArray: Array<any> = [];
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
@@ -80,7 +89,9 @@ export class PayrollAreaInformationComponent implements OnInit {
     public dialog: MatDialog, private PayrollAreaService: PayrollAreaInformationService,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    private CommonDataService: SharedInformationService) {
+    private router: Router,
+    private CommonDataService: SharedInformationService,
+    private PreviousEmpInformationService: PreviousEmploymentInformationService,) {
 
     if (data?.payrollFlag) {
       this.payrollFlag = data.payrollFlag;
@@ -126,6 +137,11 @@ export class PayrollAreaInformationComponent implements OnInit {
       banktoDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
       currency: ['']
     });
+
+    const JoiningDate = localStorage.getItem('joiningDate');
+    this.JoiningDate = new Date(JoiningDate)
+
+
     if (!this.multipleBankBoolean) {
       const temp13 = this.PayrollAreaInfoForm.get('percent');
       temp13.disable();
@@ -155,22 +171,24 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.employeeMasterId = Number(empId);
 
     this.getPayrollAreaInformation();
+    this.PayrollAreaService.getPayrollAreaDetails().subscribe(res => {
+      
+      this.payrollAreaArray = res.data.results;
+      res.data.results.forEach(res => {
+        this.payrollAreaList.push(res.payrollAreaCode);
+
+        setTimeout(() => {
+          this.PayrollAreaRequestModel.payrollAreaCode = '';
+        }, 100)
+      })
+    })
+
     if (!this.data) {
       this.PayrollAreaRequestModel.typeOfPayment = 'Salary';
+      this.PayrollAreaRequestModel.type = 'Primary';
 
-      this.PayrollAreaService.getPayrollAreaDetails().subscribe(res => {
-
-        this.payrollAreaArray = res.data.results;
-        res.data.results.forEach(res => {
-          this.payrollAreaList.push(res.payrollAreaCode);
-
-          setTimeout(() => {
-            this.PayrollAreaRequestModel.payrollAreaCode = '';
-          }, 100)
-        })
-      })
       this.PayrollAreaService.getBankAccountDetails(this.employeeMasterId).subscribe(res => {
-        
+
         this.bankDetailsArray = res.data.results[0];
         // this.bankCount = res.data.results[0].length;
         this.bankList = [];
@@ -185,21 +203,46 @@ export class PayrollAreaInformationComponent implements OnInit {
     }
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePayrollArea().subscribe(res => {
-      
+
       if (res.confirmMsg == 'payrollItemDelete') {
         this.PayrollAreaService.deletePayrollAreaGridItem(res.payrollAreaInformationId).subscribe(res => {
-          
+
           this.getPayrollAreaInformation();
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+          this.payrollEditFlag = false;
+          this.payrollviewFlag = false;
 
         })
+      }
+    })
+
+    this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
+      this.currencyArray = res.data.results;
+    })
+  }
+
+  payrollAssignValues(payrollAreaCode){
+
+    this.payrollAreaArray.forEach(element =>{
+      if(element.payrollAreaCode == payrollAreaCode){
+        
+        this.PayrollAreaRequestModel.description = element.headGroupDefinitionResponse.description;
+        this.PayrollAreaRequestModel.currency = element.currency;
+        this.PayrollAreaInfoForm.get('currency').setValue(element.currency);
       }
     })
   }
 
 
+  PayrollSaveNextSubmit(PayrollAreaRequestModel) {
+    this.saveNextBoolean = true;
+
+    this.savePayrollArea(PayrollAreaRequestModel);
+  }
+
+
   savePayrollArea(PayrollAreaRequestModel) {
-    
+
     if (this.additionPayrollFlag == false) {
       PayrollAreaRequestModel.additionalPayrollAllowed = 0;
     }
@@ -219,20 +262,76 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
 
     // if (PayrollAreaRequestModel.currency == '') {
-      delete PayrollAreaRequestModel.currency;
+    delete PayrollAreaRequestModel.currency;
+    delete PayrollAreaRequestModel.bankAccount;
     // }
     this.PayrollAreaService.postPayrollAreaInfoForm(PayrollAreaRequestModel).subscribe(res => {
-      
+
       this.getPayrollAreaInformation();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.payrollAreaDisable();
 
       this.PayrollAreaRequestModel.bankName = '';
-      this.PayrollAreaRequestModel.bankAccount = '';
+      this.PayrollAreaRequestModel.bankAccountNumber = '';
       this.PayrollAreaRequestModel.nameAsPerBank = '';
       this.PayrollAreaRequestModel.typeOfPayment = '';
       this.PayrollAreaRequestModel.amount = '';
-      if(this.multipleBankBoolean == true){
+      if (this.multipleBankBoolean == true) {
+        this.PayrollAreaRequestModel.percentageOfNetPay = '';
+      }
+      this.PayrollAreaRequestModel.payFromDate = '';
+      this.percentOrAmountModel = 'percentOfNetPay';
+      this.PayrollAreaRequestModel.priority = '';
+      this.payrollEditFlag = false;
+      this.payrollviewFlag = false;
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/job-information/organization-details']);
+      }
+    }, (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+    })
+  }
+
+  updatePayrollArea(PayrollAreaRequestModel) {
+
+    if (this.additionPayrollFlag == false) {
+      PayrollAreaRequestModel.additionalPayrollAllowed = 0;
+    }
+    if (this.additionPayrollFlag == true) {
+      PayrollAreaRequestModel.additionalPayrollAllowed = 1;
+    }
+
+    if (this.multipleBankBoolean == false) {
+      PayrollAreaRequestModel.multibankingAllowed = 0;
+    }
+    if (this.multipleBankBoolean == true) {
+      PayrollAreaRequestModel.multibankingAllowed = 1;
+    }
+
+    PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
+    PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
+    PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
+
+    // if (PayrollAreaRequestModel.currency == '') {
+    delete PayrollAreaRequestModel.currency;
+    delete PayrollAreaRequestModel.bankAccount;
+    // }
+    this.PayrollAreaService.postPayrollAreaInfoForm(PayrollAreaRequestModel).subscribe(res => {
+
+      this.getPayrollAreaInformation();
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.payrollAreaDisable();
+
+      this.PayrollAreaRequestModel.payrollAreaInformationId = null;
+      this.PayrollAreaRequestModel.bankName = '';
+      this.PayrollAreaRequestModel.bankAccountNumber = '';
+      this.PayrollAreaRequestModel.nameAsPerBank = '';
+      this.PayrollAreaRequestModel.typeOfPayment = '';
+      this.PayrollAreaRequestModel.amount = '';
+      this.payrollEditFlag = false;
+      this.payrollviewFlag = false;
+      if (this.multipleBankBoolean == true) {
         this.PayrollAreaRequestModel.percentageOfNetPay = '';
       }
       this.PayrollAreaRequestModel.payFromDate = '';
@@ -243,8 +342,10 @@ export class PayrollAreaInformationComponent implements OnInit {
     })
   }
 
+
+
   deletePayroll(payroll) {
-    
+
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,
       width: '664px', height: '241px',
@@ -258,7 +359,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   getPayrollAreaInformation() {
 
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      
+
       this.PayrollAreaSummaryGridData = res.data.results[0];
     }, (error: any) => {
       if (error["error"]["status"]["code"] == 404) {
@@ -269,6 +370,8 @@ export class PayrollAreaInformationComponent implements OnInit {
 
   editPayroll(payroll) {
     
+    this.payrollEditFlag = true;
+    this.payrollviewFlag = false;
     this.bankDetailsEnable();
     this.payrollAreaEnable();
     if (this.percentOrAmountModel == 'amount') {
@@ -285,16 +388,20 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.paymentMode = payroll.paymentMode;
 
     this.PayrollAreaRequestModel.bankName = payroll.bankName;
-    this.PayrollAreaRequestModel.bankAccount = payroll.bankAccount;
+    this.PayrollAreaRequestModel.bankAccountNumber = payroll.bankAccountNumber;
     this.PayrollAreaRequestModel.typeOfPayment = payroll.typeOfPayment;
     this.PayrollAreaRequestModel.percentageOfNetPay = payroll.percentageOfNetPay;
     this.PayrollAreaRequestModel.amount = payroll.amount;
     this.PayrollAreaRequestModel.payFromDate = payroll.payFromDate;
     this.PayrollAreaRequestModel.payToDate = payroll.payToDate;
     this.PayrollAreaRequestModel.priority = payroll.priority;
+    this.flterBankDetails();
   }
 
   viewPayroll(payroll) {
+
+    this.payrollEditFlag = false;
+    this.payrollviewFlag = true;
 
     this.payrollAreaDisable();
     this.bankDetailsDisable();
@@ -306,7 +413,7 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.paymentMode = payroll.paymentMode;
 
     this.PayrollAreaRequestModel.bankName = payroll.bankName;
-    this.PayrollAreaRequestModel.bankAccount = payroll.bankAccount;
+    this.PayrollAreaRequestModel.bankAccountNumber = payroll.bankAccountNumber;
     this.PayrollAreaRequestModel.typeOfPayment = payroll.typeOfPayment;
     this.PayrollAreaRequestModel.percentageOfNetPay = payroll.percentageOfNetPay;
     this.PayrollAreaRequestModel.amount = payroll.amount;
@@ -315,7 +422,14 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.priority = payroll.priority;
   }
 
+  cancelSkillView() {
+ 
+    this.payrollEditFlag = false;
+    this.payrollviewFlag = false;
 
+    this.resetPayrollAreaForm();
+    
+  }
   // PayrollAreaToGrid(PayrollAreaRequestModel) {
   //   if (this.additionPayrollFlag) {
   //     this.pushAdditionalPayrollAreaToGrid(PayrollAreaRequestModel)
@@ -362,13 +476,13 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   percentOrAmount(event) {
-    
+
     if (event == false) {
       this.percentOrAmountModel = "percentOfNetPay";
       this.PayrollAreaRequestModel.isPercentOfNetPay = 1;
       this.PayrollAreaRequestModel.isAmount = 0;
       this.PayrollAreaRequestModel.amount = '';
-      this.PayrollAreaRequestModel.currency = '';
+      // this.PayrollAreaRequestModel.currency = '';
       const temp13 = this.PayrollAreaInfoForm.get('priority');
       temp13.disable();
       this.PayrollAreaRequestModel.priority = ''
@@ -417,7 +531,7 @@ export class PayrollAreaInformationComponent implements OnInit {
       this.disableToggleButton = true;
       this.bankDetailsDisable();
       this.PayrollAreaRequestModel.bankName = '';
-      this.PayrollAreaRequestModel.bankAccount = '';
+      this.PayrollAreaRequestModel.bankAccountNumber = '';
       this.PayrollAreaRequestModel.typeOfPayment = '';
       this.PayrollAreaRequestModel.percentageOfNetPay = '';
       this.PayrollAreaRequestModel.amount = '';
@@ -431,7 +545,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   bankDetailsEnable() {
-    
+
     const temp10 = this.PayrollAreaInfoForm.get('bankName');
     temp10.enable();
     const temp11 = this.PayrollAreaInfoForm.get('bankAccount');
@@ -487,12 +601,12 @@ export class PayrollAreaInformationComponent implements OnInit {
   flterBankDetails() {
     
     const bank = this.bankDetailsArray.filter(item => {
-
       if (item.bankName == this.PayrollAreaRequestModel.bankName) {
         return item;
       }
     });
-    this.PayrollAreaRequestModel.bankAccount = bank[0].accountNo;
+    this.PayrollAreaRequestModel.bankAccountNumber = bank[0].accountNo;
+    this.bankAccountList = bank;
   }
 
   getBankFromGrid() {
@@ -503,7 +617,7 @@ export class PayrollAreaInformationComponent implements OnInit {
         }
       });
       this.PayrollAreaRequestModel.bankName = getBank[0].bankName;
-      this.PayrollAreaRequestModel.bankAccount = getBank[0].bankAccount;
+      this.PayrollAreaRequestModel.bankAccountNumber = getBank[0].bankAccountNumber;
       this.PayrollAreaRequestModel.typeOfPayment = getBank[0].typeOfPayment;
       // this.PayrollAreaRequestModel.percentageOfNetPay = getBank[0].percentageOfNetPay;
       // this.PayrollAreaRequestModel.amount = getBank[0].amount;
@@ -835,7 +949,7 @@ export class PayrollAreaInformationComponent implements OnInit {
         }
 
         this.PayrollAreaRequestModel.bankName = '';
-        this.PayrollAreaRequestModel.bankAccount = '';
+        this.PayrollAreaRequestModel.bankAccountNumber = '';
         this.PayrollAreaRequestModel.typeOfPayment = '';
         // if (this.multipleBankBoolean) {
         //   this.PayrollAreaRequestModel.percentageOfNetPay = '';

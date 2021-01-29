@@ -14,7 +14,8 @@ import { SharedInformationService } from '../../../employee-master-services/shar
 @Component({
   selector: 'app-exit-information',
   templateUrl: './exit-information.component.html',
-  styleUrls: ['./exit-information.component.scss']
+  styleUrls: ['./exit-information.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ExitInformationComponent implements OnInit {
   ExitForm: FormGroup;
@@ -24,6 +25,7 @@ export class ExitInformationComponent implements OnInit {
   reasonForLeavingList = 'Personal reason,Family reason,Persue new skills,Health issue'.split(',');
   birthDate: any;
   viewExit: boolean = false;
+  editExit: boolean = false;
   exitSubscription: Subscription;
   JoiningDate: any;
   @Input() data: any;
@@ -52,9 +54,9 @@ export class ExitInformationComponent implements OnInit {
     const birthDate = localStorage.getItem('birthDate')
     this.birthDate = new Date(birthDate);
 
-    this.ExitInformation.projectedRetirementDate = this.add_years(this.birthDate, 58).toString();
+    this.ExitInformation.retirementDate = this.add_years(this.birthDate, 58).toString();
 
-    this.ExitInformation.projectedRetirementDate = this.datepipe.transform(this.ExitInformation.projectedRetirementDate, "dd-MMM-yyyy");
+    this.ExitInformation.retirementDate = this.datepipe.transform(this.ExitInformation.retirementDate, "dd-MMM-yyyy");
 
     this.EmploymentInformationService.getNumber().subscribe(number => {
 
@@ -64,9 +66,10 @@ export class ExitInformationComponent implements OnInit {
     //  this.getExitInformationData(this.employeeExitInfoId);
 
     this.exitSubscription = this.EventEmitterService.setExitData().subscribe(res => {
-      debugger
+
       if (res) {
         this.employeeExitInfoId = res.exitId
+        this.editExit = res.editExit;
         this.viewExit = res.viewExit;
         this.getExitInformationData(this.employeeExitInfoId);
 
@@ -99,11 +102,12 @@ export class ExitInformationComponent implements OnInit {
     // if (ExitInformation.employmentStatusBoolean) {
     //   this.employmentStatusBoolean = ExitInformation.employmentStatusBoolean
     // }
-    debugger
+
+
     ExitInformation.resignationDate = this.datepipe.transform(ExitInformation.resignationDate, "dd-MMM-yyyy");
     ExitInformation.expectedLeavingDate = this.datepipe.transform(ExitInformation.expectedLeavingDate, "dd-MMM-yyyy");
     ExitInformation.lastWorkingDate = this.datepipe.transform(ExitInformation.lastWorkingDate, "dd-MMM-yyyy");
-    ExitInformation.projectedRetirementDate = this.datepipe.transform(ExitInformation.projectedRetirementDate, "dd-MMM-yyyy");
+    ExitInformation.retirementDate = this.datepipe.transform(ExitInformation.retirementDate, "dd-MMM-yyyy");
     ExitInformation.employeeMasterId = this.employeeMasterId;
     // if (this.employeeExitInfoId) {
     // this.EmploymentInformationService.putExitForm(ExitInformation, this.employeeExitInfoId).subscribe(res => {
@@ -142,6 +146,7 @@ export class ExitInformationComponent implements OnInit {
         localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.ExitForm.reset();
+        this.EventEmitterService.getEmpSummaryInitiate();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
         // this.EventEmitterService.getRejoineeStatusCode(true);
       }, (error: any) => {
@@ -159,7 +164,7 @@ export class ExitInformationComponent implements OnInit {
     ExitInformation.resignationDate = this.datepipe.transform(ExitInformation.resignationDate, "dd-MMM-yyyy");
     ExitInformation.expectedLeavingDate = this.datepipe.transform(ExitInformation.expectedLeavingDate, "dd-MMM-yyyy");
     ExitInformation.lastWorkingDate = this.datepipe.transform(ExitInformation.lastWorkingDate, "dd-MMM-yyyy");
-    ExitInformation.projectedRetirementDate = this.datepipe.transform(ExitInformation.projectedRetirementDate, "dd-MMM-yyyy");
+    ExitInformation.retirementDate = this.datepipe.transform(ExitInformation.retirementDate, "dd-MMM-yyyy");
     ExitInformation.employeeMasterId = this.employeeMasterId;
 
     this.EmploymentInformationService.putExitForm(ExitInformation, ExitInformation.employeeExitInfoId).subscribe(res => {
@@ -170,6 +175,7 @@ export class ExitInformationComponent implements OnInit {
       // localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.ExitForm.reset();
+      this.EventEmitterService.getEmpSummaryInitiate();
       // this.EventEmitterService.getRejoineeStatusCode(true);
       this.router.navigate(['/employee-master/employment-information/employment-summary']);
     }, (error: any) => {
@@ -185,23 +191,26 @@ export class ExitInformationComponent implements OnInit {
       if (res.data.results[0]) {
         this.ExitInformation = res.data.results[0];
 
-        if (res.data.results[0].projectedRetirementDate) {
+        if (res.data.results[0].retirementDate) {
 
-          this.ExitInformation.projectedRetirementDate = res.data.results[0].retirementDate;
+          this.ExitInformation.retirementDate = res.data.results[0].retirementDate;
         }
         else {
-          this.ExitInformation.projectedRetirementDate = this.add_years(this.birthDate, 58);
+          this.ExitInformation.retirementDate = this.add_years(this.birthDate, 58);
           // this.ExitForm.get('projectedRetirementDate').setValue(this.ExitInformation.projectedRetirementDate);
         }
       }
 
     }, (error: any) => {
-      this.ExitInformation.projectedRetirementDate = this.add_years(this.birthDate, 58);
+      this.ExitInformation.retirementDate = this.add_years(this.birthDate, 58);
     })
     this.ExitForm.markAsUntouched();
   }
 
   resetForm() {
     this.ExitForm.reset();
+  }
+  cancel() {
+    this.EventEmitterService.getEmpSummaryInitiate();
   }
 }

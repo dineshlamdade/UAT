@@ -11,14 +11,19 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class InterestOnTtbService {
 
+<<<<<<< HEAD
   apiUrl = environment.apiBaseUrl;
  public  apiBaseUrlEmployee = environment.baseUrl8082;
+=======
+  public apiUrl = environment.apiBaseUrl;
+  public apiBaseUrlEmployee = environment.baseUrl8082;
+>>>>>>> 3159c9ebabbcc854bba25f54a440f15ed0489d2e
 
   constructor(private _HTTP: HttpClient) { }
 
   //Summary services
   get80TTBSummary() {
-    return this._HTTP.get(this.apiUrl + 'nterestOnDeposit80TTA-transaction/summary')
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/summary')
     .pipe(map((res: any) => {
       return res;
     }
@@ -42,32 +47,42 @@ export class InterestOnTtbService {
     ));
   }
 
+  //get ifsc detail
+    getDataFromIFSC(bankIFSC) : Observable<any>  {
+    return this._HTTP.get(this.apiBaseUrlEmployee + '/bank-master/data/' + bankIFSC)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
 
+  //state info list
   getStateInfoList() : Observable<any>  {
-    return this._HTTP.get(this.apiBaseUrlEmployee + 'location-information/state')
+    return this._HTTP.get(this.apiBaseUrlEmployee + '/location-information/state')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
+  //IFSC code list
   getIFSCCodeList(state : string) : Observable<any>  {
-    return this._HTTP.get(this.apiBaseUrlEmployee + 'bank-master/ifsc/' + state)
+    return this._HTTP.get(this.apiBaseUrlEmployee + '/bank-master/ifsc/' + state)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  searchIFSC(terms: any, stateModel) {
-    return this._HTTP.get(this.apiBaseUrlEmployee+ '/bank-master/ifsc/' + stateModel + '/' + terms)
-   .pipe(map((res: any) =>{
-     return res;
-   }))
- }
+   //search IFSCcode service
+    searchIFSC(terms: any, stateModel) {
+      return this._HTTP.get(this.apiBaseUrlEmployee+ '/bank-master/ifsc/' + stateModel + '/' + terms)
+    .pipe(map((res: any) =>{
+      return res;
+    }))
+  }
 
   //  Declaration services
 
-  get80TTAWithBankNameList() {
-    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/bankList')
+  get80TTBWithBankNameList() {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/bankList')
     .pipe(map((res: any) => {
       return res;
     }
@@ -83,15 +98,15 @@ export class InterestOnTtbService {
   //   ));
   // }
 
-  getTransactionFilterData() {
-    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction')
+  getTransactionFilterData(bankName:String) {
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/' + bankName)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTA-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'interestOnDeposit80TTB-transaction/psid/' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -99,8 +114,8 @@ export class InterestOnTtbService {
 
 
 
-  post80TTATransaction(data) {
-    return this._HTTP.post(this.apiUrl + 'interestOnDeposit80TTA-transaction', data)
+  post80TTBTransaction(data) {
+    return this._HTTP.post(this.apiUrl + 'interestOnDeposit80TTB-transaction', data)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -137,35 +152,43 @@ export class InterestOnTtbService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'interestonsavingdeposit80TTB-master?interestOnSavingDeposit80TTBMaster&interestOnSavingDeposit80TTBMasterDocuments',
+      this.apiUrl + 'interestonsavingdeposit80TTB-master',
       formData,
       {
 
       });
   }
 
-  upload80TTATransactionwithDocument(files: File[], data:any): Observable<any> {
-    var formData: any = new FormData();
-    console.log('in uploadMultipleFiles Service::', files);
-    for (let file of files) {
-      formData.append('interestCertificate', file);
-    }
-    //formData.append('licDocuments', files);
-    formData.append('electricVehicleLoanTransaction', JSON.stringify(data));
+  // upload80TTBTransactionwithDocument(files: File[], data:any): Observable<any> {
+  //   var formData: any = new FormData();
+  //   console.log('in uploadMultipleFiles Service::', files);
+  //   for (let file of files) {
+  //     formData.append('interestCertificate', file);
+  //   }
+  //   //formData.append('licDocuments', files);
+  //   formData.append('electricVehicleLoanTransaction', JSON.stringify(data));
 
-    console.log('formData', formData);
+  //   console.log('formData', formData);
 
-    formData.forEach((value, key) => {
-      console.log(key," ",value)
-    });
-    //return null;
+  //   formData.forEach((value, key) => {
+  //     console.log(key," ",value)
+  //   });
+  //   //return null;
+  //   return this._HTTP.post<any>(
+  //     this.apiUrl + 'interestOnDeposit80TTB-transaction',
+  //     formData,
+  //     {
+
+  //     });
+  // }
+
+  upload80TTBTransactionwithDocument(data:any): Observable<any> {
     return this._HTTP.post<any>(
-      this.apiUrl + 'interestOnDeposit80TTA-transaction',
-      formData,
-      {
+   this.apiUrl + 'interestOnDeposit80TTB-transaction',data,
+   {
+   });
+}
 
-      });
-  }
 
 }
 

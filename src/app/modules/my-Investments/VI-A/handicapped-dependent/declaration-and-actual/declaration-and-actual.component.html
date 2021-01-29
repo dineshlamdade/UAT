@@ -57,18 +57,18 @@
                   {{ element.handicappedDependentDetailMaster.disabilityType }}
                 </td>
                 <td>
-                   <input type="text" value="{{element.limit}}" disabled
+                   <input type="text" value="{{element.declaredAmount}}" disabled
                   class="form-control align-right" (change)="onDeclaredAmountChange(element, i, j)" />
-                  {{ element.limit}}
+                  <!-- {{ element.declaredAmount}} -->
                 </td>
 
 
 
                 <td>
-                <!-- <input type="text" value="{{element.actualAmount}}" disabled
+                <input type="text" value="{{element.actualAmount}}" disabled
                   class="form-control align-right" />
-                </td> -->
-                  {{element.limit}}
+                </td>
+                  <!-- {{element.actualAmount}} -->
                 <td>
                     <!-- <input  type="text"
                       [ngModel]="element.handicappedDependentDetailMaster.amountRejected | number: '1.2-2'"
@@ -98,6 +98,10 @@
                     {{ element.transactionStatus }}
                   </span>
                 </td>
+                <td>
+                  <button id="remove" (click)="deleteRows(i)">DELETE</button>
+               </td>
+
               </tr>
               <tr role="form" (ngSubmit)="upload(formDirective)" #formDirective="ngForm" method="post" novalidate
               *ngFor="let currEmpFormArrayElement of currEmpFormArray['controls']; let i=index" [formGroup]="currEmpFormArrayElement">
@@ -167,7 +171,7 @@
                     </span>
                   </td>
                   <td>
-                     <button id="remove" (click)="deleteRow(currentEmployerHandicappedDependentResponseList.length - 1)">DELETE</button>
+                     <button id="remove" (click)="deleteCurrentEmployerRow(currEmpFormArrayElement)">DELETE</button>
                   </td>
               </tr>
               <tr>
@@ -240,8 +244,8 @@
                 <th colspan="2" class="wd-11 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
                 <th rowspan="2" class="wd-10">Proof Submission ID</th>
-                <th rowspan="2" class="wd-10 font700">Transaction Status</th>
-
+                <th rowspan="2" class="wd-7 font700">Transaction Status</th>
+                <th rowspan="2" class="wd-7 font700">Action</th>
               </tr>
               <tr>
                 <th>Rejected</th>
@@ -270,7 +274,7 @@
                   <span class="custom-control-label"></span>
                 </label> -->
               </td>
-                <td *ngIf="previousEmployeeList?.length">
+                <td *ngIf="previousEmployeeList?.length" >
                   <select class="form-control custom-select" disabled [(ngModel)]="summary.previousEmployerId">
                     <option [ngValue]="0">Select</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList"
@@ -320,6 +324,9 @@
                     {{ summary.transactionStatus }}
                   </span>
                 </td>
+                <td>
+                  <!-- <button id="remove" (click)="deletePreviousEmployerRow(priviousEmpFormArrayElement)">DELETE</button> -->
+               </td>
               </tr>
 
               <tr role="form" (ngSubmit)="upload(formDirective)" #formDirective="ngForm" method="post" novalidate
@@ -387,9 +394,12 @@
                       {{ priviousEmpFormArrayElement.value.transactionStatus }}
                     </span>
                   </td>
+                  <td>
+                    <button id="remove" (click)="deletePreviousEmployerRow(priviousEmpFormArrayElement)">DELETE</button>
+                 </td>
               </tr>
                 <tr>
-                  <td colspan="10"
+                  <td colspan="11"
                     class="align-right font700 font-16 text-light-green cursor-pointer">
                     <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addPreviousEmployerRow()"></i>
                     <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
@@ -479,7 +489,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
+  <div class="row mt-10" *ngIf="!isDisabled">
     <div class="col-12">
       <div class="float-right mb-15">
         <button
@@ -537,7 +547,7 @@
                   </td>
                   <td>
                     <span>
-                      <!-- {{documentSummary.severity}} <br/> {{documentSummary.disabilityType}} -->
+                      {{documentSummary.severity}} <br/> {{documentSummary.disabilityType}}
                     </span>
                   </td>
                   <td>

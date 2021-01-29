@@ -1,4 +1,5 @@
 <form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(minumumWagesDetailsModel)">
+    <div class="row">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
         <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
@@ -6,14 +7,30 @@
             (onSelect)="selectPayrollArea($event)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
         </p-autoComplete> -->
-        <select class="form-control" placeholder="Select Payroll Area"
+        <!-- <select class="form-control" placeholder="Select Payroll Area"
             (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
             <option value="" selected disabled>Select Payroll Area</option>
             <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
                 {{option}}
             </option>
+        </select> -->
+        <select class="form-control" placeholder="Select"
+        (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+        (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                {{option.payrollAreaCode}}
+            </option>
         </select>
+    </div>
+
+    <div class="col-sm-6 col-md-3" >
+        <label class="form-label">Company Name</label>
+        <input type="text" class="form-control" [(ngModel)]="companyName"
+            [ngModelOptions]="{standalone: true}" disabled>
+    </div>
     </div>
     <br>
 <div class="row row-cards">
@@ -23,11 +40,11 @@
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
-            <select class="form-control" placeholder="Select Skill"
+            <select class="form-control" placeholder="Select"
             (completeMethod)="searchSkill(minumumWagesDetailsModel.skill)"
             (change)="enableSkillDate();validateSkillDates();"
             formControlName="skillControl" [(ngModel)]="minumumWagesDetailsModel.skill">
-              <option value="" selected disabled>Select Skill</option>
+              <option value="" selected disabled>Select</option>
               <option *ngFor="let skill of skillList" [value]="skill">
                 {{skill}}
             </option>
@@ -69,11 +86,11 @@
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
-            <select class="form-control" placeholder="Select Type Of Work"
+            <select class="form-control" placeholder="Select"
             (completeMethod)="searchSkill(minumumWagesDetailsModel.workType)"
-            (change)="enableWorkDate();validateWorkDates();"
+            (change)="enableWorkDate();"
             formControlName="workTypeControl" [(ngModel)]="minumumWagesDetailsModel.workType">
-              <option value="" selected disabled>Select Skill</option>
+              <option value="" selected disabled>Select</option>
               <option *ngFor="let work of filteredWorkList" [value]="work">
                 {{work}}
             </option>

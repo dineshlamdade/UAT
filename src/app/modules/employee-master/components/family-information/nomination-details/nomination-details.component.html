@@ -3,25 +3,39 @@
         <div class="col-12"> -->
     <div class="card">
         <div class="card-body">
-            <legend class="nomination-title">Nomination</legend>
             <legend>All nomination details are in %</legend>
+
+            <legend class="nomination-title">Nomination</legend>
             <div class="row">
                 <div class="col-md-12">
                     <!-- <div class="card"> -->
+                    <div class="col-sm-6 col-md-3" style="margin-left: auto;">
+                        <label class="form-label">Last Updated Date</label>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                </div>
+                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                                    data-date-autoclose="true" class="form-control" placeholder="Select Birth Date"
+                                    bsDatepicker [(ngModel)]="lastUpdatedDate" disabled>
+                            </div>
+                        </div>
+                    </div>
                     <p-table [value]="nominationDataSource" [scrollable]="true" [style]="{width:'1000px'}"
-                        scrollHeight="200px">
+                        scrollHeight="200px" [style]="{'overflow':'auto!important'}">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
+                                <col style="width:130px">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -34,86 +48,87 @@
                                 <th class="primeng-table-header-center">Gratuity</th>
                                 <th class="primeng-table-header-center">Super Annuation</th>
                                 <th class="primeng-table-header-center">Life Insurance</th>
-                                <th class="primeng-table-header-center">Mediclaim Annuation</th>
-                                <th class="primeng-table-header-center">Personal Accident Annuation</th>
+                                <th class="primeng-table-header-center">Mediclaim Insurance</th>
+                                <th class="primeng-table-header-center">Personal Accident Insurance</th>
                             </tr>
                         </ng-template>
+
                         <ng-template pTemplate="body" let-nomination>
                             <tr>
                                 <td><span>
                                         <input type="text" class="form-control"
                                             [(ngModel)]="nomination.familyMemberName"
-                                            [ngModelOptions]="{standalone: true}" style="text-align: center;"
-                                            [disabled]="nomination.disable">
+                                            [ngModelOptions]="{standalone: true}" disabled>
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control" [(ngModel)]="nomination.pfPercentage"
-                                            [ngModelOptions]="{standalone: true}"
+                                        <input type="number" class="form-control text-center"
+                                            [(ngModel)]="nomination.pfPercentage" [ngModelOptions]="{standalone: true}"
                                             (change)="getTotalPFCost(nomination.pfPercentage)"
                                             [disabled]="nomination.disable"
-                                            (change)="nomination.pfPercentage < 0 ? nomination.pfPercentage = '' : nomination.pfPercentage; nomination.pfPercentage > 100 ? nomination.pfPercentage = '' : nomination.pfPercentage;">
+                                            (change)="nomination.pfPercentage < 0 ? nomination.pfPercentage = 0 : nomination.pfPercentage; nomination.pfPercentage > 100 ? nomination.pfPercentage = 0 : nomination.pfPercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control" [(ngModel)]="nomination.epsPercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.epsPercentage < 0 ? nomination.epsPercentage = '' : nomination.epsPercentage; nomination.epsPercentage > 100 ? nomination.epsPercentage = '' : nomination.epsPercentage;">
+                                        <input type="number" class="form-control text-center"
+                                            [(ngModel)]="nomination.epsPercentage" [ngModelOptions]="{standalone: true}"
+                                            [disabled]="nomination.disable"
+                                            (change)="nomination.epsPercentage < 0 ? nomination.epsPercentage = 0: nomination.epsPercentage; nomination.epsPercentage > 100 ? nomination.epsPercentage = 0: nomination.epsPercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.salaryPercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.salaryPercentage < 0 ? nomination.salaryPercentage = '' : nomination.salaryPercentage; nomination.salaryPercentage > 100 ? nomination.salaryPercentage = '' : nomination.salaryPercentage;">
+                                            (change)="nomination.salaryPercentage < 0 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage; nomination.salaryPercentage > 100 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.esicPercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.esicPercentage < 0 ? nomination.esicPercentage = '' : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = '' : nomination.esicPercentage;">
+                                            (change)="nomination.esicPercentage < 0 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage < 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.gratuityPercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.gratuityPercentage < 0 ? nomination.gratuityPercentage = '' : nomination.gratuityPercentage; nomination.gratuityPercentage > 100 ? nomination.gratuityPercentage = '' : nomination.gratuityPercentage;">
+                                            (change)="nomination.gratuityPercentage < 0 ? nomination.gratuityPercentage = 0 : nomination.gratuityPercentage; nomination.gratuityPercentage > 100 ? nomination.gratuityPercentage = 0 : nomination.gratuityPercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.superAnnuationPercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.superAnnuationPercentage < 0 ? nomination.superAnnuationPercentage = '' : nomination.superAnnuationPercentage; nomination.superAnnuationPercentage > 100 ? nomination.superAnnuationPercentage = '' : nomination.superAnnuationPercentage;">
+                                            (change)="nomination.superAnnuationPercentage < 0 ? nomination.superAnnuationPercentage = 0 : nomination.superAnnuationPercentage; nomination.superAnnuationPercentage > 100 ? nomination.superAnnuationPercentage = 0 : nomination.superAnnuationPercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.lifeInsurancePercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.lifeInsurancePercentage < 0 ? nomination.lifeInsurancePercentage = '' : nomination.lifeInsurancePercentage; nomination.lifeInsurancePercentage > 100 ? nomination.lifeInsurancePercentage = '' : nomination.lifeInsurancePercentage;">
+                                            (change)="nomination.lifeInsurancePercentage < 0 ? nomination.lifeInsurancePercentage = 0 : nomination.lifeInsurancePercentage; nomination.lifeInsurancePercentage > 100 ? nomination.lifeInsurancePercentage = 0 : nomination.lifeInsurancePercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.mediclaimInsurancePercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.mediclaimInsurancePercentage < 0 ? nomination.mediclaimInsurancePercentage = '' : nomination.mediclaimInsurancePercentage; nomination.mediclaimInsurancePercentage > 100 ? nomination.mediclaimInsurancePercentage = '' : nomination.mediclaimInsurancePercentage;">
+                                            (change)="nomination.mediclaimInsurancePercentage < 0 ? nomination.mediclaimInsurancePercentage = 0 : nomination.mediclaimInsurancePercentage; nomination.mediclaimInsurancePercentage > 100 ? nomination.mediclaimInsurancePercentage = 0: nomination.mediclaimInsurancePercentage;">
                                     </span></td>
 
                                 <td><span>
-                                        <input type="number" class="form-control"
+                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.personalAccidentInsurancePercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.personalAccidentInsurancePercentage < 0 ? nomination.personalAccidentInsurancePercentage = '' : nomination.personalAccidentInsurancePercentage; nomination.personalAccidentInsurancePercentage > 100 ? nomination.personalAccidentInsurancePercentage = '' : nomination.personalAccidentInsurancePercentage;">
+                                            (change)="nomination.personalAccidentInsurancePercentage < 0 ? nomination.personalAccidentInsurancePercentage = 0: nomination.personalAccidentInsurancePercentage; nomination.personalAccidentInsurancePercentage > 100 ? nomination.personalAccidentInsurancePercentage = 0 : nomination.personalAccidentInsurancePercentage;">
                                     </span></td>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="footer">
+                        <ng-template pTemplate="footer" *ngIf="nominationDataSource">
                             <tr>
-                                <td class="p-text-right">Totals %</td>
+                                <td class="p-text-left">Totals %</td>
                                 <td class="primeng-table-header-center">{{getTotalPF()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalepsPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalsalaryPercentage()}}</td>
@@ -125,20 +140,23 @@
                                 <td class="primeng-table-header-center">{{getTotalpersonalAccidentInsurance()}}</td>
                             </tr>
                             <tr>
-                                <td class="p-text-right">Remaining Balance %</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingPf}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingEps}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingSalary}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingEsic}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingGratuity}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingAnnuation}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingLifeIns}}</td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingMediclaimIns}}
+                                <td class="p-text-left">Remaining Balance %</td>
+                                <td class="primeng-table-header-center">{{getRemainingTotalPF()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingTotalepsPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingTotalsalaryPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingTotalesicPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingTotalgratuityPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingSupeAnnuationPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingLifeInsurancePercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingMediclaimInsurancePercentage()}}
                                 </td>
-                                <td class="primeng-table-header-center">{{TotalPercentageDTO.remainingAccidentIns}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingpersonalAccidentInsurance()}}</td>
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="nominationDataSource.length==0">No
+                        data found</span>
 
 
                     <br><br>
@@ -201,6 +219,9 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="FamilyMemberList.length==0">No
+                        data found</span>
                     <!-- </div> -->
 
 
@@ -211,11 +232,11 @@
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
+                                <col style="width:200px">
+                                <col style="width:200px">
+                                <col style="width:200px">
+                                <col style="width:200px">
+                                <col style="width:200px">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -231,7 +252,7 @@
                             <tr>
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="ESIC.familyMemberName"
-                                            [ngModelOptions]="{standalone: true}" style="text-align: center;">
+                                            [ngModelOptions]="{standalone: true}" disabled>
                                     </span></td>
 
                                 <td><span>
@@ -296,6 +317,10 @@
                             </tr>
                         </ng-template>
                     </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="esicDataSource.length==0">No
+                        data found</span>
+
 
                     <div class="row mt-15">
                         <div class="col-12">

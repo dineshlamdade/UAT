@@ -47,8 +47,9 @@
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="dateOfBirth" [maxDate]="today"
                                                     [(ngModel)]="familyMemberInfoRequestDTO.dateOfBirth"
+                                                    (click)="birthDateClickEvent($event)"
                                                     [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('dateOfBirth').status == 'INVALID'}"
-                                                    (bsValueChange)="birthDateValidation(); birthD();validDate(familyMemberInfoRequestDTO.dateOfBirth)">
+                                                    (bsValueChange)="birthDateValidation();validDate(familyMemberInfoRequestDTO.dateOfBirth)">
                                             </div>
                                         </div>
                                     </div>
@@ -132,6 +133,8 @@
                                         <label class="form-label">Aadhaar Number </label>
                                         <input type="text" class="form-control" placeholder="Enter Aadhaar No."
                                             minlength="1" maxlength="12" formControlName="aadhaar"
+                                            (keypress)="keyPress($event)"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('aadhaar').status == 'INVALID'}"
                                             [(ngModel)]="familyMemberInfoRequestDTO.aadhaar">
                                     </div>
 
@@ -144,7 +147,13 @@
 
                                     <div class="col-sm-6 col-md-4 mt-15">
                                         <label class="form-label">Age Bracket</label>
-                                        <select class="form-control custom-select" placeholder="Select"
+                                        <input type="text" class="form-control" placeholder="Enter Name"
+                                            formControlName="ageBracket"
+                                            [(ngModel)]="familyMemberInfoRequestDTO.ageBracket"
+                                            (change)="validateIsdependant()"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
+
+                                        <!-- <select class="form-control custom-select" placeholder="Select"
                                             (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
                                             [(ngModel)]="familyMemberInfoRequestDTO.ageBracket" [dropdown]="true"
                                             (change)="validateIsdependant()" placeholder="Select"
@@ -153,7 +162,7 @@
                                             <option *ngFor="let ageBracket of ageBracketList" [value]="ageBracket">
                                                 {{ageBracket}}
                                             </option>
-                                        </select>
+                                        </select> -->
 
                                         <!-- <p-autoComplete [suggestions]="filteredageBracketList"
                                             (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
@@ -167,9 +176,9 @@
 
                             <div class="row">
                                 <div class="col-sm-6 col-md-3 mt-15 row-margin-left">
-                                    <div class="form-group  mt-15">
-                                        <legend>
-                                            Dependent On Employee</legend>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Dependent On Employee</label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="yes"
@@ -192,10 +201,10 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-4 mt-15">
-                                    <div class="form-group  mt-15">
-                                        <legend>
-                                            Part Of Company Mediclaim Insurance</legend>
+                                <div class="col-sm-6 col-md-5 mt-15">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Part Of Company Mediclaim Insurance</label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="yes"
@@ -220,7 +229,7 @@
                             </div>
 
                             <div class="row row-margin-left">
-                                <div class="col-sm-6 col-md-3 mt-15">
+                                <div class="col-sm-6 col-md-3">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="example-checkbox1"
                                             checked formControlName="isActive" (change)="activeSetBoolean($event)"
@@ -228,7 +237,7 @@
                                         <span class="custom-control-label">Active</span>
                                     </label>
                                 </div>
-                                <div class="col-sm-6 col-md-3 mt-15 ml-35">
+                                <div class="col-sm-6 col-md-3 ml-35">
                                     <label class="form-label">Remark</label>
                                     <input type="text" class="form-control" placeholder="Enter Remark"
                                         formControlName="remark" [(ngModel)]="familyMemberInfoRequestDTO.remark">
@@ -246,7 +255,7 @@
                                     <div class="row">
                                         <div class="col-sm-3 col-md-4 country-code">
                                             <select class="form-control custom-select" placeholder="Select"
-                                                [(ngModel)]="addressCountryCode" [dropdown]="true"
+                                                [(ngModel)]="addressCountryCode"
                                                 (completeMethod)="filtercountryCode($event)"
                                                 formControlName="addressDetailsCountryCode" placeholder="Select">
                                                 <option value="" selected disabled>Select</option>
@@ -263,7 +272,7 @@
                                         </div>
                                         <div class="col-sm-3 col-md-6">
                                             <input type="text" class="form-control" placeholder="Enter Phone No."
-                                                minlength="1" maxlength="10"
+                                                minlength="1" maxlength="10" (keypress)="keyPress($event)"
                                                 formControlName="addressDetailsMobileNumber"
                                                 [(ngModel)]="addressPhoneNo">
                                         </div>
@@ -273,8 +282,8 @@
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Copy From</label>
                                     <select class="form-control custom-select" placeholder="Select"
-                                        (completeMethod)="filterCopyFromList($event)" formControlName="copyFrom"
-                                        (onSelect)="getAddressFromCopyList($event)" placeholder="Select">
+                                        (completeMethod)="filterCopyFromList($event)" #copy formControlName="copyFrom"
+                                        (change)="getAddressFromCopyList(copy)" placeholder="Select">
                                         <option value="" selected disabled>Select</option>
                                         <option *ngFor="let copyFrom of CopyFromAddressList" [value]="copyFrom">
                                             {{copyFrom}}
@@ -323,7 +332,7 @@
                                     <label class="form-label">PIN</label>
                                     <input type="text" class="form-control" placeholder="Enter PIN"
                                         formControlName="addressDetailsPin" (keyup)="AddressValidationFromPIN();"
-                                        minlength="1" maxlength="6" pattern="[0-9]{6}"
+                                        minlength="1" maxlength="6" pattern="[0-9]{6}" (keypress)="keyPress($event)"
                                         [(ngModel)]="familyAddressDetailRequestDTO.pinCode">
                                 </div>
 
@@ -368,7 +377,7 @@
                                     <div class="row">
                                         <div class="col-sm-3 col-md-5 country-code">
                                             <select class="form-control custom-select" placeholder="Select"
-                                                [(ngModel)]="guardianCountryCode" [dropdown]="true"
+                                                [(ngModel)]="guardianCountryCode"
                                                 (completeMethod)="filtercountryCode($event)"
                                                 formControlName="guardianCountryCode" placeholder="Select">
                                                 <option value="" selected disabled>Select</option>
@@ -386,7 +395,7 @@
                                         <div class="col-sm-3 col-md-6">
                                             <input type="text" class="form-control" placeholder="Enter Mobile No."
                                                 minlength="1" maxlength="10" formControlName="guardianMobileNumber"
-                                                [(ngModel)]="guardianPhoneNo">
+                                                [(ngModel)]="guardianPhoneNo" (keypress)="keyPress($event)">
                                         </div>
                                     </div>
                                 </div>
@@ -424,7 +433,8 @@
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">PIN</label>
                                     <input type="text" class="form-control" placeholder="Enter PIN"
-                                        formControlName="guardianPin" [(ngModel)]="guardianDetailRequestDTO.pincode"
+                                        (keypress)="keyPress($event)" formControlName="guardianPin"
+                                        [(ngModel)]="guardianDetailRequestDTO.pincode"
                                         (keyup)="getGuardianAddressFromPIN();" minlength="1" maxlength="6"
                                         pattern="[0-9]{6}">
                                 </div>
@@ -454,6 +464,26 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mb-15">
+                                    <button type="button" tooltip="Previous"
+                                        [routerLink]="['/employee-master/previous-employment-information']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                class="fa fa-chevron-circle-left"
+                                                aria-hidden="true"></i></b>Previous</button>
+
+                                    <button type="button" tooltip="Next"
+                                        [routerLink]="['/employee-master/education-skills-information/education-details']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                class="fa fa-chevron-circle-right"
+                                                aria-hidden="true"></i></b>Next</button>
+
+                                    <button type="button" (click)="familySaveNextSubmit(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
+                                    guardianDetailRequestDTO)" [hidden]="updateFormFlag || familyViewItem"
+                                        [disabled]="FamilyDetailsInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green' : FamilyDetailsInfoForm.invalid,
+                                    'btn-bg-green': !FamilyDetailsInfoForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                        tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                                        Save & Next</button>
+
                                     <button type="submit" [disabled]="FamilyDetailsInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green' : FamilyDetailsInfoForm.invalid,
                                     'btn-bg-green': !FamilyDetailsInfoForm.invalid}" (click)="pushFamilyDetailsToGrid(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
                     guardianDetailRequestDTO);" class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -492,6 +522,10 @@
                                                 <th scope="col" class="font700 wd-20">Action</th>
                                             </tr>
                                         </thead>
+                                        <tr *ngIf="FamilySummaryGridData.length == 0">
+                                            <td colspan="4"><span class="font-14 font500 align-center text-red">No
+                                                    data found</span></td>
+                                        </tr>
                                         <tbody>
                                             <tr *ngFor="let family of FamilySummaryGridData">
                                                 <td><span>{{family.familyMemberName}}</span></td>

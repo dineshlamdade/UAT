@@ -8166,16 +8166,16 @@ body.boxlayout .container-fluid {
 
 body *::-webkit-scrollbar {
     width: 0px;
-    height: 3px;
+    height: 12px;
     transition: .3s background
 }
 
 body *::-webkit-scrollbar-thumb {
-    background: #f8f9fa
+    background: #c3bac9
 }
 
 body *:hover::-webkit-scrollbar-thumb {
-    background: #f8f9fa
+    background: #c3bac9
 }
 
 a:hover {

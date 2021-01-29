@@ -300,7 +300,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
         this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
-          
+
           this.AllESICList = res.data.results[0];
           this.getStates();
           // const TABLE_DATA1: ESICElement[] = res.data.results[0];
@@ -337,7 +337,7 @@ export class NominationDetailsComponent implements OnInit {
             this.ESICMemberList.forEach((element1) => {
               this.AllESICList.some(res => {
                 res.stateList = this.states;
-                if(element1.familyMemberInfoId == res.familyMemberInfoId){
+                if (element1.familyMemberInfoId == res.familyMemberInfoId) {
                   res.familyMemberName = element1.familyMemberName;
                 }
               })
@@ -381,7 +381,7 @@ export class NominationDetailsComponent implements OnInit {
     // })
   }
   filterCity(state, ESIC) {
-    debugger
+
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {
@@ -395,7 +395,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   filterDispensaryName(city, ESIC) {
-    
+
     let dispensaryNames = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(dispensaryName => {
       if (city == dispensaryName.district) {
@@ -428,7 +428,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   getDispensaryAddress(nomination) {
-    
+
     let dispensary1 = this.ESICLocationLIST['esicdispensaryDB'].filter(dispensary => {
       if (nomination.dispensaryName == dispensary.dispensary) {
         return dispensary;
@@ -458,60 +458,72 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.pfPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalPF() {
-  //   return this.dataSource.data.map(t => t.pfPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalPF() {
+    return 100 - this.getTotalPF();
+  }
   getTotalepsPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.epsPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalepsPercentage() {
-  //   return this.dataSource.data.map(t => t.epsPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalepsPercentage() {
+    return 100 - this.getTotalepsPercentage();
+  }
   getTotalsalaryPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.salaryPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalsalaryPercentage() {
-  //   return this.dataSource.data.map(t => t.salaryPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalsalaryPercentage() {
+    return 100 - this.getTotalsalaryPercentage();
+  }
   getTotalesicPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.esicPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalesicPercentage() {
-  //   return this.dataSource.data.map(t => t.esicPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalesicPercentage() {
+    return 100 - this.getTotalesicPercentage();
+  }
   getTotalgratuityPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.gratuityPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalgratuityPercentage() {
-  //   return this.dataSource.data.map(t => t.gratuityPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalgratuityPercentage() {
+    return 100 - this.getTotalgratuityPercentage();
+  }
   getTotalsupeannuationPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.superAnnuationPercentage).reduce((acc, value) => acc + value, 0);
     }
+  }
+  getRemainingSupeAnnuationPercentage(){
+    return 100 - this.getTotalsupeannuationPercentage();
   }
   getTotallifeInsurancePercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.lifeInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
+  getRemainingLifeInsurancePercentage(){
+    return 100 - this.getTotallifeInsurancePercentage();
+  }
   getTotalMediclaimInsurancePercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.mediclaimInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
+  getRemainingMediclaimInsurancePercentage(){
+    return 100 - this.getTotalMediclaimInsurancePercentage();
+  }
   getTotalpersonalAccidentInsurance() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.personalAccidentInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
+  }
+  getRemainingpersonalAccidentInsurance(){
+    return 100 - this.getTotalpersonalAccidentInsurance();
   }
   saveNominationsDetails(nominationDataSource, esicDataSource) {
 
@@ -594,7 +606,7 @@ export class NominationDetailsComponent implements OnInit {
       this.SaveBoolean = true;
     }
 
-    
+
     if (this.SaveBoolean == true) {
 
       this.NominationInformation.familyNominationRequestDTO = nominationDataSource;
@@ -715,7 +727,7 @@ export class NominationDetailsComponent implements OnInit {
     this.FilteredDispensaryNames = filtered;
   }
 
-  resetNomination(){
-    
+  resetNomination() {
+
   }
 }

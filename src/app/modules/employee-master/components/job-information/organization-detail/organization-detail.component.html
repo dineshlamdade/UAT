@@ -1,24 +1,30 @@
 <form [formGroup]="OrganizationForm" (ngSubmit)="OrganizationFormSubmit(organizationDetailsModel)">
-    <div class="col-sm-6 col-md-3">
-        <label class="form-label">Payroll Area</label>
-        <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select Payroll Area"
-            (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label">Payroll Area</label>
+            <!-- <select class="form-control" placeholder="Select Payroll Area"
+            (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
-        </p-autoComplete> -->
-        <!-- <select class="form-control" placeholder="Select Payroll Area"
-        (completeMethod)="filterpayrollArea(option)"
-        (change)="selectPayrollArea(option)"
-        [(ngModel)]="payrollAreaCode" formControlName="payrollAreaCode"> -->
-
-        <select class="form-control" placeholder="Select Payroll Area"
-                (completeMethod)="filterpayrollArea(payrollAreaCode)"
-                (change)="selectPayrollArea(payrollAreaCode)"
-                 [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
-          <option value="" selected disabled>Select Payroll Area</option>
-          <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
-            {{option}}
-        </option> 
-      </select>
+            <option value="" selected disabled>Select Payroll Area</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
+                {{option}}
+            </option>
+        </select> -->
+            <select class="form-control" placeholder="Select"
+                (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+                (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
+                [ngModelOptions]="{standalone: true}">
+                <option value="" selected disabled>Select</option>
+                <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                    {{option.payrollAreaCode}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label">Company Name</label>
+            <input type="text" class="form-control" [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}"
+                disabled>
+        </div>
     </div>
     <br>
     <div class="row row-cards">
@@ -36,11 +42,11 @@
                     </ng-template>
 
                 </p-autoComplete> -->
-                <select class="form-control custom-select" placeholder="Select Business Area"
+                <select class="form-control custom-select" placeholder="Select"
                     (completeMethod)="SearchBusinessArea(businessAreaCode)"
                     (change)="validateBusiDatesSave();businessAreaObject(businessAreaCode);"
                     formControlName="businessAreaMasterIdControl" [(ngModel)]="businessAreaCode">
-                    <option value="" selected disabled>Select Business Area</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let businessArea of filteredBusinessAreaList" [value]="businessArea.masterCode">
                         {{businessArea.masterCode}}
                     </option>
@@ -87,11 +93,10 @@
                     (completeMethod)="SearchSubArea($event)" [dropdown]="true" formControlName="subAreaIdControl"
                     [(ngModel)]="subAreaCode" (onSelect)="validateSubAreaDatesSave();subAreaObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Sub-Area"
-                    (completeMethod)="SearchSubArea(subArea.masterCode)"
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchSubArea(subArea.masterCode)"
                     (change)="validateSubAreaDatesSave();subAreaObject(subArea);" formControlName="subAreaIdControl"
                     [(ngModel)]="subAreaCode">
-                    <option value="" selected disabled>Select Sub-Area</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let subArea of subAreaList" [value]="subArea.masterCode">
                         {{subArea.masterCode}}
                     </option>
@@ -138,11 +143,11 @@
                     formControlName="strategicBusinessUnitIdControl" [(ngModel)]="strategicCode"
                     (onSelect)="validateSBUDatesSave();strategicObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Strategic Business Unit"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchStrategic(strategic.masterCode)"
                     (change)="validateSBUDatesSave();strategicObject(strategic);"
                     formControlName="strategicBusinessUnitIdControl" [(ngModel)]="strategicCode">
-                    <option value="" selected disabled>Select Strategic Business Unit</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let strategic of filteredStrategicBusinessAreaList" [value]="strategic.masterCode">
                         {{strategic.masterCode}}
                     </option>
@@ -190,11 +195,10 @@
                     formControlName="divisionMasterIdControl" [(ngModel)]="divisionCode"
                     (onSelect)="validateDivisionDatesSave();divisionObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Division"
-                    (completeMethod)="SearchDivision(division.masterCode)"
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchDivision(division.masterCode)"
                     (change)="validateDivisionDatesSave();divisionObject(division);"
                     formControlName="divisionMasterIdControl" [(ngModel)]="divisionCode">
-                    <option value="" selected disabled>Select Division</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let division of filteredDivisionList" [value]="division.masterCode">
                         {{division.masterCode}}
                     </option>
@@ -241,11 +245,10 @@
                     formControlName="profitCentreMasterIdControl" [(ngModel)]="profitCentreCode"
                     (onSelect)="validateProfitDatesSave();profitObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Profit Center"
-                    (completeMethod)="SearchProfit(profitCentreCode)"
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchProfit(profitCentreCode)"
                     (change)="validateProfitDatesSave();profitObject(profitCentreCode);"
                     formControlName="profitCentreMasterIdControl" [(ngModel)]="profitCentreCode">
-                    <option value="" selected disabled>Select Profit Center</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let profit of filteredProfitCenterList" [value]="profit.masterCode">
                         {{profit.masterCode}}
                     </option>
@@ -297,11 +300,11 @@
                         {{establishment.establishmentCode}}
                     </ng-template>
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Establishment"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchEstablishment(establishment.establishmentCode)"
                     (change)="validatEstSave();establishmentObject(establishment);"
                     formControlName="establishmentMasterIdControl" [(ngModel)]="establishmentCode">
-                    <option value="" selected disabled>Select Establishment</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let establishment of filteredEstablishmentList"
                         [value]="establishment.establishmentCode">
                         {{establishment.establishmentCode}}
@@ -349,11 +352,11 @@
                     formControlName="subLocationMasterIdControl" [(ngModel)]="subLocationCode"
                     (onSelect)="validatSubLocSave();subLocationObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Sub-Location"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchSubLocation(sublocation.masterCode)"
                     (change)="validatSubLocSave();subLocationObject(sublocation);"
                     formControlName="subLocationMasterIdControl" [(ngModel)]="subLocationCode">
-                    <option value="" selected disabled>Select Sub-Location</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let sublocation of filteredSubLocationList" [value]="sublocation.masterCode">
                         {{sublocation.masterCode}}
                     </option>
@@ -401,11 +404,10 @@
                     formControlName="workLocationMasterIdControl" [(ngModel)]="workLocationCode"
                     (onSelect)="validateWorkLocSave();workLocationObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Work-Location"
-                    (completeMethod)="SearchWorkLocation(work.masterCode)"
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchWorkLocation(work.masterCode)"
                     (change)="validateWorkLocSave();workLocationObject(work);"
                     formControlName="workLocationMasterIdControl" [(ngModel)]="workLocationCode">
-                    <option value="" selected disabled>Select Work-Location</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let work of filteredWorkLocationList" [value]="work.masterCode">
                         {{work.masterCode}}
                     </option>
@@ -451,10 +453,10 @@
                     (completeMethod)="SearchCost($event)" [dropdown]="true" formControlName="costCentreIdControl"
                     [(ngModel)]="costCode" (onSelect)="validateCostDatesSave();costObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Cost Center"
-                    (completeMethod)="SearchCost(cost.masterCode)" (change)="validateCostDatesSave();costObject(cost);"
-                    formControlName="costCentreIdControl" [(ngModel)]="costCode">
-                    <option value="" selected disabled>Select Cost Center</option>
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchCost(cost.masterCode)"
+                    (change)="validateCostDatesSave();costObject(cost);" formControlName="costCentreIdControl"
+                    [(ngModel)]="costCode">
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let cost of filteredCostCenterList" [value]="cost.masterCode">
                         {{cost.masterCode}}
                     </option>
@@ -500,11 +502,10 @@
                     (completeMethod)="SearchSubCost($event)" [dropdown]="true" formControlName="subCostCentreIdControl"
                     [(ngModel)]="subCostCode" (onSelect)="validateSubCostDatesSave();subCostObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Sub-Cost Center"
-                    (completeMethod)="SearchSubCost(subCost.masterCode)"
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchSubCost(subCost.masterCode)"
                     (change)="validateSubCostDatesSave();subCostObject(subCost);"
                     formControlName="subCostCentreIdControl" [(ngModel)]="subCostCode">
-                    <option value="" selected disabled>Select Sub-Cost Center</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let subCost of filteredSubCostCenterList" [value]="subCost.masterCode">
                         {{subCost.masterCode}}
                     </option>
@@ -551,11 +552,11 @@
                     formControlName="departmentMasterIdControl" [(ngModel)]="departmentCode"
                     (onSelect)="validateDepartmentDatesSave();departmentObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Department"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchDepartment(department.masterCode)"
                     (change)="validateDepartmentDatesSave();departmentObject(department);"
                     formControlName="departmentMasterIdControl" [(ngModel)]="departmentCode">
-                    <option value="" selected disabled>Select Department</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let department of filteredDepartmentList" [value]="department.masterCode">
                         {{department.masterCode}}
                     </option>
@@ -602,11 +603,11 @@
                     formControlName="subDepartmentMasterIdControl" [(ngModel)]="subDepCode"
                     (onSelect)="validateSubDepDatesSave();sunDepartmentObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Sub - Department"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchSubDepartment(department.masterCode)"
                     (change)="validateSubDepDatesSave();sunDepartmentObject(department);"
                     formControlName="subDepartmentMasterIdControl" [(ngModel)]="subDepCode">
-                    <option value="" selected disabled>Select Department</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let department of filteredSubDepartmentList" [value]="department.masterCode">
                         {{department.masterCode}}
                     </option>

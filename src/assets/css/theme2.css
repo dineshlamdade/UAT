@@ -1448,7 +1448,7 @@ th .p-dialog .p-dialog-footer {
 }
 
 .custom-control-label {
-  font-size: 12px!important;
+  font-size: 75%!important;
   line-height: 21px!important;
 }
 
@@ -1516,7 +1516,8 @@ button:focus {
 .field-icon {
   float: right;
   margin-left: -25px;
-  margin-top: -25px;
+  margin-right: 4px;
+  margin-top: -28px;
   position: relative;
   z-index: 2;
   color: #662d8c !important;
@@ -2435,4 +2436,24 @@ width: 100%;
 .multiselect-dropdown {
   font-weight: 500!important;
   font-size: 12px!important;
+}
+
+.next-previous-disabled{
+  background-color: #6060602b !important;
+}
+
+.no-data-center{
+  margin-left: 50%;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

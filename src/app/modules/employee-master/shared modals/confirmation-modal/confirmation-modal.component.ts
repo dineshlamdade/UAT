@@ -62,13 +62,13 @@ export class ConfirmationModalComponent implements OnInit {
       this.EventEmitterService.getConfirmDeleteEducationSkills(this.confirmMsg)
     }
     if (this.confirmMsg == 'payrollItemDelete') {
-      debugger
+      
       let payrollEditItem;
       payrollEditItem = this.payrollEditItem;
       payrollEditItem.confirmMsg = this.confirmMsg;
       this.EventEmitterService.getConfirmDeletePayrollArea(payrollEditItem)
     }
-    debugger
+    
 
     if (this.confirmMsg == 'joinee') {
       // var joinee: any;
@@ -94,7 +94,7 @@ export class ConfirmationModalComponent implements OnInit {
     }
   }
   clearBirthDate() {
-    debugger
+    
     if (this.confirmMsg == 'EmployeeAgeConfirmation') {
       this.dialogRef.close();
       this.EventEmitterService.getClearBirthDate();

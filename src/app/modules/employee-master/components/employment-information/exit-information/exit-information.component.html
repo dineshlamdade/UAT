@@ -19,8 +19,8 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 class="form-control" formControlName="projectedRetirementDate"
-                                                [(ngModel)]="ExitInformation.projectedRetirementDate"
-                                                placeholder="  /   /" bsDatepicker>
+                                                [(ngModel)]="ExitInformation.retirementDate" placeholder="  /   /"
+                                                bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -129,14 +129,20 @@
                                                 class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
 
                                     <button type="submit" [disabled]="ExitForm.invalid || ExitForm.untouched"
-                                        [hidden]="viewExit"
+                                        [hidden]="viewExit || editExit"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                         [ngClass]="{'disabled-btn-bg-green' : ExitForm.invalid || ExitForm.untouched,
                                         'btn-bg-green': !ExitForm.invalid}" tooltip="Save"><b><i
                                                 class="fa fa-floppy-o"></i></b>Save</button>
 
+                                    <button type="submit" *ngIf="editExit"
+                                        [disabled]="ExitForm.invalid || ExitForm.untouched" [ngClass]="{'disabled-btn-bg-green' : ExitForm.invalid || ExitForm.untouched,
+                                    'btn-bg-green': !ExitForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
-                                    <button type="button" tooltip="Cancel" *ngIf="viewExit"
+                                    <button type="button" tooltip="Cancel" *ngIf="viewExit || editExit"
+                                        (click)="cancel()"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
                                                 class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>

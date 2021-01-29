@@ -1,4 +1,5 @@
 <form [formGroup]="projectForm" (ngSubmit)="projectDetailsSubmit(projectDetailsModel)">
+    <div class="row">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
         <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
@@ -6,15 +7,31 @@
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
         </p-autoComplete> -->
         
-        <select class="form-control" placeholder="Select Payroll Area"
+        <!-- <select class="form-control" placeholder="Select Payroll Area"
             (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
             <option value="" selected disabled>Select Payroll Area</option>
             <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
                 {{option}}
             </option>
+        </select> -->
+
+        <select class="form-control" placeholder="Select"
+        (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+        (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                {{option.payrollAreaCode}}
+            </option>
         </select>
 
+    </div>
+    <div class="col-sm-6 col-md-3" >
+        <label class="form-label">Company Name</label>
+        <input type="text" class="form-control" [(ngModel)]="companyName"
+            [ngModelOptions]="{standalone: true}" disabled>
+    </div>
     </div>
     <br>
     <div class="row row-cards">
@@ -26,11 +43,11 @@
                     formControlName="businessAreaMasterIdControl" [(ngModel)]="projectDetailsModel.projectName"
                     (onSelect)="enableProjectDate();validateProjectDatesSave();">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Project"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="enableProjectDate();validateProjectDatesSave(employee);"
                     formControlName="projectNameControl" [(ngModel)]="projectDetailsModel.projectName">
-                    <option value="" selected disabled>Select Project</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of projectList" [value]="employee">
                         {{employee}}
                     </option>
@@ -73,11 +90,11 @@
                 <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                     (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Billable"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="enableBillableDate();validateSaveBillableDates(employee);"
                     formControlName="billableControl" [(ngModel)]="projectDetailsModel.billable">
-                    <option value="" selected disabled>Select Billable</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of billableList" [value]="employee">
                         {{employee}}
                     </option>

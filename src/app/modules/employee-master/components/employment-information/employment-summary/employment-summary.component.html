@@ -2,39 +2,7 @@
     <legend style="font-size: 17px !important;">Employment Summary
     </legend>
     <p-table [value]="EmploymentInformationSumarry" [scrollable]="true" [style]="{width:'1000px'}" scrollHeight="200px">
-        <!-- <ng-template pTemplate="colgroup" let-employmentHeader>
-        <colgroup>
-            <col style="width:150px">
-            <col style="width:120px">
-            <col style="width:120px">
-            <col style="width:170px">
-            <col style="width:175px">
-            <col style="width:300px">
-            <col style="width:120px">
-            <col style="width:120px">
-            <col style="width:170px">
-        </colgroup>
-    </ng-template> -->
         <ng-template pTemplate="header">
-            <!-- <tr>
-            <th class="primeng-table-header-center">Company</th>
-            <th class="primeng-table-header-center">Joining Date</th>
-            <th class="primeng-table-header-center">Re-Joinee</th>
-            <th class="primeng-table-header-center">Original Hire Date</th>
-            <th class="primeng-table-header-center">Emp. Age</th>
-            <th class="primeng-table-header-center">Service Age
-        <tr>
-            <br>
-            <th class="primeng-table-header-center">Date Of Joining(DOJ)</th>
-            <th class="primeng-table-header-center">Original DOJ</th>
-            <th class="primeng-table-header-center">Gratuity</th>
-
-        </tr>
-        </th>
-        <th class="primeng-table-header-center">Remaining Service</th>
-        <th class="primeng-table-header-center">Exit Date</th>
-        <th class="primeng-table-header-center">Employment Status</th>
-        </tr> -->
 
             <tr>
                 <th rowspan="2" class=" font700"> Company</th>
@@ -42,7 +10,7 @@
                 <th rowspan="2" class=" font700">Re-Joinee</th>
                 <th rowspan="2" class=" font700">Original Hire Date</th>
                 <th rowspan="2" class=" font700">Emp. Age</th>
-                <th colspan="3" class=" font700">Service Age</th>
+                <th colspan="3" class=" font700 header-center">Service Age</th>
                 <th rowspan="2" class=" font700">Remaining Service</th>
                 <th rowspan="2" class="">Exit Date</th>
                 <th rowspan="2" class=" font700">Employment Status</th>
@@ -56,29 +24,29 @@
         <ng-template pTemplate="body" let-element>
             <tr>
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.companyName}}">
                         {{element.companyName}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.joiningDate}}">
                         {{element.joiningDate}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.rejoinee}}">
                         {{element.rejoinee}} </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.originalHireDate}}">
                         {{element.originalHireDate}}</span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.employmentAge}}">
                         {{element.employmentAge}}
                     </span>
                 </td>
@@ -86,13 +54,19 @@
                 <!-- <td>
                 <tr> -->
                 <td class="primeng-table-header-center pd-5">
-                    {{element.serviceAgeShort}}
+                    <span tooltip="{{element.serviceAge}}">
+                        {{element.serviceAgeShort}}
+                    </span>
                 </td>
                 <td class="primeng-table-header-center pd-5">
-                    {{element.originalDOJServiceShort}}
+                    <span tooltip="{{element.originalDOJServiceShort}}">
+                        {{element.originalDOJServiceShort}}
+                    </span>
                 </td>
                 <td class="primeng-table-header-center pd-5">
-                    {{element.gratuityPeriod}}
+                    <span tooltip="{{element.gratuityPeriod}}">
+                        {{element.gratuityPeriodShort}}
+                    </span>
                 </td>
                 <!-- </tr> -->
                 <!-- <div class="pd-5" >
@@ -127,19 +101,19 @@
                 </span></td> -->
 
                 <td class="primeng-table-header-center">
-                    <span>
-                        {{element.remainingMonthOrDays}}
+                    <span tooltip="{{element.remainingMonthOrDays}}">
+                        {{element.remainingMonthOrDaysShort}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.lastWorkingDate}}">
                         {{element.lastWorkingDate}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.employeeStatus}}">
                         {{element.employeeStatus}} </span>
                 </td>
 
@@ -151,6 +125,9 @@
             </tr>
         </ng-template>
     </p-table>
+    <span class="font-14 font500 align-center text-red no-data-center" *ngIf="EmploymentInformationSumarry.length==0">No
+        data found</span>
+
     <br>
     <br>
     <legend style="font-size: 17px !important;">Milestones Summary
@@ -190,4 +167,6 @@
             </tr>
         </ng-template>
     </p-table>
+    <span class="font-14 font500 align-center text-red no-data-center" *ngIf="TransactionHistory.length==0">No
+        data found</span>
 </div>

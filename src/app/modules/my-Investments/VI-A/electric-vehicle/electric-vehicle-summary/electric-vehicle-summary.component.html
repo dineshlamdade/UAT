@@ -18,10 +18,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td
-                class="text-link wd-20 align-left"
-                (click)="jumpToMasterPage(i)"
-              >
+              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.loanAccountNumber)">
                 <span tooltip="{{ summary.lenderName }}">{{
                   summary.lenderName
                 }}</span>
@@ -54,7 +51,7 @@
               </td>
               <td class="wd-10">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                  (click)="onEditSummary(summary.lender)" tooltip="Edit"></i>&nbsp;&nbsp;
+                  (click)="onEditSummary(summary.institution, summary.loanAccountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
@@ -98,7 +95,7 @@
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="interestOnFutureLoanDeclaredAmount"
+                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
                 (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder="0.00"
                 class="form-control width120 inline_center align-right">
               </td>

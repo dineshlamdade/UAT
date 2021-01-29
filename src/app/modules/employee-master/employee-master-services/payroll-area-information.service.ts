@@ -37,6 +37,15 @@ export class PayrollAreaInformationService {
     }))
   }
 
+  getDistinctPayrollAreaInformation(employeeMasterId){
+
+    return this.httpClient.get(environment.baseUrl8082 +
+       '/payroll-information/distinct/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((res: any) =>{
+      return res;
+    }))
+  }
+
   deletePayrollAreaGridItem(deletePayrollId){
 
     return this.httpClient.delete(environment.baseUrl8082 +
@@ -66,7 +75,7 @@ export class PayrollAreaInformationService {
 
   getPayrollAreaDetails(){
 
-    return this.httpClient.get(environment.baseUrl8083 + '/payrollArea-details', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8084 + 'payrollArea-details', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

@@ -8,12 +8,14 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-education-detail',
   templateUrl: './education-detail.component.html',
-  styleUrls: ['./education-detail.component.scss']
+  styleUrls: ['./education-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EducationDetailComponent implements OnInit {
   EducationInfoForm: FormGroup;
@@ -53,10 +55,15 @@ export class EducationDetailComponent implements OnInit {
   skillId: number;
   skillEditFlag: boolean = false;
   skillviewFlag: boolean = false;
+  saveNextBoolean: boolean = false
+  public today = new Date();
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
     public dialog: MatDialog,
+    private router: Router,
     private matDialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private EducationSkillsInformationService: EducationSkillsInformationService,
@@ -102,19 +109,12 @@ export class EducationDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-
+      
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
 
-          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
           this.getAllEducationSummary();
-        })
-      }
-      if (res == 'skillsItemDelete') {
-        this.EducationSkillsInformationService.deleteSkillsGridItem(this.skillId).subscribe(res => {
-
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-          this.getAllSkillsSummary();
         })
       }
     })
@@ -124,13 +124,13 @@ export class EducationDetailComponent implements OnInit {
   getAllEducationSummary() {
 
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-
-      this.EducationSummaryGridData = res.data.results[0];
+      
+      // this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
     }, (error: any) => {
       if (error["error"]["status"]["messsage"] == 'EmployeeSkillDetails details list is empty') {
-        this.EducationSummaryGridData = [];
+        this.EducationSummaryData = [];
       }
     })
   }
@@ -146,6 +146,14 @@ export class EducationDetailComponent implements OnInit {
     })
   }
 
+  educationSaveNextSubmit(employeeEducationRequestModel) {
+
+    this.saveNextBoolean = true;
+
+    this.postEducationForm(employeeEducationRequestModel);
+  }
+
+
   postEducationForm(employeeEducationRequestModel) {
 
     employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
@@ -158,6 +166,12 @@ export class EducationDetailComponent implements OnInit {
       this.getAllEducationSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetEducationForm();
+      this.educationEditFlag = false;
+      this.educationviewFlag = false;
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/employee-summary']);
+      }
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -176,6 +190,8 @@ export class EducationDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetEducationForm();
       this.employeeEducationRequestModel.employeeEducationID = 0;
+      this.educationEditFlag = false;
+      this.educationviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -334,6 +350,8 @@ export class EducationDetailComponent implements OnInit {
 
   resetEducationForm() {
     this.EducationInfoForm.reset();
+    this.educationEditFlag = false;
+    this.educationviewFlag = false;
   }
 
 
@@ -451,6 +469,8 @@ export class EducationDetailComponent implements OnInit {
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -467,6 +487,8 @@ export class EducationDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
       this.employeeSkillDetailsRequestModel.employeeSkillInfoId = 0;
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })

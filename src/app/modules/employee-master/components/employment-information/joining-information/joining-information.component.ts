@@ -44,7 +44,11 @@ export class JoiningInformationComponent implements OnInit {
   companyListForJoining: Array<any> = [];
   certificateViewFlag: boolean = false;
   viewJoining: boolean = false;
+  editJoining: boolean = false;
   public today = new Date();
+  saveNextBoolean: boolean = false;
+
+
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
@@ -92,12 +96,12 @@ export class JoiningInformationComponent implements OnInit {
 
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
-      
+
       let list = res.data.results;
       list.forEach(element => {
         this.companyListForJoining.push(element.companyName);
       });
-      if(this.companyListForJoining.length == 1){
+      if (this.companyListForJoining.length == 1) {
         this.JoiningInformationModel.companyName = this.companyListForJoining[0];
       }
     })
@@ -112,10 +116,11 @@ export class JoiningInformationComponent implements OnInit {
     // })
     // if (this.confirmMsg == 'viewJoining') {
     this.joiningDataSubscription = this.EventEmitterService.setJoiningData().subscribe(res => {
-      
+
       if (res) {
         this.getJoiningFormInformation();
-        if(res.viewJoining == true){
+        this.editJoining = res.editJoining;
+        if (res.viewJoining == true) {
           this.viewJoining = res.viewJoining;
           this.disableFields();
         }
@@ -124,45 +129,45 @@ export class JoiningInformationComponent implements OnInit {
   }
 
   disableFields() {
-    
+
     // if (certificateViewFlag == true) {
-      const temp1 = this.JoiningForm.get('joiningDate');
-      temp1.disable();
-      const temp2 = this.JoiningForm.get('originalHireDate');
-      temp2.disable();
-      const temp3 = this.JoiningForm.get('joiningDateForGratuity');
-      temp3.disable();
-      const temp4 = this.JoiningForm.get('companyName');
-      temp4.disable();
-      const temp5 = this.JoiningForm.get('probationPeriodMonth');
-      temp5.disable();
-      const temp6 = this.JoiningForm.get('probationPeriodDays');
-      temp6.disable();
-      const temp7 = this.JoiningForm.get('noticePeriodMonth');
-      temp7.disable();
-      const temp8 = this.JoiningForm.get('noticePeriodDays');
-      temp8.disable();
-      const temp9 = this.JoiningForm.get('expectedConfirmationDate');
-      temp9.disable();
-      const temp10 = this.JoiningForm.get('expectedRemark');
-      temp10.disable();
-      const temp11 = this.JoiningForm.get('confirmationDate');
-      temp11.disable();
-      const temp12 = this.JoiningForm.get('confirmationRemark');
-      temp12.disable();
-      // const temp13 = this.JoiningForm.get('projectedRetirementDate');
-      // temp13.disable();
-      const temp14 = this.JoiningForm.get('probationPeriod');
-      temp14.disable();
-      const temp15 = this.JoiningForm.get('noticePeriod');
-      temp15.disable();
+    const temp1 = this.JoiningForm.get('joiningDate');
+    temp1.disable();
+    const temp2 = this.JoiningForm.get('originalHireDate');
+    temp2.disable();
+    const temp3 = this.JoiningForm.get('joiningDateForGratuity');
+    temp3.disable();
+    const temp4 = this.JoiningForm.get('companyName');
+    temp4.disable();
+    const temp5 = this.JoiningForm.get('probationPeriodMonth');
+    temp5.disable();
+    const temp6 = this.JoiningForm.get('probationPeriodDays');
+    temp6.disable();
+    const temp7 = this.JoiningForm.get('noticePeriodMonth');
+    temp7.disable();
+    const temp8 = this.JoiningForm.get('noticePeriodDays');
+    temp8.disable();
+    const temp9 = this.JoiningForm.get('expectedConfirmationDate');
+    temp9.disable();
+    const temp10 = this.JoiningForm.get('expectedRemark');
+    temp10.disable();
+    const temp11 = this.JoiningForm.get('confirmationDate');
+    temp11.disable();
+    const temp12 = this.JoiningForm.get('confirmationRemark');
+    temp12.disable();
+    // const temp13 = this.JoiningForm.get('projectedRetirementDate');
+    // temp13.disable();
+    const temp14 = this.JoiningForm.get('probationPeriod');
+    temp14.disable();
+    const temp15 = this.JoiningForm.get('noticePeriod');
+    temp15.disable();
     // }
   }
   // ngOnDestroy() {
   // }
 
   joiningFormSubmit(JoiningInformationModel) {
-    
+
     JoiningInformationModel.employeeMasterId = this.employeeMasterId;
     if (this.probationMonthsDays == 'false') {
       JoiningInformationModel.isProbationInMonth = 1;
@@ -202,14 +207,20 @@ export class JoiningInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.JoiningInformationModel = res.data.results[0];
         this.employementInfoId = this.JoiningInformationModel.employementInfoId;
+        localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
         this.EventEmitterService.getcloseCurrentForm();
         if (this.confirmMsg) {
           this.onNoClick();
         }
         this.employementInfoId = res.data.results[0].employementInfoId;
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.EventEmitterService.getEmpSummaryInitiate();
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
+        if (this.saveNextBoolean == true) {
+          this.saveNextBoolean = false;
+          this.router.navigate(['/employee-master/contact-information']);
+        }
       }, (error: any) => {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
@@ -225,6 +236,9 @@ export class JoiningInformationComponent implements OnInit {
           this.onNoClick();
         }
         this.employementInfoId = res.data.results[0].employementInfoId;
+        this.EventEmitterService.getEmpSummaryInitiate();
+        localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
+
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId);
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {
@@ -236,11 +250,12 @@ export class JoiningInformationComponent implements OnInit {
   getJoiningFormInformation() {
 
     this.EmploymentInformationService.getJoiningInformation(this.employeeMasterId).subscribe(res => {
-      
+
       this.employementInfoId = res.data.results[0].employementInfoId;
       localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
       if (res.data.results[0]) {
         this.JoiningInformationModel = res.data.results[0];
+        this.JoiningInformationModel.joiningDate = new Date(this.JoiningInformationModel.joiningDate);
         // this.JoiningInformationModel.companyName = res.data.results[0].companyName;
         if (res.data.results.length > 0) {
           if (this.JoiningInformationModel.isNoticePeriodInMonth == 1) {
@@ -281,9 +296,11 @@ export class JoiningInformationComponent implements OnInit {
     if (probationPeriod.value == "true") {
       this.probationMonthsDays = "true";
       this.probationPeriodDaysModel = '';
+      this.JoiningInformationModel.expectedConfirmationDate = '';
     } else {
       this.probationMonthsDays = "false";
       this.probationPeriodMonthModel = '';
+      this.JoiningInformationModel.expectedConfirmationDate = '';
     }
   }
 
@@ -311,8 +328,8 @@ export class JoiningInformationComponent implements OnInit {
     return new Date(dt.setFullYear(dt.getFullYear() + n));
   }
   calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, joiningDate) {
-    
-    if(probationPeriodMonthModel){
+
+    if (probationPeriodMonthModel) {
       probationPeriodMonthModel = parseInt(probationPeriodMonthModel);
       localStorage.setItem('joiningDate', joiningDate);
       let localjoiningDate = localStorage.getItem('joiningDate');
@@ -351,6 +368,12 @@ export class JoiningInformationComponent implements OnInit {
     }
   }
 
+  saveNextJoiningSubmit(JoiningInformationModel) {
+    this.saveNextBoolean = true;
+
+    this.joiningFormSubmit(JoiningInformationModel);
+  }
+
   disableExpectedConfirmationDate() {
     // if (this.JoiningInformationModel.confirmationDate) {
     //   const projectedRetirementDate = this.JoiningForm.get('expectedConfirmationDate')
@@ -359,5 +382,9 @@ export class JoiningInformationComponent implements OnInit {
   }
   onNoClick(): void {
     this.matDialog.closeAll();
+  }
+
+  cancel() {
+    this.EventEmitterService.getEmpSummaryInitiate();
   }
 }

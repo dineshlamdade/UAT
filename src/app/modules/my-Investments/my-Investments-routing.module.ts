@@ -24,6 +24,9 @@ import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/in
 import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
 import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
 import { IDSATTBComponent } from './VI-A/IDSA-TTB/IDSA-TTB.component';
+import { DonationsForScientificResearchComponent } from './VI-A/donations-for-scientific-research/donations-for-scientific-research.component';
+import { GGCComponent } from './VI-A/ggc/ggc.component';
+import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.component';
 
 const routes: Routes = [
 
@@ -136,19 +139,34 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'childEducationAllowance',
+        path:   'Chapter-VI-A-childEducationAllowance',
         component:  ChildEducationAllowanceComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'interestDepositSavingAccountTTA',
+        path:   'Chapter-VI-A-interestDepositSavingAccountTTA',
         component:  InterestDepositSavingAccountComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'interestDepositSavingAccountTTB',
+        path:   'Chapter-VI-A-interestDepositSavingAccountTTB',
         component:  IDSATTBComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      },
+      {
+        path:   'Chapter-VI-A-DonationsForScientificResearchRuralDevelopmentScreenGGA',
+        component:  DonationsForScientificResearchComponent,
+        data: { title:  ':: DelziaHR :: DonationsForScientificResearchRuralDevelopmentScreenGGA' },
+      },
+      {
+        path:   'Chapter-VI-A-DonationsForScientificResearchGGC',
+        component:  GGCComponent,
+        data: { title:  ':: DelziaHR :: DonationsForScientificResearchGGC' },
+      },
+      {
+        path:   'Chapter-VI-A-Mediclaim80D',
+        component:  Mediclaim80DComponent,
+        data: { title:  ':: DelziaHR :: Mediclaim80D' },
       },
     ],
    },
