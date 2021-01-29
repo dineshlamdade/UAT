@@ -11,7 +11,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class InterestOnTtaService {
 
   apiUrl = environment.apiBaseUrl;
-  apiBaseUrlEmployee = environment.apiBaseUrlEmployee;
+  apiBaseUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 

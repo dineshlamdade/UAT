@@ -12,7 +12,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 export class InterestOnTtbService {
 
   apiUrl = environment.apiBaseUrl;
-  apiBaseUrlEmployee = environment.apiBaseUrlEmployee;
+ public  apiBaseUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
