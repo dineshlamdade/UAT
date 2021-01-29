@@ -39,11 +39,11 @@
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
-            <select class="form-control" placeholder="Select Skill"
+            <select class="form-control" placeholder="Select"
             (completeMethod)="searchSkill(minumumWagesDetailsModel.skill)"
             (change)="enableSkillDate();validateSkillDates();"
             formControlName="skillControl" [(ngModel)]="minumumWagesDetailsModel.skill">
-              <option value="" selected disabled>Select Skill</option>
+              <option value="" selected disabled>Select</option>
               <option *ngFor="let skill of skillList" [value]="skill">
                 {{skill}}
             </option>
@@ -85,11 +85,11 @@
             <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                 (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
             </p-autoComplete> -->
-            <select class="form-control" placeholder="Select Type Of Work"
+            <select class="form-control" placeholder="Select"
             (completeMethod)="searchSkill(minumumWagesDetailsModel.workType)"
             (change)="enableWorkDate();"
             formControlName="workTypeControl" [(ngModel)]="minumumWagesDetailsModel.workType">
-              <option value="" selected disabled>Select Skill</option>
+              <option value="" selected disabled>Select</option>
               <option *ngFor="let work of filteredWorkList" [value]="work">
                 {{work}}
             </option>

@@ -321,7 +321,7 @@ export class ProjectDetailComponent implements OnInit {
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
 
-    this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
