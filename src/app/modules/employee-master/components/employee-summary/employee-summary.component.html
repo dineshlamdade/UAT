@@ -167,8 +167,8 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.personalSummaryBean.dateOfBirth}}">
-                                                        {{ (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)?
-                                                        (EmployeeSummary.personalSummaryBean.dateOfBirth |
+                                                        {{ (EmployeeSummary.personalSummaryBean.dateOfBirthShort?.length>25)?
+                                                        (EmployeeSummary.personalSummaryBean.dateOfBirthShort |
                                                         slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirthShort)
                                                         }}
                                                     </div>
@@ -318,8 +318,8 @@
                                                     </div>
                                                     <div class="col-7 py-1"
                                                         tooltip="{{EmployeeSummary.workSummaryBean.dateOfJoining}}">
-                                                        {{ (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)?
-                                                        (EmployeeSummary.workSummaryBean.dateOfJoining |
+                                                        {{ (EmployeeSummary.workSummaryBean.dateOfJoiningShort?.length>25)?
+                                                        (EmployeeSummary.workSummaryBean.dateOfJoiningShort |
                                                         slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoiningShort)
                                                         }}
                                                     </div>
