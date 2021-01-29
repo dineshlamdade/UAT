@@ -92,14 +92,14 @@ export class PersonalInformationComponent implements OnInit {
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
       employeeCode: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
-      alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	_,/,-])[a-zA-Z0-9•	_,/,-]+$/)])],
+      alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
       title: [''],
       // firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)])],
       firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       middleName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       fullName: [{ value: null, disabled: true },],
-      displayName: [''],
+      displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       birthDate: [this.tomorrow, Validators.required],
       bloodGroup: [''],
       maritalStatus: [''],
@@ -126,7 +126,7 @@ export class PersonalInformationComponent implements OnInit {
     this.Physically = 'No';
     this.expatBoolean1 = 'No';
     this.personalInformationModel.disabilityType = '';
-    
+
     if (this.employeeMasterId) {
       this.getEmployeeData();
     }
@@ -159,7 +159,7 @@ export class PersonalInformationComponent implements OnInit {
         }
       })
     })
-    
+
     if (this.internationalWorkerRequestDTO.cocNumber || this.internationalWorkerRequestDTO.cocValidTill) {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.enable();
@@ -353,7 +353,7 @@ export class PersonalInformationComponent implements OnInit {
   getEmployeeData() {
 
     this.PersonalInformationService.getEmployeeData(this.employeeMasterId).subscribe((res: any) => {
-      
+
       this.newData = res;
       this.BasicInfoForm.markAsUntouched();
       this.getDataBinding(res);
@@ -362,13 +362,13 @@ export class PersonalInformationComponent implements OnInit {
 
   // Get data binding Function
   getDataBinding(res) {
-    
+
     this.personalInformationModel = res.data.results[0];
     this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
-    if(!this.personalInformationModel.nationality){
+    if (!this.personalInformationModel.nationality) {
       this.personalInformationModel.nationality = '';
     }
-    if(!this.personalInformationModel.disabilityType){
+    if (!this.personalInformationModel.disabilityType) {
       this.personalInformationModel.disabilityType = '';
     }
     if (this.rejoinee == true && this.sameCode == false) {
@@ -461,7 +461,7 @@ export class PersonalInformationComponent implements OnInit {
   }
   get physically(): any { return this.BasicInfoForm.get('physicallyChallengedOption'); }
   validatePhysically(physicallyChallengedB) {
-    
+
     if (physicallyChallengedB == 'No') {
       this.physically.reset();
       this.personalInformationModel.disabilityType = '';
@@ -473,7 +473,7 @@ export class PersonalInformationComponent implements OnInit {
   get expat(): any { return this.BasicInfoForm.get('countryOfOrigin'); }
 
   validateExpatBoolean(expatBoolean) {
-    
+
     if (expatBoolean == 'No') {
       this.expat.reset();
       this.internationalWorkerRequestDTO.countryOfOrigin = '';
@@ -483,7 +483,7 @@ export class PersonalInformationComponent implements OnInit {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.disable();
     }
-    if(!this.internationalWorkerRequestDTO.countryOfOrigin){
+    if (!this.internationalWorkerRequestDTO.countryOfOrigin) {
       this.internationalWorkerRequestDTO.countryOfOrigin = '';
     }
   }
@@ -505,13 +505,14 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel.employeeMasterRequestDTO.displayName =
       this.personalInformationModel.employeeMasterRequestDTO.fullName
 
+    this.personalInformationModel.employeeMasterRequestDTO.displayName = this.personalInformationModel.employeeMasterRequestDTO.displayName.trim();
     this.exportFullNameToIdentityInformation = this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.middleName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.lastName;
     localStorage.setItem('fullName', this.exportFullNameToIdentityInformation)
   }
   resetForm() {
-    
+
     this.BasicInfoForm.reset();
     this.imageUrl = "./assets/emp-master-images/empIcon5.png";
     const severityLevel = this.BasicInfoForm.get('severityLevel');
@@ -546,7 +547,7 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   birthDateValidation(event) {
-    
+
     if ((this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
       let dateObj = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
@@ -574,10 +575,10 @@ export class PersonalInformationComponent implements OnInit {
   //   return this.BasicInfoForm.get('birthDate');
   // }
   validateNationalty(nationality) {
-    
-    if(this.personalInformationModel.nationality){
+
+    if (this.personalInformationModel.nationality) {
       this.BasicInfoForm.markAsTouched();
-    } 
+    }
 
     nationality = nationality[0].toUpperCase() + nationality.substr(1).toLowerCase();
 
@@ -636,35 +637,35 @@ export class PersonalInformationComponent implements OnInit {
     })
   }
 
-  birthDateClickEvent(event){
-    
+  birthDateClickEvent(event) {
+
     this.birthdateClickboolean = true;
   }
 
-  validateSaverityLevel(severityLevel){
-    
-    if(severityLevel>100){
+  validateSaverityLevel(severityLevel) {
+
+    if (severityLevel > 100) {
       this.sweetalertError('Severity Level should be up to 100%');
     }
   }
 
-  validateDropdown(){
-    
-    if(this.personalInformationModel.employeeMasterRequestDTO.gender){
+  validateDropdown() {
+
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender) {
       this.BasicInfoForm.markAsTouched();
     }
 
-    if(this.personalInformationModel.bloodGroup){
+    if (this.personalInformationModel.bloodGroup) {
       this.BasicInfoForm.markAsTouched();
     }
 
-    if(this.personalInformationModel.nationality){
+    if (this.personalInformationModel.nationality) {
       this.BasicInfoForm.markAsTouched();
-    } 
-    if(this.personalInformationModel.maritialStatus){
+    }
+    if (this.personalInformationModel.maritialStatus) {
       this.BasicInfoForm.markAsTouched();
     }
   }
 
-  
+
 }

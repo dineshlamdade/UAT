@@ -147,7 +147,13 @@
 
                                     <div class="col-sm-6 col-md-4 mt-15">
                                         <label class="form-label">Age Bracket</label>
-                                        <select class="form-control custom-select" placeholder="Select"
+                                        <input type="text" class="form-control" placeholder="Enter Name"
+                                            formControlName="ageBracket"
+                                            [(ngModel)]="familyMemberInfoRequestDTO.ageBracket"
+                                            (change)="validateIsdependant()"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
+
+                                        <!-- <select class="form-control custom-select" placeholder="Select"
                                             (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
                                             [(ngModel)]="familyMemberInfoRequestDTO.ageBracket" [dropdown]="true"
                                             (change)="validateIsdependant()" placeholder="Select"
@@ -156,7 +162,7 @@
                                             <option *ngFor="let ageBracket of ageBracketList" [value]="ageBracket">
                                                 {{ageBracket}}
                                             </option>
-                                        </select>
+                                        </select> -->
 
                                         <!-- <p-autoComplete [suggestions]="filteredageBracketList"
                                             (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"

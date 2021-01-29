@@ -242,7 +242,7 @@ export class LanguageDetailComponent implements OnInit {
   validateGridLanguage() {
     if (this.LanguageSummaryGridData.length > 0) {
       this.LanguageSummaryGridData.forEach(res => {
-        debugger
+        
         if (res.language == this.employeeLanguageRequestModel.language) {
           // this.validateLanguageGridRow = true;
           // this.notifyService.showError('This Record is already exist in Grid Summary', "Attention..!!");

@@ -29,7 +29,33 @@ export class JobInformationComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
-    private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
+    private router: Router, private PayrollAreaService: PayrollAreaInformationService,
+     private JobInformationService: JobInformationService,) { 
+      if (router.url == '/employee-master/job-information/job-summary') {
+        this.tabIndex = 0;
+        this.jobSummaryTabValidation();
+      }
+      if (router.url == '/employee-master/job-information/organization-details') {
+        this.tabIndex = 1;
+        this.organizationTabValidation();
+      }
+      if (router.url == '/employee-master/job-information/position-details') {
+        this.tabIndex = 2;
+        this.positionTabValidation();
+      }
+      if (router.url == '/employee-master/job-information/minimum-wages-details') {
+        this.tabIndex = 3;
+        this.minimumWagesTabValidation();
+      }
+      if (router.url == '/employee-master/job-information/project-details') {
+        this.tabIndex = 4;
+        this.projectTabValidation();
+      }
+      if (router.url == '/employee-master/job-information/deputation-details') {
+        this.tabIndex = 5;
+        this.deputationTabValidation();
+      }
+     }
 
 
   ngOnInit(): void {

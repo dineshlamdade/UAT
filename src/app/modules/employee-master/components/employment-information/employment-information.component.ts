@@ -31,7 +31,28 @@ export class EmploymentInformationComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
-    private EventEmitterService: EventEmitterService, private router: Router) { }
+    private EventEmitterService: EventEmitterService, private router: Router) {
+      if (router.url == '/employee-master/employment-information/employment-summary') {
+        this.tabIndex = 0;
+        this.EmpSummaryTabValidation();
+      }
+      if (router.url == '/employee-master/employment-information/joining-information') {
+        this.tabIndex = 1;
+        this.joiningTabValidation();
+      }
+      if (router.url == '/employee-master/employment-information/re-joining-information') {
+        this.tabIndex = 2;
+        this.reJoiningTabValidation();
+      }
+      if (router.url == '/employee-master/employment-information/transfer-information') {
+        this.tabIndex = 3;
+        this.transferTabValidation();
+      }
+      if (router.url == '/employee-master/employment-information/exit-information') {
+        this.tabIndex = 4;
+        this.exitTabValidation();
+      }
+     }
 
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
