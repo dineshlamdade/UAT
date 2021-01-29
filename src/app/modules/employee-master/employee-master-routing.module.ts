@@ -209,6 +209,11 @@ const routes: Routes = [
             component: ExitInformationComponent,
             data: { title: ':: DelziaHR :: exit-information' },
           },
+          {
+            path: 'employment-summary',
+            component: EmploymentSummaryComponent,
+            data: { title: ':: DelziaHR :: employment-summary' },
+          },
         ]
       },
       {

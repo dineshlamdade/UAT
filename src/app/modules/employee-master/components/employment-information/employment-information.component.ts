@@ -57,7 +57,7 @@ export class EmploymentInformationComponent implements OnInit {
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.router.navigate(['/employee-master/employment-information/employment-summary']);
+    // this.router.navigate(['/employee-master/employment-information/employment-summary']);
 
     this.EmploymentForm = this.formBuilder.group({
       summary: [''],
