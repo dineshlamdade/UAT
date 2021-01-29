@@ -169,7 +169,7 @@
                                                         tooltip="{{EmployeeSummary.personalSummaryBean.dateOfBirth}}">
                                                         {{ (EmployeeSummary.personalSummaryBean.dateOfBirth?.length>25)?
                                                         (EmployeeSummary.personalSummaryBean.dateOfBirth |
-                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirth)
+                                                        slice:0:25)+'...':(EmployeeSummary.personalSummaryBean.dateOfBirthShort)
                                                         }}
                                                     </div>
 
@@ -320,7 +320,7 @@
                                                         tooltip="{{EmployeeSummary.workSummaryBean.dateOfJoining}}">
                                                         {{ (EmployeeSummary.workSummaryBean.dateOfJoining?.length>25)?
                                                         (EmployeeSummary.workSummaryBean.dateOfJoining |
-                                                        slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoining)
+                                                        slice:0:25)+'...':(EmployeeSummary.workSummaryBean.dateOfJoiningShort)
                                                         }}
                                                     </div>
 
@@ -390,6 +390,7 @@
                                                         <strong>{{ 'EmployoymentSummary.reportingManager' | transloco }}
                                                             :</strong>
                                                     </div>
+                                                    
                                                     <div class="col-7 py-1">
                                                         {{EmployeeSummary.workSummaryBean.reportingManager}}
                                                     </div>

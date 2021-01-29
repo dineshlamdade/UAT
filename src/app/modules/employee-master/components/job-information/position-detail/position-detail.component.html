@@ -39,11 +39,11 @@
                     formControlName="employeeTypeControl" [(ngModel)]="positionDetailsModel.employeeType"
                     (onSelect)="validatEmployeeTypeDate();employeeTypeObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Employee Type"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="employeeTypeObject(employee);validatEmployeeTypeDate();"
                     formControlName="employeeTypeControl" [(ngModel)]="positionDetailsModel.employeeType">
-                    <option value="" selected disabled>Select Employee Type</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredEmployeeTypeList" [value]="employee.value">
                         {{employee.value}}
                     </option>
@@ -91,11 +91,11 @@
                     formControlName="employeeStatusControl" [(ngModel)]="positionDetailsModel.employeeStatus"
                     (onSelect)="validatEmployeeStatusDate();employeeStatusObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Employee Status"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="searchEmployeeStatus(employee.value)"
                     (change)="validatEmployeeStatusDate();employeeStatusObject(employee);"
                     formControlName="employeeStatusControl" [(ngModel)]="positionDetailsModel.employeeStatus">
-                    <option value="" selected disabled>Select Employee Status</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredEmployeeStatusList" [value]="employee.value">
                         {{employee.value}}
                     </option>
@@ -143,11 +143,11 @@
                     formControlName="employeeTaxCategoryControl" [(ngModel)]="positionDetailsModel.employeeTaxCategory"
                     (onSelect)="validatEmployeeTaxCategoryDate();employeeTaxCategoryObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Tax Category"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="searchEmployeeTaxCategory(employee.value)"
                     (change)="validatEmployeeTaxCategoryDate();employeeTaxCategoryObject(employee);"
                     formControlName="employeeTaxCategoryControl" [(ngModel)]="positionDetailsModel.employeeTaxCategory">
-                    <option value="" selected disabled>Select Tax Category</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredEmployeeTaxCategoryList" [value]="employee.value">
                         {{employee.value}}
                     </option>
@@ -195,11 +195,11 @@
                     formControlName="gradeMasterIdControl" [(ngModel)]="gradeCode"
                     (onSelect)="validatGradeDate();gradeObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Grade"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="SearchGrade(employee.masterCode)"
                     (change)="validatGradeDate();gradeObject(employee);" formControlName="gradeMasterIdControl"
                     [(ngModel)]="gradeCode">
-                    <option value="" selected disabled>Select Grade</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredGradeList" [value]="employee.masterCode">
                         {{employee.masterCode}}
                     </option>
@@ -244,11 +244,11 @@
                     formControlName="designation1Control" [(ngModel)]="designation1Code"
                     (onSelect)="validatDesignation1Date();designation1Object($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Designation 1"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="searchDesignation1(employee.masterCode)"
                     (change)="validatDesignation1Date();designation1Object(employee);"
                     formControlName="designation1Control" [(ngModel)]="designation1Code">
-                    <option value="" selected disabled>Select Designation 1</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredDesignation1List" [value]="employee.masterCode">
                         {{employee.masterCode}}
                     </option>
@@ -295,11 +295,11 @@
                     formControlName="designation2Control" [(ngModel)]="designation2Code"
                     (onSelect)="validatDesignation2Date();designation2Object($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Designation 2"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="searchDesignation2(employee.masterCode)"
                     (change)="validatDesignation2Date();designation2Object(employee);"
                     formControlName="designation2Control" [(ngModel)]="designation2Code">
-                    <option value="" selected disabled>Select Designation 2</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of filteredDesignation2List" [value]="employee.masterCode">
                         {{employee.masterCode}}
                     </option>
@@ -345,7 +345,7 @@
                     (completeMethod)="filterHighestEducation($event)" [dropdown]="true"
                     formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Reporting to"
+                <!-- <select class="form-control" placeholder="Select Reporting to"
                     (completeMethod)="searchReportingTo(employee)"
                     (change)="validatReportingDate();enableReportingDate();"
                     formControlName="reportingToControl" [(ngModel)]="positionDetailsModel.reportingTo">
@@ -353,11 +353,20 @@
                     <option *ngFor="let employee of filteredReportingToList" [value]="employee">
                         {{employee}}
                     </option>
-                </select>
+                </select> -->
+                <select class="form-control" placeholder="Select"
+                (completeMethod)="searchReportingTo(employee.fullNameAndEmployeeCode)"
+                (change)="validatReportingDate();reportingToObject(employee);"
+                formControlName="reportingToControl" [(ngModel)]="reportingToCode">
+                <option value="" selected disabled>Select</option>
+                <option *ngFor="let employee of filteredReportingToList" [value]="employee.fullNameAndEmployeeCode">
+                    {{employee.fullNameAndEmployeeCode}}
+                </option>
+            </select>
+
                 <label class="form-label mt-10">Description</label>
-                <input type="text" class="form-control" formControlName="reportingToDescriptionControl"
-                    [(ngModel)]="positionDetailsModel.reportingToDescription" [ngModelOptions]="{standalone: true}"
-                    disabled>
+                <input type="text" class="form-control" [(ngModel)]="reportingToDesc" 
+                [ngModelOptions]="{standalone: true}" disabled>
 
                 <label class="form-label mt-10">From Date</label>
                 <div class="form-group">

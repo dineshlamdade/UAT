@@ -41,11 +41,11 @@
                     formControlName="businessAreaMasterIdControl" [(ngModel)]="projectDetailsModel.projectName"
                     (onSelect)="enableProjectDate();validateProjectDatesSave();">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Project"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="enableProjectDate();validateProjectDatesSave(employee);"
                     formControlName="projectNameControl" [(ngModel)]="projectDetailsModel.projectName">
-                    <option value="" selected disabled>Select Project</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of projectList" [value]="employee">
                         {{employee}}
                     </option>
@@ -88,11 +88,11 @@
                 <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                     (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Billable"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="enableBillableDate();validateSaveBillableDates(employee);"
                     formControlName="billableControl" [(ngModel)]="projectDetailsModel.billable">
-                    <option value="" selected disabled>Select Billable</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of billableList" [value]="employee">
                         {{employee}}
                     </option>
