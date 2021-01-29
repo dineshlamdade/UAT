@@ -563,6 +563,7 @@ export class SkillsDetailComponent implements OnInit {
           this.CommonDataService.sweetalertWarning('This Record is already exist in Grid Summary');
 
           this.employeeSkillDetailsRequestModel.skillName = '';
+          this.SkillInfoForm.get('skillName').setValue('');
           const description = this.SkillInfoForm.get('skillDescription');
           description.disable();
           const proficiency = this.SkillInfoForm.get('proficiency');

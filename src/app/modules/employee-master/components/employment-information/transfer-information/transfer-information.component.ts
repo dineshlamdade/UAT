@@ -12,7 +12,8 @@ import { SharedInformationService } from '../../../employee-master-services/shar
 @Component({
   selector: 'app-transfer-information',
   templateUrl: './transfer-information.component.html',
-  styleUrls: ['./transfer-information.component.scss']
+  styleUrls: ['./transfer-information.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TransferInformationComponent implements OnInit {
 
@@ -44,15 +45,15 @@ export class TransferInformationComponent implements OnInit {
       transferTo: [''],
       effectiveDate: [''],
       transferRemark: [''],
-    }); 
+    });
     const JoiningDate = localStorage.getItem('joiningDate');
     this.JoiningDate = new Date(JoiningDate)
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
-      
+
       let list = res.data.results;
       list.forEach(element => {
-        
+
         this.companyListForJoining.push(element.companyName);
       });
 
@@ -71,7 +72,7 @@ export class TransferInformationComponent implements OnInit {
         this.editTransfer = res.editTransfer;
         this.getTranferToData(this.employeeTransferId);
 
-        if(this.viewTransfer == true){
+        if (this.viewTransfer == true) {
           const transferTo = this.TransferForm.get('transferTo');
           transferTo.disable();
           const effectiveDate = this.TransferForm.get('effectiveDate');
@@ -86,7 +87,7 @@ export class TransferInformationComponent implements OnInit {
 
 
   transferToFormSubmit(TransferToInformation) {
-    
+
     TransferToInformation.employeeMasterId = this.employeeMasterId
     TransferToInformation.effectiveDate = this.datepipe.transform(TransferToInformation.effectiveDate, "dd-MMM-yyyy");
     TransferToInformation.companyId = 1;
@@ -112,6 +113,7 @@ export class TransferInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.TransferForm.reset();
+        this.EventEmitterService.getEmpSummaryInitiate();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -132,6 +134,7 @@ export class TransferInformationComponent implements OnInit {
 
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.TransferForm.reset();
+      this.EventEmitterService.getEmpSummaryInitiate();
       this.router.navigate(['/employee-master/employment-information/employment-summary']);
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -170,6 +173,10 @@ export class TransferInformationComponent implements OnInit {
 
   resetTranferToForm() {
     this.TransferForm.reset();
+  }
+
+  cancel() {
+    this.EventEmitterService.getEmpSummaryInitiate();
   }
 }
 

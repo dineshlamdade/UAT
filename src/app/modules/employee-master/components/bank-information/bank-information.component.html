@@ -29,7 +29,7 @@
                                         </p-autoComplete>
                                         <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <!-- <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.state' | transloco }}</label>
                                         <select class="form-control custom-select" [(ngModel)]="stateModel"
                                             [suggestions]="filteredStates" placeholder="Select"
@@ -39,15 +39,15 @@
                                                 {{state}}
                                             </option>
                                         </select>
-
-                                        <!-- <p-autoComplete [(ngModel)]="stateModel" [suggestions]="filteredStates"
-                                            placeholder="Select State" (completeMethod)="filterStates($event)"
-                                            formControlName="state">
-                                        </p-autoComplete> -->
-                                    </div>
+                                    </div> -->
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
-                                        <p-autoComplete [(ngModel)]="BankInformationModel.bankIFSC"
+                                        <input type="text" class="form-control" placeholder="Enter IFSC" maxlength="11"
+                                            formControlName="bankIFSC" [(ngModel)]="BankInformationModel.bankIFSC"
+                                            (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();"
+                                            (keyup)="getDataFromIFSC(BankInformationModel.bankIFSC);BankInformationModel.bankIFSC = $event?.toUpperCase();">
+
+                                        <!-- <p-autoComplete [(ngModel)]="BankInformationModel.bankIFSC"
                                             [suggestions]="IFSCcodeList" placeholder="Search IFSC"
                                             (completeMethod)="searchIFSC($event, BankInformationModel.bankIFSC)"
                                             formControlName="bankIFSC" (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();
@@ -59,7 +59,7 @@
                                                 </div>
                                             </ng-template>
                                         </p-autoComplete>
-                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                        <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                     </div>
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.bankName' | transloco }}</label>
@@ -68,7 +68,7 @@
                                             tooltip="{{BankInformationModel.bankName}}">
                                     </div>
 
-                                    <div class="col-sm-6 col-md-3 mt-15">
+                                    <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.branchName' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Branch"
                                             formControlName="branchName" [(ngModel)]="BankInformationModel.branchName"
@@ -116,7 +116,7 @@
                                             (change)="matchAccountNo(confirmPassword.value)" minlength="1"
                                             maxlength="{{maxAccNumber}}" (keypress)="keyPress($event)"
                                             [type]="confirmAccountNo1 ? 'text' : 'password'"
-                                            [(ngModel)]="confirmAccountNumber"
+                                            [(ngModel)]="confirmAccountNumber" (keyup)="accountNoMatchValidation()"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('confirmAccountNo').status == 'INVALID'}">
                                         <mat-icon matSuffix (click)="confirmAccountNo1 = !confirmAccountNo1"
                                             class="field-icon">
@@ -126,9 +126,9 @@
                                         <mat-error style="font-size: 11px;" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch') || confirmAccountNumber?.length>0
                                             && bankInfoForm.get('confirmAccountNo').status == 'INVALID'">
                                             {{ 'BankInfoForm.accountNoMatchError' | transloco }}</mat-error>
-                                        <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo
+                                        <!-- <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo
                 && BankInformationModel.accountNo.length>0" class="match-accountNo">
-                                            {{ 'BankInfoForm.accountNoMatchSuccessMsg' | transloco }}</p>
+                                            {{ 'BankInfoForm.accountNoMatchSuccessMsg' | transloco }}</p> -->
                                     </div>
                                 </div>
 

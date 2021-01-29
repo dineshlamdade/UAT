@@ -84,8 +84,8 @@ export class FamilyDetailsComponent implements OnInit {
     private router: Router,
     private matDialog: MatDialog,
     private CommonDataService: SharedInformationService) { }
-    birthdateClickboolean: boolean = false;
-    validBirthDate: boolean;
+  birthdateClickboolean: boolean = false;
+  validBirthDate: boolean;
 
 
   ngOnInit(): void {
@@ -100,7 +100,7 @@ export class FamilyDetailsComponent implements OnInit {
       gender: ['', Validators.required],
       maritalStatus: ['', Validators.required],
       fatherHusbandName: ['', Validators.required],
-      aadhaar: [''],
+      aadhaar: ['', Validators.pattern(/^(\d{12}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)],
       nameAsPerAadhaar: [''],
       ageBracket: ['', Validators.required],
       companyMediclaimApplicable: [''],
@@ -241,18 +241,18 @@ export class FamilyDetailsComponent implements OnInit {
     this.dependentOnEmployee = 'no';
     this.companyMediclaim = 'no';
     this.IsActive = true;
-     this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('no');
-     this.FamilyDetailsInfoForm.get('companyMediclaimToggle').setValue('no');
-     this.FamilyDetailsInfoForm.get('isActive').setValue(true);
+    this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('no');
+    this.FamilyDetailsInfoForm.get('companyMediclaimToggle').setValue('no');
+    this.FamilyDetailsInfoForm.get('isActive').setValue(true);
 
-     this.FamilyDetailsInfoForm.get('relation').setValue('');
-     this.FamilyDetailsInfoForm.get('gender').setValue('');
-     this.FamilyDetailsInfoForm.get('maritalStatus').setValue('');
-     this.FamilyDetailsInfoForm.get('ageBracket').setValue('');
+    this.FamilyDetailsInfoForm.get('relation').setValue('');
+    this.FamilyDetailsInfoForm.get('gender').setValue('');
+    this.FamilyDetailsInfoForm.get('maritalStatus').setValue('');
+    this.FamilyDetailsInfoForm.get('ageBracket').setValue('');
 
-     this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValue('');
-     this.FamilyDetailsInfoForm.get('copyFrom').setValue('');
-     this.FamilyDetailsInfoForm.get('guardianCountryCode').setValue('');
+    this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValue('');
+    this.FamilyDetailsInfoForm.get('copyFrom').setValue('');
+    this.FamilyDetailsInfoForm.get('guardianCountryCode').setValue('');
   }
 
   getGuardianAddressFromPIN() {
@@ -341,10 +341,10 @@ export class FamilyDetailsComponent implements OnInit {
     let valid;
     if (this.FamilySummaryGridData.length > 0) {
       this.FamilySummaryGridData.forEach(element => {
-        if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName ||
+        if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName &&
           element.relation == familyMemberInfoRequestDTO.relation) {
           valid = false;
-          // this.CommonDataService.sweetalertError('This record is already present', "Attention..!!");
+          this.CommonDataService.sweetalertError('This record is already present');
           return;
         }
       })
@@ -381,14 +381,15 @@ export class FamilyDetailsComponent implements OnInit {
       }
 
       this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
+      this.saveFamilyInformation();
     }
     valid = true;
-    this.saveFamilyInformation();
+
   }
 
   saveFamilyEditRow(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
     guardianDetailRequestDTO) {
-    
+
     if (familyMemberInfoRequestDTO) {
       familyMemberInfoRequestDTO.employeeMasterId = this.employeeMasterId;
     }
@@ -453,25 +454,25 @@ export class FamilyDetailsComponent implements OnInit {
   birthDateValidation() {
 
     if ((this.familyMemberInfoRequestDTO.dateOfBirth != '' ||
-    this.familyMemberInfoRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
+      this.familyMemberInfoRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
       let dateObj = new Date(this.familyMemberInfoRequestDTO.dateOfBirth);
       // dateObj = this.familyMemberInfoRequestDTO.dateOfBirth;
       var month = dateObj.getMonth() + 1; //months from 1-12
       var day = dateObj.getDate();
       var year = dateObj.getFullYear();
-  
+
       this.validBirthDate = new Date(year + 18, month - 1, day) <= new Date();
       if (this.validBirthDate == false && this.familyMemberInfoRequestDTO.dateOfBirth != '') {
         this.birthD(this.validBirthDate);
       }
-      if(this.validBirthDate == true && this.familyMemberInfoRequestDTO.dateOfBirth) {
+      if (this.validBirthDate == true && this.familyMemberInfoRequestDTO.dateOfBirth) {
         this.familyMemberInfoRequestDTO.ageBracket = 'Adult';
         const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
         temp13.enable();
       }
     }
 
-    
+
   }
   birthD(validBirthDate) {
     this.birthdateClickboolean = false;
@@ -481,11 +482,11 @@ export class FamilyDetailsComponent implements OnInit {
       this.familyMemberInfoRequestDTO.isDependant = 1;
       const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
       temp13.disable();
-    } 
-    
+    }
+
   }
-  birthDateClickEvent(event){
-    
+  birthDateClickEvent(event) {
+
     this.birthdateClickboolean = true;
   }
   getAge(birthDateString) {
@@ -500,7 +501,7 @@ export class FamilyDetailsComponent implements OnInit {
     return age;
   }
   validDate(birthDateString) {
-    
+
     if (this.getAge(birthDateString) >= 60 && this.getAge(birthDateString) < 80) {
       this.familyMemberInfoRequestDTO.ageBracket = 'Senior Citizen';
     }
@@ -558,7 +559,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   getAddressFromCopyList(copyAddress) {
-    
+
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
 
@@ -676,7 +677,7 @@ export class FamilyDetailsComponent implements OnInit {
   editFamilyMember(family) {
     this.enableForm();
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-      
+
       this.updateFormFlag = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
@@ -733,11 +734,14 @@ export class FamilyDetailsComponent implements OnInit {
       this.familyViewItem = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
+
       if (res.data.results[0].familyDetailsGetBean.familyMemberInfo.image) {
         this.imageUrl = 'data:' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.type + ';base64,' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.image;
       } else {
         this.imageUrl = "./assets/images/empIcon5.png";
-      } if (this.familyMemberInfoRequestDTO.isDependant == 1) {
+      }
+
+      if (this.familyMemberInfoRequestDTO.isDependant == 1) {
         this.dependentOnEmployee = "yes";
       } else {
         this.dependentOnEmployee = "no";
@@ -747,10 +751,25 @@ export class FamilyDetailsComponent implements OnInit {
       } else {
         this.companyMediclaim = "no";
       }
-      this.familyMemberInfoRequestDTO.dateOfBirth = this.familyMemberInfoRequestDTO.dateOfBirth;
+      this.familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(this.familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
+
       this.familyAddressDetailRequestDTO = res.data.results[0].familyDetailsGetBean.familyAddressDetail;
+
+      if (this.familyAddressDetailRequestDTO.phoneNumber) {
+        let num;
+        this.addressPhoneNo = this.familyAddressDetailRequestDTO.phoneNumber.slice(this.familyAddressDetailRequestDTO.phoneNumber.length - 10),
+          num = this.familyAddressDetailRequestDTO.phoneNumber,
+          this.addressCountryCode = num.slice(0, num.length - 11);
+      }
+
       this.guardianDetailRequestDTO = res.data.results[0].familyDetailsGetBean.guardianDetail;
 
+      if (this.guardianDetailRequestDTO.phoneNumber) {
+        let num1;
+        this.guardianPhoneNo = this.guardianDetailRequestDTO.phoneNumber.slice(this.guardianDetailRequestDTO.phoneNumber.length - 10),
+          num1 = this.guardianDetailRequestDTO.phoneNumber,
+          this.guardianCountryCode = num1.slice(0, num1.length - 11);
+      }
     })
   }
 
@@ -927,7 +946,7 @@ export class FamilyDetailsComponent implements OnInit {
     temp38.enable();
   }
   keyPress(event: any) {
-    
+
     const pattern = /[0-9]/;
 
     let inputChar = String.fromCharCode(event.charCode);

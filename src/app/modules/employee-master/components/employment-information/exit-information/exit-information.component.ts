@@ -14,7 +14,8 @@ import { SharedInformationService } from '../../../employee-master-services/shar
 @Component({
   selector: 'app-exit-information',
   templateUrl: './exit-information.component.html',
-  styleUrls: ['./exit-information.component.scss']
+  styleUrls: ['./exit-information.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ExitInformationComponent implements OnInit {
   ExitForm: FormGroup;
@@ -65,7 +66,7 @@ export class ExitInformationComponent implements OnInit {
     //  this.getExitInformationData(this.employeeExitInfoId);
 
     this.exitSubscription = this.EventEmitterService.setExitData().subscribe(res => {
-      
+
       if (res) {
         this.employeeExitInfoId = res.exitId
         this.editExit = res.editExit;
@@ -102,7 +103,7 @@ export class ExitInformationComponent implements OnInit {
     //   this.employmentStatusBoolean = ExitInformation.employmentStatusBoolean
     // }
 
-    
+
     ExitInformation.resignationDate = this.datepipe.transform(ExitInformation.resignationDate, "dd-MMM-yyyy");
     ExitInformation.expectedLeavingDate = this.datepipe.transform(ExitInformation.expectedLeavingDate, "dd-MMM-yyyy");
     ExitInformation.lastWorkingDate = this.datepipe.transform(ExitInformation.lastWorkingDate, "dd-MMM-yyyy");
@@ -145,6 +146,7 @@ export class ExitInformationComponent implements OnInit {
         localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.ExitForm.reset();
+        this.EventEmitterService.getEmpSummaryInitiate();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
         // this.EventEmitterService.getRejoineeStatusCode(true);
       }, (error: any) => {
@@ -173,6 +175,7 @@ export class ExitInformationComponent implements OnInit {
       // localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.ExitForm.reset();
+      this.EventEmitterService.getEmpSummaryInitiate();
       // this.EventEmitterService.getRejoineeStatusCode(true);
       this.router.navigate(['/employee-master/employment-information/employment-summary']);
     }, (error: any) => {
@@ -184,7 +187,7 @@ export class ExitInformationComponent implements OnInit {
 
     this.EmploymentInformationService.getExitInformation(employeeExitInfoId).subscribe(res => {
 
-      
+
       if (res.data.results[0]) {
         this.ExitInformation = res.data.results[0];
 
@@ -206,5 +209,8 @@ export class ExitInformationComponent implements OnInit {
 
   resetForm() {
     this.ExitForm.reset();
+  }
+  cancel() {
+    this.EventEmitterService.getEmpSummaryInitiate();
   }
 }

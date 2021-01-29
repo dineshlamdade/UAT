@@ -113,7 +113,7 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 class="form-control" placeholder="  /   /" bsDatepicker
-                                                formControlName="endDate"
+                                                formControlName="endDate" [maxDate]="today"
                                                 [minDate]="employeeEducationRequestModel.startDate"
                                                 [(ngModel)]="employeeEducationRequestModel.endDate">
                                         </div>
@@ -121,8 +121,8 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
-                                    <label class="form-label">Percentage/CGPA/Grade</label>
-                                    <input type="number" class="form-control" placeholder="Enter Percentage/CGPA/Grade"
+                                    <label class="form-label">Percentage/ CGPA/ Grade</label>
+                                    <input type="text" class="form-control" placeholder="Enter Percentage/CGPA/Grade"
                                         formControlName="percentageOrCGPAOrGrade"
                                         [(ngModel)]="employeeEducationRequestModel.percentageOrCGPAOrGrade">
                                 </div>

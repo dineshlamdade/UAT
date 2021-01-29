@@ -50,7 +50,7 @@ export class BankDetailsComponent implements OnInit {
   BankDataSource: MatTableDataSource<any>;
   BankAccountDataSource: Array<any> = [];
   filteredStates: Array<any> = [];
-
+  accountNo: boolean;
 
 
   constructor(private FamilyInformationService: FamilyInformationService,
@@ -194,22 +194,23 @@ export class BankDetailsComponent implements OnInit {
     }
     return temp.sort((a, b) => a - b);
   }
-  // getDataFromIFSC(bankIFSC, bank) {
-  //   // if (this.BankInformationModel.bankIFSC) {
-  //   //   this.BankInformationModel.bankName = '';
-  //   //   this.BankInformationModel.branchName = '';
-  //   //   this.BankInformationModel.branchAddress = '';
-  //   //   this.confirmAccountNumber = '';
-  //   //   this.BankInformationModel.accountNo = '';
-  //   //   this.BankInformationModel.nameAsPerBank = '';
-  //     this.IFSCDetails(bankIFSC, bank);
-  //   // }
-  //   // if (bankIFSC) {
-  //   //   this.gridEditIFSC1 = bankIFSC
-  //   //   this.IFSCGridDetails(bankIFSC);
-  //   // }
-  // }
 
+  getDataFromIFSC(bankIFSC, bank) {
+    
+    if (bankIFSC.length < 11) {
+      bank.bankName = '';
+      bank.branchName = '';
+      bank.branchAddress = '';
+      bank = '';
+      bank.accountNo = '';
+      bank.nameAsPerBank = '';
+    }
+    if (bankIFSC.length == 11) {
+      this.IFSCDetails(bankIFSC, bank);
+    }
+  }
+
+  
   IFSCDetails(bankIFSC, bank: any) {
     
     this.currenBank = bank;
@@ -224,6 +225,9 @@ export class BankDetailsComponent implements OnInit {
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
       
       this.maxAccNumber = res.data.results[0].limit
+      if (this.maxAccNumber == 0) {
+        this.maxAccNumber = null;
+      }
       bank.bankName = res.data.results[0].bankName;
       bank.branchName = res.data.results[0].branchName;
       bank.branchAddress = res.data.results[0].address;
@@ -288,5 +292,15 @@ export class BankDetailsComponent implements OnInit {
       }
     }
     this.AllIFSCcodeList = filtered;
+  }
+
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

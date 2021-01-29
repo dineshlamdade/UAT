@@ -9,20 +9,20 @@
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
+                                <col style="width:130px">
+                                <!-- <col style="width:130px"> -->
+                                <col style="width:140px">
+                                <col style="width:120px">
+                                <col style="width:120px">
+                                <col style="width:120px">
+                                <col style="width:150px">
+                                <col style="width:120px">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
                                 <th class="primeng-table-header-center">Name</th>
-                                <th class="primeng-table-header-center">State</th>
+                                <!-- <th class="primeng-table-header-center">State</th> -->
                                 <th class="primeng-table-header-center">Bank IFSC</th>
                                 <th class="primeng-table-header-center">Bank Name</th>
                                 <th class="primeng-table-header-center">Branch Name</th>
@@ -34,11 +34,12 @@
                         <ng-template pTemplate="body" let-bank>
                             <tr>
                                 <td><span>
-                                        <input type="text" class="form-control" [(ngModel)]="bank.familyMemberName"
-                                            [ngModelOptions]="{standalone: true}" style="text-align: center;">
+                                        <input type="text" class="form-control text-center"
+                                            [(ngModel)]="bank.familyMemberName" [ngModelOptions]="{standalone: true}"
+                                            disabled>
                                     </span></td>
 
-                                <td><span>
+                                <!-- <td><span>
                                         <select class="form-control custom-select" placeholder="Select"
                                             [(ngModel)]="bank.state" (completeMethod)="filterStates($event)">
                                             <option value="" selected disabled>Select</option>
@@ -46,18 +47,18 @@
                                                 {{state}}
                                             </option>
                                         </select>
-
-                                        <!-- <p-autoComplete [(ngModel)]="bank.state" [suggestions]="filteredStates"
-                                            placeholder="Select" (completeMethod)="filterStates($event)"
-                                            [dropdown]="true">
-                                        </p-autoComplete> -->
-                                    </span></td>
+                                    </span></td> -->
 
                                 <td><span>
-                                        <p-autoComplete
+                                        <input type="text" class="form-control" [(ngModel)]="bank.bankIFSC"
+                                            placeholder="Enter IFSC" (keyup)="getDataFromIFSC(bank.bankIFSC, bank)"
+                                            [ngModelOptions]="{standalone: true}" maxlength="11"
+                                            (ngModelChange)="bank.bankIFSC = $event?.toUpperCase()">
+
+                                        <!-- <p-autoComplete
                                             (completeMethod)="searchIFSC($event, bank.bankIFSC, bank.state, bank)"
                                             [suggestions]="AllIFSCcodeList" [dropdown]="true"
-                                            (onSelect)="IFSCDetails(bank.bankIFSC, bank)" [(ngModel)]="bank.bankIFSC"
+                                            (onSelect)="getDataFromIFSC(bank.bankIFSC, bank)" [(ngModel)]="bank.bankIFSC"
                                             placeholder="Search IFSC"
                                             (ngModelChange)="bank.bankIFSC = $event?.toUpperCase()"
                                             [ngModelOptions]="{standalone: true}">
@@ -67,37 +68,41 @@
                                                         {{ifsc}}</div>
                                                 </div>
                                             </ng-template>
-                                        </p-autoComplete>
+                                        </p-autoComplete> -->
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.bankName"
-                                            #bankName="ngModel" [ngModelOptions]="{standalone: true}">
+                                            #bankName="ngModel" [ngModelOptions]="{standalone: true}"
+                                            tooltip="{{bank.bankName}}">
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.branchName"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{bank.branchName}}">
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.branchAddress"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{bank.branchAddress}}">
                                     </span></td>
 
                                 <td><span>
                                         <input #accNo [(ngModel)]="bank.accountNumber" class="form-control"
                                             [ngModelOptions]="{standalone: true}" minlength="1"
-                                            maxlength="{{maxAccNumber}}" [type]="bank.accountNo ? 'number' : 'password'"
+                                            maxlength="{{maxAccNumber}}" [type]="accountNo ? 'text' : 'password'"
                                             (keyup)="validateAccountNo(bank.accountNumber)"
-                                            placeholder="Enter Account No.">
+                                            placeholder="Enter Account No." (keypress)="keyPress($event)">
                                         <mat-icon matSuffix (click)="accountNo = !accountNo" class="eye-icon-payroll">
                                             {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
+
+                                        <mat-error style="font-size: 7px;">
+                                            {{accountNumberCountError}}</mat-error>
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.accountHolderName"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{bank.accountHolderName}}">
                                     </span></td>
                             </tr>
                         </ng-template>

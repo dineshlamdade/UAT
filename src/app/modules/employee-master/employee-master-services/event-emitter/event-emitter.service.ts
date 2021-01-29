@@ -41,6 +41,13 @@ export class EventEmitterService {
   private TransferToDataSubject = new Subject<any>();
   private ExitDataSubject = new Subject<any>();
   private RejoineeStatusCodeSubject = new Subject<any>();
+  private JoiningInitiateSubject = new Subject<any>();
+  private reJoiningInitiateSubject = new Subject<any>();
+  private transferInitiateSubject = new Subject<any>();
+  private exitInitiateSubject = new Subject<any>();
+  private EmpSummaryInitiateSubject = new Subject<any>();
+
+
 
   constructor() { }
 
@@ -247,53 +254,93 @@ export class EventEmitterService {
   setNextJobTab() {
     return this.NextJobTab.asObservable();
   }
-  getNextToAssignment(assignment){
+  getNextToAssignment(assignment) {
     this.NextToAssignment.next(assignment);
   }
   setNextToAssignment() {
     return this.NextToAssignment.asObservable();
   }
 
-  getAddjoinee(user){
+  getAddjoinee(user) {
     this.AddjoineeSubject.next(user);
   }
   setAddjoinee() {
     return this.AddjoineeSubject.asObservable();
   }
 
-  getJoiningData(joinee){
+  getJoiningData(joinee) {
     this.JoiningDataSubject.next(joinee);
   }
   setJoiningData() {
     return this.JoiningDataSubject.asObservable();
   }
 
-  getReJoiningData(rejoinee){
+  getReJoiningData(rejoinee) {
     this.ReJoiningDataSubject.next(rejoinee);
   }
   setReJoiningData() {
     return this.ReJoiningDataSubject.asObservable();
   }
 
-  getTransferToData(TransferTo){
+  getTransferToData(TransferTo) {
     this.TransferToDataSubject.next(TransferTo);
   }
   setTransferToData() {
     return this.TransferToDataSubject.asObservable();
   }
 
-  getExitData(ExitData){
+  getExitData(ExitData) {
     this.ExitDataSubject.next(ExitData);
   }
   setExitData() {
     return this.ExitDataSubject.asObservable();
   }
 
-  getRejoineeStatusCode(rejoinee){
+  getRejoineeStatusCode(rejoinee) {
     this.RejoineeStatusCodeSubject.next(rejoinee);
   }
 
   setRejoineeStatusCode() {
     return this.RejoineeStatusCodeSubject.asObservable();
+  }
+
+  getJoiningInitiate(joinee) {
+    this.JoiningInitiateSubject.next(joinee);
+  }
+
+  setJoiningInitiate() {
+    return this.JoiningInitiateSubject.asObservable();
+  }
+
+  getreJoiningInitiate(joinee) {
+    this.reJoiningInitiateSubject.next(joinee);
+  }
+
+  setreJoiningInitiate() {
+    return this.reJoiningInitiateSubject.asObservable();
+  }
+
+  getTransferInitiate(joinee) {
+    this.transferInitiateSubject.next(joinee);
+  }
+
+  setTransferInitiate() {
+    return this.transferInitiateSubject.asObservable();
+  }
+
+  getExitInitiate(joinee) {
+    this.exitInitiateSubject.next(joinee);
+  }
+
+  setExitInitiate() {
+    return this.exitInitiateSubject.asObservable();
+  }
+
+  getEmpSummaryInitiate() {
+    this.EmpSummaryInitiateSubject.next();
+  }
+
+  setEmpSummaryInitiate() {
+    return this.EmpSummaryInitiateSubject.asObservable();
   }
 }

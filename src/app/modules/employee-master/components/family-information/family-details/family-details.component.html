@@ -134,6 +134,7 @@
                                         <input type="text" class="form-control" placeholder="Enter Aadhaar No."
                                             minlength="1" maxlength="12" formControlName="aadhaar"
                                             (keypress)="keyPress($event)"
+                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('aadhaar').status == 'INVALID'}"
                                             [(ngModel)]="familyMemberInfoRequestDTO.aadhaar">
                                     </div>
 
@@ -169,9 +170,9 @@
 
                             <div class="row">
                                 <div class="col-sm-6 col-md-3 mt-15 row-margin-left">
-                                    <div class="form-group  mt-15">
-                                        <legend>
-                                            Dependent On Employee</legend>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Dependent On Employee</label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="yes"
@@ -195,9 +196,9 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-5 mt-15">
-                                    <div class="form-group  mt-15">
-                                        <legend>
-                                            Part Of Company Mediclaim Insurance</legend>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            Part Of Company Mediclaim Insurance</label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="yes"
@@ -222,7 +223,7 @@
                             </div>
 
                             <div class="row row-margin-left">
-                                <div class="col-sm-6 col-md-3 mt-15">
+                                <div class="col-sm-6 col-md-3">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="example-checkbox1"
                                             checked formControlName="isActive" (change)="activeSetBoolean($event)"
@@ -230,7 +231,7 @@
                                         <span class="custom-control-label">Active</span>
                                     </label>
                                 </div>
-                                <div class="col-sm-6 col-md-3 mt-15 ml-35">
+                                <div class="col-sm-6 col-md-3 ml-35">
                                     <label class="form-label">Remark</label>
                                     <input type="text" class="form-control" placeholder="Enter Remark"
                                         formControlName="remark" [(ngModel)]="familyMemberInfoRequestDTO.remark">

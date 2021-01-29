@@ -19,8 +19,8 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 class="form-control" formControlName="projectedRetirementDate"
-                                                [(ngModel)]="ExitInformation.retirementDate"
-                                                placeholder="  /   /" bsDatepicker>
+                                                [(ngModel)]="ExitInformation.retirementDate" placeholder="  /   /"
+                                                bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -142,6 +142,7 @@
                                         tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
                                     <button type="button" tooltip="Cancel" *ngIf="viewExit || editExit"
+                                        (click)="cancel()"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
                                                 class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>

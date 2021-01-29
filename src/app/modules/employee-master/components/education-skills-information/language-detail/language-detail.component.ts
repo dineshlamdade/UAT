@@ -151,7 +151,7 @@ export class LanguageDetailComponent implements OnInit {
 
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.enable();
-   this.enableLanguageOptions();
+    this.enableLanguageOptions();
   }
 
   viewLanguageRow(language) {
@@ -230,12 +230,31 @@ export class LanguageDetailComponent implements OnInit {
     temp4.disable();
   }
 
-  enableLanguageOptions(){
+  enableLanguageOptions() {
     const temp2 = this.LanguageInfoForm.get('languageRead');
     temp2.enable();
     const temp3 = this.LanguageInfoForm.get('languageWrite');
     temp3.enable();
     const temp4 = this.LanguageInfoForm.get('languageSpeak');
     temp4.enable();
+  }
+
+  validateGridLanguage() {
+    if (this.LanguageSummaryGridData.length > 0) {
+      this.LanguageSummaryGridData.forEach(res => {
+        debugger
+        if (res.language == this.employeeLanguageRequestModel.language) {
+          // this.validateLanguageGridRow = true;
+          // this.notifyService.showError('This Record is already exist in Grid Summary', "Attention..!!");
+          this.CommonDataService.sweetalertError('This Record is already exist in Grid Summary');
+          this.disableLanguageOptions()
+          this.employeeLanguageRequestModel.language = '';
+          this.LanguageInfoForm.get('language').setValue('');
+          return;
+        } else {
+          this.enableLanguageOptions();
+        }
+      })
+    }
   }
 }

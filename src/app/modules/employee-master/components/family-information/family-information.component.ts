@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FamilyInformationService } from './../../employee-master-services/family-information.service';
 
 
@@ -16,20 +17,35 @@ export class FamilyInformationComponent implements OnInit {
   nominationTab: boolean = false;
   bankTab: boolean = false;
   public tabIndex = 0;
-  
-  constructor(private FamilyInformationService: FamilyInformationService) { }
+
+  constructor(private FamilyInformationService: FamilyInformationService,
+    private route: Router) {
+    
+    if (route.url == '/employee-master/family-information/family-details') {
+      this.tabIndex = 0;
+      this.familyTabValidation();
+    }
+    if (route.url == '/employee-master/family-information/nomination-details') {
+      this.tabIndex = 1;
+      this.nominationTabValidation();
+    }
+    if (route.url == '/employee-master/family-information/bank-details') {
+      this.tabIndex = 2;
+      this.bankTabValidation();
+    }
+  }
 
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
     this.hideSummaryGrid = false;
-    this. getFamilyGridSummary();
+    this.getFamilyGridSummary();
   }
 
   getFamilyGridSummary() {
 
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe(res => {
-      
+
       this.FamilySummaryGridData = res.data.results[0].familyDetailsSummaryBeans;
       console.log(this.FamilySummaryGridData);
 
@@ -43,22 +59,22 @@ export class FamilyInformationComponent implements OnInit {
     })
   }
 
-  familyTabValidation(){
-    this.familyTab=true;
-    this.nominationTab=false;
-    this.bankTab=false;
+  familyTabValidation() {
+    this.familyTab = true;
+    this.nominationTab = false;
+    this.bankTab = false;
   }
 
-  nominationTabValidation(){
-    this.familyTab=false;
-    this.nominationTab=true;
-    this.bankTab=false;
+  nominationTabValidation() {
+    this.familyTab = false;
+    this.nominationTab = true;
+    this.bankTab = false;
   }
 
-  bankTabValidation(){
-    this.familyTab=false;
-    this.nominationTab=false;
-    this.bankTab=true;
+  bankTabValidation() {
+    this.familyTab = false;
+    this.nominationTab = false;
+    this.bankTab = true;
   }
 
 }

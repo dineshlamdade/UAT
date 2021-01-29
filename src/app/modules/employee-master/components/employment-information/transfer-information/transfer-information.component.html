@@ -67,6 +67,7 @@
                                         tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
                                     <button type="button" tooltip="Cancel" *ngIf="viewTransfer || editTransfer"
+                                        (click)="cancel()"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
                                                 class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
