@@ -355,6 +355,8 @@ debugger
      positionDetailsModel.payrollAreaCode=new String(payrollAreaCode);
     }
 
+    positionDetailsModel.payrollAreaCode=new String( this.payrollAreaCode);
+
     positionDetailsModel.employeeTypeFromDate = this.datepipe.transform(positionDetailsModel.employeeTypeFromDate, "dd-MMM-yyyy");
     positionDetailsModel.employeeTypeToDate = this.datepipe.transform(positionDetailsModel.employeeTypeToDate, "dd-MMM-yyyy");
     positionDetailsModel.employeeStatusFromDate = this.datepipe.transform(positionDetailsModel.employeeStatusFromDate, "dd-MMM-yyyy");

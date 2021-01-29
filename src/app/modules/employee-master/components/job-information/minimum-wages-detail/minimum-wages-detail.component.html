@@ -1,4 +1,5 @@
 <form [formGroup]="minimumWagesForm" (ngSubmit)="minumumWagesDetailsSubmit(minumumWagesDetailsModel)">
+    <div class="row">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
         <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
@@ -25,12 +26,12 @@
         </select>
     </div>
 
-    <div class="col-sm-6 col-md-3 mt-10" >
+    <div class="col-sm-6 col-md-3" >
         <label class="form-label">Company Name</label>
         <input type="text" class="form-control" [(ngModel)]="companyName"
             [ngModelOptions]="{standalone: true}" disabled>
     </div>
-    
+    </div>
     <br>
 <div class="row row-cards">
     <div class="col-sm-6 col-lg-3">

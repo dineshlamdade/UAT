@@ -514,6 +514,7 @@ export class OrganizationDetailComponent implements OnInit {
          this.companyName = new String(companyName);
        }
     }
+    organizationDetailsModel.payrollAreaCode=new String( this.payrollAreaCode);
 
     organizationDetailsModel.establishmentFromDate = this.datepipe.transform(organizationDetailsModel.establishmentFromDate, "dd-MMM-yyyy");
     organizationDetailsModel.establishmentToDate = this.datepipe.transform(organizationDetailsModel.establishmentToDate, "dd-MMM-yyyy");

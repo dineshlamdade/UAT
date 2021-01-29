@@ -246,6 +246,8 @@ export class MinimumWagesDetailComponent implements OnInit {
        }
     }
 
+    minumumWagesDetailsModel.payrollAreaCode=new String( this.payrollAreaCode);
+
     minumumWagesDetailsModel.stateStartDate = this.datepipe.transform(minumumWagesDetailsModel.stateStartDate, "dd-MMM-yyyy");
     minumumWagesDetailsModel.stateEndDate = this.datepipe.transform(minumumWagesDetailsModel.stateEndDate, "dd-MMM-yyyy");
     minumumWagesDetailsModel.zoneStartDate = this.datepipe.transform(minumumWagesDetailsModel.zoneStartDate, "dd-MMM-yyyy");

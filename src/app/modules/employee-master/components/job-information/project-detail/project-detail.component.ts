@@ -187,6 +187,7 @@ export class ProjectDetailComponent implements OnInit {
     if (this.isOnBenchBoolean == 'no') {
       this.projectDetailsModel.isOnBench = 0;
     }
+    projectDetailsModel.payrollAreaCode=new String( this.payrollAreaCode);
 
     projectDetailsModel.projectFromDate = this.datepipe.transform(projectDetailsModel.projectFromDate, "dd-MMM-yyyy");
     projectDetailsModel.projectToDate = this.datepipe.transform(projectDetailsModel.projectToDate, "dd-MMM-yyyy");

@@ -1,12 +1,13 @@
 <form [formGroup]="PositionForm" (ngSubmit)="positionFormSubmit(positionDetailsModel)">
-    <div class="col-sm-6 col-md-3">
-        <label class="form-label">Payroll Area</label>
-        <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label">Payroll Area</label>
+            <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
             (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
         </p-autoComplete> -->
 
-        <!-- <select class="form-control" placeholder="Select Payroll Area"
+            <!-- <select class="form-control" placeholder="Select Payroll Area"
             (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
             [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
             <option value="" selected disabled>Select Payroll Area</option>
@@ -14,20 +15,21 @@
                 {{option}}
             </option>
         </select> -->
-        <select class="form-control" placeholder="Select"
-        (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
-        (change)="selectPayrollArea(payrollAreaCode)"
-            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
-            <option value="" selected disabled>Select</option>
-            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
-                {{option.payrollAreaCode}}
-            </option>
-        </select>
-    </div>
-    <div class="col-sm-6 col-md-3 mt-10" >
-        <label class="form-label">Company Name</label>
-        <input type="text" class="form-control" [(ngModel)]="companyName"
-            [ngModelOptions]="{standalone: true}" disabled>
+            <select class="form-control" placeholder="Select"
+                (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+                (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
+                [ngModelOptions]="{standalone: true}">
+                <option value="" selected disabled>Select</option>
+                <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                    {{option.payrollAreaCode}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label">Company Name</label>
+            <input type="text" class="form-control" [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}"
+                disabled>
+        </div>
     </div>
     <br>
     <div class="row row-cards">
@@ -39,8 +41,7 @@
                     formControlName="employeeTypeControl" [(ngModel)]="positionDetailsModel.employeeType"
                     (onSelect)="validatEmployeeTypeDate();employeeTypeObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select"
-                    (completeMethod)="employeeTypeList(employee.value)"
+                <select class="form-control" placeholder="Select" (completeMethod)="employeeTypeList(employee.value)"
                     (change)="employeeTypeObject(employee);validatEmployeeTypeDate();"
                     formControlName="employeeTypeControl" [(ngModel)]="positionDetailsModel.employeeType">
                     <option value="" selected disabled>Select</option>
@@ -195,8 +196,7 @@
                     formControlName="gradeMasterIdControl" [(ngModel)]="gradeCode"
                     (onSelect)="validatGradeDate();gradeObject($event);">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select"
-                    (completeMethod)="SearchGrade(employee.masterCode)"
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchGrade(employee.masterCode)"
                     (change)="validatGradeDate();gradeObject(employee);" formControlName="gradeMasterIdControl"
                     [(ngModel)]="gradeCode">
                     <option value="" selected disabled>Select</option>
@@ -355,18 +355,18 @@
                     </option>
                 </select> -->
                 <select class="form-control" placeholder="Select"
-                (completeMethod)="searchReportingTo(employee.fullNameAndEmployeeCode)"
-                (change)="validatReportingDate();reportingToObject(employee);"
-                formControlName="reportingToControl" [(ngModel)]="reportingToCode">
-                <option value="" selected disabled>Select</option>
-                <option *ngFor="let employee of filteredReportingToList" [value]="employee.fullNameAndEmployeeCode">
-                    {{employee.fullNameAndEmployeeCode}}
-                </option>
-            </select>
+                    (completeMethod)="searchReportingTo(employee.fullNameAndEmployeeCode)"
+                    (change)="validatReportingDate();reportingToObject(employee);" formControlName="reportingToControl"
+                    [(ngModel)]="reportingToCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let employee of filteredReportingToList" [value]="employee.fullNameAndEmployeeCode">
+                        {{employee.fullNameAndEmployeeCode}}
+                    </option>
+                </select>
 
                 <label class="form-label mt-10">Description</label>
-                <input type="text" class="form-control" [(ngModel)]="reportingToDesc" 
-                [ngModelOptions]="{standalone: true}" disabled>
+                <input type="text" class="form-control" [(ngModel)]="reportingToDesc"
+                    [ngModelOptions]="{standalone: true}" disabled>
 
                 <label class="form-label mt-10">From Date</label>
                 <div class="form-group">
