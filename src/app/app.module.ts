@@ -93,6 +93,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     CompanySettingModule,
 ////////////////////////////////
     MyInvestmentsModule,
+    investmentChapterVIAModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,

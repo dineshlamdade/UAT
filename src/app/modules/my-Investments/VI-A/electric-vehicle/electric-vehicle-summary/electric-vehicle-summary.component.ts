@@ -11,20 +11,12 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
   styleUrls: ['./electric-vehicle-summary.component.scss']
 })
 export class ElectricVehicleSummaryComponent implements OnInit {
-  @Input() lender: string;
-  @Input() policyNo: string;
+  @Input() lenderName: string;
+  // @Input() loanAccountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
+  @Output() loanAccountNumber = new EventEmitter<any>();
 
-  onEditSummary(lender: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      lender: lender,
-      tabIndex: this.tabIndex,
-    };
-    this.lender = lender;
-    this.policyNo = policyNo;
-    this.myEvent.emit(data);
-  }
+
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -40,7 +32,7 @@ export class ElectricVehicleSummaryComponent implements OnInit {
   public selectedInstitution: string;
 
   // public previousEmployerB: string;
-  public interestOnFutureLoanDeclaredAmount: string;
+  public futureNewPolicyDeclaredAmount: string;
   public limit : number;
   public benefitAvailableOnActualAmount :number;
   public benefitAvailableOnDeclaredAmount : number;
@@ -56,7 +48,17 @@ export class ElectricVehicleSummaryComponent implements OnInit {
   public ngOnInit(): void {
     this.summaryPage();
   }
-
+  onEditSummary(lenderName: string, loanAccountNumber: string) {
+    // this.tabIndex = 2;
+    // const data = {
+    //   lenderName: lenderName,
+    //   loanAccountNumber: loanAccountNumber,
+    //   tabIndex: this.tabIndex,
+    // };
+    // this.lenderName = lenderName;
+    // this.loanAccountNumber = loanAccountNumber;
+    // this.myEvent.emit(data);
+  }
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -64,7 +66,7 @@ export class ElectricVehicleSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].electricVehicleSummaryDetails;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
+      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
         res.data.results[0].interestOnFutureLoanDeclaredAmount
       );
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
@@ -78,11 +80,11 @@ export class ElectricVehicleSummaryComponent implements OnInit {
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-    this.interestOnFutureLoanDeclaredAmount = this.interestOnFutureLoanDeclaredAmount
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
     .toString().replace(',', '');
 
     const data = {
-      futureNewPolicyDeclaredAmount: this. interestOnFutureLoanDeclaredAmount,
+      futureNewPolicyDeclaredAmount: this. futureNewPolicyDeclaredAmount,
     };
 
     //console.log('addFuturePolicy Data..', data);
@@ -94,39 +96,42 @@ export class ElectricVehicleSummaryComponent implements OnInit {
         this.summaryGridData = res.data.results[0];
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
+        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
           res.data.results[0].interestOnFutureLoanDeclaredAmount
         );
         this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         this.limit = res.data.results[0].limit;
       }
-      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
     });
+    this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-    this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
-      this.interestOnFutureLoanDeclaredAmount
+    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+      this.futureNewPolicyDeclaredAmount
     );
     this.addFuturePolicy();
     this.onChangeLimit();
 
   }
 
-  jumpToMasterPage(n: number) {
-    //console.log(n);
+  jumpToMasterPage(loanAccountNumber: string) {
     this.tabIndex = 1;
-    //this.editMaster(3);
+    const data = {
+      number : loanAccountNumber,
+      tabIndex : this.tabIndex
+    };;
+    this.loanAccountNumber.emit(data);
   }
 
   // On onEditSummary
-  onEditSummary1(lender: string) {
-    this.tabIndex = 2;
-    this.lender = lender;
-    console.log('lender::', lender);
-  }
+  // onEditSummary1(lenderName: string) {
+  //   this.tabIndex = 2;
+  //   this.lenderName = lenderName;
+  //   console.log('lenderName::', lenderName);
+  // }
 
   onChangeLimit() {
     this.benefitAvailableOnDeclaredAmount = Math.min(this.grandTotalDeclaredAmount, this.limit);

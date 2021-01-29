@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   Component,
   Inject,
+  Input,
   OnInit,
   TemplateRef,
 } from '@angular/core';
@@ -29,6 +30,7 @@ import { EducationalLoanServiceService } from '../educational-loan-service.servi
 })
 export class EducationalLoanMasterComponent implements OnInit {
 
+  @Input() public loanAccountNumber: string;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -276,6 +278,9 @@ export class EducationalLoanMasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
+      if (this.loanAccountNumber !== undefined || this.loanAccountNumber !== null) {
+        this.getInstituteDetails(this.loanAccountNumber)
+      }
     });
   }
 
@@ -368,54 +373,8 @@ export class EducationalLoanMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-  // Calculate annual amount on basis of premium and frquency
-  // calculateAnnualAmount() {
-  //   if (
-  //     this.form.value.premiumAmount != null &&
-  //     this.form.value.frequencyOfPayment != null
-  //   ) {
-  //     let installment = this.form.value.premiumAmount;
 
-  //     installment = installment.toString().replace(',', '');
-
-  //     // console.log(installment);
-  //     if (!this.form.value.frequencyOfPayment) {
-  //       installment = 0;
-  //     }
-  //     if (this.form.value.frequencyOfPayment === 'Monthly') {
-  //       installment = installment * 12;
-  //     } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-  //       installment = installment * 4;
-  //     } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-  //       installment = installment * 2;
-  //     } else {
-  //       installment = installment * 1;
-  //     }
-  //     const formatedPremiumAmount = this.numberFormat.transform(
-  //       this.form.value.premiumAmount
-  //     );
-  //     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-  //     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-  //     this.form.get('annualAmount').setValue(installment);
-  //   }
-  // }
-
-
-  // Deactivate the Remark
-  // deactivateRemark() {
-  //   if (this.form.value.active === false) {
-  //     // this.form.get('remark').enable();
-  //     this.hideRemarkDiv = true;
-  //     this.form.get('remark').setValidators([Validators.required]);
-  //   } else {
-  //     this.form.get('remark').clearValidators();
-  //     this.hideRemarkDiv = false;
-  //     // this.form.get('remark').disable();
-  //     this.form.get('remark').reset();
-  //   }
-  // }
-
-  // On Master Edit functionality
+    // On Master Edit functionality
   editMaster(i: number) {
     //this.scrollToTop();
     this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
@@ -503,4 +462,12 @@ export class EducationalLoanMasterComponent implements OnInit {
   resetForm() {
     this.form.reset();
   }
+
+  getInstituteDetails(loanAccountNumber) {
+    const educationalLoan = this.masterGridData.find(
+      (element) => element.loanAccountNumber === loanAccountNumber.number
+    );
+    this.form.patchValue(educationalLoan);
+  }
+
 }

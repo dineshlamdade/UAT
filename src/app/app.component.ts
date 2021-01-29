@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
       })
      }
   public ngOnInit(): void {
+<<<<<<< HEAD
     if (this.router.getCurrentNavigation() === null) {
     if (!this.authService.isLoggedIn()) {
      // this.router.navigate(['/login']);
@@ -57,6 +58,15 @@ export class AppComponent implements OnInit {
       //this.router.navigate(['/dashboard']);
     }
     }
+=======
+    // if (this.router.getCurrentNavigation() === null) {
+    // if (!this.authService.isLoggedIn()) {
+    //   this.router.navigate(['/login']);
+    // } else {
+    //   this.router.navigate(['/dashboard']);
+    // }
+    // }
+>>>>>>> ad8923e1a78b529605cb2f14227db10eae04d241
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('offcanvas-active');
     body.classList.add('font-montserrat');

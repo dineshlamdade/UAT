@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -19,6 +20,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
+import { EventEmitter } from 'events';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
@@ -34,6 +36,7 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
 })
 export class ElectricVehicleMasterComponent implements OnInit {
 
+  @Input() public loanAccountNumber: string;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -301,6 +304,9 @@ export class ElectricVehicleMasterComponent implements OnInit {
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
+      if (this.loanAccountNumber !== undefined || this.loanAccountNumber !== null) {
+        this.getInstituteDetails(this.loanAccountNumber)
+      }
     });
   }
 
@@ -470,6 +476,13 @@ export class ElectricVehicleMasterComponent implements OnInit {
       template,
       Object.assign({}, { class: 'gray modal-md' })
     );
+  }
+
+  getInstituteDetails(loanAccountNumber) {
+    const electricVehicle = this.masterGridData.find(
+      (element) => element.loanAccountNumber === loanAccountNumber.number
+    );
+    this.form.patchValue(electricVehicle);
   }
 
 

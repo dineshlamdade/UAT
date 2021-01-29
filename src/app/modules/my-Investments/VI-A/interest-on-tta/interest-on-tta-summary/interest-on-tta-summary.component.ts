@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import { MyInvestmentsService } from '../../../my-Investments.service';
 import { InterestOnTtaService } from '../interest-on-tta.service';
 
 
@@ -12,27 +11,16 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
 })
 export class InterestOnTtaSummaryComponent implements OnInit {
 
-  @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() bankName: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
+  @Output() policyNumber = new EventEmitter<any>();
 
-
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      policyNo: policyNo,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.policyNo = policyNo;
-    this.myEvent.emit(data);
-  }
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
-  public totalDeclaredAmount: any;
-  public totalActualAmount: any;
+  public totalDeclaredAmount: number = 0;
+  public totalActualAmount: number = 0;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -52,7 +40,6 @@ export class InterestOnTtaSummaryComponent implements OnInit {
 
 
   constructor(
-    private service: MyInvestmentsService,
     private interestOnTtaService: InterestOnTtaService   ,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
@@ -62,40 +49,46 @@ export class InterestOnTtaSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
+  // redirect to declarartion page
+  redirectToDeclarationActual(bankName: string, accountNumber: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      bankName : bankName,
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)
+    };
+    this.bankName = bankName;
+    this.accountNumber = accountNumber;
+    this.myEvent.emit(data);
+  }
+
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
     this.interestOnTtaService.get80TTASummary().subscribe((res) => {
-      this.summaryGridData = res.data.results[0].interestOnSavingDeposit80TTTransactionList;
+      this.summaryGridData = res.data.results[0].interestOnSavingDeposit80TTTransactionList.interestOnSavingDeposit80TTTransactionList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.limit = res.data.results[0].limit;
-      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.benefitActualAmount = res.data.results[0].benefitActualAmount;
       this.benefitDeclaredAmount = res.data.results[0].benefitDeclaredAmount;
       this.onChangeLimit();
     });
   }
 
-  jumpToMasterPage(n: number) {
-    //console.log(n);
+  jumpToMasterPage(accountNumber: string) {
     this.tabIndex = 1;
-    //this.editMaster(3);
-  }
-
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.policyNo = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
+    const data = {
+      number : accountNumber,
+      tabIndex : this.tabIndex
+    };;
+    this.policyNumber.emit(data);
   }
 
   onChangeLimit() {
-    this.DeclaredAmountBenefit = Math.min(this.grandTotalDeclaredAmount, this.limit);
-    this.ActualAmountBenefit = Math.min(this.grandTotalActualAmount, this.limit);
+    this.benefitDeclaredAmount = Math.min(this.totalDeclaredAmount, this.limit);
+    this.benefitActualAmount = Math.min(this.totalActualAmount, this.limit);
     // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitAvailable;
   }
 }
