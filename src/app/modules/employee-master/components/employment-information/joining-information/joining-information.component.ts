@@ -58,19 +58,10 @@ export class JoiningInformationComponent implements OnInit {
     public dialog: MatDialog, private router: Router,
     private CommonDataService: SharedInformationService) {
     this.tomorrow.setDate(this.tomorrow.getDate());
-    // if (data) {
-    //   this.confirmMsg = data.pageValue;
-    //   this.info = data.info;
-    //   // this.projectedRetirementDate = data.projectedRetirementDate;
-    //   this.employementInfoId = data.employementJoiningInfoId;
-    // }
   }
 
   ngOnInit(): void {
-    // if (!this.confirmMsg) {
-    //   let dateOfBirth = new Date(this.birthDate);
-    //   this.JoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-    // }
+
     this.JoiningForm = this.formBuilder.group({
       joiningDate: ['', Validators.required],
       originalHireDate: [''],
@@ -278,15 +269,6 @@ export class JoiningInformationComponent implements OnInit {
           }
         }
       }
-
-      // if (!this.JoiningInformationModel.projectedRetirementDate) {
-
-      //   let dateOfBirth = new Date(this.birthDate);
-      //   this.JoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-      // }
-      // if (this.confirmMsg) {
-      //   this.JoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
-      // }
     })
     this.JoiningForm.markAsUntouched();
   }
@@ -380,6 +362,7 @@ export class JoiningInformationComponent implements OnInit {
     //   projectedRetirementDate.disable();
     // }
   }
+
   onNoClick(): void {
     this.matDialog.closeAll();
   }

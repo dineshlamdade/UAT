@@ -22,7 +22,7 @@ export class EducationDetailComponent implements OnInit {
   SkillInfoForm: FormGroup;
   date = { startDate: "", endDate: "" }
   addPush: boolean;
-  public employeeEducationRequestModel = new employeeEducationRequest('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
+  public employeeEducationRequestModel = new employeeEducationRequest('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
   public employeeSkillDetailsRequestModel = new employeeSkillDetailsRequest('', '', '', '', '')
   EmptyGridTrue: boolean;
   proficiency: any;

@@ -65,7 +65,7 @@ export class TransferInformationComponent implements OnInit {
     })
 
     this.transferToSubscription = this.EventEmitterService.setTransferToData().subscribe(res => {
-      
+
       if (res) {
         this.employeeTransferId = res.transferId
         this.viewTransfer = res.viewTransfer;
@@ -91,20 +91,7 @@ export class TransferInformationComponent implements OnInit {
     TransferToInformation.employeeMasterId = this.employeeMasterId
     TransferToInformation.effectiveDate = this.datepipe.transform(TransferToInformation.effectiveDate, "dd-MMM-yyyy");
     TransferToInformation.companyId = 1;
-    // if (this.employeeTransferId) {
-    //   this.EmploymentInformationService.putTransferToForm(TransferToInformation, this.employeeTransferId).subscribe(res => {
-    //     // this.TransferToInformation = res.data.results[0];
-    //     this.notifyService.showSuccess(res.status.messsage, "Success..!!");
-    //     this.selectJoining = '';
-    //     this.selectReJoining = '';
-    //     this.selectTransferTo = '';
-    //     this.selectExit = '';
-    //     this.getSummaryEmploymentInfo();
-    //     this.TransactionHistorySummary();
-    //     this.TransferForm.reset();
-    //     this.dialog.closeAll();
-    //   })
-    // } else {
+
     if (this.employeeTransferId) {
       this.putTransferFormSubmit(TransferToInformation);
     } else {
@@ -119,8 +106,6 @@ export class TransferInformationComponent implements OnInit {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
     }
-
-    // }
   }
   putTransferFormSubmit(TransferToInformation) {
 
@@ -139,21 +124,6 @@ export class TransferInformationComponent implements OnInit {
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
-    // } 
-    // else {
-    // this.EmploymentInformationService.postTransferToForm(TransferToInformation).subscribe(res => {
-    //   // this.TransferToInformation = res.data.results[0];
-    //   this.notifyService.showSuccess(res.status.messsage, "Success..!!");
-    //   this.selectJoining = '';
-    //   this.selectReJoining = '';
-    //   this.selectTransferTo = '';
-    //   this.selectExit = '';
-    //   this.getSummaryEmploymentInfo();
-    //   this.TransactionHistorySummary();
-    //   this.TransferForm.reset();
-    //   this.dialog.closeAll();
-    // })
-    // }
   }
 
 
