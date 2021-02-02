@@ -21,7 +21,7 @@ export class EducationSkillsInformationComponent implements OnInit {
     this.languageTab = false;
     this.certificationTab = false;
     // this.router.navigate(['/employee-master/education-skills-information/education-details']);
-debugger
+
     if (router.url == '/employee-master/education-skills-information/education-details') {
       this.tabIndex = 0;
       this.educationTabValidation();

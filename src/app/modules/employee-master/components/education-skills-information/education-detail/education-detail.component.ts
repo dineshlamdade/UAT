@@ -30,6 +30,7 @@ export class EducationDetailComponent implements OnInit {
   educationList: Array<any> = [];
   SkillSetList: Array<any> = [];
   filteredSkillSetList: Array<any> = [];
+  standardDurationList = 'Days,Weeks,Months,Years'.split(',');
   highestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
   filteredHighestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
   courseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
@@ -82,6 +83,7 @@ export class EducationDetailComponent implements OnInit {
       education: ['', Validators.required],
       degreeName: [''],
       durationOfCourse: [''],
+      duration: [''],
       courseType: [''],
       location: [''],
       instituteUniversityName: [''],

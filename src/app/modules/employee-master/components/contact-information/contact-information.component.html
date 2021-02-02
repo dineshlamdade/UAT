@@ -103,7 +103,7 @@
                                                             }}</label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Email" formControlName="personalEmail"
-                                                            pattern="\S+@\S+\.\S+"
+                                                            pattern="\S+@\S+\.\S+" (change)="validatePersonalEmailId(contactInformation.employeePersonalInfoRequestDTO.personalEmailID)"
                                                             [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.personalEmailID"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('personalEmail').status == 'INVALID'}">
                                                     </div>

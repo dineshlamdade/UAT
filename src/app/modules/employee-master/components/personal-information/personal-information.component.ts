@@ -35,6 +35,7 @@ export class PersonalInformationComponent implements OnInit {
   PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '', '', '')
   bloodGroups = 'A+,A-,B+,B-,AB+,AB-,O+,O-'.split(',');
   maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+  maritalStatusTotal = 'Single,Married,Widow,Widower,Divorced'.split(',');
   physicallyChallengedDropdown = 'Visual,Hearing,Locomotive'.split(',');
   physicallyChallengedBoolean = 'Yes,No'.split(',');
   expatBooleanOptions = 'Yes,No'.split(',');
@@ -667,5 +668,28 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
+  validateGender() {
+    
+    this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Male') {
+      this.maritalStatus.splice(2, 1);
+      this.personalInformationModel.maritialStatus = '';
+      // this.maritalStatus.find(res=>{
+      //   if(res == 'Widower'){
+      //     this.maritalStatus.push('Widower');
+      //   }
+      // })
+    }
+
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Female') {
+      this.maritalStatus.splice(3, 1);
+      this.personalInformationModel.maritialStatus = '';
+      // this.maritalStatus.find(res=>{
+      //   if(res == 'Widow'){
+      //     this.maritalStatus.push('Widow');
+      //   }
+      // })
+    }
+  }
 
 }

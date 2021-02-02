@@ -91,7 +91,7 @@
                                         <input #accNo [(ngModel)]="bank.accountNumber" class="form-control"
                                             [ngModelOptions]="{standalone: true}" minlength="1"
                                             maxlength="{{maxAccNumber}}" [type]="accountNo ? 'text' : 'password'"
-                                            (keyup)="validateAccountNo(bank.accountNumber)"
+                                            (keyup)="validateAccountNo(bank.accountNumber)" appBlockCopyPaste
                                             placeholder="Enter Account No." (keypress)="keyPress($event)">
                                         <mat-icon matSuffix (click)="accountNo = !accountNo" class="eye-icon-payroll">
                                             {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>

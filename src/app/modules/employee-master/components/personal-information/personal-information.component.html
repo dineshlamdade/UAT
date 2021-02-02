@@ -104,7 +104,7 @@
                                         <label class="form-label">{{ PersonalInfoLabels.gender }}</label>
                                         <select class="form-control" placeholder="Select" formControlName="gender"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.gender"
-                                            (change)="validateDropdown()"
+                                            (change)="validateDropdown(); validateGender()"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('gender').status == 'INVALID'}">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let gender of allGenders" [value]="gender">

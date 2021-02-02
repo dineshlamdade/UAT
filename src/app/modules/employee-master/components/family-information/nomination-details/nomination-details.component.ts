@@ -498,7 +498,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.superAnnuationPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingSupeAnnuationPercentage(){
+  getRemainingSupeAnnuationPercentage() {
     return 100 - this.getTotalsupeannuationPercentage();
   }
   getTotallifeInsurancePercentage() {
@@ -506,7 +506,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.lifeInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingLifeInsurancePercentage(){
+  getRemainingLifeInsurancePercentage() {
     return 100 - this.getTotallifeInsurancePercentage();
   }
   getTotalMediclaimInsurancePercentage() {
@@ -514,7 +514,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.mediclaimInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingMediclaimInsurancePercentage(){
+  getRemainingMediclaimInsurancePercentage() {
     return 100 - this.getTotalMediclaimInsurancePercentage();
   }
   getTotalpersonalAccidentInsurance() {
@@ -522,7 +522,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.personalAccidentInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingpersonalAccidentInsurance(){
+  getRemainingpersonalAccidentInsurance() {
     return 100 - this.getTotalpersonalAccidentInsurance();
   }
   saveNominationsDetails(nominationDataSource, esicDataSource) {
@@ -729,5 +729,15 @@ export class NominationDetailsComponent implements OnInit {
 
   resetNomination() {
 
+  }
+
+  esicPercentageValidation(esicPercentage) {
+
+    if (esicPercentage == 0) {
+      return
+    }
+    if (esicPercentage != 100) {
+      this.CommonDataService.sweetalertError('Nomination Percentage for ESIC Should be 100%');
+    }
   }
 }

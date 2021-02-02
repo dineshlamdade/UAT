@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <p-table [value]="nominationDataSource" [scrollable]="true" [style]="{width:'1000px'}"
-                        scrollHeight="200px" [style]="{'overflow':'auto!important'}">
+                        scrollHeight="275px" [style]="{'overflow':'auto!important'}">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
                                 <col style="width:130px">
@@ -87,7 +87,8 @@
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.esicPercentage"
                                             [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.esicPercentage < 0 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage < 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage;">
+                                            (change)="nomination.esicPercentage < 0 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage < 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage;
+                                            esicPercentageValidation(nomination.esicPercentage)">
                                     </span></td>
 
                                 <td><span>
@@ -163,7 +164,7 @@
 
                     <legend class="nomination-title">Document</legend>
                     <p-table [value]="FamilyMemberList" [scrollable]="true" [style]="{width:'1000px'}"
-                        scrollHeight="200px">
+                        scrollHeight="275px">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
                                 <col style="width:250px">

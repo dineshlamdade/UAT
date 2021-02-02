@@ -102,11 +102,13 @@ export class BankDetailsComponent implements OnInit {
           this.extractedInfoID = this.differenceOf2Arrays(newNomination, newNomination1);
 
           if (this.extractedInfoID.length > 0) {
-            this.extractedInfoID.filter(element => {
+            this.BankDetailsList.filter(element => {
               this.familyMemberList.find((element1) => {
-                if (element == element1.familyMemberInfoId) {
-                  this.BankDetailsList.push(element1);
-                  this.BankAccountDataSource = this.BankDetailsList
+                if (element.familyMemberInfoId == element1.familyMemberInfoId) {
+                  const index = this.familyMemberList.findIndex(x => x.familyMemberInfoId == element.familyMemberInfoId);
+                  // this.familyMemberList.push(element1);
+                  this.familyMemberList[index] = element;
+                  this.BankAccountDataSource = this.familyMemberList
                   // const TABLE_DATA: BankElement[] = this.BankDetailsList;
                   // return this.BankDataSource = new MatTableDataSource(TABLE_DATA);
                 }

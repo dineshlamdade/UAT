@@ -52,7 +52,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   addReJoinee(user){
-    debugger
+    
     this.rejoinee = true;
 
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
@@ -62,7 +62,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   employeeSelection(emp){
-    debugger
+    
    
     const employeeObject = this.employeeList.filter(res=>{
       if(emp == res.employeeMasterId){

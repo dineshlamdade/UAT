@@ -80,11 +80,35 @@
                                     </p-autoComplete> -->
                                 </div>
 
-                                <div class="col-sm-6 col-md-3 mt-15">
+                                <!-- <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Standard Duration</label>
                                     <input type="text" class="form-control" placeholder="Standard Duration"
                                         formControlName="durationOfCourse" tooltip="standard Duration"
                                         [(ngModel)]="employeeEducationRequestModel.durationOfCourse">
+                                </div> -->
+
+
+                                <div class="col-sm-6 col-md-3 mt-15">
+                                    <label class="form-label">Standard Duration</label>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-5 country-code">
+                                            <select class="form-control selectpicker" placeholder="Select"
+                                                formControlName="duration" tooltip="{{duration}}">
+                                                <option value="" data-hidden="true">select
+                                                </option>
+                                                <option *ngFor="let duration of standardDurationList"
+                                                    [value]="duration">
+                                                    {{duration}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-3 col-md-7 ml-2">
+                                            <input type="text" class="form-control" formControlName="durationOfCourse"
+                                                placeholder="Standard Duration"
+                                                [(ngModel)]="employeeEducationRequestModel.durationOfCourse"
+                                                tooltip="standard Duration">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
@@ -139,7 +163,8 @@
                                             checked [(ngModel)]="employeeEducationRequestModel.isHighestQualification"
                                             formControlName="isHighestQualificationBoolean"
                                             (change)="highestEducationBoolean(employeeEducationRequestModel.isHighestQualification)">
-                                        <span class="custom-control-label"><b>Highest level qualification</b></span>
+                                        <span class="custom-control-label"><b>Highest level
+                                                qualification</b></span>
                                     </label>
                                 </div>
                             </div>

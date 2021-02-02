@@ -57,4 +57,16 @@ export class ContactInformationService {
         return res;
       }))
   }
+
+  validatePersonalEmailId(PersonalEmailId, employeeCode) {
+ 
+    let params = new URLSearchParams();
+    params.append("employeeCode", employeeCode)
+
+    return this.httpClient.put(environment.baseUrl8082 + '/employee-personal-info/verify-personalEmail/' + PersonalEmailId, params,
+      { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
 }

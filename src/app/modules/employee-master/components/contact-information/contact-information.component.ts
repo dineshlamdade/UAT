@@ -501,6 +501,23 @@ export class ContactInformationComponent implements OnInit {
       });
     }
   }
+
+  validatePersonalEmailId(personalEmailID){
+    
+    const personalEmail = this.ContactInfoForm.get('personalEmail');
+    if (personalEmail.status == "VALID" && personalEmailID.length > 0) {
+
+      this.ContactInformationService.validatePersonalEmailId(this.contactInformation.employeePersonalInfoRequestDTO.personalEmailID, this.employeeCode).subscribe(res => {
+        // this.notifyService.showSuccess(res.status.messsage, res.status.result)
+        // this.sweetalertMasterSuccess(res.status.messsag, res.status.messsage);
+      }, (error: any) => {
+        this.sweetalertError(error.error.status.messsage);
+        // this.notifyService.showError(error.error.status.messsage, "Error..!!")
+      });
+    }
+  }
+
+
   clearLocalAddressFields() {
 
     if (this.localAddressInformation.country != 'India') {

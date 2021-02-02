@@ -63,7 +63,8 @@ import { EmployeeSummaryComponent } from './components/employee-summary/employee
 import { EmploymentSummaryComponent } from './components/employment-information/employment-summary/employment-summary.component';
 import { ComplianceSummaryComponent } from './components/compliance-information/compliance-summary/compliance-summary.component';
 import { JobSummaryComponent } from './components/job-information/job-summary/job-summary.component';
-import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { LandingPageComponent } from './../../modules/employee-master/components/landing-page/landing-page.component';
+import { BlockCopyPasteDirective } from './../../core/utility/directives/appBlockCopyPasteDirective';
 
 @NgModule({
     declarations: [
@@ -102,7 +103,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
         EmploymentSummaryComponent,
         ComplianceSummaryComponent,
         JobSummaryComponent,
-        LandingPageComponent
+        LandingPageComponent,
+        BlockCopyPasteDirective
     ],
     imports: [
         CommonModule,

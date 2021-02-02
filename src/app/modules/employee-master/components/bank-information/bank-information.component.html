@@ -92,7 +92,7 @@
                                         <label class="form-label">{{ 'BankInfoForm.accountNumber' | transloco }}</label>
                                         <input class="form-control" placeholder="Enter Account No."
                                             formControlName="accountNumber" [(ngModel)]="BankInformationModel.accountNo"
-                                            minlength="1" maxlength="{{maxAccNumber}}"
+                                            minlength="1" maxlength="{{maxAccNumber}}" appBlockCopyPaste
                                             [type]="accountNo ? 'text' : 'password'" (keypress)="keyPress($event)"
                                             (keyup)="validateAccountNo(BankInformationModel.accountNo)"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('accountNumber').status == 'INVALID'}">
@@ -112,7 +112,7 @@
                                         <label class="form-label">{{ 'BankInfoForm.confirmAccountNumber' | transloco
                                             }}</label>
                                         <input class="form-control" placeholder="Re-Enter Account no." #confirmPassword
-                                            formControlName="confirmAccountNo"
+                                            formControlName="confirmAccountNo" appBlockCopyPaste
                                             (change)="matchAccountNo(confirmPassword.value)" minlength="1"
                                             maxlength="{{maxAccNumber}}" (keypress)="keyPress($event)"
                                             [type]="confirmAccountNo1 ? 'text' : 'password'"
