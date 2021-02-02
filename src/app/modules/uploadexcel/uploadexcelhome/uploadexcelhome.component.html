@@ -9,7 +9,7 @@
       <div class="container-fluid p-0">
         <div class="page-header p-10 no-border">
           <div class="left">
-            <h1 class="page-title text-gray">Dashboard</h1>
+            <h1 class="page-title text-gray">Dashboard {{wrongSequenceNumberisEntered}} {{buttonIndex}}</h1>
           </div>
           <div class="right">
             <div class="right">
@@ -27,52 +27,12 @@
         </div>
       </div>
     </div>
-    <div class="section-body mt-3">
-      <div class="container-fluid">
+    <div class="section-body mt-0">
+      <div class="container-fluid pt-25">
         <div class="row">
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-
-
-
-                <!--
-              <form [formGroup]="form" (ngSubmit)="submit()">
-                <label  formArrayName="orders" *ngFor="let order of ordersFormArray.controls; let i = index">
-                  <input type="checkbox" [formControlName]="i">
-                  {{ordersData[i].name}}
-                </label>
-                <input class="toggle-sub-box" id="identifier-5" type="checkbox" [formControlName]="i" />
-                <label for="identifier-5" class="pt-2">Employment Information</label>
-                <div  *ngFor="let order of ordersFormArray.controls; let i = index">
-                  <a   class="p-0 position_relative">
-                    <label class="custom-control custom-checkbox ml-15">
-                      <input type="checkbox" class="custom-control-input" [formControlName]="i" name="example-checkbox1" value="Menu 1" />
-                      <span class="custom-control-label">   {{ordersData[i].name}}</span>
-                    </label>
-
-                  </a>
-                </div>
-                <br>
-
-                <div *ngIf="!form.valid">At least one order must be selected</div>
-                <br>
-                <button [disabled]="!form.valid">submit</button>
-              </form> -->
-                <!-- <a   class="p-0 position_relative">
-                    <label class="custom-control custom-checkbox ml-15">
-                      <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 2" />
-                      <span class="custom-control-label">Menu 2</span>
-                    </label>
-
-                  </a> -->
-
-
-
-
-
-
-
                 <div class="tabview tabview_upload_excel">
                   <input name="nav" type="radio" class="about-radio" id="TemplateCreation" checked />
                   <div class="tabs about-page">
@@ -80,19 +40,6 @@
                       <div class="col-12">
                         <fieldset>
                           <legend>Template Creation</legend>
-
-                          <!-- <div class="row"   *ngFor="let order of ordersData; let i = index"    formArrayName="orders" >
-                            <label>
-
-                            <input type="checkbox"  (change)="onChangeCheckBoxLeftMenu($event,order)"/>
-                            {{order.name}}
-                          </label>
-                        </div> -->
-
-
-                          <!-- <div *ngIf="!form.valid">At least one order must be selected</div>
-                          <button>submit</button> -->
-
                           <div class="row">
                             <div class="col-sm-6 col-md-3">
                               <label class="form-label">Name</label>
@@ -144,270 +91,49 @@
                       <div class="col-md-4">
                         <div class="row mt-15">
                           <div class="col-md-12">
-                            <div class="card height-756">
+                            <div class="card height-620">
                               <div class="card-body box-border">
                                 <div id="page">
+
+
+
+
+
                                   <div *ngIf="checkedEmployeeMaster == true">
                                     <input class="toggle-box" id="identifier-4" type="checkbox" />
                                     <label for="identifier-4">Employee Master</label>
                                     <div class="ml-30">
-                                      <a class="p-0">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            value="Select All" />
-                                          <span class="custom-control-label">Select All</span>
-                                        </label>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangePersonalInfo($event)"
-                                            value="Personal Information" />
-                                          <span class="custom-control-label">Personal Information
-                                            <span class="notificationbadge ml-2">{{counterPersonalInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Personal Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangeComplianceInfo($event)" value="abc" />
-                                          <span class="custom-control-label">Compliance Information
-                                            <span class="notificationbadge ml-2">{{counterComplianceInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Compliance Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangeIdentityInfo($event)" value="abc" />
-                                          <span class="custom-control-label">Identity Information
-                                            <span class="notificationbadge ml-2">{{counterIdentityInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Identity Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangeContactInfo($event)" value="abc" />
-                                          <span class="custom-control-label">Contact Information
-                                            <span class="notificationbadge ml-2">{{counterContactInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Contact Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangePreviousEmploymentInfo($event)"
-                                            value="abc" />
-                                          <span class="custom-control-label"> Previous Employment Information
-                                            <span
-                                              class="notificationbadge ml-2">{{counterPreviousEmploymentInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Previous Employment  Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangeEducationAndSkillInfo($event)"
-                                            value="abc" />
-                                          <span class="custom-control-label">Education & Skill Information
-                                            <span
-                                              class="notificationbadge ml-2">{{counterEducationAndSkillInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Education & Skill Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangeEmploymentInfo($event)" value="abc" />
-                                          <span class="custom-control-label">Employment Information
-                                            <span class="notificationbadge ml-2">{{counterEmploymentInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Employment Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangePayrollInfo($event)" value="abc" />
-                                          <span class="custom-control-label">Payroll Information
-                                            <span class="notificationbadge ml-2">{{counterPayrollInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Payroll Information')"></i></span>
-                                      </a>
-                                      <a class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangeFamilyInfo($event)" value="abc" />
-                                          <span class="custom-control-label">Family Information
-                                            <span class="notificationbadge ml-2">{{counterFamilyInformation}}</span>
-                                          </span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
-                                            (click)="MergeTab(template3,'Family Information')"></i></span>
-                                      </a>
-                                      <!-- <input class="toggle-sub-box" id="identifier-5" type="checkbox" />
-                                      <label for="identifier-5" class="pt-2">Employment Information</label> -->
-                                      <!-- <div>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 1" />
-                                            <span class="custom-control-label">Menu 1</span>
+                                        <a class="p-0 d-flex" [ngClass]="order.hide?'btn-info1':''"   *ngFor="let order of ordersData; let i = index" formArrayName="orders">
+                                          <label class="custom-control custom-checkbox ">
+
+                                            <input type="checkbox"  class="custom-control-input"
+                                              (change)="leftSideMenuCheckBoxChnanged($event.target.checked,order.name)"
+                                              [disabled]="order.disable" [checked]="order.disable" />
+                                              <span class="custom-control-label">  {{order.name}}
+                                                <!-- <span class="notificationbadge ml-2">{{counterPersonalInformation}}</span> -->
+                                                </span>
+
                                           </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
+
+                                          <!-- <span *ngIf="order.hide == true">
+                                            <span *ngIf="order.name!=='Select All'"> <i class="fa fa-compress mergeicon"
+                                              tooltip="Merge Tab/Field"
+                                              (click)="MergeTab(template3,order.name)"></i></span>
+
+                                          </span> -->
+
+
+
+
+
+                                          <span *ngIf="order.hide == false"> <i class="fa fa-compress mergeicon"
+                                            tooltip="Merge Tab/Field"
+                                            (click)="MergeTab(template3,order.name)"></i></span>
                                         </a>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 2" />
-                                            <span class="custom-control-label">Menu 2</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                      </div> -->
-                                      <!-- <a   class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            (change)="leftSideCheckBoxChangePreviousEmploymentInfo($event)"
-                                            value="Previous Employment Information" />
-                                          <span class="custom-control-label">Previous Employment Information</span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span>
-                                      </a>
-                                      <input class="toggle-sub-box" id="identifier-6" type="checkbox" />
-                                      <label for="identifier-6" class="pt-2">Job Information</label> -->
-                                      <!-- <div>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 1" />
-                                            <span class="custom-control-label">Menu 1</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 2" />
-                                            <span class="custom-control-label">Menu 2</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                      </div> -->
-                                      <!-- <a   class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            value="Bank Information" />
-                                          <span class="custom-control-label">Bank Information</span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span>
-                                      </a> -->
-                                      <!-- <input class="toggle-sub-box" id="identifier-7" type="checkbox" />
-                                      <label for="identifier-7" class="pt-2">Family Information</label>
-                                      <div>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 1" />
-                                            <span class="custom-control-label">Menu 1</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 2" />
-                                            <span class="custom-control-label">Menu 2</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                      </div> -->
-                                      <!-- <input class="toggle-sub-box" id="identifier-8" type="checkbox" />
-                                      <label for="identifier-8" class="pt-2">Compliance Information</label> -->
-                                      <!-- <div>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 1" />
-                                            <span class="custom-control-label">Menu 1</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 2" />
-                                            <span class="custom-control-label">Menu 2</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                      </div> -->
-                                      <!-- <input class="toggle-sub-box" id="identifier-9" type="checkbox" />
-                                      <label for="identifier-9" class="pt-2">Educational Skill Information</label> -->
-                                      <!-- <div>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 1" />
-                                            <span class="custom-control-label">Menu 1</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                        <a   class="p-0 position_relative">
-                                          <label class="custom-control custom-checkbox ml-15">
-                                            <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                              value="Menu 2" />
-                                            <span class="custom-control-label">Menu 2</span>
-                                          </label>
-                                          <span> <i class="fa fa-compress mergeicon"
-                                              tooltip="Merge Tab/Field"></i></span>
-                                        </a>
-                                      </div> -->
-                                      <!-- <a   class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            value="Leave and Attendance Information" />
-                                          <span class="custom-control-label">Leave and Attendance Information</span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span>
-                                      </a>
-                                      <a   class="p-0 position_relative">
-                                        <label class="custom-control custom-checkbox mr-15">
-                                          <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            value="Payroll Area Information" />
-                                          <span class="custom-control-label">Payroll Area Information</span>
-                                        </label>
-                                        <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span>
-                                      </a> -->
+
                                     </div>
                                   </div>
-                                  <!-- end of employee master left menu -->
+
                                   <div *ngIf="checkedPayrollMaster == true">
                                     <input class="toggle-box" id="identifier-10" type="checkbox" />
                                     <label for="identifier-10" class="mt-10">Payroll</label>
@@ -467,14 +193,16 @@
                           <div class="col-md-12">
                             <div class="card">
 
-                              <div class="card-body box-border">
+                                                            <div class="card-body box-border">
 
-                                <div class="row mb-2">
-                                  <div class="col-md-2">
-                                    <h3 class="font-14 text-purple font-bold pt-2">Sheet Name:</h3>
+                                                                <div class="row mb-2">
+                                                                    <div class="col-md-2">
+                                                                        <h3 class="font-14 text-purple font-bold pt-2">Sheet Name:</h3>
+
+                                    <i class="fa fa-pencil" (click)="abc()"> All</i>
                                   </div>
-                                  <div class="col-md-4">
-                                    <select name="filterTemplateDropDown" class="form-control"
+                                  <div class="col-md-5">
+                                    <select name="filterTemplateDropDown" class="form-control custom-select"
                                       formControlName="filterTemplateDropDown"
                                       (change)="onChangFilterDropDown($event.target.value)">
                                       <option *ngFor="let filter of filterDropDownList" [value]="filter">
@@ -485,52 +213,55 @@
                                 </div>
 
 
-                                <div class="table-responsive Custom_Table  height-607">
-                                  <table class="table table-striped table-bordered table-hover m-b-0 bg-color-white">
+                                <div class="table-responsive Custom_Table  height-473">
+                                  <table class="table  table-bordered table-hover m-b-0 bg-color-white">
                                     <thead class="thead-dark">
                                       <tr>
                                         <th scope="col" class="wd-10">
                                           <label class="custom-control custom-checkbox checkbox-center">
-                                            <input type="checkbox" class="custom-control-input" name="select"  (change)="summaryCheckBoxHtmlDataListChanged($event.target.checked,'All')" />
+                                            <input type="checkbox" class="custom-control-input" name="selectAll"
+                                              [(ngModel)]='selectAllModel' [ngModelOptions]="{standalone: true}"
+                                              (change)="summaryCheckBoxHtmlDataListSelectAll($event.target.checked)" />
                                             <span class="custom-control-label"></span>
                                           </label>
                                         </th>
-                                        <th>Sequence</th>
-                                        <th scope="col" class="wd-30">Tab</th>
-                                        <th scope="col" class="wd-30">Field Name</th>
+                                        <th class="wd-10">Sequence</th>
+                                        <th scope="col" class="wd-40">Table Name</th>
+                                        <th scope="col" class="wd-40">Field Name</th>
                                         <!-- <th scope="col" class="wd-30">Dropdown Value</th> -->
                                       </tr>
                                     </thead>
                                     <tbody *ngIf="filterDropDownList.length > 0">
                                       <tr *ngFor="let summary of fieldNameArrayList; let i = index">
-                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
+                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'bg-color-disable' : '']">
                                           <span> <label class="custom-control custom-checkbox checkbox-center">
-                                              <input type="checkbox" class="custom-control-input" name="select"
+                                              <input type="checkbox" #checkboxes class="custom-control-input"
+                                                name="select"
                                                 (change)="summaryCheckBoxHtmlDataListChanged($event.target.checked,summary)"
-                                                [checked]="summary.isChecked ==true"  [disabled]="summary.isMandatory==1"/>
+                                                [checked]="summary.isChecked ? true : false"
+                                                [disabled]="summary.isMandatory==1" />
                                               <span class="custom-control-label"></span>
-                                              <!-- <span style="color: red;">{{i+1}}</span> -->
+                                              <!-- <span style="color: red;">{{summary.merge}}</span> -->
                                             </label></span>
 
                                         </td>
-                                        <!-- <td class="wd-10"[ngClass]="[ summary.isMandatory==1 ? 'bg-secondary' : '']"><span
+                                        <!-- <td class="wd-10"[ngClass]="[ summary.isMandatory==1 ? 'bg-color-disable' : '']"><span
                                             tooltip="{{summary.Sequence}}">{{summary.Sequence}}</span>
                                         </td> -->
-                                        <td [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']">
+                                        <td [ngClass]="[ summary.isMandatory==1 ? 'bg-color-disable' : '']">
                                           <select #myselect class="form-control custom-select invalid-check-box"
                                             [(ngModel)]="summary.Sequence"
                                             (change)="onChangeSequenceCheckBox(summary.Sequence,myselect.value,summary)"
-                                            [ngModelOptions]="{standalone: true}" >
-                                            <option value="null"></option>
+                                            [ngModelOptions]="{standalone: true}">
                                             <option *ngFor="let item of sequenceArray" [disabled]=item.disable>
                                               {{item.value}}</option>
                                           </select>
                                         </td>
 
-                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']"><span
+                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'bg-color-disable' : '']"><span
                                             tooltip="{{summary.tableName}}">{{summary.tableName}}</span>
                                         </td>
-                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'lightgray' : '']"><span
+                                        <td class="wd-10" [ngClass]="[ summary.isMandatory==1 ? 'bg-color-disable' : '']"><span
                                             tooltip="{{summary.fieldName}}">{{summary.fieldName}}</span>
                                         </td>
 
@@ -544,7 +275,7 @@
                                         </td> -->
                                       </tr>
                                       <tr *ngIf="!fieldNameArrayList?.length">
-                                        <td colspan="10">
+                                        <td colspan="4">
                                           <span class="font-14 font500 align-center text-red">No Data Available</span>
                                         </td>
                                       </tr>
@@ -552,17 +283,29 @@
                                   </table>
                                 </div>
                                 <div class="float-right mt-4">
-                                  <button type="button" tooltip="Previous" (click)="buttonPrevious()"
-                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+ <!-- <button type="button" tooltip="Previous" (click)="buttonPrevious()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
                                         class="fa fa-angle-double-left"></i></b> Previous</button>
 
 
-                                        <!-- when next button is disable/enable it's css  Sneha -->
-                                        <!-- when previous button is disable/enable it's ccss  Sneha -->
 
-                                  <button type="button" tooltip="Next" (click)="buttonNext()"
-                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+
+                                                                    <button type="button" tooltip="Next" (click)="buttonNext()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
                                         class="fa fa-angle-double-right"></i></b> Next</button>
+                                                                    <button type="button" tooltip="Preview" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" (click)="displayPreview()"><b><i class="fa fa-eye"></i></b> Preview</button> -->
+
+                                  <span *ngIf="hidePreviousButton">
+                                    <button type="button" tooltip="Previous" (click)="buttonPrevious()"
+                                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                                          class="fa fa-angle-double-left"></i></b> Previous</button>
+                                  </span>
+
+                                  <span *ngIf="hideNextButton ==true">
+                                    <button type="button" tooltip="Next" (click)="buttonNext()"
+                                      class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
+                                          class="fa fa-angle-double-right"></i></b> Next</button>
+
+                                  </span>
+
                                   <button type="button" tooltip="Preview"
                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                                     (click)="displayPreview()"><b><i class="fa fa-eye"></i></b> Preview</button>
@@ -581,42 +324,49 @@
 
                     <div class="row mt-10" *ngIf="preview">
                       <div class="col-md-12">
-                        <div class="row mt-10 mb-10">
-                          <div class="col-md-8">
-                            <h3 class="font-14 text-purple font-bold pt-2" id="UploadModalLabel">
-                              Preview1
-                            </h3>
+                          <div class="row mt-10 mb-10">
+                              <div class="col-md-10">
+                                  <h3 class="font-14 text-purple font-bold pt-2" id="UploadModalLabel">
+                                      Preview
+                                  </h3>
+                              </div>
+                              <!-- <div class="col-md-2">
+                                  <select class="form-control">
+                                <option value="ABC"> ABC </option>
+                                <option value="PQR"> PQR </option>
+                                <option value="XYZ"> XYZ </option>
+                              </select>
+                              </div> -->
+                              <div class="col-md-2">
+                                <select name="filterTemplateDropDown" class="form-control custom-select"
+                                  formControlName="filterTemplateDropDown"
+                                  (change)="onChangePreviewDropDown($event.target.value)">
+                                  <option *ngFor="let filter of filterDropDownList" [value]="filter">
+                                    {{filter}}
+                                  </option>
+                                </select>
+                              </div>
+
                           </div>
-                          <!-- <div class="col-md-4">
-                            <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Search for...">
-                              <span class="input-group-append"><button class="btn btn-primary"
-                                  type="button">Go</button></span>
-                            </div>
-                          </div> -->
-                        </div>
-                        <div class="table-responsive Custom_Table height-200">
-                          <table class="table table-striped table-bordered table-hover m-b-0  mb-0 bg-color-white">
-                            <thead class="thead-green">
-                              <th *ngFor="let item of selectedSummaryCheckBoxHtmlDataList">{{item.fieldName}}</th>
-                            </thead>
-                            <tbody>
-                              <td *ngFor="let list of selectedSummaryCheckBoxHtmlDataList"></td>
-                            </tbody>
-                          </table>
-                        </div>
+                          <div class="table-responsive Custom_Table max_height-200">
+                              <table class="table table-striped table-bordered table-hover m-b-0  mb-0 bg-color-white">
+                                  <thead class="thead-green">
+                                      <th *ngFor="let item of previewTableData">{{item.fieldName}}</th>
+
+                                  </thead>
+                                  <tbody>
+                                      <td *ngFor="let list of previewTableData"></td>
+
+                                  </tbody>
+                              </table>
+                          </div>
                       </div>
-                    </div>
+                  </div>
                     <div class="row pull-right mt-10">
                       <div class="col-sm-12 pull-right">
                         <div *ngIf="isEditMode ==false">
-                          <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left"
-                            tooltip="Save" (click)="saveMaster()">
-                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
-                            <!-- Save button css not working Sneha -->
-
-                            <button type="submit" [disabled]="form.invalid"
+                          <button type="submit" [disabled]="form.invalid"
                             class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
                             (click)="saveMaster()"
                             [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
@@ -643,68 +393,11 @@
                       </div>
                     </div>
                     <br> <br>
-                    <!-- <div class="row mt-10">
-                    <div class="col-md-6">
-                      <h3 class="font-14 text-purple font-bold pt-2" id="UploadModalLabel">
-                        Summary
-                      </h3>
-                      <div class="table-responsive Custom_Table height-200">
-                        <table class="table table-striped table-bordered table-hover m-b-0  mb-0 bg-color-white">
-                          <thead class="thead-dark">
-                            <tr>
-                              <th scope="col">Sr. No</th>
-                              <th scope="col">Template Name</th>
-                              <th scope="col">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>1</td>
-                              <td>Template 1</td>
-                              <td> <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>
-                                &nbsp;&nbsp;
-                                <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"></i>
-                                &nbsp;&nbsp;
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;&nbsp;
-                                <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
-                                  (click)="DownloadCriteria(template2)"></i> &nbsp;&nbsp;
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>Template 2</td>
-                              <td> <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>
-                                &nbsp;&nbsp;
-                                <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"></i>
-                                &nbsp;&nbsp;
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;&nbsp;
-                                <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"></i>
-                                &nbsp;&nbsp;
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>Template 3</td>
-                              <td> <i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>
-                                &nbsp;&nbsp;
-                                <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"></i>
-                                &nbsp;&nbsp;
-                                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>&nbsp;&nbsp;
-                                <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download" (click)="exportAsXLSX()"></i>
-                                &nbsp;&nbsp;
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div> -->
+
 
 
                     <div class="row">
                       <div class="col-md-6">
-
-
                         <!-- <div class="mb-0"> -->
                         <h3 class="font-14 text-purple font-bold">Summary</h3>
                         <!-- </div> -->
@@ -727,7 +420,7 @@
                                     tooltip="{{summary.templateName}}">{{summary.templateName}}</span>
                                 </td>
                                 <td class="wd-20"> <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                    tooltip="Edit"></i>
+                                    tooltip="Edit"   (click)="editMaster(summary.templateMasterId)"></i>
                                   &nbsp;&nbsp;
                                   <i class="fa fa-trash font-16 text-red cursor-pointer" tooltip="Delete"
                                     (click)="deleteTemplate(summary.templateMasterId)"></i>
@@ -789,18 +482,6 @@
                                 </ng-multiselect-dropdown>
                               </div>
                             </div>
-                            <!-- <div class="row clearfix mt-2">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Garnishment </label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <select name="beast" class="form-control custom-select">
-                                                <option value="1">Change %</option>
-                                                <option value="4">Change Value</option>
-                                                <option value="3">Absolute Value</option>
-                                             </select>
-                                        </div>
-                                    </div> -->
                           </div>
                         </div>
                       </div>
@@ -878,20 +559,10 @@
                                   </div>
                                 </div>
                                 <div class="col-md-4 pt-1">
-                                  <!-- <button type="button" tooltip="Previous" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-file"></i></b> Browse</button> -->
-                                  <!-- <button type="button" tooltip="Clear" class="custom_button custom_btn bg-teal-400  btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-times"></i></b> Clear</button> -->
                                   <button type="button" tooltip="Validate"
                                     class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left"
                                     (click)="uploadExcelSheet()"><b><i class="fa fa-check"></i></b> Validate</button>
                                 </div>
-                                <!-- <div class="col-md-4">
-                                  <div class="float-right d-flex">
-                                    <div class="input-group">
-                                      <input type="text" class="form-control" placeholder="Search for...">
-                                    </div>
-                                    &nbsp;&nbsp; <i class="fa fa-file-excel-o text-green font-18 mt-2"></i>
-                                  </div>
-                                </div> -->
                               </div>
                               <div class="row">
                                 <div class="col-md-1"></div>
@@ -983,19 +654,6 @@
                               </div>
                             </div>
                           </div>
-                          <!-- <div class="row mt-15">
-                                       <div class="col-md-12">
-                                           <h5 class="text-green">Upload file validated successfully </h5>
-                                           <label class="text-gray">Download excel file to see the summary of data validated</label>
-                                       </div>
-                                       </div>
-
-                                       <div class="row mt-15">
-                                       <div class="col-md-12">
-                                           <h5 class="text-green">Data imported Successfully </h5>
-                                           <label class="text-gray">Download excel file to see the summary of data uploaded</label>
-                                       </div>
-                                       </div> -->
                         </fieldset>
                       </div>
                     </div>
@@ -1024,11 +682,6 @@
       <span aria-hidden="true">×</span>
     </button>
   </div>
-  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
-      <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
-
-
-
   <div class="modal-body">
     <div class="card-body box-border">
       <div class="row">
@@ -1040,266 +693,44 @@
 
             <input class="toggle-box" id="merge1" type="checkbox" value=false />
             <label for="merge1">Employee Master</label>
-            <div clsss="ml-30">
+            <!-- <div clsss="ml-30">
 
               <a class="p-0" *ngFor="let emp of employeeMasterModuleList">
                 <label class="custom-control custom-checkbox mr-15">
-                  <!-- <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Select All" /> -->
-                  <input type="checkbox"  (change)="onmergeSelected($event,emp)"
-                    name={{emp.id}} [value]=emp.id [checked]=emp.checked [disabled]=emp.disabled /> &nbsp;&nbsp;{{emp.title}}
-                  <!-- <span class="custom-control-label">Select All</span> -->
+                  <input type="checkbox" (change)="onmergeSelected($event.target.checked,emp)" name={{emp.id}}
+                    [value]=emp.id [checked]=emp.checked [disabled]=emp.disabled /> &nbsp;&nbsp;{{emp.title}}
+                 <span class="custom-control-label">Select All</span>
                 </label>
               </a>
               <div>
               </div>
-            </div>
-            <!-- <div class="ml-30">
-              <a   class="p-0">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Select All" />
-                  <span class="custom-control-label">Select All</span>
-                </label>
-              </a>
-              <a class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1" [(ngModel)]="mergePersonalInformation" value="mergePersonalInformation" />
-                  <span class="custom-control-label selectedfield">Personal Information </span>
-                </label>
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"  [(ngModel)]="mergeComplianceInformation" value="mergeComplianceInformation" />
-                  <span class="custom-control-label">Compliance Information</span>
-                </label>
-
-
-
-
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"   [(ngModel)]="mergeIdentityInformation" value="mergeIdentityInformation" />
-                  <span class="custom-control-label">Identity Information</span>
-                </label>
-
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"  [(ngModel)]="mergeContactInformation" value="mergeContactInformation" />
-                  <span class="custom-control-label">Contact Information</span>
-                </label>
-
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"  [(ngModel)]="mergePreviousEmploymentInformation" value="mergePreviousEmploymentInformation" />
-                  <span class="custom-control-label">Previous Employment Information</span>
-                </label>
-
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"  [(ngModel)]="mergeEducationAndSkillInformation" value="mergeEducationAndSkillInformation" />
-                  <span class="custom-control-label">Education & Skill Information</span>
-                </label>
-
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1" [(ngModel)]="mergeEmploymentInformation" value="mergeEmploymentInformation" />
-                  <span class="custom-control-label">Employment Information</span>
-                </label>
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"  [(ngModel)]="mergePayrollInformation" value="mergePayrollInformation" />
-                  <span class="custom-control-label">Payroll Information</span>
-                </label>
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"  [(ngModel)]="mergeFamilyInformation" value="mergeFamilyInformation" />
-                  <span class="custom-control-label">Family Information</span>
-                </label>
-              </a>
-
             </div> -->
-            <!-- <input class="toggle-sub-box" id="merge2" type="checkbox" />
-              <label for="merge2" class="pt-2">Employment Information</label> -->
-            <!-- <div>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 1" />
-                    <span class="custom-control-label">Menu 1</span>
-                  </label>
 
-                </a>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 2" />
-                    <span class="custom-control-label">Menu 2</span>
-                  </label>
+            <div clsss="ml-30">
 
-                </a>
-              </div> -->
-            <!-- <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                    value="Previous Employment Information" />
-                  <span class="custom-control-label">Previous Employment Information</span>
-                </label>
+              <label class="custom-control custom-checkbox mr-17" *ngFor="let emp of employeeMasterModuleList">
 
-              </a>
-              <input class="toggle-sub-box" id="merge3" type="checkbox" />
-              <label for="merge3" class="pt-2">Job Information</label> -->
-            <!-- <div>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 1" />
-                    <span class="custom-control-label">Menu 1</span>
-                  </label>
+    <input type="checkbox" class="custom-control-input"  (change)="onmergeSelected($event.target.checked,emp)"
+      name={{emp.id}} [value]=emp.id [checked]=emp.checked [disabled]=emp.disabled /> &nbsp;&nbsp; <span class="custom-control-label text-000 font-14"
+      >{{emp.title}}</span>
 
-                </a>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 2" />
-                    <span class="custom-control-label">Menu 2</span>
-                  </label>
+  </label>
 
-                </a>
-              </div> -->
-            <!-- <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                    value="Bank Information" />
-                  <span class="custom-control-label">Bank Information</span>
-                </label>
-
-              </a> -->
-            <!-- <input class="toggle-sub-box" id="merge4" type="checkbox" />
-              <label for="merge4" class="pt-2"> Family Information</label> -->
-            <!-- <div>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 1" />
-                    <span class="custom-control-label">Menu 1</span>
-                  </label>
-
-                </a>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 2" />
-                    <span class="custom-control-label">Menu 2</span>
-                  </label>
-
-                </a>
-              </div> -->
-            <!-- <input class="toggle-sub-box" id="merge5" type="checkbox" />
-              <label for="merge5" class="pt-2">Compliance Information</label> -->
-            <!-- <div>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 1" />
-                    <span class="custom-control-label">Menu 1</span>
-                  </label>
-
-                </a>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 2" />
-                    <span class="custom-control-label">Menu 2</span>
-                  </label>
-
-                </a>
-              </div> -->
-            <!-- <input class="toggle-sub-box" id="merge6" type="checkbox" />
-              <label for="merge6" class="pt-2">Educational Skill Information</label> -->
-            <!-- <div>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 1" />
-                    <span class="custom-control-label">Menu 1</span>
-                  </label>
-
-                </a>
-                <a   class="p-0 position_relative">
-                  <label class="custom-control custom-checkbox ml-15">
-                    <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Menu 2" />
-                    <span class="custom-control-label">Menu 2</span>
-                  </label>
-
-                </a>
-              </div> -->
-
-            <!-- <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                    value="Leave and Attendance Information" />
-                  <span class="custom-control-label">Leave and Attendance Information</span>
-                </label>
-
-              </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                    value="Payroll Area Information" />
-                  <span class="custom-control-label">Payroll Area Information</span>
-                </label>
-
-              </a> -->
-
-
-            <!-- <input class="toggle-box" id="merge7" type="checkbox" />
-            <label for="merge7" class="mt-10">Payroll</label>
-            <div class="ml-30">
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                    value="Financial Master " />
-                  <span class="custom-control-label">Financial Master
-                  </span>
-                </label> -->
-            <!-- <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span> -->
-            <!-- </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Non-Recurring " />
-                  <span class="custom-control-label">Non-Recurring
-                  </span>
-                </label> -->
-            <!-- <span> <i class="fa fa-compress mergeicon"  tooltip="Merge Tab/Field"></i></span> -->
-            <!-- </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Garnishment" />
-                  <span class="custom-control-label">Garnishment</span>
-                </label> -->
-            <!-- <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span> -->
-            <!-- </a>
-              <a   class="p-0 position_relative">
-                <label class="custom-control custom-checkbox mr-15">
-                  <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="Attendance" />
-                  <span class="custom-control-label">Attendance</span>
-                </label> -->
-            <!-- <span> <i class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"></i></span> -->
-            <!-- </a>
-            </div> -->
+              <div>
+              </div>
+          </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
     <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
       tooltip="Save" (click)="modalRef.hide()" (click)="saveMergeAndUnmerge()"><b>
         <i class="fa fa-floppy-o"></i></b> Save</button>
     <button type="submit" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ripple"
       tooltip="Reset" (click)="modalRef.hide()"><b>
         <i class="fa fa-refresh"></i></b> Reset</button>
-    <!-- <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-         Ok
-         </button> -->
   </div>
 </ng-template>
 <ng-template #template2>
@@ -1425,10 +856,8 @@
                                 <span class="custom-control-label"></span>
                               </label>
                             </th>
-                            <!-- Sequence madhe max 2 digit yenar aahe tar tya chi length Sneha -->
-                             <!-- td chi width pan kami pahije hoti Sneha -->
                             <th scope="col" class="wd-10">Sequence</th>
-                            <th scope="col" class="wd-30">Tab</th>
+                            <th scope="col" class="wd-30">Table Nme</th>
                             <th scope="col" class="wd-30">Field Name</th>
                             <th scope="col" class="wd-20">Dropdown Value</th>
                           </tr>
@@ -1739,7 +1168,7 @@
                     </div>
                     <div class="float-right">
                       <button type="button" tooltip="Previous"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10" ><b><i
+                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
                             class="fa fa-angle-double-left"></i></b> Previous</button>
                       <button type="button" tooltip="Next"
                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i

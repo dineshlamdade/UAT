@@ -56,6 +56,12 @@ var UploadExcelHomeService = /** @class */ (function () {
             return res;
         }));
     };
+    UploadExcelHomeService.prototype.getExcelTemplateById = function (excelTemplateId) {
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + '//excel-template/getTemplateData/' + excelTemplateId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
     UploadExcelHomeService = __decorate([
         core_1.Injectable({
             providedIn: 'root'

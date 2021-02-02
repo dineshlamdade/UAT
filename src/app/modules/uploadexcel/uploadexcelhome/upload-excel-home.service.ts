@@ -60,5 +60,12 @@ getExcelTableFields(){
   }));
 }
 
-
+getExcelTemplateById(excelTemplateId:number){
+  return this._HTTP.get(environment.baseUrl8082 + '//excel-template/getTemplateData/'+ excelTemplateId, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+  .pipe(map((res: any) => {
+    return res;
+  }));
 }
+}
+
+
