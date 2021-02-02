@@ -107,7 +107,7 @@ export class FamilyDetailsComponent implements OnInit {
       isDependant: [''],
       image: [''],
       remark: [''],
-      isActive: [''],
+      isActive: [{ value: null, disabled: true }],
       companyMediclaimToggle: ['', Validators.required],
       dependentOnEmployeeToggle: ['', Validators.required],
       addressDetailsCountryCode: [''],
@@ -225,11 +225,15 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   activeSetBoolean(event) {
-
-    if (event.checked == true) {
+    debugger
+    if (event == true) {
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
+      this.FamilyDetailsInfoForm.get('remark').clearValidators();
+      this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
     } else {
       this.familyMemberInfoRequestDTO.isMemberActive = 0;
+      this.FamilyDetailsInfoForm.get('remark').setValidators([Validators.required]);
+      this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
     }
   }
 
@@ -253,6 +257,8 @@ export class FamilyDetailsComponent implements OnInit {
     this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValue('');
     this.FamilyDetailsInfoForm.get('copyFrom').setValue('');
     this.FamilyDetailsInfoForm.get('guardianCountryCode').setValue('');
+    const isActive = this.FamilyDetailsInfoForm.get('isActive');
+    isActive.disable();
   }
 
   getGuardianAddressFromPIN() {
@@ -309,6 +315,8 @@ export class FamilyDetailsComponent implements OnInit {
       }
       this.familyEditingItem.isMemberActive = 'Active';
       this.IsActive = true;
+      const isActive = this.FamilyDetailsInfoForm.get('isActive');
+      isActive.disable();
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -723,6 +731,9 @@ export class FamilyDetailsComponent implements OnInit {
           num1 = this.guardianDetailRequestDTO.phoneNumber,
           this.guardianCountryCode = num1.slice(0, num1.length - 11);
       }
+
+      const isActive = this.FamilyDetailsInfoForm.get('isActive');
+      isActive.enable();
     })
   }
 
@@ -778,7 +789,8 @@ export class FamilyDetailsComponent implements OnInit {
     this.enableForm();
     this.familyViewItem = false;
     this.updateFormFlag = false;
-
+    const isActive = this.FamilyDetailsInfoForm.get('isActive');
+    isActive.disable();
     this.dependentOnEmployee = 'no';
     this.companyMediclaim = 'no';
     this.IsActive = true;

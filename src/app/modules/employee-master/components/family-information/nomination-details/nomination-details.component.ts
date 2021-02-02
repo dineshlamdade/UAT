@@ -111,6 +111,8 @@ export class NominationDetailsComponent implements OnInit {
     const data = 'some text';
     const blob = new Blob([data], { type: 'application/octet-stream' });
 
+    this.getNomination();
+
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
     this.FamilyInformationService.getAllESICLocation().subscribe(res => {
 
@@ -133,8 +135,31 @@ export class NominationDetailsComponent implements OnInit {
 
 
 
-    this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
+    
+    // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
+    //   
+    //   res.isMemberActive == 'isMemberActive';
+    //   this.dataSource.data.forEach(element => {
 
+    //     if (res.isMemberActive == element.IsActive) {
+    //       element.pfPercentage = 0;
+    //       element.epsPercentage = 0;
+    //       element.gratuityPercentage = 0;
+    //       element.salaryPercentage = 0;
+    //       element.superAnnuationPercentage = 0;
+    //       element.lifeInsurancePercentage = 0;
+    //       element.esicPercentage = 0;
+    //       element.personalAccidentInsurancePercentage = 0;
+    //       element.mediclaimInsurancePercentage = 0;
+    //       element.IsActive = 0;
+    //     }
+    //   })
+    // })
+  }
+
+  getNomination(){
+    this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
+      debugger
       // if (!this.dataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
         const obj = {
@@ -160,7 +185,7 @@ export class NominationDetailsComponent implements OnInit {
       })
       // }
       this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
-
+        debugger
         this.AllNominationList = res.data.results[0].familyNominationResponseDTO;
         this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
         // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
@@ -359,27 +384,9 @@ export class NominationDetailsComponent implements OnInit {
 
       // }
     })
-
-    // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
-    //   
-    //   res.isMemberActive == 'isMemberActive';
-    //   this.dataSource.data.forEach(element => {
-
-    //     if (res.isMemberActive == element.IsActive) {
-    //       element.pfPercentage = 0;
-    //       element.epsPercentage = 0;
-    //       element.gratuityPercentage = 0;
-    //       element.salaryPercentage = 0;
-    //       element.superAnnuationPercentage = 0;
-    //       element.lifeInsurancePercentage = 0;
-    //       element.esicPercentage = 0;
-    //       element.personalAccidentInsurancePercentage = 0;
-    //       element.mediclaimInsurancePercentage = 0;
-    //       element.IsActive = 0;
-    //     }
-    //   })
-    // })
   }
+
+
   filterCity(state, ESIC) {
 
     let cities = [];
@@ -617,6 +624,7 @@ export class NominationDetailsComponent implements OnInit {
       })
       this.NominationInformation.familyNominationRequestDTO.forEach(data => {
         delete data.disable;
+        delete data.familyMemberInfo;
       })
       this.NominationInformation.familyESICDetailRequestDTO.forEach(data => {
         delete data.dispensaryList;
@@ -635,12 +643,16 @@ export class NominationDetailsComponent implements OnInit {
         this.PersonalAccInsurancecount = 0;
         this.MediclaimInsurancecount = 0;
 
-        // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
-        // this.dataSource = new MatTableDataSource(TABLE_DATA);
-        this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
-        // const TABLE_DATA1: ESICElement[] = res.data.results[0].familyESICDetailResponseDTO;
-        // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
-        this.esicDataSource = res.data.results[0].familyESICDetailResponseDTO;
+        // this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
+        this.getNomination();
+
+        // let cities = [];
+        // this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
+        //   if (ESIC.state == city.state) {
+        //     cities.push(city.district);
+        //   }
+        // })
+        // ESIC.cities = cities.filter(this.onlyUnique);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
       }, (error: any) => {
