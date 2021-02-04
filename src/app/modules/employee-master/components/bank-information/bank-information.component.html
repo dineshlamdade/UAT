@@ -96,7 +96,7 @@
                                             [type]="accountNo ? 'text' : 'password'" (keypress)="keyPress($event)"
                                             (keyup)="validateAccountNo(BankInformationModel.accountNo)"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('accountNumber').status == 'INVALID'}">
-                                        <mat-icon matSuffix class="field-icon" (click)="toggleFieldTextType()"
+                                        <mat-icon matSuffix class="field-icon" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
                                             [ngClass]="{
                                             'visibility': !accountNo,
                                             'visibility_off': accountNo
@@ -118,12 +118,13 @@
                                             [type]="confirmAccountNo1 ? 'text' : 'password'"
                                             [(ngModel)]="confirmAccountNumber" (keyup)="accountNoMatchValidation()"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('confirmAccountNo').status == 'INVALID'}">
-                                        <mat-icon matSuffix (click)="confirmAccountNo1 = !confirmAccountNo1"
+                                        <!-- && confirmAccountNumber?.length>0? -->
+                                        <mat-icon matSuffix (click)="confirmAccountNo1 = !confirmAccountNo1;hideConfirmAccountNo(confirmAccountNo1)"
                                             class="field-icon">
                                             {{confirmAccountNo1 ? 'visibility' : 'visibility_off'}}
                                         </mat-icon>
 
-                                        <mat-error style="font-size: 11px;" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch') || confirmAccountNumber?.length>0
+                                        <mat-error style="font-size: 11px;" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch')&& confirmAccountNumber?.length>0
                                             && bankInfoForm.get('confirmAccountNo').status == 'INVALID'">
                                             {{ 'BankInfoForm.accountNoMatchError' | transloco }}</mat-error>
                                         <!-- <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo

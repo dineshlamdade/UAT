@@ -514,6 +514,8 @@ export class PersonalInformationComponent implements OnInit {
   }
   resetForm() {
 
+    this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+
     this.BasicInfoForm.reset();
     this.imageUrl = "./assets/emp-master-images/empIcon5.png";
     const severityLevel = this.BasicInfoForm.get('severityLevel');

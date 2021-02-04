@@ -71,6 +71,7 @@ export class BankInformationComponent implements OnInit {
   showOptios: boolean = false;
   saveNextBoolean: boolean = false;
   accountNo: boolean;
+  confirmAccountNo1: boolean;
 
 
   constructor(private formBuilder: FormBuilder, private EventEmitterService: EventEmitterService,
@@ -207,7 +208,7 @@ export class BankInformationComponent implements OnInit {
   // Get IFSC Details
 
   getDataFromIFSC(bankIFSC) {
-    
+
     if (bankIFSC.length < 11) {
       this.BankInformationModel.bankName = '';
       this.BankInformationModel.branchName = '';
@@ -223,7 +224,7 @@ export class BankInformationComponent implements OnInit {
   IFSCDetails(bankIFSC) {
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
-      
+
       this.maxAccNumber = res.data.results[0].limit
       if (this.maxAccNumber == 0) {
         this.maxAccNumber = null;
@@ -431,14 +432,14 @@ export class BankInformationComponent implements OnInit {
 
       this.BankInformationService.accountNoVerification(confirmPassword, 0).subscribe(res => {
         // DelayNode
-        
+
         // this.CommonDataService.sweetalertMasterSuccess(res.status.messsage, res.status.result);
         // if(res.status.messsage == 'Account Number  Already Exists '){
         //   this.BankInformationModel.accountNo = '';
         //   this.confirmAccountNumber = '';
         // }
       }, (error: any) => {
-        
+
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
 
@@ -485,11 +486,29 @@ export class BankInformationComponent implements OnInit {
     this.accountNo = !this.accountNo
   }
 
-  accountNoMatchValidation(){
-    
-    if(this.bankInfoForm.controls['confirmAccountNo'].value == this.BankInformationModel.accountNo
-    && this.BankInformationModel.accountNo.length>0){
+  accountNoMatchValidation() {
+
+    if (this.bankInfoForm.controls['confirmAccountNo'].value == this.BankInformationModel.accountNo
+      && this.BankInformationModel.accountNo.length > 0) {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", 'Account Number Matched');
+    }
+  }
+
+  hideAccountNo(accountNo) {
+
+    if (accountNo == true) {
+      setTimeout(() => {
+        this.accountNo = false;
+      }, 10000)
+    }
+  }
+
+  hideConfirmAccountNo(confirmAccountNo1) {
+
+    if (confirmAccountNo1 == true) {
+      setTimeout(() => {
+        this.confirmAccountNo1 = false;
+      }, 10000)
     }
   }
 }

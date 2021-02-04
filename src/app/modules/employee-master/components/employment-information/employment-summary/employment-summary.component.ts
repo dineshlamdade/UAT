@@ -58,7 +58,7 @@ export class EmploymentSummaryComponent implements OnInit {
   getSummaryEmploymentInfo() {
 
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.EmploymentInformationSumarry = res.data.results;
       this.joiningDate = res.data.results[0].joiningDate;
       if (res.data.results[0].joiningDate) {

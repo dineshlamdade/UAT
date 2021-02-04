@@ -92,10 +92,16 @@
                                     <label class="form-label">Standard Duration</label>
                                     <div class="row">
                                         <div class="col-sm-3 col-md-5 country-code">
+                                            <input type="text" class="form-control" formControlName="durationOfCourse"
+                                                placeholder="Standard Duration"
+                                                [(ngModel)]="employeeEducationRequestModel.durationOfCourse"
+                                                tooltip="standard Duration">
+                                        </div>
+                                        <div class="col-sm-3 col-md-7 ml-2">
                                             <select class="form-control selectpicker" placeholder="Select"
                                                 formControlName="duration"
                                                 [(ngModel)]="employeeEducationRequestModel.durationOfCourseValue"
-                                                tooltip="{{duration}}">
+                                                tooltip="{{duration}}" (change)="clearDuration()">
                                                 <option value="" data-hidden="true">select
                                                 </option>
                                                 <option *ngFor="let duration of standardDurationList"
@@ -103,12 +109,6 @@
                                                     {{duration}}
                                                 </option>
                                             </select>
-                                        </div>
-                                        <div class="col-sm-3 col-md-7 ml-2">
-                                            <input type="text" class="form-control" formControlName="durationOfCourse"
-                                                placeholder="Standard Duration"
-                                                [(ngModel)]="employeeEducationRequestModel.durationOfCourse"
-                                                tooltip="standard Duration">
                                         </div>
                                     </div>
                                 </div>

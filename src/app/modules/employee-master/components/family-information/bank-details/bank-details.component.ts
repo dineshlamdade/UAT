@@ -78,13 +78,13 @@ export class BankDetailsComponent implements OnInit {
     // this.controls = new FormArray(this.toGroups);
     if (this.BankAccountDataSource.length == 0) {
       this.FamilyInformationService.getFamilyMemberInfo(this.employeeMasterId).subscribe(res => {
-        
+
         this.familyMemberList = res.data.results[0];
         // const TABLE_DATA1: BankElement[] = this.familyMemberList;
         // this.BankDataSource = new MatTableDataSource(TABLE_DATA1);
 
         this.FamilyInformationService.getBankDetailsInfo(this.employeeMasterId).subscribe(res => {
-          
+
 
           this.BankDetailsList = res.data.results[0];
           // const TABLE_DATA1: BankElement[] = this.familyMemberList;
@@ -132,6 +132,10 @@ export class BankDetailsComponent implements OnInit {
   }
   saveBankDetails(BankAccountDataSource) {
 
+    BankAccountDataSource.forEach(element => {
+      delete element.accountNumberCountError;
+    });
+
     this.FamilyInformationService.postBankDetailsInfoForm(BankAccountDataSource).subscribe(res => {
 
       this.BankAccountDataSource = res.data.results[0];
@@ -144,7 +148,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   searchIFSC(searchTerm, bankIFSC, stateModel, bank: any) {
-    
+
     this.currenBank = bank;
     if (searchTerm.query.length < 2) {
       this.AllIFSCcodeList = []
@@ -198,7 +202,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   getDataFromIFSC(bankIFSC, bank) {
-    
+
     if (bankIFSC.length < 11) {
       bank.bankName = '';
       bank.branchName = '';
@@ -212,9 +216,9 @@ export class BankDetailsComponent implements OnInit {
     }
   }
 
-  
+
   IFSCDetails(bankIFSC, bank: any) {
-    
+
     this.currenBank = bank;
     if (bankIFSC) {
       bank.bankName = '';
@@ -225,7 +229,7 @@ export class BankDetailsComponent implements OnInit {
     }
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
-      
+
       this.maxAccNumber = res.data.results[0].limit
       if (this.maxAccNumber == 0) {
         this.maxAccNumber = null;
@@ -256,13 +260,15 @@ export class BankDetailsComponent implements OnInit {
     })
   }
 
-  validateAccountNo(accountNumber) {
+  validateAccountNo(accountNumber, bank) {
 
     if (this.maxAccNumber) {
       if (accountNumber.length < this.maxAccNumber) {
+        bank.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
         this.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
       } else {
         this.accountNumberCountError = '';
+        bank.accountNumberCountError = null;
       }
     }
   }
@@ -283,7 +289,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   filterIFSCCode(event) {
-    
+
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: any[] = [];
     let query = event.query;
@@ -303,6 +309,15 @@ export class BankDetailsComponent implements OnInit {
     let inputChar = String.fromCharCode(event.charCode);
     if (event.keyCode != 8 && !pattern.test(inputChar)) {
       event.preventDefault();
+    }
+  }
+
+  hideAccountNo(accountNo) {
+    debugger
+    if (accountNo == true) {
+      setTimeout(() => {
+        this.accountNo = false;
+      }, 2000)
     }
   }
 }

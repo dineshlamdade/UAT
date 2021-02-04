@@ -222,12 +222,13 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   payrollAssignValues(payrollAreaCode){
-
+    debugger
     this.payrollAreaArray.forEach(element =>{
       if(element.payrollAreaCode == payrollAreaCode){
         
         this.PayrollAreaRequestModel.description = element.headGroupDefinitionResponse.description;
         this.PayrollAreaRequestModel.currency = element.currency;
+        // this.PayrollAreaRequestModel.payrollAreaId = element.payrollAreaId;
         this.PayrollAreaInfoForm.get('currency').setValue(element.currency);
       }
     })
@@ -242,7 +243,7 @@ export class PayrollAreaInformationComponent implements OnInit {
 
 
   savePayrollArea(PayrollAreaRequestModel) {
-
+    debugger
     if (this.additionPayrollFlag == false) {
       PayrollAreaRequestModel.additionalPayrollAllowed = 0;
     }

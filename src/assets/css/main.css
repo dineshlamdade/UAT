@@ -8165,17 +8165,18 @@ body.boxlayout .container-fluid {
 }
 
 body *::-webkit-scrollbar {
-    width: 0px;
+    width: 13px;
     height: 12px;
-    transition: .3s background
+    transition: .3s background;
+    background: #ffffff
 }
 
 body *::-webkit-scrollbar-thumb {
-    background: #c3bac9
+    background: #eae5ed;
 }
 
 body *:hover::-webkit-scrollbar-thumb {
-    background: #c3bac9
+    background: #eae5ed;
 }
 
 a:hover {

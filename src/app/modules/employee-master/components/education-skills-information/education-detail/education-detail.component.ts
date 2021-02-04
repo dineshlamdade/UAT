@@ -213,6 +213,7 @@ export class EducationDetailComponent implements OnInit {
     this.employeeEducationRequestModel.location = education.location;
     this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
     this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
+    this.employeeEducationRequestModel.durationOfCourseValue = education.durationOfCourseValue;
     this.employeeEducationRequestModel.startDate = education.startDate;
     this.employeeEducationRequestModel.endDate = education.endDate;
     this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
@@ -264,6 +265,7 @@ export class EducationDetailComponent implements OnInit {
     this.employeeEducationRequestModel.location = education.location;
     this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
     this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
+    this.employeeEducationRequestModel.durationOfCourseValue = education.durationOfCourseValue
     this.employeeEducationRequestModel.startDate = education.startDate;
     this.employeeEducationRequestModel.endDate = education.endDate;
     this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
@@ -318,6 +320,9 @@ export class EducationDetailComponent implements OnInit {
     this.educationviewFlag = false;
     this.validateQualification = false;
     this.employeeEducationRequestModel.employeeEducationID = 0;
+    this.employeeEducationRequestModel.education = '';
+    this.EducationInfoForm.get('education').setValue('');
+    this.employeeEducationRequestModel.durationOfCourseValue = '';
     this.resetEducationForm();
     const temp1 = this.EducationInfoForm.get('education');
     temp1.enable();
@@ -354,6 +359,9 @@ export class EducationDetailComponent implements OnInit {
     this.EducationInfoForm.reset();
     this.educationEditFlag = false;
     this.educationviewFlag = false;
+    this.employeeEducationRequestModel.education = '';
+    this.EducationInfoForm.get('education').setValue('');
+    this.employeeEducationRequestModel.durationOfCourseValue = '';
   }
 
 
@@ -604,5 +612,10 @@ export class EducationDetailComponent implements OnInit {
 
   resetSkillForm() {
     this.SkillInfoForm.reset();
+  }
+
+  clearDuration(){
+
+    this.employeeEducationRequestModel.durationOfCourse = '';
   }
 }

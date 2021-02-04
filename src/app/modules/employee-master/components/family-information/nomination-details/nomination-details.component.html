@@ -3,22 +3,26 @@
         <div class="col-12"> -->
     <div class="card">
         <div class="card-body">
-            <legend>All nomination details are in %</legend>
-
-            <legend class="nomination-title">Nomination</legend>
+            
             <div class="row">
                 <div class="col-md-12">
-                    <!-- <div class="card"> -->
-                    <div class="col-sm-6 col-md-3" style="margin-left: auto;">
-                        <label class="form-label">Last Updated Date</label>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3">
+                            <legend class="nomination-title">Nomination</legend>
+                            <legend class="font-size-11">All nomination details are in %</legend>
+                        </div>
+                        <!-- <div class="card"> -->
+                        <div class="col-sm-6 col-md-3" style="margin-left: auto;">
+                            <label class="form-label">Last Updated Date</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                                        data-date-autoclose="true" class="form-control" placeholder="Select Birth Date"
+                                        bsDatepicker [(ngModel)]="lastUpdatedDate" disabled>
                                 </div>
-                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                                    data-date-autoclose="true" class="form-control" placeholder="Select Birth Date"
-                                    bsDatepicker [(ngModel)]="lastUpdatedDate" disabled>
                             </div>
                         </div>
                     </div>
@@ -42,20 +46,20 @@
                             <tr>
                                 <th class="primeng-table-header-center">Name</th>
                                 <th class="primeng-table-header-center">Provident Fund (PF)</th>
-                                <th class="primeng-table-header-center">Employee Pension Scheme (EPS)</th>
+                                <th class="primeng-table-header-center">Emp. Pension Scheme (EPS)</th>
                                 <th class="primeng-table-header-center">Salary</th>
-                                <th class="primeng-table-header-center">Employee State Insurance (ESI)</th>
+                                <th class="primeng-table-header-center">Emp. State Ins. (ESI)</th>
                                 <th class="primeng-table-header-center">Gratuity</th>
                                 <th class="primeng-table-header-center">Super Annuation</th>
                                 <th class="primeng-table-header-center">Life Insurance</th>
-                                <th class="primeng-table-header-center">Mediclaim Insurance</th>
-                                <th class="primeng-table-header-center">Personal Accident Insurance</th>
+                                <th class="primeng-table-header-center">Mediclaim Ins.</th>
+                                <th class="primeng-table-header-center">Personal Accident Ins.</th>
                             </tr>
                         </ng-template>
 
                         <ng-template pTemplate="body" let-nomination>
                             <tr>
-                                <td><span>
+                                <td tooltip="{{nomination.familyMemberName}}"><span>
                                         <input type="text" class="form-control"
                                             [(ngModel)]="nomination.familyMemberName"
                                             [ngModelOptions]="{standalone: true}" disabled>
@@ -65,64 +69,61 @@
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.pfPercentage" [ngModelOptions]="{standalone: true}"
                                             (change)="getTotalPFCost(nomination.pfPercentage)"
-                                            [disabled]="nomination.disable"
                                             (change)="nomination.pfPercentage < 0 ? nomination.pfPercentage = 0 : nomination.pfPercentage; nomination.pfPercentage > 100 ? nomination.pfPercentage = 0 : nomination.pfPercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.epsPercentage" [ngModelOptions]="{standalone: true}"
-                                            [disabled]="nomination.disable"
                                             (change)="nomination.epsPercentage < 0 ? nomination.epsPercentage = 0: nomination.epsPercentage; nomination.epsPercentage > 100 ? nomination.epsPercentage = 0: nomination.epsPercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.salaryPercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
+                                            [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.salaryPercentage < 0 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage; nomination.salaryPercentage > 100 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.esicPercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
-                                            (change)="nomination.esicPercentage < 0 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage < 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage;
-                                            esicPercentageValidation(nomination.esicPercentage)">
+                                            [ngModelOptions]="{standalone: true}"
+                                            (change)="esicPercentageValidation(nomination.esicPercentage);nomination.esicPercentage < 0 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage < 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.gratuityPercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
+                                            [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.gratuityPercentage < 0 ? nomination.gratuityPercentage = 0 : nomination.gratuityPercentage; nomination.gratuityPercentage > 100 ? nomination.gratuityPercentage = 0 : nomination.gratuityPercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.superAnnuationPercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
+                                            [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.superAnnuationPercentage < 0 ? nomination.superAnnuationPercentage = 0 : nomination.superAnnuationPercentage; nomination.superAnnuationPercentage > 100 ? nomination.superAnnuationPercentage = 0 : nomination.superAnnuationPercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.lifeInsurancePercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
+                                            [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.lifeInsurancePercentage < 0 ? nomination.lifeInsurancePercentage = 0 : nomination.lifeInsurancePercentage; nomination.lifeInsurancePercentage > 100 ? nomination.lifeInsurancePercentage = 0 : nomination.lifeInsurancePercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.mediclaimInsurancePercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
+                                            [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.mediclaimInsurancePercentage < 0 ? nomination.mediclaimInsurancePercentage = 0 : nomination.mediclaimInsurancePercentage; nomination.mediclaimInsurancePercentage > 100 ? nomination.mediclaimInsurancePercentage = 0: nomination.mediclaimInsurancePercentage;">
                                     </span></td>
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.personalAccidentInsurancePercentage"
-                                            [ngModelOptions]="{standalone: true}" [disabled]="nomination.disable"
+                                            [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.personalAccidentInsurancePercentage < 0 ? nomination.personalAccidentInsurancePercentage = 0: nomination.personalAccidentInsurancePercentage; nomination.personalAccidentInsurancePercentage > 100 ? nomination.personalAccidentInsurancePercentage = 0 : nomination.personalAccidentInsurancePercentage;">
                                     </span></td>
                             </tr>
@@ -164,7 +165,7 @@
 
                     <legend class="nomination-title">Document</legend>
                     <p-table [value]="FamilyMemberList" [scrollable]="true" [style]="{width:'1000px'}"
-                        scrollHeight="275px">
+                        scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
                                 <col style="width:250px">
@@ -187,31 +188,6 @@
 
                                 <td class="primeng-table-header-center"><span>
                                         Form 2
-                                    </span></td>
-
-                                <td class="primeng-table-header-center"><a [href]="fileUrl" download="file.txt"><i
-                                            class="fa fa-cloud-download"></i>
-                                    </a></td>
-                            </tr>
-                            <tr>
-                                <td class="primeng-table-header-center"><span>
-                                        Provident Fund (PF) %
-                                    </span></td>
-
-                                <td class="primeng-table-header-center"><span>
-                                        Form F
-                                    </span></td>
-
-                                <td class="primeng-table-header-center"><a [href]="fileUrl" download="file.txt"><i
-                                            class="fa fa-cloud-download"></i>
-                                    </a></td>
-                            </tr>
-                            <tr>
-                                <td class="primeng-table-header-center"><span>
-                                        Provident Fund (PF) %
-                                    </span></td>
-
-                                <td class="primeng-table-header-center"><span>
                                     </span></td>
 
                                 <td class="primeng-table-header-center"><a [href]="fileUrl" download="file.txt"><i
@@ -251,48 +227,41 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-ESIC>
                             <tr>
-                                <td><span>
+                                <td tooltip="{{ESIC.familyMemberName}}" data-placement="top"><span>
                                         <input type="text" class="form-control" [(ngModel)]="ESIC.familyMemberName"
                                             [ngModelOptions]="{standalone: true}" disabled>
                                     </span></td>
 
                                 <td><span>
-                                        <select class="form-control custom-select" placeholder="Select"
-                                            [(ngModel)]="ESIC.state" [ngModelOptions]="{standalone: true}"
-                                            [dropdown]="true" (completeMethod)="filterStates($event,ESIC)"
+                                        <select class="form-control" placeholder="Select" [(ngModel)]="ESIC.state"
+                                            [ngModelOptions]="{standalone: true}" [dropdown]="true"
+                                            (completeMethod)="filterStates($event,ESIC)"
                                             (change)="filterCity($event, ESIC)" placeholder="Select">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let state of ESIC.stateList" [value]="state">
                                                 {{state}}
                                             </option>
                                         </select>
-
-                                        <!-- <p-autoComplete [suggestions]="ESIC.stateList" [(ngModel)]="ESIC.state"
-                                            [ngModelOptions]="{standalone: true}" [dropdown]="true"
-                                            (completeMethod)="filterStates($event,ESIC)"
-                                            (onSelect)="filterCity($event, ESIC)" placeholder="Select">
-                                        </p-autoComplete> -->
                                     </span></td>
 
-                                <td><span>
-                                        <select class="form-control custom-select" placeholder="Select"
-                                            [(ngModel)]="ESIC.city" (completeMethod)="filterCities($event,ESIC)"
+                                <td *ngIf="ESIC.cities"><span>
+                                        <select class="form-control" placeholder="Select" [(ngModel)]="ESIC.city"
+                                            (completeMethod)="filterCities($event,ESIC)"
                                             (change)="filterDispensaryName(ESIC.city, ESIC)" tooltip="{{ESIC.city}}">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let city of ESIC.cities" [value]="city">
                                                 {{city}}
                                             </option>
                                         </select>
-
-                                        <!-- <p-autoComplete [suggestions]="filteredCities" [(ngModel)]="ESIC.city"
-                                            (completeMethod)="filterCities($event,ESIC)"
-                                            (onSelect)="filterDispensaryName(ESIC.city, ESIC)" tooltip="{{ESIC.city}}"
-                                            [dropdown]="true">
-                                        </p-autoComplete> -->
                                     </span></td>
 
-                                <td><span>
-                                        <select class="form-control custom-select" placeholder="Select"
+                                <td *ngIf="!ESIC.cities"><span>
+                                        <input type="text" class="form-control" [(ngModel)]="ESIC.city"
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{ESIC.city}}">
+                                    </span></td>
+
+                                <td *ngIf="ESIC.dispensaryList"><span>
+                                        <select class="form-control" placeholder="Select"
                                             [(ngModel)]="ESIC.dispensaryName" [ngModelOptions]="{standalone: true}"
                                             (completeMethod)="filterDispensaryList($event,ESIC)"
                                             (change)="getDispensaryAddress(ESIC, ESIC)"
@@ -302,13 +271,11 @@
                                                 {{dispensary}}
                                             </option>
                                         </select>
+                                    </span></td>
 
-                                        <!-- <p-autoComplete [suggestions]="FilteredDispensaryNames"
-                                            [(ngModel)]="ESIC.dispensaryName" [ngModelOptions]="{standalone: true}"
-                                            (completeMethod)="filterDispensaryList($event,ESIC)"
-                                            (onSelect)="getDispensaryAddress(ESIC, ESIC)"
-                                            tooltip="{{ESIC.dispensaryName}}" [dropdown]="true">
-                                        </p-autoComplete> -->
+                                <td *ngIf="!ESIC.dispensaryList"><span>
+                                        <input type="text" class="form-control" [(ngModel)]="ESIC.dispensaryName"
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{ESIC.dispensaryName}}">
                                     </span></td>
 
                                 <td><span>

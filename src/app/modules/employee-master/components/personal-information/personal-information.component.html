@@ -60,21 +60,24 @@
                                             formControlName="title" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.firstName== ''">
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.firstName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.firstName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter First Name"
                                             formControlName="firstName" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.firstName"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('firstName').status == 'INVALID'}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.middleName== ''">
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.middleName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.middleName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Middle Name"
                                             formControlName="middleName" (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.middleName"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('middleName').status == 'INVALID'}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.lastName== ''">
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.lastName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.lastName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Last Name"
                                             formControlName="lastName" (change)="concateFullName()"
@@ -179,6 +182,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" [maxDate]="today"
+                                                    [minDate]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     placeholder="Select Marriage Date" bsDatepicker
                                                     formControlName="marriageDate"
                                                     [(ngModel)]="personalInformationModel.anniversaryDate">

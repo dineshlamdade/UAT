@@ -54,6 +54,7 @@ export class NominationDetailsComponent implements OnInit {
   employeeMasterId: number;
   ELEMENT_DATA: []
   FamilyMemberList: Array<any> = [];
+  DocumentMemberList: Array<any> = [];
   ESICDataSource: MatTableDataSource<any>;
   ESICMemberList: Array<any> = [];
   public FamilyMember = new NominationElementDTO('', '', '', '', '', '', '', '', '');
@@ -135,7 +136,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
 
-    
+
     // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
     //   
     //   res.isMemberActive == 'isMemberActive';
@@ -157,39 +158,46 @@ export class NominationDetailsComponent implements OnInit {
     // })
   }
 
-  getNomination(){
+  getNomination() {
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
-      debugger
+      
       // if (!this.dataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-        const obj = {
-          'familyMemberInfoId': element.familyMemberInfoId,
-          'familyMemberName': element.familyMemberName,
-          'isActive': element.status,
-          'pfPercentage': 0,
-          'epsPercentage': 0,
-          'gratuityPercentage': 0,
-          'salaryPercentage': 0,
-          'superAnnuationPercentage': 0,
-          'lifeInsurancePercentage': 0,
-          'esicPercentage': 0,
-          'personalAccidentInsurancePercentage': 0,
-          'mediclaimInsurancePercentage': 0
+        if (element.status == 1) {
+          const obj = {
+            'familyMemberInfoId': element.familyMemberInfoId,
+            'familyMemberName': element.familyMemberName,
+            'isActive': element.status,
+            'pfPercentage': 0,
+            'epsPercentage': 0,
+            'gratuityPercentage': 0,
+            'salaryPercentage': 0,
+            'superAnnuationPercentage': 0,
+            'lifeInsurancePercentage': 0,
+            'esicPercentage': 0,
+            'personalAccidentInsurancePercentage': 0,
+            'mediclaimInsurancePercentage': 0
+          }
+          this.FamilyMemberList.push(obj);
         }
-
-
-        this.FamilyMemberList.push(obj);
 
         // const TABLE_DATA: NominationElement[] = this.FamilyMemberList;
         // this.dataSource = new MatTableDataSource(TABLE_DATA);
       })
       // }
       this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
-        debugger
+        
         this.AllNominationList = res.data.results[0].familyNominationResponseDTO;
         this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
-        // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
-        // this.dataSource = new MatTableDataSource(TABLE_DATA);
+    
+        this.FamilyMemberList.forEach((element1) => {
+          this.AllNominationList.some(res => {
+            if (element1.familyMemberInfoId == res.familyMemberInfoId) {
+              res.familyMemberName = element1.familyMemberName;
+            }
+          })
+        })
+        
         this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
         this.lastUpdatedDate = new Date(Math.max.apply(null, this.AllNominationList.map(function (e) {
           return new Date(e.lastModifiedDateTime);
@@ -273,6 +281,9 @@ export class NominationDetailsComponent implements OnInit {
           // return this.dataSource = new MatTableDataSource(TABLE_DATA);
           return this.nominationDataSource = this.AllNominationList;
         }
+      }, (error: any) => {
+        // this.nominationDataSource = this.FamilyMemberList;
+        // this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
 
       if (this.extractedInfoID.length == 0 && this.AllNominationList.length == 0) {
@@ -302,19 +313,19 @@ export class NominationDetailsComponent implements OnInit {
       }
       // if (!this.ESICDataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-        const obj1 = {
-          'familyMemberInfoId': element.familyMemberInfoId,
-          'familyMemberName': element.familyMemberName,
-          // 'isActive': element.status,
-          'state': '',
-          'city': '',
-          'dispensaryName': '',
-          'dispensaryAddress': ''
+        
+        if (element.status == 1) {
+          const obj1 = {
+            'familyMemberInfoId': element.familyMemberInfoId,
+            'familyMemberName': element.familyMemberName,
+            // 'isActive': element.status,
+            'state': '',
+            'city': '',
+            'dispensaryName': '',
+            'dispensaryAddress': ''
+          }
+          this.ESICMemberList.push(obj1);
         }
-
-
-        this.ESICMemberList.push(obj1);
-
         // const TABLE_DATA1: ESICElement[] = this.ESICMemberList;
         // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
       })
@@ -325,11 +336,9 @@ export class NominationDetailsComponent implements OnInit {
 
 
         this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
-
+          
           this.AllESICList = res.data.results[0];
           this.getStates();
-          // const TABLE_DATA1: ESICElement[] = res.data.results[0];
-          // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
 
           const newESIC = [];
           this.ESICMemberList.filter(element => {
@@ -348,14 +357,22 @@ export class NominationDetailsComponent implements OnInit {
                 if (element == element1.familyMemberInfoId) {
                   this.AllESICList.push(element1);
                   // const TABLE_DATA1: ESICElement[] = this.AllESICList;
-                  this.AllESICList.forEach(res => {
-                    res.stateList = this.states;
-                    res.familyMemberName = element1.familyMemberName;
-                  })
+                  // this.AllESICList.forEach(res => {
+                  //   res.stateList = this.states;
+                  //   res.familyMemberName = element1.familyMemberName;
+                  // })
                   return this.esicDataSource = this.AllESICList;
                   // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
                 }
               });
+            })
+            this.ESICMemberList.forEach((element1) => {
+              this.AllESICList.some(res => {
+                res.stateList = this.states;
+                if (element1.familyMemberInfoId == res.familyMemberInfoId) {
+                  res.familyMemberName = element1.familyMemberName;
+                }
+              })
             })
           } else {
             const TABLE_DATA1: ESICElement[] = this.AllESICList;
@@ -396,6 +413,9 @@ export class NominationDetailsComponent implements OnInit {
       }
     })
     ESIC.cities = cities.filter(this.onlyUnique);
+    ESIC.city = '';
+    ESIC.dispensaryName = '';
+    ESIC.dispensaryAddress = '';
     // if(state){
     //   ESIC.city = '';
     // }
@@ -744,12 +764,12 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   esicPercentageValidation(esicPercentage) {
-
+    
     if (esicPercentage == 0) {
       return
     }
     if (esicPercentage != 100) {
-      this.CommonDataService.sweetalertError('Nomination Percentage for ESIC Should be 100%');
+      this.CommonDataService.sweetalertError('Nomination for ESIC Should be 100%');
     }
   }
 }

@@ -51,7 +51,7 @@ export class FamilyDetailsComponent implements OnInit {
   shareCountryDataSubcription: Subscription;
   allGenders = 'Male,Female,Trans'.split(',');
   maritalStatusList = 'Single,Married,Widow,Widower,Divorced'.split(',');
-  relationshipList = 'Father,Mother,Brother,Sister,Wife,Son,Daughter,Husband,Mother in Law,Father in Law'.split(',');
+  relationshipList = 'Mother,Father,Wife,Husband,Daughter,Son,Sister,Brother,Mother-in-law,Father-in-law'.split(',');
   filteredRelationshipList: Array<any> = [];
   ageBracketList = 'Minor,Adult,Senior Citizen,Very Senior Citizen'.split(',');
   familyHT: any;
@@ -94,15 +94,15 @@ export class FamilyDetailsComponent implements OnInit {
 
 
     this.FamilyDetailsInfoForm = this.formBuilder.group({
-      familyMemberName: ['', Validators.required],
+      familyMemberName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       dateOfBirth: [this.tomorrow, Validators.required],
       relation: ['', Validators.required],
       gender: ['', Validators.required],
       maritalStatus: ['', Validators.required],
-      fatherHusbandName: ['', Validators.required],
+      fatherHusbandName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       aadhaar: ['', Validators.pattern(/^(\d{12}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)],
       nameAsPerAadhaar: [''],
-      ageBracket: ['', Validators.required],
+      ageBracket: [{ value: null, disabled: true }, Validators.required],
       companyMediclaimApplicable: [''],
       isDependant: [''],
       image: [''],
@@ -225,7 +225,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   activeSetBoolean(event) {
-    debugger
+    
     if (event == true) {
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
       this.FamilyDetailsInfoForm.get('remark').clearValidators();
@@ -349,7 +349,7 @@ export class FamilyDetailsComponent implements OnInit {
     let valid;
     if (this.FamilySummaryGridData.length > 0) {
       this.FamilySummaryGridData.forEach(element => {
-        if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName &&
+        if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName ||
           element.relation == familyMemberInfoRequestDTO.relation) {
           valid = false;
           this.CommonDataService.sweetalertError('This record is already present');

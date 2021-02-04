@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from './../../../../../environments/environment';
 
@@ -11,7 +11,7 @@ export class ContactInformationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  
+
   postContactInfoForm(IdentityInformation) {
 
     return this.httpClient.post(environment.baseUrl8082 + '/employeeContact-information', IdentityInformation, { headers: { 'X-TenantId': 'PaysquareDefault' } })
@@ -39,11 +39,10 @@ export class ContactInformationService {
   }
 
   validatePersonalMobile(mobileNoCountryCode, employeeCode) {
-    
-    let params = new URLSearchParams();
-    params.append("employeeCode", employeeCode)
-    return this.httpClient.put(environment.baseUrl8082 + '/employee-master/verify-personalMobile/' + mobileNoCountryCode + '/' + employeeCode,
-      { headers: { 'X-TenantId': 'PaysquareDefault' } })
+
+    const params = new HttpParams().set('employeeCode', employeeCode);
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/verify-personalMobile/' + mobileNoCountryCode,
+      { headers: { 'X-TenantId': 'PaysquareDefault' },params})
       .pipe(map((res: any) => {
         return res;
       }))
@@ -51,20 +50,20 @@ export class ContactInformationService {
 
   validateOfficialEmailId(officialEmailId, employeeCode) {
 
-    return this.httpClient.put(environment.baseUrl8082 + '/employee-master/verify-officialEmail/' + officialEmailId + '/' + employeeCode,
-      { headers: { 'X-TenantId': 'PaysquareDefault' } })
+    const params = new HttpParams().set('employeeCode', employeeCode);
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/verify-officialEmail/' + officialEmailId,
+      { headers: { 'X-TenantId': 'PaysquareDefault' },params})
       .pipe(map((res: any) => {
         return res;
       }))
   }
 
   validatePersonalEmailId(PersonalEmailId, employeeCode) {
- 
-    let params = new URLSearchParams();
-    params.append("employeeCode", employeeCode)
 
-    return this.httpClient.put(environment.baseUrl8082 + '/employee-personal-info/verify-personalEmail/' + PersonalEmailId, params,
-      { headers: { 'X-TenantId': 'PaysquareDefault' } })
+    const params = new HttpParams().set('employeeCode', employeeCode);
+
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-personal-info/verify-personalEmail/' + PersonalEmailId,
+      { headers: { 'X-TenantId': 'PaysquareDefault' },params})
       .pipe(map((res: any) => {
         return res;
       }))
