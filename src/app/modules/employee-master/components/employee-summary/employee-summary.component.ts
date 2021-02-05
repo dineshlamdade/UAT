@@ -127,7 +127,7 @@ export class EmployeeSummaryComponent implements OnInit {
 
   //set PayrollArea and company name in local storage when dropdown chanegs
   selectPayrollArea(event) {
-    debugger
+    
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
 

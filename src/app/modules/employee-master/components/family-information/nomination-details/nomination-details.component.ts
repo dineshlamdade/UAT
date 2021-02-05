@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { DatePipe } from '@angular/common';
 
 
 export interface NominationElement {
@@ -104,7 +105,8 @@ export class NominationDetailsComponent implements OnInit {
     private BankInformationService: BankInformationService,
     private EventEmitterService: EventEmitterService,
     private sanitizer: DomSanitizer,
-    private CommonDataService: SharedInformationService) { }
+    private CommonDataService: SharedInformationService,
+    public datepipe: DatePipe,) { }
 
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
@@ -202,7 +204,10 @@ export class NominationDetailsComponent implements OnInit {
         this.lastUpdatedDate = new Date(Math.max.apply(null, this.AllNominationList.map(function (e) {
           return new Date(e.lastModifiedDateTime);
         })));
-
+        this.lastUpdatedDate = this.datepipe.transform(this.lastUpdatedDate, "dd-MMM-yyyy");
+        if(this.lastUpdatedDate == '01-Jan-1970'){
+          this.lastUpdatedDate = ''; 
+        }
         const newNomination = [];
         this.FamilyMemberList.filter(element => {
           newNomination.push(element.familyMemberInfoId);

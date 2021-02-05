@@ -376,17 +376,17 @@ export class FamilyDetailsComponent implements OnInit {
       //   this.selectedImageFileList.push(this.selectedImageFile);
       // }
 
-      if (this.addressPhoneNo) {
-        familyAddressDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.addressDetailsCountryCode +
-          this.FamilyDetailsInfoForm.value.addressDetailsMobileNumber;
-      }
+      // if (this.addressPhoneNo) {
+      //   familyAddressDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.addressDetailsCountryCode + ' ' +
+      //     this.FamilyDetailsInfoForm.value.addressDetailsMobileNumber;
+      // }
 
       this.FamilyInformation.familyAddressDetailRequestDTO = familyAddressDetailRequestDTO;
 
-      if (this.guardianPhoneNo) {
-        guardianDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.guardianCountryCode +
-          this.FamilyDetailsInfoForm.value.guardianMobileNumber;
-      }
+      // if (this.guardianPhoneNo) {
+      //   guardianDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.guardianCountryCode + ' ' +
+      //     this.FamilyDetailsInfoForm.value.guardianMobileNumber;
+      // }
 
       this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
       this.saveFamilyInformation();

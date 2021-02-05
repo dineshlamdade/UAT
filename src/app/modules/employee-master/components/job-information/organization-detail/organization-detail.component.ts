@@ -1348,7 +1348,7 @@ export class OrganizationDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
-    debugger
+    
     // localStorage.setItem('jobInformationPayrollAreaCode', event);
     // this.payrollAreaCode = event;
 
