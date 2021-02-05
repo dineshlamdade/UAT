@@ -13,7 +13,8 @@
                                     <label class="form-label">Skill</label>
                                     <select class="form-control" placeholder="Select" (change)="clearSkillsInformation();
                                     validateGridSkills()" formControlName="skillName"
-                                        [(ngModel)]="employeeSkillDetailsRequestModel.skillName">
+                                        [(ngModel)]="employeeSkillDetailsRequestModel.skillName"
+                                        [ngClass]="{'is-invalid' : SkillInfoForm.get('skillName').status == 'INVALID'}">
                                         <option value="" selected disabled>Select</option>
                                         <option *ngFor="let skill of SkillSetList" [value]="skill">
                                             {{skill}}
@@ -31,6 +32,7 @@
                                     <label class="form-label">Description</label>
                                     <input type="text" class="form-control" placeholder="Enter Description"
                                         formControlName="skillDescription"
+                                        [ngClass]="{'is-invalid' : SkillInfoForm.get('skillDescription').status == 'INVALID'}"
                                         [(ngModel)]="employeeSkillDetailsRequestModel.skillDescription">
                                 </div>
 

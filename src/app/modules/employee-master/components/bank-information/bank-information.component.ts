@@ -224,7 +224,7 @@ export class BankInformationComponent implements OnInit {
   IFSCDetails(bankIFSC) {
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
-
+      
       this.maxAccNumber = res.data.results[0].limit
       if (this.maxAccNumber == 0) {
         this.maxAccNumber = null;
@@ -426,7 +426,8 @@ export class BankInformationComponent implements OnInit {
     this.bankInfoForm.get('state').setValue('');
   }
 
-  matchAccountNo(confirmPassword) {
+  confirmMatchAccountNo(confirmPassword) {
+    
     if (confirmPassword == this.BankInformationModel.accountNo) {
       this.accountNoMatched = true;
 
@@ -487,10 +488,13 @@ export class BankInformationComponent implements OnInit {
   }
 
   accountNoMatchValidation() {
-
+    
     if (this.bankInfoForm.controls['confirmAccountNo'].value == this.BankInformationModel.accountNo
       && this.BankInformationModel.accountNo.length > 0) {
+        this.accountNoMatched = true;
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", 'Account Number Matched');
+    } else{
+      this.accountNoMatched = false;
     }
   }
 
@@ -499,7 +503,7 @@ export class BankInformationComponent implements OnInit {
     if (accountNo == true) {
       setTimeout(() => {
         this.accountNo = false;
-      }, 10000)
+      }, 3000)
     }
   }
 
@@ -508,7 +512,26 @@ export class BankInformationComponent implements OnInit {
     if (confirmAccountNo1 == true) {
       setTimeout(() => {
         this.confirmAccountNo1 = false;
-      }, 10000)
+      }, 3000)
+    }
+  }
+
+  getHideAccountNo(accountNo) {
+
+    if (accountNo.length > 0) {
+      this.accountNo = true
+      setTimeout(() => {
+        this.accountNo = false;
+      }, 1000)
+    }
+  }
+
+  getHideconfirmAccountNo(confirmAccountNumber){
+    if (confirmAccountNumber.length > 0) {
+      this.confirmAccountNo1 = true
+      setTimeout(() => {
+        this.confirmAccountNo1 = false;
+      }, 1000)
     }
   }
 }

@@ -134,6 +134,8 @@ export class BankDetailsComponent implements OnInit {
 
     BankAccountDataSource.forEach(element => {
       delete element.accountNumberCountError;
+      delete element.maxAccNumber;
+      delete element.accountNo;
     });
 
     this.FamilyInformationService.postBankDetailsInfoForm(BankAccountDataSource).subscribe(res => {
@@ -230,9 +232,9 @@ export class BankDetailsComponent implements OnInit {
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
 
-      this.maxAccNumber = res.data.results[0].limit
-      if (this.maxAccNumber == 0) {
-        this.maxAccNumber = null;
+      bank.maxAccNumber = res.data.results[0].limit
+      if (bank.maxAccNumber == 0) {
+        bank.maxAccNumber = null;
       }
       bank.bankName = res.data.results[0].bankName;
       bank.branchName = res.data.results[0].branchName;
@@ -262,10 +264,10 @@ export class BankDetailsComponent implements OnInit {
 
   validateAccountNo(accountNumber, bank) {
 
-    if (this.maxAccNumber) {
-      if (accountNumber.length < this.maxAccNumber) {
-        bank.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
-        this.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
+    if (bank.maxAccNumber) {
+      if (accountNumber.length < bank.maxAccNumber) {
+        bank.accountNumberCountError = 'Account Number Should be ' + bank.maxAccNumber + ' digits';
+        this.accountNumberCountError = 'Account Number Should be ' + bank.maxAccNumber + ' digits';
       } else {
         this.accountNumberCountError = '';
         bank.accountNumberCountError = null;
@@ -312,12 +314,22 @@ export class BankDetailsComponent implements OnInit {
     }
   }
 
-  hideAccountNo(accountNo) {
-    debugger
-    if (accountNo == true) {
+  hideAccountNo(bank) {
+    
+    if (bank.accountNo == true) {
       setTimeout(() => {
-        this.accountNo = false;
-      }, 2000)
+        bank.accountNo = false;
+      }, 3000)
+    }
+  }
+
+  getHideAccountNo(bank) {
+
+    if (bank.accountNumber.length > 0) {
+      bank.accountNo = true
+      setTimeout(() => {
+        bank.accountNo = false;
+      }, 1000)
     }
   }
 }

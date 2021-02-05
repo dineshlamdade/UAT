@@ -228,7 +228,7 @@ export class CertificationDetailComponent implements OnInit {
   }
 
   onSelectionName(certificate) {
-    debugger
+    
     let renewable;
     const certificateNew = this.ToFilteredCertificateAllList.filter(element =>{
       if(element.certificateMasterMappingId == certificate){
@@ -263,7 +263,7 @@ export class CertificationDetailComponent implements OnInit {
     this.certificateViewFlag = false;
 
     this.EducationSkillsInformationService.getCertificateById(certificate.employeeCertificateId).subscribe(res => {
-      debugger
+      
       this.employeeCertificateRequestModel.renewalFeesValidityFromDate = res.data.results[0].renewalFeesValidityFromDate;
       this.employeeCertificateRequestModel.renewalCertificationDate = res.data.results[0].renewalCertificationDate;
       this.employeeCertificateRequestModel.renewalFeesValidityToDate = res.data.results[0].renewalFeesValidityToDate;

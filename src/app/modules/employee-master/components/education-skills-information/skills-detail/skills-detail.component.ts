@@ -55,8 +55,8 @@ export class SkillsDetailComponent implements OnInit {
 
     this.SkillInfoForm = this.formBuilder.group({
       skillName: ['', Validators.required],
-      skillDescription: [''],
-      proficiency: [''],
+      skillDescription:  ['', Validators.required],
+      proficiency:  ['', Validators.required],
     });
 
     const empId = localStorage.getItem('employeeMasterId')

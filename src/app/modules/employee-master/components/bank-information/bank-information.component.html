@@ -94,10 +94,10 @@
                                             formControlName="accountNumber" [(ngModel)]="BankInformationModel.accountNo"
                                             minlength="1" maxlength="{{maxAccNumber}}" appBlockCopyPaste
                                             [type]="accountNo ? 'text' : 'password'" (keypress)="keyPress($event)"
-                                            (keyup)="validateAccountNo(BankInformationModel.accountNo)"
+                                            (keyup)="validateAccountNo(BankInformationModel.accountNo); getHideAccountNo(BankInformationModel.accountNo);accountNoMatchValidation();"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('accountNumber').status == 'INVALID'}">
-                                        <mat-icon matSuffix class="field-icon" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
-                                            [ngClass]="{
+                                        <mat-icon matSuffix class="field-icon"
+                                            (click)="toggleFieldTextType();hideAccountNo(accountNo)" [ngClass]="{
                                             'visibility': !accountNo,
                                             'visibility_off': accountNo
                                           }">
@@ -113,13 +113,15 @@
                                             }}</label>
                                         <input class="form-control" placeholder="Re-Enter Account no." #confirmPassword
                                             formControlName="confirmAccountNo" appBlockCopyPaste
-                                            (change)="matchAccountNo(confirmPassword.value)" minlength="1"
+                                            (change)="confirmMatchAccountNo(confirmAccountNumber)" minlength="1"
                                             maxlength="{{maxAccNumber}}" (keypress)="keyPress($event)"
                                             [type]="confirmAccountNo1 ? 'text' : 'password'"
-                                            [(ngModel)]="confirmAccountNumber" (keyup)="accountNoMatchValidation()"
+                                            [(ngModel)]="confirmAccountNumber"
+                                            (keyup)="accountNoMatchValidation();getHideconfirmAccountNo(confirmAccountNumber)"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('confirmAccountNo').status == 'INVALID'}">
                                         <!-- && confirmAccountNumber?.length>0? -->
-                                        <mat-icon matSuffix (click)="confirmAccountNo1 = !confirmAccountNo1;hideConfirmAccountNo(confirmAccountNo1)"
+                                        <mat-icon matSuffix
+                                            (click)="confirmAccountNo1 = !confirmAccountNo1;hideConfirmAccountNo(confirmAccountNo1)"
                                             class="field-icon">
                                             {{confirmAccountNo1 ? 'visibility' : 'visibility_off'}}
                                         </mat-icon>

@@ -13,7 +13,8 @@
                                     <label class="form-label">Education</label>
                                     <select class="form-control" placeholder="Select" formControlName="education"
                                         [(ngModel)]="employeeEducationRequestModel.education"
-                                        (onSelect)="IlliterateValidation()">
+                                        (onSelect)="IlliterateValidation()"
+                                        [ngClass]="{'is-invalid' : EducationInfoForm.get('education').status == 'INVALID'}">
                                         <option value="" selected disabled>Select</option>
                                         <option *ngFor="let education of highestEducationList" [value]="education">
                                             {{education}}
