@@ -15,9 +15,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
-
 import { MatSliderModule } from '@angular/material/slider';
-import { EightyCComponent } from './eighty-c/eighty-c.component';
 import { HousingloanComponent } from './housingloan/housingloan.component';
 import { HousingloandeclarationComponent } from './housingloan/housingloandeclaration/housingloandeclaration.component';
 import { HousingloanmasterComponent } from './housingloan/housingloanmaster/housingloanmaster.component';
@@ -29,10 +27,13 @@ import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
 import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
 import { NPSComponent } from './VI-A/nps/nps.component';
 import { PrimeNGModule } from 'src/app/app.primeNG.module';
+import { HousingrentComponent } from './housingrent/housingrent.component';
+import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
+import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
+import { HouserentsummaryComponent } from './housingrent/houserentsummary/houserentsummary.component';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-    EightyCComponent,
     NPSComponent,
     NpsSummaryComponent,
     NpsMasterComponent,
@@ -41,6 +42,10 @@ import { PrimeNGModule } from 'src/app/app.primeNG.module';
     HousingloanmasterComponent,
     HousingloansummaryComponent,
     HousingloandeclarationComponent,
+    HousingrentComponent,
+    HouserentdeclarationComponent,
+    HouserentmasterComponent,
+    HouserentsummaryComponent,
   ],
   imports: [
     CommonModule,

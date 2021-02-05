@@ -1,3 +1,4 @@
+
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef } from '@angular/core';
@@ -12,14 +13,18 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 import { NumberFormatPipe } from 'src/app/core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../file.service';
 import { MyInvestmentsService } from '../../my-Investments.service';
-import { HousingloanService } from '../housingloan.service';
-@Component({
-  selector: 'app-housingloanmaster',
-  templateUrl: './housingloanmaster.component.html',
-  styleUrls: ['./housingloanmaster.component.scss'],
+import { HousingloanService } from '../../housingloan/housingloan.service';
 
+@Component({
+  selector: 'app-houserentmaster',
+  templateUrl: './houserentmaster.component.html',
+  styleUrls: ['./houserentmaster.component.scss']
 })
-export class HousingloanmasterComponent implements OnInit {
+export class HouserentmasterComponent implements OnInit {
+
+  public houseRentform: FormGroup;
+
+
 
   public countriesList: Array<any> = [];
   public showOwner = false;
@@ -59,7 +64,7 @@ export class HousingloanmasterComponent implements OnInit {
   public urlArray: Array<any> = [];
   public urlIndex: number;
   public glbalECS: number;
-  public form: FormGroup;
+
   public Index: number;
   public showUpdateButton: boolean;
   public tabIndex = 0;
@@ -126,9 +131,11 @@ export class HousingloanmasterComponent implements OnInit {
     private modalService: BsModalService,
     private alertService: AlertServiceService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer) {
-      this.form = this.formBuilder.group({
-        housePropertyMasterId:  new FormControl(0),
+    public sanitizer: DomSanitizer)
+
+    {
+      this.houseRentform = this.formBuilder.group({
+        houseRentalMasterId:  new FormControl(0),
         propertyName: new FormControl(null, Validators.required),
         possessionDate: new FormControl(null, Validators.required),
         copyFrom: new FormControl(null, Validators.required),
@@ -139,56 +146,44 @@ export class HousingloanmasterComponent implements OnInit {
         pinCode: new FormControl(null, Validators.required),
         state: new FormControl(null, Validators.required),
         city: new FormControl(null, Validators.required),
-        townOrVillage: new FormControl(null),
-        stampDutyRegistrationDate: new FormControl(null, Validators.required),
-        stampDutyRegistrationAmount: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-        propertyRegistrationValue: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-
-        loanTaken : new FormControl(null, Validators.required),
-        housePropertyOwnerDetailList: new FormArray([]),
-        housePropertyUsageTypeList:  new FormArray([]),
-        housePropertyLoanDetailList :
+        village: new FormControl(null),
+        metroCity : new FormControl(null, Validators.required),
+        landLordDetailList :
          this.formBuilder.group({
-          housePropertyLoanDetailId : new FormControl(0),
-          purposeOfLoan: new FormControl(null, Validators.required ),
-          lenderName: new FormControl(null, Validators.required),
-          lenderType: new FormControl(null, Validators.required),
-          lenderPANOrAadhar: new FormControl(null, Validators.required),
-          loanAccountNumber: new FormControl(null, Validators.required),
-          loanAmount: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-          preEMIInterestPaid: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-          loanSanctionedDate: new FormControl(null, Validators.required),
-          loanEndDate: new FormControl(null, Validators.required),
-          percentageClaimedByEmployee: new FormControl(null, [Validators.required , Validators.max(100), Validators.min(0)]),
+          houseRentalLandLordDetailId : new FormControl(0),
+          houseRentalMasterId : new FormControl(0),
+          name: new FormControl(null, Validators.required ),
+          address: new FormControl(null, Validators.required),
+          landLordPan: new FormControl(null, Validators.required),
+          percentageShareOfRent: new FormControl(null, [Validators.max(100) , Validators.required]),
+          remark :null,
+
         }),
+        agreementDetailList :
+        this.formBuilder.group({
+          houseRentalAgreementDetailId : new FormControl(0),
+         houseRentalMasterId : new FormControl(0),
+         fromDate: new FormControl(null, Validators.required ),
+         toDate: new FormControl(null, Validators.required),
+         remark: null,
+
+
+       }),
+       rentDetailList :
+       this.formBuilder.group({
+        houseRentalRentDetailId : new FormControl(0),
+        houseRentalMasterId : new FormControl(0),
+        fromDate: new FormControl(null, Validators.required ),
+        toDate: new FormControl(null, Validators.required),
+        rentAmount: new FormControl(null, Validators.required),
+
+      }),
 
       });
 
-      this.housePropertyUsageTypeList.push(this.formBuilder.group({
-        housePropertyUsageTypeId : [0],
-        usageType: [''],
-        fromDate: [''],
-        toDate : [''],
-      }));
 
-      this.frequencyOfPaymentList = [
-        {label: 'Monthly', value: 'Monthly'},
-        {label: 'Quarterly', value: 'Quarterly'},
-        {label: 'Half-Yearly', value: 'Halfyearly'},
-        {label: 'Yearly', value: 'Yearly'},
-        {label: 'As & When', value: 'As & When'},
-      ];
 
-      this.usageTypeList = [
-        {label: 'Self – Occupied', value: 'selfOccupied'},
-        {label: 'Let Out', value: 'letOut'},
-        {label: 'Deemed Let Out', value: 'deemedLetOut'},
-      ];
 
-      this.purposeOfLoanList = [
-        {label: 'Acquisition or construction', value: 'Acquisition or construction'},
-        {label: 'Repair or renewal or reconstruction of the house', value: 'Repair or renewal or reconstruction of the house'},
-      ];
 
       this.lenderTypeList = [
 
@@ -211,9 +206,9 @@ export class HousingloanmasterComponent implements OnInit {
 
   public ngOnInit(): void {
    this.addOwner(0);
-   this.form.get('country').setValue('India');
-   // console.log('Purpose Of Loan' , this.form.get('housePropertyLoanDetailList').get('purposeOfLoan'))
-    // console.log('dropdown',this.form.get('housePropertyLoanDetailList').get('purposeOfLoan').setValue('construction'))
+   this.houseRentform.get('country').setValue('India');
+   // console.log('Purpose Of Loan' , this.houseRentform.get('housePropertyLoanDetailList').get('purposeOfLoan'))
+    // console.log('dropdown',this.houseRentform.get('housePropertyLoanDetailList').get('purposeOfLoan').setValue('construction'))
 
     // Business Financial Year API Call
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
@@ -254,10 +249,10 @@ export class HousingloanmasterComponent implements OnInit {
 
   }
 
-  get f() { return this.form.controls; }
+  get f() { return this.houseRentform.controls; }
   get pfArray() { return this.f.pfFormArray as FormArray; }
   // get housePropertyLoanDetailList() { return this.f.housePropertyLoanDetailList as FormArray; }
-  get housePropertyUsageTypeList() { return this.form.get('housePropertyUsageTypeList') as FormArray; }
+  get housePropertyUsageTypeList() { return this.houseRentform.get('housePropertyUsageTypeList') as FormArray; }
 
   public addOwner(i: number) {
     const OwnerArray = new FormGroup({
@@ -267,8 +262,8 @@ export class HousingloanmasterComponent implements OnInit {
 
     });
     // tslint:disable-next-line:no-angle-bracket-type-assertion
-    (<FormArray> this.form.get('housePropertyOwnerDetailList')).push(OwnerArray);
-    console.log('pgFprmArray' , (this.form.get('housePropertyOwnerDetailList') as FormArray));
+    (<FormArray> this.houseRentform.get('housePropertyOwnerDetailList')).push(OwnerArray);
+    console.log('pgFprmArray' , (this.houseRentform.get('housePropertyOwnerDetailList') as FormArray));
 
 }
 
@@ -299,7 +294,7 @@ export class HousingloanmasterComponent implements OnInit {
 
   public removeOwner(i: number) {
     if (i > 0) {
-      (this.form.get('housePropertyOwnerDetailList') as FormArray).removeAt(i);
+      (this.houseRentform.get('housePropertyOwnerDetailList') as FormArray).removeAt(i);
 
     } else {
 
@@ -309,16 +304,22 @@ export class HousingloanmasterComponent implements OnInit {
     }
   }
 
-  public addLoanDetails(formDirective : FormGroupDirective) {
+  public addLoanDetails() {
     this.loansubmitted =true;
     console.log('this.loansubmitted', this.loanForm)
-    if (this.form.get('housePropertyLoanDetailList').invalid) {
-      console.log(this.form.get('housePropertyLoanDetailList').invalid)
+    if (this.houseRentform.get ('housePropertyLoanDetailList').invalid) {
+      console.log(this.houseRentform.get ('housePropertyLoanDetailList').invalid)
        return;
      }
-    this.loanDetailGridData.push(this.form.get('housePropertyLoanDetailList').value);
-    this.form.get('housePropertyLoanDetailList').reset();
-   this.loansubmitted =false;
+
+    this.loanDetailGridData.push(this.houseRentform.get('housePropertyLoanDetailList').value);
+    this.loanDetailGridData = this.loanDetailGridData.slice();
+
+
+    this.houseRentform.get('housePropertyLoanDetailList').reset();
+
+    this.houseRentform.get('housePropertyLoanDetailList').markAsPristine();
+
 
   }
 
@@ -328,19 +329,19 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public getPermanentAddressFromPIN() {
-    console.log(this.form.get('pinCode').value);
-    if (this.form.get('pinCode').value.length < 6) {
-      this.form.get('state').setValue('');
-      this.form.get('city').setValue('');
-      this.form.get('townOrVillage').setValue('');
+    console.log(this.houseRentform.get('pinCode').value);
+    if (this.houseRentform.get('pinCode').value.length < 6) {
+      this.houseRentform.get('state').setValue('');
+      this.houseRentform.get('city').setValue('');
+      this.houseRentform.get('village').setValue('');
 
     }
-    if (this.form.get('pinCode').value.length === 6 &&  this.form.get('country').value === 'India') {
-      this.Service.getAddressFromPIN(this.form.get('pinCode').value).subscribe((res) => {
+    if (this.houseRentform.get('pinCode').value.length === 6 &&  this.houseRentform.get('country').value === 'India') {
+      this.Service.getAddressFromPIN(this.houseRentform.get('pinCode').value).subscribe((res) => {
         console.log(res);
-        this.form.get('state').setValue( res.data.results[0].state);
-        this.form.get('city').setValue(res.data.results[0].city);
-        this.form.get('townOrVillage').setValue(res.data.results[0].officeName);
+        this.houseRentform.get('state').setValue( res.data.results[0].state);
+        this.houseRentform.get('city').setValue(res.data.results[0].city);
+        this.houseRentform.get('village').setValue(res.data.results[0].officeName);
 
       }, (error: any) => {
         this.alertService.sweetalertError(error.error.status.messsage);
@@ -350,7 +351,7 @@ export class HousingloanmasterComponent implements OnInit {
   }
 
   public checkRegistrationDateValid() {
-    const stampDutyPaymentDate_ = this.form.get('stampDutyRegistrationDate').value;
+    const stampDutyPaymentDate_ = this.houseRentform.get('stampDutyRegistrationDate').value;
     console.log('stampDutyPaymentDate_', stampDutyPaymentDate_);
     if (stampDutyPaymentDate_ !== null)
     {
@@ -364,23 +365,23 @@ export class HousingloanmasterComponent implements OnInit {
 
   // ------------------------------------Master----------------------------
 
-    // convenience getter for easy access to form fields
-    get masterForm() { return this.form.controls; }
-    get loanForm() { return this.form.get('housePropertyLoanDetailList')['controls'];};
+    // convenience getter for easy access to houseRentform fields
+    get masterForm() { return this.houseRentform.controls; }
+    get loanForm() { return this.houseRentform.get('housePropertyLoanDetailList')['controls'];};
 
     // Policy End Date Validations with Policy Start Date
       // setPolicyEndDate() {
-      //   console.log('PPF START DATE', this.form.value.policyStartDate);
-      //   this.policyMinDate = this.form.value.policyStartDate;
-      //   const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
-      //   const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
+      //   console.log('PPF START DATE', this.houseRentform.value.policyStartDate);
+      //   this.policyMinDate = this.houseRentform.value.policyStartDate;
+      //   const policyStart = this.datePipe.transform(this.houseRentform.get('policyStartDate').value, 'yyyy-MM-dd');
+      //   const policyEnd = this.datePipe.transform(this.houseRentform.get('policyEndDate').value, 'yyyy-MM-dd');
       //   this.minFormDate = this.policyMinDate;
 
-      //   console.log('PPF MIN DATE', this.form.value.policyStartDate);
+      //   console.log('PPF MIN DATE', this.houseRentform.value.policyStartDate);
       //   if (policyStart > policyEnd) {
-      //       this.form.controls.policyEndDate.reset();
+      //       this.houseRentform.controls.policyEndDate.reset();
       //   }
-      //   this.form.patchValue({
+      //   this.houseRentform.patchValue({
       //       fromDate: this.policyMinDate,
       //   });
 
@@ -390,40 +391,40 @@ export class HousingloanmasterComponent implements OnInit {
 
     // Policy End Date Validations with Current Finanacial Year
       public checkFinancialYearStartDateWithPolicyEnd() {
-        const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
+        const policyEnd = this.datePipe.transform(this.houseRentform.get('policyEndDate').value, 'yyyy-MM-dd');
         const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
-        const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
+        const policyStart = this.datePipe.transform(this.houseRentform.get('policyStartDate').value, 'yyyy-MM-dd');
 
         console.log(policyStart);
         if (policyEnd < financialYearStartDate) {
           this.alertService.sweetalertWarning('Policy End Date should be greater than or equal to Current Financial Year : '
           + this.financialYearStart);
-          this.form.controls.policyEndDate.reset();
+          this.houseRentform.controls.policyEndDate.reset();
         } else {
-          this.form.patchValue({
-            toDate: this.form.value.policyEndDate,
+          this.houseRentform.patchValue({
+            toDate: this.houseRentform.value.policyEndDate,
           });
-          this.maxFromDate = this.form.value.policyEndDate;
+          this.maxFromDate = this.houseRentform.value.policyEndDate;
         }
 
         if (policyEnd < policyStart) {
           this.alertService.sweetalertWarning('Policy End Date should be greater than Policy Start Date : ');
-          this.form.controls.policyEndDate.reset();
+          this.houseRentform.controls.policyEndDate.reset();
         } else {
-          this.form.patchValue({
-            toDate: this.form.value.policyEndDate,
+          this.houseRentform.patchValue({
+            toDate: this.houseRentform.value.policyEndDate,
           });
-          this.maxFromDate = this.form.value.policyEndDate;
+          this.maxFromDate = this.houseRentform.value.policyEndDate;
         }
       }
 
     // Payment Detail To Date Validations with Payment Detail From Date
       public setPaymentDetailToDate() {
-        this.paymentDetailMinDate = this.form.value.fromDate;
-        const from = this.datePipe.transform(this.form.get('fromDate').value, 'yyyy-MM-dd');
-        const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
+        this.paymentDetailMinDate = this.houseRentform.value.fromDate;
+        const from = this.datePipe.transform(this.houseRentform.get('fromDate').value, 'yyyy-MM-dd');
+        const to = this.datePipe.transform(this.houseRentform.get('toDate').value, 'yyyy-MM-dd');
         if (from > to) {
-          this.form.controls.toDate.reset();
+          this.houseRentform.controls.toDate.reset();
         }
       }
 
@@ -439,12 +440,12 @@ export class HousingloanmasterComponent implements OnInit {
 
     // Payment Detail To Date Validations with Current Finanacial Year
       public checkFinancialYearStartDateWithPaymentDetailToDate() {
-        const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
+        const to = this.datePipe.transform(this.houseRentform.get('toDate').value, 'yyyy-MM-dd');
         const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
         if (to < financialYearStartDate) {
           this.alertService.sweetalertWarning('To Date should be greater than or equal to Current Financial Year : ' +
           this.financialYearStart);
-          this.form.controls.toDate.reset();
+          this.houseRentform.controls.toDate.reset();
         }
       }
 
@@ -466,7 +467,7 @@ export class HousingloanmasterComponent implements OnInit {
 
         this.submitted = true;
 
-        // if (this.form.invalid) {
+        // if (this.houseRentform.invalid) {
         //   return;
         // }
 
@@ -475,7 +476,7 @@ export class HousingloanmasterComponent implements OnInit {
           this.alertService.sweetalertWarning('Please Upload All Mandatitory Documents');
           return;
         } else {
-          const data = this.form.getRawValue();
+          const data = this.houseRentform.getRawValue();
           data.housePropertyLoanDetailList = this.loanDetailGridData;
           console.log('Housing Loan Data::', data);
           this.HousingLoanService.submitHousingLoanMasterData(this.propertyIndex, this.stampDutyRegistration,
@@ -499,7 +500,7 @@ export class HousingloanmasterComponent implements OnInit {
 
           this.Index = -1;
           formDirective.resetForm();
-          this.form.reset();
+          this.houseRentform.reset();
 
           this.showUpdateButton = false;
           this.loanDetailGridData = [];
@@ -557,27 +558,27 @@ export class HousingloanmasterComponent implements OnInit {
 
       // Family relationship shown on Policyholder selection
         public OnSelectionfamilyMemberGroup() {
-          const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
-          this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-          this.form.get('relationship').setValue(toSelect.relation);
+          const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.houseRentform.get('accountHolderName').value);
+          this.houseRentform.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+          this.houseRentform.get('relationship').setValue(toSelect.relation);
         }
 
         public onSelectAddressType() {
-          const toSelectAddress = this.empoyeeAddressList.find((c) => c.addressType === this.form.get('copyFrom').value);
+          const toSelectAddress = this.empoyeeAddressList.find((c) => c.addressType === this.houseRentform.get('copyFrom').value);
           console.log('toSelectAddress', toSelectAddress);
-          this.form.get('address1').setValue(toSelectAddress.address1);
-          this.form.get('address2').setValue(toSelectAddress.address2);
-          this.form.get('address3').setValue(toSelectAddress.address3);
-          this.form.get('country').setValue(toSelectAddress.country);
-          this.form.get('pinCode').setValue(toSelectAddress.postalCode);
-          this.form.get('state').setValue(toSelectAddress.state);
-          this.form.get('city').setValue(toSelectAddress.city);
-          this.form.get('townOrVillage').setValue(toSelectAddress.village);
+          this.houseRentform.get('address1').setValue(toSelectAddress.address1);
+          this.houseRentform.get('address2').setValue(toSelectAddress.address2);
+          this.houseRentform.get('address3').setValue(toSelectAddress.address3);
+          this.houseRentform.get('country').setValue(toSelectAddress.country);
+          this.houseRentform.get('pinCode').setValue(toSelectAddress.postalCode);
+          this.houseRentform.get('state').setValue(toSelectAddress.state);
+          this.houseRentform.get('city').setValue(toSelectAddress.city);
+          this.houseRentform.get('townOrVillage').setValue(toSelectAddress.village);
         }
 
       // on checkPaymentDate
       public checkPaymentDate() {
-        const stampDutyPaymentDate = this.form.get('stampDutyRegistrationDate').value;
+        const stampDutyPaymentDate = this.houseRentform.get('stampDutyRegistrationDate').value;
         console.log('stampDutyPaymentDate', stampDutyPaymentDate);
 
         if (stampDutyPaymentDate === null) {
@@ -585,7 +586,7 @@ export class HousingloanmasterComponent implements OnInit {
           this.stampDutyDateValid = true;
 
           console.log('stampDutyRegistrationDate' ,
-          this.form.controls['stampDutyRegistrationDate'].updateValueAndValidity());
+          this.houseRentform.controls['stampDutyRegistrationDate'].updateValueAndValidity());
           this.alertService.sweetalertWarning(
             'Please Enter stampDutyRegistrationDate First to enter Amount : ',
 	        );
@@ -600,7 +601,7 @@ export class HousingloanmasterComponent implements OnInit {
           console.log('inedit as and when', this.masterGridData[i].frequency);
           if (this.masterGridData[i].frequency === 'As & When') {
 
-            this.form.patchValue({
+            this.houseRentform.patchValue({
               institution: this.masterGridData[i].institution,
               accountNumber: this.masterGridData[i].accountNumber,
               accountHolderName: this.masterGridData[i].accountHolderName,
@@ -619,22 +620,22 @@ export class HousingloanmasterComponent implements OnInit {
 
           } else {
           this.loanDetailGridData = this.masterGridData[i].paymentDetails;
-          this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
+          this.houseRentform.patchValue(this.masterGridData[i]);
+          // console.log(this.houseRentform.getRawValue());
           this.Index = i;
           this.showUpdateButton = true;
           const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
           // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+          this.houseRentform.get('premiumAmount').setValue(formatedPremiumAmount);
           this.isClear = true;
         }
       }
 
       // On Edit Cancel
         public cancelEdit() {
-          this.form.reset();
-          this.form.get('active').setValue(true);
-          this.form.get('ecs').setValue(0);
+          this.houseRentform.reset();
+          this.houseRentform.get('active').setValue(true);
+          this.houseRentform.get('ecs').setValue(0);
           this.showUpdateButton = false;
           this.loanDetailGridData = [];
           this.isClear = false;
@@ -644,21 +645,21 @@ export class HousingloanmasterComponent implements OnInit {
         public viewMaster(i: number) {
           // this.scrollToTop();
           this.loanDetailGridData = this.masterGridData[i].paymentDetails;
-          this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
+          this.houseRentform.patchValue(this.masterGridData[i]);
+          // console.log(this.houseRentform.getRawValue());
           this.Index = i;
           this.showUpdateButton = true;
           const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
           // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+          this.houseRentform.get('premiumAmount').setValue(formatedPremiumAmount);
           this.isCancel = true;
         }
 
       // On View Cancel
         public cancelView() {
-          this.form.reset();
-          this.form.get('active').setValue(true);
-          this.form.get('ecs').setValue(0);
+          this.houseRentform.reset();
+          this.houseRentform.get('active').setValue(true);
+          this.houseRentform.get('ecs').setValue(0);
           this.showUpdateButton = false;
           this.loanDetailGridData = [];
           this.isCancel = false;

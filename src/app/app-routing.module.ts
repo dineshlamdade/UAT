@@ -13,11 +13,6 @@ const routes: Routes = [
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
   { path: 'investment', loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
-
-
-
-
-
   { path: '**', pathMatch: 'full' , redirectTo: '/dashboard' },
 ];
 

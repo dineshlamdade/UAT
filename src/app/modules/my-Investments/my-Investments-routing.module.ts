@@ -13,6 +13,7 @@ import { FixedDepositsComponent } from './80C/fixed-deposits/fixed-deposits.comp
 import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/tax-saving-shares-nabard.component';
 import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
 import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingrentComponent } from './housingrent/housingrent.component';
 
 const routes: Routes = [
 
@@ -83,6 +84,11 @@ const routes: Routes = [
         path:   'HousingLoan',
         component:  HousingloanComponent,
         data: { title: ':: DelziaHR :: HousingLoan' },
+      },
+      {
+        path:   'HouseRent',
+        component:  HousingrentComponent,
+        data: { title: ':: DelziaHR :: HouseRent' },
       },
     ],
 

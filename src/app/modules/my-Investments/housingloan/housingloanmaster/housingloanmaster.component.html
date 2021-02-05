@@ -22,7 +22,7 @@
                 </div>
                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="possessionDate"
                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                 (bsValueChange)="setPolicyEndDate()" placeholder="Account Start Date" bsDatepicker
+                  placeholder="Possession Date" bsDatepicker
                  [ngClass]="{ 'is-invalid': submitted && masterForm.possessionDate.errors }"
                  [maxDate]="today">
                 <div *ngIf="submitted && masterForm.possessionDate.errors" class="invalid-feedback">
@@ -143,12 +143,13 @@
              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
           </div>
           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stampDutyRegistrationDate" data-provide="datepicker"
-             data-date-autoclose="true" class="form-control"
-             [minDate]="policyMinDate"  placeholder="Registration Date" bsDatepicker
+             data-date-autoclose="true" class="form-control" (bsValueChange)="checkRegistrationDateValid()"
+             [ngClass]="{ 'is-invalid': (submitted   && masterForm.stampDutyRegistrationDate.errors) || stampDutyDateValid }"
+             [maxDate]="today" placeholder="Registration Date" bsDatepicker
             >
-           <!-- <div *ngIf="submitted && masterForm.stampDutyRegistrationDate.errors" class="invalid-feedback">
-             <div *ngIf="masterForm.stampDutyRegistrationDate.errors.required">Stamp Duty & Registration Date is mandatory</div>
-          </div> -->
+           <div *ngIf="(submitted && masterForm.stampDutyRegistrationDate.errors) ||  stampDutyDateValid" class="invalid-feedback">
+             <div *ngIf="(masterForm.stampDutyRegistrationDate.errors.required) || stampDutyDateValid ">Stamp Duty & Registration Date is mandatory</div>
+          </div>
        </div>
     </div>
   </div>
@@ -159,6 +160,7 @@
        [ngClass]="{ 'is-invalid': submitted && masterForm.stampDutyRegistrationAmount.errors }"  > -->
        <p-inputNumber   class="form-control align-right" formControlName="stampDutyRegistrationAmount"
        [ngClass]="{ 'is-invalid': submitted && masterForm.stampDutyRegistrationAmount.errors }"
+       (onBlur) = "checkPaymentDate()"
         mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
     <div *ngIf="submitted && masterForm.stampDutyRegistrationAmount.errors" class="invalid-feedback">
        <div *ngIf="masterForm.stampDutyRegistrationAmount.errors.required">Stamp Duty & Registration Amount is mandatory</div>
@@ -259,6 +261,8 @@
                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                 </div>
                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                [minDate]="financialYearStartDate"
+                      [maxDate]="financialYearEndDate"
                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
                  placeholder="From Date" bsDatepicker
 
@@ -277,10 +281,12 @@
                  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
               </div>
               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+              [minDate]="financialYearStartDate"
+              [maxDate]="financialYearEndDate"
                data-provide="datepicker" data-date-autoclose="true" class="form-control"
                placeholder="To Date" bsDatepicker
 
-               [maxDate]="today">
+              >
               <!-- <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
                  <div *ngIf="masterForm.toDate.errors.required">To Date is mandatory</div>
               </div> -->
@@ -303,29 +309,29 @@
  <div class="col-sm-3 col-md-3">
   <div class="custom-controls-stacked">
      <label class="custom-control custom-radio custom-control-inline">
-     <input formControlName="loanTaken" type="radio" [checked]="isloanTaken"
-        class="custom-control-input" name="loanTaken"  [value]="true" checked
-        >
+     <input formControlName="loanTaken" type="radio"  [(ngModel)]="loanTaken" [checked]="loanTaken"
+        class="custom-control-input" name="loanTaken"  [value]="true" checked>
      <span class="custom-control-label">Yes</span>
      </label>
      <label class="custom-control custom-radio custom-control-inline">
-     <input formControlName="loanTaken" type="radio" [checked]="!isloanTaken"
+     <input formControlName="loanTaken" type="radio"  [(ngModel)]="loanTaken" [checked]="!loanTaken"
         class="custom-control-input" name="loanTaken"  [value]="false">
      <span class="custom-control-label">No</span>
      </label>
   </div>
 </div>
 </div>
-     <div class="row mt-25">
+     <div class="row mt-25" *ngIf= "loanTaken" >
         <div class="col-12"  >
            <fieldset>
               <legend>Loan Details</legend>
-              <div formGroupName="housePropertyLoanDetailList" >
+              <div formGroupName="housePropertyLoanDetailList"  [formGroup]="form" #formDirective_="ngForm" >
               <div class="row">
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Purpose Of Loan</label>
                     <select   placeholder="Select"
                         formControlName="purposeOfLoan" class="form-control custom-select"
+                        [ngClass]="{ 'is-invalid': loansubmitted && loanForm.lenderName.errors }"
                         #purposeOfLoan
                         >
                       <option *ngFor="let purpose of purposeOfLoanList"
@@ -333,23 +339,23 @@
                         {{purpose.label}}
                       </option>
                     </select>
-                    <div *ngIf="submitted && masterForm.purposeOfLoan.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.purposeOfLoan.errors.required">purposeOfLoan is mandatory</div>
+                    <div *ngIf="loansubmitted && loanForm.purposeOfLoan.errors" class="invalid-feedback">
+                       <div *ngIf="loanForm.purposeOfLoan.errors.required">purposeOfLoan is mandatory</div>
                     </div>
                  </div>
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Lender Name</label>
                     <input type="text" formControlName="lenderName" placeholder="Lender Name" class="form-control"
-                      name="Premium Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.lenderName.errors }">
-                    <div *ngIf="submitted && masterForm.lenderName.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.lenderName.errors.required">Lender Name is mandatory</div>
+                      name="Premium Amount" [ngClass]="{ 'is-invalid': loansubmitted && loanForm.lenderName.errors }">
+                    <div *ngIf="loansubmitted && loanForm.lenderName.errors" class="invalid-feedback">
+                       <div *ngIf="loanForm.lenderName.errors.required">Lender Name is mandatory</div>
                     </div>
                  </div>
                  <div class="col-sm-6 col-md-3">
                   <label class="form-label">Lender Type</label>
                   <select  id="lenderType" placeholder="Select Lender"
                       formControlName="lenderType" class="form-control custom-select"
-                      [ngClass]="{ 'is-invalid': submitted && masterForm.lenderType.errors }"
+                      [ngClass]="{ 'is-invalid': loansubmitted && loanForm.lenderType.errors }"
                       #lenderType
                       >
                     <option *ngFor="let lender of lenderTypeList"
@@ -357,8 +363,8 @@
                       {{lender.label}}
                     </option>
                   </select>
-                  <div *ngIf="submitted && masterForm.lenderType.errors" class="invalid-feedback">
-                     <div *ngIf="masterForm.lenderType.errors.required">Lender Type is mandatory</div>
+                  <div *ngIf="loansubmitted && loanForm.lenderType.errors" class="invalid-feedback">
+                     <div *ngIf="loanForm.lenderType.errors.required">Lender Type is mandatory</div>
                   </div>
                   </div>
                  <div class="col-sm-6 col-md-3" >
@@ -368,9 +374,11 @@
                     <span class="form-label">PAN Or Aadhar</span>
                     </label>
                     <input type="text" maxlength="12" minlength="10" formControlName="lenderPANOrAadhar" placeholder="Enter PAN Number"
-                      class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN" >
-                    <div *ngIf="submitted && masterForm.lenderPANOrAadhar.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.lenderPANOrAadhar.errors.required">Annual Amount is mandatory</div>
+                      class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
+                      [ngClass]="{ 'is-invalid': loansubmitted && loanForm.lenderPANOrAadhar.errors }" >
+                    <div *ngIf="loansubmitted && loanForm.lenderPANOrAadhar.errors" class="invalid-feedback">
+                       <div *ngIf="loanForm.lenderPANOrAadhar.errors.required">PAN Number is Mandatory</div>
+                       <div *ngIf="loanForm.lenderPANOrAadhar.errors?.pattern">Enter valid PAN Number</div>
                     </div>
                  </div>
 
@@ -379,9 +387,9 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Account No.</label>
                   <input type="text" formControlName="loanAccountNumber" class="form-control"
-                     [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }">
-                  <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">
-                     <div *ngIf="masterForm.loanAccountNumber.errors.required">Account No. is mandatory</div>
+                     [ngClass]="{ 'is-invalid': loansubmitted && loanForm.loanAccountNumber.errors }">
+                  <div *ngIf="loansubmitted && loanForm.loanAccountNumber.errors" class="invalid-feedback">
+                     <div *ngIf="loanForm.loanAccountNumber.errors.required">Account No. is mandatory</div>
                   </div>
                </div>
                <div class="col-sm-6 col-md-3">
@@ -390,25 +398,29 @@
                 class="form-control align-right"
                   [ngClass]="{ 'is-invalid': submitted && masterForm.loanAmount.errors }"> -->
 
-                  <p-inputNumber   class="form-control align-right" formControlName="loanAmount" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-                <div *ngIf="submitted && masterForm.loanAmount.errors" class="invalid-feedback">
-                   <div *ngIf="masterForm.loanAmount.errors.required">Loan Amount is mandatory</div>
+                  <p-inputNumber   class="form-control align-right" formControlName="loanAmount"
+
+                  mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                  [ngClass]="{ 'is-invalid': loansubmitted && loanForm.loanAmount.errors }"></p-inputNumber>
+                <div *ngIf="loansubmitted && loanForm.loanAmount.errors" class="invalid-feedback">
+                   <div *ngIf="loanForm.loanAmount.errors.required">Loan Amount is mandatory</div>
                 </div>
              </div>
              <div class="col-sm-6 col-md-3">
               <label class="form-label">Pre EMI Intrest Paid</label>
               <input type="number" formControlName="preEMIInterestPaid" class="form-control align-right"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.preEMIInterestPaid.errors }">
-              <div *ngIf="submitted && masterForm.preEMIInterestPaid.errors" class="invalid-feedback">
-                 <div *ngIf="masterForm.preEMIInterestPaid.errors.required">Pre EMI Intrest is mandatory</div>
+                [ngClass]="{ 'is-invalid': loansubmitted && loanForm.preEMIInterestPaid.errors }">
+              <div *ngIf="loansubmitted && loanForm.preEMIInterestPaid.errors" class="invalid-feedback">
+                 <div *ngIf="loanForm.preEMIInterestPaid.errors.required">Pre EMI Intrest is mandatory</div>
               </div>
            </div>
            <div class="col-sm-6 col-md-3">
             <label class="form-label">% Claimed By Employee</label>
             <input type="number" formControlName="percentageClaimedByEmployee"  min="0" max="100" class="form-control "
-              [ngClass]="{ 'is-invalid': submitted && masterForm.percentageClaimedByEmployee.errors }">
-            <div *ngIf="submitted && masterForm.percentageClaimedByEmployee.errors" class="invalid-feedback">
-               <div *ngIf="masterForm.percentageClaimedByEmployee.errors.required">Percent Claim is mandatory</div>
+              [ngClass]="{ 'is-invalid': loansubmitted && loanForm.percentageClaimedByEmployee.errors }">
+            <div *ngIf="loansubmitted && loanForm.percentageClaimedByEmployee.errors" class="invalid-feedback">
+               <div *ngIf="loanForm.percentageClaimedByEmployee.errors.required">Percent Claim is mandatory</div>
+               <div *ngIf="loanForm.percentageClaimedByEmployee.errors?.max">Max 100 is allowed</div>
             </div>
          </div>
               </div>
@@ -425,9 +437,9 @@
                             data-date-autoclose="true" class="form-control"
                             [minDate]="minFormDate"
                             [maxDate]="maxFromDate" placeholder="Sanction Date" bsDatepicker
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.loanSanctionedDate.errors }">
-                          <div *ngIf="submitted && masterForm.loanSanctionedDate.errors" class="invalid-feedback">
-                             <div *ngIf="masterForm.loanSanctionedDate.errors.required">From Date is mandatory</div>
+                            [ngClass]="{ 'is-invalid': loansubmitted && loanForm.loanSanctionedDate.errors }">
+                          <div *ngIf="loansubmitted && loanForm.loanSanctionedDate.errors" class="invalid-feedback">
+                             <div *ngIf="loanForm.loanSanctionedDate.errors.required">From Date is mandatory</div>
                           </div>
                        </div>
                     </div>
@@ -445,9 +457,10 @@
                           data-date-autoclose="true" class="form-control"
                           [minDate]="minFormDate"
                           [maxDate]="maxFromDate" placeholder="End Date" bsDatepicker
+                          [ngClass]="{ 'is-invalid': loansubmitted && loanForm.loanEndDate.errors }"
                         >
-                        <div *ngIf="submitted && masterForm.loanEndDate.errors" class="invalid-feedback">
-                           <div *ngIf="masterForm.loanEndDate.errors.required">From Date is mandatory</div>
+                        <div *ngIf="loansubmitted && loanForm.loanEndDate.errors" class="invalid-feedback">
+                           <div *ngIf="loanForm.loanEndDate.errors.required">From Date is mandatory</div>
                         </div>
                      </div>
                   </div>
@@ -557,7 +570,7 @@
                                 </td>
                              </tr>
                              <tr>
-                              <th scope="row"><span tooltip="1">1</span></th>
+                              <th scope="row"><span tooltip="2">2</span></th>
                               <td><span tooltip="Premium Receipt/ Premium Statement"></span>Stamp Duty And Registration Charges Document</td>
                               <td><span *ngFor ="let item of stampDutyRegistration"  class="text-orange" tooltip="{{item.name}},"><i
                                  class="fa fa-paperclip"
@@ -568,7 +581,7 @@
                               </td>
                            </tr>
                            <tr>
-                            <th scope="row"><span tooltip="1">1</span></th>
+                            <th scope="row"><span tooltip="3">3</span></th>
                             <td><span tooltip="Premium Receipt/ Premium Statement"></span>Loan Sanction Letter</td>
                             <td><span *ngFor ="let item of loanSanctionLetter"  class="text-orange" tooltip="{{item.name}},"><i
                                class="fa fa-paperclip"
@@ -579,7 +592,7 @@
                             </td>
                          </tr>
                          <tr>
-                          <th scope="row"><span tooltip="1">1</span></th>
+                          <th scope="row"><span tooltip="4">4</span></th>
                           <td><span tooltip="Premium Receipt/ Premium Statement"></span>Possession Letter</td>
                           <td><span *ngFor ="let item of possessionLetter"  class="text-orange" tooltip="{{item.name}},"><i
                              class="fa fa-paperclip"
