@@ -8,10 +8,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-
-
-
-
 import * as FileSaver from 'file-saver';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { MenuItem } from 'primeng/api';
@@ -28,9 +24,12 @@ import { NgIfContext } from '@angular/common';
 })
 export class UploadexcelhomeComponent implements OnInit {
   sheetDataArray = [];
+  isViewMode = false;
   // for edit
   templateMasterId: number = 0;
   previewTableData = [];
+  isViewFieldNameArrayList: boolean = false;
+
 
   buttonIndex: number;
   errorInSequence = false;
@@ -65,30 +64,6 @@ export class UploadexcelhomeComponent implements OnInit {
 
   public selectedMergedGroupList = [];
   public employeeMasterModuleList = [];
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '1', title: 'Personal Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '2', title: 'Compliance Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '3', title: 'Contact Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '4', title: 'Identity Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '5', title: 'Education & Skill Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '6', title: 'Employment Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '7', title: 'Previous Employment  Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '8', title: 'Payroll Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '9', title: 'Family Information' },
-  //   { checked: false, group: 0, disabled: false, assignValue: '', id: '10', title: 'Job Information' },
-
-  // ];
-  // public mergeArrayList: [
-  //   { leftSideMenuList: 'Personal Information', values: [] },
-  //   { leftSideMenuList: 'Compliance Information', values: [] },
-  //   { leftSideMenuList: 'Identity Information', values: [] },
-  //   { leftSideMenuList: 'Contact Information', values: [] },
-  //   { leftSideMenuList: 'Previous Employment  Information', values: [] },
-  //   { leftSideMenuList: 'Education & Skill Information', values: [] },
-  //   { leftSideMenuList: 'Employment Information', values: [] },
-  //   { leftSideMenuList: 'Payroll Information', values: [] },
-  //   { leftSideMenuList: 'Family Information', values: [] },
-  //   { leftSideMenuList: 'Job Information', values: [] },
-  // ];
 
   public mergePersonalInformation = false;
   public mergeComplianceInformation = false;
@@ -100,32 +75,15 @@ export class UploadexcelhomeComponent implements OnInit {
   public mergePayrollInformation = false;
   public mergeFamilyInformation = false;
   public mergeJobInformation = false;
-  public selectedPersonalInformationFields = [];
-  public selectedDropDownSequenceNumberList = [];
+
+
   public masterGetExcelTableFieldsResponse: any;
   public leftSideBarMenuList = [];
-  public selectedCounterPersonalInformationList = [];
-  public selectedCounterComplianceInformationList = [];
-  public selectedCounterIdentityInformationList = [];
-  public selectedCounterContactInformationList = [];
-  public selectedCounterPreviousEmploymentInformationList = [];
-  public selectedCounterEducationAndSkillInformationList = [];
-  public selectedCounterEmploymentInformationList = [];
-  public selectedCounterPayrollInformationList = [];
-  public selectedCounterFamilyInformationList = [];
-  public selectedCounterJobInformationList = [];
+  //public selectedCounterPersonalInformationList = [];
+
   public fieldNameArrayList = [];
   public global = [];
-  public counterPersonalInformation = 0;
-  public counterContactInformation = 0;
-  public counterIdentityInformation = 0;
-  public counterComplianceInformation = 0;
-  public counterEducationAndSkillInformation = 0;
-  public counterPreviousEmploymentInformation = 0;
-  public counterPayrollInformation = 0;
-  public counterFamilyInformation = 0;
-  public counterEmploymentInformation = 0;
-  public counterJobInformation = 0;
+
   public sequenceArray = [];
   public sequenceSelect = true;
   public isEditMode = false;
@@ -169,9 +127,9 @@ export class UploadexcelhomeComponent implements OnInit {
 
   public ngOnInit(): void {
 
-
-
-
+    this.form.patchValue({
+      templateName: 'a',
+    });
     this.dropdownList = [
       { id: 1, label: 'PA_01_Staff' },
       { id: 2, label: 'PA_02_Worker' },
@@ -205,12 +163,12 @@ export class UploadexcelhomeComponent implements OnInit {
       let counter = 1;
       let globalCounter = 1;
       let idForEmpMasterModule = 1;
-      this.leftSideBarMenuList.push({ id: 1, name: 'Select All', disable: false });
+      this.leftSideBarMenuList.push({ id: 1, name: 'Select All', disable: false, group: 0, hide: false, counter: 0, checked: false });
 
       res.data.results.forEach((element) => {
         let flagForEmployeeCode = false;
         let flagForCompanyName = false;
-        this.leftSideBarMenuList.push({ id: counter++, name: element.sheetName, disable: false, group: 0, hide: false });
+        this.leftSideBarMenuList.push({ id: counter++, name: element.sheetName, disable: false, group: 0, hide: false, counter: 0, checked: false });
 
         this.employeeMasterModuleList.push({ checked: false, group: 0, disabled: false, assignValue: '', id: idForEmpMasterModule++, title: element.sheetName });
 
@@ -219,15 +177,15 @@ export class UploadexcelhomeComponent implements OnInit {
 
             if (element.fields[i].customLabelName == 'Employee Code' || element.fields[i].customLabelName == 'Company Name') {
               if (element.fields[i].customLabelName == 'Employee Code' && flagForEmployeeCode == false) {
-                this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0, counter: globalCounter++ });
+                this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: '', counter: globalCounter++ });
                 flagForEmployeeCode = true;
               }
               if (element.fields[i].customLabelName == 'Company Name' && flagForCompanyName == false) {
-                this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0, counter: globalCounter++ });
+                this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: '', counter: globalCounter++ });
                 flagForCompanyName = true;
               }
             } else {
-              this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0, counter: globalCounter++ });
+              this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: '', counter: globalCounter++ });
             }
           }
         }
@@ -264,7 +222,6 @@ export class UploadexcelhomeComponent implements OnInit {
       });
     });
   }
-
   onItemSelect(item: any, DeselectTab: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       DeselectTab,
@@ -310,16 +267,15 @@ export class UploadexcelhomeComponent implements OnInit {
     this.tempMergeSelectedArrayList = [];
     console.log('in   onChangeCheckBoxLeftMenu checked function is dynamic to all', checked, 'tabName', tabName);
 
-    let index1 = this.employeeMasterModuleList.findIndex(o => o.assignValue == tabName);
+    const index1 = this.employeeMasterModuleList.findIndex(o => o.assignValue == tabName);
 
     for (let i = 0; i < this.employeeMasterModuleList.length; i++) {
       if (this.employeeMasterModuleList[i].assignValue == tabName) {
         this.tempMergeSelectedArrayList.push(this.employeeMasterModuleList[i]);
-
       }
     }
 
-    let findGroupValue = this.employeeMasterModuleList.findIndex(o => o.assignValue == tabName);
+    const findGroupValue = this.employeeMasterModuleList.findIndex(o => o.assignValue == tabName);
     console.log('findGroupValue ', findGroupValue);
 
     if (findGroupValue == -1) {
@@ -333,7 +289,6 @@ export class UploadexcelhomeComponent implements OnInit {
           this.employeeMasterModuleList[i].checked = false;
         } else { }
       }
-
     } else {
       for (let i = 0; i < this.employeeMasterModuleList.length; i++) {
         if (this.employeeMasterModuleList[i].group === this.employeeMasterModuleList[findGroupValue].group || this.employeeMasterModuleList[i].group == 0) {
@@ -346,33 +301,27 @@ export class UploadexcelhomeComponent implements OnInit {
         }
       }
     }
-
-
     if (checked == true) {
-
       // hide merge/unmerge button
       console.log('check this one', this.employeeMasterModuleList);
-
       for (let j = 0; j < this.employeeMasterModuleList.length; j++) {
         if (this.employeeMasterModuleList[j].group > 0) {
           if (this.employeeMasterModuleList[j].assignValue !== this.employeeMasterModuleList[j].title) {
-            let findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
+            const findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
             if (findIndexOfOrdersData !== -1) {
               this.ordersData[findIndexOfOrdersData].hide = true;
             }
           }
         } else {
-          let findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
+          const findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
           if (findIndexOfOrdersData !== -1) {
             this.ordersData[findIndexOfOrdersData].hide = false;
           }
-
         }
-
       }
       console.log('ordersData in true stmt ', this.ordersData);
 
-      let indx = this.filterDropDownList.findIndex(o => o == tabName);
+      const indx = this.filterDropDownList.findIndex(o => o == tabName);
       if (indx == -1) {
         this.filterDropDownList.push(tabName);
         //  this.logicForHideNextButtonAndPreviousButton(tabName);
@@ -384,53 +333,40 @@ export class UploadexcelhomeComponent implements OnInit {
           this.sequenceArray.push({ disable: false, value: counter++ });
         }
       }
-      // commented on 01-02-21
       this.onChangFilterDropDown(tabName);
-
       this.form.patchValue({
         filterTemplateDropDown: tabName
       });
 
     } else {
-
-
       // hide merge/unmerge button
-
       // for(let j=0; j<this.employeeMasterModuleList.length;j++){
       //   if(this.employeeMasterModuleList[j].group> 0){
       //     if(this.employeeMasterModuleList[j].assignValue !== this.employeeMasterModuleList[j].title ){
-
-
       //       let findIndexOfOrdersData = this.ordersData.findIndex(o=>o.name == this.employeeMasterModuleList[j].title);
       //       if(findIndexOfOrdersData !== -1){
       //         this.ordersData[findIndexOfOrdersData].hide = true;
       //       }
-
       //     }
-
       //   }
       // }
 
       for (let j = 0; j < this.employeeMasterModuleList.length; j++) {
         if (this.employeeMasterModuleList[j].group > 0) {
           if (this.employeeMasterModuleList[j].assignValue !== this.employeeMasterModuleList[j].title) {
-            let findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
+            const findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
             if (findIndexOfOrdersData !== -1) {
               this.ordersData[findIndexOfOrdersData].hide = true;
             }
           }
         } else {
-          let findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
+          const findIndexOfOrdersData = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
           if (findIndexOfOrdersData !== -1) {
             this.ordersData[findIndexOfOrdersData].hide = false;
           }
-
         }
-
       }
-
       console.log('ordersData  in false stmt ', this.ordersData);
-
       console.log('before delete ', this.fieldNameArrayList);
 
       for (let i = this.checkBoxHtmlDataList.length - 1; i >= 0; --i) {
@@ -455,17 +391,23 @@ export class UploadexcelhomeComponent implements OnInit {
         }
       }
 
-      const index = this.filterDropDownList.findIndex((o) => o == tabName);
+
+      const index = this.filterDropDownList.findIndex(o => o == tabName);
+      console.log('index to be splice is ', index, 'tabname is', tabName);
       this.filterDropDownList.splice(index, 1);
       if (index !== 0) {
-        //this.leftSideMenuCheckBoxChnanged(true, this.filterDropDownList[index - 1]);
+        // this.leftSideMenuCheckBoxChnanged(true, this.filterDropDownList[index - 1]);
       }
 
       console.log('fieldNameArrayList', this.fieldNameArrayList);
       console.log('checkBoxHtmlDataList', this.checkBoxHtmlDataList);
       console.log('selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
-
+      this.leftSideMenuCounter(tabName);
     }
+
+    // let index = this.ordersData.findIndex(o=>o.name ==tabName );
+    // this.ordersData[index].counter =0;
+    // this.ordersData[index].counter = this.selectedSummaryCheckBoxHtmlDataList.filter(o=>o.tab === tabName && o.isChecked==true).length;
   }
 
   leftSideMenuCheckBoxChnanged(evt: boolean, leftSideMenuName: string) {
@@ -473,36 +415,35 @@ export class UploadexcelhomeComponent implements OnInit {
     if (leftSideMenuName == 'Select All') {
     } else {
       this.onChangeCheckBoxLeftMenu(evt, leftSideMenuName);
+      console.log('ordersData', this.ordersData);
     }
     //this.buttonPrevious();
   }
 
-  findMissingNumber(tabName: string) {
-    let missedNumber = 0;
-    for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == tabName) {
-        this.selectedSummaryCheckBoxHtmlDataList.sort((a, b) => a.Sequence - b.Sequence);
-      }
-    }
-    let flag = false;
-    console.log('after sorting selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
+  // findMissingNumber(tabName: string) {
+  //   let missedNumber = 0;
+  //   for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+  //     if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == tabName) {
+  //       this.selectedSummaryCheckBoxHtmlDataList.sort((a, b) => a.Sequence - b.Sequence);
+  //     }
+  //   }
+  //   let flag = false;
+  //   console.log('after sorting selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
 
-    for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
-      if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
-
-        let p = k + 1;
-        if (this.selectedSummaryCheckBoxHtmlDataList[k].Sequence == p.toString()) {
-          console.log('p  ', p.toString());
-        } else {
-          if (flag == false) {
-            missedNumber = p;
-          }
-        }
-
-      }
-    }
-    console.log('missed number is  ', missedNumber);
-  }
+  //   for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+  //     if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+  //       let p = k + 1;
+  //       if (this.selectedSummaryCheckBoxHtmlDataList[k].Sequence == p.toString()) {
+  //         console.log('p  ', p.toString());
+  //       } else {
+  //         if (flag == false) {
+  //           missedNumber = p;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   console.log('missed number is  ', missedNumber);
+  // }
 
 
 
@@ -549,28 +490,25 @@ export class UploadexcelhomeComponent implements OnInit {
   // }
 
   decrementCounter(row: any, isChecked: boolean, tabName: string) {
-
-
     const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o === row);
     this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = 0;
     this.selectedSummaryCheckBoxHtmlDataList.splice(index, 1);
 
-
     const tableName = [...new Set(this.selectedSummaryCheckBoxHtmlDataList.map((item) => item.tableName))];
     console.log(tableName);
 
-    let mInd = tableName.findIndex(o => o == row.tableName);
+    const mInd = tableName.findIndex(o => o == row.tableName);
     console.log(mInd);
-
 
     for (let k = tableName.length; k > mInd; --k) {
       for (let j = 0; j < this.selectedSummaryCheckBoxHtmlDataList.length; j++) {
         if (this.selectedSummaryCheckBoxHtmlDataList[j].tab == row.tab && this.selectedSummaryCheckBoxHtmlDataList[j].tableName == tableName[k]) {
-          let s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + -1;
+          const s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + -1;
           this.selectedSummaryCheckBoxHtmlDataList[j].Sequence = s.toString();
         }
       }
     }
+    this.leftSideMenuCounter(row.tab);
   }
   notMoreThanOneMandatoryFieldDecrementCounter(row: any, evt: boolean, tabName: string) {
     const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o === row);
@@ -583,11 +521,17 @@ export class UploadexcelhomeComponent implements OnInit {
         this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = count++;
       }
     });
+    this.leftSideMenuCounter(row.tab);
   }
 
-
   abc() {
-    // let index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    this.selectAllForMoreThanOneMandatoryfield('Compliance Information');
+
+
+
+
+   // this.isSequenceAreProperlyAllocatedTableNameWise();
+    //
     // console.log(index);
     // this.selectAllModel = !this.selectAllModel;
     // console.log(this.selectAllModel)
@@ -597,22 +541,26 @@ export class UploadexcelhomeComponent implements OnInit {
     // this.findMissingNumber(this.form.get('filterTemplateDropDown').value);
     // this.getLargestNumberByTabWiseAndTableNameWise('Compliance Type', 'EmployeeComplianceInfo');
 
-    let index;
-    for (let i = 0; i < this.filterDropDownList.length; i++) {
-      if (this.filterDropDownList[i] == this.form.get('filterTemplateDropDown').value) {
-        index = i;
-      }
-    }
+    // let index;
+    // for (let i = 0; i < this.filterDropDownList.length; i++) {
+    //   if (this.filterDropDownList[i] == this.form.get('filterTemplateDropDown').value) {
+    //     index = i;
+    //   }
+    // }
+    // let index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    // console.log(this.filterDropDownList);
+
+    //  this.alertService.sweetalertError('index is '+ index + 'length is ' +this.filterDropDownList.length);
+    // let index = this.ordersData.findIndex(o => o.name == this.form.get('filterTemplateDropDown').value);
+    // this.ordersData[index].counter = 0;
 
 
-    this.alertService.sweetalertError(index);
   }
 
   onChangeSequenceCheckBox(seq, myselect, row) {
     console.log('row', row);
     console.log('seq', seq);
     console.log('myselect ', myselect);
-
 
     for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
       if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == row.tab) {
@@ -626,9 +574,9 @@ export class UploadexcelhomeComponent implements OnInit {
       const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o.fieldName == row.fieldName && o.tab == row.tab);
       if (index == -1) {
         row.checked = true;
-
         this.selectedSummaryCheckBoxHtmlDataList.push(row);
       } else {
+        row.checked = true;
         this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = row.Sequence.toString();
       }
 
@@ -708,10 +656,135 @@ export class UploadexcelhomeComponent implements OnInit {
           // this.summaryCheckBoxHtmlDataListChanged(false, this.selectedSummaryCheckBoxHtmlDataList[i]);
         }
       }
-      let ind = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+      const ind = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
       this.filterDropDownList.splice(ind, 1);
       this.filterDropDownList.push(this.form.get('filterTemplateDropDown').value);
     }
+
+  }
+  //08-02-2021
+  selectAllForMoreThanOneMandatoryfield(tabName:string){
+    console.log('Seq Array',this.sequenceArray);
+
+
+
+
+    // the below code will remove all the mandatory fild as well as user checked fields..
+    for (let k = this.selectedSummaryCheckBoxHtmlDataList.length - 1; k >= 0; --k) {
+      if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+        this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = false;
+        this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = 0;
+        this.selectedSummaryCheckBoxHtmlDataList.splice(k, 1);
+      }
+    }
+    console.log(this.selectedSummaryCheckBoxHtmlDataList);
+
+
+
+
+
+
+
+    this.sequenceArray = [];
+    this.checkBoxHtmlDataList1 = [];
+    this.global.filter((o) => {
+      if (o.tab === tabName) {
+        this.checkBoxHtmlDataList1.push(o);
+      }
+    });
+    console.log('after clear checkBoxHtmlDataList1', this.checkBoxHtmlDataList1);
+    this.fieldNameArrayList = [];
+    this.fieldNameArrayList = this.checkBoxHtmlDataList1;
+    console.log('after adding new fieldNameArrayList', this.fieldNameArrayList);
+
+    const counter = 1;
+
+    for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+      if (this.fieldNameArrayList[i].tab === tabName) {
+       this.selectedSummaryCheckBoxHtmlDataList.push(this.fieldNameArrayList[i]);
+       this.sequenceArray.push({ disable: false, value:i });
+     //  this.getLargestNumberByTabWiseAndTableNameWise(row.tabName, row.tableName, row);
+      //  this.sequenceArray.push({ disable: false, value: counter++ });
+      }
+    }
+
+
+
+
+
+
+    let largestElement = 0;
+
+    for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+      if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+        if (largestElement < Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence)) {
+          largestElement = Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence);
+
+          this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = largestElement.toString();
+        }
+      }
+    }
+
+    // console.log(' this.selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
+    // const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
+    // console.log('index  ', index);
+   // this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
+
+    for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+      this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = true;
+      this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = largestElement.toString();
+      largestElement = Number(largestElement) + 1;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //   const m1 = this.selectedSummaryCheckBoxHtmlDataList.filter((o) => o.isMandatory == 1 && o.tab == tabName);
+  //   const tableName = [...new Set(m1.map((item) => item.tableName))];
+  //   console.log(tableName);
+  //   if (tableName.length > 1) {
+  //     let m = 0;
+  //   let largestElement = 0;
+  //   for (let i = 0; i < tableName.length; i++) {
+  //     largestElement = 0;
+  //     for (let j = 0; j < this.selectedSummaryCheckBoxHtmlDataList.length; j++) {
+  //       if (this.selectedSummaryCheckBoxHtmlDataList[j].tab == row.tab && this.selectedSummaryCheckBoxHtmlDataList[j].tableName == row.tableName) {
+  //         if (Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) > largestElement) {
+  //           largestElement = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   let s = Number(largestElement + 1);
+  //   const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
+  //   console.log('index', index);
+  //   this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = s.toString();
+
+  //   let mInd = tableName.findIndex(o => o == row.tableName);
+  //   console.log(mInd);
+  //   for (let k = mInd + 1; k < tableName.length; k++) {
+  //     for (let j = 0; j < this.selectedSummaryCheckBoxHtmlDataList.length; j++) {
+  //       if (this.selectedSummaryCheckBoxHtmlDataList[j].tab == row.tab && this.selectedSummaryCheckBoxHtmlDataList[j].tableName == tableName[k]) {
+  //         let s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + 1;
+  //         this.selectedSummaryCheckBoxHtmlDataList[j].Sequence = s.toString();
+  //       }
+  //     }
+  //   }
+  // }
+
 
   }
   selectAllLogicForMoreThanOneMandatoryFieldInDifferntTables(row: any) {
@@ -733,35 +806,35 @@ export class UploadexcelhomeComponent implements OnInit {
           }
         }
       }
-      let s = Number(largestElement + 1);
+      const s = Number(largestElement + 1);
       const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
 
       this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = s.toString();
 
-      let mInd = tableName.findIndex(o => o == row.tableName);
+      const mInd = tableName.findIndex(o => o == row.tableName);
       console.log(mInd);
 
 
       for (let k = mInd + 1; k < tableName.length; k++) {
         for (let j = 0; j < this.selectedSummaryCheckBoxHtmlDataList.length; j++) {
           if (this.selectedSummaryCheckBoxHtmlDataList[j].tab == row.tab && this.selectedSummaryCheckBoxHtmlDataList[j].tableName == tableName[k]) {
-            let s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + 1;
+            const s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + 1;
             this.selectedSummaryCheckBoxHtmlDataList[j].Sequence = s.toString();
           }
         }
       }
     } else {
-      console.log('table length is not greate than 1');
+      console.log('table length is not greater than 1');
       //   this.incrementCounter(this.fieldNameArrayList[i], true, this.form.get('filterTemplateDropDown').value, this.fieldNameArrayList[i].tableName);
     }
   }
 
   UnSelectAllLogicForMoreThanOneMandatoryFieldInDifferntTables(row: any) {
     this.decrementCounter(row, false, row.tab);
-
   }
 
-  summaryCheckBoxHtmlDataListChanged(evt: boolean, row: any) {
+  summaryCheckBoxHtmlDataListChanged(evt: boolean, row: any, Seq?: string) {
+    console.log('Seq is ', Seq);
     this.onChangePreviewDropDown(this.form.get('filterTemplateDropDown').value);
     // this.getLargestNumberByTabWiseAndTableNameWise(row.tab, row.tableName);
     this.checkThatAllItemsAreSelectedFromThatLeftMenu(row.tab);
@@ -770,12 +843,19 @@ export class UploadexcelhomeComponent implements OnInit {
     const tableName = [...new Set(m1.map((item) => item.tableName))];
     console.log(tableName);
 
-    let ind = this.filterDropDownList.findIndex(o => o == row.tab);
+    const ind = this.filterDropDownList.findIndex(o => o == row.tab);
 
     if (evt == true) {
+      if (Seq !== undefined) {
+        row.Sequence = Seq.toString();
+      }
       row.isChecked = true;
-      this.selectedSummaryCheckBoxHtmlDataList.push(row);
-
+      const ind = this.selectedSummaryCheckBoxHtmlDataList.findIndex(o => o == row);
+      if (ind == -1) {
+        this.selectedSummaryCheckBoxHtmlDataList.push(row);
+      }
+      console.log('this.ordersData', this.ordersData);
+      this.leftSideMenuCounter(row.tab);
       // this.incrementCounter(row, evt, row.tab,row.tableName);
       if (row.isMandatory == 1) {
         this.getLargestNumberByTabWiseAndTableNameWise(row.tab, row.tableName, row);
@@ -793,17 +873,17 @@ export class UploadexcelhomeComponent implements OnInit {
               }
             }
           }
-          let s = Number(largestElement + 1);
+          const s = Number(largestElement + 1);
           const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
           console.log('index', index);
           this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = s.toString();
 
-          let mInd = tableName.findIndex(o => o == row.tableName);
+          const mInd = tableName.findIndex(o => o == row.tableName);
           console.log(mInd);
           for (let k = mInd + 1; k < tableName.length; k++) {
             for (let j = 0; j < this.selectedSummaryCheckBoxHtmlDataList.length; j++) {
               if (this.selectedSummaryCheckBoxHtmlDataList[j].tab == row.tab && this.selectedSummaryCheckBoxHtmlDataList[j].tableName == tableName[k]) {
-                let s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + 1;
+                const s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + 1;
                 this.selectedSummaryCheckBoxHtmlDataList[j].Sequence = s.toString();
               }
             }
@@ -812,60 +892,13 @@ export class UploadexcelhomeComponent implements OnInit {
           //  this.getLargestNumberByTabWiseAndTableNameWise(row.tab, row.tableName, row);
           this.incrementCounter(row, evt, row.tab, row.tableName);
         }
-
       }
-
     } else {
       row.isChecked = false;
       if (tableName.length > 1) {
         this.decrementCounter(row, evt, row.tab);
       } else {
         this.notMoreThanOneMandatoryFieldDecrementCounter(row, evt, row.tab);
-
-      }
-
-    }
-
-    this.counterPersonalInformation = 0;
-    this.counterContactInformation = 0;
-    this.counterIdentityInformation = 0;
-    this.counterComplianceInformation = 0;
-    this.counterEducationAndSkillInformation = 0;
-    this.counterPreviousEmploymentInformation = 0;
-    this.counterEmploymentInformation = 0;
-    this.counterFamilyInformation = 0;
-    this.counterPayrollInformation = 0;
-    this.counterJobInformation = 0;
-    for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Personal Information') {
-        this.counterPersonalInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Contact Information') {
-        this.counterContactInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Identity Information') {
-        this.counterIdentityInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Compliance Information') {
-        this.counterComplianceInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Previous Employment  Information') {
-        this.counterPreviousEmploymentInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Education & Skill Information') {
-        this.counterEducationAndSkillInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Employment Information') {
-        this.counterEmploymentInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Family Information') {
-        this.counterFamilyInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Payroll Information') {
-        this.counterPayrollInformation++;
-      }
-      if (this.selectedSummaryCheckBoxHtmlDataList[i].tab === 'Job Information') {
-        this.counterJobInformation++;
       }
     }
   }
@@ -900,12 +933,13 @@ export class UploadexcelhomeComponent implements OnInit {
       }
     }
     if (this.filterDropDownList.length == 1 || this.filterDropDownList.length == 0) {
-      this.hideNextButton = false;
+      this.hideNextButton = true;
       this.hidePreviousButton = false;
     }
-    let index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    const index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    this.indexNextAndPrevious = index;
     if (index == this.filterDropDownList.length - 1) {
-      this.hideNextButton = true;
+      //  this.hideNextButton = true;
     }
   }
   logicForHideNextButtonAndPreviousButton(tabName: string) {
@@ -924,13 +958,12 @@ export class UploadexcelhomeComponent implements OnInit {
     this.alertService.sweetalertError(index);
 
     if (this.filterDropDownList.length > 1 && index !== -1) {
-      // this.hideNextButton = true;
+      this.hideNextButton = true;
 
       if (index == this.filterDropDownList.length - 1) {
         this.hideNextButton = false;
         this.hidePreviousButton = true;
       }
-
       if (index == 0) {
         this.hidePreviousButton = true;
       } else {
@@ -1011,16 +1044,17 @@ export class UploadexcelhomeComponent implements OnInit {
 
   }
   saveMaster() {
+    this.assignMergeFieldToAllSelectedCheckBoxHtmlDataList();
     if (this.isEditMode == false) {
-      let a = this.isSequenceAreProperlyAllocatedTableNameWise();
+      const a = this.isSequenceAreProperlyAllocatedTableNameWise();
       console.log(a);
       if (a == false) {
 
         this.sheetsize = 0;
         this.json = [];
-        let temp = [];
+        const temp = [];
         const sheet1 = [];
-        let oneAllowEmpCode = 0;
+        const oneAllowEmpCode = 0;
         for (let q = 0; q < this.employeeMasterModuleList.length; q++) {
           if (this.employeeMasterModuleList[q].group > 0) {
             this.selectedSummaryCheckBoxHtmlDataList.forEach((element, index) => {
@@ -1031,10 +1065,11 @@ export class UploadexcelhomeComponent implements OnInit {
           }
         }
         console.log('After merge selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
-        let counter = 0;
+        const counter = 0;
 
         const assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
         console.log('assign value array', assignValueArray);
+
 
         let deleteEmpCode = false;
         for (let t = 0; t < assignValueArray.length; t++) {
@@ -1055,6 +1090,7 @@ export class UploadexcelhomeComponent implements OnInit {
             }
           }
         }
+
         /// below code is used for removing employee code in one sheet multiple times....
 
         const unique = [...new Set(this.selectedSummaryCheckBoxHtmlDataList.map((item) => item.tableName))];
@@ -1072,10 +1108,10 @@ export class UploadexcelhomeComponent implements OnInit {
             if (fieldName.length == 0) {
               fieldName = o.fieldName;
               seq = o.Sequence;
-              if (o.fieldName == 'Company Code') {
-                fieldName = fieldName + ',' + 'Employee Code';
-                seq = seq + ',' + o.Sequence;
-              }
+              // if (o.fieldName == 'Company Code') {
+              //   fieldName = fieldName + ',' + 'Employee Code';
+              //   seq = seq + ',' + o.Sequence;
+              // }
               if (this.addFromDateToDate(o.fieldName)) {
                 fieldName = fieldName + ',' + 'From Date' + ',' + 'To Date';
               }
@@ -1086,9 +1122,9 @@ export class UploadexcelhomeComponent implements OnInit {
                 fieldName = fieldName + ',' + 'From Date' + ',' + 'To Date';
               }
             }
-            let a = o.tab.split(" ");
+            const a = o.tab.split(" ");
 
-            temp[i] = ({ sheetName:o.tab , tableName: unique[i], fields: fieldName, sequence: seq, mergeTabName: '' });
+            temp[i] = ({ tabName: o.tab, sheetName: 'Employee_' + a[0], tableName: unique[i], fields: fieldName, sequence: seq, mergeTabName: o.merged });
             //below line code used for concatenate Employee_Personal like that
 
 
@@ -1106,13 +1142,14 @@ export class UploadexcelhomeComponent implements OnInit {
 
         // const sheetNameUnique = [...new Set(JSON.stringify(temp).map((item) => item.sheetName))]; /// sheetName means tabName
         console.log(sheetNameUnique);
-        let sheetArray = [];
+        const sheetArray = [];
         for (let x = 0; x < sheetNameUnique.length; x++) {
-          let tempArr = [];
+          const tempArr = [];
           for (let y = 0; y < this.json.length; y++) {
             if (sheetNameUnique[x] == this.json[y].sheetName) {
               const propertyName: string = 'sheet' + (x + 1);
               tempArr.push({
+                tabName: this.json[y].tabName,
                 sheetName: this.json[y].sheetName,
                 tableName: this.json[y].tableName,
                 fields: this.json[y].fields,
@@ -1132,21 +1169,169 @@ export class UploadexcelhomeComponent implements OnInit {
           }
         }
         sheet1.push(temp);
-        let saveObject = {
+        const saveObject = {
           templateMasterId: 0,
           templateName: this.form.get('templateName').value,
-          remark: this.form.get('remark').value,
-          description: this.form.get('description').value,
+          remark: this.form.get('remark').value ? null : '',
+          description: this.form.get('description').value ? null : '',
           companyId: 1,
           module: 'EmpMaster',
           sheetSize: this.sheetsize.toString(),
         };
-        let object3 = { ...saveObject, ...this.anantTemp }
+        const object3 = { ...saveObject, ...this.anantTemp }
         console.log('json obj for saving', JSON.stringify(object3));
 
         this.uploadeExcelHomeService.postExcelTemplateGeneration(object3).subscribe((res) => {
           if (res.data.results.length > 0) {
             this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
+            this.cancelView();
+            this.getAllExcelTemplate();
+          } else {
+            this.alertService.sweetalertWarning(res.status.messsage);
+          }
+        }, (error: any) => {
+          this.alertService.sweetalertError(error.error.status.messsage);
+        }, () => {
+
+        });
+      }
+    } else {
+      const a = this.isSequenceAreProperlyAllocatedTableNameWise();
+      console.log(a);
+      if (a == false) {
+
+        this.sheetsize = 0;
+        this.json = [];
+        const temp = [];
+        const sheet1 = [];
+        const oneAllowEmpCode = 0;
+        for (let q = 0; q < this.employeeMasterModuleList.length; q++) {
+          if (this.employeeMasterModuleList[q].group > 0) {
+            this.selectedSummaryCheckBoxHtmlDataList.forEach((element, index) => {
+              if (this.employeeMasterModuleList[q].title == element.tab) {
+                element.tab = this.employeeMasterModuleList[q].assignValue;
+              }
+            });
+          }
+        }
+        console.log('After merge selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
+        const counter = 0;
+
+        const assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
+        console.log('assign value array', assignValueArray);
+
+
+        let deleteEmpCode = false;
+        for (let t = 0; t < assignValueArray.length; t++) {
+          console.log('imp check this', assignValueArray[t]);
+          if (assignValueArray[t].length !== 0) {
+            for (let p = 0; p < this.selectedSummaryCheckBoxHtmlDataList.length; p++) {
+              console.log(assignValueArray[t]);
+              console.log(this.selectedSummaryCheckBoxHtmlDataList[p].tab)
+              console.log('check this', this.selectedSummaryCheckBoxHtmlDataList[p].tab == assignValueArray[t]);
+              if (this.selectedSummaryCheckBoxHtmlDataList[p].tab == assignValueArray[t]) {
+                if (this.selectedSummaryCheckBoxHtmlDataList[p].fieldName == 'Employee Code') {
+                  if (deleteEmpCode == true) {
+                    this.selectedSummaryCheckBoxHtmlDataList.splice(p, 1);
+                  }
+                  deleteEmpCode = true;
+                }
+              }
+            }
+          }
+        }
+
+        /// below code is used for removing employee code in one sheet multiple times....
+
+        const unique = [...new Set(this.selectedSummaryCheckBoxHtmlDataList.map((item) => item.tableName))];
+        // console.log('unique', unique); // 2 found  Employee Personal Info and EmployeeMaster Table
+
+
+        for (let i = 0; i < unique.length; i++) {
+
+          const result = this.selectedSummaryCheckBoxHtmlDataList.filter((o) => o.tableName == unique[i]);
+          console.log('result is', result);
+          let fieldName = '';
+          let seq = '';
+          const set = new Set(result);
+          set.forEach((o) => {
+            if (fieldName.length == 0) {
+              fieldName = o.fieldName;
+              seq = o.Sequence;
+              // if (o.fieldName == 'Company Code') {
+              //   fieldName = fieldName + ',' + 'Employee Code';
+              //   seq = seq + ',' + o.Sequence;
+              // }
+              if (this.addFromDateToDate(o.fieldName)) {
+                fieldName = fieldName + ',' + 'From Date' + ',' + 'To Date';
+              }
+            } else {
+              fieldName = fieldName + ',' + o.fieldName;
+              seq = seq + ',' + o.Sequence;
+              if (this.addFromDateToDate(o.fieldName)) {
+                fieldName = fieldName + ',' + 'From Date' + ',' + 'To Date';
+              }
+            }
+            const a = o.tab.split(" ");
+
+            temp[i] = ({ tabName: o.tab, sheetName: 'Employee_' + a[0], tableName: unique[i], fields: fieldName, sequence: seq, mergeTabName: o.merged });
+            //below line code used for concatenate Employee_Personal like that
+            // temp[i] = ({ sheetName: 'Employee_' + a[0], tableName: unique[i], fields: fieldName, sequence: seq, mergeTabName: '' });
+            //temp[i] = ({ sheetName: 'Employee_' + a[0], tableName: unique[i], fields: fieldName });
+          });
+        }
+        console.log('temp printed ', temp);
+        const sheetNameUnique = [...new Set(temp.map((item) => item.sheetName))];
+        const tempData = {};
+        //  let json = JSON.stringify(temp);
+        this.json = temp;
+        console.log('json is printed ', this.json);
+        // const sheetNameUnique = [...new Set(JSON.stringify(temp).map((item) => item.sheetName))]; /// sheetName means tabName
+        console.log(sheetNameUnique);
+        const sheetArray = [];
+        for (let x = 0; x < sheetNameUnique.length; x++) {
+          const tempArr = [];
+          for (let y = 0; y < this.json.length; y++) {
+            if (sheetNameUnique[x] == this.json[y].sheetName) {
+              const propertyName: string = 'sheet' + (x + 1);
+              tempArr.push({
+                tabName: this.json[y].tabName,
+                sheetName: this.json[y].sheetName,
+                tableName: this.json[y].tableName,
+                fields: this.json[y].fields,
+                sequence: this.json[y].sequence,
+                mergeTabName: this.json[y].mergeTabName,
+              });
+            }
+          }
+          this.objectify('sheet' + (x + 1), tempArr);
+        }
+
+        for (let i = 0; i < temp.length; i++) {
+          for (let j = 0; j < sheetNameUnique.length; j++) {
+            if (temp[i].sheetName === sheetNameUnique) {
+              // this.customizedResponse[j][sheetName]
+            }
+          }
+        }
+        sheet1.push(temp);
+
+        const saveObject = {
+          templateMasterId: this.templateMasterId,
+          templateName: this.form.get('templateName').value,
+          remark:  this.form.get('remark').value,
+          description:  this.form.get('description').value,
+          companyId: 1,
+          module: 'EmpMaster',
+          sheetSize: this.sheetsize.toString(),
+        };
+        const object3 = { ...saveObject, ...this.anantTemp }
+        console.log('json obj for saving', JSON.stringify(object3));
+
+        this.uploadeExcelHomeService.postExcelTemplateGeneration(object3).subscribe((res) => {
+          if (res.data.results.length > 0) {
+            this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
+            this.cancelView();
             this.getAllExcelTemplate();
           } else {
             this.alertService.sweetalertWarning(res.status.messsage);
@@ -1154,29 +1339,20 @@ export class UploadexcelhomeComponent implements OnInit {
 
         }, (error: any) => {
           this.alertService.sweetalertError(error.error.status.messsage);
-
-        }, () => {
-
-        });
+        }, () => { });
       }
-
-
-
-    } else {
-
     }
   }
 
 
   cancelView() {
+    this.isViewMode = false;
+    this.isViewFieldNameArrayList = false;
     this.isEditMode = false;
     this.errorInSequence = false;
-
-
     this.filterDropDownList = [];
-
+    this.global = [];
     // reset value merge unmerge left side menu
-
     this.personalInfoMergeTab = false;
     this.complianceInfoMergeTab = false;
     this.contactInfoMergeTab = false;
@@ -1212,24 +1388,7 @@ export class UploadexcelhomeComponent implements OnInit {
     this.mergeJobInformation = false;
 
 
-
-    this.global = [];
-    this.counterPersonalInformation = 0;
-    this.counterContactInformation = 0;
-    this.counterIdentityInformation = 0;
-    this.counterComplianceInformation = 0;
-    this.counterEducationAndSkillInformation = 0;
-    this.counterPreviousEmploymentInformation = 0;
-    this.counterPayrollInformation = 0;
-    this.counterFamilyInformation = 0;
-    this.counterEmploymentInformation = 0;
-    this.counterJobInformation = 0;
-
-
-
-
     this.getAllExcelTemplate();
-
     this.getExcelTableFields();
   }
   uploadExcelSheet() {
@@ -1239,9 +1398,7 @@ export class UploadexcelhomeComponent implements OnInit {
 
     } else {
       this.uploadeExcelHomeService.postExcelUpload(this.formData).subscribe((res) => {
-
         this.alertService.sweetalertWarning(res.status.messsage);
-
       }, (error: any) => {
         this.alertService.sweetalertError(error.error.status.messsage);
 
@@ -1258,9 +1415,7 @@ export class UploadexcelhomeComponent implements OnInit {
       selectedImageFileLogo3 = event.target.files[0];
       const [file] = event.target.files;
       reader.readAsDataURL(file);
-
     }
-
     this.formData = new FormData();
     this.formData.append('file', event.target.files[0]);
     console.log('in upload excel sheet', this.formData);
@@ -1288,43 +1443,14 @@ export class UploadexcelhomeComponent implements OnInit {
   //       filterTemplateDropDown: this.filterDropDownList[index + 1]
   //     });
   //   }
-
-
   // }
   buttonPrevious() {
     console.log('clicked on previous');
-    let index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    const index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    this.indexNextAndPrevious = index;
     console.log('clicked on previous index', index);
     this.buttonIndex = index;
     if (this.filterDropDownList.length > 1) {
-
-
-
-
-
-
-
-      // if (this.filterDropDownList.length > 1 && index !== -1) {
-      //   // this.hideNextButton = true;
-
-      //   if (index == this.filterDropDownList.length - 1) {
-      //     this.hideNextButton = true;
-      //     this.hidePreviousButton = true;
-      //   }
-
-      //   if (index == 0) {
-      //     this.hidePreviousButton = true;
-      //   } else {
-      //     // this.hidePreviousButton = true;
-      //   }
-      // }
-      // if (index == 1) {
-      //   this.hidePreviousButton = true;
-      // }
-
-
-
-
       if (index == (this.filterDropDownList.length - 1)) {
         this.hideNextButton = true;
         this.hidePreviousButton = false;
@@ -1333,47 +1459,39 @@ export class UploadexcelhomeComponent implements OnInit {
         this.hideNextButton = true;
         this.hidePreviousButton = false;
         this.onChangFilterDropDown(this.filterDropDownList[index - 1]);
-        //this.logicForHideNextButtonAndPreviousButton(this.filterDropDownList[index-1]);
         this.form.patchValue({
           filterTemplateDropDown: this.filterDropDownList[index - 1],
         });
       } else if (index !== 0) {
         this.hidePreviousButton = true;
         this.onChangFilterDropDown(this.filterDropDownList[index - 1]);
-        // this.logicForHideNextButtonAndPreviousButton(this.filterDropDownList[index-1])
         this.form.patchValue({
           filterTemplateDropDown: this.filterDropDownList[index - 1],
         });
       }
     }
-
   }
-
   buttonNext() {
-    let index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
+    const index = this.filterDropDownList.findIndex(o => o == this.form.get('filterTemplateDropDown').value);
     this.buttonIndex = index;
+    this.indexNextAndPrevious = index;
 
     if (this.filterDropDownList.length > 1) {
-
 
       if (index == 0) {
         this.hidePreviousButton = true;
       }
-
       if (index == this.filterDropDownList.length - 1) {
-        // this.alertService.sweetalertWarning('You reached to last element');
         this.hidePreviousButton = true;
         this.hideNextButton = false;
 
       } else {
         this.hideNextButton = true;
         this.onChangFilterDropDown(this.filterDropDownList[index + 1]);
-        // this.logicForHideNextButtonAndPreviousButton(this.filterDropDownList[index-1])
         this.form.patchValue({
           filterTemplateDropDown: this.filterDropDownList[index + 1]
         });
       }
-
     }
   }
   // buttonPrevious() {
@@ -1411,7 +1529,6 @@ export class UploadexcelhomeComponent implements OnInit {
   // }
   getOrders() {
     return this.leftSideBarMenuList;
-
   }
   minSelectedCheckboxes(min = 1) {
     const validator: ValidatorFn = (formArray: FormArray) => {
@@ -1438,7 +1555,7 @@ export class UploadexcelhomeComponent implements OnInit {
   onmergeSelected(evt: boolean, emp: any) {
 
     console.log('evt', evt, '', emp);
-    let index = this.tempMergeSelectedArrayList.findIndex(o => o.title == emp.title);
+    const index = this.tempMergeSelectedArrayList.findIndex(o => o.title == emp.title);
     if (evt == true) {
       emp.checked = true;
       if (index == -1) {
@@ -1469,7 +1586,7 @@ export class UploadexcelhomeComponent implements OnInit {
     this.checkboxNameToBeCheckedByDefault = checkboxNameToBeCheckedByDefault;
 
 
-    let index = this.employeeMasterModuleList.findIndex(o => o.title == this.checkboxNameToBeCheckedByDefault);
+    const index = this.employeeMasterModuleList.findIndex(o => o.title == this.checkboxNameToBeCheckedByDefault);
     this.employeeMasterModuleList[index].checked = true;
     this.employeeMasterModuleList[index].disabled = true;
 
@@ -1480,9 +1597,9 @@ export class UploadexcelhomeComponent implements OnInit {
 
 
 
-    let assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
+    const assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
     console.log('assignVAlue array', assignValueArray);
-    let removeBlankspace = assignValueArray.findIndex(o => o == '');
+    const removeBlankspace = assignValueArray.findIndex(o => o == '');
     console.log('removeBlanck space index', removeBlankspace);
     assignValueArray.splice(removeBlankspace, 1);
 
@@ -1494,9 +1611,9 @@ export class UploadexcelhomeComponent implements OnInit {
         }
       }
     }
-    let findGroup = this.employeeMasterModuleList.findIndex(o => o.assignValue == this.checkboxNameToBeCheckedByDefault);
+    const findGroup = this.employeeMasterModuleList.findIndex(o => o.assignValue == this.checkboxNameToBeCheckedByDefault);
     if (findGroup !== -1) {
-      let group = this.employeeMasterModuleList[findGroup].assignValue;
+      const group = this.employeeMasterModuleList[findGroup].assignValue;
       console.log('group  ', group);
 
       for (let i = 0; i < this.employeeMasterModuleList.length; i++) {
@@ -1543,13 +1660,9 @@ export class UploadexcelhomeComponent implements OnInit {
     console.log('selectedOrderIds', selectedOrderIds);
     console.log(this.ordersData);
 
-
-
-
     if (this.tempMergeSelectedArrayList.length == 1) {
-
       console.log('this.tempMergeSelectedArrayList.length ==1)', this.tempMergeSelectedArrayList.length)
-      let j = this.employeeMasterModuleList.findIndex(o => o.title == this.checkboxNameToBeCheckedByDefault);
+      const j = this.employeeMasterModuleList.findIndex(o => o.title == this.checkboxNameToBeCheckedByDefault);
       this.employeeMasterModuleList[j].group = 0;
       this.employeeMasterModuleList[j].assignValue = '';
       this.employeeMasterModuleList[j].checked = false;
@@ -1558,7 +1671,7 @@ export class UploadexcelhomeComponent implements OnInit {
       this.tempMergeSelectedArrayList[0].group = 0;
       this.tempMergeSelectedArrayList[0].checked = false;
 
-      let idx = this.ordersData.findIndex(o => o.name == this.checkboxNameToBeCheckedByDefault);
+      const idx = this.ordersData.findIndex(o => o.name == this.checkboxNameToBeCheckedByDefault);
       this.ordersData[idx].disable = false;
     }
 
@@ -1592,32 +1705,29 @@ export class UploadexcelhomeComponent implements OnInit {
         if (this.employeeMasterModuleList[j].assignValue == this.checkboxNameToBeCheckedByDefault) {
           this.employeeMasterModuleList[j].group = 0;
           this.employeeMasterModuleList[j].assignValue = '';
-          let idx = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
+          const idx = this.ordersData.findIndex(o => o.name == this.employeeMasterModuleList[j].title);
           this.ordersData[idx].disable = false;
           this.ordersData[idx].group = '';
-
+          this.leftSideMenuCheckBoxChnanged(false, this.employeeMasterModuleList[j].title);
         }
       }
 
 
       for (let a = 0; a < this.tempMergeSelectedArrayList.length; a++) {
 
-        let ind = this.employeeMasterModuleList.findIndex(o => o.title == this.tempMergeSelectedArrayList[a].title);
+        const ind = this.employeeMasterModuleList.findIndex(o => o.title == this.tempMergeSelectedArrayList[a].title);
         if (ind == -1) {
           console.log('index not found');
-
         } else {
           if (this.tempMergeSelectedArrayList[a].group == 0) {
             this.employeeMasterModuleList[ind].group = largestElement;
             this.employeeMasterModuleList[ind].assignValue = this.checkboxNameToBeCheckedByDefault;
-            let idx = this.ordersData.findIndex(o => o.name == this.tempMergeSelectedArrayList[a].title);
+            const idx = this.ordersData.findIndex(o => o.name == this.tempMergeSelectedArrayList[a].title);
             this.ordersData[idx].disable = true;
           }
         }
       }
     }
-
-
 
     let group = 0;
     let countOfClose = 0;
@@ -1629,39 +1739,22 @@ export class UploadexcelhomeComponent implements OnInit {
         return x.group == group
       }).length
 
-
       // logic for uncheck one disable button
-
 
       console.log('group is', group);
       console.log('count of close ', countOfClose);
 
-
-
       if (countOfClose == 1) {
-
         const mergedIndex = this.employeeMasterModuleList.findIndex(o => o.assignValue == this.checkboxNameToBeCheckedByDefault);
-
-
         this.employeeMasterModuleList[mergedIndex].group = 0;
         this.employeeMasterModuleList[mergedIndex].assignValue = '';
-        let idx = this.ordersData.findIndex(o => o.name == this.checkboxNameToBeCheckedByDefault);
+        const idx = this.ordersData.findIndex(o => o.name == this.checkboxNameToBeCheckedByDefault);
         this.ordersData[idx].disable = false;
-
-
         this.leftSideMenuCheckBoxChnanged(false, this.checkboxNameToBeCheckedByDefault);
-
-
 
       }
     }
-
-
-
     console.log('len is ', countOfClose);
-
-
-
 
     for (let t = 0; t < this.employeeMasterModuleList.length; t++) {
       if (this.checkboxNameToBeCheckedByDefault == this.employeeMasterModuleList[t].assignValue) {
@@ -1676,12 +1769,7 @@ export class UploadexcelhomeComponent implements OnInit {
 
 
 
-
-
     // logic for hiding Merge/ Tab field button
-
-
-
 
     this.tempMergeSelectedArrayList = [];
     this.selectedMergedGroupList = [];
@@ -1696,6 +1784,7 @@ export class UploadexcelhomeComponent implements OnInit {
   // }
 
   findMissingNumber1(tabName: string, tableName: string): number {
+
 
     for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
       if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == tabName) {
@@ -1795,11 +1884,8 @@ export class UploadexcelhomeComponent implements OnInit {
   }
 
   getLargestNumberByTabWiseAndTableNameWise(tabName: string, tableName: string, row?: any) {
-
-
-    console.log('TabName', tabName, ' Table Name', tableName);
     let largest = 0;
-    let counter = 0;
+    const counter = 0;
     if (row.Sequence == 0) {
       for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
 
@@ -1809,8 +1895,7 @@ export class UploadexcelhomeComponent implements OnInit {
           }
         }
       }
-
-      let s = Number(largest + 1);
+      const s = Number(largest + 1);
       const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
       this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = s.toString();
       this.selectedSummaryCheckBoxHtmlDataList[index].merge = counter;
@@ -1823,80 +1908,214 @@ export class UploadexcelhomeComponent implements OnInit {
 
   }
 
+  findMinNumberByTabNameWiseAndTableNameWise(tabName: string, tableName: string): number {
+
+    let min = 1;
+    let flag = false
+    for (let b = 0; b < this.selectedSummaryCheckBoxHtmlDataList.length; b++) {
+      if (this.selectedSummaryCheckBoxHtmlDataList[b].tab == tabName && this.selectedSummaryCheckBoxHtmlDataList[b].tableName == tableName) {
+        if (flag == false) {
+          min = Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence);
+          flag = true;
+        }
+        if (min > Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence)) {
+          min = Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence);
+        }
+      }
+    }
+    return min;
+
+  }
+  checkTabWiseAndTableNameWiseObjectisExist(tab: string, tableName: string) {
+    let minNo = this.findMinNumberByTabNameWiseAndTableNameWise(tab, tableName);
+    console.log('minNo is', minNo)
+    const some: boolean = true;
+    for (let b = 0; b < this.selectedSummaryCheckBoxHtmlDataList.length; b++) {
+
+      if (this.selectedSummaryCheckBoxHtmlDataList[b].tab == tab && this.selectedSummaryCheckBoxHtmlDataList[b].tableName == tableName) {
+
+        if (Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence) == minNo) {
+          console.log('found element', minNo);
+        } else {
+          console.log('not found element ', minNo);
+          this.alertService.sweetalertError('Wrong Seq tab Name  is' + tab + ' tableName is ' + tableName + 'Sequence is ' + minNo + 'Wrong no added is ' + Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence));
+
+        }
+        minNo++
+      }
+    }
+  }
   isSequenceAreProperlyAllocatedTableNameWise(): boolean {
+    for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+      this.selectedSummaryCheckBoxHtmlDataList.sort((a, b) => a.Sequence - b.Sequence);
+    }
+
+    const tableName = [...new Set(this.selectedSummaryCheckBoxHtmlDataList.map((item) => item.tableName))];
+
+    const tabName = [...new Set(this.selectedSummaryCheckBoxHtmlDataList.map((item) => item.tab))];
+
+
+
+    for (let tab = 0; tab < tabName.length; tab++) {
+      for (let k = 0; k < tableName.length; k++) {
+        if (k == 0) {
+          // minNo = this.findMinNumberByTabNameWiseAndTableNameWise(tabName[tab],tableName[k]);
+          //  //ab = this.selectedSummaryCheckBoxHtmlDataList.some((o)=> Number(o.Sequence) == minNo));
+          //  console.log('ab',ab);
+          //   minNo = minNo -1;
+        }
+        const index = this.selectedSummaryCheckBoxHtmlDataList.some(o => o.tab == tabName[tab] && o.tableName == tableName[k]);
+        console.log(index);
+
+        if (index == true) {
+          this.checkTabWiseAndTableNameWiseObjectisExist(tabName[tab], tableName[k]);
+        }
+
+
+        //  console.log('min number is ', minNo);
+        //  ab = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o)=> { console.log('o',o);
+        // Number(o.Sequence) == minNo && o.tableName == tableName[k]}) ;
 
 
 
 
+
+        //   console.log('check this ..', 'min no ', minNo, ' ab  ', ab , ' this.selectedSummaryCheckBoxHtmlDataList',this.selectedSummaryCheckBoxHtmlDataList[k].Sequence);
+        // if some condition will be false it will return false; means Sequence does not found
+
+        //  if (ab == -1) {
+        //   console.log('check this ..', 'min no ', ' ab  ' , ' this.selectedSummaryCheckBoxHtmlDataList',this.selectedSummaryCheckBoxHtmlDataList[k].Sequence);
+        //    this.errorInSequence = true;
+        //    this.alertService.sweetalertError('You have added wrong sequence at table ' + tableName[k] + 'Sequence is ' + 'wrong '+this.selectedSummaryCheckBoxHtmlDataList[k].Sequence + 'tabName is '+this.selectedSummaryCheckBoxHtmlDataList[k].tab+'minNo '+minNo);
+        //  }
+      }
+    }
+
+
+    // let a: boolean;
+    // for (let k = 0; k < tableName.length; k++) {
+    //   let minNo = 0
+    //   let flag = false;
+    //   for (let b = 0; b < this.selectedSummaryCheckBoxHtmlDataList.length; b++) {
+    //     if (minNo > Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence && this.selectedSummaryCheckBoxHtmlDataList[b].tableName == tableName[k])) {
+    //       minNo = Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence);
+    //     }
+    //     if (b == this.selectedSummaryCheckBoxHtmlDataList.length - 1) {
+    //       for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+    //         if (i == 0) {
+    //          // minNo-=1;
+    //         }
+    //         if (this.selectedSummaryCheckBoxHtmlDataList[i].tableName == tableName[k]) {
+    //           minNo+=1;
+    //         let ab = this.selectedSummaryCheckBoxHtmlDataList.some((o)=> Number(o.Sequence) == minNo && o.tableName ==   tableName[k]);
+    //           console.log('check this ..', ' ', minNo, '  ', ab , ' this.selectedSummaryCheckBoxHtmlDataList',this.selectedSummaryCheckBoxHtmlDataList[i].Sequence);
+    //           // if some condition will be false it will return false; means Sequence does not found
+    //           if (ab == false) {
+    //             this.errorInSequence = true;
+    //             this.alertService.sweetalertError('You have added wrong sequence at table ' + tableName[k] + 'Sequence is ' + 'wrong '+this.selectedSummaryCheckBoxHtmlDataList[i].Sequence + 'tabName is '+this.selectedSummaryCheckBoxHtmlDataList[i].tab+'minNo '+minNo);
+
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+
+    // }
+    console.log(this.selectedSummaryCheckBoxHtmlDataList);
+    return this.errorInSequence;
+  }
+
+
+
+  isSequenceAreProperlyAllocatedTableNameWise1(): boolean {
+
+    for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+      this.selectedSummaryCheckBoxHtmlDataList.sort((a, b) => a.Sequence - b.Sequence);
+    }
     console.log(this.selectedSummaryCheckBoxHtmlDataList);
     const tableName = [...new Set(this.selectedSummaryCheckBoxHtmlDataList.map((item) => item.tableName))];
     console.log(tableName);
 
-    for (let k = 0; k < tableName.length; k++) {
-      let greaterNo = 0
-      let flag = false;
-      for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
-        if (this.selectedSummaryCheckBoxHtmlDataList[i].tableName == tableName[k]) {
-          if (flag == false) {
-            greaterNo = Number(this.selectedSummaryCheckBoxHtmlDataList[i].Sequence);
-            flag = true;
-          }
-          if (flag == true) {
-            let a = this.selectedSummaryCheckBoxHtmlDataList[i].Sequence.includes(greaterNo++);
-            console.log(a);
-            if (a == false) {
-              this.errorInSequence = true;
-              this.alertService.sweetalertError('You have added wrong sequence at table' + tableName[k] + 'Sequence is ' + this.selectedSummaryCheckBoxHtmlDataList[i].Sequence);
 
+    let a: boolean;
+    for (let k = 0; k < tableName.length; k++) {
+      let minNo = 0
+      const flag = false;
+      for (let b = 0; b < this.selectedSummaryCheckBoxHtmlDataList.length; b++) {
+        if (minNo > Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence && this.selectedSummaryCheckBoxHtmlDataList[b].tableName == tableName[k])) {
+          minNo = Number(this.selectedSummaryCheckBoxHtmlDataList[b].Sequence);
+        }
+        if (b == this.selectedSummaryCheckBoxHtmlDataList.length - 1) {
+          for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+            if (i == 0) {
+              // minNo-=1;
+            }
+            if (this.selectedSummaryCheckBoxHtmlDataList[i].tableName == tableName[k]) {
+              minNo += 1;
+              const ab = this.selectedSummaryCheckBoxHtmlDataList.some((o) => Number(o.Sequence) == minNo && o.tableName == tableName[k]);
+              console.log('check this ..', ' ', minNo, '  ', ab, ' this.selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList[i].Sequence);
+              // if some condition will be false it will return false; means Sequence does not found
+              if (ab == false) {
+                this.errorInSequence = true;
+                this.alertService.sweetalertError('You have added wrong sequence at table ' + tableName[k] + 'Sequence is ' + 'wrong ' + this.selectedSummaryCheckBoxHtmlDataList[i].Sequence + 'tabName is ' + this.selectedSummaryCheckBoxHtmlDataList[i].tab + 'minNo ' + minNo);
+
+              }
             }
           }
-
-
-
-          // console.log( Number(this.selectedSummaryCheckBoxHtmlDataList[i].Sequence),' ',tableName[k] );
-
-
         }
       }
-      return this.errorInSequence;
     }
     console.log(this.selectedSummaryCheckBoxHtmlDataList);
-
-
-    // const x =this.selectedSummaryCheckBoxHtmlDataList.findIndex(function (el) {
-    //   return el.tableName == tableName[i];
-
-
-
-
-
-
+    return this.errorInSequence;
   }
 
   removeOrdersFromFormArray(index: any) {
     (<FormArray>this.form.get('orders')).removeAt(index);
   }
-  editMaster(templateMasterId: number) {
+  editMaster(templateMasterId: number, isView1?: Boolean) {
+    console.log('isView ', isView1);
+    this.isViewFieldNameArrayList = false;
+    this.isViewMode = false;
+    for (let j = 0; j < this.employeeMasterModuleList.length; j++) {
+      this.employeeMasterModuleList[j].group = 0;
+      this.employeeMasterModuleList[j].assignValue = '';
+      this.employeeMasterModuleList[j].checked = false;
+      this.employeeMasterModuleList[j].disabled = false;
+    }
+    this.tempMergeSelectedArrayList = [];
+    this.fieldNameArrayList = [];
+    for (let k = 0; k < this.ordersData.length; k++) {
+      this.ordersData[k].counter = 0;
+      this.ordersData[k].disable = false;
+      this.ordersData[k].checked = false;
+      this.ordersData[k].hide = false;
+      this.ordersData[k].group = 0;
+    }
     this.sheetDataArray = [];
     this.isEditMode = true;
-    console.log(templateMasterId);
-
     this.templateMasterId = templateMasterId;
     this.uploadeExcelHomeService.getExcelTemplateById(templateMasterId).subscribe((res) => {
       console.log(res);
       this.masterOfExcelTemplate = res.data.results;
-      let i = 1;
-      res.data.results.forEach((element) => {
-        console.log('element is ', element);
-        //  const tempObj1 = {
-        //   templateMasterId: element.templateMasterId,
-        //   templateName: element.templateName,
-        //   module: element.module,
-        //   description: element.description,
-        //   companyId: element.companyId,
-        //   remark: element.remark,
+      const i = 1;
+      res.data.results.forEach((element, index) => {
+        console.log('element is ', element, 'index', index);
+        if (index == 0) {
+          const tempObj1 = {
+            templateMasterId: element.templateMasterId,
+            templateName: element.templateName,
+            module: element.module,
+            description: element.description,
+            companyId: element.companyId,
+            remark: element.remark,
+          }
+          this.form.patchValue({
+            templateName: element.templateName,
+            remark: element.remark,
+            description: element.description,
+          });
+        }
 
-        // }
         for (let i = 0; i < element.sheetData.length; i++) {
           console.log(element.sheetData[i]);
           const tempObj = {
@@ -1907,21 +2126,7 @@ export class UploadexcelhomeComponent implements OnInit {
             mergeTabName: element.sheetData[i].mergeTabName,
           }
           this.sheetDataArray.push(tempObj);
-
-
         }
-        // const obj = {
-        //   SrNo: i++,
-        //   companyId: element.companyId,
-        //   createdBy: element.createdBy,
-        //   excelFile: element.excelFile,
-        //   isActive: element.isActive,
-        //   remark: element.remark,
-        //   templateDescription: element.templateDescription,
-        //   templateMasterId: element.templateMasterId,
-        //   templateName: element.templateName,
-        // };
-
       });
     }, (error) => {
       console.log(error);
@@ -1931,19 +2136,31 @@ export class UploadexcelhomeComponent implements OnInit {
         //if(i ==0){
         // don't do anything
         // } else {
-        let tableName = this.sheetDataArray[i].tableName;
-        let tabName = this.sheetDataArray[i].tabName;;
-        var nameArr = this.sheetDataArray[i].fields.split(',');
-        console.log('nameArr',nameArr);
-        for (let k = 0; k < nameArr.length; k++) {
-          this.findIndexByCalling(tabName, tableName, nameArr[k]);
+        const tableName = this.sheetDataArray[i].tableName;
+        const ind = this.ordersData.findIndex(o => o.name == this.sheetDataArray[i].tabName);
+        this.ordersData[ind].checked = true;
+        this.leftSideMenuCheckBoxChnanged(true, this.sheetDataArray[i].tabName);
+        const tabName = this.sheetDataArray[i].tabName;
 
+
+        var nameArr = this.sheetDataArray[i].fields.split(',');
+
+        const sequence = this.sheetDataArray[i].sequence.toString().split(",").map(Number)
+        this.mergeAndUnmergeAfterClickedOnEditResponse(this.sheetDataArray[i].tabName, this.sheetDataArray[i].mergeTabName);
+
+
+        let flagForEmployeeCode = false;
+        for (let k = 0; k < nameArr.length; k++) {
+
+
+          if (flagForEmployeeCode == false && nameArr[k] == 'Employee Code') {
+            this.findIndexByCalling(tabName, tableName, nameArr[k], sequence[k]);
+            flagForEmployeeCode = true;
+          } else {
+            this.findIndexByCalling(tabName, tableName, nameArr[k], sequence[k]);
+          }
         }
       }
-
-
-
-
       // assign below templatemasterid
       console.log('sheetDataArray', this.sheetDataArray);
     });
@@ -1954,19 +2171,20 @@ export class UploadexcelhomeComponent implements OnInit {
 
 
 
-    for (let i = 0; i < this.sheetDataArray.length; i++) {
-      //if(i ==0){
-      // don't do anything
-      // } else {
-      let tableName = this.sheetDataArray[i].tableName;
-      let tabName = this.sheetDataArray[i].tabName;
-      var nameArr = this.sheetDataArray[i].fields.split(',');
-      console.log('nameArr',nameArr);
-      for (let k = 0; k < nameArr.length; k++) {
-        this.findIndexByCalling(tabName, tableName, nameArr[k]);
+    // for (let i = 0; i < this.sheetDataArray.length; i++) {
+    //   //if(i ==0){
+    //   // don't do anything
+    //   // } else {
+    //   let tableName = this.sheetDataArray[i].tableName;
+    //   let tabName = this.sheetDataArray[i].tabName;
+    //   var nameArr = this.sheetDataArray[i].fields.split(',');
+    //   console.log('nameArr', nameArr);
+    //   for (let k = 0; k < nameArr.length; k++) {
+    //     this.findIndexByCalling(tabName, tableName, nameArr[k]);
 
-      }
-    }
+    //   }
+    // }
+
 
 
 
@@ -1974,41 +2192,132 @@ export class UploadexcelhomeComponent implements OnInit {
     // assign below templatemasterid
     console.log('sheetDataArray', this.sheetDataArray);
 
+
+    // if(isView == true){
+
+    if (isView1 !== undefined) {
+      if (isView1 == true) {
+        this.isViewFieldNameArrayList = true;
+        this.forReadOnlyAllCheckBox();
+      }
+    }
   }
-  findIndexByCalling(tabName: string, tableName: string, fieldName: string) {
+  findIndexByCalling(tabName: string, tableName: string, fieldName: string, sequence: string) {
+
     console.log('tab name is  ', tabName);
     console.log('table name is  ', tableName);
     console.log('fieldName is  ', fieldName);
     console.log('fieldNameArrayList', this.fieldNameArrayList);
-    let index = this.fieldNameArrayList.findIndex(o => o.fieldName == fieldName &&  o.tab==tabName && o.tableName == tableName);
-
-   // this.fieldNameArrayList.push({ Sequence: 0, tab: element.sheetName, tableName: element.fields[i].tableName, fieldName: element.fields[i].customLabelName, isMandatory: element.fields[i].isMandatory, isdropdownValue: element.fields[i].isdropdownValue, isChecked: false, merged: 0, counter: globalCounter++ });
-
-
-    console.log(index);
-    console.log( this.fieldNameArrayList[index]);
-
-
-
-    console.log('index found', index);
-    if(index !== -1){
-      this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[index]);
+    const index = this.fieldNameArrayList.findIndex(o => o.fieldName == fieldName && o.tab == tabName && o.tableName == tableName)
+    if (index !== -1) {
+      this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[index], sequence);
     }
-
-
-
-    console.log(this.selectedSummaryCheckBoxHtmlDataList);
-
   }
   onChangePreviewDropDown(evt: string) {
     this.previewTableData = [];
-
     for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
       if (this.selectedSummaryCheckBoxHtmlDataList[i].tab == this.form.get('filterTemplateDropDown').value) {
         this.previewTableData.push(this.selectedSummaryCheckBoxHtmlDataList[i]);
       }
     }
+  }
+  leftSideMenuCounter(tabName: string) {
+    console.log('ss', this.ordersData);
+    const index = this.ordersData.findIndex(o => o.name == tabName);
+    console.log('index is ', index, '', this.selectedSummaryCheckBoxHtmlDataList);
+    this.ordersData[index].counter = this.selectedSummaryCheckBoxHtmlDataList.filter(o => o.tab === tabName && o.isChecked == true).length;
+    console.log('ss', this.ordersData);
+  }
+  mergeAndUnmergeAfterClickedOnEditResponse(tabName: string, mergedWith: string) {
+    let largestElement: number = 0;
 
+    // it will check that it will already merged
+    if (mergedWith.length !== 0) {
+      const mergedIndex = this.employeeMasterModuleList.findIndex(o => o.assignValue == mergedWith);
+      console.log('merged index is ', mergedIndex);
+
+      if (mergedIndex == -1) {
+        for (let k = 0; k < this.employeeMasterModuleList.length; k++) {
+          if (largestElement < Number(this.employeeMasterModuleList[k].group)) {
+            largestElement = Number(this.employeeMasterModuleList[k].group);
+          }
+        }
+        largestElement = largestElement + 1;
+        console.log('largest ', largestElement);
+      } else {
+        //if (this.tempMergeSelectedArrayList[0].checked == true) {
+        console.log('found merged index', mergedIndex);
+        largestElement = this.employeeMasterModuleList[mergedIndex].group;
+      }
+      console.log('largest element in a group is ', largestElement);
+      const ind = this.employeeMasterModuleList.findIndex(o => o.title == tabName);
+      if (ind == -1) {
+        console.log('index not found');
+      } else {
+        this.employeeMasterModuleList[ind].group = largestElement;
+        this.employeeMasterModuleList[ind].assignValue = mergedWith;
+        this.employeeMasterModuleList[ind].disabled = false;
+        this.employeeMasterModuleList[ind].checked = true;
+        const idx = this.ordersData.findIndex(o => o.name == tabName);
+        this.ordersData[idx].disable = true;
+      }
+      console.log('this.employeeMasterModuleList', this.employeeMasterModuleList);
+    }
+  }
+  assignMergeFieldToAllSelectedCheckBoxHtmlDataList() {
+    const assignValueArray = [...new Set(this.employeeMasterModuleList.map((item) => item.assignValue))];
+    const removeBlankspace = assignValueArray.findIndex(o => o == '');
+    const removeZero = assignValueArray.findIndex(o => o == 0);
+    assignValueArray.splice(removeZero, 1);
+    assignValueArray.splice(removeBlankspace, 1);
+
+    console.log('assign value array', assignValueArray);
+    console.log('emp module ', this.employeeMasterModuleList);
+
+    for (let t = 0; t < assignValueArray.length; t++) {
+      if (assignValueArray[t].length !== 0) {
+        for (let e = 0; e < this.employeeMasterModuleList.length; e++) {
+          if (this.employeeMasterModuleList[e].assignValue == assignValueArray[t]) {
+            for (let p = 0; p < this.selectedSummaryCheckBoxHtmlDataList.length; p++) {
+              if (this.employeeMasterModuleList[e].title == this.selectedSummaryCheckBoxHtmlDataList[p].tab) {
+                this.selectedSummaryCheckBoxHtmlDataList[p].merged = assignValueArray[t];
+              }
+            }
+          }
+        }
+      }
+    }
+    console.log('this.selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
+  }
+  viewTemplate(templateMasterId: number) {
+    this.editMaster(templateMasterId, true);
+  }
+  forReadOnlyAllCheckBox() {
+    for (let i = 0; i < this.sequenceArray.length; i++) {
+      this.sequenceArray[i].disable = true;
+    }
+    for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+      this.fieldNameArrayList[i].isMandatory = 1;
+    }
+    for (let i = 0; i < this.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+      this.selectedSummaryCheckBoxHtmlDataList[i].isMandatory = 1;
+    }
+
+    for (let j = 0; j < this.employeeMasterModuleList.length; j++) {
+      this.employeeMasterModuleList[j].disabled = true;
+    }
+    this.tempMergeSelectedArrayList = [];
+    this.fieldNameArrayList = [];
+    console.log('orders daa', this.ordersData);
+    for (let k = 0; k < this.ordersData.length; k++) {
+      if (this.ordersData[k].checked == true) {
+        this.ordersData[k].disable = true;
+      } else {
+        this.ordersData[k].disable = true;
+      }
+    }
+    // this.isViewFieldNameArrayList = true;
+    this.isViewMode = true;
   }
 }
 
