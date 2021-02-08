@@ -14,6 +14,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 
 
@@ -26,7 +27,7 @@ export class IdentityInformationComponent implements OnInit {
 
   IdentityInfoForm: FormGroup;
   IdentityInformation = new IdentityInformation();
-  VisaInformation = new VisaInformation('', '', '', '', '', '')
+  VisaInformation = new VisaInformation('', '', '', '', '', '', '')
   countryList: Array<any> = [];
   visaTypeList = 'Business,Tourist,Work Permit'.split(',');
   data: any[];
@@ -74,6 +75,8 @@ export class IdentityInformationComponent implements OnInit {
   public today = new Date();
   editVisaDialogFlag: any;
   visaItem: any;
+  saveNextBoolean: boolean = false
+
 
   constructor(private formBuilder: FormBuilder,
     public datepipe: DatePipe,
@@ -81,9 +84,10 @@ export class IdentityInformationComponent implements OnInit {
     private EventEmitterService: EventEmitterService,
     private SharedInformationService: SharedInformationService,
     private modalService: BsModalService,
+    private router: Router,
     public dialog: MatDialog,
     @Optional() @Inject(MAT_DIALOG_DATA) public VisaDialog: any,) {
-      
+
     if (VisaDialog?.VisaDialog) {
       this.editVisaDialogFlag = VisaDialog.VisaDialog;
       if (this.editVisaDialogFlag == 'editVisaDialog') {
@@ -164,19 +168,32 @@ export class IdentityInformationComponent implements OnInit {
     //     this.VisaInformation.countryName = '';
     //   }
     // })
-    this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(res => {
-      
-     
+    this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(element => {
+
+
       // (<wjcCore.CollectionView>this.flex.collectionView).remove(this.item);
-      this.deleteInternationalWorkerID.push(this.item.employeeVisaDetailId);
+      this.deleteInternationalWorkerID.push(element.employeeVisaDetailId);
       this.IdentityInfoForm.markAsTouched();
+      this.data.find(res => {
+
+        const index = this.data.findIndex(x => res.employeeVisaDetailId == element.employeeVisaDetailId);
+        if (res.employeeVisaDetailId == element.employeeVisaDetailId) {
+          this.data.splice(index, 1);
+        }
+      })
       // this.VisaInformation.countryName = '';
     })
   }
 
+  IdentitySaveNextSubmit(IdentityInformation) {
+    this.saveNextBoolean = true;
+
+    this.IdentityInfoFormSubmit(IdentityInformation);
+  }
+
 
   IdentityInfoFormSubmit(IdentityInformation) {
-    
+
     IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate =
       this.datepipe.transform(IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate, "dd-MMM-yyyy");
 
@@ -216,11 +233,16 @@ export class IdentityInformationComponent implements OnInit {
       if (this.deleteInternationalWorkerID.length > 0) {
         this.deleteInternationalWorkerID.forEach(id => {
           this.IdentityInformationService.deleteGridRow(this.employeeMasterId, id).subscribe(res => {
-            if (res.data.results[0]) {
-              this.data = res.data.results[0];
-            }
+            this.getIdentityInfoData();
+            // if (res.data.results[0]) {
+            //   this.data = res.data.results[0];
+            // }
           })
         })
+      }
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/compliance-information/compliance-summary']);
       }
     }, (error: any) => {
       this.sweetalertError(error["error"]["status"]["messsage"]);
@@ -229,7 +251,7 @@ export class IdentityInformationComponent implements OnInit {
   }
   getIdentityInfoData() {
     this.IdentityInformationService.getIdentityInfoData().subscribe((res: any) => {
-      
+
       this.newData = res;
       this.dataBinding(res);
     })
@@ -246,26 +268,34 @@ export class IdentityInformationComponent implements OnInit {
       this.data = res.data.results[0].employeeVisaDetailResponseDTOList;
     }
   }
-  
+
   editVisaInfo(visa) {
-    
+
+    this.VisaInformation.countryName = visa.countryName;
+    this.VisaInformation.visaType = visa.visaType;
+    this.VisaInformation.validTill = visa.validTill;
+    this.VisaInformation.employeeVisaDetailId = visa.employeeVisaDetailId;
+
     // this.modalRef = this.modalService.show(template);
-    const dialogRef = this.dialog.open(IdentityInformationComponent, {
-      disableClose: true,
-      width: '100%', height: '92%', maxWidth: '83vw',
-      data: {
-        VisaDialog: 'editVisaDialog', visa: visa,
-        countryList: this.countryList
-      }
-    });
+    // const dialogRef = this.dialog.open(IdentityInformationComponent, {
+    //   disableClose: true,
+    //   width: '100%', height: '92%', maxWidth: '83vw',
+    //   data: {
+    //     VisaDialog: 'editVisaDialog', visa: visa,
+    //     countryList: this.countryList
+    //   }
+    // });
   }
 
-  removeVisaItem(visa){
+  removeVisaItem(visa) {
     this.visaItem = visa;
     // this.modalRef = this.modalService.show(template);
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       width: '664px', height: '241px',
-      data: { pageValue: 'IdentityForm', info: 'Do you really want to delete?' }
+      data: {
+        pageValue: 'IdentityForm', info: 'Do you really want to delete?',
+        visa: visa
+      }
     });
   }
 
@@ -273,39 +303,56 @@ export class IdentityInformationComponent implements OnInit {
 
   pushToGrid() {
     let data = [];
-    
-    this.tableCountries = []; this.typeOfVisa = []; this.validTill = [];
-    this.tableCountries.push(this.VisaInformation.countryName);
-    this.typeOfVisa.push(this.VisaInformation.visaType);
-    this.validTill.push(this.VisaInformation.validTill);
 
-    for (let i = 0; i < this.tableCountries.length; i++) {
-      data.push({
-        employeeMasterId: this.employeeMasterId,
-        id: i,
-        countryName: this.tableCountries[i],
-        visaType: this.typeOfVisa[i],
-        validTill: this.validTill[i],
-      });
-    }
-    this.VisaInformation.validTill = '';
-    this.VisaInformation.countryName = '';
-    this.VisaInformation.visaType = '';
+    if (!this.VisaInformation.employeeVisaDetailId) {
+      this.tableCountries = []; this.typeOfVisa = []; this.validTill = [];
+      this.tableCountries.push(this.VisaInformation.countryName);
+      this.typeOfVisa.push(this.VisaInformation.visaType);
+      this.validTill.push(this.VisaInformation.validTill);
 
-    if (this.data) {
-      let newData = data.concat(this.data);
-      this.data = newData;
+      for (let i = 0; i < this.tableCountries.length; i++) {
+        data.push({
+          employeeMasterId: this.employeeMasterId,
+          id: i,
+          countryName: this.tableCountries[i],
+          visaType: this.typeOfVisa[i],
+          validTill: this.validTill[i],
+        });
+      }
+      this.VisaInformation.validTill = '';
+      this.VisaInformation.countryName = '';
+      this.VisaInformation.visaType = '';
 
-      let temp = this.data.forEach(data => {
-        return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
-      })
+      if (this.data) {
+        let newData = data.concat(this.data);
+        this.data = newData;
 
+        let temp = this.data.forEach(data => {
+          return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
+        })
+
+      } else {
+        data.forEach(data => {
+          return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
+        })
+        this.data = data;
+      }
     } else {
-      data.forEach(data => {
-        return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
+      this.data.find(res => {
+
+        if (res.employeeVisaDetailId == this.VisaInformation.employeeVisaDetailId) {
+          res.countryName = this.VisaInformation.countryName;
+          res.visaType = this.VisaInformation.visaType;
+          res.validTill = this.VisaInformation.validTill;
+          res.employeeVisaDetailId = this.VisaInformation.employeeVisaDetailId;
+        }
       })
-      this.data = data;
+      this.VisaInformation.validTill = '';
+      this.VisaInformation.countryName = '';
+      this.VisaInformation.visaType = '';
+      this.VisaInformation.employeeVisaDetailId = '';
     }
+
   }
 
   // private _updateCurrentInfo() {
@@ -315,7 +362,8 @@ export class IdentityInformationComponent implements OnInit {
   // }
 
   updateAadhaarName(aadhaar) {
-    if (this.IdentityInfoForm.controls.aadhaarNo.valid == true) {
+    
+    if (this.IdentityInfoForm.controls.aadhaarNo.valid == true && aadhaar) {
       this.IdentityInformation.employeeMasterRequestDTO.nameAsPerAADHAAR = this.fullName;
     }
     if (aadhaar.length == 0 || this.IdentityInfoForm.controls.aadhaarNo.valid == false) {
@@ -406,5 +454,15 @@ export class IdentityInformationComponent implements OnInit {
       timer: 15000,
       timerProgressBar: true,
     })
+  }
+
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

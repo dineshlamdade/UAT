@@ -46,10 +46,10 @@
   }
 
   .educationtabs {
-    grid-column-start: 1;
-    grid-row-start: 2;
-    grid-column-end: span 4;
-    padding: 0px 0px;
+    grid-column-start: 1 !important;
+    grid-row-start: 2 !important;
+    grid-column-end: span 4 !important;
+    padding: 0px 0px !important;
     /* display: flex; */
     align-items: center;
   }

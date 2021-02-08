@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { DatePipe } from '@angular/common';
 
 
 export interface NominationElement {
@@ -54,6 +55,7 @@ export class NominationDetailsComponent implements OnInit {
   employeeMasterId: number;
   ELEMENT_DATA: []
   FamilyMemberList: Array<any> = [];
+  DocumentMemberList: Array<any> = [];
   ESICDataSource: MatTableDataSource<any>;
   ESICMemberList: Array<any> = [];
   public FamilyMember = new NominationElementDTO('', '', '', '', '', '', '', '', '');
@@ -103,13 +105,16 @@ export class NominationDetailsComponent implements OnInit {
     private BankInformationService: BankInformationService,
     private EventEmitterService: EventEmitterService,
     private sanitizer: DomSanitizer,
-    private CommonDataService: SharedInformationService) { }
+    private CommonDataService: SharedInformationService,
+    public datepipe: DatePipe,) { }
 
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
     const data = 'some text';
     const blob = new Blob([data], { type: 'application/octet-stream' });
+
+    this.getNomination();
 
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
     this.FamilyInformationService.getAllESICLocation().subscribe(res => {
@@ -133,43 +138,76 @@ export class NominationDetailsComponent implements OnInit {
 
 
 
-    this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
 
+    // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
+    //   
+    //   res.isMemberActive == 'isMemberActive';
+    //   this.dataSource.data.forEach(element => {
+
+    //     if (res.isMemberActive == element.IsActive) {
+    //       element.pfPercentage = 0;
+    //       element.epsPercentage = 0;
+    //       element.gratuityPercentage = 0;
+    //       element.salaryPercentage = 0;
+    //       element.superAnnuationPercentage = 0;
+    //       element.lifeInsurancePercentage = 0;
+    //       element.esicPercentage = 0;
+    //       element.personalAccidentInsurancePercentage = 0;
+    //       element.mediclaimInsurancePercentage = 0;
+    //       element.IsActive = 0;
+    //     }
+    //   })
+    // })
+  }
+
+  getNomination() {
+    this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
+      
       // if (!this.dataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-        const obj = {
-          'familyMemberInfoId': element.familyMemberInfoId,
-          'familyMemberName': element.familyMemberName,
-          'isActive': element.status,
-          'pfPercentage': 0,
-          'epsPercentage': 0,
-          'gratuityPercentage': 0,
-          'salaryPercentage': 0,
-          'superAnnuationPercentage': 0,
-          'lifeInsurancePercentage': 0,
-          'esicPercentage': 0,
-          'personalAccidentInsurancePercentage': 0,
-          'mediclaimInsurancePercentage': 0
+        if (element.status == 1) {
+          const obj = {
+            'familyMemberInfoId': element.familyMemberInfoId,
+            'familyMemberName': element.familyMemberName,
+            'isActive': element.status,
+            'pfPercentage': 0,
+            'epsPercentage': 0,
+            'gratuityPercentage': 0,
+            'salaryPercentage': 0,
+            'superAnnuationPercentage': 0,
+            'lifeInsurancePercentage': 0,
+            'esicPercentage': 0,
+            'personalAccidentInsurancePercentage': 0,
+            'mediclaimInsurancePercentage': 0
+          }
+          this.FamilyMemberList.push(obj);
         }
-
-
-        this.FamilyMemberList.push(obj);
 
         // const TABLE_DATA: NominationElement[] = this.FamilyMemberList;
         // this.dataSource = new MatTableDataSource(TABLE_DATA);
       })
       // }
       this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
-
+        
         this.AllNominationList = res.data.results[0].familyNominationResponseDTO;
         this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
-        // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
-        // this.dataSource = new MatTableDataSource(TABLE_DATA);
+    
+        this.FamilyMemberList.forEach((element1) => {
+          this.AllNominationList.some(res => {
+            if (element1.familyMemberInfoId == res.familyMemberInfoId) {
+              res.familyMemberName = element1.familyMemberName;
+            }
+          })
+        })
+        
         this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
         this.lastUpdatedDate = new Date(Math.max.apply(null, this.AllNominationList.map(function (e) {
           return new Date(e.lastModifiedDateTime);
         })));
-
+        this.lastUpdatedDate = this.datepipe.transform(this.lastUpdatedDate, "dd-MMM-yyyy");
+        if(this.lastUpdatedDate == '01-Jan-1970'){
+          this.lastUpdatedDate = ''; 
+        }
         const newNomination = [];
         this.FamilyMemberList.filter(element => {
           newNomination.push(element.familyMemberInfoId);
@@ -248,6 +286,9 @@ export class NominationDetailsComponent implements OnInit {
           // return this.dataSource = new MatTableDataSource(TABLE_DATA);
           return this.nominationDataSource = this.AllNominationList;
         }
+      }, (error: any) => {
+        // this.nominationDataSource = this.FamilyMemberList;
+        // this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
 
       if (this.extractedInfoID.length == 0 && this.AllNominationList.length == 0) {
@@ -277,19 +318,19 @@ export class NominationDetailsComponent implements OnInit {
       }
       // if (!this.ESICDataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-        const obj1 = {
-          'familyMemberInfoId': element.familyMemberInfoId,
-          'familyMemberName': element.familyMemberName,
-          // 'isActive': element.status,
-          'state': '',
-          'city': '',
-          'dispensaryName': '',
-          'dispensaryAddress': ''
+        
+        if (element.status == 1) {
+          const obj1 = {
+            'familyMemberInfoId': element.familyMemberInfoId,
+            'familyMemberName': element.familyMemberName,
+            // 'isActive': element.status,
+            'state': '',
+            'city': '',
+            'dispensaryName': '',
+            'dispensaryAddress': ''
+          }
+          this.ESICMemberList.push(obj1);
         }
-
-
-        this.ESICMemberList.push(obj1);
-
         // const TABLE_DATA1: ESICElement[] = this.ESICMemberList;
         // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
       })
@@ -303,8 +344,6 @@ export class NominationDetailsComponent implements OnInit {
           
           this.AllESICList = res.data.results[0];
           this.getStates();
-          // const TABLE_DATA1: ESICElement[] = res.data.results[0];
-          // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
 
           const newESIC = [];
           this.ESICMemberList.filter(element => {
@@ -323,21 +362,29 @@ export class NominationDetailsComponent implements OnInit {
                 if (element == element1.familyMemberInfoId) {
                   this.AllESICList.push(element1);
                   // const TABLE_DATA1: ESICElement[] = this.AllESICList;
-                  this.AllESICList.forEach(res => {
-                    res.stateList = this.states;
-                    res.familyMemberName = element1.familyMemberName;
-                  })
+                  // this.AllESICList.forEach(res => {
+                  //   res.stateList = this.states;
+                  //   res.familyMemberName = element1.familyMemberName;
+                  // })
                   return this.esicDataSource = this.AllESICList;
                   // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
                 }
               });
+            })
+            this.ESICMemberList.forEach((element1) => {
+              this.AllESICList.some(res => {
+                res.stateList = this.states;
+                if (element1.familyMemberInfoId == res.familyMemberInfoId) {
+                  res.familyMemberName = element1.familyMemberName;
+                }
+              })
             })
           } else {
             const TABLE_DATA1: ESICElement[] = this.AllESICList;
             this.ESICMemberList.forEach((element1) => {
               this.AllESICList.some(res => {
                 res.stateList = this.states;
-                if(element1.familyMemberInfoId == res.familyMemberInfoId){
+                if (element1.familyMemberInfoId == res.familyMemberInfoId) {
                   res.familyMemberName = element1.familyMemberName;
                 }
               })
@@ -359,43 +406,28 @@ export class NominationDetailsComponent implements OnInit {
 
       // }
     })
-
-    // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
-    //   
-    //   res.isMemberActive == 'isMemberActive';
-    //   this.dataSource.data.forEach(element => {
-
-    //     if (res.isMemberActive == element.IsActive) {
-    //       element.pfPercentage = 0;
-    //       element.epsPercentage = 0;
-    //       element.gratuityPercentage = 0;
-    //       element.salaryPercentage = 0;
-    //       element.superAnnuationPercentage = 0;
-    //       element.lifeInsurancePercentage = 0;
-    //       element.esicPercentage = 0;
-    //       element.personalAccidentInsurancePercentage = 0;
-    //       element.mediclaimInsurancePercentage = 0;
-    //       element.IsActive = 0;
-    //     }
-    //   })
-    // })
   }
+
+
   filterCity(state, ESIC) {
-    
+
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
-      if (state == city.state) {
+      if (ESIC.state == city.state) {
         cities.push(city.district);
       }
     })
     ESIC.cities = cities.filter(this.onlyUnique);
+    ESIC.city = '';
+    ESIC.dispensaryName = '';
+    ESIC.dispensaryAddress = '';
     // if(state){
     //   ESIC.city = '';
     // }
   }
 
   filterDispensaryName(city, ESIC) {
-    
+
     let dispensaryNames = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(dispensaryName => {
       if (city == dispensaryName.district) {
@@ -428,7 +460,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   getDispensaryAddress(nomination) {
-    
+
     let dispensary1 = this.ESICLocationLIST['esicdispensaryDB'].filter(dispensary => {
       if (nomination.dispensaryName == dispensary.dispensary) {
         return dispensary;
@@ -458,60 +490,72 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.pfPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalPF() {
-  //   return this.dataSource.data.map(t => t.pfPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalPF() {
+    return 100 - this.getTotalPF();
+  }
   getTotalepsPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.epsPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalepsPercentage() {
-  //   return this.dataSource.data.map(t => t.epsPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalepsPercentage() {
+    return 100 - this.getTotalepsPercentage();
+  }
   getTotalsalaryPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.salaryPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalsalaryPercentage() {
-  //   return this.dataSource.data.map(t => t.salaryPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalsalaryPercentage() {
+    return 100 - this.getTotalsalaryPercentage();
+  }
   getTotalesicPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.esicPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalesicPercentage() {
-  //   return this.dataSource.data.map(t => t.esicPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalesicPercentage() {
+    return 100 - this.getTotalesicPercentage();
+  }
   getTotalgratuityPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.gratuityPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  // getRemainingTotalgratuityPercentage() {
-  //   return this.dataSource.data.map(t => t.gratuityPercentage).reduce((acc, value) => 100 - (acc + value));
-  // }
+  getRemainingTotalgratuityPercentage() {
+    return 100 - this.getTotalgratuityPercentage();
+  }
   getTotalsupeannuationPercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.superAnnuationPercentage).reduce((acc, value) => acc + value, 0);
     }
+  }
+  getRemainingSupeAnnuationPercentage() {
+    return 100 - this.getTotalsupeannuationPercentage();
   }
   getTotallifeInsurancePercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.lifeInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
+  getRemainingLifeInsurancePercentage() {
+    return 100 - this.getTotallifeInsurancePercentage();
+  }
   getTotalMediclaimInsurancePercentage() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.mediclaimInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
+  getRemainingMediclaimInsurancePercentage() {
+    return 100 - this.getTotalMediclaimInsurancePercentage();
+  }
   getTotalpersonalAccidentInsurance() {
     if (this.nominationDataSource) {
       return this.nominationDataSource.map(t => t.personalAccidentInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
+  }
+  getRemainingpersonalAccidentInsurance() {
+    return 100 - this.getTotalpersonalAccidentInsurance();
   }
   saveNominationsDetails(nominationDataSource, esicDataSource) {
 
@@ -594,7 +638,7 @@ export class NominationDetailsComponent implements OnInit {
       this.SaveBoolean = true;
     }
 
-    
+
     if (this.SaveBoolean == true) {
 
       this.NominationInformation.familyNominationRequestDTO = nominationDataSource;
@@ -605,6 +649,7 @@ export class NominationDetailsComponent implements OnInit {
       })
       this.NominationInformation.familyNominationRequestDTO.forEach(data => {
         delete data.disable;
+        delete data.familyMemberInfo;
       })
       this.NominationInformation.familyESICDetailRequestDTO.forEach(data => {
         delete data.dispensaryList;
@@ -623,12 +668,16 @@ export class NominationDetailsComponent implements OnInit {
         this.PersonalAccInsurancecount = 0;
         this.MediclaimInsurancecount = 0;
 
-        // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
-        // this.dataSource = new MatTableDataSource(TABLE_DATA);
-        this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
-        // const TABLE_DATA1: ESICElement[] = res.data.results[0].familyESICDetailResponseDTO;
-        // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
-        this.esicDataSource = res.data.results[0].familyESICDetailResponseDTO;
+        // this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
+        this.getNomination();
+
+        // let cities = [];
+        // this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
+        //   if (ESIC.state == city.state) {
+        //     cities.push(city.district);
+        //   }
+        // })
+        // ESIC.cities = cities.filter(this.onlyUnique);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
       }, (error: any) => {
@@ -715,4 +764,17 @@ export class NominationDetailsComponent implements OnInit {
     this.FilteredDispensaryNames = filtered;
   }
 
+  resetNomination() {
+
+  }
+
+  esicPercentageValidation(esicPercentage) {
+    
+    if (esicPercentage == 0) {
+      return
+    }
+    if (esicPercentage != 100) {
+      this.CommonDataService.sweetalertError('Nomination for ESIC Should be 100%');
+    }
+  }
 }

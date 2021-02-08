@@ -131,4 +131,15 @@ export class JobInformationService {
       return res;
     }))
   }
+
+  //get All Employees From database
+  getAllEmployees() {
+
+    return this.httpClient.get(environment.baseUrl8082 + '/employee-master/all/active', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((res: any) =>{
+      return res;
+    }))
+  }
+
+  
 }

@@ -13,9 +13,20 @@ import { NationalSevingCertificateComponent } from './80C/national-seving-certif
 import { FixedDepositsComponent } from './80C/fixed-deposits/fixed-deposits.component';
 import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/tax-saving-shares-nabard.component';
 import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
+import { SeniorCitizenSavingSchemeComponent } from './80C/senior-citizen-saving-scheme/senior-citizen-saving-scheme.component';
+import { TuitionFeesComponent } from './80C/tuition-fees/tuition-fees.component';
+import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
+import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
+import { ElectricVehicleComponent } from './VI-A/electric-vehicle/electric-vehicle.component';
+import { EducationalLoanComponent } from './VI-A/educational-loan/educational-loan.component';
+import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.component';
+import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
 import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
 import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
 import { IDSATTBComponent } from './VI-A/IDSA-TTB/IDSA-TTB.component';
+import { DonationsForScientificResearchComponent } from './VI-A/donations-for-scientific-research/donations-for-scientific-research.component';
+import { GGCComponent } from './VI-A/ggc/ggc.component';
+import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.component';
 
 const routes: Routes = [
 
@@ -35,7 +46,7 @@ const routes: Routes = [
         {
           path:   '80C-TaxsavingMutualFund',
           component:     TaxsavingMutualFundComponent,
-          data: { title: ':: DelziaHR :: PensionPlan' },
+          data: { title: ':: DelziaHR :: TaxsavingMutualFund' },
         },
       {
         path:   '80C-PensionPlan',
@@ -83,29 +94,81 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: PostOfficeTermDeposit' },
       },
       {
+        path:   '80C-SeniorCitizenSavingScheme',
+        component:  SeniorCitizenSavingSchemeComponent,
+        data: { title: ':: DelziaHR :: SeniorCitizenSavingScheme' },
+      },
+      {
+        path:   '80C-TuitionFees',
+        component:  TuitionFeesComponent,
+        data: { title: ':: DelziaHR :: TuitionFees' },
+      },
+      {
+        path:   'Chapter-VI-A-PhysicallyHandicapped',
+        component:  PhysicallyHandicappedComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-PhysicallyHandicapped' },
+      },
+      {
+        path:   'Chapter-VI-A-HandicappedDependent',
+        component:  HandicappedDependentComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-HandicappedDependent{Sec.80-DD}' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOnLoanForPurchaseOfElectricVehicle',
+        component:  ElectricVehicleComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOnLoanForPurchaseOfElectricVehicle(Sec.80-EEB)' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOnEducationalLoan',
+        component:  EducationalLoanComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOnEducationalLoan{Sec.80-E}' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOn80TTA',
+        component:  InterestOnTtaComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTA{Sec.80TTA}' },
+      },
+      {
+        path:   'Chapter-VI-A-InterestOn80TTB',
+        component:  InterestOnDepositTtbComponent,
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTA{Sec.80TTB}' },
+      },
+      {
         path:   'childHostelAllowance',
         component:  ChildHostelAllowanceComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'childEducationAllowance',
+        path:   'Chapter-VI-A-childEducationAllowance',
         component:  ChildEducationAllowanceComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'interestDepositSavingAccountTTA',
+        path:   'Chapter-VI-A-interestDepositSavingAccountTTA',
         component:  InterestDepositSavingAccountComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'interestDepositSavingAccountTTB',
+        path:   'Chapter-VI-A-interestDepositSavingAccountTTB',
         component:  IDSATTBComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
+      {
+        path:   'Chapter-VI-A-DonationsForScientificResearchRuralDevelopmentScreenGGA',
+        component:  DonationsForScientificResearchComponent,
+        data: { title:  ':: DelziaHR :: DonationsForScientificResearchRuralDevelopmentScreenGGA' },
+      },
+      {
+        path:   'Chapter-VI-A-DonationsForScientificResearchGGC',
+        component:  GGCComponent,
+        data: { title:  ':: DelziaHR :: DonationsForScientificResearchGGC' },
+      },
+      {
+        path:   'Chapter-VI-A-Mediclaim80D',
+        component:  Mediclaim80DComponent,
+        data: { title:  ':: DelziaHR :: Mediclaim80D' },
+      },
     ],
-
-
-  // { path: '', pathMatch: 'full', redirectTo: '/investment' },
    },
 ];
 

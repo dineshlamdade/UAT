@@ -13,14 +13,16 @@ export class PayrollAreaInformationService {
 
   postPayrollAreaInfoForm(PayrollAreaSummaryGridData){
 
-    return this.httpClient.post(environment.baseUrl8082 + '/payroll-information', PayrollAreaSummaryGridData, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.post(environment.baseUrl8082 +
+       '/payroll-information', PayrollAreaSummaryGridData, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
   putPayrollAreaInfoForm(PayrollAreaSummaryGridData){
 
-    return this.httpClient.put(environment.baseUrl8082 + '/payroll-information/update', PayrollAreaSummaryGridData, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.put(environment.baseUrl8082 +
+      '/payroll-information/update', PayrollAreaSummaryGridData, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -28,15 +30,26 @@ export class PayrollAreaInformationService {
 
   getPayrollAreaInformation(employeeMasterId){
 
-    return this.httpClient.get(environment.baseUrl8082 + '/payroll-information/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 +
+       '/payroll-information/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((res: any) =>{
+      return res;
+    }))
+  }
+
+  getDistinctPayrollAreaInformation(employeeMasterId){
+
+    return this.httpClient.get(environment.baseUrl8082 +
+       '/payroll-information/distinct/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
   }
 
   deletePayrollAreaGridItem(deletePayrollId){
-    
-    return this.httpClient.delete(environment.baseUrl8082 + '/payroll-information/' + deletePayrollId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+
+    return this.httpClient.delete(environment.baseUrl8082 +
+      '/payroll-information/' + deletePayrollId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -53,7 +66,8 @@ export class PayrollAreaInformationService {
 
   getBankAccountDetails(employeeMasterId){
 
-    return this.httpClient.get(environment.baseUrl8082 + '/employee-bank-info/employeeMasterId/'+employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8082 +
+      '/employee-bank-info/employeeMasterId/'+employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -61,7 +75,7 @@ export class PayrollAreaInformationService {
 
   getPayrollAreaDetails(){
 
-    return this.httpClient.get(environment.baseUrl8083 + '/payrollArea-details', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    return this.httpClient.get(environment.baseUrl8084 + 'payrollArea-details', {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

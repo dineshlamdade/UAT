@@ -1,0 +1,26 @@
+<div class="card landing-card">
+    <fieldset>
+        <div class="col-12">
+            <button type="button" (click)="AddJoinee()"
+                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mr-15" tooltip="Add Joinee">
+                Add Joinee</button>
+
+            <div class="col-sm-6 col-md-8 mt-20">
+                <label class="form-label">Employee List</label>
+                <select class="form-control custom-select" placeholder="Select" [(ngModel)]="employee"
+                (change)="employeeSelection(employee)">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let emp of employeeList" [value]="emp.employeeMasterId" >
+                        {{emp.firstName}} {{emp.lastName }}
+                    </option>
+                </select>
+            </div>
+
+            <button type="button" (click)="addReJoinee(employeeItem)" [disabled]="!validRejoinee"
+            [ngClass]="{'disabled-btn-bg-green' : !validRejoinee,
+                           'btn-bg-green': validRejoinee}"
+                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mt-15" tooltip="Add Re-Joinee">
+                Add Re-Joinee</button>
+        </div>
+    </fieldset>
+</div>

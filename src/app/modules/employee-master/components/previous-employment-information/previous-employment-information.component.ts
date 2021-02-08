@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -63,13 +64,17 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   Gratuity: any;
   CTCANNUM: any;
   public today = new Date();
+  viewEmploymentInfoForm: boolean = false;
+  JoiningDate: any;
+  saveNextBoolean: boolean = false
 
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
     private PreviousEmpInformationService: PreviousEmploymentInformationService,
-    public dialog: MatDialog, private CommonDataService: SharedInformationService) {
+    public dialog: MatDialog, private CommonDataService: SharedInformationService,
+    private router: Router) {
     this.tomorrow.setDate(this.tomorrow.getDate());
   }
 
@@ -85,7 +90,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
       remark: [''],
       designation: [''],
       jobProfile: [''],
-      ctsPerAnum: [''],
+      ctsPerAnum: [{ value: null, disabled: true }],
       currency: [''],
       gratuity: [''],
       leaveEncashment: [''],
@@ -101,11 +106,12 @@ export class PreviousEmploymentInformationComponent implements OnInit {
       }, 1)
     })
 
-
+    const JoiningDate = localStorage.getItem('joiningDate');
+    this.JoiningDate = new Date(JoiningDate)
     // this.initiatePreviousEmploymentInfoForm = this.EventEmitterService.setPreviousEmploymentInfoInitiate().subscribe(res => {
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePreviousEmpForm().subscribe(res => {
-      
+
       this.deleteEmpGridRow(res);
       this.previousEmploymentInfoForm.markAsTouched();
       this.EmptyGridTrue = true;
@@ -114,7 +120,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
 
   getPreviousEmployees() {
     this.PreviousEmpInformationService.getPreviousEmpInformation(this.employeeMasterId).subscribe(res => {
-      
+
       this.previousSmmaryGridData = res.data.results[0];
       // this.pushToGrid(this.summaryGridData);
       if (this.previousSmmaryGridData.length > 0) {
@@ -123,121 +129,100 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     });
   }
 
-  previousEmploymentInfoSubmit() {
+  // previousEmploymentInfoSubmit() {
+
+  //   this.summaryGridData.forEach(data => {
+  //     data.employeeMasterId = this.employeeMasterId;
+
+  //     if (data.employeePreviousEmploymentId) {
+  //       this.PreviousEmpInformationService.putPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
+
+  //         // this.previousSmmaryGridData = res.data.results[0];
+  //         this.getPreviousEmployees();
+
+  //         // if (this.summaryGridData.length > 0) {
+  //         //   this.EmptyGridTrue = true;
+  //         // }
+  //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+
+  //       }, (error: any) => {
+  //         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+  //         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
+  //       })
+  //     } else {
+  //       this.PreviousEmpInformationService.postPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
+
+  //         // this.previousSmmaryGridData = res.data.results[0];
+  //         this.getPreviousEmployees();
+  //         this.summaryGridData = [];
+  //         if (this.previousSmmaryGridData.length > 0) {
+  //           this.EmptyGridTrue = true;
+  //         }
+  //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+
+  //       }, (error: any) => {
+  //         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+  //       })
+  //     }
+  //   })
+  // }
+  PreviousEmpSaveNextSubmit(previousEmploymentInformation) {
+    this.saveNextBoolean = true;
+
+    this.postEmploymentInfoForm(previousEmploymentInformation);
+  }
+
+
+
+  postEmploymentInfoForm(previousEmploymentInformation) {
     
-    this.summaryGridData.forEach(data => {
-      data.employeeMasterId = this.employeeMasterId;
+    previousEmploymentInformation.employeeMasterId = this.employeeMasterId;
+    previousEmploymentInformation.dateOfJoining = this.datepipe.transform(previousEmploymentInformation.dateOfJoining, 'dd-MMM-yyyy');
+    previousEmploymentInformation.dateOfRelieving = this.datepipe.transform(previousEmploymentInformation.dateOfRelieving, 'dd-MMM-yyyy');
 
-      if (data.employeePreviousEmploymentId) {
-        this.PreviousEmpInformationService.putPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-          
-          // this.previousSmmaryGridData = res.data.results[0];
-          this.getPreviousEmployees();
-
-          // if (this.summaryGridData.length > 0) {
-          //   this.EmptyGridTrue = true;
-          // }
-          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-          this.previousEmploymentInformation.previousEmployerName = '';
-          this.previousEmploymentInformation.previousDesignation = '';
-          this.previousEmploymentInformation.dateOfJoining = '';
-          this.previousEmploymentInformation.dateOfRelieving = '';
-          this.previousEmploymentInformation.lastCTCPerAnnum = '';
-          this.previousEmploymentInformation.remark = '';
-          this.previousEmploymentInformation.previousJobProfile = '';
-          this.previousEmploymentInformation.currency = '';
-          this.previousEmploymentInformation.exemptGratuityReceived = '';
-          this.previousEmploymentInformation.exemptLeaveSalaryReceived = '';
-          this.previousEmploymentInformation.exemptVRSReceived = '';
-          this.previousEmploymentInformation.employeePreviousEmploymentId = '';
-        }, (error: any) => {
-          this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-          // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
-        })
-      } else {
-        this.PreviousEmpInformationService.postPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-          
-          // this.previousSmmaryGridData = res.data.results[0];
-          this.getPreviousEmployees();
-          this.summaryGridData = [];
-          if (this.previousSmmaryGridData.length > 0) {
-            this.EmptyGridTrue = true;
-          }
-          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-          
-        }, (error: any) => {
-          this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-        })
-      }
-    })
-  }
-
-  updateEmpGridRow(previousEmploymentInformation){
-    this.summaryGridData.push(previousEmploymentInformation);
-    this.previousEmploymentInfoSubmit();
-  }
-
-
-  pushToGrid() {
-
-    let data = [];
-
-    let summaryGridData = [];
-    summaryGridData.push(this.previousEmploymentInformation);
-    // for (let i = 0; i < this.companyList.length; i++) {
-    for (var val of summaryGridData) {
-      data.push({
-        // id: i,
-        previousEmployerName: val.previousEmployerName,
-        previousDesignation: val.previousDesignation,
-        dateOfJoining: val.dateOfJoining,
-        dateOfRelieving: val.dateOfRelieving,
-        lastCTCPerAnnum: val.lastCTCPerAnnum,
-        lastCTCPerAnnumNew: '(' + val.currency + ')' + ' ' + val.lastCTCPerAnnum,
-        remark: val.remark,
-        previousJobProfile: val.previousJobProfile,
-        currency: val.currency,
-        exemptGratuityReceived: val.exemptGratuityReceived,
-        exemptLeaveSalaryReceived: val.exemptLeaveSalaryReceived,
-        exemptVRSReceived: val.exemptVRSReceived,
-      });
+    if (!this.previousEmploymentInformation.currency || !this.previousEmploymentInformation.lastCTCPerAnnum) {
+      this.previousEmploymentInformation.currency = '';
+      this.previousEmploymentInformation.lastCTCPerAnnum = '';
     }
-    summaryGridData.forEach(dta => {
-      if (dta.currency == '' && dta.lastCTCPerAnnum == '') {
-        data.forEach(res => {
-          return res.lastCTCPerAnnum = '';
-        })
+    this.PreviousEmpInformationService.postPreviousEmpInfoForm(previousEmploymentInformation).subscribe(res => {
+
+      this.getPreviousEmployees();
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.resetForm();
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/family-information/family-details']);
       }
+    }, (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
-
-    this.summaryGridData = data;
-    this.EmptyGridTrue = true;
-
-    let temp = this.summaryGridData.forEach(data => {
-      return data.dateOfJoining = this.datepipe.transform(data.dateOfJoining, 'dd-MMM-yyyy');
-    })
-    let temp1 = this.summaryGridData.forEach(data => {
-      return data.dateOfRelieving = this.datepipe.transform(data.dateOfRelieving, 'dd-MMM-yyyy');
-    })
-    this.previousEmploymentInfoSubmit();
-
-
-    this.previousEmploymentInformation.previousEmployerName = '';
-    this.previousEmploymentInformation.previousDesignation = '';
-    this.previousEmploymentInformation.dateOfJoining = '';
-    this.previousEmploymentInformation.dateOfRelieving = '';
-    this.previousEmploymentInformation.lastCTCPerAnnum = '';
-    this.previousEmploymentInformation.remark = '';
-    this.previousEmploymentInformation.previousJobProfile = '';
-    this.previousEmploymentInformation.currency = '';
-    this.previousEmploymentInformation.exemptGratuityReceived = '';
-    this.previousEmploymentInformation.exemptLeaveSalaryReceived = '';
-    this.previousEmploymentInformation.exemptVRSReceived = '';
-
-    this.addPush = false;
   }
+
+  updateEmpGridRow(previousEmploymentInformation) {
+
+    previousEmploymentInformation.employeeMasterId = this.employeeMasterId;
+    previousEmploymentInformation.dateOfJoining = this.datepipe.transform(previousEmploymentInformation.dateOfJoining, 'dd-MMM-yyyy');
+    previousEmploymentInformation.dateOfRelieving = this.datepipe.transform(previousEmploymentInformation.dateOfRelieving, 'dd-MMM-yyyy');
+
+    if (!this.previousEmploymentInformation.currency || !this.previousEmploymentInformation.lastCTCPerAnnum) {
+      this.previousEmploymentInformation.currency = '';
+      this.previousEmploymentInformation.lastCTCPerAnnum = '';
+    }
+
+    this.PreviousEmpInformationService.putPreviousEmpInfoForm(previousEmploymentInformation).subscribe(res => {
+
+      this.getPreviousEmployees();
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.viewEmploymentInfoForm = false;
+      this.resetForm();
+    }, (error: any) => {
+      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+    })
+  }
+
 
   editEmpGridRow(employee) {
+    this.viewEmploymentInfoForm = false;
     this.previousEmploymentInformation.previousEmployerName = employee.previousEmployerName;
     this.previousEmploymentInformation.previousDesignation = employee.previousDesignation;
     this.previousEmploymentInformation.dateOfJoining = employee.dateOfJoining;
@@ -250,11 +235,35 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     this.previousEmploymentInformation.exemptLeaveSalaryReceived = employee.exemptLeaveSalaryReceived;
     this.previousEmploymentInformation.exemptVRSReceived = employee.exemptVRSReceived;
     this.previousEmploymentInformation.employeePreviousEmploymentId = employee.employeePreviousEmploymentId;
+
+    if (this.previousEmploymentInformation.currency) {
+      const ctsPerAnum = this.previousEmploymentInfoForm.get('ctsPerAnum');
+      ctsPerAnum.enable();
+    }
+    this.enableForm();
   }
 
+  viewEmpGridRow(employee) {
+    this.viewEmploymentInfoForm = true;
+
+    this.previousEmploymentInformation.previousEmployerName = employee.previousEmployerName;
+    this.previousEmploymentInformation.previousDesignation = employee.previousDesignation;
+    this.previousEmploymentInformation.dateOfJoining = employee.dateOfJoining;
+    this.previousEmploymentInformation.dateOfRelieving = employee.dateOfRelieving;
+    this.previousEmploymentInformation.lastCTCPerAnnum = employee.lastCTCPerAnnum;
+    this.previousEmploymentInformation.remark = employee.remark;
+    this.previousEmploymentInformation.previousJobProfile = employee.previousJobProfile;
+    this.previousEmploymentInformation.currency = employee.currency;
+    this.previousEmploymentInformation.exemptGratuityReceived = employee.exemptGratuityReceived;
+    this.previousEmploymentInformation.exemptLeaveSalaryReceived = employee.exemptLeaveSalaryReceived;
+    this.previousEmploymentInformation.exemptVRSReceived = employee.exemptVRSReceived;
+    this.previousEmploymentInformation.employeePreviousEmploymentId = employee.employeePreviousEmploymentId;
+
+    this.disableForm();
+  }
 
   deleteEmpGridRowDiaglog(employee) {
-    
+
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       width: '664px', height: '241px',
       data: {
@@ -302,8 +311,29 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     }
   }
   resetForm() {
+    this.viewEmploymentInfoForm = false;
     this.previousEmploymentInfoForm.reset();
     this.previousEmploymentInformation.employeePreviousEmploymentId = '';
+    this.previousEmploymentInformation.previousEmployerName = '';
+    this.previousEmploymentInformation.previousDesignation = '';
+    this.previousEmploymentInformation.dateOfJoining = '';
+    this.previousEmploymentInformation.dateOfRelieving = '';
+    this.previousEmploymentInformation.lastCTCPerAnnum = '';
+    this.previousEmploymentInformation.remark = '';
+    this.previousEmploymentInformation.previousJobProfile = '';
+    this.previousEmploymentInformation.currency = '';
+    this.previousEmploymentInformation.exemptGratuityReceived = '';
+    this.previousEmploymentInformation.exemptLeaveSalaryReceived = '';
+    this.previousEmploymentInformation.exemptVRSReceived = '';
+    const ctsPerAnum = this.previousEmploymentInfoForm.get('ctsPerAnum');
+    ctsPerAnum.disable();
+  }
+
+  closePreviousEmpGridRow() {
+
+    this.viewEmploymentInfoForm = false;
+    this.resetForm();
+    this.enableForm();
   }
 
   CTCCommaFormatted(event, grid) {
@@ -376,32 +406,66 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     }
   }
 
-  // sweetalertMasterSuccess(message: any, text: any) {
-  //   Swal.fire({
-  //     title: message,
-  //     text: text,
-  //     showCloseButton: true,
-  //     showCancelButton: false,
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     icon: 'success',
-  //     timer: 15000,
-  //     timerProgressBar: true,
-  //   })
-  // }
+  disableForm() {
 
-  // sweetalertError(message: any) {
-  //   Swal.fire({
-  //     title: message,
-  //     showCloseButton: true,
-  //     showCancelButton: false,
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     icon: 'error',
-  //     timer: 15000,
-  //     timerProgressBar: true,
-  //   })
-  // }
+    const companyName = this.previousEmploymentInfoForm.get('companyName');
+    companyName.disable();
+    const joiningDate = this.previousEmploymentInfoForm.get('joiningDate');
+    joiningDate.disable();
+    const leaveDate = this.previousEmploymentInfoForm.get('leaveDate');
+    leaveDate.disable();
+    const remark = this.previousEmploymentInfoForm.get('remark');
+    remark.disable();
+    const designation = this.previousEmploymentInfoForm.get('designation');
+    designation.disable();
+    const jobProfile = this.previousEmploymentInfoForm.get('jobProfile');
+    jobProfile.disable();
+    const ctsPerAnum = this.previousEmploymentInfoForm.get('ctsPerAnum');
+    ctsPerAnum.disable();
+    const currency = this.previousEmploymentInfoForm.get('currency');
+    currency.disable();
+    const gratuity = this.previousEmploymentInfoForm.get('gratuity');
+    gratuity.disable();
+    const leaveEncashment = this.previousEmploymentInfoForm.get('leaveEncashment');
+    leaveEncashment.disable();
+    const vouluntaryRetirement = this.previousEmploymentInfoForm.get('vouluntaryRetirement');
+    vouluntaryRetirement.disable();
+  }
+
+  enableForm() {
+
+
+    const companyName = this.previousEmploymentInfoForm.get('companyName');
+    companyName.enable();
+    const joiningDate = this.previousEmploymentInfoForm.get('joiningDate');
+    joiningDate.enable();
+    const leaveDate = this.previousEmploymentInfoForm.get('leaveDate');
+    leaveDate.enable();
+    const remark = this.previousEmploymentInfoForm.get('remark');
+    remark.enable();
+    const designation = this.previousEmploymentInfoForm.get('designation');
+    designation.enable();
+    const jobProfile = this.previousEmploymentInfoForm.get('jobProfile');
+    jobProfile.enable();
+    const ctsPerAnum = this.previousEmploymentInfoForm.get('ctsPerAnum');
+    ctsPerAnum.enable();
+    const currency = this.previousEmploymentInfoForm.get('currency');
+    currency.enable();
+    const gratuity = this.previousEmploymentInfoForm.get('gratuity');
+    gratuity.enable();
+    const leaveEncashment = this.previousEmploymentInfoForm.get('leaveEncashment');
+    leaveEncashment.enable();
+    const vouluntaryRetirement = this.previousEmploymentInfoForm.get('vouluntaryRetirement');
+    vouluntaryRetirement.enable();
+  }
+
+  validateCTCperAnum() {
+    if (this.previousEmploymentInformation.currency) {
+      const ctsPerAnum = this.previousEmploymentInfoForm.get('ctsPerAnum');
+      ctsPerAnum.enable();
+    } else {
+      const ctsPerAnum = this.previousEmploymentInfoForm.get('ctsPerAnum');
+      ctsPerAnum.disable();
+    }
+  }
 }

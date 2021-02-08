@@ -21,7 +21,7 @@ export class SkillsDetailComponent implements OnInit {
   SkillInfoForm: FormGroup;
   date = { startDate: "", endDate: "" }
   addPush: boolean;
-  public employeeEducationRequestModel = new employeeEducationRequest('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
+  // public employeeEducationRequestModel = new employeeEducationRequest('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
   public employeeSkillDetailsRequestModel = new employeeSkillDetailsRequest('', '', '', '', '')
   EmptyGridTrue: boolean;
   proficiency: any;
@@ -29,28 +29,16 @@ export class SkillsDetailComponent implements OnInit {
   educationList: Array<any> = [];
   SkillSetList: Array<any> = [];
   filteredSkillSetList: Array<any> = [];
-  highestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
-  filteredHighestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
   courseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
   filteredcourseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
-  EducationSummaryGridData: Array<any> = [];
-  EducationSummaryData: Array<any> = [];
   SkillSummaryGridData: Array<any> = [];
   SkillSummaryData: Array<any> = [];
-  educationPopupSaveSubscription: Subscription;
-  EducationSkillsFormInitiateSubscription: Subscription
   employeeMasterId: number;
   confirmDeleteSubscription: Subscription
-  deleteEducationId: Array<any> = [];
   deleteLanguageId: Array<any> = [];
   deleteSkillId: Array<any> = [];
   validateQualification: boolean;
-  validateEducationGridRow: boolean;
   validateSkillsGridRow: boolean;
-  ishigherEducationValid: boolean;
-  educationEditFlag: boolean = false;
-  educationviewFlag: boolean = false;
-  educationId: number;
   skillId: number;
   skillEditFlag: boolean = false;
   skillviewFlag: boolean = false;
@@ -64,35 +52,19 @@ export class SkillsDetailComponent implements OnInit {
     private CommonDataService: SharedInformationService) { }
 
   ngOnInit(): void {
-    this.EducationInfoForm = this.formBuilder.group({
-      education: ['', Validators.required],
-      degreeName: [''],
-      durationOfCourse: [''],
-      courseType: [''],
-      location: [''],
-      instituteUniversityName: [''],
-      startDate: [''],
-      endDate: [''],
-      percentageOrCGPAOrGrade: [''],
-      specialization1: [''],
-      specialization2: [''],
-      Remark: [''],
-      isHighestQualificationBoolean: [''],
-      qualification: [{ value: null, disabled: true }]
-    });
 
     this.SkillInfoForm = this.formBuilder.group({
       skillName: ['', Validators.required],
-      skillDescription: [''],
-      proficiency: [''],
+      skillDescription:  ['', Validators.required],
+      proficiency:  ['', Validators.required],
     });
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
-    this.getAllEducationSummary();
+    // this.getAllEducationSummary();
     this.getAllSkillsSummary();
-    this.getEducationList();
+    // this.getEducationList();
     this.getSkillsList();
 
     const temp2 = this.SkillInfoForm.get('skillDescription');
@@ -101,14 +73,14 @@ export class SkillsDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-      
-      if (res == 'educationItemDelete') {
-        this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
-          
-          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-          this.getAllEducationSummary();
-        })
-      }
+
+      // if (res == 'educationItemDelete') {
+      //   this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
+
+      //     this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      //     this.getAllEducationSummary();
+      //   })
+      // }
       if (res == 'skillsItemDelete') {
         this.EducationSkillsInformationService.deleteSkillsGridItem(this.skillId).subscribe(res => {
 
@@ -120,303 +92,303 @@ export class SkillsDetailComponent implements OnInit {
   }
 
 
-  getAllEducationSummary() {
-    
-    this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-      
-      this.EducationSummaryGridData = res.data.results[0];
-      this.EducationSummaryData = res.data.results[0];
-      this.validatingHigherQualification();
-    }, (error: any) => {
-      if (error["error"]["status"]["messsage"] == 'EmployeeSkillDetails details list is empty') {
-        this.EducationSummaryGridData = [];
-      }
-    })
-  }
+  // getAllEducationSummary() {
 
-  getEducationList() {
+  //   this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
 
-    this.EducationSkillsInformationService.getEducationList().subscribe(res => {
-      this.educationList = res.data.results;
-      setTimeout(() => {
-        this.employeeEducationRequestModel.education = '';
-        this.employeeEducationRequestModel.specialisation1 = '';
-      }, 100)
-    })
-  }
+  //     this.EducationSummaryGridData = res.data.results[0];
+  //     this.EducationSummaryData = res.data.results[0];
+  //     this.validatingHigherQualification();
+  //   }, (error: any) => {
+  //     if (error["error"]["status"]["messsage"] == 'EmployeeSkillDetails details list is empty') {
+  //       this.EducationSummaryGridData = [];
+  //     }
+  //   })
+  // }
 
-  postEducationForm(employeeEducationRequestModel) {
-    
-    employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
+  // getEducationList() {
 
-    employeeEducationRequestModel.startDate = this.datepipe.transform(employeeEducationRequestModel.startDate, 'dd-MMM-yyyy');
-    employeeEducationRequestModel.endDate = this.datepipe.transform(employeeEducationRequestModel.endDate, 'dd-MMM-yyyy');
+  //   this.EducationSkillsInformationService.getEducationList().subscribe(res => {
+  //     this.educationList = res.data.results;
+  //     setTimeout(() => {
+  //       this.employeeEducationRequestModel.education = '';
+  //       this.employeeEducationRequestModel.specialisation1 = '';
+  //     }, 100)
+  //   })
+  // }
 
-    this.EducationSkillsInformationService.postEducationInfoForm(employeeEducationRequestModel).subscribe(res => {
-      
-      this.getAllEducationSummary();
-      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-      this.resetEducationForm();
-    }, (error: any) => {
-      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-    })
+  // postEducationForm(employeeEducationRequestModel) {
 
-  }
+  //   employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
 
-  updateEducationForm(employeeEducationRequestModel) {
+  //   employeeEducationRequestModel.startDate = this.datepipe.transform(employeeEducationRequestModel.startDate, 'dd-MMM-yyyy');
+  //   employeeEducationRequestModel.endDate = this.datepipe.transform(employeeEducationRequestModel.endDate, 'dd-MMM-yyyy');
 
-    employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
+  //   this.EducationSkillsInformationService.postEducationInfoForm(employeeEducationRequestModel).subscribe(res => {
 
-    employeeEducationRequestModel.startDate = this.datepipe.transform(employeeEducationRequestModel.startDate, 'dd-MMM-yyyy');
-    employeeEducationRequestModel.endDate = this.datepipe.transform(employeeEducationRequestModel.endDate, 'dd-MMM-yyyy');
+  //     this.getAllEducationSummary();
+  //     this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+  //     this.resetEducationForm();
+  //   }, (error: any) => {
+  //     this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+  //   })
 
-    this.EducationSkillsInformationService.putEducationInfoForm(employeeEducationRequestModel).subscribe(res => {
-      this.getAllEducationSummary();
-      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-      this.resetEducationForm();
-      this.employeeEducationRequestModel.employeeEducationID = 0;
-    }, (error: any) => {
-      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-    })
+  // }
 
-  }
+  // updateEducationForm(employeeEducationRequestModel) {
 
-  editEducationRow(education) {
-    
-    this.educationEditFlag = true;
-    this.educationviewFlag = false;
-    this.validateQualification = false;
+  //   employeeEducationRequestModel.employeeMasterId = this.employeeMasterId
 
-    this.employeeEducationRequestModel.employeeEducationID = education.employeeEducationID;
-    this.employeeEducationRequestModel.education = education.education;
-    this.employeeEducationRequestModel.degreeName = education.degreeName;
-    this.employeeEducationRequestModel.qualification = education.qualification;
-    this.employeeEducationRequestModel.location = education.location;
-    this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
-    this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
-    this.employeeEducationRequestModel.startDate = education.startDate;
-    this.employeeEducationRequestModel.endDate = education.endDate;
-    this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
-    this.employeeEducationRequestModel.courseType = education.courseType;
-    this.employeeEducationRequestModel.specialisation1 = education.specialisation1;
-    this.employeeEducationRequestModel.specialisation2 = education.specialisation2;
-    this.employeeEducationRequestModel.remark = education.remark;
-    this.employeeEducationRequestModel.isHighestQualification = education.isHighestQualification;
+  //   employeeEducationRequestModel.startDate = this.datepipe.transform(employeeEducationRequestModel.startDate, 'dd-MMM-yyyy');
+  //   employeeEducationRequestModel.endDate = this.datepipe.transform(employeeEducationRequestModel.endDate, 'dd-MMM-yyyy');
 
-    const temp1 = this.EducationInfoForm.get('education');
-    temp1.enable();
-    const temp2 = this.EducationInfoForm.get('degreeName');
-    temp2.enable();
-    const temp3 = this.EducationInfoForm.get('durationOfCourse');
-    temp3.enable();
-    const temp4 = this.EducationInfoForm.get('courseType');
-    temp4.enable();
-    const temp5 = this.EducationInfoForm.get('location');
-    temp5.enable();
-    const temp6 = this.EducationInfoForm.get('instituteUniversityName');
-    temp6.enable();
-    const temp7 = this.EducationInfoForm.get('startDate');
-    temp7.enable();
-    const temp8 = this.EducationInfoForm.get('endDate');
-    temp8.enable();
-    const temp9 = this.EducationInfoForm.get('percentageOrCGPAOrGrade');
-    temp9.enable();
-    const temp10 = this.EducationInfoForm.get('specialization1');
-    temp10.enable();
-    const temp11 = this.EducationInfoForm.get('specialization2');
-    temp11.enable();
-    const temp13 = this.EducationInfoForm.get('Remark');
-    temp13.enable();
-    const temp14 = this.EducationInfoForm.get('isHighestQualificationBoolean');
-    temp14.enable();
-    const temp15 = this.EducationInfoForm.get('qualification');
-    temp15.enable();
-  }
+  //   this.EducationSkillsInformationService.putEducationInfoForm(employeeEducationRequestModel).subscribe(res => {
+  //     this.getAllEducationSummary();
+  //     this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+  //     this.resetEducationForm();
+  //     this.employeeEducationRequestModel.employeeEducationID = 0;
+  //   }, (error: any) => {
+  //     this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
+  //   })
 
-  viewEducationRow(education) {
-    
-    this.educationviewFlag = true;
-    this.educationEditFlag = false;
-    this.validateQualification = true;
-    this.employeeEducationRequestModel.employeeEducationID = education.employeeEducationID;
-    this.employeeEducationRequestModel.education = education.education;
-    this.employeeEducationRequestModel.degreeName = education.degreeName;
-    this.employeeEducationRequestModel.qualification = education.qualification;
-    this.employeeEducationRequestModel.location = education.location;
-    this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
-    this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
-    this.employeeEducationRequestModel.startDate = education.startDate;
-    this.employeeEducationRequestModel.endDate = education.endDate;
-    this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
-    this.employeeEducationRequestModel.courseType = education.courseType;
-    this.employeeEducationRequestModel.specialisation1 = education.specialisation1;
-    this.employeeEducationRequestModel.specialisation2 = education.specialisation2;
-    this.employeeEducationRequestModel.remark = education.remark;
-    this.employeeEducationRequestModel.isHighestQualification = education.isHighestQualification;
-    const temp1 = this.EducationInfoForm.get('education');
-    temp1.disable();
-    const temp2 = this.EducationInfoForm.get('degreeName');
-    temp2.disable();
-    const temp3 = this.EducationInfoForm.get('durationOfCourse');
-    temp3.disable();
-    const temp4 = this.EducationInfoForm.get('courseType');
-    temp4.disable();
-    const temp5 = this.EducationInfoForm.get('location');
-    temp5.disable();
-    const temp6 = this.EducationInfoForm.get('instituteUniversityName');
-    temp6.disable();
-    const temp7 = this.EducationInfoForm.get('startDate');
-    temp7.disable();
-    const temp8 = this.EducationInfoForm.get('endDate');
-    temp8.disable();
-    const temp9 = this.EducationInfoForm.get('percentageOrCGPAOrGrade');
-    temp9.disable();
-    const temp10 = this.EducationInfoForm.get('specialization1');
-    temp10.disable();
-    const temp11 = this.EducationInfoForm.get('specialization2');
-    temp11.disable();
-    const temp13 = this.EducationInfoForm.get('Remark');
-    temp13.disable();
-    const temp14 = this.EducationInfoForm.get('isHighestQualificationBoolean');
-    temp14.disable();
-    const temp15 = this.EducationInfoForm.get('qualification');
-    temp15.disable();
-  }
+  // }
 
-  deleteEducationRow(education) {
-    
-    this.educationId = education.employeeEducationID;
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      disableClose: true,
-      width: '664px', height: '241px',
-      data: { pageValue: 'educationItemDelete', info: 'Do you really want to delete?' }
-    });
-  }
+  // editEducationRow(education) {
 
-  cancelEducationEditView() {
-    
-    this.educationEditFlag = false;
-    this.educationviewFlag = false;
-    this.validateQualification = false;
-    this.employeeEducationRequestModel.employeeEducationID = 0;
-    this.resetEducationForm();
-    const temp1 = this.EducationInfoForm.get('education');
-    temp1.enable();
-    const temp2 = this.EducationInfoForm.get('degreeName');
-    temp2.enable();
-    const temp3 = this.EducationInfoForm.get('durationOfCourse');
-    temp3.enable();
-    const temp4 = this.EducationInfoForm.get('courseType');
-    temp4.enable();
-    const temp5 = this.EducationInfoForm.get('location');
-    temp5.enable();
-    const temp6 = this.EducationInfoForm.get('instituteUniversityName');
-    temp6.enable();
-    const temp7 = this.EducationInfoForm.get('startDate');
-    temp7.enable();
-    const temp8 = this.EducationInfoForm.get('endDate');
-    temp8.enable();
-    const temp9 = this.EducationInfoForm.get('percentageOrCGPAOrGrade');
-    temp9.enable();
-    const temp10 = this.EducationInfoForm.get('specialization1');
-    temp10.enable();
-    const temp11 = this.EducationInfoForm.get('specialization2');
-    temp11.enable();
-    const temp13 = this.EducationInfoForm.get('Remark');
-    temp13.enable();
-    const temp14 = this.EducationInfoForm.get('isHighestQualificationBoolean');
-    temp14.enable();
-    const temp15 = this.EducationInfoForm.get('qualification');
-    temp15.enable();
-    this.getAllEducationSummary();
-  }
+  //   this.educationEditFlag = true;
+  //   this.educationviewFlag = false;
+  //   this.validateQualification = false;
 
-  resetEducationForm() {
-    this.EducationInfoForm.reset();
-  }
+  //   this.employeeEducationRequestModel.employeeEducationID = education.employeeEducationID;
+  //   this.employeeEducationRequestModel.education = education.education;
+  //   this.employeeEducationRequestModel.degreeName = education.degreeName;
+  //   this.employeeEducationRequestModel.qualification = education.qualification;
+  //   this.employeeEducationRequestModel.location = education.location;
+  //   this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
+  //   this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
+  //   this.employeeEducationRequestModel.startDate = education.startDate;
+  //   this.employeeEducationRequestModel.endDate = education.endDate;
+  //   this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
+  //   this.employeeEducationRequestModel.courseType = education.courseType;
+  //   this.employeeEducationRequestModel.specialisation1 = education.specialisation1;
+  //   this.employeeEducationRequestModel.specialisation2 = education.specialisation2;
+  //   this.employeeEducationRequestModel.remark = education.remark;
+  //   this.employeeEducationRequestModel.isHighestQualification = education.isHighestQualification;
+
+  //   const temp1 = this.EducationInfoForm.get('education');
+  //   temp1.enable();
+  //   const temp2 = this.EducationInfoForm.get('degreeName');
+  //   temp2.enable();
+  //   const temp3 = this.EducationInfoForm.get('durationOfCourse');
+  //   temp3.enable();
+  //   const temp4 = this.EducationInfoForm.get('courseType');
+  //   temp4.enable();
+  //   const temp5 = this.EducationInfoForm.get('location');
+  //   temp5.enable();
+  //   const temp6 = this.EducationInfoForm.get('instituteUniversityName');
+  //   temp6.enable();
+  //   const temp7 = this.EducationInfoForm.get('startDate');
+  //   temp7.enable();
+  //   const temp8 = this.EducationInfoForm.get('endDate');
+  //   temp8.enable();
+  //   const temp9 = this.EducationInfoForm.get('percentageOrCGPAOrGrade');
+  //   temp9.enable();
+  //   const temp10 = this.EducationInfoForm.get('specialization1');
+  //   temp10.enable();
+  //   const temp11 = this.EducationInfoForm.get('specialization2');
+  //   temp11.enable();
+  //   const temp13 = this.EducationInfoForm.get('Remark');
+  //   temp13.enable();
+  //   const temp14 = this.EducationInfoForm.get('isHighestQualificationBoolean');
+  //   temp14.enable();
+  //   const temp15 = this.EducationInfoForm.get('qualification');
+  //   temp15.enable();
+  // }
+
+  // viewEducationRow(education) {
+
+  //   this.educationviewFlag = true;
+  //   this.educationEditFlag = false;
+  //   this.validateQualification = true;
+  //   this.employeeEducationRequestModel.employeeEducationID = education.employeeEducationID;
+  //   this.employeeEducationRequestModel.education = education.education;
+  //   this.employeeEducationRequestModel.degreeName = education.degreeName;
+  //   this.employeeEducationRequestModel.qualification = education.qualification;
+  //   this.employeeEducationRequestModel.location = education.location;
+  //   this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
+  //   this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
+  //   this.employeeEducationRequestModel.startDate = education.startDate;
+  //   this.employeeEducationRequestModel.endDate = education.endDate;
+  //   this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
+  //   this.employeeEducationRequestModel.courseType = education.courseType;
+  //   this.employeeEducationRequestModel.specialisation1 = education.specialisation1;
+  //   this.employeeEducationRequestModel.specialisation2 = education.specialisation2;
+  //   this.employeeEducationRequestModel.remark = education.remark;
+  //   this.employeeEducationRequestModel.isHighestQualification = education.isHighestQualification;
+  //   const temp1 = this.EducationInfoForm.get('education');
+  //   temp1.disable();
+  //   const temp2 = this.EducationInfoForm.get('degreeName');
+  //   temp2.disable();
+  //   const temp3 = this.EducationInfoForm.get('durationOfCourse');
+  //   temp3.disable();
+  //   const temp4 = this.EducationInfoForm.get('courseType');
+  //   temp4.disable();
+  //   const temp5 = this.EducationInfoForm.get('location');
+  //   temp5.disable();
+  //   const temp6 = this.EducationInfoForm.get('instituteUniversityName');
+  //   temp6.disable();
+  //   const temp7 = this.EducationInfoForm.get('startDate');
+  //   temp7.disable();
+  //   const temp8 = this.EducationInfoForm.get('endDate');
+  //   temp8.disable();
+  //   const temp9 = this.EducationInfoForm.get('percentageOrCGPAOrGrade');
+  //   temp9.disable();
+  //   const temp10 = this.EducationInfoForm.get('specialization1');
+  //   temp10.disable();
+  //   const temp11 = this.EducationInfoForm.get('specialization2');
+  //   temp11.disable();
+  //   const temp13 = this.EducationInfoForm.get('Remark');
+  //   temp13.disable();
+  //   const temp14 = this.EducationInfoForm.get('isHighestQualificationBoolean');
+  //   temp14.disable();
+  //   const temp15 = this.EducationInfoForm.get('qualification');
+  //   temp15.disable();
+  // }
+
+  // deleteEducationRow(education) {
+
+  //   this.educationId = education.employeeEducationID;
+  //   const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+  //     disableClose: true,
+  //     width: '664px', height: '241px',
+  //     data: { pageValue: 'educationItemDelete', info: 'Do you really want to delete?' }
+  //   });
+  // }
+
+  // cancelEducationEditView() {
+
+  //   this.educationEditFlag = false;
+  //   this.educationviewFlag = false;
+  //   this.validateQualification = false;
+  //   this.employeeEducationRequestModel.employeeEducationID = 0;
+  //   this.resetEducationForm();
+  //   const temp1 = this.EducationInfoForm.get('education');
+  //   temp1.enable();
+  //   const temp2 = this.EducationInfoForm.get('degreeName');
+  //   temp2.enable();
+  //   const temp3 = this.EducationInfoForm.get('durationOfCourse');
+  //   temp3.enable();
+  //   const temp4 = this.EducationInfoForm.get('courseType');
+  //   temp4.enable();
+  //   const temp5 = this.EducationInfoForm.get('location');
+  //   temp5.enable();
+  //   const temp6 = this.EducationInfoForm.get('instituteUniversityName');
+  //   temp6.enable();
+  //   const temp7 = this.EducationInfoForm.get('startDate');
+  //   temp7.enable();
+  //   const temp8 = this.EducationInfoForm.get('endDate');
+  //   temp8.enable();
+  //   const temp9 = this.EducationInfoForm.get('percentageOrCGPAOrGrade');
+  //   temp9.enable();
+  //   const temp10 = this.EducationInfoForm.get('specialization1');
+  //   temp10.enable();
+  //   const temp11 = this.EducationInfoForm.get('specialization2');
+  //   temp11.enable();
+  //   const temp13 = this.EducationInfoForm.get('Remark');
+  //   temp13.enable();
+  //   const temp14 = this.EducationInfoForm.get('isHighestQualificationBoolean');
+  //   temp14.enable();
+  //   const temp15 = this.EducationInfoForm.get('qualification');
+  //   temp15.enable();
+  //   this.getAllEducationSummary();
+  // }
+
+  // resetEducationForm() {
+  //   this.EducationInfoForm.reset();
+  // }
 
 
 
-  highestEducationBoolean(isHighestQualification) {
+  // highestEducationBoolean(isHighestQualification) {
 
-    if (isHighestQualification) {
-      const temp = this.EducationInfoForm.get('qualification');
-      temp.enable();
-      this.employeeEducationRequestModel.isHighestQualification = 1;
-    } else {
-      const temp = this.EducationInfoForm.get('qualification');
-      temp.disable();
-      this.employeeEducationRequestModel.isHighestQualification = 0;
-    }
-  }
+  //   if (isHighestQualification) {
+  //     const temp = this.EducationInfoForm.get('qualification');
+  //     temp.enable();
+  //     this.employeeEducationRequestModel.isHighestQualification = 1;
+  //   } else {
+  //     const temp = this.EducationInfoForm.get('qualification');
+  //     temp.disable();
+  //     this.employeeEducationRequestModel.isHighestQualification = 0;
+  //   }
+  // }
 
-  IlliterateValidation() {
-    if (this.employeeEducationRequestModel.education == 'Illiterate') {
-      this.employeeEducationRequestModel.isHighestQualification = true;
-      const temp10 = this.EducationInfoForm.get('specialization1');
-      temp10.disable();
-      const temp11 = this.EducationInfoForm.get('specialization2');
-      temp11.disable();
-    } else {
-      this.employeeEducationRequestModel.isHighestQualification = false;
-      const temp10 = this.EducationInfoForm.get('specialization1');
-      temp10.enable();
-      const temp11 = this.EducationInfoForm.get('specialization2');
-      temp11.enable();
-    }
-  }
+  // IlliterateValidation() {
+  //   if (this.employeeEducationRequestModel.education == 'Illiterate') {
+  //     this.employeeEducationRequestModel.isHighestQualification = true;
+  //     const temp10 = this.EducationInfoForm.get('specialization1');
+  //     temp10.disable();
+  //     const temp11 = this.EducationInfoForm.get('specialization2');
+  //     temp11.disable();
+  //   } else {
+  //     this.employeeEducationRequestModel.isHighestQualification = false;
+  //     const temp10 = this.EducationInfoForm.get('specialization1');
+  //     temp10.enable();
+  //     const temp11 = this.EducationInfoForm.get('specialization2');
+  //     temp11.enable();
+  //   }
+  // }
 
-  filterHighestEducation(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.highestEducationList.length; i++) {
-      let country = this.highestEducationList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
-      }
-    }
-    this.filteredHighestEducationList = filtered;
-  }
+  // filterHighestEducation(event) {
+  //   //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+  //   let filtered: any[] = [];
+  //   let query = event.query;
+  //   for (let i = 0; i < this.highestEducationList.length; i++) {
+  //     let country = this.highestEducationList[i];
+  //     if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+  //       filtered.push(country);
+  //     }
+  //   }
+  //   this.filteredHighestEducationList = filtered;
+  // }
 
-  validatingHigherQualification() {
-    if (this.EducationSummaryGridData.length > 0) {
-      let temp;
-      temp = this.EducationSummaryGridData.filter(data => {
-        return data.qualification != '';
-      })
-      if (temp.length == 1) {
-        this.validateQualification = true;
-        const temp15 = this.EducationInfoForm.get('qualification');
-        temp15.disable();
-      } else {
-        this.validateQualification = false;
-      }
-    }
-  }
+  // validatingHigherQualification() {
+  //   if (this.EducationSummaryGridData.length > 0) {
+  //     let temp;
+  //     temp = this.EducationSummaryGridData.filter(data => {
+  //       return data.qualification != '';
+  //     })
+  //     if (temp.length == 1) {
+  //       this.validateQualification = true;
+  //       const temp15 = this.EducationInfoForm.get('qualification');
+  //       temp15.disable();
+  //     } else {
+  //       this.validateQualification = false;
+  //     }
+  //   }
+  // }
 
-  filtercourseType(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.courseTypeList.length; i++) {
-      let country = this.courseTypeList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
-      }
-    }
-    this.filteredcourseTypeList = filtered;
-  }
+  // filtercourseType(event) {
+  //   //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
+  //   let filtered: any[] = [];
+  //   let query = event.query;
+  //   for (let i = 0; i < this.courseTypeList.length; i++) {
+  //     let country = this.courseTypeList[i];
+  //     if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+  //       filtered.push(country);
+  //     }
+  //   }
+  //   this.filteredcourseTypeList = filtered;
+  // }
 
-  comparespecialization() {
-    if (this.employeeEducationRequestModel.specialisation1 && this.employeeEducationRequestModel.specialisation2) {
-      if (this.employeeEducationRequestModel.specialisation1 == this.employeeEducationRequestModel.specialisation2) {
-        this.CommonDataService.sweetalertWarning('Specialization 1 & Specialization 2 fields should be different');
-        this.employeeEducationRequestModel.specialisation1 = '';
-        this.employeeEducationRequestModel.specialisation2 = '';
-      }
-    }
-  }
+  // comparespecialization() {
+  //   if (this.employeeEducationRequestModel.specialisation1 && this.employeeEducationRequestModel.specialisation2) {
+  //     if (this.employeeEducationRequestModel.specialisation1 == this.employeeEducationRequestModel.specialisation2) {
+  //       this.CommonDataService.sweetalertWarning('Specialization 1 & Specialization 2 fields should be different');
+  //       this.employeeEducationRequestModel.specialisation1 = '';
+  //       this.employeeEducationRequestModel.specialisation2 = '';
+  //     }
+  //   }
+  // }
 
   // Skills Information
 
@@ -431,9 +403,9 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   getAllSkillsSummary() {
-    debugger
+    
     this.EducationSkillsInformationService.getAllSkillsSummary(this.employeeMasterId).subscribe(res => {
-      debugger
+      
       this.SkillSummaryGridData = res.data.results[0];
       this.SkillSummaryData = res.data.results[0];
 
@@ -442,14 +414,16 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   postSkillsForm(employeeSkillDetailsRequestModel) {
-    debugger
+    
     employeeSkillDetailsRequestModel.employeeMasterId = this.employeeMasterId;
 
     this.EducationSkillsInformationService.postSkillsInfoForm(employeeSkillDetailsRequestModel).subscribe(res => {
-      debugger
+      
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -457,15 +431,17 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   updateSkillsForm(employeeSkillDetailsRequestModel) {
-    debugger
+    
     employeeSkillDetailsRequestModel.employeeMasterId = this.employeeMasterId;
 
     this.EducationSkillsInformationService.putSkillsInfoForm(employeeSkillDetailsRequestModel).subscribe(res => {
-      debugger
+      
       this.getAllSkillsSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.resetSkillForm();
       this.employeeSkillDetailsRequestModel.employeeSkillInfoId = 0;
+      this.skillEditFlag = false;
+      this.skillviewFlag = false;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -473,7 +449,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   editSkillRow(skill) {
-    debugger
+    
     this.skillEditFlag = true;
     this.skillviewFlag = false;
     this.employeeSkillDetailsRequestModel.employeeSkillInfoId = skill.employeeSkillInfoId;
@@ -490,7 +466,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   viewSkillRow(skill) {
-    debugger
+    
     this.skillEditFlag = false;
     this.skillviewFlag = true;
     this.employeeSkillDetailsRequestModel.employeeSkillInfoId = skill.employeeSkillInfoId;
@@ -507,7 +483,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   deleteSkillRow(skill) {
-    debugger
+    
     this.skillId = skill.employeeSkillInfoId;
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
       disableClose: true,
@@ -524,9 +500,9 @@ export class SkillsDetailComponent implements OnInit {
     const temp1 = this.SkillInfoForm.get('skillName');
     temp1.enable();
     const temp2 = this.SkillInfoForm.get('skillDescription');
-    temp2.enable();
+    temp2.disable();
     const temp3 = this.SkillInfoForm.get('proficiency');
-    temp3.enable();
+    temp3.disable();
     this.getAllSkillsSummary();
   }
 
@@ -559,6 +535,7 @@ export class SkillsDetailComponent implements OnInit {
           this.CommonDataService.sweetalertWarning('This Record is already exist in Grid Summary');
 
           this.employeeSkillDetailsRequestModel.skillName = '';
+          this.SkillInfoForm.get('skillName').setValue('');
           const description = this.SkillInfoForm.get('skillDescription');
           description.disable();
           const proficiency = this.SkillInfoForm.get('proficiency');
@@ -580,5 +557,15 @@ export class SkillsDetailComponent implements OnInit {
 
   resetSkillForm() {
     this.SkillInfoForm.reset();
+    this.skillEditFlag = false;
+    this.skillviewFlag = false;
+    this.employeeSkillDetailsRequestModel.employeeSkillInfoId = 0;
+    const temp2 = this.SkillInfoForm.get('skillDescription');
+    temp2.disable();
+    const temp3 = this.SkillInfoForm.get('proficiency');
+    temp3.disable();
+
+    this.employeeSkillDetailsRequestModel.skillName = '';
+    this.SkillInfoForm.get('skillName').setValue('');
   }
 }

@@ -6,19 +6,28 @@
                     <form [formGroup]="CertificateInfoForm">
                         <!-- Member Details -->
                         <fieldset>
-                            <legend><i class="fa fa-users"></i>
+                            <legend>
                                 Certificate Information</legend>
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Name</label>
-                                    <p-autoComplete [suggestions]="filteredCertificateList" placeholder="Select"
+                                    <select class="form-control" placeholder="Select" formControlName="cerificateName"
+                                        (change)="onSelectionName(certificateModel)" [(ngModel)]="certificateModel">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let certificate of ToFilteredCertificateAllList"
+                                            [value]="certificate.certificateMasterMappingId">
+                                            {{certificate.certificateMasterDetails.certificateName}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredCertificateList" placeholder="Select"
                                         (completeMethod)="filterCertificate($event)" [dropdown]="true"
                                         formControlName="cerificateName" (onSelect)="onSelectionName(certificateModel)"
                                         [(ngModel)]="certificateModel" field="certificateMasterDetails.certificateName">
                                         <ng-template let-certificate pTemplate="item">
                                             {{certificate.certificateMasterDetails.certificateName}}
                                         </ng-template>
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
@@ -36,12 +45,12 @@
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="yes" checked
                                                     formControlName="renewable" [(ngModel)]="renewableModel">
-                                                <span class="custom-control-label">Yes</span>
+                                                <span class="custom-control-label"><b>Yes</b></span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="no"
                                                     formControlName="renewable" [(ngModel)]="renewableModel">
-                                                <span class="custom-control-label">No</span>
+                                                <span class="custom-control-label"><b>No</b></span>
                                             </label>
                                         </div>
                                     </div>
@@ -119,11 +128,20 @@
                                         <label class="form-label">Fees</label>
                                         <div class="row">
                                             <div class="col-sm-3 col-md-5 country-code">
-                                                <p-autoComplete [suggestions]="filteredCurrencyArray" placeholder="INR"
+                                                <select class="form-control" placeholder="Select"
+                                                    formControlName="renewalFeesCurrency"
+                                                    [(ngModel)]="employeeCertificateRequestModel.renewalFeesCurrency">
+                                                    <option value="" selected disabled>Select</option>
+                                                    <option *ngFor="let currency of currencyArray" [value]="currency">
+                                                        {{currency}}
+                                                    </option>
+                                                </select>
+
+                                                <!-- <p-autoComplete [suggestions]="filteredCurrencyArray" placeholder="INR"
                                                     (completeMethod)="filterCurrency($event)" [dropdown]="true"
                                                     formControlName="renewalFeesCurrency"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalFeesCurrency">
-                                                </p-autoComplete>
+                                                </p-autoComplete> -->
                                             </div>
                                             <div class="col-sm-3 col-md-7">
                                                 <input type="text" class="form-control" placeholder="Enter Renewal Fees"
@@ -175,42 +193,40 @@
                                     </div>
                                 </div>
                             </fieldset>
+                        </fieldset>
+                        <div class="row mt-15">
+                            <div class="col-12">
+                                <div class="float-right mb-15">
+                                    <button type="submit" (click)="postCertificateForm(employeeCertificateRequestModel)"
+                                        [ngClass]="{'disabled-btn-bg-green':CertificateInfoForm.invalid,
+                                    'btn-bg-green':!CertificateInfoForm.invalid}"
+                                        [disabled]="CertificateInfoForm.invalid"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                                        [hidden]="certificateEditFlag || certificateViewFlag"><b><i
+                                                class="fa fa-floppy-o"></i></b>Save</button>
 
-                            <div class="row mt-15">
-                                <div class="col-12">
-                                    <div class="float-right mb-15">
-                                        <button type="submit"
-                                            (click)="postCertificateForm(employeeCertificateRequestModel)" [ngClass]="{'disabled-btn-bg-green':CertificateInfoForm.invalid,
-                                        'btn-bg-green':!CertificateInfoForm.invalid}"
-                                            [disabled]="CertificateInfoForm.invalid"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                                            [hidden]="certificateEditFlag || certificateViewFlag"><b><i
-                                                    class="fa fa-floppy-o"></i></b>Save</button>
+                                    <button type="submit" [ngClass]="{'disabled-btn-bg-green':CertificateInfoForm.invalid,
+                                    'btn-bg-green':!CertificateInfoForm.invalid}"
+                                        [disabled]="CertificateInfoForm.invalid"
+                                        (click)="updateCertificateForm(employeeCertificateRequestModel);"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Update"
+                                        *ngIf="certificateEditFlag"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
-                                        <button type="submit" [ngClass]="{'disabled-btn-bg-green':CertificateInfoForm.invalid,
-                                        'btn-bg-green':!CertificateInfoForm.invalid}"
-                                            [disabled]="CertificateInfoForm.invalid"
-                                            (click)="updateCertificateForm(employeeCertificateRequestModel);"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                            tooltip="Update" *ngIf="certificateEditFlag"><b><i
-                                                    class="fa fa-floppy-o"></i></b>Update</button>
+                                    <button type="button" tooltip="Reset" (click)="resetCertificateForm()"
+                                        [hidden]="certificateViewFlag"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
 
-                                        <button type="button" tooltip="Reset" (click)="resetCertificateForm()"
-                                            [hidden]="certificateViewFlag"
-                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
-
-                                        <button type="button" *ngIf="certificateViewFlag || certificateEditFlag"
-                                            (click)="cancelCertificateView()"
-                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
-                                    </div>
+                                    <button type="button" *ngIf="certificateViewFlag || certificateEditFlag"
+                                        (click)="cancelCertificateView()"
+                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                        tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
                                 </div>
                             </div>
-                        </fieldset>
+                        </div>
                     </form>
 
-                    <br>
+                    
                     <legend style="font-size: 17px !important;">Summary</legend>
                     <p-table [value]="certificateSummaryGridData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
@@ -221,7 +237,7 @@
                                 <col style="width:150px">
                                 <col style="width:150px">
                                 <col style="width:150px">
-                                <col style="width:250px">
+                                <col style="width:100px">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
@@ -275,7 +291,9 @@
                             </tr>
                         </ng-template>
                     </p-table>
-
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="certificateSummaryGridData.length==0">No
+                        data found</span>
                 </div>
             </div>
         </div>

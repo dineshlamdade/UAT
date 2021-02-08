@@ -2,10 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
+import { BnNgIdleService } from 'bn-ng-idle';
 import { filter } from 'rxjs/operators';
 import { AuthService } from './modules/auth/auth.service';
-import { BnNgIdleService } from 'bn-ng-idle';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -33,7 +32,8 @@ export class AppComponent implements OnInit {
               private titleService: Title,
               private authService: AuthService,
               private translocoService: TranslocoService,
-              private bnIdle: BnNgIdleService) {
+              private bnIdle: BnNgIdleService
+              ) {
       this.selectedLanguage = localStorage.getItem('selectedLanguage');
       // generate a regex from the locales we support
       if (this.selectedLanguage) {
@@ -50,13 +50,13 @@ export class AppComponent implements OnInit {
       })
      }
   public ngOnInit(): void {
-    // if (this.router.getCurrentNavigation() === null) {
-    // if (!this.authService.isLoggedIn()) {
-    //   this.router.navigate(['/login']);
-    // } else {
-    //   this.router.navigate(['/dashboard']);
-    // }
-    // }
+    if (this.router.getCurrentNavigation() === null) {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
+    }
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('offcanvas-active');
     body.classList.add('font-montserrat');

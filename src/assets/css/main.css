@@ -8165,6 +8165,7 @@ body.boxlayout .container-fluid {
 }
 
 body *::-webkit-scrollbar {
+<<<<<<< HEAD
     width: 0px;
     height: 7px;
     transition: .3s background
@@ -8178,6 +8179,20 @@ body *::-webkit-scrollbar-thumb {
 
 body *:hover::-webkit-scrollbar-thumb {
     background: #8c8c8c
+=======
+    width: 13px;
+    height: 12px;
+    transition: .3s background;
+    background: #ffffff
+}
+
+body *::-webkit-scrollbar-thumb {
+    background: #eae5ed;
+}
+
+body *:hover::-webkit-scrollbar-thumb {
+    background: #eae5ed;
+>>>>>>> d765f0b0e25483f82dc9733476ef64f014515dcf
 }
 
 a:hover {

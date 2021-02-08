@@ -53,6 +53,7 @@ export class FileService {
       });
   }
 
+
   public uploadMultipleMasterFiles(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);

@@ -11,18 +11,18 @@ import { FixedDepositsService } from '../fixed-deposits.service';
 })
 export class FixedDepositsSummaryComponent implements OnInit {
   @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(institution: string, policyNo: string) {
+  onEditSummary(institution: string, accountNumber: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
-      policyNo: policyNo,
+      accountNumber: accountNumber,
       tabIndex: this.tabIndex,
     };
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
 
     this.myEvent.emit(data);
   }
@@ -119,12 +119,12 @@ export class FixedDepositsSummaryComponent implements OnInit {
   }
 
   // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
+  onEditSummary1(institution: string, accountNumber: string) {
     this.tabIndex = 2;
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
     console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
+    console.log('accountNumber::', accountNumber);
   }
 }
 

@@ -10,19 +10,21 @@
                         <div class="card-body">
                             <form [formGroup]="PayrollAreaInfoForm">
                                 <fieldset>
-                                    <legend><i class="icon-pointer"></i>
+                                    <legend>
                                         Payroll Area Information</legend>
                                     <!-- <div class="tabview"> -->
                                     <div class="row">
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <p-autoComplete [suggestions]="filteredPayrollAreaList"
-                                                (completeMethod)=" filterpayrollArea($event)" placeholder="Select"
+                                            <select class="form-control" placeholder="Select"
                                                 formControlName="payrollAreaCode"
                                                 [(ngModel)]="PayrollAreaRequestModel.payrollAreaCode"
-                                                (change)="bankDetailsEnable()">
-                                            </p-autoComplete>
-                                            <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                                (change)="bankDetailsEnable(); payrollAssignValues(PayrollAreaRequestModel.payrollAreaCode)">
+                                                <option value="" selected disabled>Select</option>
+                                                <option *ngFor="let payroll of payrollAreaList" [value]="payroll">
+                                                    {{payroll}}
+                                                </option>
+                                            </select>
                                         </div>
 
                                         <div class="col-sm-6 col-md-3">
@@ -34,22 +36,27 @@
 
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Type</label>
-                                            <p-autoComplete [suggestions]="filteredTypeList"
-                                                (completeMethod)="filtertype($event)" placeholder="Select"
-                                                formControlName="type" [(ngModel)]="PayrollAreaRequestModel.type">
-                                            </p-autoComplete>
-                                            <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                            <select class="form-control" placeholder="Select" formControlName="type"
+                                                [(ngModel)]="PayrollAreaRequestModel.type">
+                                                <option value="" selected disabled>Select</option>
+                                                <option *ngFor="let type of typeList" [value]="type">
+                                                    {{type}}
+                                                </option>
+                                            </select>
                                         </div>
 
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Payment Mode</label>
-                                            <p-autoComplete [suggestions]="filteredpaymentModeList"
-                                                (completeMethod)="filterpaymentMode($event)" placeholder="Select"
+                                            <select class="form-control" placeholder="Select"
                                                 formControlName="paymentMode"
                                                 [(ngModel)]="PayrollAreaRequestModel.paymentMode"
-                                                (onSelect)="bankDetailsValidations()">
-                                            </p-autoComplete>
-                                            <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                                (change)="bankDetailsValidations()">
+                                                <option value="" selected disabled>Select</option>
+                                                <option *ngFor="let paymentMode of paymentModeList"
+                                                    [value]="paymentMode">
+                                                    {{paymentMode}}
+                                                </option>
+                                            </select>
                                         </div>
 
                                         <div class="col-sm-6 col-md-3 mt-15">
@@ -63,7 +70,7 @@
                                                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                         data-provide="datepicker" data-date-autoclose="true"
                                                         class="form-control" placeholder="  /   /" bsDatepicker
-                                                        [maxDate]="today" formControlName="fromDate"
+                                                        [minDate]="JoiningDate" formControlName="fromDate"
                                                         [(ngModel)]="PayrollAreaRequestModel.payrollAreaFromDate">
                                                 </div>
                                             </div>
@@ -94,12 +101,14 @@
                                                 <label class="form-label">Bank Name</label>
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-10">
-                                                        <p-autoComplete [suggestions]="filteredbankList"
-                                                            (completeMethod)="filterbanks($event)" placeholder="Select"
+                                                        <select class="form-control" placeholder="Select"
                                                             [(ngModel)]="PayrollAreaRequestModel.bankName"
-                                                            formControlName="bankName" (onSelect)="flterBankDetails();">
-                                                        </p-autoComplete>
-                                                        <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                                            formControlName="bankName" (change)="flterBankDetails();">
+                                                            <option value="" selected disabled>Select</option>
+                                                            <option *ngFor="let bank of bankList" [value]="bank">
+                                                                {{bank}}
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <mat-icon class="copy-btn" (click)="getBankFromGrid()"
@@ -111,26 +120,32 @@
 
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Bank Account No.</label>
-                                                <p-autoComplete [suggestions]="filteredPayrollAreaList"
-                                                    (completeMethod)="filterpayrollArea($event)" placeholder="Select"
+                                                <select class="form-control" placeholder="Select"
                                                     formControlName="bankAccount"
-                                                    [(ngModel)]="PayrollAreaRequestModel.bankAccount"
-                                                    [type]="accountNo ? 'number' : 'password'">
-                                                </p-autoComplete>
+                                                    [(ngModel)]="PayrollAreaRequestModel.bankAccountNumber"
+                                                    type="password">
+                                                    <option value="" selected disabled>Select</option>
+                                                    <option *ngFor="let bankAccount of bankAccountList"
+                                                        [value]="bankAccount.accountNo" type="password">
+                                                        {{bankAccount.accountNo}}
+                                                    </option>
+                                                </select>
                                                 <mat-icon matSuffix (click)="accountNo = !accountNo"
                                                     class="eye-icon-payroll">
                                                     {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
-                                                <i class="fa fa-chevron-down down-arrow-icon"></i>
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Type of Payment</label>
-                                                <p-autoComplete [suggestions]="filteredtypeOfPaymentList"
-                                                    (completeMethod)="filtertypeOfPayment($event)" placeholder="Select"
+                                                <select class="form-control" placeholder="Select"
                                                     formControlName="typeOfPayment"
                                                     [(ngModel)]="PayrollAreaRequestModel.typeOfPayment">
-                                                </p-autoComplete>
-                                                <i class="fa fa-chevron-down down-arrow-icon"></i>
+                                                    <option value="" selected disabled>Select</option>
+                                                    <option *ngFor="let typeOfPayment of typeOfPaymentList"
+                                                        [value]="typeOfPayment">
+                                                        {{typeOfPayment}}
+                                                    </option>
+                                                </select>
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-25">
@@ -142,11 +157,11 @@
                                                             [disabled]="disableToggleButton ||
                                                             payrollFlag == 'viewpayroll'" formControlName="toggle">
                                                         <span class="custom-switch-description"
-                                                            value="percentOfNetPay">% of Net
-                                                            Pay</span>&nbsp;&nbsp;
+                                                            value="percentOfNetPay"><b>% of Net
+                                                                Pay</b></span>&nbsp;&nbsp;
                                                         <span class="custom-switch-indicator"></span>
                                                         <span class="custom-switch-description"
-                                                            value="amount">Amount</span>
+                                                            value="amount"><b>Amount</b></span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -162,12 +177,22 @@
 
                                             <div class="col-sm-6 col-md-3 mt-15"
                                                 *ngIf="percentOrAmountModel == 'amount'">
-                                                <label class="form-label">Fix Amount</label>
+                                                <label class="form-label">Amount</label>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-5 country-code">
-                                                        <input type="text" class="form-control" placeholder="Currency"
+                                                        <select class="form-control selectpicker" placeholder="Select"
                                                             formControlName="currency"
                                                             [(ngModel)]="PayrollAreaRequestModel.currency">
+                                                            <option value="" data-hidden="true">Select</option>
+                                                            <option *ngFor="let currency of currencyArray"
+                                                                [value]="currency">
+                                                                {{currency}}
+                                                            </option>
+                                                        </select>
+
+                                                        <!-- <input type="text" class="form-control" placeholder="Currency"
+                                                            formControlName="currency"
+                                                            [(ngModel)]="PayrollAreaRequestModel.currency"> -->
                                                     </div>
                                                     <div class="col-sm-3 col-md-7">
                                                         <input type="text" class="form-control"
@@ -196,7 +221,7 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="  /   /" bsDatepicker
-                                                            [maxDate]="today" formControlName="bankfromDate"
+                                                            [minDate]="JoiningDate" formControlName="bankfromDate"
                                                             [(ngModel)]="PayrollAreaRequestModel.payFromDate"
                                                             [min]="payrollAreaBackFromDate">
                                                     </div>
@@ -204,7 +229,7 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-15">
-                                                <label class="form-label">From Date</label>
+                                                <label class="form-label">To Date</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -214,7 +239,7 @@
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                             data-provide="datepicker" data-date-autoclose="true"
                                                             class="form-control" placeholder="  /   /" bsDatepicker
-                                                            [maxDate]="today" formControlName="banktoDate"
+                                                            formControlName="banktoDate"
                                                             [(ngModel)]="PayrollAreaRequestModel.payToDate"
                                                             [min]="PayrollAreaInfoForm.controls.bankfromDate?.value">
                                                     </div>
@@ -225,21 +250,53 @@
                                         <div class="row mt-15">
                                             <div class="col-12">
                                                 <div class="float-right mb-15">
-                                                    <button type="button"
+                                                    <button type="button" tooltip="Previous"
+                                                        [routerLink]="['/employee-master/bank-information']"
+                                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                                class="fa fa-chevron-circle-left"
+                                                                aria-hidden="true"></i></b>Previous</button>
+
+                                                    <button type="button" tooltip="Next"
+                                                        [routerLink]="['/employee-master/job-information/job-summary']"
+                                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                                class="fa fa-chevron-circle-right"
+                                                                aria-hidden="true"></i></b>Next</button>
+
+                                                    <button type="button" [hidden]="payrollEditFlag || payrollviewFlag"
+                                                        (click)="PayrollSaveNextSubmit(PayrollAreaRequestModel)"
                                                         [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
                                                         [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
                                                          'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid || !disableAddButtonMultipleBankFalse}"
-                                                        (click)="addPush=true;savePayrollArea(PayrollAreaRequestModel);"
+                                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                                        tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                                                        Save & Next</button>
+
+                                                    <button type="button" [hidden]="payrollEditFlag || payrollviewFlag"
+                                                        [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
+                                                        [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
+                                                         'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid || !disableAddButtonMultipleBankFalse}"
+                                                        (click)="savePayrollArea(PayrollAreaRequestModel);"
                                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                                         tooltip="Save"><b><i
                                                                 class="fa fa-floppy-o"></i></b>Save</button>
 
-                                                    <!-- <button type="button"
-                                                        (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
+                                                    <button type="button" *ngIf="payrollEditFlag"
+                                                        (click)="addPush=true;updatePayrollArea(PayrollAreaRequestModel);"
+                                                        [disabled]="PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse"
+                                                        [ngClass]="{'disabled-btn-bg-green':PayrollAreaInfoForm.invalid || amountValid || disableAddButtonMultipleBankFalse,
+                                                         'btn-bg-green': !PayrollAreaInfoForm.invalid || !amountValid || !disableAddButtonMultipleBankFalse}"
                                                         class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button> -->
+                                                        tooltip="Update"><b><i
+                                                                class="fa fa-floppy-o"></i></b>Update</button>
 
-                                                    <button type="button" tooltip="Reset"
+                                                    <button type="button"
+                                                        *ngIf="payrollviewFlag || PayrollAreaRequestModel.payrollAreaInformationId"
+                                                        (click)="cancelSkillView();"
+                                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                        tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                        Cancel</button>
+
+                                                    <button type="button" tooltip="Reset" [hidden]="payrollviewFlag"
                                                         (click)="resetPayrollAreaForm()"
                                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                                 class="fa fa-refresh"
@@ -258,22 +315,39 @@
                                                                 <th scope="col" class="font700 wd-20">Type of Payment
                                                                 </th>
                                                                 <th scope="col" class="font700 wd-20">Bank Name</th>
-                                                                <th scope="col" class="font700 wd-20">Bank Account No.
+                                                                <!-- <th scope="col" class="font700 wd-20">Bank Account No.
+                                                                </th> -->
+                                                                <th scope="col" class="font700 wd-20">% Net Pay
                                                                 </th>
-                                                                <th scope="col" class="font700 wd-20">% Net Pay / Amount
+                                                                <th scope="col" class="font700 wd-20">Amount
                                                                 </th>
                                                                 <th scope="col" class="font700 wd-20">Priority</th>
                                                                 <th scope="col" class="font700 wd-20">From Date</th>
                                                                 <th scope="col" class="font700 wd-20">To Date</th>
                                                             </tr>
                                                         </thead>
+                                                        <tr *ngIf="PayrollAreaSummaryGridData.length == 0">
+                                                            <td colspan="12"><span
+                                                                    class="font-14 font500 align-center text-red">No
+                                                                    data
+                                                                    found</span></td>
+                                                        </tr>
                                                         <tbody>
                                                             <tr *ngFor="let bank of PayrollAreaSummaryGridData">
                                                                 <td><span>{{bank.typeOfPayment}}</span></td>
                                                                 <td><span>{{bank.bankName}}</span></td>
-                                                                <td><span>{{bank.bankAccount}}</span></td>
-                                                                <td><span>{{bank.percentageOfNetPay}}</span></td>
-                                                                <td><span>{{bank.priority}}</span></td>
+                                                                <!-- <td><span>{{bank.bankAccountNumber}}</span></td> -->
+                                                                <td *ngIf="bank.percentageOfNetPay">
+                                                                    <span>{{bank.percentageOfNetPay}}</span>
+                                                                </td>
+                                                                <td *ngIf="!bank.percentageOfNetPay"><span>-</span></td>
+                                                                <td *ngIf="bank.amount > 0">
+                                                                    <span>{{bank.amount}}</span>
+                                                                </td>
+                                                                <td *ngIf="bank.amount == 0"><span>-</span></td>
+                                                                <td *ngIf="bank.priority"><span>{{bank.priority}}</span>
+                                                                </td>
+                                                                <td *ngIf="!bank.priority"><span>-</span></td>
                                                                 <td><span>{{bank.payFromDate}}</span></td>
                                                                 <td><span>{{bank.payToDate}}</span></td>
                                                             </tr>
@@ -284,29 +358,19 @@
                                         </div>
                                     </fieldset>
 
-                                    <div class="row mt-15">
+                                    <!-- <div class="row mt-15">
                                         <div class="col-12">
                                             <div class="float-right mb-15">
-                                                <!-- <button type="button"
-                                                    (click)="addPush=true;pushToGrid(previousEmploymentInformation);"
-                                                    class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
-                                                    tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button> -->
-
-                                                <!-- <button type="button"
-                                                    (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
-                                                    class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                    tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button> -->
-
                                                 <button type="button" tooltip="Add"
                                                     (click)="additionPayrollValidation();"
-                                                    class="custom_button custom_btn btn-bg-add btn-labeled btn-labeled-left ml-10"><b><i
+                                                    class="custom_button custom_btn btn-add-payroll btn-labeled btn-labeled-left ml-10"><b><i
                                                             class="icon-plus" aria-hidden="true"></i></b>Add Payroll
                                                     Area</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-
+                                    <br>
                                     <legend>Payroll Area Summary</legend>
                                     <div class="row mt-20">
                                         <div class="col-md-12">
@@ -320,25 +384,40 @@
                                                             <th scope="col" class="font700 wd-20">To Date</th>
                                                             <th scope="col" class="font700 wd-20">Type of Payment</th>
                                                             <th scope="col" class="font700 wd-20">Bank Name</th>
-                                                            <th scope="col" class="font700 wd-20">Bank Account No.</th>
+                                                            <!-- <th scope="col" class="font700 wd-20">Bank Account No.</th> -->
                                                             <!-- <th scope="col" class="font700 wd-20">Name as par Bank</th> -->
-                                                            <th scope="col" class="font700 wd-20">% Net Pay / Amount
+                                                            <th scope="col" class="font700 wd-20">% Net Pay
+                                                            </th>
+                                                            <th scope="col" class="font700 wd-20">Amount
                                                             </th>
                                                             <th scope="col" class="font700 wd-20">Action</th>
 
                                                         </tr>
                                                     </thead>
+                                                    <tr *ngIf="PayrollAreaSummaryGridData.length == 0">
+                                                        <td colspan="12"><span
+                                                                class="font-14 font500 align-center text-red">No data
+                                                                found</span></td>
+                                                    </tr>
                                                     <tbody>
+
                                                         <tr *ngFor="let payroll of PayrollAreaSummaryGridData">
+
                                                             <td><span>{{payroll.payrollAreaCode}}</span></td>
                                                             <td><span>{{payroll.type}}</span></td>
                                                             <td><span>{{payroll.payrollAreaFromDate}}</span></td>
                                                             <td><span>{{payroll.payrollAreaToDate}}</span></td>
                                                             <td><span>{{payroll.typeOfPayment}}</span></td>
                                                             <td><span>{{payroll.bankName}}</span></td>
-                                                            <td><span>{{payroll.bankAccount}}</span></td>
-                                                            <!-- <td><span>{{payroll.payrollAreaCode}}</span></td> -->
-                                                            <td><span>{{payroll.percentageOfNetPay}}</span></td>
+                                                            <!-- <td><span>{{payroll.bankAccountNumber}}</span></td> -->
+                                                            <td *ngIf="payroll.percentageOfNetPay">
+                                                                <span>{{payroll.percentageOfNetPay}}</span>
+                                                            </td>
+                                                            <td *ngIf="!payroll.percentageOfNetPay"><span>-</span></td>
+                                                            <td *ngIf="payroll.amount > 0">
+                                                                <span>{{payroll.amount}}</span>
+                                                            </td>
+                                                            <td *ngIf="payroll.amount == 0"><span>-</span></td>
 
 
                                                             <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
@@ -350,7 +429,6 @@
                                                                 <i class="fa fa-times font-16 text-red cursor-pointer"
                                                                     tooltip="Delete"
                                                                     (click)="deletePayroll(payroll)"></i>
-
                                                             </td>
                                                         </tr>
                                                     </tbody>

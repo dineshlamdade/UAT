@@ -9,133 +9,103 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="jobtabview">
-                                <input name="nav" type="radio" class="about-radio" id="organizationDetails"
+                                <input name="nav" type="radio" class="about-radio" id="jobSummary"
                                     [checked]="tabIndex==0" />
-                                <label class="nav" for="organizationDetails" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/job-information/organization-details']"
-                                    (click)="hiddenSummary = false">
+                                <div class="tabs jobtabs about-page" *ngIf="jobSummaryTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="jobSummary"
+                                    [routerLink]="['/employee-master/job-information/job-summary']"
+                                    (click)="hiddenSummary = false;jobSummaryTabValidation()">
                                     <span>
-                                        Organization Details
+                                        Job Summary
+                                    </span>
+                                </label>
+
+
+                                <input name="nav" type="radio" class="about-radio" id="organizationDetails"
+                                    [checked]="tabIndex==1" />
+                                <div class="tabs jobtabs about-page">
+                                    <div class="tabview-contents" *ngIf="organizationTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="organizationDetails"
+                                    (click)="hiddenSummary = false;organizationTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/organization-details']">
+                                    <span>
+                                        Organization
                                     </span>
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="positionDetails"
-                                    [checked]="tabIndex==1" />
-                                <label class="nav" for="positionDetails" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/job-information/position-details']"
-                                    (click)="hiddenSummary = false">
+                                    [checked]="tabIndex==2" />
+                                <div class="tabs jobtabs about-page" *ngIf="positionTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="positionDetails"
+                                    (click)="hiddenSummary = false;positionTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/position-details']">
                                     <span>
-                                        Position Details
+                                        Position
                                     </span>
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="minimumWagesDetails"
-                                    [checked]="tabIndex==1" />
-                                <label class="nav" for="minimumWagesDetails" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/job-information/minimum-wages-details']"
-                                    (click)="hiddenSummary = false">
+                                    [checked]="tabIndex==3" />
+                                <div class="tabs jobtabs about-page" *ngIf="minimumWagesTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="minimumWagesDetails"
+                                    (click)="hiddenSummary = false;minimumWagesTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/minimum-wages-details']">
                                     <span>
-                                        Minimum Wages Details
+                                        Minimum Wages
                                     </span>
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="projectDetails"
-                                    [checked]="tabIndex==2" />
-                                <label class="nav" for="projectDetails" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/job-information/project-details']"
-                                    (click)="hiddenSummary = false">
+                                    [checked]="tabIndex==4" />
+                                <div class="tabs jobtabs about-page" *ngIf="projectTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="projectDetails"
+                                    (click)="hiddenSummary = false;projectTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/project-details']">
                                     <span>
-                                        Project Details
+                                        Project
                                     </span>
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="deputationDetails"
-                                    [checked]="tabIndex==3" />
-                                <label class="nav" for="deputationDetails" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/job-information/deputation-details']"
-                                    (click)="hiddenSummary = false">
+                                    [checked]="tabIndex==5" />
+                                <div class="tabs jobtabs about-page" *ngIf="deputationTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="deputationDetails"
+                                    (click)="hiddenSummary = false;deputationTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/deputation-details']">
                                     <span>
-                                        Deputation Details
+                                        Deputation
                                     </span>
                                 </label>
 
 
-                                <div class="jobtabs about-page">
+                                <!-- <div class="jobtabs about-page">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
-
-                                        <div class="col-sm-6 col-md-3" *ngIf="hiddenSummary">
-                                            <label class="form-label">Payroll Area</label>
-                                            <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
-                                            (completeMethod)="filterpayrollArea($event)" [dropdown]="true"
-                                            (onSelect)="selectPayrollArea($event)"
-                                            [(ngModel)]="payrollAreaCode">
-                                        </p-autoComplete>
-                                        </div>
-                                        <br>
-                                        <legend style="font-size: 17px !important;" *ngIf="hiddenSummary">Summary
-                                        </legend>
-                                        <p-table [value]="summaryGridData" [scrollable]="true"
-                                            [style]="{width:'1000px'}" scrollHeight="200px" *ngIf="hiddenSummary">
-                                            <ng-template pTemplate="colgroup" let-education>
-                                                <colgroup>
-                                                    <col style="width:150px">
-                                                    <col style="width:120px">
-                                                    <col style="width:120px">
-                                                    <col style="width:170px">
-                                                    <col style="width:175px">
-                                                    <col style="width:170px">
-                                                </colgroup>
-                                            </ng-template>
-                                            <ng-template pTemplate="header">
-                                                <tr>
-                                                    <th class="primeng-table-header-center">Job Detail</th>
-                                                    <th class="primeng-table-header-center">Job Field</th>
-                                                    <th class="primeng-table-header-center">Value</th>
-                                                    <th class="primeng-table-header-center">From Date</th>
-                                                    <th class="primeng-table-header-center">To Date</th>
-                                                    <th class="primeng-table-header-center">Action</th>
-                                                </tr>
-                                            </ng-template>
-                                            <ng-template pTemplate="body" let-job>
-                                                <tr>
-                                                    <td class="primeng-table-header-center"><span>
-                                                        {{job.jobDetail}}
-                                                        </span></td>
-
-                                                    <td class="primeng-table-header-center"><span>
-                                                        {{job.jobField}}
-                                                        </span></td>
-
-                                                    <td class="primeng-table-header-center"><span>
-                                                        {{job.value}}
-                                                    </span></td>
-
-                                                    <td class="primeng-table-header-center"><span>
-                                                        {{job.fromDate}}
-                                                    </span></td>
-
-                                                    <td class="primeng-table-header-center"><span>
-                                                        {{job.toDate}}
-                                                    </span></td>
-                                                    <td  class="primeng-table-header-center"><span><i
-                                                            *ngIf="job.jobDetail"
-                                                                class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
-                                                                tooltip="Edit"
-                                                                (click)="editJobDetails(job.jobDetail)"></i>
-
-                                                            <!-- <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1"
-                                                                tooltip="View"></i> -->
-                                                            </span>
-
-                                                        <!-- <i class="fa fa-times font-16 text-red cursor-pointer"
-                                                            tooltip="Delete"></i> -->
-                                                    </td>
-                                                </tr>
-                                            </ng-template>
-                                        </p-table>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

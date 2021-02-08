@@ -11,6 +11,7 @@ import { ContactInformationService } from './../../../employee-master-services/c
 import { FamilyInformationService } from './../../../employee-master-services/family-information.service';
 import { ConfirmationModalComponent } from './../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../../employee-master-services/shared-service/shared-information.service';
+import { Router } from '@angular/router';
 
 
 
@@ -50,7 +51,7 @@ export class FamilyDetailsComponent implements OnInit {
   shareCountryDataSubcription: Subscription;
   allGenders = 'Male,Female,Trans'.split(',');
   maritalStatusList = 'Single,Married,Widow,Widower,Divorced'.split(',');
-  relationshipList = 'Father,Mother,Brother,Sister,Wife,Son,Daughter,Husband,Mother in Law,Father in Law'.split(',');
+  relationshipList = 'Mother,Father,Wife,Husband,Daughter,Son,Sister,Brother,Mother-in-law,Father-in-law'.split(',');
   filteredRelationshipList: Array<any> = [];
   ageBracketList = 'Minor,Adult,Senior Citizen,Very Senior Citizen'.split(',');
   familyHT: any;
@@ -69,7 +70,7 @@ export class FamilyDetailsComponent implements OnInit {
   filteredCopyFromAddressList: Array<any> = [];
   filteredcountryCode: Array<any> = [];
   updateFormFlag: boolean = false;
-
+  saveNextBoolean: boolean = false
 
 
   constructor(private formBuilder: FormBuilder,
@@ -80,8 +81,11 @@ export class FamilyDetailsComponent implements OnInit {
     private ContactInformationService: ContactInformationService,
     private FamilyInformationService: FamilyInformationService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    private router: Router,
     private matDialog: MatDialog,
     private CommonDataService: SharedInformationService) { }
+  birthdateClickboolean: boolean = false;
+  validBirthDate: boolean;
 
 
   ngOnInit(): void {
@@ -90,20 +94,20 @@ export class FamilyDetailsComponent implements OnInit {
 
 
     this.FamilyDetailsInfoForm = this.formBuilder.group({
-      familyMemberName: ['', Validators.required],
+      familyMemberName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       dateOfBirth: [this.tomorrow, Validators.required],
       relation: ['', Validators.required],
       gender: ['', Validators.required],
       maritalStatus: ['', Validators.required],
-      fatherHusbandName: ['', Validators.required],
-      aadhaar: [''],
+      fatherHusbandName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      aadhaar: ['', Validators.pattern(/^(\d{12}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)],
       nameAsPerAadhaar: [''],
-      ageBracket: ['', Validators.required],
+      ageBracket: [{ value: null, disabled: true }, Validators.required],
       companyMediclaimApplicable: [''],
       isDependant: [''],
       image: [''],
       remark: [''],
-      isActive: [''],
+      isActive: [{ value: null, disabled: true }],
       companyMediclaimToggle: ['', Validators.required],
       dependentOnEmployeeToggle: ['', Validators.required],
       addressDetailsCountryCode: [''],
@@ -199,7 +203,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   dependentOnEmployeeValidation(event) {
-    debugger
+
     if (event.target.defaultValue == "yes") {
       this.dependentOnEmployee = "yes";
       this.familyMemberInfoRequestDTO.isDependant = 1;
@@ -210,7 +214,7 @@ export class FamilyDetailsComponent implements OnInit {
     }
   }
   companyMediclaimValidation(event) {
-    debugger
+
     if (event.target.defaultValue == "yes") {
       this.companyMediclaim = "yes";
       this.familyMemberInfoRequestDTO.companyMediclaimApplicable = 1;
@@ -221,11 +225,15 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   activeSetBoolean(event) {
-
-    if (event.checked == true) {
+    
+    if (event == true) {
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
+      this.FamilyDetailsInfoForm.get('remark').clearValidators();
+      this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
     } else {
       this.familyMemberInfoRequestDTO.isMemberActive = 0;
+      this.FamilyDetailsInfoForm.get('remark').setValidators([Validators.required]);
+      this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
     }
   }
 
@@ -237,6 +245,20 @@ export class FamilyDetailsComponent implements OnInit {
     this.dependentOnEmployee = 'no';
     this.companyMediclaim = 'no';
     this.IsActive = true;
+    this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('no');
+    this.FamilyDetailsInfoForm.get('companyMediclaimToggle').setValue('no');
+    this.FamilyDetailsInfoForm.get('isActive').setValue(true);
+
+    this.FamilyDetailsInfoForm.get('relation').setValue('');
+    this.FamilyDetailsInfoForm.get('gender').setValue('');
+    this.FamilyDetailsInfoForm.get('maritalStatus').setValue('');
+    this.FamilyDetailsInfoForm.get('ageBracket').setValue('');
+
+    this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValue('');
+    this.FamilyDetailsInfoForm.get('copyFrom').setValue('');
+    this.FamilyDetailsInfoForm.get('guardianCountryCode').setValue('');
+    const isActive = this.FamilyDetailsInfoForm.get('isActive');
+    isActive.disable();
   }
 
   getGuardianAddressFromPIN() {
@@ -248,7 +270,7 @@ export class FamilyDetailsComponent implements OnInit {
 
     if (this.guardianDetailRequestDTO.pincode.length == 6) {
       this.ContactInformationService.getAddressFromPIN(this.guardianDetailRequestDTO.pincode).subscribe(res => {
-        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        // this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
         this.guardianDetailRequestDTO.state = res.data.results[0].state;
         this.guardianDetailRequestDTO.city = res.data.results[0].city;
@@ -267,7 +289,7 @@ export class FamilyDetailsComponent implements OnInit {
 
     if (this.familyAddressDetailRequestDTO.pinCode.length == 6) {
       this.ContactInformationService.getAddressFromPIN(this.familyAddressDetailRequestDTO.pinCode).subscribe(res => {
-        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        // this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.familyAddressDetailRequestDTO.state = res.data.results[0].state;
         this.familyAddressDetailRequestDTO.city = res.data.results[0].city;
       }, (error: any) => {
@@ -277,7 +299,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   saveFamilyInformation() {
-    
+
     const body: FormData = new FormData();
 
     body.append('files', this.selectedImageFile);
@@ -287,15 +309,33 @@ export class FamilyDetailsComponent implements OnInit {
       this.resetFamilyDetailsForm();
       this.getFamilyGridSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/family-information/family-details']);
+      }
+      this.familyEditingItem.isMemberActive = 'Active';
+      this.IsActive = true;
+      const isActive = this.FamilyDetailsInfoForm.get('isActive');
+      isActive.disable();
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
   }
 
+  familySaveNextSubmit(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
+    guardianDetailRequestDTO) {
+
+    this.saveNextBoolean = true;
+
+    this.pushFamilyDetailsToGrid(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
+      guardianDetailRequestDTO);
+  }
+
+
   // Push Education Form Data to Summary Grid
   pushFamilyDetailsToGrid(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
     guardianDetailRequestDTO) {
-    
+
     familyMemberInfoRequestDTO.employeeMasterId = this.employeeMasterId
     familyAddressDetailRequestDTO.employeeMasterId = this.employeeMasterId
     guardianDetailRequestDTO.employeeMasterId = this.employeeMasterId
@@ -312,7 +352,7 @@ export class FamilyDetailsComponent implements OnInit {
         if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName ||
           element.relation == familyMemberInfoRequestDTO.relation) {
           valid = false;
-          // this.CommonDataService.sweetalertError('This record is already present', "Attention..!!");
+          this.CommonDataService.sweetalertError('This record is already present');
           return;
         }
       })
@@ -336,27 +376,28 @@ export class FamilyDetailsComponent implements OnInit {
       //   this.selectedImageFileList.push(this.selectedImageFile);
       // }
 
-      if (this.addressPhoneNo) {
-        familyAddressDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.addressDetailsCountryCode +
-          this.FamilyDetailsInfoForm.value.addressDetailsMobileNumber;
-      }
+      // if (this.addressPhoneNo) {
+      //   familyAddressDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.addressDetailsCountryCode + ' ' +
+      //     this.FamilyDetailsInfoForm.value.addressDetailsMobileNumber;
+      // }
 
       this.FamilyInformation.familyAddressDetailRequestDTO = familyAddressDetailRequestDTO;
 
-      if (this.guardianPhoneNo) {
-        guardianDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.guardianCountryCode +
-          this.FamilyDetailsInfoForm.value.guardianMobileNumber;
-      }
+      // if (this.guardianPhoneNo) {
+      //   guardianDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.guardianCountryCode + ' ' +
+      //     this.FamilyDetailsInfoForm.value.guardianMobileNumber;
+      // }
 
       this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
+      this.saveFamilyInformation();
     }
     valid = true;
-    this.saveFamilyInformation();
+
   }
 
   saveFamilyEditRow(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
     guardianDetailRequestDTO) {
-    
+
     if (familyMemberInfoRequestDTO) {
       familyMemberInfoRequestDTO.employeeMasterId = this.employeeMasterId;
     }
@@ -373,10 +414,14 @@ export class FamilyDetailsComponent implements OnInit {
     if (this.guardianCountryCode) {
       this.guardianDetailRequestDTO.phoneNumber = this.guardianCountryCode + ' ' + this.guardianPhoneNo;
     }
-
+    if (this.IsActive == true) {
+      this.familyMemberInfoRequestDTO.isMemberActive = 1;
+    } else {
+      this.familyMemberInfoRequestDTO.isMemberActive = 0;
+    }
     const array = []
     this.familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(this.familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
-    
+
     this.FamilyInformation.familyMemberInfoRequestDTO = familyMemberInfoRequestDTO;
     this.FamilyInformation.familyAddressDetailRequestDTO = familyAddressDetailRequestDTO;
     this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
@@ -397,13 +442,15 @@ export class FamilyDetailsComponent implements OnInit {
       this.resetFamilyDetailsForm();
       this.updateFormFlag = false;
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.familyEditingItem.isMemberActive = 'Active';
+      this.IsActive = true;
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
   }
 
   populateGender(relation) {
-    
+
     if (relation.value == 'Father' || relation.value == 'Brother' || relation.value == 'Son' ||
       relation.value == 'Husband' || relation.value == 'Father in Law') {
       this.familyMemberInfoRequestDTO.gender = 'Male';
@@ -413,28 +460,42 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   birthDateValidation() {
-    
-    let dateObj = new Date();
-    dateObj = this.familyMemberInfoRequestDTO.dateOfBirth;
-    var month = dateObj.getMonth() + 1; //months from 1-12
-    var day = dateObj.getDate();
-    var year = dateObj.getFullYear();
 
-    return new Date(year + 18, month - 1, day) <= new Date();
+    if ((this.familyMemberInfoRequestDTO.dateOfBirth != '' ||
+      this.familyMemberInfoRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
+      let dateObj = new Date(this.familyMemberInfoRequestDTO.dateOfBirth);
+      // dateObj = this.familyMemberInfoRequestDTO.dateOfBirth;
+      var month = dateObj.getMonth() + 1; //months from 1-12
+      var day = dateObj.getDate();
+      var year = dateObj.getFullYear();
+
+      this.validBirthDate = new Date(year + 18, month - 1, day) <= new Date();
+      if (this.validBirthDate == false && this.familyMemberInfoRequestDTO.dateOfBirth != '') {
+        this.birthD(this.validBirthDate);
+      }
+      if (this.validBirthDate == true && this.familyMemberInfoRequestDTO.dateOfBirth) {
+        this.familyMemberInfoRequestDTO.ageBracket = 'Adult';
+        const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
+        temp13.enable();
+      }
+    }
+
+
   }
-  birthD() {
-    
-    if (this.birthDateValidation() == false) {
+  birthD(validBirthDate) {
+    this.birthdateClickboolean = false;
+    if (validBirthDate == false) {
       this.familyMemberInfoRequestDTO.ageBracket = 'Minor';
       this.dependentOnEmployee = 'yes';
       this.familyMemberInfoRequestDTO.isDependant = 1;
       const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
       temp13.disable();
-    } else {
-      this.familyMemberInfoRequestDTO.ageBracket = 'Adult';
-      const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
-      temp13.enable();
     }
+
+  }
+  birthDateClickEvent(event) {
+
+    this.birthdateClickboolean = true;
   }
   getAge(birthDateString) {
 
@@ -470,7 +531,7 @@ export class FamilyDetailsComponent implements OnInit {
   getCopyFromAddress() {
 
     this.FamilyInformationService.getCopyFromAddress(this.employeeMasterId).subscribe(res => {
-      
+
       this.getAddressCopyFromList = res.data.results[0].allAddressBeans;
 
       const newa = res.data.results[0].allAddressBeans.forEach(element => {
@@ -483,7 +544,7 @@ export class FamilyDetailsComponent implements OnInit {
   getFamilyGridSummary() {
 
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe(res => {
-      
+
       this.FamilySummaryGridData = res.data.results[0].familyDetailsSummaryBeans;
 
       this.FamilySummaryGridData.forEach(res => {
@@ -506,12 +567,12 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   getAddressFromCopyList(copyAddress) {
-    
+
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
 
       let num: string
-      if (copyAddress == 'Employee Local Address') {
+      if (copyAddress.value == 'Employee Local Address') {
         if (element.local) {
           return this.familyAddressDetailRequestDTO = element.local,
             this.familyAddressDetailRequestDTO.pinCode = element.local.postalCode,
@@ -520,7 +581,7 @@ export class FamilyDetailsComponent implements OnInit {
             this.addressCountryCode = num.slice(0, num.length - 10);
         }
       }
-      if (copyAddress == 'Employee Permanent Address') {
+      if (copyAddress.value == 'Employee Permanent Address') {
         if (element.permanent) {
           return this.familyAddressDetailRequestDTO = element.permanent,
             this.familyAddressDetailRequestDTO.pinCode = element.permanent.postalCode,
@@ -529,7 +590,7 @@ export class FamilyDetailsComponent implements OnInit {
             this.addressCountryCode = num.slice(0, num.length - 10);
         }
       }
-      if (copyAddress == element.memberName + ' ' + element.relation) {
+      if (copyAddress.value == element.memberName + ' ' + element.relation) {
         if (element.addressDetail) {
           return this.familyAddressDetailRequestDTO = element.addressDetail,
             this.familyAddressDetailRequestDTO.pinCode = element.addressDetail.postalCode,
@@ -624,13 +685,18 @@ export class FamilyDetailsComponent implements OnInit {
   editFamilyMember(family) {
     this.enableForm();
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-      
+
       this.updateFormFlag = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
       this.familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(this.familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
 
-      this.imageUrl = 'data:' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.type + ';base64,' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.image;
+      if (res.data.results[0].familyDetailsGetBean.familyMemberInfo.image) {
+        this.imageUrl = 'data:' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.type + ';base64,' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.image;
+      } else {
+        this.imageUrl = "./assets/images/empIcon5.png";
+      }
+
       if (this.familyMemberInfoRequestDTO.isDependant == 1) {
         this.dependentOnEmployee = "yes";
       } else {
@@ -665,17 +731,27 @@ export class FamilyDetailsComponent implements OnInit {
           num1 = this.guardianDetailRequestDTO.phoneNumber,
           this.guardianCountryCode = num1.slice(0, num1.length - 11);
       }
+
+      const isActive = this.FamilyDetailsInfoForm.get('isActive');
+      isActive.enable();
     })
   }
 
   viewFamilyMember(family) {
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-      
+
       this.disableForm();
+      this.updateFormFlag = false;
       this.familyViewItem = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
-      this.imageUrl = 'data:' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.type + ';base64,' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.image;
+
+      if (res.data.results[0].familyDetailsGetBean.familyMemberInfo.image) {
+        this.imageUrl = 'data:' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.type + ';base64,' + res.data.results[0].familyDetailsGetBean.familyMemberInfo.image;
+      } else {
+        this.imageUrl = "./assets/images/empIcon5.png";
+      }
+
       if (this.familyMemberInfoRequestDTO.isDependant == 1) {
         this.dependentOnEmployee = "yes";
       } else {
@@ -686,10 +762,25 @@ export class FamilyDetailsComponent implements OnInit {
       } else {
         this.companyMediclaim = "no";
       }
+      this.familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(this.familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
 
       this.familyAddressDetailRequestDTO = res.data.results[0].familyDetailsGetBean.familyAddressDetail;
+
+      if (this.familyAddressDetailRequestDTO.phoneNumber) {
+        let num;
+        this.addressPhoneNo = this.familyAddressDetailRequestDTO.phoneNumber.slice(this.familyAddressDetailRequestDTO.phoneNumber.length - 10),
+          num = this.familyAddressDetailRequestDTO.phoneNumber,
+          this.addressCountryCode = num.slice(0, num.length - 11);
+      }
+
       this.guardianDetailRequestDTO = res.data.results[0].familyDetailsGetBean.guardianDetail;
 
+      if (this.guardianDetailRequestDTO.phoneNumber) {
+        let num1;
+        this.guardianPhoneNo = this.guardianDetailRequestDTO.phoneNumber.slice(this.guardianDetailRequestDTO.phoneNumber.length - 10),
+          num1 = this.guardianDetailRequestDTO.phoneNumber,
+          this.guardianCountryCode = num1.slice(0, num1.length - 11);
+      }
     })
   }
 
@@ -698,7 +789,8 @@ export class FamilyDetailsComponent implements OnInit {
     this.enableForm();
     this.familyViewItem = false;
     this.updateFormFlag = false;
-
+    const isActive = this.FamilyDetailsInfoForm.get('isActive');
+    isActive.disable();
     this.dependentOnEmployee = 'no';
     this.companyMediclaim = 'no';
     this.IsActive = true;
@@ -864,5 +956,14 @@ export class FamilyDetailsComponent implements OnInit {
     temp37.enable();
     const temp38 = this.FamilyDetailsInfoForm.get('guardianVillege');
     temp38.enable();
+  }
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

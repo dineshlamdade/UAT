@@ -4,10 +4,10 @@
     width: 100%;
     overflow: hidden;
     grid-template-rows: 40px 1fr;
-    grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr;
     font-family: Montserrat, sans-serif!important;
   }
-
+ 
   .jobtabview input[type="radio"] {
     display: none;
   }
@@ -46,10 +46,10 @@
   }
 
   .jobtabs {
-    grid-column-start: 1;
-    grid-row-start: 2;
-    grid-column-end: span 5;
-    padding: 0px 0px;
+    grid-column-start: 1 !important;
+    grid-row-start: 2 !important;
+    grid-column-end: span 6 !important;
+    padding: 0px 0px !important;
     /* display: flex; */
     align-items: center;
   }

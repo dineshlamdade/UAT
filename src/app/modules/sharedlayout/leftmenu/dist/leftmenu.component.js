@@ -13,9 +13,10 @@ exports.LeftmenuComponent = void 0;
 var core_1 = require("@angular/core");
 var app_component_1 = require("src/app/app.component");
 var LeftmenuComponent = /** @class */ (function () {
-    function LeftmenuComponent(router, app) {
+    function LeftmenuComponent(router, app, EventEmitterService) {
         this.router = router;
         this.app = app;
+        this.EventEmitterService = EventEmitterService;
         this.isCollapsed = true;
         this.isEmployeeMaster = true;
         this.isProjectCollapsed = true;
@@ -32,6 +33,7 @@ var LeftmenuComponent = /** @class */ (function () {
         this.toggle3 = true;
         this.staticscard = true;
         this.friendscard = true;
+        this.ischaptersettingCollapsed = true;
         if ((this.router.url).includes('payroll')) {
             this.isCollapsed = false;
         }
@@ -47,14 +49,33 @@ var LeftmenuComponent = /** @class */ (function () {
         if ((this.router.url).includes('uploadexcel')) {
             this.isUploadExcel = false;
         }
+        if ((this.router.url).includes('companysetting')) {
+            this.ischaptersettingCollapsed = false;
+        }
+        if ((this.router.url).includes('employee-master')) {
+            this.isEmployeeMaster = false;
+        }
     }
     LeftmenuComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.menuDetails = [{
                 collapsed: false,
                 icon: 'icon-rocket',
                 name: 'Dashboard',
                 routerlink: '/dashboard'
             },
+            ////////////////////
+            {
+                collapsed: true,
+                icon: 'icon-credit-card',
+                name: 'Company Settings',
+                subDetails: [{
+                        name: 'payroll',
+                        routerlink: '/companysetting/payroll'
+                    },
+                ]
+            },
+            //////////////////////////////
             {
                 collapsed: true,
                 icon: 'icon-credit-card',
@@ -90,6 +111,17 @@ var LeftmenuComponent = /** @class */ (function () {
                     }]
             },
         ];
+        this.updateEmpIdSubscription = this.EventEmitterService.setUpdateEmployeeId().subscribe(function (res) {
+            _this.employeeMasterId = res;
+            _this.checkEmpId();
+        });
+    };
+    LeftmenuComponent.prototype.checkEmpId = function () {
+        var empId = localStorage.getItem('employeeMasterId');
+        this.employeeMasterId = Number(empId);
+        if (this.employeeMasterId) {
+            return true;
+        }
     };
     LeftmenuComponent.prototype.ngAfterViewInit = function () {
         var _this = this;

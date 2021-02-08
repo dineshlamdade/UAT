@@ -19,20 +19,14 @@ import { MatSliderModule } from '@angular/material/slider';
 import { EightyCComponent } from './eighty-c/eighty-c.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { NPSComponent } from './VI-A/nps/nps.component';
-import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
-import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
-import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
+import { PrimeNGModule } from '../../app.primeNG.module';
+// import { PrimeNGModule } from 'src/app/app.primeNG.module';
 
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
     EightyCComponent,
-    NPSComponent,
-    NpsSummaryComponent,
-    NpsMasterComponent,
-    NpsDeclarationComponent,
-  ],
+   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -56,6 +50,7 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

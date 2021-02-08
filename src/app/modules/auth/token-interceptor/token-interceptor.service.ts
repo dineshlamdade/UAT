@@ -51,11 +51,11 @@ export class TokenInterceptorService implements HttpInterceptor {
       this.alertService.sweetalertError('Failed To load Resource,  Please Try Again !!', );
       break;
    }
-     default : {
-      console.log('default error');
-      this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
-      break;
- }
+//      default : {
+//       console.log('default error');
+//       this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
+//       break;
+//  }
 
         }
 

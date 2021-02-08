@@ -66,6 +66,7 @@ private readonly JWT_TOKEN = '%qycutr';
   logout() {
 
     this.doLogoutUser();
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 
