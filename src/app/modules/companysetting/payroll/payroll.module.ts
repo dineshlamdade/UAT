@@ -1,6 +1,6 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, Pipe } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
@@ -12,22 +12,12 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
-import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
-import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { MatSliderModule } from '@angular/material/slider';
-
-import { payrollComponent } from './bc/bc.component';
-import {HeadcreationComponent} from './headcreation/headcreation.component';
-import {AttributecreationComponent} from './attributecreation/attributecreation.component';
-import {AttributeselectionComponent} from './attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './payrollheadgroupcreation/payrollheadgroupcreation.component';
-import { CompanySettingRoutingModule } from './companysetting.routing.module';
-import { CompanySettingComponent } from './companysetting.component';
-import { pipe } from 'rxjs';
-// import {TableModule} from 'primeng/table';
-// import {ButtonModule} from 'primeng/button';
-import { CustomerService } from './payroll/financial-master/customerservice';
+import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
+import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
+import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
+import { FinancialMasterComponent } from './financial-master/financial-master.component';
+import { CommonModule, DatePipe } from '@angular/common';
+import { CompanySettingRoutingModule } from '../companysetting.routing.module';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
 import {CalendarModule} from 'primeng/calendar';
@@ -41,16 +31,14 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ProgressBarModule} from 'primeng/progressbar';
 
 
+
 @NgModule({
-  declarations: [
-    payrollComponent,
-    HeadcreationComponent,
-    AttributecreationComponent,
-    AttributeselectionComponent,
-    PayrollheadgroupcreationComponent,
-    CompanySettingComponent,
-   // GarnishmentMasterComponent,
-   // FinancialMasterComponent
+
+  declarations: [ 
+    FinancialMasterComponent,
+    GarnishmentMasterComponent,
+    
+
   ],
   imports: [
     CommonModule,
@@ -70,30 +58,32 @@ import {ProgressBarModule} from 'primeng/progressbar';
     CarouselModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
-    NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
     }),
     SharedlayoutModule,
-
     CompanySettingRoutingModule,
     TableModule,
-    
     CalendarModule,
 		SliderModule,
 		DialogModule,
 		MultiSelectModule,
 		ContextMenuModule,
-	
+		
 		ButtonModule,
 		ToastModule,
     InputTextModule,
     ProgressBarModule,
    
   ],
+ 
+  
 
-  providers: [ DatePipe, NumberFormatPipe,CustomerService],
-
+  providers: [ DatePipe,
+     NumberFormatPipe,
+     Pipe,],
+     schemas: [
+      CUSTOM_ELEMENTS_SCHEMA
+    ],
 })
-export class CompanySettingModule { }
-
+export class PayrollModule { }

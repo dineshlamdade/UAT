@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+// import { Table } from "primeng/table";
+import { Table } from 'primeng/table/primeng-table';
+
 
 @Component({
   selector: 'app-financial-master',
@@ -6,10 +9,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./financial-master.component.scss']
 })
 export class FinancialMasterComponent implements OnInit {
+  
+  
+
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit() {
+      
+      }
 
-}
+    
+
+  }

@@ -33,8 +33,9 @@ export class GarnishmentService {
 
   // get api for ganish master
   getGarnishmentMaster() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + '/garnishment-master' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+    return this._HTTP.get('http://localhost:8084/hrms/v1/garnishment-master' )
     .pipe(map((res: any) => {
+      console.log(res)
       return res;
     }
     ));
@@ -50,19 +51,28 @@ export class GarnishmentService {
   }
 
   updateGarnishmentMasterDetails(data) {
-    return this._HTTP.post(this.apiUrl + '/garnishment-master/get/1', data)
+    console.log('end data',data)
+    return this._HTTP.put(this.apiUrl + '/garnishment-master', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+ 
+  
+  deleteGarnishmentMasterDetails(masterid:number):Observable<number> {
+    return this._HTTP.delete<number>(this.apiUrl + '/garnishment-master/delete/'+ masterid)
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
-  
-  deleteGarnishmentMasterDetails(): Observable<any> {
-    return this._HTTP.get(this.apiUrl + '/garnishment-master/get/1')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
+  // deleteGarnishmentMasterDetails():Observable<any> {
+  //   return this._HTTP.delete(this.apiUrl + '/garnishment-master',{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+
+  // }
 
 
   
@@ -97,14 +107,7 @@ export class GarnishmentService {
       ));
     }
 
-    // get api for Loan Master Get All Earning Head
-    // getloanMasterAllEarningHead() : Observable<any> {
-    //   return this._HTTP.get(this.apiUrl + '/loan-Master/getEarning' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
-    //   .pipe(map((res: any) => {
-    //     return res;
-    //   }
-    //   ));
-    // }
+    
 
      // get api for GET ALL FrequecyDetails.
      getALLFrequecyDetails() : Observable<any> {
@@ -114,7 +117,7 @@ export class GarnishmentService {
       }
       ));
     }
-
+    // get api for institution Name.
     getInstitutionMaster() : Observable<any> {
       return this._HTTP.get(this.apiUrl3 + '/compliance-institution-master/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
@@ -123,6 +126,17 @@ export class GarnishmentService {
       ));
     }
 
+    // get api for compliance head Name.
+    getComplianceHeadNane() : Observable<any> {
+      return this._HTTP.get(this.apiUrl3 + '/compliance-head/details' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }
+      ));
+    }
+
+    // get api for IndianIncomeTex
+
     getindianincometax() : Observable<any> {
       return this._HTTP.get(this.apiUrl + '/indian-income-tax' ,{ headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
@@ -130,13 +144,15 @@ export class GarnishmentService {
       }
       ));
     }
+    // get api for PinCode
     getAddressFromPIN(postalCode) {
 
-      return this._HTTP.get(this.apiUrl4  + '/pincode-details-check' + postalCode, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+      return this._HTTP.get(this.apiUrl4  + '/pincode-details-check/' + postalCode, { headers: { 'X-TenantId': 'PaysquareGlobal' } })
         .pipe(map((res: any) => {
           return res;
         }))
     }
+    // get api for Country List
       getLocationInformationOrCountryList() {
   
         return this._HTTP.get(this.apiUrl4   + '/location-information/country', { headers: { 'X-TenantId': 'PaysquareGlobal' } })

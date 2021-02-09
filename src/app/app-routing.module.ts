@@ -17,13 +17,14 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
 const routes: Routes = [
   { path: 'auth', loadChildren: './modules/auth/auth.module#AuthModule' },
   { path: '', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
-  { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
+ 
   { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
  { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
  
+  { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
   {
     path: 'investment',
     loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
@@ -37,13 +38,16 @@ const routes: Routes = [
     loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
   },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
+  // { path: 'company-setting', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
+  // { path: 'company-setting', 
+  // loadChildren: './modules/company-setting/company-setting.module#Company-setting' },
   
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 
 
     //////////////////////////////////////////
-    { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
+    
     // {
     //   path: 'payroll',
     //   component: payrollComponent,

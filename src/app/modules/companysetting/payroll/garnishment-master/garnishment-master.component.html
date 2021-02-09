@@ -8,14 +8,24 @@
           <fieldset>
             <legend>Ganishment Details</legend>
             <div class="row">
+              <div class="col-sm-3">
+                <label class="form-label">ComplianceHeadName</label>
+                <select name="complianceHeadName" id="complianceHeadName" class="form-control"
+                   formControlName="complianceHeadName" (change)='onSelectHeadName($event)'>
+                  <option *ngFor="let complianceHeadName of complianceHeadNameList" 
+                    [value]="complianceHeadName.value">
+                {{complianceHeadName.label}}
+                  </option>
+                </select>
+              </div>
               <div class="col-sm-3" *ngIf="!isEditMode">
-                <label class="form-label"> Code</label>
+                <label class="form-label">Institution name</label>
                 <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
                   [ngClass]="{'is-invalid' : form.get('nameOfInstitution').status == 'INVALID'}"
                   formControlName="nameOfInstitution" (change)='onSelectThirdPartyMasterId($event)'>
-                  <option *ngFor="let reason of complianceInstitutionMasterDetails" 
-                    [value]="reason.value">
-                {{reason.label}}
+                  <option *ngFor="let nameOfInstitution of complianceInstitutionMasterDetails1" 
+                    [value]="nameOfInstitution.value">
+                {{nameOfInstitution.label}}
                   </option>
                 </select>
               </div>
@@ -29,7 +39,7 @@
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Description</label>
                 <input type="text" formControlName="description" class="form-control align-right" name="description"
-                  [ngClass]="{'is-invalid' : form.get('description').status == 'INVALID'}">
+                [ngClass]="{'is-invalid' : form.get('description').status == 'INVALID'}" >
 
               </div>
               <div class="col-sm-6 col-md-3">
@@ -44,6 +54,8 @@
                    <div *ngIf="form.contactPerson.errors.required">Contact Person is mandatory</div>
                 </div> -->
               </div>
+            </div>
+            <div class="row mt-4 mb-10">
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Phone Number</label>
                 <div class="form-group">
@@ -51,15 +63,15 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class=""></i></span>
                     </div>
-                    <input type="text" formControlName="contactNumber" class="form-control align-right"
-                      name="contactNumber" [ngClass]="{'is-invalid' : form.get('contactNumber').status == 'INVALID'}">
+                    <input type="text" formControlName="contactNumber" class="form-control align-right" minlength="10" maxlength="12"
+                      name="contactNumber"  [ngClass]="{ 'is-invalid': submitted && form.contactNumber.errors } ">
 
 
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row mt-4 mb-10">
+            
+           
               <div class="col-sm-6 col-md-3">
                 <!-- <label class="form-label">Email Id</label>
                 <input type="text" formControlName="emailId" class="form-control align-right" name="emailId"
@@ -88,6 +100,8 @@
                   <input type="text" formControlName="address2" class="form-control"
                      [ngClass]="{ 'is-invalid': submitted && form.address2.errors }"  >
               </div>
+            </div>
+            <div class="row mt-4 mb-10">
               <div class="col-sm-6 col-md-3">
                 <!-- <label class="form-label">Address3</label>
                 <input type="text" formControlName="address3" class="form-control align-right" name="address3"
@@ -98,8 +112,8 @@
                      [ngClass]="{ 'is-invalid': submitted && form.address3.errors }">
               </div>
 
-            </div>
-            <div class="row mt-4 mb-10">
+            
+           
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Country</label>
                 <select name="country" id="country" formControlName="country" class="form-control custom-select"
@@ -107,8 +121,6 @@
                   <option *ngFor="let country of countryList" [value]="country.value" >
                     {{country.value}}
                   </option >
-                  <label class="form-label">Address3</label>
-                  
                 </select>
                 <!-- <input type="text" formControlName="country" class="form-control"
                      [ngClass]="{ 'is-invalid': submitted && form.country.errors }"> -->
@@ -140,7 +152,8 @@
                   <input type="text" formControlName="state" class="form-control"
                      [ngClass]="{ 'is-invalid': submitted && form.state.errors }">
               </div>
-
+          </div>
+            <div class="row mt-4 mb-10">
               <div class="col-sm-6 col-md-3">
                 <!-- <label class="form-label">City</label>
                 <input type="text" formControlName="city" class="form-control align-right" name="city"
@@ -150,9 +163,6 @@
                   <input type="text" formControlName="city" class="form-control"
                      [ngClass]="{ 'is-invalid': submitted && form.city.errors }">
               </div>
-
-            </div>
-            <div class="row mt-4 mb-10">
               <div class="col-sm-6 col-md-3">
                 <!-- <label class="form-label">Village</label>
                 <input type="text" formControlName="villege" class="form-control align-right"
@@ -197,7 +207,7 @@
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Deduction Head</label>
                 <select name="standardName" id="standardName" formControlName="standardName"
-                  class="form-control custom-select"
+                  class="form-control custom-select" (change)='onSelectMasterHead($event)'
                   [ngClass]="{'is-invalid' : form.get('standardName').status == 'INVALID'}">
                   <option *ngFor="let standardName of deductionHeadList" [value]="standardName.value">
                     {{standardName.value}}
@@ -232,7 +242,7 @@
               </div>
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Frequency/ies</label>
-                <select name="frequency" id="frequency" formControlName="frequency" class="form-control custom-select"
+                <select name="frequency" id="frequency"  formControlName="frequency" class="form-control custom-select"
                   [ngClass]="{'is-invalid' : form.get('frequency').status == 'INVALID'}">
                   <option *ngFor="let frequency of frequencyList" [value]="frequency.value">
                     {{frequency.value}}
@@ -258,19 +268,19 @@
                 <div class="custom-controls-stacked ml-15 mt-10">
                   <label class="custom-control custom-radio custom-control-inline">
                     <input formControlName="familyMember" type="radio" class="custom-control-input" name="familyMember"
-                      value=1 checked>
+                      [value]=true >
                     <span class="custom-control-label">Yes</span>
                   </label>
                   <label class="custom-control custom-radio custom-control-inline">
                     <input formControlName="familyMember" type="radio" class="custom-control-input" name="familyMember"
-                      value=0 >
+                      [value]=false checked>
                     <span class="custom-control-label">No</span>
                   </label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <label class="form-label pl-10">Remark </label>
-                <textarea formControlName="remark" class="form-control align-right" rows="1"></textarea>
+                <textarea  formControlName="remark" class="form-control align-right" rows="1"></textarea>
               </div>
             </div>
 
@@ -291,7 +301,7 @@
            </label>
         </div>
         <div class="col-md-3" *ngIf="hideRemarkDiv">
-           <label class="form-label pl-10">Remark</label>
+           <label class="form-label pl-10">General Remark</label>
            <textarea formControlName="generalRemark" class="form-control ml-10" rows="1"></textarea>
         </div>
      </div>
@@ -305,36 +315,38 @@
               <ng-container *ngIf="isSaveAndReset; else newDeb">
 
                 <button type="submit" 
-                  class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)="save()"
-                 ><b><i
-                      class="fa fa-floppy-o"></i></b> Save </button>
+                  class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                  (click)="save()"
+                  [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
+                  <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
                 <button type="button" tooltip="Reset" (click)="cancelView()"
-                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                      class="fa  fa-refresh"></i></b> Reset</button>
+                  class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                  <b><i class="fa  fa-refresh"></i></b> Reset</button>
 
               </ng-container>
 
               <ng-template #newDeb>
 
-                <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
-                        'btn-bg-green': !form.invalid}"
+                <button type="submit"
+                  
                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
-                  (click)="save()"><b><i class="fa fa-floppy-o"></i></b>
-                  Update</button>
+                  (click)="save()">
+                  <b><i class="fa fa-floppy-o"></i></b>Update</button>
 
 
-                <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                  tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
-                  Cancel</button>
+                <button type="button"
+                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                  tooltip="Cancel" (click)="cancelView()">
+                  <b><i class="fa fa-times-circle"></i></b> Cancel</button>
 
               </ng-template>
-
             </ng-container>
             <ng-container *ngIf="!showButtonSaveAndReset">
-              <button type="button" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
-                Cancel</button>
+              <button type="button"
+                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                tooltip="Cancel" (click)="cancelView()">
+                <b><i class="fa fa-times-circle"></i></b>Cancel</button>
             </ng-container>
           </div>
         </div> <!-- <end of div col-6 -->
@@ -381,9 +393,9 @@
                     </td>
                     <td class="wd-10"><span tooltip="{{summary.investmentSection}}">{{summary.investmentSection}}</span>
                     </td>
-                    <td class="wd-10"><span tooltip="{{summary.familyMember}}">{{summary.familyMember}}</span>
+                    <td class="wd-10"><span tooltip="{{summary.familyMember}}">{{summary.familyMember ? 'yes' : 'no'}}   </span>
                     </td>
-                    <td class="wd-10"><span tooltip="{{summary.generalRemark}}">{{summary.generalRemark}}</span>
+                    <td class="wd-10"><span tooltip="{{summary.generalRemark}}">{{summary.isActive}}</span>
                     </td>
 
 
@@ -393,8 +405,11 @@
 
                       <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
                         tooltip="View"></i>
-                      <i class="fas fa-trash font-16 text-red cursor-pointer ml-3" (click)="deleteMaster(i)"
+                      <i class="fa fa-trash-o font-16 text-red cursor-pointer ml-3" (click)="deleteMaster(summary.thirdPartyMasterId)"
                         tooltip="delete"></i>
+                      
+                          <!-- <i class="fa fa-times text-red font-18" (click)="removeSelectedRow(i)"></i> -->
+                       
                     </td>
                   </tr>
                   <tr *ngIf="!summaryHtmlDataList?.length">

@@ -1,0 +1,65 @@
+.page{
+    background-color: white !important;
+    border: 1px solid rgb(218, 217, 238);
+}
+.section-body{
+    background-color: white !important;
+   
+}
+.card-body{
+ background-color: rgb(231, 226, 226) !important;
+ padding: 8px 10px 5px !important;
+}
+.tabview-contents{
+  padding: 4px!important;
+}
+
+.d-flex{
+    background-color: rgb(231, 226, 226) !important;
+    border: 2px solid rgb(185, 180, 180)!important;
+}
+
+.payroll {
+    color: purple !important;
+    font-size: 11px;
+}
+.table-bordered{
+    border: 2px solid rgb(185, 180, 180)!important;    
+}
+
+.custom-controls-stacked{
+  border: 2px solid rgb(185, 180, 180)!important; 
+    padding-left: 2.5rem;
+    font-size: 11px;
+    padding-top: 0.2rem;
+}
+.cb-summary{
+  border: 2px solid rgb(185, 180, 180)!important;
+    padding:0.3rem;
+    background-color:rgb(231, 226, 226);
+    float: right;
+}
+.custom_btn{
+  line-height: 12px;
+}
+.btn-labeled>b{
+    padding: 5px;
+}
+.d-flex1{
+    background-color: rgb(231, 226, 226) !important;  
+    height: 100px;
+    border: 2px solid rgb(185, 180, 180)!important;
+}
+.form-select{
+  width: 20% !important;
+  font-size: 14px;
+
+  flex-wrap: wrap;
+ 
+}
+.form-control{
+  width: 30 !important;
+}
+.tabview label.nav span{
+    font-size: 12px!important;
+}

@@ -9,7 +9,7 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
@@ -50,23 +50,16 @@ import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { investmentOthersModule } from './modules/my-Investments/others/others.module';
-import { PayrollModule } from './modules/payroll/payroll.module';
+import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
 
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
 
-//////////////////////addaed by bharati////
-//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
-
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
-import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
-import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
 
-////////////////////////////////////
+
+
 
 
 
@@ -75,13 +68,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     AppComponent,
     ProfileComponent,
     SettingsComponent,
-    //////////////////////////
-   // payrollComponent,
-    // HeadcreationComponent,
-    // AttributecreationComponent,
-    // AttributeselectionComponent,
-    // PayrollheadgroupcreationComponent,
-///////////////////////////////////////
+
   ],
   imports: [
     BrowserModule,
@@ -118,12 +105,11 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     DashboardModule,
     MyInvestmentsModule,
     PayrollModule,
-
     EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	 AdminApprovalModule,
+	  AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
@@ -150,6 +136,9 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
       multi: true,
     },
   ],
+  // schemas: [
+  //   CUSTOM_ELEMENTS_SCHEMA
+  // ],
 
   bootstrap: [AppComponent]
 })
