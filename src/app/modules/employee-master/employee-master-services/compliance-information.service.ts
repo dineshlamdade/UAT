@@ -23,8 +23,8 @@ export class complianceInformationService {
   }
 
   //GET by compliance type API call to other master
-  getComplianceDetails(comapnyId,establishmentId,complianceType){
-    return this.httpClient.get(environment.baseUrl8083 + '/compliance-master/' + comapnyId +'/'+establishmentId+'/'+complianceType , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  getComplianceDetails(complianceMasterId){
+    return this.httpClient.get(environment.baseUrl8083 + '/compliance-master/' + complianceMasterId , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

@@ -251,7 +251,7 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="contributionFromDateControl" 
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.contributionFromDate" [format]="'dd-MMM-yyyy'"
-                            [min]="joiningDate" (change)="validateContributionToDate()">
+                            [minDate]="joiningDate" (focusout)="validateContributionToDate()">
                         </div>
                     </div>
                 </div>
@@ -267,7 +267,7 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="contributionToDateControl"
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.contributionToDate"  [format]="'dd-MMM-yyyy'"
-                        [min]="applicableFrom">
+                        [minDate]="applicableFrom">
                         </div>
                     </div>
                 </div>
@@ -328,8 +328,8 @@
                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="voluntaryFromDateControl"
-                        [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryFromDate" [format]="'dd-MMM-yyyy'" [min]="joiningDate"
-                        (change)="validateVoluntaryToDate()">
+                        [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryFromDate" [format]="'dd-MMM-yyyy'" 
+                        [minDate]="joiningDate" (focusout)="validateVoluntaryToDate()">
                         </div>
                     </div>
                 </div>
@@ -345,7 +345,7 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="voluntaryToDateControl"
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate" [format]="'dd-MMM-yyyy'" 
-                        [min]="voluntaryFromDateControl">
+                        [minDate]="voluntaryFromDateControl">
                         </div>
                     </div>
                 </div>
@@ -380,8 +380,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="saContributionFromDateControl"
-                    [(ngModel)]="InputDetailsModel.superAnnuationRequestDTO.saContributionFromDate"  (change)="validateSAContributionToDate()"
-                    [format]="'dd-MMM-yyyy'" [min]="joiningDate">
+                    [(ngModel)]="InputDetailsModel.superAnnuationRequestDTO.saContributionFromDate" 
+                     (focusout)="validateSAContributionToDate()"
+                    [format]="'dd-MMM-yyyy'" [minDate]="joiningDate">
                     </div>
                 </div>
             </div>
@@ -397,7 +398,7 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="saContributionToDateControl"
                     [(ngModel)]="InputDetailsModel.superAnnuationRequestDTO.saContributionToDate" 
-                    [format]="'dd-MMM-yyyy'" [min]="joiningDate">
+                    [format]="'dd-MMM-yyyy'" [minDate]="joiningDate">
                     </div>
                 </div>
             </div>
@@ -415,6 +416,7 @@
                     [ngClass]="{'disabled-btn-bg-green' : InputInfoForm.invalid || InputInfoForm.untouched,
                     'btn-bg-green': !InputInfoForm.invalid}" >
                     <b><i class="fa fa-floppy-o"></i></b>Save</button>
+
             </div>
         </div>
     </div>

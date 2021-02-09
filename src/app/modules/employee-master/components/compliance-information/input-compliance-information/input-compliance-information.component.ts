@@ -84,7 +84,7 @@ export class InputComplianceInformationComponent implements OnInit {
       voluntaryToDateControl: [{ value: null, disabled: true }],
       isEPSContributionTill60Control: [{ value: null, disabled: true }],
       //Super Annuation
-      saContributionRateControl: [],
+      saContributionRateControl: [{ value: null, disabled: true }],
       saContributionFromDateControl: [{ value: null, disabled: true }],
       saContributionToDateControl: [{ value: null, disabled: true }],
     });
@@ -102,10 +102,6 @@ export class InputComplianceInformationComponent implements OnInit {
     const companyId = localStorage.getItem('companyId')
     this.companyId = Number(companyId);
 
-    //   this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
-    //     this.currencyArray = res.data.results;
-    // }) 
-
     this.complianceInformationService.getEmployeeAge(this.employeeMasterId).subscribe(res => {
       if (res.data.results[0]) {
         this.employeeAge = res.data.results[0].split(" ");
@@ -122,11 +118,10 @@ export class InputComplianceInformationComponent implements OnInit {
 
     //checking Super Annuation master is present or not for employee, If present then show SA tab in UI
     this.complianceInformationService.getComplianceAssignmentDetails(this.employeeMasterId, 'SA').subscribe(res => {
-      debugger
       if (res.data.results[0]) {
         this.saPresent = true;
          //If SA applicable to employee then find sa max percentage from company setting
-       this.getSAComplainceDetails();
+       this.getSAComplainceDetails(res.data.results[0].complianceMasterId);
       }
       else {
         this.saPresent = false;
@@ -135,12 +130,11 @@ export class InputComplianceInformationComponent implements OnInit {
 
     //checking PF master is present or not for employee, If present then get compliance master id to get setting details from compliance master
     this.complianceInformationService.getComplianceAssignmentDetails(this.employeeMasterId, 'PF').subscribe(res => {
-      debugger
       if (res.data.results[0]) {
         this.saPresent = true;
         console.log("PF present");
         //calling compliance master for PF
-        this.getPFComplainceDetails();
+        this.getPFComplainceDetails(res.data.results[0].complianceMasterId);
       }
       else {
         this.saPresent = false;
@@ -152,14 +146,14 @@ export class InputComplianceInformationComponent implements OnInit {
   }//ngOnInit end 
 
   //other master API for SA compliance
-  getSAComplainceDetails() {
+  getSAComplainceDetails(complianceMasterId) {
 
-    this.complianceInformationService.getComplianceDetails(this.companyId, this.establishmentMasterId, 'SA').subscribe(res => {
+    this.complianceInformationService.getComplianceDetails(complianceMasterId).subscribe(res => {
 
       if (res.data.results[0]) {
         this.saPresent = true;
         //set SA contribution percentage limit
-        this.saContributionRate = res.data.results[0].complianceInfo.saMaxPercentage;
+        this.saContributionRate = res.data.results[0].complianceDetail.saMaxPercentage;
       }
       else {
         this.saPresent = false;
@@ -168,27 +162,27 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   //other master API for PF compliance
-  getPFComplainceDetails() {
+  getPFComplainceDetails(complianceMasterId) {
 
     //PF master details GET needs to call only if epf==yes
-    this.complianceInformationService.getComplianceDetails(this.companyId, this.establishmentMasterId, 'PF').subscribe(res => {
+    this.complianceInformationService.getComplianceDetails(complianceMasterId).subscribe(res => {
 
       if (res.data.results[0]) {
-        if (res.data.results[0].complianceInfo.pfNilOptionChoice == "NO") {
+        if (res.data.results[0].complianceDetail.pfNilOptionChoice == "NO") {
           this.optionToChooseNill = false;
         }
-        if (res.data.results[0].complianceInfo.pfNilOptionChoice == "YES") {
+        if (res.data.results[0].complianceDetail.pfNilOptionChoice == "YES") {
           this.optionToChooseNill = true;
         }
 
-        if (res.data.results[0].complianceInfo.employeeCompanyContributionDiff == "NO") {
+        if (res.data.results[0].complianceDetail.employeeCompanyContributionDiff == "NO") {
           this.employeeCompanyContributionDiff = false;
         }
-        if (res.data.results[0].complianceInfo.employeeCompanyContributionDiff == "YES") {
+        if (res.data.results[0].complianceDetail.employeeCompanyContributionDiff == "YES") {
           this.employeeCompanyContributionDiff = true;
         }
 
-        if (res.data.results[0].complianceInfo.contributionMethodChoice == "NO") {
+        if (res.data.results[0].complianceDetail.contributionMethodChoice == "NO") {
 
           this.contributionMethodChoice = false;
           //set default contribution method values 
@@ -196,29 +190,46 @@ export class InputComplianceInformationComponent implements OnInit {
           this.employerContributionList.length = 0;
           this.totalEmployeeContributionList.length = 0;
           this.totalEmployerContributionList.length = 0;
-          this.employeeContributionList.push(res.data.results[0].complianceInfo.employeeContribution);
-          this.totalEmployeeContributionList.push(res.data.results[0].complianceInfo.employeeContribution);
-          this.employerContributionList.push(res.data.results[0].complianceInfo.companyContribution);
-          this.totalEmployerContributionList.push(res.data.results[0].complianceInfo.companyContribution);
-          this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = res.data.results[0].complianceInfo.employeeContribution;
-          this.InputInfoForm.get('employeeContributionMethodControl').setValue(res.data.results[0].complianceInfo.employeeContribution);
-          this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = res.data.results[0].complianceInfo.companyContribution;
-          this.InputInfoForm.get('employerContributionMethodControl').setValue(res.data.results[0].complianceInfo.companyContribution);
+
+          this.employeeContributionList.push(res.data.results[0].complianceDetail.employeeContribution);
+          this.totalEmployeeContributionList.push(res.data.results[0].complianceDetail.employeeContribution);
+          this.employerContributionList.push(res.data.results[0].complianceDetail.companyContribution);
+          this.totalEmployerContributionList.push(res.data.results[0].complianceDetail.companyContribution);
+
+          this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = res.data.results[0].complianceDetail.employeeContribution;
+          this.InputInfoForm.get('employeeContributionMethodControl').setValue(res.data.results[0].complianceDetail.employeeContribution);
+          this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = res.data.results[0].complianceDetail.companyContribution;
+          this.InputInfoForm.get('employerContributionMethodControl').setValue(res.data.results[0].complianceDetail.companyContribution);
+      
+          //setting from date and to date mandatory if contribution method has only 1 value
+          if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != null) {
+            const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
+            employerContributionMethod.enable();
+            const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
+            employeeContributionMethod.enable();
+  
+            const contributionFromDate = this.InputInfoForm.get('contributionFromDateControl');
+            contributionFromDate.enable();
+            const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
+            contributionToDate.enable();
+
+            this.validatContributionDate();
+          }
         }
-        if (res.data.results[0].complianceInfo.contributionMethodChoice == "YES") {
+        if (res.data.results[0].complianceDetail.contributionMethodChoice == "YES") {
           this.contributionMethodChoice = true;
           this.employeeContributionList.length = 0;
           this.employerContributionList.length = 0;
           this.totalEmployeeContributionList.length = 0;
           this.totalEmployerContributionList.length = 0;
 
-          this.temp = res.data.results[0].complianceInfo.employeeContribution.split(',');
+          this.temp = res.data.results[0].complianceDetail.employeeContribution.split(',');
           this.employeeContributionList.push(this.temp[0]);
           this.employeeContributionList.push(this.temp[1]);
           this.totalEmployeeContributionList.push(this.temp[0]);
           this.totalEmployeeContributionList.push(this.temp[1]);
 
-          this.temp = res.data.results[0].complianceInfo.companyContribution.split(',');
+          this.temp = res.data.results[0].complianceDetail.companyContribution.split(',');
           this.employerContributionList.push(this.temp[0]);
           this.employerContributionList.push(this.temp[1]);
           this.totalEmployerContributionList.push(this.temp[0]);
@@ -234,17 +245,18 @@ export class InputComplianceInformationComponent implements OnInit {
 
   //get API for Emp master- Input from
   getInputForm() {
-
+debugger
     this.complianceInformationService.getInputDetails(this.employeeMasterId).subscribe(res => {
 
       if (res.data.results[0]) {
-
+        debugger
         this.previousEmploymentPFEPSId = res.data.results[0].previousEPFEPSResponseDTO.previousEmploymentPFEPSId;
         this.employeePFEPSDetailId = res.data.results[0].presentEPFEPSResponseDTO.employeePFEPSDetailId;
         this.InputDetailsModel.previousEPFEPSRequestDTO = res.data.results[0].previousEPFEPSResponseDTO;
         this.InputDetailsModel.presentEPFEPSRequestDTO = res.data.results[0].presentEPFEPSResponseDTO;
         this.InputDetailsModel.superAnnuationRequestDTO = res.data.results[0].superAnnuationResponseDTO;
 
+        
         if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != null) {
           const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
           employerContributionMethod.enable();
@@ -333,7 +345,7 @@ export class InputComplianceInformationComponent implements OnInit {
       }
     })
   }
-  
+
   getAllBooleanFlags(InputDetailsModel) {
 
     if (InputDetailsModel.previousEPFEPSRequestDTO.isFirstEmployment == 1) {
@@ -494,6 +506,7 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   enableContributionDate() {
+    debugger
     const contributionFromDate = this.InputInfoForm.get('contributionFromDateControl');
     contributionFromDate.enable();
     const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
@@ -550,8 +563,19 @@ export class InputComplianceInformationComponent implements OnInit {
     if (this.contributionMethodChoice == false) {
       this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = this.employeeContributionList;
       this.InputInfoForm.get('employeeContributionMethodControl').setValue(this.employeeContributionList);
+      const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
+      employeeContributionMethod.disable();
+
       this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.employerContributionList;
       this.InputInfoForm.get('employerContributionMethodControl').setValue(this.employerContributionList);
+      const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
+      employerContributionMethod.disable();
+    
+      //enabled contribution dates
+      const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
+      contributionToDate.enable();
+      const contributionFromDateControl = this.InputInfoForm.get('contributionFromDateControl');
+      contributionFromDateControl.enable();
     }
   }
 
@@ -610,6 +634,7 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   validateSAContributionToDate() {
+    debugger
     if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate == '' || this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate == null) {
       this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate = '31-Dec-9999';
       const saContributionToDate = this.InputInfoForm.get('saContributionToDateControl');
@@ -682,7 +707,7 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   disablePresentTabData() {
-
+debugger
     this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = null;
     const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
     employeeContributionMethod.disable();
@@ -702,13 +727,27 @@ export class InputComplianceInformationComponent implements OnInit {
     const voluntaryPFAmount = this.InputInfoForm.get('voluntaryPFAmountControl');
     voluntaryPFAmount.disable();
 
+    this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryFromDate = null;
+    const voluntaryFromDate = this.InputInfoForm.get('voluntaryFromDateControl');
+    voluntaryFromDate.disable();
+
+    this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate = null;
+    const voluntaryToDate = this.InputInfoForm.get('voluntaryToDateControl');
+    voluntaryToDate.disable();
+
     this.InputDetailsModel.presentEPFEPSRequestDTO.contributionFromDate = null;
     const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
     contributionToDate.disable();
 
+    this.InputInfoForm.get('contributionToDateControl').clearValidators();
+    this.InputInfoForm.controls.contributionToDateControl.updateValueAndValidity();
+
     this.InputDetailsModel.presentEPFEPSRequestDTO.contributionToDate = null;
     const contributionFromDate = this.InputInfoForm.get('contributionFromDateControl');
     contributionFromDate.disable();
+
+    this.InputInfoForm.get('contributionFromDateControl').clearValidators();
+    this.InputInfoForm.controls.contributionFromDateControl.updateValueAndValidity();
 
     this.isEPSContributionTill60 = 'no';
     const isEPSContributionTill60 = this.InputInfoForm.get('isEPSContributionTill60Control');
@@ -772,7 +811,10 @@ export class InputComplianceInformationComponent implements OnInit {
 
   //Toggle button validation
   firstEmploymentToggle(event) {
-    debugger
+       //enable sa Contribution percentage
+       const saContribution = this.InputInfoForm.get('saContributionRateControl');
+       saContribution.enable();
+
     if (event.currentTarget.defaultValue == "yes") {
       this.isFirstEmployment = "yes";
       this.InputDetailsModel.previousEPFEPSRequestDTO.isFirstEmployment = "yes";
@@ -910,12 +952,12 @@ export class InputComplianceInformationComponent implements OnInit {
       const previousPFNumber = this.InputInfoForm.get('previousPFNumberControl');
       previousPFNumber.disable();
 
-      this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 = null;
+      this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 = 'no';
       this.isContributedBefore1Sep2014 = 'no';
       const isContributedBefore1Sep2014 = this.InputInfoForm.get('isContributedBefore1Sep2014Control');
       isContributedBefore1Sep2014.disable();
 
-      this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = '';
+      this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = 'no';
       this.isPartOfEPS = 'no';
       const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
       isPartOfEPS.disable();
