@@ -18,6 +18,7 @@ export class LeftmenuComponent implements OnInit {
 
   public isInvestmentCollapsed = true;
   public isOtherMaster = true;
+  isUploadExcel= true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
@@ -58,6 +59,8 @@ export class LeftmenuComponent implements OnInit {
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
     }
+    if ((this.router.url).includes('uploadexcel')) {
+      this.isUploadExcel = false;}
     if ((this.router.url).includes('companysetting')) {
       this.ischaptersettingCollapsed = false;
     }
