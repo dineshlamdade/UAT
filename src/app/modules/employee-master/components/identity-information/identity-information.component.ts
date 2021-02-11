@@ -151,27 +151,11 @@ export class IdentityInformationComponent implements OnInit {
 
     this.SharedInformationService.getLocationInformation().subscribe(res => {
       this.countryList = res.data.results;
-
-      // setTimeout(() => {
-      //   this.VisaInformation.countryName = '';
-      //   this.IdentityInformation.employeePersonalInfoRequestDTO.countryOfOrigin = '';
-      // })
     })
     this.getIdentityInfoData();
-    // this.initiateidentityForm = this.EventEmitterService.setidentityFormInitiate().subscribe(res => {
 
-    //   this.VisaInformation.countryName = '';
-    // })
-    // this.shareCountryDataSubcription = this.EventEmitterService.setCountryData().subscribe(res => {
-    //   if (res) {
-    //     this.countryList = res.countryList;
-    //     this.VisaInformation.countryName = '';
-    //   }
-    // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(element => {
 
-
-      // (<wjcCore.CollectionView>this.flex.collectionView).remove(this.item);
       this.deleteInternationalWorkerID.push(element.employeeVisaDetailId);
       this.IdentityInfoForm.markAsTouched();
       this.data.find(res => {

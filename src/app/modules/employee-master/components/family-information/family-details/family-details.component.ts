@@ -37,8 +37,8 @@ export class FamilyDetailsComponent implements OnInit {
   imageUrl: any = "./assets/images/empIcon5.png";
   editFile: boolean = true;
   removeUpload: boolean = false;
-  dependentOnEmployee: any = 'no';
-  companyMediclaim: any = 'no';
+  dependentOnEmployee: any;
+  companyMediclaim: any;
   staticLabels: boolean = true;
   FamilyInformation = new FamilyInformation();
   addressCountryCode: any;
@@ -86,6 +86,7 @@ export class FamilyDetailsComponent implements OnInit {
     private CommonDataService: SharedInformationService) { }
   birthdateClickboolean: boolean = false;
   validBirthDate: boolean;
+  fullName: any;
 
 
   ngOnInit(): void {
@@ -135,7 +136,7 @@ export class FamilyDetailsComponent implements OnInit {
     });
     this.getCopyFromAddress();
     this.getFamilyGridSummary();
-
+    this.fullName = localStorage.getItem('fullName')
     // this.familyMemberInfoRequestDTO.isMemberActive = 1;
     if (!this.data) {
       this.CommonDataService.getCountryCodes().subscribe(res => {
@@ -213,6 +214,7 @@ export class FamilyDetailsComponent implements OnInit {
       this.familyMemberInfoRequestDTO.isDependant = 0;
     }
   }
+
   companyMediclaimValidation(event) {
 
     if (event.target.defaultValue == "yes") {
@@ -225,7 +227,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   activeSetBoolean(event) {
-    
+
     if (event == true) {
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
       this.FamilyDetailsInfoForm.get('remark').clearValidators();
@@ -242,11 +244,11 @@ export class FamilyDetailsComponent implements OnInit {
     this.enableForm();
     this.imageUrl = "./assets/images/empIcon5.png";
 
-    this.dependentOnEmployee = 'no';
-    this.companyMediclaim = 'no';
+    // this.dependentOnEmployee = 'no';
+    // this.companyMediclaim = 'no';
     this.IsActive = true;
-    this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('no');
-    this.FamilyDetailsInfoForm.get('companyMediclaimToggle').setValue('no');
+    // this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('no');
+    // this.FamilyDetailsInfoForm.get('companyMediclaimToggle').setValue('no');
     this.FamilyDetailsInfoForm.get('isActive').setValue(true);
 
     this.FamilyDetailsInfoForm.get('relation').setValue('');
@@ -346,52 +348,52 @@ export class FamilyDetailsComponent implements OnInit {
       guardianDetailRequestDTO.phoneNumber = this.guardianCountryCode + ' ' + this.guardianPhoneNo;
     }
 
-    let valid;
-    if (this.FamilySummaryGridData.length > 0) {
-      this.FamilySummaryGridData.forEach(element => {
-        if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName ||
-          element.relation == familyMemberInfoRequestDTO.relation) {
-          valid = false;
-          this.CommonDataService.sweetalertError('This record is already present');
-          return;
-        }
-      })
+    // let valid;
+    // if (this.FamilySummaryGridData.length > 0) {
+    //   this.FamilySummaryGridData.forEach(element => {
+    //     if (element.familyMemberName == familyMemberInfoRequestDTO.familyMemberName ||
+    //       element.relation == familyMemberInfoRequestDTO.relation) {
+    //       valid = false;
+    //       this.CommonDataService.sweetalertError('This record is already present');
+    //       return;
+    //     }
+    //   })
+    // } else {
+    //   valid = true;
+    // }
+
+
+    // if (valid != false) {
+    let data = [];
+
+    if (this.IsActive == true) {
+      this.familyMemberInfoRequestDTO.isMemberActive = 1;
     } else {
-      valid = true;
+      this.familyMemberInfoRequestDTO.isMemberActive = 0;
     }
+    familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
 
+    this.FamilyInformation.familyMemberInfoRequestDTO = familyMemberInfoRequestDTO;
+    // if (this.selectedImageFile) {
+    //   this.selectedImageFileList.push(this.selectedImageFile);
+    // }
 
-    if (valid != false) {
-      let data = [];
+    // if (this.addressPhoneNo) {
+    //   familyAddressDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.addressDetailsCountryCode + ' ' +
+    //     this.FamilyDetailsInfoForm.value.addressDetailsMobileNumber;
+    // }
 
-      if (this.IsActive == true) {
-        this.familyMemberInfoRequestDTO.isMemberActive = 1;
-      } else {
-        this.familyMemberInfoRequestDTO.isMemberActive = 0;
-      }
-      familyMemberInfoRequestDTO.dateOfBirth = this.datepipe.transform(familyMemberInfoRequestDTO.dateOfBirth, 'dd-MMM-yyyy');
+    this.FamilyInformation.familyAddressDetailRequestDTO = familyAddressDetailRequestDTO;
 
-      this.FamilyInformation.familyMemberInfoRequestDTO = familyMemberInfoRequestDTO;
-      // if (this.selectedImageFile) {
-      //   this.selectedImageFileList.push(this.selectedImageFile);
-      // }
+    // if (this.guardianPhoneNo) {
+    //   guardianDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.guardianCountryCode + ' ' +
+    //     this.FamilyDetailsInfoForm.value.guardianMobileNumber;
+    // }
 
-      // if (this.addressPhoneNo) {
-      //   familyAddressDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.addressDetailsCountryCode + ' ' +
-      //     this.FamilyDetailsInfoForm.value.addressDetailsMobileNumber;
-      // }
-
-      this.FamilyInformation.familyAddressDetailRequestDTO = familyAddressDetailRequestDTO;
-
-      // if (this.guardianPhoneNo) {
-      //   guardianDetailRequestDTO.phoneNumber = this.FamilyDetailsInfoForm.value.guardianCountryCode + ' ' +
-      //     this.FamilyDetailsInfoForm.value.guardianMobileNumber;
-      // }
-
-      this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
-      this.saveFamilyInformation();
-    }
-    valid = true;
+    this.FamilyInformation.guardianDetailRequestDTO = guardianDetailRequestDTO;
+    this.saveFamilyInformation();
+    // }
+    // valid = true;
 
   }
 
@@ -454,8 +456,10 @@ export class FamilyDetailsComponent implements OnInit {
     if (relation.value == 'Father' || relation.value == 'Brother' || relation.value == 'Son' ||
       relation.value == 'Husband' || relation.value == 'Father in Law') {
       this.familyMemberInfoRequestDTO.gender = 'Male';
+      this.validateGender();
     } else {
       this.familyMemberInfoRequestDTO.gender = 'Female';
+      this.validateGender();
     }
   }
 
@@ -570,12 +574,12 @@ export class FamilyDetailsComponent implements OnInit {
 
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
-
+      
       let num: string
       if (copyAddress.value == 'Employee Local Address') {
         if (element.local) {
           return this.familyAddressDetailRequestDTO = element.local,
-            this.familyAddressDetailRequestDTO.pinCode = element.local.postalCode,
+            this.familyAddressDetailRequestDTO.pinCode = element.local.pinCode,
             this.addressPhoneNo = element.local.phoneNumber.slice(element.local.phoneNumber.length - 10),
             num = element.local.phoneNumber,
             this.addressCountryCode = num.slice(0, num.length - 10);
@@ -584,7 +588,7 @@ export class FamilyDetailsComponent implements OnInit {
       if (copyAddress.value == 'Employee Permanent Address') {
         if (element.permanent) {
           return this.familyAddressDetailRequestDTO = element.permanent,
-            this.familyAddressDetailRequestDTO.pinCode = element.permanent.postalCode,
+            this.familyAddressDetailRequestDTO.pinCode = element.permanent.pinCode,
             this.addressPhoneNo = element.permanent.phoneNumber.slice(element.permanent.phoneNumber.length - 10),
             num = element.permanent.phoneNumber,
             this.addressCountryCode = num.slice(0, num.length - 10);
@@ -592,11 +596,12 @@ export class FamilyDetailsComponent implements OnInit {
       }
       if (copyAddress.value == element.memberName + ' ' + element.relation) {
         if (element.addressDetail) {
-          return this.familyAddressDetailRequestDTO = element.addressDetail,
-            this.familyAddressDetailRequestDTO.pinCode = element.addressDetail.postalCode,
+          this.familyAddressDetailRequestDTO = element.addressDetail,
+            this.familyAddressDetailRequestDTO.pinCode = element.addressDetail.pinCode,
             this.addressPhoneNo = element.addressDetail.phoneNumber.slice(element.addressDetail.phoneNumber.length - 10),
             num = element.addressDetail.phoneNumber,
-            this.addressCountryCode = num.slice(0, num.length - 10);
+            this.addressCountryCode = num.slice(0, num.length - 11);
+          return;
         }
       }
     })
@@ -966,4 +971,27 @@ export class FamilyDetailsComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  validateGender() {
+
+    this.maritalStatusList = 'Single,Married,Widow,Widower,Divorced'.split(',');
+    if (this.familyMemberInfoRequestDTO.gender == 'Male') {
+      this.maritalStatusList.splice(2, 1);
+      this.familyMemberInfoRequestDTO.maritalStatus = '';
+    }
+    if (this.familyMemberInfoRequestDTO.gender == 'Female') {
+      this.maritalStatusList.splice(3, 1);
+      this.familyMemberInfoRequestDTO.maritalStatus = '';
+    }
+  }
+
+  // updateAadhaarName(aadhaar) {
+
+  //   if (this.FamilyDetailsInfoForm.controls.aadhaar.valid == true && aadhaar) {
+  //     this.familyMemberInfoRequestDTO.nameAsPerAadhaar = this.fullName;
+  //   }
+  //   if (aadhaar.length == 0 || this.FamilyDetailsInfoForm.controls.aadhaar.valid == false) {
+  //     this.familyMemberInfoRequestDTO.nameAsPerAadhaar = '';
+  //   }
+  // }
 }

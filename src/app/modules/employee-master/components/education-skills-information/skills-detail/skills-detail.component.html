@@ -110,25 +110,25 @@
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Skill</th>
-                                <th class="primeng-table-header-center">Description</th>
-                                <th class="primeng-table-header-center">Proficiency</th>
-                                <th class="primeng-table-header-center">Action</th>
+                                <th class="primeng-table-header-left">Skill</th>
+                                <th class="primeng-table-header-left">Description</th>
+                                <th class="primeng-table-header-left">Proficiency</th>
+                                <th class="primeng-table-header-left">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-skill>
                             <tr>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{skill.skillName}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left padding-left-21"><span>
                                         {{skill.skillDescription}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span> {{skill.proficiency}}</span></td>
+                                <td class="primeng-table-header-left padding-left-24"><span> {{skill.proficiency}}</span></td>
 
-                                <td class="primeng-table-header-center"><span><i
+                                <td class="primeng-table-header-left"><span><i
                                             class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
                                             (click)="editSkillRow(skill)"></i>
 

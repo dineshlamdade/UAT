@@ -774,7 +774,7 @@ export class NominationDetailsComponent implements OnInit {
       return
     }
     if (esicPercentage != 100) {
-      this.CommonDataService.sweetalertError('Nomination for ESIC Should be 100%');
+      this.CommonDataService.sweetalertError('Nomination for ESIC should be 100% for a single family member');
     }
   }
 }

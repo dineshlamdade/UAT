@@ -102,7 +102,7 @@
                                             <select class="form-control selectpicker" placeholder="Select"
                                                 formControlName="duration"
                                                 [(ngModel)]="employeeEducationRequestModel.durationOfCourseValue"
-                                                tooltip="{{duration}}" (change)="clearDuration()">
+                                                tooltip="Standard Duration" (change)="clearDuration()">
                                                 <option value="" data-hidden="true">select
                                                 </option>
                                                 <option *ngFor="let duration of standardDurationList"
@@ -228,13 +228,13 @@
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-education>
                             <colgroup>
-                                <col style="width:150px">
                                 <col style="width:120px">
                                 <col style="width:120px">
-                                <col style="width:170px">
-                                <col style="width:175px">
-                                <col style="width:200px">
-                                <col style="width:145px">
+                                <col style="width:120px">
+                                <col style="width:130px">   
+                                <col style="width:135px">
+                                <col style="width:160px">
+                                <col style="width:125px">
                                 <col style="width:100px">
                             </colgroup>
                         </ng-template>

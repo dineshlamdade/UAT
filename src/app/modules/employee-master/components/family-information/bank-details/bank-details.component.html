@@ -3,8 +3,10 @@
         <div class="col-12"> -->
     <div class="card">
         <div class="card-body">
-            <div class="row mt-20">
+            <div class="row">
                 <div class="col-md-12">
+                    <legend class="bank-title">Bank Details</legend>
+
                     <p-table [value]="BankAccountDataSource" [scrollable]="true" [style]="{width:'600px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-columns>
@@ -23,7 +25,7 @@
                             <tr>
                                 <th class="primeng-table-header-center">Name</th>
                                 <!-- <th class="primeng-table-header-center">State</th> -->
-                                <th class="primeng-table-header-center">Bank IFSC</th>
+                                <th class="primeng-table-header-center">IFSC</th>
                                 <th class="primeng-table-header-center">Bank Name</th>
                                 <th class="primeng-table-header-center">Branch Name</th>
                                 <th class="primeng-table-header-center">Branch Address</th>
@@ -90,10 +92,14 @@
                                 <td><span>
                                         <input #accNo [(ngModel)]="bank.accountNumber" class="form-control"
                                             [ngModelOptions]="{standalone: true}" minlength="1"
-                                            maxlength="{{bank.maxAccNumber}}" [type]="bank.accountNo ? 'text' : 'password'"
-                                            (keyup)="validateAccountNo(bank.accountNumber, bank);getHideAccountNo(bank)" appBlockCopyPaste
-                                            placeholder="Enter Account No." (keypress)="keyPress($event)">
-                                        <mat-icon matSuffix (click)="bank.accountNo = !bank.accountNo; hideAccountNo(bank)" class="eye-icon-payroll">
+                                            maxlength="{{bank.maxAccNumber}}"
+                                            [type]="bank.accountNo ? 'text' : 'password'"
+                                            (keyup)="validateAccountNo(bank.accountNumber, bank);getHideAccountNo(bank)"
+                                            appBlockCopyPaste placeholder="Enter Account No."
+                                            (keypress)="keyPress($event)">
+                                        <mat-icon matSuffix
+                                            (click)="bank.accountNo = !bank.accountNo; hideAccountNo(bank)"
+                                            class="eye-icon-payroll">
                                             {{bank.accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
 
                                         <mat-error style="font-size: 7px;" *ngIf="bank.accountNumber?.length>0">

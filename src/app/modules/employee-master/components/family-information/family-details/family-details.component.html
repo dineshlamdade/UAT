@@ -91,7 +91,7 @@
                                         <select class="form-control" placeholder="Select"
                                             (completeMethod)="filterGender($event)" formControlName="gender"
                                             [dropdown]="true" [(ngModel)]="familyMemberInfoRequestDTO.gender"
-                                            placeholder="Select"
+                                            placeholder="Select" (change)="validateGender()"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let gender of allGenders" [value]="gender">
@@ -133,7 +133,7 @@
                                         <label class="form-label">Aadhaar Number </label>
                                         <input type="text" class="form-control" placeholder="Enter Aadhaar No."
                                             minlength="1" maxlength="12" formControlName="aadhaar"
-                                            (keypress)="keyPress($event)"
+                                            (keypress)="keyPress($event)" (keyup)="updateAadhaarName(familyMemberInfoRequestDTO.aadhaar)"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('aadhaar').status == 'INVALID'}"
                                             [(ngModel)]="familyMemberInfoRequestDTO.aadhaar">
                                     </div>
@@ -196,7 +196,7 @@
                                                     No</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="dependentOnEmployee == ''">
+                                        <mat-error *ngIf="!dependentOnEmployee" class="mat-error">
                                             Please Select Option</mat-error>
                                     </div>
                                 </div>
@@ -222,7 +222,7 @@
                                                     No</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="companyMediclaim == ''">
+                                        <mat-error *ngIf="!companyMediclaim" class="mat-error">
                                             Please Select Option</mat-error>
                                     </div>
                                 </div>

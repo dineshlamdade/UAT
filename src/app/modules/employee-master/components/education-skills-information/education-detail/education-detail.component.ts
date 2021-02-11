@@ -31,10 +31,10 @@ export class EducationDetailComponent implements OnInit {
   SkillSetList: Array<any> = [];
   filteredSkillSetList: Array<any> = [];
   standardDurationList = 'Days,Weeks,Months,Years'.split(',');
-  highestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
-  filteredHighestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
-  courseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
-  filteredcourseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
+  highestEducationList = 'Doctorate,Post Graduate,Graduate,Technical(Professional),Higher Secondary,Senior Secondary,Non Matric,Illiterate'.split(',');
+  filteredHighestEducationList = 'Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
+  courseTypeList = 'Full-Time, Part-Time, Correspondance'.split(',');
+  filteredcourseTypeList = 'Full-Time, Part-Time, Correspondance'.split(',');
   EducationSummaryGridData: Array<any> = [];
   EducationSummaryData: Array<any> = [];
   SkillSummaryGridData: Array<any> = [];
@@ -111,11 +111,14 @@ export class EducationDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-      
+
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
 
           this.getAllEducationSummary();
+          this.resetEducationForm();
+          this.educationEditFlag = false;
+          this.educationviewFlag = false;
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         })
       }
@@ -126,7 +129,7 @@ export class EducationDetailComponent implements OnInit {
   getAllEducationSummary() {
 
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-      
+
       // this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
@@ -614,7 +617,7 @@ export class EducationDetailComponent implements OnInit {
     this.SkillInfoForm.reset();
   }
 
-  clearDuration(){
+  clearDuration() {
 
     this.employeeEducationRequestModel.durationOfCourse = '';
   }

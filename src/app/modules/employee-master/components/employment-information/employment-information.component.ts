@@ -94,7 +94,7 @@ export class EmploymentInformationComponent implements OnInit {
 
       this.rejoiningBoolean = res.rejoinee;
       // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
-      //   debugger
+      //   
       //   this.rejoiningBoolean = res.data.results[0];
       // })
     })

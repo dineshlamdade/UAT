@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
     } else {
-      this.router.navigate(['/dashboard']);
+      // this.router.navigate(['/dashboard']);
     }
     }
     const body = document.getElementsByTagName('body')[0];

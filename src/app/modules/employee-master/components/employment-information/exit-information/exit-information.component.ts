@@ -29,6 +29,9 @@ export class ExitInformationComponent implements OnInit {
   exitSubscription: Subscription;
   JoiningDate: any;
   @Input() data: any;
+  public today = new Date();
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
@@ -212,5 +215,29 @@ export class ExitInformationComponent implements OnInit {
   }
   cancel() {
     this.EventEmitterService.getEmpSummaryInitiate();
+  }
+
+  calculateExpectedLeavingDateFromMonths(resignationDate) {
+    
+    if (resignationDate) {
+      let noticePeriodDaysModel = Number(localStorage.getItem('noticePeriodDaysModel'));
+      let noticePeriodMonthModel = Number(localStorage.getItem('noticePeriodMonthModel'));
+
+      if (noticePeriodDaysModel) {
+        let noticePeriodDaysModel = Number(localStorage.getItem('noticePeriodDaysModel'));
+        resignationDate.setDate(resignationDate.getDate() + noticePeriodDaysModel);  // for Days
+
+        this.ExitInformation.expectedLeavingDate = resignationDate;
+      }
+
+      if (noticePeriodMonthModel) {
+        let expectedLeavingDate: any;
+
+        resignationDate.setMonth(resignationDate.getMonth() + noticePeriodMonthModel); // for Months
+        expectedLeavingDate = resignationDate.toISOString().slice(0, 10);
+        expectedLeavingDate = this.datepipe.transform(expectedLeavingDate, 'dd-MMM-yyyy');
+        this.ExitInformation.expectedLeavingDate = expectedLeavingDate;
+      }
+    }
   }
 }
