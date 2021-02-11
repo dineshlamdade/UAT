@@ -42,7 +42,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="yes"
                                 (change)="haveYouContributedInPastToggle($event)" formControlName="isContributedInPastControl"
-                                [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.isContributedInPast"
+                               
                                 [ngClass]="{'pf-subscriber-active' : isContributedInPast == 'no',
                                                         'pf-subscriber-inActive': isContributedInPast == 'yes'}">
                                 <span class="custom-control-label">Yes</span>
@@ -50,7 +50,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="no"
                                 (change)="haveYouContributedInPastToggle($event)" formControlName="isContributedInPastControl"
-                                [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.isContributedInPast"
+                               
                                 [ngClass]="{'pf-subscriber-inActive' : isContributedInPast == 'no',
                                 'pf-subscriber-active': isContributedInPast == 'yes'}" checked>
                                 <span class="custom-control-label" >
@@ -65,7 +65,9 @@
                         Previous Employement PF No. </label>
                     <input type="text" class="form-control" formControlName="previousPFNumberControl" 
                         [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.previousPFNumber" pattern="[A-Z]{2}/[0-9]{5}/[0-9]{7}"
-                        tooltip="{{InputDetailsModel.previousEPFEPSRequestDTO.previousPFNumber}}" [isRequired]="false">
+                        tooltip="{{InputDetailsModel.previousEPFEPSRequestDTO.previousPFNumber}}" [isRequired]="false"
+                        [ngClass]="{'is-invalid' : InputInfoForm.get('previousPFNumberControl').status == 'INVALID'}">
+                      
                 </div>
 
                 <div class="col-sm-6 col-lg-3"></div>
@@ -78,7 +80,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="yes"
                                 (change)="haveYouContributedbefor1SepToggle($event)" formControlName="isContributedBefore1Sep2014Control"
-                                [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014"
+                              
                                 [ngClass]="{'pf-subscriber-active' : isContributedBefore1Sep2014 == 'no',
                                                         'pf-subscriber-inActive': isContributedBefore1Sep2014 == 'yes'}">
                                 <span class="custom-control-label">Yes</span>
@@ -86,7 +88,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="no"
                                 (change)="haveYouContributedbefor1SepToggle($event)" formControlName="isContributedBefore1Sep2014Control"
-                                [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014"
+                                
                                 [ngClass]="{'pf-subscriber-inActive' : isContributedBefore1Sep2014 == 'no',
                                                         'pf-subscriber-active': isContributedBefore1Sep2014 == 'yes'}">
                                 <span class="custom-control-label">
@@ -99,12 +101,12 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="form-group">
                         <label class="form-label">
-                            Were You ever part of EPF</label>
+                            Were You ever part of EPS</label>
                         <div class="custom-controls-stacked">
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="yes"
                                 (change)="partOfEPSToggle($event)" formControlName="isPartOfEPSControl"
-                                [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS"
+                              
                                 [ngClass]="{'pf-subscriber-active' : isPartOfEPS == 'no',
                                                         'pf-subscriber-inActive': isPartOfEPS == 'yes'}">
                                 <span class="custom-control-label">Yes</span>
@@ -112,7 +114,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="no"
                                 (change)="partOfEPSToggle($event)" formControlName="isPartOfEPSControl"
-                                [(ngModel)]="InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS"
+                         
                                 [ngClass]="{'pf-subscriber-inActive' : isPartOfEPS == 'no',
                                                         'pf-subscriber-active': isPartOfEPS == 'yes'}">
                                 <span class="custom-control-label">
@@ -190,7 +192,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="yes"
                                 (change)="contributionTowardsEPSToggle($event)" formControlName="isEPSContributionTill60Control"
-                                [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.isEPSContributionTill60"
+                               
                                 [ngClass]="{'pf-subscriber-active' : isEPSContributionTill60 == 'no',
                                                 'pf-subscriber-inActive': isEPSContributionTill60 == 'yes'}">
                                 <span class="custom-control-label">Yes</span>
@@ -198,7 +200,7 @@
                             <label class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" class="custom-control-input" value="no"
                                 (change)="contributionTowardsEPSToggle($event)" formControlName="isEPSContributionTill60Control"
-                                [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.isEPSContributionTill60"
+                           
                                 [ngClass]="{'pf-subscriber-inActive' : isEPSContributionTill60 == 'no',
                                 'pf-subscriber-active': isEPSContributionTill60 == 'yes'}">
                                 <span class="custom-control-label">
@@ -217,7 +219,8 @@
                     (completeMethod)="searchEmployeeContribution(InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod)" 
                     (change)="validatContributionDate();enableContributionDate();"
                     [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod"
-                    formControlName="employeeContributionMethodControl">
+                    formControlName="employeeContributionMethodControl"
+                    [ngClass]="{'is-invalid' : InputInfoForm.get('employeeContributionMethodControl').status == 'INVALID'}">
                     <option value="" selected disabled>Select</option>
                     <option *ngFor="let option of employeeContributionList" [value]="option">
                         {{option}}
@@ -232,7 +235,8 @@
                     <select class="form-control" placeholder="Select"
                     (completeMethod)="searchEmployerContribution(InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod)"
                     [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod" 
-                    formControlName="employerContributionMethodControl">
+                    formControlName="employerContributionMethodControl"
+                    [ngClass]="{'is-invalid' : InputInfoForm.get('employerContributionMethodControl').status == 'INVALID'}">
                     <option value="" selected disabled>Select</option>
                     <option *ngFor="let option of employerContributionList" [value]="option">
                         {{option}}
@@ -251,7 +255,8 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="contributionFromDateControl" 
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.contributionFromDate" [format]="'dd-MMM-yyyy'"
-                            [minDate]="joiningDate" (focusout)="validateContributionToDate()">
+                            [minDate]="joiningDate" (focusout)="validateContributionToDate()"
+                            [ngClass]="{'is-invalid' : InputInfoForm.get('contributionFromDateControl').status == 'INVALID'}">
                         </div>
                     </div>
                 </div>
@@ -267,7 +272,8 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="contributionToDateControl"
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.contributionToDate"  [format]="'dd-MMM-yyyy'"
-                        [minDate]="applicableFrom">
+                        [minDate]="InputDetailsModel.presentEPFEPSRequestDTO.contributionFromDate" (focusout)="checkContributionToDate()"
+                        [ngClass]="{'is-invalid' : InputInfoForm.get('contributionToDateControl').status == 'INVALID'}">
                         </div>
                     </div>
                 </div>
@@ -281,7 +287,8 @@
                                 <input type="radio" class="custom-control-input" value="percentOfNetPay"
                                 (change)="percentOrAmount($event)" formControlName="VoluntaryPFtoggle"
                                 [ngClass]="{'voluntary-pf-active' : percentOrAmountModel == '',
-                                    'voluntary-pf-inActive': percentOrAmountModel == 'percentOfNetPay'}" checked>
+                                    'voluntary-pf-inActive': percentOrAmountModel == 'percentOfNetPay'}" checked
+                                     >
                                 <span class="custom-control-label">Percentage</span>
                             </label>
                             <label class="custom-control custom-radio custom-control-inline">
@@ -302,8 +309,8 @@
                     <input  *ngIf="percentOrAmountModel == 'percentOfNetPay'" type="number" class="form-control"
                     formControlName="voluntaryPFPercentControl" 
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFPercent" format="n2" [step]="10"
-                            [min]="0" [max]="100" (change)="validatVoluntaryDate();enableVoluntaryPercentDate();"
-                     [isRequired]="false">
+                        (change)="validatVoluntaryDate();enableVoluntaryPercentDate();"
+                        (focusout)="clearPercentageValue()" >
                 <!-- </div>
 
                 <div class="col-sm-6 col-lg-3"> -->
@@ -313,7 +320,7 @@
                     formControlName="voluntaryPFAmountControl"
                     [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFAmount"
                     (change)="validatVoluntaryDate();enableVoluntaryAmountDate();"
-                     [isRequired]="false">
+                    >
                 </div>
 
               
@@ -329,7 +336,8 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="voluntaryFromDateControl"
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryFromDate" [format]="'dd-MMM-yyyy'" 
-                        [minDate]="joiningDate" (focusout)="validateVoluntaryToDate()">
+                        [minDate]="joiningDate" (focusout)="validateVoluntaryToDate()"
+                        [ngClass]="{'is-invalid' : InputInfoForm.get('voluntaryFromDateControl').status == 'INVALID'}">
                         </div>
                     </div>
                 </div>
@@ -345,7 +353,8 @@
                                 data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                                 formControlName="voluntaryToDateControl"
                         [(ngModel)]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate" [format]="'dd-MMM-yyyy'" 
-                        [minDate]="voluntaryFromDateControl">
+                        [minDate]="InputDetailsModel.presentEPFEPSRequestDTO.voluntaryFromDate" (focusout)="checkVoluntaryToDate()"
+                        [ngClass]="{'is-invalid' : InputInfoForm.get('voluntaryToDateControl').status == 'INVALID'}">
                         </div>
                     </div>
                 </div>
@@ -367,7 +376,8 @@
                 formControlName="saContributionRateControl" 
                         [(ngModel)]="InputDetailsModel.superAnnuationRequestDTO.saContributionRate" format="n2" [step]="10"
                             [min]="0" [max]="saContributionRate"
-                            (change)="validatSAContributionDate();enableSAContributionDate();">
+                            (change)="validatSAContributionDate();enableSAContributionDate();"
+                            (focusout)="clearSAContributionRateValue()">
             </div>
 
             <div class="col-sm-6 col-lg-3">
@@ -382,7 +392,8 @@
                             formControlName="saContributionFromDateControl"
                     [(ngModel)]="InputDetailsModel.superAnnuationRequestDTO.saContributionFromDate" 
                      (focusout)="validateSAContributionToDate()"
-                    [format]="'dd-MMM-yyyy'" [minDate]="joiningDate">
+                    [format]="'dd-MMM-yyyy'" [minDate]="joiningDate"
+                    [ngClass]="{'is-invalid' : InputInfoForm.get('saContributionFromDateControl').status == 'INVALID'}">
                     </div>
                 </div>
             </div>
@@ -398,7 +409,8 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="saContributionToDateControl"
                     [(ngModel)]="InputDetailsModel.superAnnuationRequestDTO.saContributionToDate" 
-                    [format]="'dd-MMM-yyyy'" [minDate]="joiningDate">
+                    [format]="'dd-MMM-yyyy'" [minDate]="InputDetailsModel.superAnnuationRequestDTO.saContributionFromDate"  (focusout)="checkSAContributionToDate()"
+                    [ngClass]="{'is-invalid' : InputInfoForm.get('saContributionToDateControl').status == 'INVALID'}">
                     </div>
                 </div>
             </div>
@@ -410,10 +422,10 @@
             <div class="float-right mb-15">
 
                 <button type="submit"
-                [disabled]="InputInfoForm.invalid || InputInfoForm.untouched"
+                [disabled]="InputInfoForm.invalid"
                  class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                     tooltip="Save" (click)="InputFormSubmit(InputDetailsModel)"
-                    [ngClass]="{'disabled-btn-bg-green' : InputInfoForm.invalid || InputInfoForm.untouched,
+                    [ngClass]="{'disabled-btn-bg-green' : InputInfoForm.invalid,
                     'btn-bg-green': !InputInfoForm.invalid}" >
                     <b><i class="fa fa-floppy-o"></i></b>Save</button>
 

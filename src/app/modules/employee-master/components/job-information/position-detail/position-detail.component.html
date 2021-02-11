@@ -64,7 +64,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="employeeTypeFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="positionDetailsModel.employeeTypeFromDate"
-                            (bsValueChange)="validateEmployeeTypeToDate()">
+                            (bsValueChange)="validateEmployeeTypeToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('employeeTypeFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -78,7 +80,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="employeeTypeToDateControl"
                             [minDate]="positionDetailsModel.employeeTypeFromDate"
-                            [(ngModel)]="positionDetailsModel.employeeTypeToDate">
+                            [(ngModel)]="positionDetailsModel.employeeTypeToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('employeeTypeToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -116,7 +120,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="employeeStatusFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="positionDetailsModel.employeeStatusFromDate"
-                            (bsValueChange)="validateEmployeeStatusToDate()">
+                            (bsValueChange)="validateEmployeeStatusToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('employeeStatusFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -130,7 +136,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="employeeStatusToDateControl"
                             [minDate]="positionDetailsModel.employeeStatusFromDate"
-                            [(ngModel)]="positionDetailsModel.employeeStatusToDate">
+                            [(ngModel)]="positionDetailsModel.employeeStatusToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('employeeStatusToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -168,7 +176,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="employeeTaxCategoryFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="positionDetailsModel.employeeTaxCategoryFromDate"
-                            (bsValueChange)="validateEmployeeTaxCategoryToDate()">
+                            (bsValueChange)="validateEmployeeTaxCategoryToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('employeeTaxCategoryFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -182,7 +192,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="employeeTaxCategoryToDateControl"
                             [minDate]="positionDetailsModel.employeeTaxCategoryFromDate"
-                            [(ngModel)]="positionDetailsModel.employeeTaxCategoryToDate">
+                            [(ngModel)]="positionDetailsModel.employeeTaxCategoryToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('employeeTaxCategoryToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -217,7 +229,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="gradeFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="positionDetailsModel.gradeFromDate" (bsValueChange)="validateGradeToDate()">
+                            [(ngModel)]="positionDetailsModel.gradeFromDate" (bsValueChange)="validateGradeToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('gradeFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -230,7 +244,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="gradeToDateControl" [minDate]="positionDetailsModel.gradeFromDate"
-                            [(ngModel)]="positionDetailsModel.gradeToDate">
+                            [(ngModel)]="positionDetailsModel.gradeToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('gradeToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -267,7 +283,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="designation1FromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="positionDetailsModel.designation1FromDate"
-                            (bsValueChange)="validateDesignation1ToDate()">
+                            (bsValueChange)="validateDesignation1ToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('designation1FromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -281,7 +299,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="designation1ToDateControl"
                             [minDate]="positionDetailsModel.designation1FromDate"
-                            [(ngModel)]="positionDetailsModel.designation1ToDate">
+                            [(ngModel)]="positionDetailsModel.designation1ToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('designation1ToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -318,7 +338,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="designation2FromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="positionDetailsModel.designation2FromDate"
-                            (bsValueChange)="validateDesignation2ToDate()">
+                            (bsValueChange)="validateDesignation2ToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('designation2FromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -332,7 +354,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="designation2ToDateControl"
                             [minDate]="positionDetailsModel.designation2FromDate"
-                            [(ngModel)]="positionDetailsModel.designation2ToDate">
+                            [(ngModel)]="positionDetailsModel.designation2ToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('designation2ToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -378,7 +402,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="reportingFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="positionDetailsModel.reportingFromDate"
-                            (bsValueChange)="validateReportingToDate()">
+                            (bsValueChange)="validateReportingToDate()"
+                            [ngClass]="{'is-invalid' : PositionForm.get('reportingFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -391,7 +417,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="reportingToDateControl" [minDate]="positionDetailsModel.reportingFromDate"
-                            [(ngModel)]="positionDetailsModel.reportingToDate">
+                            [(ngModel)]="positionDetailsModel.reportingToDate"
+                            [ngClass]="{'is-invalid' : PositionForm.get('reportingToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -399,68 +427,6 @@
 
         <div class="col-sm-6 col-lg-3">
         </div>
-
-        <!-- <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">minDateimum Wages - Skill</label>
-                <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
-                    (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
-                </p-autoComplete>
-
-                <label class="form-label mt-10">From Date</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
-                    </div>
-                </div>
-
-                <label class="form-label">To Date</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- <div class="col-sm-6 col-lg-3">
-            <div class="card p-3 row-card-color">
-                <label class="form-label">minDateimum Wages - Type Of Work</label>
-                <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
-                    (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
-                </p-autoComplete>
-
-                <label class="form-label mt-10">From Date</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
-                    </div>
-                </div>
-
-                <label class="form-label">To Date</label>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        </div>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
-                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <div class="col-sm-6 col-lg-3">
         </div>

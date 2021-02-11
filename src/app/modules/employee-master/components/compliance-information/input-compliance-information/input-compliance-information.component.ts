@@ -62,11 +62,11 @@ export class InputComplianceInformationComponent implements OnInit {
     this.InputInfoForm = this.formBuilder.group({
       //previous
       isFirstEmploymentControl: ['', Validators.required],
-      isContributedInPastControl: [{ value: null, disabled: true }],
+      isContributedInPastControl: [{ value: 'no', disabled: true }],
       previousPFNumberControl: [{ value: null, disabled: true }],
       //,Validators.pattern(/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/)
-      isContributedBefore1Sep2014Control: [{ value: null, disabled: true }],
-      isPartOfEPSControl: [{ value: null, disabled: true }],
+      isContributedBefore1Sep2014Control: [{ value: 'no', disabled: true }],
+      isPartOfEPSControl: [{ value: 'no', disabled: true }],
       schemeCertificateNumberControl: [{ value: null, disabled: true }],
       authorityIssueControl: [{ value: null, disabled: true }],
       //present
@@ -77,14 +77,14 @@ export class InputComplianceInformationComponent implements OnInit {
       employerContributionMethodControl: [{ value: null, disabled: true }],
       contributionFromDateControl: [{ value: null, disabled: true }],
       contributionToDateControl: [{ value: null, disabled: true }],
-      VoluntaryPFtoggle: [{ value: null, disabled: true }],
-      voluntaryPFPercentControl: [{ value: null, disabled: true }],
+      VoluntaryPFtoggle: [{ value: 'percentOfNetPay', disabled: true }],
+      voluntaryPFPercentControl: [{ value: null, disabled: true },[Validators.min(0),Validators.max(100)]],
       voluntaryPFAmountControl: [{ value: null, disabled: true }],
       voluntaryFromDateControl: [{ value: null, disabled: true }],
       voluntaryToDateControl: [{ value: null, disabled: true }],
-      isEPSContributionTill60Control: [{ value: null, disabled: true }],
+      isEPSContributionTill60Control: [{ value: 'no', disabled: true }],
       //Super Annuation
-      saContributionRateControl: [{ value: null, disabled: true }],
+      saContributionRateControl: [{ value: null, disabled: true },[Validators.min(0),Validators.max(100)]],
       saContributionFromDateControl: [{ value: null, disabled: true }],
       saContributionToDateControl: [{ value: null, disabled: true }],
     });
@@ -94,7 +94,7 @@ export class InputComplianceInformationComponent implements OnInit {
     this.employeeMasterId = Number(empId);
 
     const joiningDate = localStorage.getItem('joiningDate');
-    this.joiningDate = joiningDate;
+    this.joiningDate = new Date(joiningDate);
 
     const establishmentMasterId = localStorage.getItem('establishmentMasterId')
     this.establishmentMasterId = Number(establishmentMasterId);
@@ -106,6 +106,7 @@ export class InputComplianceInformationComponent implements OnInit {
       if (res.data.results[0]) {
         this.employeeAge = res.data.results[0].split(" ");
         this.employeeAge = this.employeeAge[0];
+        console.log("this.employeeAge: "+this.employeeAge)
       }
     })
 
@@ -142,7 +143,11 @@ export class InputComplianceInformationComponent implements OnInit {
     })
 
     //get Input form from API
-    this.getInputForm()
+
+    setTimeout(() => {
+      this.getInputForm()
+    }, 500)
+  
   }//ngOnInit end 
 
   //other master API for SA compliance
@@ -183,7 +188,7 @@ export class InputComplianceInformationComponent implements OnInit {
         }
 
         if (res.data.results[0].complianceDetail.contributionMethodChoice == "NO") {
-
+          debugger
           this.contributionMethodChoice = false;
           //set default contribution method values 
           this.employeeContributionList.length = 0;
@@ -196,25 +201,27 @@ export class InputComplianceInformationComponent implements OnInit {
           this.employerContributionList.push(res.data.results[0].complianceDetail.companyContribution);
           this.totalEmployerContributionList.push(res.data.results[0].complianceDetail.companyContribution);
 
+          //set default values
           this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = res.data.results[0].complianceDetail.employeeContribution;
           this.InputInfoForm.get('employeeContributionMethodControl').setValue(res.data.results[0].complianceDetail.employeeContribution);
           this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = res.data.results[0].complianceDetail.companyContribution;
           this.InputInfoForm.get('employerContributionMethodControl').setValue(res.data.results[0].complianceDetail.companyContribution);
       
+          //disabled contribution dropdown
+   
           //setting from date and to date mandatory if contribution method has only 1 value
-          if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != null) {
             const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
-            employerContributionMethod.enable();
+            employerContributionMethod.disable();
             const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
-            employeeContributionMethod.enable();
+            employeeContributionMethod.disable();
   
             const contributionFromDate = this.InputInfoForm.get('contributionFromDateControl');
             contributionFromDate.enable();
             const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
             contributionToDate.enable();
 
-            this.validatContributionDate();
-          }
+            //make madatory contribution dates
+           this.validatContributionDate();
         }
         if (res.data.results[0].complianceDetail.contributionMethodChoice == "YES") {
           this.contributionMethodChoice = true;
@@ -245,18 +252,48 @@ export class InputComplianceInformationComponent implements OnInit {
 
   //get API for Emp master- Input from
   getInputForm() {
-debugger
+
     this.complianceInformationService.getInputDetails(this.employeeMasterId).subscribe(res => {
 
       if (res.data.results[0]) {
-        debugger
+        
         this.previousEmploymentPFEPSId = res.data.results[0].previousEPFEPSResponseDTO.previousEmploymentPFEPSId;
         this.employeePFEPSDetailId = res.data.results[0].presentEPFEPSResponseDTO.employeePFEPSDetailId;
         this.InputDetailsModel.previousEPFEPSRequestDTO = res.data.results[0].previousEPFEPSResponseDTO;
         this.InputDetailsModel.presentEPFEPSRequestDTO = res.data.results[0].presentEPFEPSResponseDTO;
         this.InputDetailsModel.superAnnuationRequestDTO = res.data.results[0].superAnnuationResponseDTO;
 
-        
+        const saContributionRateControl = this.InputInfoForm.get('saContributionRateControl');
+        saContributionRateControl.enable();
+
+         //dates conversion
+         this.InputDetailsModel.presentEPFEPSRequestDTO.contributionFromDate = new Date(res.data.results[0].presentEPFEPSResponseDTO.contributionFromDate);
+         this.InputDetailsModel.presentEPFEPSRequestDTO.contributionToDate = new Date(res.data.results[0].presentEPFEPSResponseDTO.contributionToDate);
+         this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryFromDate = new Date(res.data.results[0].presentEPFEPSResponseDTO.voluntaryFromDate);
+         this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate = new Date(res.data.results[0].presentEPFEPSResponseDTO.voluntaryToDate);
+         this.InputDetailsModel.superAnnuationRequestDTO.saContributionFromDate = new Date(res.data.results[0].superAnnuationResponseDTO.saContributionFromDate);
+         this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate = new Date(res.data.results[0].superAnnuationResponseDTO.saContributionToDate);
+     
+
+        if(this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable==0){
+          this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod=null;
+          this.InputInfoForm.get('employeeContributionMethodControl').setValue(null);
+          this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = null;
+          this.InputInfoForm.get('employerContributionMethodControl').setValue(null);
+
+          //clear validation
+          this.InputInfoForm.get('contributionFromDateControl').clearValidators();
+          this.InputInfoForm.controls.contributionFromDateControl.updateValueAndValidity();
+
+          this.InputInfoForm.get('contributionToDateControl').clearValidators();
+          this.InputInfoForm.controls.contributionToDateControl.updateValueAndValidity();
+
+          //disabled dates
+          const contributionFromDateControl = this.InputInfoForm.get('contributionFromDateControl');
+          contributionFromDateControl.disable();
+          const contributionToDateControl = this.InputInfoForm.get('contributionToDateControl');
+          contributionToDateControl.disable();
+        }
         if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != null) {
           const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
           employerContributionMethod.enable();
@@ -302,7 +339,11 @@ debugger
           voluntaryToDate.enable();
         }
 
-        if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != null) {
+        if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != null &&
+           this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != 0.00) {
+            const saContributionRateControl = this.InputInfoForm.get('saContributionRateControl');
+            saContributionRateControl.enable();
+
           const saContributionFromDate = this.InputInfoForm.get('saContributionFromDateControl');
           saContributionFromDate.enable();
           const saContributionToDate = this.InputInfoForm.get('saContributionToDateControl');
@@ -347,7 +388,7 @@ debugger
   }
 
   getAllBooleanFlags(InputDetailsModel) {
-
+debugger
     if (InputDetailsModel.previousEPFEPSRequestDTO.isFirstEmployment == 1) {
       InputDetailsModel.previousEPFEPSRequestDTO.isFirstEmployment = 'yes';
       this.isFirstEmployment = 'yes';
@@ -501,8 +542,11 @@ debugger
 
   validatContributionDate() {
     this.InputInfoForm.controls['contributionFromDateControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.contributionFromDateControl.updateValueAndValidity();
     this.InputInfoForm.controls['contributionToDateControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.contributionToDateControl.updateValueAndValidity();
     this.InputInfoForm.controls['employerContributionMethodControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.employerContributionMethodControl.updateValueAndValidity();
   }
 
   enableContributionDate() {
@@ -532,16 +576,18 @@ debugger
       if (this.employeeCompanyContributionDiff == true) {
 
         //check PF gross salary
-        if (this.grossPFSalary < 15000) {
-          //employer contribution will the same
-          this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod;
-          const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
-          employerContributionMethod.disable();
-        }
-        else {
+        // if (this.grossPFSalary < 15000) {
+        //   //employer contribution will the same
+        //   this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod;
+        //   const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
+        //   employerContributionMethod.disable();
+        // }
+      //  else {
+        debugger
           if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod == "RESTRICTED") {
             //set employer contribution to RESTRICTED
             this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod;
+            this.InputInfoForm.get('employeeContributionMethodControl').setValue('RESTRICTED');
             const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
             employerContributionMethod.disable();
           }
@@ -550,24 +596,26 @@ debugger
             this.employerContributionList = this.employerContributionList;
             this.totalEmployerContributionList = this.totalEmployerContributionList;
             this.InputInfoForm.controls['employerContributionMethodControl'].setValidators([Validators.required]);
+            this.InputInfoForm.controls.employerContributionMethodControl.updateValueAndValidity();
           }
-        }
+       // }
       }
       if (this.employeeCompanyContributionDiff == false) {
         //employer contribution will the same
         this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod;
         const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
+        this.InputInfoForm.controls.employerContributionMethodControl.updateValueAndValidity();
         employerContributionMethod.disable();
       }
     }
     if (this.contributionMethodChoice == false) {
-      this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = this.employeeContributionList;
-      this.InputInfoForm.get('employeeContributionMethodControl').setValue(this.employeeContributionList);
+      this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = this.employeeContributionList[0];
+      this.InputInfoForm.get('employeeContributionMethodControl').setValue(this.employeeContributionList[0]);
       const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
       employeeContributionMethod.disable();
 
-      this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.employerContributionList;
-      this.InputInfoForm.get('employerContributionMethodControl').setValue(this.employerContributionList);
+      this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.employerContributionList[0];
+      this.InputInfoForm.get('employerContributionMethodControl').setValue(this.employerContributionList[0]);
       const employerContributionMethod = this.InputInfoForm.get('employerContributionMethodControl');
       employerContributionMethod.disable();
     
@@ -576,7 +624,31 @@ debugger
       contributionToDate.enable();
       const contributionFromDateControl = this.InputInfoForm.get('contributionFromDateControl');
       contributionFromDateControl.enable();
+
+      //make madatory contribution dates
+      this.validatContributionDate();
     }
+  }
+
+  checkContributionToDate(){
+    
+    if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != null &&
+      this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != '') {
+        this.InputInfoForm.controls['contributionFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.contributionFromDateControl.updateValueAndValidity();
+
+        this.InputInfoForm.controls['contributionToDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.contributionToDateControl.updateValueAndValidity();
+      }
+
+    if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != null &&
+      this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != 0) {
+        this.InputInfoForm.controls['saContributionFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.saContributionFromDateControl.updateValueAndValidity();
+
+        this.InputInfoForm.controls['saContributionToDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.saContributionToDateControl.updateValueAndValidity();
+      }
   }
 
   validateContributionToDate() {
@@ -585,6 +657,12 @@ debugger
       const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
       contributionToDate.enable();
     }
+
+    if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != null &&
+      this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod != '') {
+        this.InputInfoForm.controls['contributionFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.contributionFromDateControl.updateValueAndValidity();
+      }
   }
 
   searchEmployeeContribution(employee) {
@@ -615,7 +693,9 @@ debugger
 
   validatSAContributionDate() {
     this.InputInfoForm.controls['saContributionFromDateControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.saContributionFromDateControl.updateValueAndValidity();
     this.InputInfoForm.controls['saContributionToDateControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.saContributionToDateControl.updateValueAndValidity();
   }
 
   enableSAContributionDate() {
@@ -633,6 +713,18 @@ debugger
     }
   }
 
+  checkSAContributionToDate(){
+    
+    if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != null &&
+      this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != 0) {
+        this.InputInfoForm.controls['saContributionFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.saContributionFromDateControl.updateValueAndValidity();
+
+        this.InputInfoForm.controls['saContributionToDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.saContributionToDateControl.updateValueAndValidity();
+      }
+  }
+
   validateSAContributionToDate() {
     debugger
     if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate == '' || this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate == null) {
@@ -640,11 +732,19 @@ debugger
       const saContributionToDate = this.InputInfoForm.get('saContributionToDateControl');
       saContributionToDate.enable();
     }
+    
+    if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != null &&
+      this.InputDetailsModel.superAnnuationRequestDTO.saContributionRate != 0) {
+        this.InputInfoForm.controls['saContributionFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.saContributionFromDateControl.updateValueAndValidity();
+      }
   }
 
   validatVoluntaryDate() {
     this.InputInfoForm.controls['voluntaryFromDateControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.voluntaryFromDateControl.updateValueAndValidity();
     this.InputInfoForm.controls['voluntaryToDateControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.voluntaryToDateControl.updateValueAndValidity();
   }
 
   enableVoluntaryPercentDate() {
@@ -677,18 +777,56 @@ debugger
     }
   }
 
+  checkVoluntaryToDate(){
+    if (this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFPercent != null &&
+      this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFPercent != '') {
+        this.InputInfoForm.controls['voluntaryFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.voluntaryFromDateControl.updateValueAndValidity();
+
+        this.InputInfoForm.controls['voluntaryToDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.voluntaryToDateControl.updateValueAndValidity();
+      }
+
+      if (this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFAmount != null &&
+        this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFAmount != '') {
+          this.InputInfoForm.controls['voluntaryFromDateControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.voluntaryFromDateControl.updateValueAndValidity();
+
+          this.InputInfoForm.controls['voluntaryToDateControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.voluntaryToDateControl.updateValueAndValidity();
+        }
+  }
   validateVoluntaryToDate() {
     if (this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate == '' || this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate == null) {
       this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryToDate = '31-Dec-9999';
       const voluntaryToDate = this.InputInfoForm.get('voluntaryToDateControl');
       voluntaryToDate.enable();
     }
+
+    if (this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFPercent != null &&
+      this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFPercent != '') {
+        this.InputInfoForm.controls['voluntaryFromDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.voluntaryFromDateControl.updateValueAndValidity();
+
+        this.InputInfoForm.controls['voluntaryToDateControl'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.voluntaryToDateControl.updateValueAndValidity();
+      }
+
+      if (this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFAmount != null &&
+        this.InputDetailsModel.presentEPFEPSRequestDTO.voluntaryPFAmount != '') {
+          this.InputInfoForm.controls['voluntaryFromDateControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.voluntaryFromDateControl.updateValueAndValidity();
+
+          this.InputInfoForm.controls['voluntaryToDateControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.voluntaryToDateControl.updateValueAndValidity();
+        }
   }
 
   enablePresentTabData() {
 
     //set contribution method mandatory
     this.InputInfoForm.controls['employeeContributionMethodControl'].setValidators([Validators.required]);
+    this.InputInfoForm.controls.employeeContributionMethodControl.updateValueAndValidity();
     const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
     employeeContributionMethod.enable();
     this.enableContributionDate();
@@ -707,7 +845,7 @@ debugger
   }
 
   disablePresentTabData() {
-debugger
+    
     this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod = null;
     const employeeContributionMethod = this.InputInfoForm.get('employeeContributionMethodControl');
     employeeContributionMethod.disable();
@@ -750,6 +888,7 @@ debugger
     this.InputInfoForm.controls.contributionFromDateControl.updateValueAndValidity();
 
     this.isEPSContributionTill60 = 'no';
+    this.InputInfoForm.get('isEPSContributionTill60Control').setValue('no');  
     const isEPSContributionTill60 = this.InputInfoForm.get('isEPSContributionTill60Control');
     isEPSContributionTill60.disable();
   }
@@ -757,31 +896,44 @@ debugger
   checkFlowIfAgeGreaterThan58() {
 
     if (this.employeeAge < 58) {
+      //EPS applicable
       this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "Yes";
+     // this.InputInfoForm.get('isEPSApplicableControl').setValue('yes'); 
+
+      //option selection available for contribution towards 60 years
       const isEPSContributionTill60 = this.InputInfoForm.get('isEPSContributionTill60Control');
       isEPSContributionTill60.enable();
     }
     if (this.employeeAge > 58 && this.employeeAge < 60) {
+      //need to check cycle lock(If entry is available then user is not able to choose the option )
       if (this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSContributionTill60 == "") {
         const isEPSContributionTill60 = this.InputInfoForm.get('isEPSContributionTill60Control');
         isEPSContributionTill60.enable();
         this.isEPSContributionTill60 = '';
         this.InputInfoForm.controls['isEPSContributionTill60'].setValidators([Validators.required]);
+        this.InputInfoForm.controls.isEPSContributionTill60.updateValueAndValidity();
+
+        this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
       }
       if (this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSContributionTill60 == "yes") {
         if (this.employeeAge > 60) {
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
+          //this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
         }
         else {
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "Yes";
+         // this.InputInfoForm.get('isEPSApplicableControl').setValue('yes');  
         }
       }
       if (this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSContributionTill60 == "no") {
+        debugger
         this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
+        //this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
       }
     }
     if (this.employeeAge >= 60) {
       this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
+     // this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
     }
   }
 
@@ -803,6 +955,7 @@ debugger
         }
         else {
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
+         // this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
         }
       }
     }
@@ -821,6 +974,7 @@ debugger
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedInPast = 'no';
       this.isContributedInPast = 'no';
+      this.InputInfoForm.get('isContributedInPastControl').setValue('no');   
       const isContributedInPast = this.InputInfoForm.get('isContributedInPastControl');
       isContributedInPast.disable();
 
@@ -830,29 +984,37 @@ debugger
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 = 'no';
       this.isContributedBefore1Sep2014 = 'no';
+      this.InputInfoForm.get('isContributedBefore1Sep2014Control').setValue('no');   
       const isContributedBefore1Sep2014 = this.InputInfoForm.get('isContributedBefore1Sep2014Control');
       isContributedBefore1Sep2014.disable();
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = 'no';
       this.isPartOfEPS = 'no';
+      this.InputInfoForm.get('isPartOfEPSControl').setValue('no');   
       const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
       isPartOfEPS.disable();
 
       if (this.optionToChooseNill == false) {
         const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
-        this.isEPFApplicable = "yes";
-        this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
         isEPFApplicable.disable();
+        this.isEPFApplicable = "yes";
+        this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
+        this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+     
+  
         // this.enablePresentTabData();
         this.setEPSApplicableValue();
       }
       if (this.optionToChooseNill == true) {
         //check PF gross salary
         if (this.grossPFSalary < 15000) {
+
           const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
-          this.isEPFApplicable = "yes";
-          this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
           isEPFApplicable.disable();
+          this.isEPFApplicable = "yes";
+          this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
+          this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+
           // this.enablePresentTabData();
           this.setEPSApplicableValue();
         }
@@ -860,8 +1022,10 @@ debugger
           const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
           isEPFApplicable.enable();
           this.isEPFApplicable = '';
+         // this.InputInfoForm.get('isEPFApplicableControl').setValue('');  
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = null;
           this.InputInfoForm.controls['isEPFApplicableControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.isEPFApplicableControl.updateValueAndValidity();
           //this.disablePresentTabData();
         }
       }
@@ -873,23 +1037,29 @@ debugger
       const isContributedInPast = this.InputInfoForm.get('isContributedInPastControl');
       isContributedInPast.enable();
       this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedInPast = 'no';
+      this.InputInfoForm.get('isContributedInPastControl').setValue('no');  
       this.isContributedInPast = 'no';
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 = 'no';
       this.isContributedBefore1Sep2014 = 'no';
+      this.InputInfoForm.get('isContributedBefore1Sep2014Control').setValue('no');  
       const isContributedBefore1Sep2014 = this.InputInfoForm.get('isContributedBefore1Sep2014Control');
       isContributedBefore1Sep2014.disable();
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = 'no';
       this.isPartOfEPS = 'no';
+      this.InputInfoForm.get('isPartOfEPSControl').setValue('no');  
       const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
       isPartOfEPS.disable();
 
       if (this.optionToChooseNill == false) {
         const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
+        isEPFApplicable.disable();
         this.isEPFApplicable = "yes";
         this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
-        isEPFApplicable.disable();
+        this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
+   
+
         this.setEPSApplicableValue();
       }
       if (this.optionToChooseNill == true) {
@@ -898,6 +1068,7 @@ debugger
           const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
           this.isEPFApplicable = "yes";
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+          this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
           isEPFApplicable.disable();
           this.setEPSApplicableValue();
         }
@@ -907,6 +1078,7 @@ debugger
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = null;
           this.isEPFApplicable = '';
           this.InputInfoForm.controls['isEPFApplicableControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.isEPFApplicableControl.updateValueAndValidity();
           //this.disablePresentTabData();
         }
       }
@@ -921,16 +1093,19 @@ debugger
 
       //PF number will be mandatory
       this.InputInfoForm.controls['previousPFNumberControl'].setValidators([Validators.required]);
+      this.InputInfoForm.controls.previousPFNumberControl.updateValueAndValidity();
       const previousPFNumber = this.InputInfoForm.get('previousPFNumberControl');
       previousPFNumber.enable();
 
       const isContributedBefore1Sep2014 = this.InputInfoForm.get('isContributedBefore1Sep2014Control');
       this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 = "no"
+      this.InputInfoForm.get('isContributedBefore1Sep2014Control').setValue('no');  
       this.isContributedBefore1Sep2014 = 'no';
       isContributedBefore1Sep2014.enable();
 
       if (this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 == "no" || this.isContributedBefore1Sep2014 == "no") {
         const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
+        this.InputInfoForm.get('isPartOfEPSControl').setValue('no');  
         isPartOfEPS.enable();
         this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = "no";
         this.isPartOfEPS = 'no';
@@ -939,6 +1114,7 @@ debugger
       const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
       this.isEPFApplicable = "yes";
       this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+      this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
       isEPFApplicable.disable();
       this.setEPSApplicableValue();
 
@@ -954,17 +1130,20 @@ debugger
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isContributedBefore1Sep2014 = 'no';
       this.isContributedBefore1Sep2014 = 'no';
+      this.InputInfoForm.get('isContributedBefore1Sep2014Control').setValue('no');  
       const isContributedBefore1Sep2014 = this.InputInfoForm.get('isContributedBefore1Sep2014Control');
       isContributedBefore1Sep2014.disable();
 
       this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = 'no';
       this.isPartOfEPS = 'no';
+      this.InputInfoForm.get('isPartOfEPSControl').setValue('no');  
       const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
       isPartOfEPS.disable();
 
       if (this.optionToChooseNill == false) {
         const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
         this.isEPFApplicable = "yes";
+        this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
         isEPFApplicable.disable();
         this.setEPSApplicableValue();
       }
@@ -974,6 +1153,7 @@ debugger
           const isEPFApplicable = this.InputInfoForm.get('isEPFApplicableControl');
           this.isEPFApplicable = "yes";
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+          this.InputInfoForm.get('isEPFApplicableControl').setValue('yes');  
           isEPFApplicable.disable();
           //this.enablePresentTabData();
           this.setEPSApplicableValue();
@@ -984,6 +1164,7 @@ debugger
           this.isEPFApplicable = '';
           this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = null;
           this.InputInfoForm.controls['isEPFApplicableControl'].setValidators([Validators.required]);
+          this.InputInfoForm.controls.isEPFApplicableControl.updateValueAndValidity();
           //this.disablePresentTabData();
         }
       }
@@ -1001,7 +1182,9 @@ debugger
       const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
       isPartOfEPS.disable();
       this.isPartOfEPS = "yes";
-      this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+      //this.InputDetailsModel.presentEPFEPSRequestDTO.isEPFApplicable = "yes";
+      this.InputInfoForm.get('isPartOfEPSControl').setValue('yes');  
+
       this.setEPSApplicableValue();
     } else {
       this.isContributedBefore1Sep2014 = "no";
@@ -1010,6 +1193,7 @@ debugger
       const isPartOfEPS = this.InputInfoForm.get('isPartOfEPSControl');
       isPartOfEPS.enable();
       this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = 'no';
+      this.InputInfoForm.get('isPartOfEPSControl').setValue('no');  
       this.isPartOfEPS = 'no';
     }
   }
@@ -1024,6 +1208,7 @@ debugger
     } else {
       this.isPartOfEPS = "no";
       this.InputDetailsModel.previousEPFEPSRequestDTO.isPartOfEPS = "no";
+      this.InputInfoForm.get('isPartOfEPSControl').setValue('no');  
       //check if gross salary
       this.setEPSApplicableValue();
     }
@@ -1037,6 +1222,7 @@ debugger
 
       if (this.employeeAge < 58) {
         this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "Yes";
+       // this.InputInfoForm.get('isEPSApplicableControl').setValue('yes');  
         const isEPSApplicable = this.InputInfoForm.get('isEPSApplicableControl');
         isEPSApplicable.disable();
       }
@@ -1049,6 +1235,7 @@ debugger
 
       this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
       const isEPSApplicable = this.InputInfoForm.get('isEPSApplicableControl');
+      //this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
       isEPSApplicable.disable();
 
       this.disablePresentTabData();
@@ -1068,6 +1255,7 @@ debugger
 
       //set eps not applicable
       this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
+     // this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
       const isEPSApplicable = this.InputInfoForm.get('isEPSApplicableControl');
       isEPSApplicable.disable();
     }
@@ -1082,6 +1270,17 @@ debugger
     const voluntaryToDate = this.InputInfoForm.get('voluntaryToDateControl');
     voluntaryToDate.disable();
   }
+
+  disabledsaContributionDate() {
+    this.InputDetailsModel.superAnnuationRequestDTO.saContributionFromDate = null;
+    const saContributionFromDate = this.InputInfoForm.get('saContributionFromDateControl');
+    saContributionFromDate.disable();
+
+    this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate = null;
+    const saContributionToDate = this.InputInfoForm.get('saContributionToDateControl');
+    saContributionToDate.disable();
+  }
+
   percentOrAmount(event) {
 
     if (event.currentTarget.defaultValue == "percentOfNetPay") {
@@ -1127,5 +1326,44 @@ debugger
     this.InputDetailsModel.previousEPFEPSRequestDTO.authorityIssuer = null;
     const authorityIssue = this.InputInfoForm.get('authorityIssueControl');
     authorityIssue.disable();
+  }
+
+
+  clearPercentageValue(){
+    const voluntaryPFPercent = this.InputInfoForm.get('voluntaryPFPercentControl').value;
+    if(voluntaryPFPercent<0 || voluntaryPFPercent>100){
+      this.InputInfoForm.get('voluntaryPFPercentControl').setValue('');   
+
+        //this.sweetalertError('Severity Level should be up to 100%');
+        this.CommonDataService.sweetalertError('Voluntary Provident Fund should be up to 100%');
+
+      //clear dates validation
+      this.InputInfoForm.get('voluntaryFromDateControl').clearValidators();
+      this.InputInfoForm.controls.voluntaryFromDateControl.updateValueAndValidity();
+
+      this.InputInfoForm.get('voluntaryToDateControl').clearValidators();
+      this.InputInfoForm.controls.voluntaryToDateControl.updateValueAndValidity();
+
+      this.disabledVoluntaryDate();
+    }    
+  }
+
+
+  clearSAContributionRateValue(){
+    const saContributionRateControl = this.InputInfoForm.get('saContributionRateControl').value;
+    if(saContributionRateControl<0 || saContributionRateControl>this.saContributionRate){
+      this.InputInfoForm.get('saContributionRateControl').setValue('');   
+
+      this.CommonDataService.sweetalertError('Contribution rate should be up to 100%');
+
+      //clear dates validation
+      this.InputInfoForm.get('saContributionFromDateControl').clearValidators();
+      this.InputInfoForm.controls.saContributionFromDateControl.updateValueAndValidity();
+
+      this.InputInfoForm.get('saContributionToDateControl').clearValidators();
+      this.InputInfoForm.controls.saContributionToDateControl.updateValueAndValidity();
+
+      this.disabledsaContributionDate();
+    } 
   }
 }

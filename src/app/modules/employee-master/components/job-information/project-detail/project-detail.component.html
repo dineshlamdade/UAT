@@ -65,7 +65,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="projectFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="projectDetailsModel.projectFromDate" (bsValueChange)="validateProjectDate()">
+                            [(ngModel)]="projectDetailsModel.projectFromDate" (bsValueChange)="validateProjectDate()"
+                            [ngClass]="{'is-invalid' : projectForm.get('projectFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -78,7 +80,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="projectToDateControl" [minDate]="projectDetailsModel.projectFromDate"
-                            [(ngModel)]="projectDetailsModel.projectToDate">
+                            [(ngModel)]="projectDetailsModel.projectToDate"
+                            [ngClass]="{'is-invalid' : projectForm.get('projectToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -108,7 +112,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="billableFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="projectDetailsModel.billableFromDate" (bsValueChange)="validateBillableDate()">
+                            [(ngModel)]="projectDetailsModel.billableFromDate" (bsValueChange)="validateBillableDate()"
+                            [ngClass]="{'is-invalid' : projectForm.get('billableFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -121,7 +127,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="billableToDateControl" [minDate]="projectDetailsModel.billableFromDate"
-                            [(ngModel)]="projectDetailsModel.billableToDate">
+                            [(ngModel)]="projectDetailsModel.billableToDate"
+                            [ngClass]="{'is-invalid' : projectForm.get('billableToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -158,7 +166,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="benchFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="projectDetailsModel.benchFromDate" (bsValueChange)="validateBenchDate()">
+                            [(ngModel)]="projectDetailsModel.benchFromDate" (bsValueChange)="validateBenchDate()"
+                            [ngClass]="{'is-invalid' : projectForm.get('benchFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -171,7 +181,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="benchToDateControl" [minDate]="projectDetailsModel.benchFromDate"
-                            [(ngModel)]="projectDetailsModel.benchToDate">
+                            [(ngModel)]="projectDetailsModel.benchToDate"
+                            [ngClass]="{'is-invalid' : projectForm.get('benchToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
