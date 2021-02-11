@@ -83,12 +83,33 @@ export class ProjectDetailComponent implements OnInit {
         this.employeeProjectDetailId = res.data.results[0].employeeProjectDetailId;
         this.projectDetailsModel = res.data.results[0];
 
-
+        //dates conversion  
+        if (res.data.results[0].projectFromDate != null) {
+          this.projectDetailsModel.projectFromDate = new Date(res.data.results[0].projectFromDate);
+        }
+        if (res.data.results[0].projectToDate != null) {
+          this.projectDetailsModel.projectToDate = new Date(res.data.results[0].projectToDate);
+        }
+        if (res.data.results[0].billableFromDate != null) {
+          this.projectDetailsModel.billableFromDate = new Date(res.data.results[0].billableFromDate);
+        }
+        if (res.data.results[0].billableToDate != null) {
+          this.projectDetailsModel.billableToDate = new Date(res.data.results[0].billableToDate);
+        }
+        if (res.data.results[0].benchFromDate != null) {
+          this.projectDetailsModel.benchFromDate = new Date(res.data.results[0].benchFromDate);
+        }
+        if (res.data.results[0].benchToDate != null) {
+          this.projectDetailsModel.benchToDate = new Date(res.data.results[0].benchToDate);
+        }
+        
         //bench 
         if (this.projectDetailsModel.isOnBench == 1) {
           // this.projectDetailsModel.isOnBench = 'yes';
           this.isOnBenchBoolean = 'yes';
           this.projectForm.value.isOnBenchControl = 'yes';
+
+          this.validateSaveBenchDates();
         }
         else {
           this.disableBenchDates();
@@ -108,6 +129,8 @@ export class ProjectDetailComponent implements OnInit {
           projectFromDate.enable();
           const projectToDate = this.projectForm.get('projectToDateControl');
           projectToDate.enable();
+
+          this.validateProjectDatesSave();
         }
         else {
           this.disableProjectDates();
@@ -119,6 +142,8 @@ export class ProjectDetailComponent implements OnInit {
           billableFromDate.enable();
           const billableToDate = this.projectForm.get('billableToDateControl');
           billableToDate.enable();
+
+          this.validateSaveBillableDates();
         }
         else {
           this.disableBillableDates();
@@ -222,7 +247,9 @@ export class ProjectDetailComponent implements OnInit {
 
   validateProjectDatesSave() {
     this.projectForm.controls['projectFromDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.projectFromDateControl.updateValueAndValidity();
     this.projectForm.controls['projectToDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.projectToDateControl.updateValueAndValidity();
 
   }
   enableProjectDate() {
@@ -256,7 +283,9 @@ export class ProjectDetailComponent implements OnInit {
   }
   validateSaveBillableDates() {
     this.projectForm.controls['billableFromDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.billableFromDateControl.updateValueAndValidity();
     this.projectForm.controls['billableToDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.billableToDateControl.updateValueAndValidity();
 
   }
   enableBillableDate() {
@@ -291,7 +320,9 @@ export class ProjectDetailComponent implements OnInit {
 
   validateSaveBenchDates() {
     this.projectForm.controls['benchFromDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.benchFromDateControl.updateValueAndValidity();
     this.projectForm.controls['benchToDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.benchToDateControl.updateValueAndValidity();
 
   }
 
@@ -343,7 +374,8 @@ export class ProjectDetailComponent implements OnInit {
 
         //set default company
         let result = res.data.results[0];
-        this.companyName = result[0].payrollAreaId.companyId.companyName;
+        //this.companyName = result[0].payrollAreaId.companyId.companyName;
+        this.companyName = result[0].payrollAreaAndCompany;
         localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
@@ -382,7 +414,8 @@ export class ProjectDetailComponent implements OnInit {
     const toSelect = this.filteredPayrollAreaList.find(
       (c) => c.payrollAreaCode === this.payrollAreaCode
     );
-    this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    //this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    this.companyName = toSelect.payrollAreaAndCompany;
     localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.resetProjectForm();

@@ -60,7 +60,9 @@
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="skillStartDateControl" 
                     [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.skillStartDate"
-                    (bsValueChange)="validateSkillDate()">
+                    (bsValueChange)="validateSkillDate()"
+                    [ngClass]="{'is-invalid' : minimumWagesForm.get('skillStartDateControl').status == 'INVALID'}">
+                   
                 </div>
             </div>
 
@@ -74,7 +76,9 @@
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="skillEndDateControl" 
                     [minDate]="minumumWagesDetailsModel.skillStartDate"
-                            [(ngModel)]="minumumWagesDetailsModel.skillEndDate">
+                            [(ngModel)]="minumumWagesDetailsModel.skillEndDate"
+                            [ngClass]="{'is-invalid' : minimumWagesForm.get('skillEndDateControl').status == 'INVALID'}">
+                   
                      </div>
             </div>
         </div>
@@ -105,7 +109,8 @@
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="workStartDateControl" 
                     [minDate]="joiningDate" [(ngModel)]="minumumWagesDetailsModel.workStartDate"
-                    (bsValueChange)="validateWorkDate()">
+                    (bsValueChange)="validateWorkDate()"
+                    [ngClass]="{'is-invalid' : minimumWagesForm.get('workStartDateControl').status == 'INVALID'}">
                 </div>
             </div>
 
@@ -119,7 +124,8 @@
                     data-date-autoclose="true" class="form-control" placeholder="  /   /" 
                     bsDatepicker formControlName="workEndDateControl" 
                     [minDate]="minumumWagesDetailsModel.workStartDate"
-                            [(ngModel)]="minumumWagesDetailsModel.workEndDate">
+                            [(ngModel)]="minumumWagesDetailsModel.workEndDate"
+                            [ngClass]="{'is-invalid' : minimumWagesForm.get('workEndDateControl').status == 'INVALID'}">
                     </div>
             </div>
         </div>
