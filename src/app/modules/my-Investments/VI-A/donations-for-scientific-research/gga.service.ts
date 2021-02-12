@@ -41,7 +41,7 @@ export class GgaService {
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'donations80GGA-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'donations80GGA-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));

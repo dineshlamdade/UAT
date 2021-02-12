@@ -3,17 +3,17 @@
      <div class="row">
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Type Of Expence</label>
-              <select name="Deposit_Type" id="depositType" class="form-control custom-select"
-                  formControlName="depositType" (change)='onChangeDeposit()'
-                  [ngClass]="{ 'is-invalid': submitted && masterForm.depositType.errors }">
-                  <option value="" selected>Select</option>
-                  <option *ngFor="let expenceTypeItem of typeOfExpenceList"
-                  [value]="expenceTypeItem.value">
-                  {{expenceTypeItem.label}}
-                </option>
+              <select name="Deposit_Type" id="expenseType" class="form-control custom-select"
+                   formControlName="expenseType" (change)='onChangeDeposit()'
+                   [ngClass]="{ 'is-invalid': submitted && masterForm.expenseType.errors }">
+                   <option value="" selected>Select</option>
+                   <option *ngFor="let typeOfExpenceItem of typeOfExpenceList"
+                   [value]="typeOfExpenceItem.value">
+                   {{typeOfExpenceItem.label}}
+                 </option>
               </select>
-              <div *ngIf="submitted && masterForm.depositType.errors" class="invalid-feedback">
-                <div *ngIf="masterForm.depositType.errors.required">Deposit Type is mandatory</div>
+              <div *ngIf="submitted && masterForm.expenseType.errors" class="invalid-feedback">
+                 <div *ngIf="masterForm.expenseType.errors.required">Type Of Expence is mandatory</div>
               </div>
           </div>
           <div class="col-sm-6 col-md-3">
@@ -27,11 +27,11 @@
         </div>
         <div class="col-sm-6 col-md-3">
           <label class="form-label">Policy No.</label>
-          <input type="text" formControlName="policyNo" class="form-control"
+          <input type="text" formControlName="policyNumber" class="form-control"
             placeholder="Enter Policy No."
-            [ngClass]="{ 'is-invalid': submitted && masterForm.policyNo.errors }"  >
-          <div *ngIf="submitted && masterForm.policyNo.errors" class="invalid-feedback">
-            <div *ngIf="masterForm.policyNo.errors.required">Policy No Is Mandatory</div>
+            [ngClass]="{ 'is-invalid': submitted && masterForm.policyNumber.errors }"  >
+          <div *ngIf="submitted && masterForm.policyNumber.errors" class="invalid-feedback">
+            <div *ngIf="masterForm.policyNumber.errors.required">Policy No Is Mandatory</div>
           </div>
       </div>
         <div class="col-sm-6 col-md-3">
@@ -75,26 +75,51 @@
         </div>
 
         <div class="col-sm-6 col-md-3 mt-10">
-           <label class="form-label">Benefeciary / ies</label>
-           <!-- <label class="form-label">Deposit Type</label> -->
-           <select name="Deposit_Type" id="depositType" class="form-control custom-select"
-                formControlName="depositType" (change)='onChangeDeposit()'
-                [ngClass]="{ 'is-invalid': submitted && masterForm.depositType.errors }">
-                <option value="" selected>Select</option>
-                <option *ngFor="let depositTypeItem of depositTypeList"
-                [value]="depositTypeItem.value">
-                {{depositTypeItem.label}}
+           <!-- <label class="form-label">Benefeciary / ies</label>
+           <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
+                formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
+              <option *ngFor="let familyMember of familyMemberName"
+                [value]="familyMember.value">
+                {{familyMember.label}}
               </option>
-           </select>
-           <div *ngIf="submitted && masterForm.depositType.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.depositType.errors.required">Deposit Type is mandatory</div>
-           </div>
-        </div>
-        <!-- <div class="col-sm-6 col-md-3 mt-10">
+           </select> -->
+           <label class="form-label">Benefeciary / ies</label>
+              <ng-multiselect-dropdown [placeholder]="'None Selected'" appendTo="body" #multiSelect
+              style="font-size: small;" [settings]="dropdownSettings" (change)='OnSelectionfamilyMemberGroup()'
+              [data]="dropdownList"
+              (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
+              (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)"
+              [(ngModel)]="selectedEstablishmentMasterId"
+              [ngClass]="{'is-invalid' : form.get('mediclaimBenefeciaryDetailList').status == 'INVALID'}"
+              formControlName="mediclaimBenefeciaryDetailList">
+            </ng-multiselect-dropdown>
 
-        </div> -->
+            <!-- <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
+            </ng-multiselect-dropdown> -->
+        </div>
+
+
+
      </div>
-     <div class="row mt-25">
+
+     <!-- <div class="col-lg-4 col-md-12">
+      <label>"Select All" Option Enabled</label>
+      <div class="form-group multiselect_div">
+          <select id="multiselect3-all" name="multiselect3[]" class="multiselect multiselect-custom" multiple="multiple">
+              <option value="multiselect-all">Select All</option>
+              <option value="cheese">Cheese</option>
+              <option value="tomatoes">Tomatoes</option>
+              <option value="mozarella">Mozzarella</option>
+              <option value="mushrooms">Mushrooms</option>
+              <option value="pepperoni">Pepperoni</option>
+              <option value="onions">Onions</option>
+          </select>
+      </div>
+  </div> -->
+
+     <!-- <button (click)="abc()">abc</button> -->
+     <div class="row mt-25" *ngIf="visibilityFlag">
         <div class="col-12">
            <fieldset>
               <legend>Payment Details</legend>
@@ -105,7 +130,7 @@
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
                       <option value="" selected>Select</option>
-                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentListInMediclaim"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}
                       </option>
@@ -130,17 +155,17 @@
                        <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
                     </div>
                  </div>
-                 <div class="col-sm-6 col-md-3" *ngIf="visibilityFlag">
+                 <div class="col-sm-6 col-md-3">
                     <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
                     <div class="custom-controls-stacked ml-15 mt-10">
                        <label class="custom-control custom-radio custom-control-inline">
                        <input formControlName="ecs" type="radio"
-                          class="custom-control-input" name="ecs" value=1 checked>
+                          class="custom-control-input" name="ecs" value=true checked>
                        <span class="custom-control-label">Yes</span>
                        </label>
                        <label class="custom-control custom-radio custom-control-inline">
                        <input formControlName="ecs" type="radio"
-                          class="custom-control-input" name="ecs" value=0>
+                          class="custom-control-input" name="ecs" value=false>
                        <span class="custom-control-label">No</span>
                        </label>
                     </div>
@@ -155,18 +180,18 @@
                              <span class="input-group-text"><i
                                 class="fa fa-calendar"></i></span>
                           </div>
-                          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="startDate" data-provide="datepicker"
+                          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()"
                             [minDate]="minFormDate"
                             [maxDate]="maxFromDate" placeholder="Start Date" bsDatepicker
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.startDate.errors }">
-                          <div *ngIf="submitted && masterForm.startDate.errors" class="invalid-feedback">
-                             <div *ngIf="masterForm.startDate.errors.required">Start Date is mandatory</div>
+                            [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
+                          <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
+                             <div *ngIf="masterForm.fromDate.errors.required">Start Date is mandatory</div>
                           </div>
                        </div>
                     </div>
                  </div>
-                 <div class="col-sm-6 col-md-3" *ngIf="visibilityFlag">
+                 <div class="col-sm-6 col-md-3">
                     <label class="form-label">End Date</label>
                     <div class="form-group">
                        <div class="input-group">
@@ -175,11 +200,11 @@
                                 class="fa fa-calendar"></i></span>
                           </div>
                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
-                            [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="endDate" data-provide="datepicker"
+                            [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="End Date" bsDatepicker
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.endDate.errors }">
-                          <div *ngIf="submitted && masterForm.endDate.errors" class="invalid-feedback">
-                             <div *ngIf="masterForm.endDate.errors.required">End Date is mandatory</div>
+                            [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }">
+                          <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
+                             <div *ngIf="masterForm.toDate.errors.required">End Date is mandatory</div>
                           </div>
                        </div>
                     </div>
@@ -208,13 +233,13 @@
                                    </span>
                                 </td>
                                 <td class="wd-14">
-                                   <span tooltip="{{summary.startDate| date :'dd-MMM-yyyy'}}">
-                                   {{summary.startDate| date :"dd-MMM-yyyy"}}
+                                   <span tooltip="{{summary.fromDate| date :'dd-MMM-yyyy'}}">
+                                   {{summary.fromDate| date :"dd-MMM-yyyy"}}
                                    </span>
                                 </td>
                                 <td class="wd-14">
-                                   <span tooltip="{{summary.endDate| date :'dd-MMM-yyyy'}}">
-                                   {{summary.endDate| date :"dd-MMM-yyyy"}}
+                                   <span tooltip="{{summary.toDate| date :'dd-MMM-yyyy'}}">
+                                   {{summary.toDate| date :"dd-MMM-yyyy"}}
                                    </span>
                                 </td>
                                 <td class="wd-20">
@@ -278,7 +303,7 @@
                           <tbody>
                              <tr>
                                 <th scope="row"><span tooltip="1">1</span></th>
-                                <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement</td>
+                                <td><span tooltip="Policy Document"></span>Policy Document</td>
                                 <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
                                    class="fa fa-paperclip"
                                    aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
@@ -330,12 +355,13 @@
                         <tr>
                             <th scope="col" class="wd-15">Institution</th>
                             <th scope="col" class="wd-10">Account No..</th>
-                            <th scope="col" class="wd-10">Account Holder Name</th>
-                            <th scope="col" class="wd-10">Relationship</th>
-                            <th scope="col" class="wd-10">Frequency</th>
-                            <th scope="col" class="wd-10">Premium Amount</th>
+                            <th scope="col" class="wd-10">Benefeciary / ies</th>
                             <th scope="col" class="wd-10">Start Date</th>
                             <th scope="col" class="wd-10">End Date</th>
+                            <!-- <th scope="col" class="wd-10">Relationship</th> -->
+                            <th scope="col" class="wd-10">Frequency</th>
+                            <th scope="col" class="wd-10">Premium Amount</th>
+
                             <th scope="col" class="wd-10">Status</th>
                             <th scope="col" class="wd-5">Action</th>
                         </tr>
@@ -344,20 +370,25 @@
                         <tr *ngFor="let summary of masterGridData; let i = index">
                             <td class="align-left wd-15"><span tooltip="{{summary.institution}}">{{summary.institution}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.policyNo}}">{{summary.policyNo}}</span>
+                            <td class="wd-10"><span tooltip="{{summary.policyNumber}}">{{summary.policyNumber}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
+                            <td class="wd-10">
+                              <div *ngFor="let mediclaim of summary.mediclaimBenefeciaryDetailList; let i = index">
+                              {{mediclaim.name}} : {{mediclaim.relationship}}
+                            </div>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
+
+                            <td class="wd-10"><span tooltip="{{summary.policyStartDate}}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
+                            <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date :"dd-MMM-yyyy"}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount | number:'1.2-2'}}</span>
+                            <!-- <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
+                            </td> -->
+                            <td class="wd-10"><span tooltip="{{summary.mediclaimPaymentDetailList[0].frequencyOfPayment}}">{{summary.mediclaimPaymentDetailList[0].frequencyOfPayment}}</span>
                             </td>
-                             <td class="wd-10"><span tooltip="{{summary.startDate}}">{{summary.startDate | date :"dd-MMM-yyyy"}}</span>
+                            <td class="wd-10"><span tooltip="{{summary.mediclaimPaymentDetailList[0].premiumAmount | number:'1.2-2'}}">{{summary.mediclaimPaymentDetailList[0].premiumAmount | number:'1.2-2'}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.endDate}}">{{summary.endDate| date :"dd-MMM-yyyy"}}</span>
-                            </td>
+
                             <td class="wd-10"><span tooltip="Submitted">Submitted</span>
                             </td>
                             <td class="wd-5">
@@ -365,7 +396,7 @@
                             </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">
-                            <td colspan="10">
+                            <td colspan="9">
                                 <span class="font-14 font500 align-center text-red">No Data
                     Available</span>
                             </td>
