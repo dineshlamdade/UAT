@@ -130,7 +130,12 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label *ngIf="probationMonthsDays == 'false'" class="form-label">Months</label>
-                                    <select *ngIf="probationMonthsDays == 'false'" class="form-control"
+                                    <input type="text" *ngIf="probationMonthsDays == 'false'" class="form-control"
+                                        placeholder="Select Months" [(ngModel)]="probationPeriodMonthModel"
+                                        formControlName="probationPeriodMonth"
+                                        (change)="calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, ReJoiningInformationModel.rejoiningDate)">
+
+                                    <!-- <select *ngIf="probationMonthsDays == 'false'" class="form-control"
                                         placeholder="Select Months" [(ngModel)]="probationPeriodMonthModel"
                                         formControlName="probationPeriodMonth"
                                         (change)="calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, ReJoiningInformationModel.rejoiningDate)">
@@ -138,7 +143,7 @@
                                         <option *ngFor="let option of monthsList" [value]="option">
                                             {{option}}
                                         </option>
-                                    </select>
+                                    </select> -->
                                     <label *ngIf="probationMonthsDays == 'true'" class="form-label">
                                         Days</label>
                                     <input *ngIf="probationMonthsDays == 'true'" type="text" class="form-control"
@@ -173,14 +178,18 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label *ngIf="noticeMonthsDays == 'false'" class="form-label">Months</label>
-                                    <select *ngIf="noticeMonthsDays == 'false'" class="form-control"
+                                    <input type="text" *ngIf="noticeMonthsDays == 'false'" class="form-control"
+                                        placeholder="Select Months" [(ngModel)]="noticePeriodMonthModel"
+                                        formControlName="noticePeriodMonth">
+
+                                    <!-- <select *ngIf="noticeMonthsDays == 'false'" class="form-control"
                                         placeholder="Select Months" [(ngModel)]="noticePeriodMonthModel"
                                         formControlName="noticePeriodMonth">
                                         <option value="" selected disabled>Select Months</option>
                                         <option *ngFor="let option of monthsList" [value]="option">
                                             {{option}}
                                         </option>
-                                    </select>
+                                    </select> -->
 
                                     <label *ngIf="noticeMonthsDays == 'true'" class="form-label">
                                         Days</label>
@@ -304,10 +313,18 @@
                                     <button type="submit" [disabled]="ReJoiningForm.invalid || ReJoiningForm.untouched"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                         [ngClass]="{'disabled-btn-bg-green' : ReJoiningForm.invalid || ReJoiningForm.untouched,
-                           'btn-bg-green': !ReJoiningForm.invalid}" tooltip="Save" [hidden]="viewReJoining"><b><i
+                           'btn-bg-green': !ReJoiningForm.invalid}" tooltip="Save"
+                                        [hidden]="viewReJoining || editReJoining"><b><i
                                                 class="fa fa-floppy-o"></i></b>Save</button>
 
-                                    <button type="button" tooltip="Cancel" *ngIf="viewReJoining"
+                                    <button type="submit" *ngIf="editReJoining"
+                                        [disabled]="ReJoiningForm.invalid || ReJoiningForm.untouched" [ngClass]="{'disabled-btn-bg-green' : ReJoiningForm.invalid || ReJoiningForm.untouched,
+                                    'btn-bg-green': !ReJoiningForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                    <button type="button" tooltip="Cancel" *ngIf="viewReJoining || editReJoining"
+                                        (click)="cancel()"
                                         [routerLink]="['/employee-master/employment-information/employment-summary']"
                                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
                                                 class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>

@@ -22,7 +22,7 @@ import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { InterestOnTtaService } from '../interest-on-tta.service';
 // import { error } from '@angular/compiler/src/util';
-import { error} from '@angular/compiler/src/util';
+
 
 
 @Component({

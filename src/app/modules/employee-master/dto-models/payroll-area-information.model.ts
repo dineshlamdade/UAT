@@ -7,7 +7,7 @@ export class PayrollAreaRequestModel {
         public payrollAreaFromDate: any,
         public payrollAreaToDate: any,
         public paymentMode:any,
-        public bankAccount:any,
+        public bankAccountNumber:any,
         public bankName: any,
         public nameAsPerBank :any,
         public typeOfPayment:any,

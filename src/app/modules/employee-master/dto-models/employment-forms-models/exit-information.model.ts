@@ -6,7 +6,7 @@ export class ExitInformationModel {
         public lastWorkingDate: any,
         public reasonForLeaving:any,
         public remark: any,
-        public projectedRetirementDate: any,
+        public retirementDate: any,
         public employeeStatus: any
     ){} 
 }

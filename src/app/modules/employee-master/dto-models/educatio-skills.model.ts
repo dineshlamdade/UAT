@@ -23,6 +23,7 @@ export class employeeEducationRequest {
         public location: any,
         public instituteUniversityName:any,
         public durationOfCourse:any,
+        public durationOfCourseValue:any,
         public startDate :any,
         public endDate:any,
         public percentageOrCGPAOrGrade: any,

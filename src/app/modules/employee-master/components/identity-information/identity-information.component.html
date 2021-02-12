@@ -16,27 +16,31 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.aadhaarNo' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.aadhaarNo' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Aadhaar"
                                                     formControlName="aadhaarNo"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.aadhaar"
-                                                    minlength="1" maxlength="12"
+                                                    minlength="1" maxlength="12" (keypress)="keyPress($event)"
                                                     [ngClass]="{'is-invalid' : IdentityInfoForm.get('aadhaarNo').status == 'INVALID'}"
                                                     (keyup)="updateAadhaarName(IdentityInformation.employeeMasterRequestDTO.aadhaar)">
+                                                <mat-error style="font-size: 11px;"
+                                                    *ngIf="IdentityInfoForm.get('aadhaarNo').status == 'INVALID'">
+                                                    Aadhar No. should be 12 digits.</mat-error>
                                             </div>
 
+
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.aadhaarName' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.aadhaarName' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Aadhaar Name"
                                                     formControlName="aadhaarName"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.nameAsPerAADHAAR">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.pan' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.pan' | transloco
+                                                    }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter PAN"
                                                     formControlName="pan"
                                                     [ngClass]="{'is-invalid' : IdentityInfoForm.get('pan').status == 'INVALID'}"
@@ -45,37 +49,45 @@
                                                     minlength="1" maxlength="10"
                                                     (ngModelChange)="IdentityInformation.employeeMasterRequestDTO.pan = $event?.toUpperCase()"
                                                     (keyup)="updatePANName(IdentityInformation.employeeMasterRequestDTO.pan)">
+                                                    <mat-error style="font-size: 11px;"
+                                                    *ngIf="IdentityInfoForm.get('pan').status == 'INVALID'">
+                                                    5 Character, 4 Numbers, 1 Character</mat-error>
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.panName' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.panName' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter PAN Name"
                                                     formControlName="panName"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.nameAsPerPAN">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.uan' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.uan' | transloco
+                                                    }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter UAN"
                                                     minlength="1" maxlength="12" formControlName="uan"
+                                                    (keypress)="keyPress($event)"
                                                     [ngClass]="{'is-invalid' : IdentityInfoForm.get('uan').status == 'INVALID'}"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.uan"
                                                     (keyup)="updateUANName(IdentityInformation.employeeMasterRequestDTO.uan)">
+                                                    <mat-error style="font-size: 11px;"
+                                                    *ngIf="IdentityInfoForm.get('uan').status == 'INVALID'">
+                                                    Aadhar No. should be 12 digits.</mat-error>
+
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.uanName' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.uanName' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter UAN Name"
                                                     formControlName="uanName"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.nameAgainstUAN">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.voterId' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.voterId' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Voter ID"
                                                     formControlName="voterId"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.electionCardNo"
@@ -83,16 +95,17 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.voterIdName' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.voterIdName' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control"
                                                     placeholder="Enter Voter ID Name" formControlName="voterIdName"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nameAsperElectionCard">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.nationalPopulationRegNumber' | transloco }}</label>
+                                                <label class="form-label">{{
+                                                    'IdentityInformationForm.nationalPopulationRegNumber' | transloco
+                                                    }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter NPR Number"
                                                     formControlName="nationalPopulationRegNumber"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nprNumber"
@@ -100,33 +113,35 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.nameNationalPopulationRegNumber' | transloco }}</label>
+                                                <label class="form-label">{{
+                                                    'IdentityInformationForm.nameNationalPopulationRegNumber' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter NPR Name"
                                                     formControlName="nameNationalPopulationRegNumber"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nameAsPerNPR">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.esicIP' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.esicIP' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter ESICIP"
                                                     formControlName="esicIP"
                                                     [(ngModel)]="IdentityInformation.employeeESICDTORequestDTO.eSICCode">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.pranForNPS' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.pranForNPS' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter PRAN"
                                                     minlength="1" maxlength="12" formControlName="pranForNPS"
+                                                    (keypress)="keyPress($event)" (keypress)="keyPress($event)"
                                                     [ngClass]="{'is-invalid' : IdentityInfoForm.get('pranForNPS').status == 'INVALID'}"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.pran">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.drivingLicenceNo' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.drivingLicenceNo'
+                                                    | transloco }}</label>
                                                 <input type="text" class="form-control"
                                                     placeholder="Enter Driving Licence No."
                                                     formControlName="drivingLicenceNo"
@@ -135,16 +150,17 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.nameDrivingLicence' | transloco }}</label>
+                                                <label class="form-label">{{
+                                                    'IdentityInformationForm.nameDrivingLicence' | transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Name"
                                                     formControlName="nameDrivingLicence"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nameasperDrivingLicense">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.drivingLicenceExpiryDate' | transloco }}</label>
+                                                <label class="form-label">{{
+                                                    'IdentityInformationForm.drivingLicenceExpiryDate' | transloco
+                                                    }}</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -171,8 +187,8 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.passportNo' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.passportNo' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Number"
                                                     formControlName="passportNo"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportNo"
@@ -180,16 +196,16 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.namePassport' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.namePassport' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Name"
                                                     formControlName="namePassport"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nameAsPerPassport">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.passportInfoCountry' | transloco }}</label>
+                                                <label class="form-label">{{
+                                                    'IdentityInformationForm.passportInfoCountry' | transloco }}</label>
                                                 <select class="form-control" placeholder="Select Country"
                                                     formControlName="passportInfoCountry"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.countryOfOrigin">
@@ -201,16 +217,16 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.placeOfIssue' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.placeOfIssue' |
+                                                    transloco }}</label>
                                                 <input type="text" class="form-control"
                                                     placeholder="Enter place of issue" formControlName="placeOfIssue"
                                                     [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportPlaceOfIssue">
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.dateOfIssue' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.dateOfIssue' |
+                                                    transloco }}</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -227,8 +243,8 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-10">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.expiryDate' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.expiryDate' |
+                                                    transloco }}</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -255,12 +271,12 @@
                                     <div class="col-12">
                                         <div class="row">
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.passportInfoCountry' | transloco }}</label>
-                                                <select class="form-control" placeholder="Select Country"
+                                                <label class="form-label">{{
+                                                    'IdentityInformationForm.passportInfoCountry' | transloco }}</label>
+                                                <select class="form-control" placeholder="Select"
                                                     formControlName="visaInfoCountry"
                                                     [(ngModel)]="VisaInformation.countryName">
-                                                    <option value="" selected disabled>Select Country</option>
+                                                    <option value="" selected disabled>Select</option>
                                                     <option *ngFor="let country of countryList" [value]="country">
                                                         {{country}}
                                                     </option>
@@ -268,11 +284,11 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.typeOfVisa' | transloco }}</label>
-                                                <select class="form-control" placeholder="Select Country"
+                                                <label class="form-label">{{ 'IdentityInformationForm.typeOfVisa' |
+                                                    transloco }}</label>
+                                                <select class="form-control" placeholder="Select"
                                                     formControlName="typeOfVisa" [(ngModel)]="VisaInformation.visaType">
-                                                    <option value="" selected disabled>Select Visa Type</option>
+                                                    <option value="" selected disabled>Select</option>
                                                     <option *ngFor="let visaType of visaTypeList" [value]="visaType">
                                                         {{visaType}}
                                                     </option>
@@ -280,8 +296,8 @@
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
-                                                <label
-                                                    class="form-label">{{ 'IdentityInformationForm.validTill' | transloco }}</label>
+                                                <label class="form-label">{{ 'IdentityInformationForm.validTill' |
+                                                    transloco }}</label>
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -297,9 +313,9 @@
                                                 </div>
                                             </div>
 
-                                            <i class="icon-plus add-icon" [ngClass]="{'disable':!VisaInformation.countryName || !VisaInformation.visaType
-                                            || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName 
-                                            || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName 
+                                            <i class="icon-plus add-icon" [class.disabled]="VisaInformation.countryName=='' || VisaInformation.visaType==''
+                                            || !VisaInformation.validTill" [ngClass]="{'invalid-add-button':VisaInformation.countryName ==''
+                                            || VisaInformation.visaType=='' || VisaInformation.validTill=='','valid-add-button':VisaInformation.countryName 
                                             || VisaInformation.visaType || VisaInformation.validTill}"
                                                 (click)="pushToGrid()"></i>
                                             <!-- <mat-icon [ngClass]="{'disable':!VisaInformation.countryName || !VisaInformation.visaType
@@ -346,6 +362,25 @@
                                 <div class="row mt-15">
                                     <div class="col-12">
                                         <div class="float-right mb-15">
+                                            <button type="button" tooltip="Previous"
+                                                [routerLink]="['/employee-master/job-information/job-summary']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                        class="fa fa-chevron-circle-left"
+                                                        aria-hidden="true"></i></b>Previous</button>
+
+                                            <button type="button" tooltip="Next"
+                                                [routerLink]="['/employee-master/compliance-information/compliance-summary']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                        class="fa fa-chevron-circle-right"
+                                                        aria-hidden="true"></i></b>Next</button>
+
+                                            <button type="button" (click)="IdentitySaveNextSubmit(IdentityInformation)"
+                                                [disabled]="IdentityInfoForm.invalid || IdentityInfoForm.untouched"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                                tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : IdentityInfoForm.invalid || IdentityInfoForm.untouched,
+                           'btn-bg-green': !IdentityInfoForm.invalid}"><b><i class="fa fa-floppy-o"></i></b>
+                                                Save & Next</button>
+
                                             <button type="submit"
                                                 [disabled]="IdentityInfoForm.invalid || IdentityInfoForm.untouched"
                                                 (click)="IdentityInfoFormSubmit(IdentityInformation)"
@@ -357,7 +392,8 @@
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b>
+                                                Reset</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                              tooltip="Cancel"><b><i class="fa fa-times-circle" ></i></b> Cancel</button> -->

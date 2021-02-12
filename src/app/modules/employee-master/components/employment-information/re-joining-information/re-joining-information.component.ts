@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-re-joining-information',
   templateUrl: './re-joining-information.component.html',
-  styleUrls: ['./re-joining-information.component.scss']
+  styleUrls: ['./re-joining-information.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ReJoiningInformationComponent implements OnInit {
 
@@ -46,6 +47,7 @@ export class ReJoiningInformationComponent implements OnInit {
   tomorrow = new Date();
   companyListForJoining: Array<any> = [];
   viewReJoining: boolean = false;
+  editReJoining: boolean = false;
   public today = new Date();
 
   constructor(private formBuilder: FormBuilder,
@@ -61,11 +63,6 @@ export class ReJoiningInformationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // if(!this.confirmMsg){
-    //   let dateOfBirth = new Date(this.birthDate);
-    //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-    //   this.ReJoiningInformationModel.rejoiningDate = '';
-    // }
     this.ReJoiningForm = this.formBuilder.group({
       rejoiningDate: ['', Validators.required],
       originalHireDate: [''],
@@ -87,7 +84,7 @@ export class ReJoiningInformationComponent implements OnInit {
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    
+
     if (!this.employeeMasterId || this.employeeMasterId == 0) {
       this.router.navigate(['/employee-master/personal-information']);
     }
@@ -107,13 +104,14 @@ export class ReJoiningInformationComponent implements OnInit {
     })
 
     this.EmploymentInformationService.getPreviousStintInfo(this.employeeMasterId).subscribe(res => {
-      
+
       this.PreviousStintInfoData = res.data.results[0];
     })
 
     this.RejoiningDataSubscription = this.EventEmitterService.setReJoiningData().subscribe(res => {
 
       if (res) {
+        this.editReJoining = res.editReJoining;
         this.getReJoiningFormInformation();
         if (res.viewReJoining == true) {
           this.viewReJoining = res.viewReJoining;
@@ -158,7 +156,7 @@ export class ReJoiningInformationComponent implements OnInit {
   }
 
   RejoiningFormSubmit(ReJoiningInformationModel) {
-    
+
     let Rejoining: any;
     Rejoining = this.ReJoiningInformationModel;
     ReJoiningInformationModel.employeeMasterId = this.employeeMasterId;
@@ -206,6 +204,7 @@ export class ReJoiningInformationComponent implements OnInit {
           this.onNoClick();
         }
         localStorage.removeItem('rejoinee');
+        this.EventEmitterService.getEmpSummaryInitiate();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -222,6 +221,7 @@ export class ReJoiningInformationComponent implements OnInit {
         if (this.confirmMsg) {
           this.onNoClick();
         }
+        this.EventEmitterService.getEmpSummaryInitiate();
         localStorage.removeItem('rejoinee');
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {
@@ -236,10 +236,10 @@ export class ReJoiningInformationComponent implements OnInit {
     const employementInfoId = localStorage.getItem('RejoiningEmployementInfoId')
     this.employementInfoId = Number(employementInfoId);
     this.EmploymentInformationService.getReJoiningInformation(this.employementInfoId).subscribe(res => {
-      
+
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
-        
+
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId)
         if (this.ReJoiningInformationModel.isNoticePeriodInMonth == 1) {
           this.noticeMonthsDays = 'false';
@@ -259,23 +259,14 @@ export class ReJoiningInformationComponent implements OnInit {
           this.ReJoiningForm.get('probationPeriod').setValue('true');
           this.probationPeriodDaysModel = res.data.results[0].probationPeriodDays;
         }
-        
+
         if (res.data.results[0].isContinuationOfService == 1) {
           this.ReJoiningForm.get('ContinuationService').setValue('Yes');
         }
         else {
           this.ReJoiningForm.get('ContinuationService').setValue('No');
         }
-
       }
-
-      // if(!this.ReJoiningInformationModel.projectedRetirementDate){
-      //   let dateOfBirth = new Date(this.birthDate);
-      //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-      // }
-      // if(this.confirmMsg){
-      //   this.ReJoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
-      // }
     })
     this.ReJoiningForm.markAsUntouched();
   }
@@ -285,9 +276,11 @@ export class ReJoiningInformationComponent implements OnInit {
     if (probationPeriod.value == "true") {
       this.probationMonthsDays = "true";
       this.probationPeriodDaysModel = '';
+      this.ReJoiningInformationModel.expectedConfirmationDate = '';
     } else {
       this.probationMonthsDays = "false";
       this.probationPeriodMonthModel = '';
+      this.ReJoiningInformationModel.expectedConfirmationDate = '';
     }
   }
   noticePeriod(event) {
@@ -321,19 +314,6 @@ export class ReJoiningInformationComponent implements OnInit {
   resetForm() {
     this.ReJoiningForm.reset();
   }
-  // searchEmployeeCode(value) {
-  //   setTimeout(() => {
-  //     this.EmploymentInformationService.getPreviousStintInfoBySearch(value).subscribe(res => {
-  //       this.PreviousStintInfoData = res.data.results[0];
-
-  //       if (this.continuationServiceBoolean == 'Yes' && this.PreviousStintInfoData.length>0) {
-  //         this.ReJoiningInformationModel.originalHireDate = res.data.results[0][0].originalHireDate;
-  //         this.ReJoiningInformationModel.joiningDateForGratuity = res.data.results[0][0].originalHireDate;
-  //       }
-  //       this.pushToGrid();
-  //     })
-  //   }, 1000)
-  // }
 
   pushToGrid() {
 
@@ -389,5 +369,8 @@ export class ReJoiningInformationComponent implements OnInit {
   }
   onNoClick(): void {
     this.matDialog.closeAll();
+  }
+  cancel() {
+    this.EventEmitterService.getEmpSummaryInitiate();
   }
 }

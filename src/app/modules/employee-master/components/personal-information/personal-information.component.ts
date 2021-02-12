@@ -35,11 +35,13 @@ export class PersonalInformationComponent implements OnInit {
   PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '', '', '')
   bloodGroups = 'A+,A-,B+,B-,AB+,AB-,O+,O-'.split(',');
   maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+  maritalStatusTotal = 'Single,Married,Widow,Widower,Divorced'.split(',');
   physicallyChallengedDropdown = 'Visual,Hearing,Locomotive'.split(',');
+  titleList = 'Mr.,Mrs.,Ms.,Dr.'.split(',');
   physicallyChallengedBoolean = 'Yes,No'.split(',');
   expatBooleanOptions = 'Yes,No'.split(',');
   weatherOnCOCOptions = 'Yes,No'.split(',');
-  allGenders = 'Male,Female,Trans'.split(',');
+  allGenders = 'Male,Female,Transgender'.split(',');
   @Input() staticLabels: boolean;
   @Input() item: any
   physicallyChallenged: any
@@ -60,7 +62,7 @@ export class PersonalInformationComponent implements OnInit {
   tomorrow = new Date();
   clearBirthDateSubsribtion: Subscription;
   byteCode: any;
-  weatherOnCOC1: any;
+  weatherOnCOC1: any = '';
   expatBoolean1: any;
   autoCompleteControl;
   newData: Array<any> = [];
@@ -77,6 +79,8 @@ export class PersonalInformationComponent implements OnInit {
   sameCode: boolean = false;
   validBirthDate: boolean;
   saveNextBoolean: boolean = false;
+  birthdateClickboolean: boolean = false;
+  severityCountValidation: boolean;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -85,18 +89,19 @@ export class PersonalInformationComponent implements OnInit {
     private EventEmitterService: EventEmitterService,
     public dialog: MatDialog, public datepipe: DatePipe,
     private SharedInformationService: SharedInformationService,
-    private router: Router,) { }
+    private router: Router,private CommonDataService: SharedInformationService) { }
 
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
-      employeeCode: ['', Validators.required],
-      alternateCode: [''],
+      employeeCode: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
+      alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
       title: [''],
-      firstName: ['', Validators.required],
-      middleName: [''],
-      lastName: [''],
+      // firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      middleName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       fullName: [{ value: null, disabled: true },],
-      displayName: [''],
+      displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       birthDate: [this.tomorrow, Validators.required],
       bloodGroup: [''],
       maritalStatus: [''],
@@ -120,12 +125,18 @@ export class PersonalInformationComponent implements OnInit {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
+    this.Physically = 'No';
+    this.expatBoolean1 = 'No';
+    this.personalInformationModel.disabilityType = '';
+
     if (this.employeeMasterId) {
       this.getEmployeeData();
     }
 
+
+
     this.clearBirthDateSubsribtion = this.EventEmitterService.setClearBirthDate().subscribe(res => {
-      
+
       // this.clearBirthDate.reset();
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
       this.validBirthDate = null;
@@ -150,11 +161,20 @@ export class PersonalInformationComponent implements OnInit {
         }
       })
     })
-    
-    if(this.internationalWorkerRequestDTO.cocNumber != '' || this.internationalWorkerRequestDTO.cocValidTill != ''){
+
+    if (this.internationalWorkerRequestDTO.cocNumber || this.internationalWorkerRequestDTO.cocValidTill) {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.enable();
     }
+    if (this.personalInformationModel.disabilityType) {
+      const severityLevel = this.BasicInfoForm.get('severityLevel');
+      severityLevel.enable();
+    }
+    // if(this.internationalWorkerRequestDTO.cocNumber != '' || this.internationalWorkerRequestDTO.cocValidTill != ''){
+    //   const isOnCOC = this.BasicInfoForm.get('isOnCOC');
+    //   isOnCOC.enable();
+    // }
+
 
     // this.SharedInformationService.getGlobalLabels().subscribe(res => {
 
@@ -226,7 +246,7 @@ export class PersonalInformationComponent implements OnInit {
 
   // Personal Info Form Submit Function
   personalInfoSubmit(personalInformationModel) {
-    
+
     if (this.rejoinee == false) {
       personalInformationModel.employeeMasterId = null;
       personalInformationModel.employeeMasterRequestDTO.employeeMasterId = null;
@@ -249,7 +269,7 @@ export class PersonalInformationComponent implements OnInit {
     const body: FormData = new FormData();
     body.append('file', this.selectedImageFile);
 
-    personalInformationModel.employeeMasterRequestDTO.companyId = 1111;
+    personalInformationModel.employeeMasterRequestDTO.companyId = 1;
     if (this.employeeMasterId) {
       personalInformationModel.employeeMasterRequestDTO.employeeMasterId = this.employeeMasterId
     }
@@ -287,19 +307,19 @@ export class PersonalInformationComponent implements OnInit {
         // this.EventEmitterService.getBirthDateToEmploymentForm(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
-        this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
         if (this.rejoinee == true) {
           this.router.navigate(['/employee-master/employment-information/re-joining-information']);
         }
         if (this.saveNextBoolean == true) {
           this.saveNextBoolean = false;
-          this.router.navigate(['/employee-master/employment-information/employment-summary']);
+          this.router.navigate(['/employee-master/employment-information/joining-information']);
         }
         this.BasicInfoForm.markAsUntouched();
         this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
@@ -317,7 +337,7 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeMasterId', res.data.results[0].employeeMasterId);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode);
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
-        this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.BasicInfoForm.markAsUntouched();
@@ -327,7 +347,7 @@ export class PersonalInformationComponent implements OnInit {
         }
         this.router.navigate(['/employee-master/employment-information/joining-information']);
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
     }
@@ -335,7 +355,9 @@ export class PersonalInformationComponent implements OnInit {
   getEmployeeData() {
 
     this.PersonalInformationService.getEmployeeData(this.employeeMasterId).subscribe((res: any) => {
+
       this.newData = res;
+      this.BasicInfoForm.markAsUntouched();
       this.getDataBinding(res);
     })
   }
@@ -345,7 +367,12 @@ export class PersonalInformationComponent implements OnInit {
 
     this.personalInformationModel = res.data.results[0];
     this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
-
+    if (!this.personalInformationModel.nationality) {
+      this.personalInformationModel.nationality = '';
+    }
+    if (!this.personalInformationModel.disabilityType) {
+      this.personalInformationModel.disabilityType = '';
+    }
     if (this.rejoinee == true && this.sameCode == false) {
       const employeeCode = this.BasicInfoForm.get('employeeCode');
       employeeCode.enable();
@@ -356,7 +383,7 @@ export class PersonalInformationComponent implements OnInit {
     if (res.data.results[0].imageResponseDTO) {
       this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
     }
-   
+
     // this.severity(this.personalInformationModel.severityLevel);
     // this.BasicInfoForm.patchValue({ severityLevel: this.personalInformationModel.severityLevel });
     if (res.data.results[0].isPhysicallyChallenged == 0) {
@@ -375,11 +402,16 @@ export class PersonalInformationComponent implements OnInit {
       this.weatherOnCOC1 = 'Yes'
     }
     this.internationalWorkerRequestDTO = res.data.results[0].internationalWorkerResponseDTO;
-    
-    if(this.internationalWorkerRequestDTO.cocNumber != '' || this.internationalWorkerRequestDTO.cocValidTill != ''){
+
+    if (this.internationalWorkerRequestDTO.countryOfOrigin) {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
       isOnCOC.enable();
     }
+    if (this.personalInformationModel.disabilityType) {
+      const severityLevel = this.BasicInfoForm.get('severityLevel');
+      severityLevel.enable();
+    }
+    this.validateGender();
   }
   // getImage(employeeMasterId) {
   //   this.PersonalInformationService.getImage(employeeMasterId).subscribe((res: any) => {
@@ -404,6 +436,8 @@ export class PersonalInformationComponent implements OnInit {
       this.selectedImg = null;
       uploadFile = null;
       event = null;
+      this.imageUrl = "./assets/emp-master-images/empIcon5.png";
+      this.CommonDataService.sweetalertWarning('Selected Image Size Should be less than 1 Mb');
     } else {
       this.selectedImageFile = uploadFile.files[0];
       this.BasicInfoForm.markAsTouched();
@@ -432,13 +466,17 @@ export class PersonalInformationComponent implements OnInit {
   }
   get physically(): any { return this.BasicInfoForm.get('physicallyChallengedOption'); }
   validatePhysically(physicallyChallengedB) {
-    if (physicallyChallengedB.text == 'No') {
+
+    if (physicallyChallengedB == 'No') {
       this.physically.reset();
       this.personalInformationModel.disabilityType = '';
       this.personalInformationModel.severityLevel = '';
+      const severityLevel = this.BasicInfoForm.get('severityLevel');
+      severityLevel.disable();
     }
   }
   get expat(): any { return this.BasicInfoForm.get('countryOfOrigin'); }
+
   validateExpatBoolean(expatBoolean) {
 
     if (expatBoolean == 'No') {
@@ -447,10 +485,15 @@ export class PersonalInformationComponent implements OnInit {
       this.weatherOnCOC1 = '';
       this.internationalWorkerRequestDTO.cocNumber = '';
       this.internationalWorkerRequestDTO.cocValidTill = '';
+      const isOnCOC = this.BasicInfoForm.get('isOnCOC');
+      isOnCOC.disable();
+    }
+    if (!this.internationalWorkerRequestDTO.countryOfOrigin) {
+      this.internationalWorkerRequestDTO.countryOfOrigin = '';
     }
   }
   validateWeatherOnCOC(weatherOnCOC) {
-    
+
     if (weatherOnCOC == 'No') {
       this.internationalWorkerRequestDTO.cocNumber = '';
       this.internationalWorkerRequestDTO.cocValidTill = '';
@@ -467,12 +510,22 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel.employeeMasterRequestDTO.displayName =
       this.personalInformationModel.employeeMasterRequestDTO.fullName
 
+    this.personalInformationModel.employeeMasterRequestDTO.displayName = this.personalInformationModel.employeeMasterRequestDTO.displayName.trim();
     this.exportFullNameToIdentityInformation = this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.middleName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.lastName;
-    localStorage.setItem('fullName', this.exportFullNameToIdentityInformation)
+    localStorage.setItem('fullName', this.exportFullNameToIdentityInformation);
+    this.formTouch();
   }
+
+  formTouch() {
+    this.BasicInfoForm.markAsTouched();
+  }
+
   resetForm() {
+
+    this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+
     this.BasicInfoForm.reset();
     this.imageUrl = "./assets/emp-master-images/empIcon5.png";
     const severityLevel = this.BasicInfoForm.get('severityLevel');
@@ -483,17 +536,33 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel.employeeMasterRequestDTO.firstName = '';
     this.personalInformationModel.employeeMasterRequestDTO.middleName = '';
     this.personalInformationModel.employeeMasterRequestDTO.lastName = '';
+    this.personalInformationModel.nationality = "";
+    const nationality = this.BasicInfoForm.get('nationality').setValue('');
+    this.personalInformationModel.employeeMasterRequestDTO.gender = '';
+    const gender = this.BasicInfoForm.get('gender').setValue('');
+    this.personalInformationModel.maritialStatus = '';
+    const maritalStatus = this.BasicInfoForm.get('maritalStatus').setValue('');
+    this.Physically = 'No';
+    const physicallyChallengedBoolean = this.BasicInfoForm.get('physicallyChallengedBoolean').setValue('No');
+    this.expatBoolean1 = 'NO';
+    const isExpatWorker = this.BasicInfoForm.get('isExpatWorker').setValue('No');
+    this.personalInformationModel.bloodGroup = '';
+    const bloodGroup = this.BasicInfoForm.get('bloodGroup').setValue('');
+    this.internationalWorkerRequestDTO.countryOfOrigin = '';
+    this.weatherOnCOC1 = '';
+    this.personalInformationModel.disabilityType = '';
+
     this.employeeMasterId = null;
   }
   clearMarriageDate(maritalStatusBoolean) {
-    if (maritalStatusBoolean.text !== 'Married') {
+    if (maritalStatusBoolean !== 'Married') {
       this.personalInformationModel.anniversaryDate = '';
     }
   }
-  birthDateValidation() {
+  birthDateValidation(event) {
 
-    if (this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
-      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) {
+    if ((this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
+      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
       let dateObj = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
       // dateObj = this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth;
       var month = dateObj.getMonth() + 1; //months from 1-12
@@ -505,9 +574,11 @@ export class PersonalInformationComponent implements OnInit {
         this.birthD(this.validBirthDate);
       }
     }
+
+    this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
   }
   birthD(validDate) {
-    
+    this.birthdateClickboolean = false;
     if (validDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
         disableClose: true, width: '664px', height: '241px',
@@ -519,15 +590,20 @@ export class PersonalInformationComponent implements OnInit {
   //   return this.BasicInfoForm.get('birthDate');
   // }
   validateNationalty(nationality) {
+
+    if (this.personalInformationModel.nationality) {
+      this.BasicInfoForm.markAsTouched();
+    }
+
     nationality = nationality[0].toUpperCase() + nationality.substr(1).toLowerCase();
 
-    const ifsc = this.countryList.filter((item) => {
+    const country = this.countryList.filter((item) => {
       return item == nationality;
     });
     // nationality = nationality.charAt(0).toUpperCase()
     // alert(x.charAt(0));;
-    if (ifsc.length > 0) {
-      this.personalInformationModel.nationality = ifsc[0];
+    if (country.length > 0) {
+      this.personalInformationModel.nationality = country[0];
     } else {
       // this.notifyService.showError('Please Select valid Country', "Error..!!");
       this.personalInformationModel.nationality = '';
@@ -547,32 +623,58 @@ export class PersonalInformationComponent implements OnInit {
       isOnCOC.enable();
     }
   }
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    })
+
+  birthDateClickEvent(event) {
+
+    this.birthdateClickboolean = true;
   }
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    })
+  validateSaverityLevel(severityLevel) {
+
+    if (severityLevel > 100 || severityLevel < 0) {
+      this.CommonDataService.sweetalertWarning('Severity Level should be up to 100%');
+      this.severityCountValidation = false;
+      // this.BasicInfoForm.get('severityLevel').setValue('');
+      // this.BasicInfoForm.get('severityLevel').setValidators(Validators.required);
+      // this.BasicInfoForm.get('severityLevel').updateValueAndValidity();
+    }
+    if (severityLevel > 0 && severityLevel < 100 || severityLevel == 100) {
+      this.severityCountValidation = true;
+      // this.BasicInfoForm.get('severityLevel').clearValidators();
+      // this.BasicInfoForm.get('severityLevel').updateValueAndValidity();
+    }
   }
+
+  validateDropdown() {
+
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender) {
+      this.BasicInfoForm.markAsTouched();
+    }
+
+    if (this.personalInformationModel.bloodGroup) {
+      this.BasicInfoForm.markAsTouched();
+    }
+
+    if (this.personalInformationModel.nationality) {
+      this.BasicInfoForm.markAsTouched();
+    }
+    if (this.personalInformationModel.maritialStatus) {
+      this.BasicInfoForm.markAsTouched();
+    }
+  }
+
+  validateGender() {
+
+    this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Male') {
+      this.maritalStatus.splice(2, 1);
+      this.personalInformationModel.maritialStatus = '';
+    }
+
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Female') {
+      this.maritalStatus.splice(3, 1);
+      this.personalInformationModel.maritialStatus = '';
+    }
+  }
+
 }
