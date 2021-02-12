@@ -524,7 +524,9 @@ body {
   display: grid;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
+  /* Change by sneha */
+  overflow: auto;
   grid-template-rows: 40px 1fr;
   grid-template-columns: 2fr 2fr 2fr;
   font-family: Montserrat, sans-serif!important;

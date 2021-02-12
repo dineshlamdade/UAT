@@ -1031,7 +1031,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.ggaService
       .getTransactionByProofSubmissionId(proofSubmissionId)
       .subscribe((res) => {
-        console.log('edit Data:: ', res);
+        console.log('proofSubmissionId edit Data:: ', res);
         this.urlArray =
           res.data.results[0].documentInformation[0].documentDetailList;
         this.editTransactionUpload = res.data.results[0].donations80GGTransactionList;
@@ -1059,7 +1059,10 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           // new Blob([element.blobURI], { type: 'application/octet-stream' });
         });
         //console.log('converted:: ', this.urlArray);
+        // console.log('proofSubmissionId::', this.proofSubmissionId);
+
       });
+
   }
 
      //-------------- Upload Document in Edit Document Detail ---------------------

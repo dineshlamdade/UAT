@@ -4,10 +4,11 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class Mediclaim80DService {
+export class TreatmentOfSpecifiedService {
 
   apiUrl = environment.apiBaseUrl;
 
@@ -29,10 +30,11 @@ export class Mediclaim80DService {
   //     return res;
   //   }));
   // }
+
    //Master Services
 
-   getMediclaimMaster() : Observable<any> {
-    return this._HTTP.get(this.apiUrl + 'mediclaimMaster')
+   getSpecifiedDiseaseMaster() : Observable<any> {
+    return this._HTTP.get(this.apiUrl + 'specifiedDiseaseMaster')
     .pipe(map((res: any) => {
       return res;
     }
@@ -102,14 +104,14 @@ export class Mediclaim80DService {
     }));
   }
 
-  uploadMultipleMediclaimMasterFiles(files: File[], data:any): Observable<any> {
+  uploadMultipleMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
     for (let file of files) {
-      formData.append('document', file);
+      formData.append('doctorCertificate', file);
     }
     //formData.append('licDocuments', files);
-    formData.append('mediclaimMaster', JSON.stringify(data));
+    formData.append('specifiedDiseaseMaster', JSON.stringify(data));
 
     console.log('formData', formData);
 
@@ -118,7 +120,7 @@ export class Mediclaim80DService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'mediclaimMaster',
+      this.apiUrl + 'specifiedDiseaseMaster',
       formData,
       {
 
