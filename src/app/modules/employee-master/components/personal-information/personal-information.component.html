@@ -141,7 +141,7 @@
                                                     [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     (click)="birthDateClickEvent($event)"
-                                                    (ngModelChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth);"
+                                                    (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth);"
                                                     [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}">
                                             </div>
                                         </div>
