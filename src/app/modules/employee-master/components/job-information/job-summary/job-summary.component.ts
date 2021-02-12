@@ -160,7 +160,7 @@ export class JobSummaryComponent implements OnInit {
 
   //edit job details to redirecting respective page
   editJobDetails(job) {
-debugger
+
     if (job === "Minimum Wages") {
       this.router.navigate(['/employee-master/job-information/minimum-wages-details']);
     }

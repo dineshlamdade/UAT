@@ -58,7 +58,7 @@ export class EmployeeSummaryComponent implements OnInit {
   getPayrollAreaInformation() {
 
     this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-debugger
+
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
         // this.filteredPayrollAreaList.push(item.payrollAreaCode);

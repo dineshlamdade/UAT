@@ -211,7 +211,7 @@ export class OrganizationDetailComponent implements OnInit {
           this.workLocationList.push(item);
           this.filteredWorkLocationList.push(item);
         }
-        debugger
+        
         if (item.masterType == 'BusinessAreaMaster') {
 
           this.businessAreaList.push(item);
