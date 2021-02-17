@@ -30,10 +30,6 @@
     background-color: #94c1c1!important;
 }
 
-.mat-error {
-    color: #f44336;
-    font-size: 11px;
-}
 
 select option {
 	color: black;
@@ -53,8 +49,9 @@ select option[disabled]:first-child {
   background-image: none!important;
 }
 
-.mobile-number-error{
+.invalid-mob-error-message{
   font-size: 9px;
   margin-left: 12px;
   margin-top: 3px;
+  color: #f44336;
 }

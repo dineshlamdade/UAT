@@ -87,7 +87,7 @@ export class ContactInformationComponent implements OnInit {
       localState: [{ value: null, disabled: true }],
       localDistrict: [{ value: null, disabled: true }],
       localCity: [{ value: null, disabled: true }],
-      localVillege:['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      localVillege: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       permanentAddress1: ['', Validators.required],
       permanentAddress2: [''],
       permanentAddress3: [''],
@@ -96,7 +96,7 @@ export class ContactInformationComponent implements OnInit {
       permanentState: [{ value: null, disabled: true }],
       permanentDistrict: [{ value: null, disabled: true }],
       permanentCity: [{ value: null, disabled: true }],
-      permanentVillege:['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      permanentVillege: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       communicationAddress: [Validators.required]
     });
     this.getCountryInfo();
@@ -156,25 +156,25 @@ export class ContactInformationComponent implements OnInit {
     // Concatnation of mobile number and country code
     if (contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && this.ngOfficialCountryCode) {
 
-      this.ContactInfoForm.value.officialMobileNumber = this.ContactInfoForm.value.officialCountryCode + ' ' +
+      contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber = this.ngOfficialCountryCode + ' ' +
         contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber
-      contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber = this.ContactInfoForm.value.officialMobileNumber;
+      // contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber = this.ContactInfoForm.value.officialMobileNumber;
     } else {
       contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber = ''
     }
 
     if (contactInformation.employeeMasterRequestDTO.personalMobileNumber && this.ngPersonalCountryCode) {
-      this.ContactInfoForm.value.personalmobileNumber = this.ContactInfoForm.value.personalCountryCode + ' ' +
+      contactInformation.employeeMasterRequestDTO.personalMobileNumber = this.ContactInfoForm.value.personalCountryCode + ' ' +
         contactInformation.employeeMasterRequestDTO.personalMobileNumber
-      contactInformation.employeeMasterRequestDTO.personalMobileNumber = this.ContactInfoForm.value.personalmobileNumber;
+      // contactInformation.employeeMasterRequestDTO.personalMobileNumber = this.ContactInfoForm.value.personalmobileNumber;
     } else {
       contactInformation.employeeMasterRequestDTO.personalMobileNumber = '';
     }
 
     if (contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && this.ngEmergencyCountryCode) {
-      this.ContactInfoForm.value.emergencyContactNumber = this.ContactInfoForm.value.emergencyCountryCode + ' ' +
+      contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber = this.ContactInfoForm.value.emergencyCountryCode + ' ' +
         contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber
-      contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber = this.ContactInfoForm.value.emergencyContactNumber
+      // contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber = this.ContactInfoForm.value.emergencyContactNumber
     } else {
       contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber = '';
     }
@@ -237,6 +237,28 @@ export class ContactInformationComponent implements OnInit {
         this.router.navigate(['/employee-master/bank-information']);
       }
     }, (error: any) => {
+      debugger
+      // Personal mobile number countryCode extraction
+      if (this.ContactInfoForm.value.personalmobileNumber) {
+        this.contactInformation.employeeMasterRequestDTO.personalMobileNumber = this.ContactInfoForm.value.personalmobileNumber.slice(this.ContactInfoForm.value.personalmobileNumber.length - 10)
+        this.ngPersonalCountryCode = this.ContactInfoForm.value.personalmobileNumber.slice(0, this.ContactInfoForm.value.personalmobileNumber.length - 11);
+      } else {
+        this.ngPersonalCountryCode = '';
+      }
+      // Official mobile number countryCode extraction
+      if (this.ContactInfoForm.value.officialMobileNumber) {
+        this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber = this.ContactInfoForm.value.officialMobileNumber.slice(this.ContactInfoForm.value.officialMobileNumber.length - 10)
+        this.ngOfficialCountryCode = this.ContactInfoForm.value.officialMobileNumber.slice(0, this.ContactInfoForm.value.officialMobileNumber.length - 11);
+      } else {
+        this.ngOfficialCountryCode = '';
+      }
+      // Emergency mobile number countryCode extraction
+      if (this.ContactInfoForm.value.emergencyContactNumber) {
+        this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber = this.ContactInfoForm.value.emergencyContactNumber.slice(this.ContactInfoForm.value.emergencyContactNumber.length - 10)
+        this.ngEmergencyCountryCode = this.ContactInfoForm.value.emergencyContactNumber.slice(0, this.ContactInfoForm.value.emergencyContactNumber.length - 11);
+      } else {
+        this.ngEmergencyCountryCode = '';
+      }
       this.sweetalertError(error["error"]["status"]["messsage"]);
     })
   }
@@ -632,42 +654,107 @@ export class ContactInformationComponent implements OnInit {
   }
 
   validOfficialMobNo() {
-    if (!this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber) {
+
+    if (this.ngOfficialCountryCode && (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length == 0 && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length < 10)) {
       this.ContactInfoForm.get('officialMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
       this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
-    } else {
+    }
+    if (!this.ngOfficialCountryCode && !this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber) {
       this.ContactInfoForm.get('officialMobileNumber').clearValidators();
       this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+      this.ContactInfoForm.get('officialCountryCode').clearValidators();
+      this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
+    }
+
+    if (!this.ngOfficialCountryCode && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber) {
+      this.ContactInfoForm.get('officialCountryCode').setValidators(Validators.required);
+      this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
     }
   }
 
   validOfficialCountryCode() {
-    if (!this.ngOfficialCountryCode) {
+    if (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length == 10) && !this.ngOfficialCountryCode) {
       this.ContactInfoForm.get('officialCountryCode').setValidators(Validators.required);
       this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
-    } else {
+    }
+    if (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length < 10) && !this.ngOfficialCountryCode) {
+      this.ContactInfoForm.get('officialCountryCode').setValidators(Validators.required);
+      this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
+      this.ContactInfoForm.get('officialMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+    }
+    if (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length < 10) && this.ngOfficialCountryCode) {
+      this.ContactInfoForm.get('officialMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+    }
+
+    if (this.ngOfficialCountryCode && !this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber) {
+      this.ContactInfoForm.get('officialMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+    }
+
+    if (!this.ngOfficialCountryCode && !this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber) {
+      this.ContactInfoForm.get('officialMobileNumber').clearValidators();
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
       this.ContactInfoForm.get('officialCountryCode').clearValidators();
       this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
+    }
+    if (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length == 10) && this.ngOfficialCountryCode) {
+      this.ContactInfoForm.get('officialMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^[1-9a-zA-Z][0-9a-zA-Z]*$")]));
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
     }
   }
 
   validEmergencyMobNo() {
-    if (!this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber) {
+
+    if (this.ngEmergencyCountryCode && (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length == 0 && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length < 10)) {
       this.ContactInfoForm.get('emergencyContactNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
       this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
-    } else {
+    }
+    if (!this.ngEmergencyCountryCode && !this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber) {
       this.ContactInfoForm.get('emergencyContactNumber').clearValidators();
       this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+      this.ContactInfoForm.get('emergencyCountryCode').clearValidators();
+      this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
+    }
+
+    if (!this.ngEmergencyCountryCode && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber) {
+      this.ContactInfoForm.get('emergencyCountryCode').setValidators(Validators.required);
+      this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
     }
   }
 
   validEmergencyCountryCode() {
-    if (!this.ngEmergencyCountryCode) {
+
+    if (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length == 10) && !this.ngEmergencyCountryCode) {
       this.ContactInfoForm.get('emergencyCountryCode').setValidators(Validators.required);
       this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
-    } else {
+    }
+    if (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length < 10) && !this.ngEmergencyCountryCode) {
+      this.ContactInfoForm.get('emergencyCountryCode').setValidators(Validators.required);
+      this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
+      this.ContactInfoForm.get('emergencyContactNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+    }
+    if (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length < 10) && this.ngEmergencyCountryCode) {
+      this.ContactInfoForm.get('emergencyContactNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+    }
+
+    if (this.ngEmergencyCountryCode && !this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber) {
+      this.ContactInfoForm.get('emergencyContactNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+    }
+
+    if (!this.ngEmergencyCountryCode && !this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber) {
+      this.ContactInfoForm.get('emergencyContactNumber').clearValidators();
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
       this.ContactInfoForm.get('emergencyCountryCode').clearValidators();
       this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
+    }
+    if (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length == 10) && this.ngEmergencyCountryCode) {
+      this.ContactInfoForm.get('emergencyContactNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^[1-9a-zA-Z][0-9a-zA-Z]*$")]));
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
     }
   }
 }

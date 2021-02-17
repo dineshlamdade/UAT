@@ -196,8 +196,8 @@
                                                     No</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="!dependentOnEmployee" class="mat-error">
-                                            Please Select Option</mat-error>
+                                        <div class="invalid-error-message" *ngIf="!dependentOnEmployee">
+                                            Please Select Option</div>
                                     </div>
                                 </div>
 
@@ -222,8 +222,8 @@
                                                     No</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="!companyMediclaim" class="mat-error">
-                                            Please Select Option</mat-error>
+                                        <div class="invalid-error-message" *ngIf="!companyMediclaim">
+                                            Please Select Option</div>
                                     </div>
                                 </div>
                             </div>

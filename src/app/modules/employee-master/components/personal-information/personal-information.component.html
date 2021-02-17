@@ -140,8 +140,8 @@
                                                     class="form-control" placeholder="Select Birth Date" bsDatepicker
                                                     [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
-                                                    (click)="birthDateClickEvent($event)"
-                                                    (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth);"
+                                                    (click)="birthDateClickEvent($event);"
+                                                    (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth,confirmation);"
                                                     [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}">
                                             </div>
                                         </div>
@@ -152,7 +152,7 @@
                                         <select class="form-control" formControlName="bloodGroup"
                                             [(ngModel)]="personalInformationModel.bloodGroup" placeholder="Select"
                                             (change)="validateDropdown()">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let bloodGroup of bloodGroups" [value]="bloodGroup">
                                                 {{bloodGroup}}
                                             </option>
@@ -177,7 +177,7 @@
                                             [(ngModel)]="personalInformationModel.maritialStatus"
                                             (change)="clearMarriageDate(personalInformationModel.maritialStatus);validateDropdown()"
                                             placeholder="Select">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let status of maritalStatus" [value]="status">
                                                 {{status}}
                                             </option>
@@ -208,7 +208,7 @@
                                         <select class="form-control" formControlName="physicallyChallengedBoolean"
                                             [(ngModel)]="Physically" placeholder="Select"
                                             (change)="validatePhysically(Physically)">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let option of physicallyChallengedBoolean" [value]="option">
                                                 {{option}}
                                             </option>
@@ -221,7 +221,7 @@
                                         <select class="form-control" formControlName="physicallyChallengedOption"
                                             [(ngModel)]="personalInformationModel.disabilityType" placeholder="Select"
                                             (change)="enableSeverity()">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let physically of physicallyChallengedDropdown"
                                                 [value]="physically">
                                                 {{physically}}
@@ -243,7 +243,7 @@
                                         <select class="form-control" formControlName="isExpatWorker"
                                             [(ngModel)]="expatBoolean1" placeholder="Select"
                                             (change)="validateExpatBoolean(expatBoolean1)">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let expat of expatBooleanOptions" [value]="expat">
                                                 {{expat}}
                                             </option>
@@ -255,7 +255,7 @@
                                         <select class="form-control" formControlName="countryOfOrigin"
                                             [(ngModel)]="internationalWorkerRequestDTO.countryOfOrigin"
                                             (change)="enableWhetherOnCOC()" placeholder="Select">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let originCountry of countryList" [value]="originCountry">
                                                 {{originCountry}}
                                             </option>
@@ -266,7 +266,7 @@
                                             }}</label>
                                         <select class="form-control" formControlName="isOnCOC" placeholder="Select"
                                             [(ngModel)]="weatherOnCOC1" (change)="validateWeatherOnCOC(weatherOnCOC1)">
-                                            <option value="" selected disabled>Select</option>
+                                            <option value="" selected>Select</option>
                                             <option *ngFor="let whetherOption of weatherOnCOCOptions"
                                                 [value]="whetherOption">
                                                 {{whetherOption}}
@@ -351,14 +351,16 @@
                                                 [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false,
-                                   'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i class="fa fa-floppy-o"></i></b>
+                                   'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i
+                                                        class="fa fa-floppy-o"></i></b>
                                                 Save & Next</button>
 
                                             <button type="submit"
                                                 [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false,
-                           'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i class="fa fa-floppy-o"></i></b> Save</button>
+                           'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i
+                                                        class="fa fa-floppy-o"></i></b> Save</button>
 
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
@@ -395,3 +397,26 @@
         <app-footer></app-footer>
     </div>
 </div>
+
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{empBirthdateConfirmMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="clearBithDate()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Yes</button>
+
+    </div>
+</ng-template>

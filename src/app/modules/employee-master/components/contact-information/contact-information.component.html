@@ -28,12 +28,12 @@
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
                                                                 <select class="form-control selectpicker"
-                                                                    placeholder="ISD" (change)="formTouch(); validOfficialMobNo()"
+                                                                    placeholder="ISD"
+                                                                    (change)="formTouch(); validOfficialMobNo()"
                                                                     formControlName="officialCountryCode"
                                                                     [(ngModel)]="ngOfficialCountryCode"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('officialCountryCode').status == 'INVALID'}">
-                                                                    <option value="" data-hidden="true"
-                                                                        class="placeholder-control">ISD
+                                                                    <option value="" selected>ISD
                                                                     </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
@@ -45,14 +45,17 @@
                                                                 <input type="text" class="form-control"
                                                                     placeholder="Enter Mobile No." minlength="1"
                                                                     maxlength="10" (keypress)="keyPress($event)"
-                                                                    formControlName="officialMobileNumber" (change)="validOfficialCountryCode()"
-                                                                    (keyup)="formTouch();" pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
+                                                                    formControlName="officialMobileNumber"
+                                                                    (change)="validOfficialCountryCode()"
+                                                                    (keyup)="formTouch();"
+                                                                    pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
                                                                     [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('officialMobileNumber').status == 'INVALID'}">
                                                             </div>
-                                                            <mat-error class="mobile-number-error"
+                                                            <div class="invalid-mob-error-message"
                                                                 *ngIf="ContactInfoForm.get('officialMobileNumber').status == 'INVALID'">
-                                                                Mobile Number must be 10 digit & Should not start with 0</mat-error>
+                                                                Mobile Number must be 10 digit & Should not start with 0
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4">
@@ -86,7 +89,7 @@
                                                                     [(ngModel)]="ngPersonalCountryCode"
                                                                     (change)="validatePersonalMobile(ngPersonalCountryCode);formTouch()"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('personalCountryCode').status == 'INVALID'}">
-                                                                    <option value="" selected disabled>ISD
+                                                                    <option value="" selected>ISD
                                                                     </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
@@ -99,14 +102,17 @@
                                                                     placeholder="Enter Mobile No." minlength="1"
                                                                     maxlength="10" (keypress)="keyPress($event)"
                                                                     formControlName="personalmobileNumber"
-                                                                    (keyup)="formTouch()" pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
+                                                                    (keyup)="formTouch()"
+                                                                    pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
                                                                     (change)="validatePersonalMobile(ngPersonalCountryCode)"
                                                                     [(ngModel)]="contactInformation.employeeMasterRequestDTO.personalMobileNumber"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('personalmobileNumber').status == 'INVALID'}">
                                                             </div>
-                                                            <mat-error class="mobile-number-error"
-                                                            *ngIf="ContactInfoForm.get('personalmobileNumber').status == 'INVALID' && contactInformation.employeeMasterRequestDTO.personalMobileNumber?.length>0">
-                                                            Mobile Number must be 10 digit & Should not start with 0</mat-error>
+
+                                                            <div class="invalid-mob-error-message"
+                                                                *ngIf="ContactInfoForm.get('personalmobileNumber').status == 'INVALID' && contactInformation.employeeMasterRequestDTO.personalMobileNumber?.length>0">
+                                                                Mobile Number must be 10 digit & Should not start with 0
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4">
@@ -147,11 +153,12 @@
                                                     'ContactInformationForm.officialMobileNumber' | transloco }}</label>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-5 country-code ">
-                                                        <select class="form-control" placeholder="Select"
-                                                            formControlName="emergencyCountryCode" 
-                                                            (change)="formTouch();validEmergencyMobNo()" [(ngModel)]="ngEmergencyCountryCode"
+                                                        <select class="form-control" placeholder="ISD"
+                                                            formControlName="emergencyCountryCode"
+                                                            (change)="formTouch();validEmergencyMobNo()"
+                                                            [(ngModel)]="ngEmergencyCountryCode"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyCountryCode').status == 'INVALID'}">
-                                                            <option value="" selected disabled>ISD</option>
+                                                            <option value="" selected>ISD</option>
                                                             <option *ngFor="let code of countryCode" [value]="code">
                                                                 {{code}}
                                                             </option>
@@ -160,15 +167,17 @@
                                                     <div class="col-sm-3 col-md-7 ml-2">
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Mobile No." minlength="1" maxlength="10"
-                                                            formControlName="emergencyContactNumber" pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
+                                                            formControlName="emergencyContactNumber"
+                                                            pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
                                                             (keypress)="keyPress($event)" (keyup)="formTouch()"
                                                             (change)="validEmergencyCountryCode()"
                                                             [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'}">
                                                     </div>
-                                                    <mat-error class="mobile-number-error"
-                                                    *ngIf="ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'">
-                                                    Mobile Number must be 10 digit & Should not start with 0</mat-error>
+                                                    <div class="invalid-mob-error-message"
+                                                        *ngIf="ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'">
+                                                        Mobile Number must be 10 digit & Should not start with 0
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -277,7 +286,8 @@
                                                                 placeholder="Enter Village"
                                                                 formControlName="localVillege"
                                                                 [(ngModel)]="localAddressInformation.village"
-                                                                (keyup)="checkLocalAddress();formTouch()">
+                                                                (keyup)="checkLocalAddress();formTouch()"
+                                                                [ngClass]="{'is-invalid' : ContactInfoForm.get('localVillege').status == 'INVALID'}">
                                                         </div>
                                                     </div>
 
@@ -396,7 +406,8 @@
                                                                 placeholder="Enter Village"
                                                                 formControlName="permanentVillege"
                                                                 [(ngModel)]="permanentAddressInformation.village"
-                                                                (keyup)="checkLocalAddress();formTouch()">
+                                                                (keyup)="checkLocalAddress();formTouch()"
+                                                                [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentVillege').status == 'INVALID'}">
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -429,8 +440,8 @@
                                                     {{ 'ContactInformationForm.permanentBoolean' | transloco }}</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="!communicationAddress">
-                                            {{ 'ContactInformationForm.communicationErrorMsg' | transloco }}</mat-error>
+                                        <div class="invalid-error-message" *ngIf="!communicationAddress">
+                                            {{ 'ContactInformationForm.communicationErrorMsg' | transloco }}</div>
                                     </div>
                                 </fieldset>
 

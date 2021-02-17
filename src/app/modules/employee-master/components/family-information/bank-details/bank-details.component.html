@@ -94,7 +94,7 @@
                                             [ngModelOptions]="{standalone: true}" minlength="1"
                                             maxlength="{{bank.maxAccNumber}}"
                                             [type]="bank.accountNo ? 'text' : 'password'"
-                                            (keyup)="validateAccountNo(bank.accountNumber, bank);getHideAccountNo(bank)"
+                                            (keyup)="validateAccountNo(bank.accountNumber, bank);"
                                             appBlockCopyPaste placeholder="Enter Account No."
                                             (keypress)="keyPress($event)">
                                         <mat-icon matSuffix
@@ -102,8 +102,8 @@
                                             class="eye-icon-payroll">
                                             {{bank.accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
 
-                                        <mat-error style="font-size: 7px;" *ngIf="bank.accountNumber?.length>0">
-                                            {{bank.accountNumberCountError}}</mat-error>
+                                        <div class="invalid-acc-error-message" *ngIf="bank.accountNumber?.length>0">
+                                            {{bank.accountNumberCountError}}</div>
                                     </span></td>
 
                                 <td><span>

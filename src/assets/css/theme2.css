@@ -2500,3 +2500,10 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.invalid-error-message{
+  font-size: 10px;
+  /* margin-left: 12px; */
+  /* margin-top: 3px; */
+  color: #f44336;
+}

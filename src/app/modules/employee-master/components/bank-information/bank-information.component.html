@@ -65,28 +65,32 @@
                                         <label class="form-label">{{ 'BankInfoForm.bankName' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Bank Name"
                                             formControlName="bankName" [(ngModel)]="BankInformationModel.bankName"
-                                            tooltip="{{BankInformationModel.bankName}}" (keyup)="formTouch(bankInfoForm)">
+                                            tooltip="{{BankInformationModel.bankName}}"
+                                            (keyup)="formTouch(bankInfoForm)">
                                     </div>
 
                                     <div class="col-sm-6 col-md-3">
                                         <label class="form-label">{{ 'BankInfoForm.branchName' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Branch"
                                             formControlName="branchName" [(ngModel)]="BankInformationModel.branchName"
-                                            tooltip="{{BankInformationModel.branchName}}" (keyup)="formTouch(bankInfoForm)">
+                                            tooltip="{{BankInformationModel.branchName}}"
+                                            (keyup)="formTouch(bankInfoForm)">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.branchAddress' | transloco }}</label>
                                         <input type="text" class="form-control" placeholder="Branch Address"
                                             formControlName="branchAddress"
                                             [(ngModel)]="BankInformationModel.branchAddress"
-                                            tooltip="{{BankInformationModel.branchAddress}}" (keyup)="formTouch(bankInfoForm)">
+                                            tooltip="{{BankInformationModel.branchAddress}}"
+                                            (keyup)="formTouch(bankInfoForm)">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.nameAsPerBank' | transloco }}</label>
                                         <input type="text" class="form-control"
                                             placeholder="Enter Name As per Bank Acc." formControlName="nameAsPerBank"
                                             [(ngModel)]="BankInformationModel.nameAsPerBank"
-                                            tooltip="{{BankInformationModel.nameAsPerBank}}" (keyup)="formTouch(bankInfoForm)"
+                                            tooltip="{{BankInformationModel.nameAsPerBank}}"
+                                            (keyup)="formTouch(bankInfoForm)"
                                             [ngClass]="{'is-invalid' : bankInfoForm.get('nameAsPerBank').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
@@ -106,8 +110,8 @@
                                         <!-- <i class="fa"
                                             [ngClass]="{'fa-eye-slash': !accountNo, 'fa-eye': accountNo}"
                                             (click)="toggleFieldTextType()"></i> -->
-                                        <mat-error style="font-size: 11px;">
-                                            {{accountNumberCountError}}</mat-error>
+                                        <div class="invalid-error-message">
+                                            {{accountNumberCountError}}</div>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-15">
                                         <label class="form-label">{{ 'BankInfoForm.confirmAccountNumber' | transloco
@@ -127,12 +131,12 @@
                                             {{confirmAccountNo1 ? 'visibility' : 'visibility_off'}}
                                         </mat-icon>
 
-                                        <mat-error style="font-size: 11px;" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch')&& confirmAccountNumber?.length>0
+                                        <div class="invalid-error-message" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch')&& confirmAccountNumber?.length>0
                                             && bankInfoForm.get('confirmAccountNo').status == 'INVALID'">
-                                            {{ 'BankInfoForm.accountNoMatchError' | transloco }}</mat-error>
-                                        <br>
-                                        <mat-error style="font-size: 11px;" *ngIf="confirmAccountNumber?.length>0">
-                                            {{confirmAccountNumberCountError}}</mat-error>
+                                            {{ 'BankInfoForm.accountNoMatchError' | transloco }}</div>
+                                        
+                                        <div class="invalid-error-message" *ngIf="confirmAccountNumber?.length>0">
+                                            {{confirmAccountNumberCountError}}</div>
                                         <!-- <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo
                 && BankInformationModel.accountNo.length>0" class="match-accountNo">
                                             {{ 'BankInfoForm.accountNoMatchSuccessMsg' | transloco }}</p> -->

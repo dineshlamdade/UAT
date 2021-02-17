@@ -136,7 +136,7 @@
                                             (click)="viewSkillRow(skill)"></i>
 
                                         <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
-                                            (click)="deleteSkillRow(skill)"></i></span>
+                                            (click)="deleteSkillRow(skill, confirmation)"></i></span>
                                 </td>
                             </tr>
                         </ng-template>
@@ -149,3 +149,25 @@
         </div>
     </div>
 </div>
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{confirmationMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteRecord()">Yes</button>
+
+    </div>
+</ng-template>
