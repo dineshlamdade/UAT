@@ -93,6 +93,10 @@ export class SkillsDetailComponent implements OnInit {
       this.SkillSummaryData = res.data.results[0];
 
       // this.validatingHigherQualification();
+    }, (error: any) => {
+      if (error["error"]["status"]["messsage"] == 'EmployeeSkillDetails details list is empty') {
+        this.SkillSummaryData = [];
+      }
     })
   }
 
@@ -177,10 +181,10 @@ export class SkillsDetailComponent implements OnInit {
 
   deleteRecord() {
     this.EducationSkillsInformationService.deleteSkillsGridItem(this.skillId).subscribe(res => {
+      this.getAllSkillsSummary();
 
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-      this.getAllSkillsSummary();
-      this. resetSkillForm();
+      this.resetSkillForm();
       this.modalRef.hide();
     })
   }

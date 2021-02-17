@@ -85,7 +85,7 @@
                                             class="fa fa-floppy-o"></i></b>Update</button>
 
                                 <button type="button" tooltip="Reset" [hidden]="skillviewFlag"
-                                (click)="resetSkillForm()"
+                                    (click)="resetSkillForm()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                             class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
 
@@ -96,24 +96,28 @@
                         </div>
                     </div>
 
-                    
-                    <legend style="font-size: 17px !important;">Summary</legend>
+
+                    <div class="row mt-10">
+                        <div class="col-md-12">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                    </div>
                     <p-table [value]="SkillSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-skill>
                             <colgroup>
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:100px">
+                                <col class="wd-30">
+                                <col class="wd-30">
+                                <col class="wd-30">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-left">Skill</th>
-                                <th class="primeng-table-header-left">Description</th>
-                                <th class="primeng-table-header-left">Proficiency</th>
-                                <th class="primeng-table-header-left">Action</th>
+                                <th class="primeng-table-header-center wd-30">Skill</th>
+                                <th class="primeng-table-header-center wd-30">Description</th>
+                                <th class="primeng-table-header-center wd-30">Proficiency</th>
+                                <th class="primeng-table-header-center wd-10">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-skill>
@@ -126,7 +130,8 @@
                                         {{skill.skillDescription}}
                                     </span></td>
 
-                                <td class="primeng-table-header-left padding-left-24"><span> {{skill.proficiency}}</span></td>
+                                <td class="primeng-table-header-left padding-left-24"><span>
+                                        {{skill.proficiency}}</span></td>
 
                                 <td class="primeng-table-header-left"><span><i
                                             class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
@@ -140,10 +145,13 @@
                                 </td>
                             </tr>
                         </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr *ngIf="SkillSummaryData.length == 0">
+                                <td colspan="4" class="text-center"><span class="font-14 font500 text-red">No Data
+                                        Available</span></td>
+                            </tr>
+                        </ng-template>
                     </p-table>
-                    <span class="font-14 font500 align-center text-red no-data-center"
-                        *ngIf="SkillSummaryData.length==0">No
-                        data found</span>
                 </div>
             </div>
         </div>

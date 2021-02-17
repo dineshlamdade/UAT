@@ -351,6 +351,11 @@
                                                                         (click)="removeVisaItem(visa, confirmation)"></i>
                                                                 </td>
                                                             </tr>
+                                                            <tr *ngIf="data.length == 0">
+                                                                <td colspan="4" class="text-center"><span
+                                                                        class="font-14 font500 text-red">No Data
+                                                                        Available</span></td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -365,13 +370,13 @@
                                             <button type="button" tooltip="Previous"
                                                 [routerLink]="['/employee-master/job-information/job-summary']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
-                                                        class="fa fa-chevron-circle-left"
+                                                        class="fa fa-angle-double-left"
                                                         aria-hidden="true"></i></b>Previous</button>
 
                                             <button type="button" tooltip="Next"
                                                 [routerLink]="['/employee-master/compliance-information/compliance-summary']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
-                                                        class="fa fa-chevron-circle-right"
+                                                        class="fa fa-angle-double-right"
                                                         aria-hidden="true"></i></b>Next</button>
 
                                             <button type="button" (click)="IdentitySaveNextSubmit(IdentityInformation)"

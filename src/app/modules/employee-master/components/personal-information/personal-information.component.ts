@@ -39,7 +39,7 @@ export class PersonalInformationComponent implements OnInit {
   physicallyChallenged: any
   countryList: Array<any> = [];
   @ViewChild('fileInput') el: ElementRef;
-  imageUrl: any = "./assets/emp-master-images/empIcon5.png";
+  imageUrl: any = "./assets/images/userdefault.png";
   editFile: boolean = true;
   removeUpload: boolean = false;
   selectedImg: any;
@@ -153,7 +153,6 @@ export class PersonalInformationComponent implements OnInit {
 
     this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(element => {
 
-      debugger
       if (element.rejoinee == true) {
         this.resetForm();
         localStorage.clear();
@@ -259,7 +258,7 @@ export class PersonalInformationComponent implements OnInit {
 
   // Personal Info Form Submit Function
   personalInfoSubmit(personalInformationModel) {
-    debugger
+    
     if (this.rejoinee == false) {
       personalInformationModel.employeeMasterId = null;
       personalInformationModel.employeeMasterRequestDTO.employeeMasterId = null;
@@ -311,7 +310,7 @@ export class PersonalInformationComponent implements OnInit {
 
     if (this.employeeMasterId) {
       return this.PersonalInformationService.updatePersonalInfoForm(body, this.employeeMasterId).subscribe((res) => {
-        debugger
+        
         this.personalInformationModel = res.data.results[0];
         this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO
         this.internationalWorkerRequestDTO = res.data.results[0].internationalWorkerResponseDTO;
@@ -452,12 +451,12 @@ export class PersonalInformationComponent implements OnInit {
 
   // selected image bindind
   uploadFile(event, uploadFile) {
-    debugger
+    
     if (uploadFile.files[0].size > 1000000) {
       this.selectedImg = null;
       uploadFile = null;
       event = null;
-      this.imageUrl = "./assets/emp-master-images/empIcon5.png";
+      this.imageUrl =  "./assets/images/userdefault.png";
       this.CommonDataService.sweetalertWarning('Selected Image Size Should be less than 1 Mb');
     } else {
       this.selectedImageFile = uploadFile.files[0];
@@ -548,7 +547,7 @@ export class PersonalInformationComponent implements OnInit {
     this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
 
     this.BasicInfoForm.reset();
-    this.imageUrl = "./assets/emp-master-images/empIcon5.png";
+    this.imageUrl = "./assets/images/userdefault.png";
     const severityLevel = this.BasicInfoForm.get('severityLevel');
     severityLevel.disable();
     const isOnCOC = this.BasicInfoForm.get('isOnCOC');

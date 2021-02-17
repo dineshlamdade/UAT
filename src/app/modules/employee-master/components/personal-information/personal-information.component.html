@@ -9,17 +9,17 @@
                     <div class="card">
                         <div class="card-body">
                             <form [formGroup]="BasicInfoForm" (ngSubmit)="personalInfoSubmit(personalInformationModel)">
-                                <!-- <div class="tabview"> -->
                                 <div class="row">
-                                    <!-- <div class="card-body col-sm-6"> -->
                                     &nbsp;&nbsp;
-                                    <div class="circle thumbnail" (click)="fileInput.click($event, fileInput)">
-                                        <div class="avatar-edit">
+                                    <div class="circle thumbnail margin-top-img" (click)="fileInput.click($event, fileInput)">
+                                        <div class="avatar-edit position_relative">
                                             <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
                                                 (change)="uploadFile($event, fileInput)" hidden
                                                 [(ngModel)]="selectedImg" formControlName="image" />
+                                            <div class="overlay_APP"><i class="fa fa-plus-circle"
+                                                    aria-hidden="true"></i></div>
+                                            <img [src]="imageUrl" alt="">
                                         </div>
-                                        <img [src]="imageUrl" alt="">
                                         <h4 class="image-size-info" tooltip="Size should be
                                         less than 1 MB">Select Image <p class="small-size">(Size should be
                                                 less than 1 MB)</p>
@@ -335,7 +335,7 @@
                                    'bg-teal-400': employeeMasterId}"
                                                 [routerLink]="['/employee-master/employee-summary']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-chevron-circle-left"
+                                                    class="fa fa-angle-double-left"
                                                         aria-hidden="true"></i></b>Previous</button>
 
                                             <button type="button" tooltip="Next" [disabled]="!employeeMasterId"
@@ -343,7 +343,7 @@
                                             'bg-teal-400': employeeMasterId}"
                                                 [routerLink]="['/employee-master/employment-information/joining-information']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-chevron-circle-right"
+                                                    class="fa fa-angle-double-right"
                                                         aria-hidden="true"></i></b>Next</button>
 
                                             <button type="button"

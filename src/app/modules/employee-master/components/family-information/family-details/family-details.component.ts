@@ -34,7 +34,7 @@ export class FamilyDetailsComponent implements OnInit {
   FamilyDetailsInfoList: Array<any> = [];
   CopyFromAddressList: Array<any> = [];
   getAddressCopyFromList: Array<any> = [];
-  imageUrl: any = "./assets/images/empIcon5.png";
+  imageUrl: any = "./assets/images/userdefault.png";
   editFile: boolean = true;
   removeUpload: boolean = false;
   dependentOnEmployee: any;

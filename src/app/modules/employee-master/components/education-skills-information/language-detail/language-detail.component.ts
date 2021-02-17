@@ -103,6 +103,15 @@ export class LanguageDetailComponent implements OnInit {
       this.LanguageSummaryGridData = res.data.results[0];
 
       // this.validatingHigherQualification();
+    }, (error: any) => {
+      
+      this.LanguageSummaryGridData.find(res => {
+
+        const index = this.LanguageSummaryGridData.findIndex(x => res.employeeLanguageinfoId == this.languageId);
+        if (res.employeeLanguageinfoId == this.languageId) {
+          this.LanguageSummaryGridData.splice(index, 1);
+        }
+      })
     })
   }
 
@@ -182,8 +191,8 @@ export class LanguageDetailComponent implements OnInit {
   deleteRecord() {
 
     this.EducationSkillsInformationService.deleteLanguageGridItem(this.languageId).subscribe(res => {
-      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.getAllLanguageSummary();
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.modalRef.hide();
       this.resetLanguageForm();
     })

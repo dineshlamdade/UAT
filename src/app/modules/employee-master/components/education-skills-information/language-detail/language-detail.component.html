@@ -9,7 +9,7 @@
                             <legend>
                                 Language Information</legend>
                             <div class="row">
-                                <div class="col-sm-6 col-md-4" style="margin-left: 25px;">
+                                <div class="col-md-2">
                                     <label class="form-label">Language</label>
                                     <select class="form-control" placeholder="Select" formControlName="language"
                                         [(ngModel)]="employeeLanguageRequestModel.language" (change)="clearLanguageInformation();
@@ -20,91 +20,83 @@
                                             {{language}}
                                         </option>
                                     </select>
-
-                                    <!-- <p-autoComplete [suggestions]="filteredLanguageArray" placeholder="Select"
-                                        (completeMethod)="filterLanguages($event)" [dropdown]="true"
-                                        formControlName="language" [(ngModel)]="employeeLanguageRequestModel.language"
-                                        (onSelect)="clearLanguageInformation();
-                                        validateGridLanguage();">
-                                    </p-autoComplete> -->
                                 </div>
                             </div>
 
-                            <div class="mt-20 ml-20" style="margin-left: 25px;">
-
-                                <div class="form-label">Read</div>
-                                <div class="form-group">
-                                    <div class="custom-controls-stacked">
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Basic"
-                                                formControlName="languageRead"
-                                                [(ngModel)]="employeeLanguageRequestModel.read">
-                                            <span class="custom-control-label">Basic</span>
-                                        </label>
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Intermediate"
-                                                formControlName="languageRead"
-                                                [(ngModel)]="employeeLanguageRequestModel.read">
-                                            <span class="custom-control-label">Intermediate</span>
-                                        </label>
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Proficient"
-                                                formControlName="languageRead"
-                                                [(ngModel)]="employeeLanguageRequestModel.read">
-                                            <span class="custom-control-label">Proficient</span>
-                                        </label>
+                            <div class="row mt-20">
+                                <div class="col-md-4">
+                                    <div class="form-label">Read</div>
+                                    <div class="form-group">
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Basic"
+                                                    formControlName="languageRead"
+                                                    [(ngModel)]="employeeLanguageRequestModel.read">
+                                                <span class="custom-control-label">Basic</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Intermediate"
+                                                    formControlName="languageRead"
+                                                    [(ngModel)]="employeeLanguageRequestModel.read">
+                                                <span class="custom-control-label">Intermediate</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Proficient"
+                                                    formControlName="languageRead"
+                                                    [(ngModel)]="employeeLanguageRequestModel.read">
+                                                <span class="custom-control-label">Proficient</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="mt-15" style="margin-left: 25px;">
-                                <div class="form-label">Write</div>
-                                <div class="form-group">
-                                    <div class="custom-controls-stacked">
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input"
-                                                formControlName="languageWrite" value="Basic"
-                                                [(ngModel)]="employeeLanguageRequestModel.write">
-                                            <span class="custom-control-label">Basic</span>
-                                        </label>
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Intermediate"
-                                                formControlName="languageWrite"
-                                                [(ngModel)]="employeeLanguageRequestModel.write">
-                                            <span class="custom-control-label">Intermediate</span>
-                                        </label>
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Proficient"
-                                                formControlName="languageWrite"
-                                                [(ngModel)]="employeeLanguageRequestModel.write">
-                                            <span class="custom-control-label">Proficient</span>
-                                        </label>
+                                <div class="col-md-4">
+                                    <div class="form-label">Write</div>
+                                    <div class="form-group">
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input"
+                                                    formControlName="languageWrite" value="Basic"
+                                                    [(ngModel)]="employeeLanguageRequestModel.write">
+                                                <span class="custom-control-label">Basic</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Intermediate"
+                                                    formControlName="languageWrite"
+                                                    [(ngModel)]="employeeLanguageRequestModel.write">
+                                                <span class="custom-control-label">Intermediate</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Proficient"
+                                                    formControlName="languageWrite"
+                                                    [(ngModel)]="employeeLanguageRequestModel.write">
+                                                <span class="custom-control-label">Proficient</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="mt-10" style="margin-left: 25px;">
-                                <div class="form-label">Speak</div>
-                                <div class="form-group">
-                                    <div class="custom-controls-stacked">
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input"
-                                                formControlName="languageSpeak" value="Basic"
-                                                [(ngModel)]="employeeLanguageRequestModel.speak">
-                                            <span class="custom-control-label">Basic</span>
-                                        </label>
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Intermediate"
-                                                formControlName="languageSpeak"
-                                                [(ngModel)]="employeeLanguageRequestModel.speak">
-                                            <span class="custom-control-label">Intermediate</span>
-                                        </label>
-                                        <label class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" value="Proficient"
-                                                formControlName="languageSpeak"
-                                                [(ngModel)]="employeeLanguageRequestModel.speak">
-                                            <span class="custom-control-label">Proficient</span>
-                                        </label>
+                                <div class="col-md-4">
+                                    <div class="form-label">Speak</div>
+                                    <div class="form-group">
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input"
+                                                    formControlName="languageSpeak" value="Basic"
+                                                    [(ngModel)]="employeeLanguageRequestModel.speak">
+                                                <span class="custom-control-label">Basic</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Intermediate"
+                                                    formControlName="languageSpeak"
+                                                    [(ngModel)]="employeeLanguageRequestModel.speak">
+                                                <span class="custom-control-label">Intermediate</span>
+                                            </label>
+                                            <label class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" value="Proficient"
+                                                    formControlName="languageSpeak"
+                                                    [(ngModel)]="employeeLanguageRequestModel.speak">
+                                                <span class="custom-control-label">Proficient</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -145,25 +137,29 @@
                     </div>
 
 
-                    <legend style="font-size: 17px !important;">Summary</legend>
+                    <div class="row mt-10">
+                        <div class="col-md-12">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                    </div>
                     <p-table [value]="LanguageSummaryGridData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-languageHeader>
                             <colgroup>
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:100px">
+                                <col class="wd-30">
+                                <col class="wd-20">
+                                <col class="wd-20">
+                                <col class="wd-20">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-left">Language</th>
-                                <th class="primeng-table-header-left ">Read</th>
-                                <th class="primeng-table-header-left">Write</th>
-                                <th class="primeng-table-header-left">Speak</th>
-                                <th class="primeng-table-header-left">Action</th>
+                                <th class="primeng-table-header-center wd-30">Language</th>
+                                <th class="primeng-table-header-center wd-20">Read</th>
+                                <th class="primeng-table-header-center wd-20">Write</th>
+                                <th class="primeng-table-header-center wd-20">Speak</th>
+                                <th class="primeng-table-header-center wd-10">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-Language>
@@ -176,9 +172,11 @@
                                         {{Language.read}}
                                     </span></td>
 
-                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.write}}</span></td>
+                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.write}}</span>
+                                </td>
 
-                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.speak}}</span></td>
+                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.speak}}</span>
+                                </td>
 
                                 <td class="primeng-table-header-left padding-left-24">
                                     <span>
@@ -193,10 +191,13 @@
                                 </td>
                             </tr>
                         </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr *ngIf="LanguageSummaryGridData.length==0">
+                                <td colspan="5" class="text-center"><span class="font-14 font500 text-red">No Data
+                                        Available</span></td>
+                            </tr>
+                        </ng-template>
                     </p-table>
-                    <span class="font-14 font500 align-center text-red no-data-center"
-                        *ngIf="LanguageSummaryGridData.length==0">No
-                        data found</span>
                 </div>
             </div>
         </div>
