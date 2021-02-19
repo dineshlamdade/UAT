@@ -41,6 +41,7 @@ export class Mediclaim80DService {
 
    //  Declaration services
 
+   //Mediclaim Premium Institution Name List
   getMediclaimPremiumWithInstitutionList() {
     return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/mediclaimPremiumInstitutionList')
     .pipe(map((res: any) => {
@@ -49,19 +50,19 @@ export class Mediclaim80DService {
     ));
   }
 
-  // getTransactionFilterData(expenseType:String, institution:String) {
-  //   return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/All' + expenseType + '/' + institution)
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
-  // }
-
-  getTransactionFilterData(){
-    return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/All')
+  getTransactionFilterData(expenseType:String, institution:String) {
+    return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/' + expenseType + '/' + institution)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
+  // getTransactionFilterData(){
+  //   return this._HTTP.get(this.apiUrl + 'mediclaimTransaction/All')
+  //   .pipe(map((res: any) => {
+  //     return res;
+  //   }));
+  // }
 
 
   // getTransactionFilterData() {

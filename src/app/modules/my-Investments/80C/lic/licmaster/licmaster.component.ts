@@ -467,16 +467,16 @@ export class LicmasterComponent implements OnInit {
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.form.get('proofSubmissionId').setValue(this.masterGridData[i].proofSubmissionId);
-    this.isClear = true;
+    // this.showUpdateButton = true;
+    // const formatedPremiumAmount = this.numberFormat.transform(
+    //   this.masterGridData[i].premiumAmount
+    // );
+    // // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+    // this.form.get('proofSubmissionId').setValue(this.masterGridData[i].proofSubmissionId);
+    // this.isClear = true;
 
-    this.masterfilesArray = this.masterGridData[i].documentInformationList
+    // this.masterfilesArray = this.masterGridData[i].documentInformationList
   }
 
   //------------ On Edit Cancel ----------------

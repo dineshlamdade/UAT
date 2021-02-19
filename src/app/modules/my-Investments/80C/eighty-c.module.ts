@@ -20,7 +20,7 @@ import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
 import { LicComponent } from './lic/lic.component';
 import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
 import { LicmasterComponent } from './lic/licmaster/licmaster.component';
-import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
+import { LicsummaryComponent,CopyDirective } from './lic/licsummary/licsummary.component';
 import { PensionPlanComponent } from './pension-plan/pension-plan.component';
 import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
 import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
@@ -74,6 +74,7 @@ import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-dec
     PPFDeclarationComponent,
     LicComponent,
     LicsummaryComponent,
+    CopyDirective,
     LicmasterComponent,
     LicdeclarationComponent,
     TaxsavingMfDeclarationComponent,

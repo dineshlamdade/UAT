@@ -66,11 +66,22 @@
                     <td colspan="3" class="align-right font700">Future New Policies &nbsp;
                        <span class="Letterbadge">B</span>
                     </td>
-                    <td>
-                       <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                       (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
-                       class="form-control width120 inline_center align-right">
-                    </td>
+                      <!-- <div>
+                       <p-inputNumber [(ngModel)]="futureNewPolicyDeclaredAmount" placeholder ="0.00" class="form-control width120 inline_center align-right" (change)='onChangeFutureNewPolicyDeclaredAmount()'>
+                      </p-inputNumber>
+                    </div> -->
+                    <!-- <td>
+                      <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                      (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
+                      class="form-control width120 inline_center align-right">
+                   </td> -->
+                   <td>
+                    <input type="text" class="form-control" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                    (change)='onChangeFutureNewPolicyDeclaredAmount()' minlength="1"
+                      maxlength="15" autocomplete="off"
+
+                    >
+                   </td>
                     <td></td>
                     <td></td>
                  </tr>
@@ -97,3 +108,20 @@
      </div>
   </div>
 </div>
+
+
+
+
+  <!-- <input type="text" class="form-control" [(ngModel)]="futureNewPolicyDeclaredAmount"
+  (change)='onChangeFutureNewPolicyDeclaredAmount()' minlength="1"
+    maxlength="10" autocomplete="off"
+    [ngClass]="{'is-invalid' : companyMasterform.get('phoneNumber').status == 'INVALID'}"
+    (keypress)="keyPress($event)"
+    [(ngModel)]="employeeMasterRequestDTO.phoneNumber"> -->
+
+
+    <!-- <td>
+                      <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                      (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
+                      class="form-control width120 inline_center align-right">
+                   </td> -->

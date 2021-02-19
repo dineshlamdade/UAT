@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output,Directive, ElementRef } from '@angular/core';
+import { NumberFormatPatternService } from '../../../../..//core/services/number-format-pattern.service';
+import { Renderer2 } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+
 
 @Component({
   selector: 'app-licsummary',
@@ -33,6 +36,8 @@ export class LicsummaryComponent implements OnInit {
     private service: MyInvestmentsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService,
+    // private numberFormatPatternService : NumberFormatPatternService,
+    // el: ElementRef, renderer2: Renderer2
     ) { }
 
   public ngOnInit(): void {
@@ -107,4 +112,31 @@ export class LicsummaryComponent implements OnInit {
       };;
       this.policyNumber.emit(data);
     }
-}
+
+    keyPress(event: any) {
+      // this.numberFormatPattern.keyPress(event);
+
+      const pattern = /[0-9]/;
+
+      let inputChar = String.fromCharCode(event.charCode);
+      if (event.keyCode != 8 && !pattern.test(inputChar)) {
+        event.preventDefault();
+      }
+
+   }
+
+  }
+
+  @Directive({ selector: '[preventCutCopyPaste]' })
+
+export class CopyDirective {
+    constructor(el: ElementRef, renderer2: Renderer2) {
+      var events = 'cut copy paste';
+      events.split(' ').forEach(e =>
+      renderer2.listen(el.nativeElement, e, (event) => {
+        event.preventDefault();
+        })
+      );
+
+    }
+  }

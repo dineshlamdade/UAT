@@ -444,7 +444,7 @@
                   <td class="padding-0"  *ngIf = "documentSummary.interest80TTBankList.length == 1">
                     <!-- {{ documentSummary.bankName}} -->
                     <!-- {{ documentSummary.accountNo}} -->
-                    {{ documentSummary.interest80TTBankList[0].bankName }}
+                    {{ documentSummary.interest80TTBankList[0].bankName }} :
                     {{ documentSummary.interest80TTBankList[0].accountNumber }}
                   </td>
                   <td>
@@ -627,9 +627,20 @@
         <div class="ml-2 pl-1 pr-0">
           <label
             class="font-12 text-ellipsis mt-1"
-            tooltip="{{ item.accountNo }}"
+            tooltip="{{ item.accountNumber }}"
           >
-            {{ item.accountNo }}</label
+            {{ item.accountNumber }}</label
+          >
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label class="form-label mt-1 pl-10">Account Holder Name</label>
+        </div>
+        <div class="ml-2 pl-1 pr-0">
+          <label
+            class="font-12 text-ellipsis mt-1"
+            tooltip="{{ item.accountHolderName }}"
+          >
+            {{ item.accountHolderName }}</label
           >
         </div>
         <!-- <div class="ml-2 pl-1 pr-0">
