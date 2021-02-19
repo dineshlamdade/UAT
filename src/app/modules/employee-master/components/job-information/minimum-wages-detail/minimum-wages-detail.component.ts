@@ -140,7 +140,7 @@ export class MinimumWagesDetailComponent implements OnInit {
       this.employeeMinimumWagesInfoId = res.data.results[0].employeeMinimumWagesInfoId;
       if (res.data.results[0]) {
 
-        debugger
+        
         this.minumumWagesDetailsModel = res.data.results[0];
 
         //dates conversion

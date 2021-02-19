@@ -141,7 +141,7 @@ export class PersonalInformationComponent implements OnInit {
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
       this.validBirthDate = null;
       this.BasicInfoForm.get('birthDate').reset();
-
+      return;
     })
 
     this.PersonalInformationService.getLocationInformation().subscribe(res => {
@@ -559,8 +559,14 @@ export class PersonalInformationComponent implements OnInit {
       this.personalInformationModel.anniversaryDate = '';
     }
   }
-  birthDateValidation(event) {
 
+  birthDateClickEvent(event) {
+    
+    this.birthdateClickboolean = true;
+  }
+
+  birthDateValidation(event) {
+    
     if ((this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
       let dateObj = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
@@ -573,9 +579,13 @@ export class PersonalInformationComponent implements OnInit {
       if (this.validBirthDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
         this.birthD(this.validBirthDate);
       }
+      if(this.validBirthDate == true){
+        this.birthdateClickboolean = false;
+        return
+      }
     }
 
-    this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
+    return this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
   }
   birthD(validDate) {
     this.birthdateClickboolean = false;
@@ -624,13 +634,10 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  birthDateClickEvent(event) {
-
-    this.birthdateClickboolean = true;
-  }
+ 
 
   validateSaverityLevel(severityLevel) {
-
+  
     if (severityLevel > 100 || severityLevel < 0) {
       this.CommonDataService.sweetalertWarning('Severity Level should be up to 100%');
       this.severityCountValidation = false;

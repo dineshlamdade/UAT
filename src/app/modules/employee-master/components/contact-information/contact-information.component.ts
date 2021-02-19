@@ -76,27 +76,27 @@ export class ContactInformationComponent implements OnInit {
       personalmobileNumber: ['', Validators.compose([Validators.required, Validators.pattern(/^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)])],
       officialEmail: ['', Validators.compose([Validators.pattern(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/)])],
       personalEmail: ['', Validators.pattern(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/)],
-      emergencyContactName: [''],
-      emergencyContactNumber: ['', Validators.pattern(/^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)],
+      emergencyContactName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      emergencyContactNumber: ['', Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")],
       emergencyCountryCode: [''],
       localAddress1: ['', Validators.required],
       localAddress2: [''],
       localAddress3: [''],
       localCountry: [''],
-      localPin:[''],
+      localPin: [''],
       localState: [{ value: null, disabled: true }],
-      localDistrict:  [{ value: null, disabled: true }],
+      localDistrict: [{ value: null, disabled: true }],
       localCity: [{ value: null, disabled: true }],
-      localVillege: [''],
+      localVillege:['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       permanentAddress1: ['', Validators.required],
       permanentAddress2: [''],
       permanentAddress3: [''],
       permanentCountry: [''],
       permanentPin: [''],
       permanentState: [{ value: null, disabled: true }],
-      permanentDistrict:  [{ value: null, disabled: true }],
+      permanentDistrict: [{ value: null, disabled: true }],
       permanentCity: [{ value: null, disabled: true }],
-      permanentVillege: [''],
+      permanentVillege:['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       communicationAddress: [Validators.required]
     });
     this.getCountryInfo();
@@ -104,15 +104,15 @@ export class ContactInformationComponent implements OnInit {
 
     // Response from address copy confirmation dialog
     this.EventEmitterService.getCopyFromConfirmation().subscribe(res => {
-      
+
       if (res == 'LocalToPermanent') {
         // this.formTouch();
-        this. markFormGroupTouched(this.ContactInfoForm);
+        this.markFormGroupTouched(this.ContactInfoForm);
         this.copyFromLocalToPermanent();
         this.checkLocalAddress();
       } else {
         // this.formTouch();
-        this. markFormGroupTouched(this.ContactInfoForm);
+        this.markFormGroupTouched(this.ContactInfoForm);
         this.copyFromPermanentToLocal();
         this.checkLocalAddress();
       }
@@ -141,9 +141,9 @@ export class ContactInformationComponent implements OnInit {
   selectionChallenged(event) {
 
     this.communicationAddress = event.target.defaultValue;
-    this. markFormGroupTouched(this.ContactInfoForm);
+    this.markFormGroupTouched(this.ContactInfoForm);
   }
-  contactSaveNextSubmit(contactInformation){
+  contactSaveNextSubmit(contactInformation) {
 
     this.saveNextBoolean = true;
 
@@ -152,7 +152,7 @@ export class ContactInformationComponent implements OnInit {
 
   // Contact Form submit Post API call
   contactFormSubmit(contactInformation) {
-    
+
     // Concatnation of mobile number and country code
     if (contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber && this.ngOfficialCountryCode) {
 
@@ -311,11 +311,11 @@ export class ContactInformationComponent implements OnInit {
       && this.permanentAddressInformation.isCommunicationAddress == 1) {
       this.communicationAddress = 'permanent'
     }
-    if(!this.localAddressInformation.country){
+    if (!this.localAddressInformation.country) {
       this.localAddressInformation.country = '';
       this.ContactInfoForm.get('permanentCountry').setValue('');
     }
-    if(!this.permanentAddressInformation.country){
+    if (!this.permanentAddressInformation.country) {
       this.permanentAddressInformation.country = '';
       this.ContactInfoForm.get('permanentCountry').setValue('');
     }
@@ -427,7 +427,7 @@ export class ContactInformationComponent implements OnInit {
     }
   }
   checkLocalAddress() {
-    
+
     let local;
     let permanent;
     // if (this.permanentAddressInformation.country == '') {
@@ -493,7 +493,7 @@ export class ContactInformationComponent implements OnInit {
     this.ContactInfoForm.reset();
     const communicationAddress = this.ContactInfoForm.get('communicationAddress');
     communicationAddress.disable();
-    
+
     this.ngOfficialCountryCode = '';
     this.ContactInfoForm.get('officialCountryCode').setValue('');
     this.ngPersonalCountryCode = '';
@@ -504,6 +504,16 @@ export class ContactInformationComponent implements OnInit {
     this.ContactInfoForm.get('localCountry').setValue('');
     this.permanentAddressInformation.country = '';
     this.ContactInfoForm.get('permanentCountry').setValue('');
+
+    this.ContactInfoForm.get('officialMobileNumber').clearValidators();
+    this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+    this.ContactInfoForm.get('officialCountryCode').clearValidators();
+    this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
+
+    this.ContactInfoForm.get('emergencyContactNumber').clearValidators();
+    this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+    this.ContactInfoForm.get('emergencyCountryCode').clearValidators();
+    this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
   }
   validateOfficialEmail(officialEmail) {
     const officialEmailId = this.ContactInfoForm.get('officialEmail');
@@ -535,8 +545,8 @@ export class ContactInformationComponent implements OnInit {
     }
   }
 
-  validatePersonalEmailId(personalEmailID){
-    
+  validatePersonalEmailId(personalEmailID) {
+
     const personalEmail = this.ContactInfoForm.get('personalEmail');
     if (personalEmail.status == "VALID" && personalEmailID.length > 0) {
 
@@ -598,7 +608,7 @@ export class ContactInformationComponent implements OnInit {
     })
   }
   keyPress(event: any) {
-    
+
     const pattern = /[0-9]/;
 
     let inputChar = String.fromCharCode(event.charCode);
@@ -621,5 +631,44 @@ export class ContactInformationComponent implements OnInit {
     });
   }
 
+  validOfficialMobNo() {
+    if (!this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber) {
+      this.ContactInfoForm.get('officialMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+    } else {
+      this.ContactInfoForm.get('officialMobileNumber').clearValidators();
+      this.ContactInfoForm.get('officialMobileNumber').updateValueAndValidity();
+    }
+  }
+
+  validOfficialCountryCode() {
+    if (!this.ngOfficialCountryCode) {
+      this.ContactInfoForm.get('officialCountryCode').setValidators(Validators.required);
+      this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
+    } else {
+      this.ContactInfoForm.get('officialCountryCode').clearValidators();
+      this.ContactInfoForm.get('officialCountryCode').updateValueAndValidity();
+    }
+  }
+
+  validEmergencyMobNo() {
+    if (!this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber) {
+      this.ContactInfoForm.get('emergencyContactNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+    } else {
+      this.ContactInfoForm.get('emergencyContactNumber').clearValidators();
+      this.ContactInfoForm.get('emergencyContactNumber').updateValueAndValidity();
+    }
+  }
+
+  validEmergencyCountryCode() {
+    if (!this.ngEmergencyCountryCode) {
+      this.ContactInfoForm.get('emergencyCountryCode').setValidators(Validators.required);
+      this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
+    } else {
+      this.ContactInfoForm.get('emergencyCountryCode').clearValidators();
+      this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
+    }
+  }
 }
 

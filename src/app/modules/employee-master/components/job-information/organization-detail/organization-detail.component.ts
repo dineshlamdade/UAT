@@ -200,7 +200,7 @@ export class OrganizationDetailComponent implements OnInit {
       this.costCenterList = [];
       this.subCostCenterList = [];
       this.profitCenterList = [];
-
+      
       const location = res.data.results.filter((item) => {
 
         if (item.masterType == 'SubLocationMaster') {
@@ -211,7 +211,7 @@ export class OrganizationDetailComponent implements OnInit {
           this.workLocationList.push(item);
           this.filteredWorkLocationList.push(item);
         }
-
+        
         if (item.masterType == 'BusinessAreaMaster') {
 
           this.businessAreaList.push(item);

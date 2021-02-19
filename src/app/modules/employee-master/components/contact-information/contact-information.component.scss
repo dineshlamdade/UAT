@@ -52,3 +52,9 @@ select option[disabled]:first-child {
 .form-control.is-invalid {
   background-image: none!important;
 }
+
+.mobile-number-error{
+  font-size: 9px;
+  margin-left: 12px;
+  margin-top: 3px;
+}
