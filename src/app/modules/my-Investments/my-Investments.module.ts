@@ -20,6 +20,9 @@ import { EightyCComponent } from './eighty-c/eighty-c.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
 import { PrimeNGModule } from '../../app.primeNG.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {InputNumberModule} from 'primeng/inputnumber';
 // import { PrimeNGModule } from 'src/app/app.primeNG.module';
 
 @NgModule({
@@ -51,6 +54,11 @@ import { PrimeNGModule } from '../../app.primeNG.module';
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
     PrimeNGModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    InputNumberModule,
+    FormsModule
+
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

@@ -56,13 +56,6 @@
             {{mediclaim.name}} : {{mediclaim.relationship}}
           </label>
         </div>
-
-        <!-- <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1 pl-10">Benefeciary Detail List :</label>
-        </div>
-        <div *ngFor="let mediclaim of item.mediclaimBenefeciaryDetailList; let i = index">
-          {{mediclaim.name}} : {{mediclaim.relationship}}
-        </div> -->
       </div>
 
       <div class="row mt-15">
@@ -96,79 +89,32 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="
-                    let summary of item.mediclaimTransactionList;
-                    let i = index;
-                    count as c
-                  ">
-
+                <tr *ngFor="let summary of item.mediclaimTransactionList;
+                    let i = index; count as c">
                   <td scope="row">
-                    <label
-                      class="custom-control custom-checkbox checkbox-center"
-                      *ngIf="isDisabled"
-                      tooltip="Select institution for proof submission"
-                    >
-                      <input
-                        type="checkbox"
-                        [ngModel]="enableSelectAll"
-                        [disabled]="isDisabled || summary.proofSubmissionId"
-                        (change)="
-                          onSelectCheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        "
-                        class="custom-control-input"
-                        value="option{{ summary.mediclaimTransactionId }}"
-                      />
-                      <span class="custom-control-label"></span>
-                    </label>
-                    <!-- [disabled]="isDisabled || summary.proofSubmissionId" -->
-                    <label
-                      *ngIf="!isDisabled"
-                      class="custom-control custom-checkbox checkbox-center"
-                    >
-                      <input
-                        type="checkbox"
-                        [ngModel]="enableSelectAll"
-
-                        (change)="
-                          onSelectCheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        "
-                        class="custom-control-input"
-                        value="option{{ summary.mediclaimTransactionId }}"
-                      />
-                      <span class="custom-control-label"></span>
-                    </label>
-                  </td>
-                  <!-- <td scope="row">
-                    <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                      tooltip="Select institution for proof submission">
+                    <label  class="custom-control custom-checkbox checkbox-center"
+                      *ngIf="isDisabled" tooltip="Select institution for proof submission">
                       <input type="checkbox" [ngModel]="enableSelectAll"
-                        [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                          onSelectCheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        " class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
+                        [disabled]="isDisabled || summary.proofSubmissionId"
+                        (change)="onSelectCheckBox(summary, $event, i, j);enableCheckboxFlag = j"
+                        class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}"/>
                       <span class="custom-control-label"></span>
                     </label>
                     <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
-                      <input type="checkbox" [ngModel]="enableSelectAll"
-                        [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                          onSelectCheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        " class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
+                      <input  type="checkbox" [ngModel]="enableSelectAll"
+                      [disabled]="summary.transactionStatus === 'Submitted'"
+                      (change)="onSelectCheckBox(summary, $event, i, j);enableCheckboxFlag = j"
+                        class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}"/>
                       <span class="custom-control-label"></span>
                     </label>
-                  </td> -->
+                  </td>
                   <td *ngIf="previousEmployeeList?.length">
                     <select name="Previous Employer Name" class="form-control custom-select"
                       (change)="updatePreviousEmpId($event, i, j)" [disabled]="
-                        isDisabled || summary.transactionStatus === 'Submitted'
-                      ">
+                        isDisabled || summary.transactionStatus === 'Submitted'">
                       <option [ngValue]="0">Select Previous Emp.</option>
                       <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
-                        [selected]="
-                          previousEmployee.value == summary.previousEmployerId
-                        ">
+                        [selected]="previousEmployee.value == summary.previousEmployerId">
                         {{ previousEmployee.label }}
                       </option>
                     </select>
@@ -364,20 +310,20 @@
               <tbody>
                 <tr
                   *ngFor="let summary of preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList; let i = index; count as c ">
-                  <td scope="row">
+                   <td scope="row">
                     <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
                       tooltip="Select institution for proof submission">
                       <input type="checkbox" [ngModel]="enableSelectAll"
-                        [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                        onSelectPre_CheckBox(summary, $event, i);
-                        " class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
+                        [disabled]="isDisabled || summary.proofSubmissionId"
+                        (change)="onSelectPre_CheckBox(summary, $event, i);"
+                        class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
                       <span class="custom-control-label"></span>
                     </label>
                     <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
                       <input type="checkbox" [ngModel]="enableSelectAll"
-                        [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                        onSelectPre_CheckBox(summary, $event, i);
-                        " class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
+                        [disabled]="summary.transactionStatus === 'Submitted'"
+                        (change)="onSelectPre_CheckBox(summary, $event, i);"
+                        class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
                       <span class="custom-control-label"></span>
                     </label>
                   </td>
@@ -617,10 +563,10 @@
                     </label>
                     <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
                       <input type="checkbox" [ngModel]="enableSelectAll"
-                        [disabled]="isDisabled || summary.proofSubmissionId" (change)="
-                        onSelectExpense_CheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        " class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
+                        [disabled]="summary.transactionStatus === 'Submitted'"
+                        (change)=" onSelectExpense_CheckBox(summary, $event, i, j);
+                          enableCheckboxFlag = j"
+                          class="custom-control-input" value="option{{ summary.mediclaimTransactionId }}" />
                       <span class="custom-control-label"></span>
                     </label>
                   </td>

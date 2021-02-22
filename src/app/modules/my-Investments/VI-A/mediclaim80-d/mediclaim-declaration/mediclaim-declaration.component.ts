@@ -293,34 +293,22 @@ export class MediclaimDeclarationComponent implements OnInit {
   // Update Previous Employee in Main Page
   updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.mediclaimPremiumTransactionDetail[j].mediclaimTransactionList[i].previousEmployerId =
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].previousEmployerId =
       event.target.value;
-    console.log(
-      'previous emp id::',
-      this.mediclaimPremiumTransactionDetail[j].mediclaimTransactionList[i].previousEmployerId,
-    );
   }
 
    // Update Previous Employee in Main Page
    updatePreventive_PreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.preventiveHealthCheckupTransactionDetail[j].preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].previousEmployerId =
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].previousEmployerId =
       event.target.value;
-    console.log(
-      'previous emp id::',
-      this.preventiveHealthCheckupTransactionDetail[j].preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].previousEmployerId,
-    );
   }
 
    // Update Previous Employee in Main Page
    updateExpense_PreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.medicalExpenseTransactionDetail[j].medicalExpenseTransactionDetail.medicalExpenseTransactionDetailList[i].previousEmployerId =
+    this.medicalExpenseTransactionDetail.medicalExpenseTransactionDetailList[i].previousEmployerId =
       event.target.value;
-    console.log(
-      'previous emp id::',
-      this.medicalExpenseTransactionDetail[j].medicalExpenseTransactionDetail.medicalExpenseTransactionDetailList[i].previousEmployerId,
-    );
   }
 
   // Update Previous Employee in Edit Modal
@@ -920,19 +908,19 @@ selectedTransactionInstName(institution: any) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail[i].declaredAmount = this.declarationService.declaredAmount;
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[i].declaredAmount,
+      this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].declaredAmount,
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[i].forEach((element) => {
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].forEach((element) => {
       console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', ''),
@@ -941,7 +929,7 @@ selectedTransactionInstName(institution: any) {
       this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.mediclaimTransactionDetail[j].declarationTotal = this.declarationTotal;
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.mediclaimTransactionDetail[j].declarationTotal);
   }
 
@@ -960,21 +948,21 @@ selectedTransactionInstName(institution: any) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].declaredAmount,
+      this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].declaredAmount,
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((element) => {
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', ''),
@@ -983,7 +971,7 @@ selectedTransactionInstName(institution: any) {
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.mediclaimTransactionDetail[j].declarationTotal = this.declarationTotal;
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[j] = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.mediclaimTransactionDetail[j].declarationTotal);
   }
 
@@ -1002,21 +990,21 @@ selectedTransactionInstName(institution: any) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.mediclaimTransactionDetail[j].medicalExpenseTransactionDetail.medicalExpenseTransactionList[
+    this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.mediclaimTransactionDetail[j].medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].declaredAmount,
+      this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].declaredAmount,
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.mediclaimTransactionDetail[j].medicalExpenseTransactionDetail.medicalExpenseTransactionList[
+    this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.mediclaimTransactionDetail[j].medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((element) => {
+    this.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', ''),
@@ -1025,7 +1013,7 @@ selectedTransactionInstName(institution: any) {
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.mediclaimTransactionDetail[j].declarationTotal = this.declarationTotal;
+    this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.mediclaimTransactionDetail[j].declarationTotal);
   }
 
@@ -1128,13 +1116,9 @@ selectedTransactionInstName(institution: any) {
     j: number,
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Actual Amount change::" , summary);
     this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail[i].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform
     this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[i].actualAmount,
-
-    // console.log(`formatedActualAmount::`,formatedActualAmount);
     this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[
       i
     ].actualAmount = formatedActualAmount;
@@ -1144,28 +1128,19 @@ selectedTransactionInstName(institution: any) {
         Number(0) ||
       this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].actualAmount !== null
     ) {
-      // console.log(`in if::`,this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].actualAmount);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].actualAmount);
       this.isDisabled = true;
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[i].forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', ''),
       );
-      // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
-
     this.mediclaimTransactionDetail[j].actualTotal = this.actualTotal;
-    // this.mediclaimTransactionDetail[j].actualAmount = this.actualAmount;
-    // console.log(this.mediclaimTransactionDetail[j]);
-    // console.log(this.actualTotal);
   }
 
   // ------------Actual Amount change Edit Modal-----------
@@ -1235,8 +1210,6 @@ selectedTransactionInstName(institution: any) {
   }
 
   // --------Add New ROw Function---------
-  // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
-  //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   addRowInList(
     summarynew: {
       mediclaimTransactionId: number;

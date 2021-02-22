@@ -75,13 +75,17 @@
                       (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
                       class="form-control width120 inline_center align-right">
                    </td> -->
-                   <td>
+                   <!-- <td>
                     <input type="text" class="form-control" [(ngModel)]="futureNewPolicyDeclaredAmount"
                     (change)='onChangeFutureNewPolicyDeclaredAmount()' minlength="1"
-                      maxlength="15" autocomplete="off"
+                      maxlength="15" autocomplete="off" (keypress)="keyPress($event)" preventCutCopyPaste
 
                     >
-                   </td>
+                   </td> -->
+                    <td>
+                      <p-inputNumber [(ngModel)]="value8" inputId="locale-indian" mode="decimal" locale="en-IN" [minFractionDigits]="2">
+                      </p-inputNumber>
+                    </td>
                     <td></td>
                     <td></td>
                  </tr>
