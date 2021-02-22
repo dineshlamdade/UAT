@@ -60,7 +60,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   setCancelPayrollEditPopupSubscription: Subscription;
   NewPayrollPopupFormSaveSubscription: Subscription;
   // additionPayrollFlag: boolean = false;
-  additionalPayrollButton: boolean = true;
+  additionalPayrollButton: boolean = false;
   TotalPercentLimit: any = 100;
   payrollAreaArray: Array<any> = [];
   multipleBankBoolean: boolean = true;
@@ -100,10 +100,10 @@ export class PayrollAreaInformationComponent implements OnInit {
       fromDate: [this.date.fromDate, Validators.required],
       toDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
       paymentMode: [this.PayrollAreaRequestModel.paymentMode, Validators.required],
-      bankName: [''],
+      bankName:  ['', Validators.required],
       bankAccount: [''],
-      typeOfPayment: [''],
-      percent: [''],
+      typeOfPayment: ['', Validators.required],
+      percent: ['', Validators.required],
       amount: [''],
       toggle: [''],
       priority: [{ value: this.date.toDate, disabled: true }],
@@ -242,7 +242,7 @@ export class PayrollAreaInformationComponent implements OnInit {
 
       this.getPayrollAreaInformation();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-      this.payrollAreaDisable();
+      // this.payrollAreaDisable();
 
       this.PayrollAreaRequestModel.bankName = '';
       this.PayrollAreaRequestModel.bankAccountNumber = '';

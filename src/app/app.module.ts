@@ -76,22 +76,22 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     ProfileComponent,
     SettingsComponent,
     //////////////////////////
-   // payrollComponent,
+    // payrollComponent,
     // HeadcreationComponent,
     // AttributecreationComponent,
     // AttributeselectionComponent,
     // PayrollheadgroupcreationComponent,
-///////////////////////////////////////
+    ///////////////////////////////////////
   ],
   imports: [
     BrowserModule,
     AuthModule,
     DashboardModule,
     PayrollModule,
-/////////////////
-  //  payrollModule,
+    /////////////////
+    //  payrollModule,
     CompanySettingModule,
-////////////////////////////////
+    ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
     EightyCModule,
@@ -124,7 +124,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	 AdminApprovalModule,
+    AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
@@ -136,7 +136,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
-        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
         listenToLangChange: true,
         reRenderOnLangChange: true,
         defaultLang: 'en',

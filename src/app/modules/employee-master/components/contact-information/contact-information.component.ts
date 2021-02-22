@@ -15,6 +15,7 @@ import { ConfirmationModalComponent } from './../../shared modals/confirmation-m
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { ContactInfoLabels } from '../../dto-models/language-info-labels/contact-info-labels.model';
 
 
 
@@ -31,6 +32,8 @@ export class ContactInformationComponent implements OnInit {
   contactInformation = new ContactInformation();
   localAddressInformation = new LocalAddressInformation('', '', '', '', '', '', '', '', '', '', '', '', '');
   permanentAddressInformation = new PermanentAddressInformation('', '', '', '', '', '', '', '', '', '', '', '', '');
+  ContactInfoLabels = new ContactInfoLabels('', '', '', '', '', '', '', '', '', '', '', '', '', ' ', '', '')
+
   employeeCode: any;
   handicap: any;
   @Input() item: any
@@ -54,6 +57,12 @@ export class ContactInformationComponent implements OnInit {
   autoCompleteControl: any;
   newData: Array<any> = [];
   saveNextBoolean: boolean = false;
+  changesLabelArray: Array<any> = [];
+  selectedLanguage: any;
+
+
+
+
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
@@ -83,7 +92,7 @@ export class ContactInformationComponent implements OnInit {
       localAddress2: [''],
       localAddress3: [''],
       localCountry: [''],
-      localPin: [''],
+      localPin: [{ value: '', disabled: true }],
       localState: [{ value: null, disabled: true }],
       localDistrict: [{ value: null, disabled: true }],
       localCity: [{ value: null, disabled: true }],
@@ -92,7 +101,7 @@ export class ContactInformationComponent implements OnInit {
       permanentAddress2: [''],
       permanentAddress3: [''],
       permanentCountry: [''],
-      permanentPin: [''],
+      permanentPin: [{ value: '', disabled: true }],
       permanentState: [{ value: null, disabled: true }],
       permanentDistrict: [{ value: null, disabled: true }],
       permanentCity: [{ value: null, disabled: true }],
@@ -101,6 +110,7 @@ export class ContactInformationComponent implements OnInit {
     });
     this.getCountryInfo();
     this.getContactInfoData();
+    this.selectedLanguage = localStorage.getItem('selectedLanguage');
 
     // Response from address copy confirmation dialog
     this.EventEmitterService.getCopyFromConfirmation().subscribe(res => {
@@ -126,6 +136,252 @@ export class ContactInformationComponent implements OnInit {
       const communicationAddress = this.ContactInfoForm.get('communicationAddress');
       communicationAddress.enable();
     }
+
+    this.SharedInformationService.getGlobalLabels(this.selectedLanguage).subscribe(res => {
+
+      this.changesLabelArray = res.data.results.filter(item => {
+        // Change English Label's name as per Company setting
+        if (item.language == 'en') {
+          if (item.isDisplay == true && item.defaultLabelName == 'Mobile Number') {
+            this.ContactInfoLabels.officialMobileNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Email Address') {
+            this.ContactInfoLabels.officialEmailId = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Mobile Number') {
+            this.ContactInfoLabels.personalMobileNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Email Address') {
+            this.ContactInfoLabels.personalEmailID = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Name') {
+            this.ContactInfoLabels.emergencyContactName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Mobile Number') {
+            this.ContactInfoLabels.emergencyContactNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Address 1') {
+            this.ContactInfoLabels.address1 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Address 2') {
+            this.ContactInfoLabels.address2 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Address 3') {
+            this.ContactInfoLabels.address3 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'PIN') {
+            this.ContactInfoLabels.PIN = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Country') {
+            this.ContactInfoLabels.country = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Communication Address') {
+            this.ContactInfoLabels.CommunicationAddress = item.customLabelName;
+          }
+
+
+
+          // Hide English Labels As per Company setting
+          if (item.isDisplay == false && item.defaultLabelName == 'Mobile Number') {
+            this.ContactInfoLabels.officialMobileNumber = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Email Address') {
+            this.ContactInfoLabels.officialEmailId = false;
+          }
+          // if (item.isDisplay == false && item.defaultLabelName == 'Mobile Number') {
+          //   this.ContactInfoLabels.personalMobileNumber = false;
+          // }
+          if (item.isDisplay == false && item.defaultLabelName == 'Email Address') {
+            this.ContactInfoLabels.personalEmailID = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Name') {
+            this.ContactInfoLabels.emergencyContactName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Mobile Number') {
+            this.ContactInfoLabels.emergencyContactNumber = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Address 1') {
+            this.ContactInfoLabels.address1 = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Address 2') {
+            this.ContactInfoLabels.address2 = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Address 3') {
+            this.ContactInfoLabels.address3 = false;
+          }
+          // if (item.isDisplay == false && item.defaultLabelName == 'PIN') {
+          //   this.ContactInfoLabels.PIN = false;
+          // }
+          // if (item.isDisplay == false && item.defaultLabelName == 'Country') {
+          //   this.ContactInfoLabels.country = false;
+          // }
+          if (item.isDisplay == false && item.defaultLabelName == 'Communication Address') {
+            this.ContactInfoLabels.CommunicationAddress = false;
+          }
+        }
+
+        // Change French Label's name as per Company setting
+        if (item.language == 'fr') {
+          if (item.isDisplay == true && item.defaultLabelName == 'Numéro de portable') {
+            this.ContactInfoLabels.officialMobileNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Adresse e-mail') {
+            this.ContactInfoLabels.officialEmailId = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Numéro de portable') {
+            this.ContactInfoLabels.personalMobileNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Adresse e-mail') {
+            this.ContactInfoLabels.personalEmailID = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Nom') {
+            this.ContactInfoLabels.emergencyContactName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Numéro de portable') {
+            this.ContactInfoLabels.emergencyContactNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Adresse 1') {
+            this.ContactInfoLabels.address1 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Adresse 2') {
+            this.ContactInfoLabels.address2 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Adresse 3') {
+            this.ContactInfoLabels.address3 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'PIN') {
+            this.ContactInfoLabels.PIN = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'de campagne') {
+            this.ContactInfoLabels.country = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Adresse de communication') {
+            this.ContactInfoLabels.CommunicationAddress = item.customLabelName;
+          }
+
+
+
+          // Hide French Labels As per Company setting
+          if (item.isDisplay == false && item.defaultLabelName == 'Numéro de portable') {
+            this.ContactInfoLabels.officialMobileNumber = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Adresse e-mail') {
+            this.ContactInfoLabels.officialEmailId = false;
+          }
+          // if (item.isDisplay == false && item.defaultLabelName == 'Numéro de portable') {
+          //   this.ContactInfoLabels.personalMobileNumber = false;
+          // }
+          if (item.isDisplay == false && item.defaultLabelName == 'Adresse e-mail') {
+            this.ContactInfoLabels.personalEmailID = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Nom') {
+            this.ContactInfoLabels.emergencyContactName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Numéro de portable') {
+            this.ContactInfoLabels.emergencyContactNumber = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Adresse 1') {
+            this.ContactInfoLabels.address1 = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Adresse 2') {
+            this.ContactInfoLabels.address2 = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Adresse 3') {
+            this.ContactInfoLabels.address3 = false;
+          }
+          // if (item.isDisplay == false && item.defaultLabelName == 'PIN') {
+          //   this.ContactInfoLabels.PIN = false;
+          // }
+          // if (item.isDisplay == false && item.defaultLabelName == 'de campagne') {
+          //   this.ContactInfoLabels.country = false;
+          // }
+          if (item.isDisplay == false && item.defaultLabelName == 'Adresse de communication') {
+            this.ContactInfoLabels.CommunicationAddress = false;
+          }
+        }
+
+        // Change Hindi Label's name as per Company setting
+        if (item.language == 'hi') {
+          if (item.isDisplay == true && item.defaultLabelName == 'मोबाइल नंबर') {
+            this.ContactInfoLabels.officialMobileNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'ईमेल पता') {
+            this.ContactInfoLabels.officialEmailId = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'मोबाइल नंबर') {
+            this.ContactInfoLabels.personalMobileNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'ईमेल पता') {
+            this.ContactInfoLabels.personalEmailID = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'नाम') {
+            this.ContactInfoLabels.emergencyContactName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'मोबाइल नंबर') {
+            this.ContactInfoLabels.emergencyContactNumber = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'पता 1') {
+            this.ContactInfoLabels.address1 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'पता 2') {
+            this.ContactInfoLabels.address2 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'पता 3') {
+            this.ContactInfoLabels.address3 = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'पिन') {
+            this.ContactInfoLabels.PIN = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'देश') {
+            this.ContactInfoLabels.country = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'संचार पता') {
+            this.ContactInfoLabels.CommunicationAddress = item.customLabelName;
+          } 
+
+
+
+          // Hide Labels As per Company setting
+          if (item.isDisplay == false && item.defaultLabelName == 'मोबाइल नंबर') {
+            this.ContactInfoLabels.officialMobileNumber = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'ईमेल पता') {
+            this.ContactInfoLabels.officialEmailId = false;
+          }
+          // if (item.isDisplay == false && item.defaultLabelName == 'मोबाइल नंबर') {
+          //   this.ContactInfoLabels.personalMobileNumber = false;
+          // }
+          if (item.isDisplay == false && item.defaultLabelName == 'ईमेल पता') {
+            this.ContactInfoLabels.personalEmailID = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'नाम') {
+            this.ContactInfoLabels.emergencyContactName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'मोबाइल नंबर') {
+            this.ContactInfoLabels.emergencyContactNumber = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'पता 1') {
+            this.ContactInfoLabels.address1 = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'पता 2') {
+            this.ContactInfoLabels.address2 = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'पता 3') {
+            this.ContactInfoLabels.address3 = false;
+          }
+          // if (item.isDisplay == false && item.defaultLabelName == 'पिन') {
+          //   this.ContactInfoLabels.PIN = false;
+          // }
+          // if (item.isDisplay == false && item.defaultLabelName == 'देश') {
+          //   this.ContactInfoLabels.country = false;
+          // }
+          if (item.isDisplay == false && item.defaultLabelName == 'संचार पता') {
+            this.ContactInfoLabels.CommunicationAddress = false;
+          }
+        }
+      })
+    })
+
   }
   getCountryInfo() {
     this.SharedInformationService.getLocationInformation().subscribe(res => {
@@ -228,7 +484,7 @@ export class ContactInformationComponent implements OnInit {
 
     // post call for ContactInformation
     return this.ContactInformationService.postContactInfoForm(contactInformation).subscribe((res) => {
-      this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.SharedInformationService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.dataBinding(res);
 
       this.ContactInfoForm.markAsUntouched();
@@ -237,7 +493,7 @@ export class ContactInformationComponent implements OnInit {
         this.router.navigate(['/employee-master/bank-information']);
       }
     }, (error: any) => {
-      debugger
+      
       // Personal mobile number countryCode extraction
       if (this.ContactInfoForm.value.personalmobileNumber) {
         this.contactInformation.employeeMasterRequestDTO.personalMobileNumber = this.ContactInfoForm.value.personalmobileNumber.slice(this.ContactInfoForm.value.personalmobileNumber.length - 10)
@@ -259,11 +515,11 @@ export class ContactInformationComponent implements OnInit {
       } else {
         this.ngEmergencyCountryCode = '';
       }
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.SharedInformationService.sweetalertError(error["error"]["status"]["messsage"]);
     })
   }
 
-  // get API for contact information
+  // get API for Mobile Number
   getContactInfoData() {
 
     this.ContactInformationService.getContactInfoData().subscribe((res: any) => {
@@ -362,7 +618,7 @@ export class ContactInformationComponent implements OnInit {
         this.localAddressInformation.district = res.data.results[0].district;
         this.localAddressInformation.city = res.data.results[0].city;
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.SharedInformationService.sweetalertError(error["error"]["status"]["messsage"]);
         this.localAddressInformation.postalCode = '';
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
@@ -381,7 +637,7 @@ export class ContactInformationComponent implements OnInit {
         this.permanentAddressInformation.district = res.data.results[0].district;
         this.permanentAddressInformation.city = res.data.results[0].city;
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.SharedInformationService.sweetalertError(error["error"]["status"]["messsage"]);
         this.permanentAddressInformation.postalCode = '';
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
@@ -545,7 +801,7 @@ export class ContactInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, res.status.result)
         // this.sweetalertMasterSuccess(res.status.messsag, res.status.messsage);
       }, (error: any) => {
-        this.sweetalertError(error.error.status.messsage);
+        this.SharedInformationService.sweetalertError(error.error.status.messsage);
         // this.notifyService.showError(error.error.status.messsage, "Error..!!")
       });
     }
@@ -561,7 +817,7 @@ export class ContactInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, res.status.result)
         // this.sweetalertMasterSuccess(res.status.messsag, res.status.messsage);
       }, (error: any) => {
-        this.sweetalertError(error.error.status.messsage);
+        this.SharedInformationService.sweetalertError(error.error.status.messsage);
         // this.notifyService.showError(error.error.status.messsage, "Error..!!")
       });
     }
@@ -576,7 +832,7 @@ export class ContactInformationComponent implements OnInit {
         // this.notifyService.showSuccess(res.status.messsage, res.status.result)
         // this.sweetalertMasterSuccess(res.status.messsag, res.status.messsage);
       }, (error: any) => {
-        this.sweetalertError(error.error.status.messsage);
+        this.SharedInformationService.sweetalertError(error.error.status.messsage);
         // this.notifyService.showError(error.error.status.messsage, "Error..!!")
       });
     }
@@ -591,6 +847,18 @@ export class ContactInformationComponent implements OnInit {
       this.localAddressInformation.district = '';
       this.localAddressInformation.city = '';
     }
+
+    if (this.localAddressInformation.country) {
+      const localPin = this.ContactInfoForm.get('localPin');
+      localPin.enable();
+      this.ContactInfoForm.get('localPin').setValidators(Validators.compose([Validators.required, Validators.pattern("[0-9]{6}")]));
+      this.ContactInfoForm.get('localPin').updateValueAndValidity();
+    } else {
+      const localPin = this.ContactInfoForm.get('localPin');
+      localPin.disable();
+      this.ContactInfoForm.get('localPin').clearValidators();
+      this.ContactInfoForm.get('localPin').updateValueAndValidity();
+    }
   }
   clearPermanentAddressFields() {
     if (this.permanentAddressInformation.country != 'India') {
@@ -599,36 +867,48 @@ export class ContactInformationComponent implements OnInit {
       this.permanentAddressInformation.district = '';
       this.permanentAddressInformation.city = '';
     }
+
+    if (this.permanentAddressInformation.country) {
+      const permanentPin = this.ContactInfoForm.get('permanentPin');
+      permanentPin.enable();
+      this.ContactInfoForm.get('permanentPin').setValidators(Validators.compose([Validators.required, Validators.pattern("[0-9]{6}")]));
+      this.ContactInfoForm.get('permanentPin').updateValueAndValidity();
+    } else {
+      const permanentPin = this.ContactInfoForm.get('permanentPin');
+      permanentPin.disable();
+      this.ContactInfoForm.get('permanentPin').clearValidators();
+      this.ContactInfoForm.get('permanentPin').updateValueAndValidity();
+    }
   }
 
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 3000,
-      timerProgressBar: true,
-    })
-  }
+  // sweetalertMasterSuccess(message: any, text: any) {
+  //   Swal.fire({
+  //     Mobile Number: message,
+  //     text: text,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'success',
+  //     timer: 3000,
+  //     timerProgressBar: true,
+  //   })
+  // }
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 3000,
-      timerProgressBar: true,
-    })
-  }
+  // sweetalertError(message: any) {
+  //   Swal.fire({
+  //     Mobile Number: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'error',
+  //     timer: 3000,
+  //     timerProgressBar: true,
+  //   })
+  // }
   keyPress(event: any) {
 
     const pattern = /[0-9]/;

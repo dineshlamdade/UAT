@@ -21,8 +21,13 @@
                                             <!-- <div class="col-12"> -->
                                             <div class="col-6">
                                                 <div class="row">
-                                                    <div class="col-sm-3 col-md-6">
-                                                        <label class="form-label">{{
+                                                    <div class="col-sm-3 col-md-6"
+                                                        [hidden]="ContactInfoLabels.officialMobileNumber === false">
+                                                        <label class="form-label"
+                                                            *ngIf="ContactInfoLabels.officialMobileNumber">{{
+                                                            ContactInfoLabels.officialMobileNumber }}</label>
+                                                        <label class="form-label"
+                                                            [hidden]="ContactInfoLabels.officialMobileNumber">{{
                                                             'ContactInformationForm.officialMobileNumber' | transloco
                                                             }}</label>
                                                         <div class="row">
@@ -58,8 +63,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4 col-md-4">
-                                                        <label class="form-label">{{
+                                                    <div class="col-sm-4 col-md-4"
+                                                        [hidden]="ContactInfoLabels.officialEmailId === false">
+                                                        <label class="form-label"
+                                                            *ngIf="ContactInfoLabels.officialEmailId">{{
+                                                            ContactInfoLabels.officialEmailId }}</label>
+                                                        <label class="form-label"
+                                                            [hidden]="ContactInfoLabels.officialEmailId">{{
                                                             'ContactInformationForm.officialemail' | transloco
                                                             }}</label>
                                                         <input type="text" class="form-control"
@@ -79,7 +89,11 @@
                                                 <legend>{{ 'ContactInformationForm.personal' | transloco }}</legend>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-6">
-                                                        <label class="form-label">{{
+                                                        <label class="form-label"
+                                                            *ngIf="ContactInfoLabels.personalMobileNumber">{{
+                                                            ContactInfoLabels.personalMobileNumber }}</label>
+                                                        <label class="form-label"
+                                                            [hidden]="ContactInfoLabels.personalMobileNumber">{{
                                                             'ContactInformationForm.officialMobileNumber' | transloco
                                                             }}</label>
                                                         <div class="row">
@@ -115,8 +129,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4 col-md-4">
-                                                        <label class="form-label">{{
+                                                    <div class="col-sm-4 col-md-4"
+                                                        [hidden]="ContactInfoLabels.personalEmailID === false">
+                                                        <label class="form-label"
+                                                            *ngIf="ContactInfoLabels.personalEmailID">{{
+                                                            ContactInfoLabels.personalEmailID }}</label>
+                                                        <label class="form-label"
+                                                            [hidden]="ContactInfoLabels.personalEmailID">{{
                                                             'ContactInformationForm.officialemail' | transloco
                                                             }}</label>
                                                         <input type="text" class="form-control"
@@ -139,8 +158,13 @@
                                     <legend>{{ 'ContactInformationForm.EmergencyContactDetails' | transloco }}</legend>
                                     <div class="col-6">
                                         <div class="row">
-                                            <div class="col-sm-4 col-md-4">
-                                                <label class="form-label">{{
+                                            <div class="col-sm-4 col-md-4"
+                                                [hidden]="ContactInfoLabels.emergencyContactName === false">
+                                                <label class="form-label"
+                                                    *ngIf="ContactInfoLabels.emergencyContactName">{{
+                                                    ContactInfoLabels.emergencyContactName }}</label>
+                                                <label class="form-label"
+                                                    [hidden]="ContactInfoLabels.emergencyContactName">{{
                                                     'ContactInformationForm.emergencyContactName' | transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Name"
                                                     formControlName="emergencyContactName" (keyup)="formTouch()"
@@ -148,8 +172,13 @@
                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactName').status == 'INVALID'}">
                                             </div>
 
-                                            <div class="col-sm-3 col-md-6 ">
-                                                <label class="form-label">{{
+                                            <div class="col-sm-3 col-md-6"
+                                                [hidden]="ContactInfoLabels.emergencyContactNumber === false">
+                                                <label class="form-label"
+                                                    *ngIf="ContactInfoLabels.emergencyContactNumber">{{
+                                                    ContactInfoLabels.emergencyContactNumber }}</label>
+                                                <label class="form-label"
+                                                    [hidden]="ContactInfoLabels.emergencyContactNumber">{{
                                                     'ContactInformationForm.officialMobileNumber' | transloco }}</label>
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-5 country-code ">
@@ -197,8 +226,13 @@
                                                     <legend>{{ 'ContactInformationForm.localAddressTitle' | transloco }}
                                                     </legend>
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-12">
-                                                            <label class="form-label">{{
+                                                        <div class="col-sm-6 col-md-12"
+                                                            [hidden]="ContactInfoLabels.address1 === false">
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.address1">{{
+                                                                ContactInfoLabels.address1 }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.address1">{{
                                                                 'ContactInformationForm.Address1' | transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Address 1"
@@ -208,8 +242,13 @@
                                                                 tooltip="{{localAddressInformation.address1}}"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
                                                         </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{
+                                                        <div class="col-sm-6 col-md-6 mt-10"
+                                                            [hidden]="ContactInfoLabels.address2 === false">
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.address2">{{
+                                                                ContactInfoLabels.address2 }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.address2">{{
                                                                 'ContactInformationForm.Address2' | transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Address 2"
@@ -218,8 +257,13 @@
                                                                 (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{localAddressInformation.address2}}">
                                                         </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{
+                                                        <div class="col-sm-6 col-md-6 mt-10"
+                                                            [hidden]="ContactInfoLabels.address3 === false">
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.address3">{{
+                                                                ContactInfoLabels.address3 }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.address3">{{
                                                                 'ContactInformationForm.Address3' | transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Address 3"
@@ -230,13 +274,17 @@
                                                         </div>
 
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.country">{{
+                                                                ContactInfoLabels.country }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.country">{{
                                                                 'ContactInformationForm.Country' | transloco }}</label>
                                                             <select class="form-control" placeholder="Select"
                                                                 formControlName="localCountry"
                                                                 [(ngModel)]="localAddressInformation.country"
-                                                                (change)="checkLocalAddress(); clearLocalAddressFields();formTouch()">
-                                                                <option value="" selected disabled>Select</option>
+                                                                (change)="checkLocalAddress(); clearLocalAddressFields();formTouch(); getLocalAddressFromPIN()">
+                                                                <option value="" selected>Select</option>
                                                                 <option *ngFor="let country of countries"
                                                                     [value]="country">
                                                                     {{country}}
@@ -244,7 +292,11 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-6 col-md- mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Pin' |
+                                                            <label class="form-label" *ngIf="ContactInfoLabels.PIN">{{
+                                                                ContactInfoLabels.PIN }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.PIN">{{
+                                                                'ContactInformationForm.Pin' |
                                                                 transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter PIN" minlength="1" maxlength="6"
@@ -316,7 +368,11 @@
 
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-12">
-                                                            <label class="form-label">{{
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.address1">{{
+                                                                ContactInfoLabels.address1 }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.address1">{{
                                                                 'ContactInformationForm.Address1' | transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Address 1"
@@ -326,8 +382,13 @@
                                                                 tooltip="{{permanentAddressInformation.address1}}"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
                                                         </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{
+                                                        <div class="col-sm-6 col-md-6 mt-10"
+                                                            [hidden]="ContactInfoLabels.address2 === false">
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.address2">{{
+                                                                ContactInfoLabels.address2 }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.address2">{{
                                                                 'ContactInformationForm.Address2' | transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Address 2"
@@ -336,8 +397,13 @@
                                                                 (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{permanentAddressInformation.address2}}">
                                                         </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{
+                                                        <div class="col-sm-6 col-md-6 mt-10"
+                                                            [hidden]="ContactInfoLabels.address3 === false">
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.address3">{{
+                                                                ContactInfoLabels.address3 }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.address3">{{
                                                                 'ContactInformationForm.Address3' | transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter Address 3"
@@ -348,13 +414,17 @@
                                                         </div>
 
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">{{
+                                                            <label class="form-label"
+                                                                *ngIf="ContactInfoLabels.country">{{
+                                                                ContactInfoLabels.country }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.country">{{
                                                                 'ContactInformationForm.Country' | transloco }}</label>
                                                             <select class="form-control" placeholder="Select"
                                                                 formControlName="permanentCountry"
                                                                 [(ngModel)]="permanentAddressInformation.country"
-                                                                (change)="checkLocalAddress(); clearPermanentAddressFields();formTouch()">
-                                                                <option value="" selected disabled>Select
+                                                                (change)="checkLocalAddress(); clearPermanentAddressFields();formTouch(); getPermanentAddressFromPIN()">
+                                                                <option value="" selected>Select
                                                                 </option>
                                                                 <option *ngFor="let country of countries"
                                                                     [value]="country">
@@ -363,7 +433,11 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-6 col-md- mt-10">
-                                                            <label class="form-label">{{ 'ContactInformationForm.Pin' |
+                                                            <label class="form-label" *ngIf="ContactInfoLabels.PIN">{{
+                                                                ContactInfoLabels.PIN }}</label>
+                                                            <label class="form-label"
+                                                                [hidden]="ContactInfoLabels.PIN">{{
+                                                                'ContactInformationForm.Pin' |
                                                                 transloco }}</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter PIN" minlength="1" maxlength="6"
@@ -417,7 +491,10 @@
 
                                     <br>
                                     <div class="form-group">
-                                        <legend
+                                        <legend *ngIf="ContactInfoLabels.CommunicationAddress"
+                                            [ngClass]="{'invalid-feedback' : ContactInfoForm.get('communicationAddress').status == 'INVALID'}">
+                                            {{ContactInfoLabels.CommunicationAddress}}</legend>
+                                        <legend [hidden]="ContactInfoLabels.CommunicationAddress"
                                             [ngClass]="{'invalid-feedback' : ContactInfoForm.get('communicationAddress').status == 'INVALID'}">
                                             {{ 'ContactInformationForm.communicationAddress' | transloco }}</legend>
                                         <div class="custom-controls-stacked">
@@ -466,14 +543,14 @@
                                             <button type="button" tooltip="Previous"
                                                 [routerLink]="['/employee-master/employment-information/joining-information']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
-                                                        class="fa fa-angle-double-left"
-                                                        aria-hidden="true"></i></b>Previous</button>
+                                                        class="fa fa-angle-double-left" aria-hidden="true"></i></b> {{
+                                                'ContactInformationForm.previous' | transloco }}</button>
 
                                             <button type="button" tooltip="Next"
                                                 [routerLink]="['/employee-master/bank-information']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
-                                                        class="fa fa-angle-double-right"
-                                                        aria-hidden="true"></i></b>Next</button>
+                                                        class="fa fa-angle-double-right" aria-hidden="true"></i></b> {{
+                                                'ContactInformationForm.next' | transloco }}</button>
 
                                             <button type="button" (click)="contactSaveNextSubmit(contactInformation)"
                                                 [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched"
@@ -482,7 +559,7 @@
                                                 [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
                                                 'btn-bg-green': !ContactInfoForm.invalid || communicationAddress}"><b><i
                                                         class="fa fa-floppy-o"></i></b>
-                                                Save & Next</button>
+                                                {{ 'ContactInformationForm.saveAndNext' | transloco }}</button>
 
                                             <button type="submit"
                                                 [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched"
@@ -490,12 +567,14 @@
                                                 [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
                                                'btn-bg-green': !ContactInfoForm.invalid || communicationAddress || ContactInfoForm.touched}"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> Save</button>
+                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> {{
+                                                'ContactInformationForm.save' | transloco }}</button>
 
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b> {{
+                                                'ContactInformationForm.reset' | transloco }}</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                              tooltip="Cancel"><b><i class="fa fa-times-circle" ></i></b> Cancel</button> -->

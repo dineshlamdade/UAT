@@ -1,15 +1,6 @@
 <div class="row">
     <div class="col-sm-6 col-md-3" *ngIf="hiddenSummary">
         <label class="form-label">Payroll Area</label>
-
-        <!-- <select class="form-control" placeholder="Select Payroll Area" (completeMethod)="filterpayrollArea(payrollAreaCode)"
-        (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
-        [ngModelOptions]="{standalone: true}">
-        <option value="" selected disabled>Select Payroll Area</option>
-        <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
-            {{option}}
-        </option>
-    </select> -->
         <select class="form-control" placeholder="Select" (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
             (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
             [ngModelOptions]="{standalone: true}">
@@ -28,18 +19,17 @@
 </div>
 
 <br>
-<legend style="font-size: 17px !important;" *ngIf="hiddenSummary">Summary
-</legend>
+<h3 class="font-14 text-purple font-bold" *ngIf="hiddenSummary">Nomination</h3>
 <p-table [value]="summaryGridData" [scrollable]="true" [style]="{width:'1000px'}" scrollHeight="200px"
     *ngIf="hiddenSummary">
     <ng-template pTemplate="colgroup" let-education>
         <colgroup>
-            <col style="width:150px">
-            <col style="width:120px">
-            <col style="width:120px">
-            <col style="width:170px">
-            <col style="width:175px">
-            <col style="width:170px">
+            <col class="wd-20">
+            <col class="wd-20">
+            <col class="wd-10">
+            <col class="wd-20">
+            <col class="wd-20">
+            <col class="wd-10">
         </colgroup>
     </ng-template>
     <ng-template pTemplate="header">
@@ -84,6 +74,12 @@
                 <!-- <i class="fa fa-times font-16 text-red cursor-pointer"
                     tooltip="Delete"></i> -->
             </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr *ngIf="summaryGridData.length == 0">
+            <td colspan="6" class="text-center"><span class="font-14 font500 text-red">No Data
+                    Available</span></td>
         </tr>
     </ng-template>
 </p-table>

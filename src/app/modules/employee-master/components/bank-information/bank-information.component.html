@@ -16,7 +16,7 @@
                                         <select class="form-control custom-select"
                                             [(ngModel)]="BankInformationModel.country" [suggestions]="filteredCountries"
                                             (completeMethod)="filterCountry($event)" formControlName="country"
-                                            placeholder="Select" (change)="formTouch(bankInfoForm)">
+                                            placeholder="Select" (change)="formTouch(bankInfoForm); selectCountry()">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let country of countryList" [value]="country">
                                                 {{country}}

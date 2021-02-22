@@ -343,4 +343,12 @@ export class EventEmitterService {
   setEmpSummaryInitiate() {
     return this.EmpSummaryInitiateSubject.asObservable();
   }
+
+  getJobSummaryInitiate(object) {
+    this.EmpSummaryInitiateSubject.next(object);
+  }
+
+  setJobSummaryInitiate() {
+    return this.EmpSummaryInitiateSubject.asObservable();
+  }
 }

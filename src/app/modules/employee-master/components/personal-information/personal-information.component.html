@@ -11,7 +11,8 @@
                             <form [formGroup]="BasicInfoForm" (ngSubmit)="personalInfoSubmit(personalInformationModel)">
                                 <div class="row">
                                     &nbsp;&nbsp;
-                                    <div class="circle thumbnail margin-top-img" (click)="fileInput.click($event, fileInput)">
+                                    <div class="circle thumbnail margin-top-img"
+                                        (click)="fileInput.click($event, fileInput)">
                                         <div class="avatar-edit position_relative">
                                             <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
                                                 (change)="uploadFile($event, fileInput)" hidden
@@ -21,8 +22,9 @@
                                             <img [src]="imageUrl" alt="">
                                         </div>
                                         <h4 class="image-size-info" tooltip="Size should be
-                                        less than 1 MB">Select Image <p class="small-size">(Size should be
-                                                less than 1 MB)</p>
+                                        less than 1 MB">{{'PersonalInformationForm.selectImage' | transloco}}<p
+                                                class="small-size">{{'PersonalInformationForm.imageInfo' | transloco}}
+                                            </p>
                                         </h4>
                                     </div>
                                     <!-- <h6 class="mt-3 mb-0">Michelle Green</h6>
@@ -36,15 +38,25 @@
                                     <button class="btn btn-default btn-sm ml-1">Message</button> -->
                                     <!-- </div> -->
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div class="col-sm-6 col-md-3 code-line">
-                                        <label class="form-label">{{ PersonalInfoLabels.employeeCode }}</label>
+                                    <div class="col-sm-6 col-md-3 code-line"
+                                        [hidden]="PersonalInfoLabels.employeeCode === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.employeeCode">{{
+                                            PersonalInfoLabels.employeeCode }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.employeeCode">{{
+                                            'PersonalInformationForm.empCode' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Employee Code"
                                             formControlName="employeeCode" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.employeeCode"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('employeeCode').status == 'INVALID'}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 code-line">
-                                        <label class="form-label">{{ PersonalInfoLabels.alternateEmployeeCode }}</label>
+                                    <div class="col-sm-6 col-md-3 code-line"
+                                        [hidden]="PersonalInfoLabels.alternateEmployeeCode === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.alternateEmployeeCode">{{
+                                            PersonalInfoLabels.alternateEmployeeCode }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.alternateEmployeeCode">{{
+                                            'PersonalInformationForm.alternateCode' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Alternate Code"
                                             formControlName="alternateCode" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.alternateEmployeeCode"
@@ -54,8 +66,13 @@
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.title== ''">
-                                        <label class="form-label">{{ PersonalInfoLabels.title }}</label>
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.title === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.title">{{
+                                            PersonalInfoLabels.title }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.title">{{
+                                            'PersonalInformationForm.title' | transloco
+                                            }}</label>
                                         <select class="form-control" placeholder="Select" formControlName="title"
                                             (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title">
@@ -64,15 +81,15 @@
                                                 {{title}}
                                             </option>
                                         </select>
-
-
-                                        <!-- <input type="text" class="form-control" placeholder="Enter Title"
-                                            formControlName="title" (change)="concateFullName()" (keyup)="formTouch()"
-                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title"> -->
                                     </div>
+
                                     <div class="col-sm-6 col-md-3 mt-10 mb-1"
-                                        [hidden]="PersonalInfoLabels.firstName== ''">
-                                        <label class="form-label">{{ PersonalInfoLabels.firstName }}</label>
+                                        [hidden]="PersonalInfoLabels.firstName === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.firstName">{{
+                                            PersonalInfoLabels.firstName }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.firstName">{{
+                                            'PersonalInformationForm.firstName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter First Name"
                                             formControlName="firstName" (change)="concateFullName()"
                                             (keyup)="formTouch()"
@@ -80,8 +97,12 @@
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('firstName').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10 mb-1"
-                                        [hidden]="PersonalInfoLabels.middleName== ''">
-                                        <label class="form-label">{{ PersonalInfoLabels.middleName }}</label>
+                                        [hidden]="PersonalInfoLabels.middleName === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.middleName">{{
+                                            PersonalInfoLabels.middleName }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.middleName">{{
+                                            'PersonalInformationForm.middleName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Middle Name"
                                             formControlName="middleName" (change)="concateFullName()"
                                             (keyup)="formTouch()"
@@ -89,8 +110,12 @@
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('middleName').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-10 mb-1"
-                                        [hidden]="PersonalInfoLabels.lastName== ''">
-                                        <label class="form-label">{{ PersonalInfoLabels.lastName }}</label>
+                                        [hidden]="PersonalInfoLabels.lastName === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.lastName">{{
+                                            PersonalInfoLabels.lastName }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.lastName">{{
+                                            'PersonalInformationForm.lastName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Last Name"
                                             formControlName="lastName" (change)="concateFullName()"
                                             (keyup)="formTouch()"
@@ -100,14 +125,24 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-sm-6 col-md-3 mt-20">
-                                        <label class="form-label">{{ PersonalInfoLabels.fullName }}</label>
+                                    <div class="col-sm-6 col-md-3 mt-20"
+                                        [hidden]="PersonalInfoLabels.fullName === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.fullName">{{
+                                            PersonalInfoLabels.fullName }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.fullName">{{
+                                            'PersonalInformationForm.fullName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Full Name"
                                             formControlName="fullName"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.fullName">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-20">
-                                        <label class="form-label">{{ PersonalInfoLabels.displayName }}</label>
+                                    <div class="col-sm-6 col-md-3 mt-20"
+                                        [hidden]="PersonalInfoLabels.displayName === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.displayName">{{
+                                            PersonalInfoLabels.displayName }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.displayName">{{
+                                            'PersonalInformationForm.displayName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Display Name"
                                             formControlName="displayName" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.displayName">
@@ -116,8 +151,12 @@
 
                                     <!-- <br> -->
                                     <!-- <div class="row"> -->
-                                    <div class="col-sm-6 col-md-3 mt-20" [hidden]="PersonalInfoLabels.gender == ''">
-                                        <label class="form-label">{{ PersonalInfoLabels.gender }}</label>
+                                    <div class="col-sm-6 col-md-3 mt-20" [hidden]="PersonalInfoLabels.gender === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.gender">{{
+                                            PersonalInfoLabels.gender }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.gender">{{
+                                            'PersonalInformationForm.gender' | transloco
+                                            }}</label>
                                         <select class="form-control" placeholder="Select" formControlName="gender"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.gender"
                                             (change)="validateDropdown(); validateGender()"
@@ -128,8 +167,13 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-20">
-                                        <label class="form-label">{{ PersonalInfoLabels.dateOfBirth }}</label>
+                                    <div class="col-sm-6 col-md-3 mt-20"
+                                        [hidden]="PersonalInfoLabels.dateOfBirth === false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.dateOfBirth">{{
+                                            PersonalInfoLabels.dateOfBirth }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.dateOfBirth">{{
+                                            'PersonalInformationForm.birthDate' | transloco
+                                            }}</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
@@ -146,7 +190,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-20">
                                         <label class="form-label">{{ 'PersonalInformationForm.bloodGroup' | transloco
                                             }}</label>
                                         <select class="form-control" formControlName="bloodGroup"
@@ -158,8 +202,12 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
-                                        <label class="form-label">{{ 'PersonalInformationForm.nationality' | transloco
+                                    <div class="col-sm-6 col-md-3 mt-20"
+                                        [hidden]="PersonalInfoLabels.nationality== false">
+                                        <label class="form-label" *ngIf="PersonalInfoLabels.nationality">{{
+                                            PersonalInfoLabels.nationality }}</label>
+                                        <label class="form-label" [hidden]="PersonalInfoLabels.nationality">{{
+                                            'PersonalInformationForm.nationality' | transloco
                                             }}</label>
                                         <select class="form-control" formControlName="nationality"
                                             [(ngModel)]="personalInformationModel.nationality"
@@ -170,7 +218,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-20">
                                         <label class="form-label">{{ 'PersonalInformationForm.maritalStatus' | transloco
                                             }}</label>
                                         <select class="form-control" formControlName="maritalStatus"
@@ -183,7 +231,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10"
+                                    <div class="col-sm-6 col-md-3 mt-20"
                                         *ngIf="personalInformationModel.maritialStatus == 'Married'">
                                         <label class="form-label">{{ 'PersonalInformationForm.marriageDate' | transloco
                                             }}</label>
@@ -202,7 +250,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10">
+                                    <div class="col-sm-6 col-md-3 mt-20">
                                         <label class="form-label">{{
                                             'PersonalInformationForm.physicallyChallengedBoolean' | transloco }}</label>
                                         <select class="form-control" formControlName="physicallyChallengedBoolean"
@@ -335,16 +383,16 @@
                                    'bg-teal-400': employeeMasterId}"
                                                 [routerLink]="['/employee-master/employee-summary']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-angle-double-left"
-                                                        aria-hidden="true"></i></b>Previous</button>
+                                                        class="fa fa-angle-double-left" aria-hidden="true"></i></b>{{
+                                                'ContactInformationForm.previous' | transloco }}</button>
 
                                             <button type="button" tooltip="Next" [disabled]="!employeeMasterId"
                                                 [ngClass]="{'next-previous-disabled' : !employeeMasterId,
                                             'bg-teal-400': employeeMasterId}"
                                                 [routerLink]="['/employee-master/employment-information/joining-information']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-angle-double-right"
-                                                        aria-hidden="true"></i></b>Next</button>
+                                                        class="fa fa-angle-double-right" aria-hidden="true"></i></b> {{
+                                                'ContactInformationForm.next' | transloco }}</button>
 
                                             <button type="button"
                                                 (click)="saveNextPersonalInfoSubmit(personalInformationModel)"
@@ -353,19 +401,21 @@
                                                 tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false,
                                    'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i
                                                         class="fa fa-floppy-o"></i></b>
-                                                Save & Next</button>
+                                                {{ 'ContactInformationForm.saveAndNext' | transloco }}</button>
 
                                             <button type="submit"
                                                 [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false,
                            'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i
-                                                        class="fa fa-floppy-o"></i></b> Save</button>
+                                                        class="fa fa-floppy-o"></i></b> {{ 'ContactInformationForm.save'
+                                                | transloco }}</button>
 
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                        class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+                                                        class="fa fa-refresh" aria-hidden="true"></i></b> {{
+                                                'ContactInformationForm.reset' | transloco }}</button>
                                             <!-- <button type="button" *ngIf="isCancel" (click)="cancelView()"
                                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                              tooltip="Cancel"><b><i class="fa fa-times-circle" ></i></b> Cancel</button> -->
