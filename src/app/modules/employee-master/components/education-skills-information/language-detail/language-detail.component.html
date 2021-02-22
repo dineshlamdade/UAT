@@ -13,7 +13,8 @@
                                     <label class="form-label">Language</label>
                                     <select class="form-control" placeholder="Select" formControlName="language"
                                         [(ngModel)]="employeeLanguageRequestModel.language" (change)="clearLanguageInformation();
-                                    validateGridLanguage();">
+                                    validateGridLanguage();"
+                                        [ngClass]="{'is-invalid' : LanguageInfoForm.get('language').status == 'INVALID'}">
                                         <option value="" selected disabled>Select</option>
                                         <option *ngFor="let language of languageArray" [value]="language">
                                             {{language}}
@@ -149,7 +150,7 @@
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-languageHeader>
                             <colgroup>
-                                <col style="width:250px">
+                                <col style="width:150px">
                                 <col style="width:150px">
                                 <col style="width:150px">
                                 <col style="width:150px">
@@ -158,28 +159,28 @@
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Language</th>
-                                <th class="primeng-table-header-center">Read</th>
-                                <th class="primeng-table-header-center">Write</th>
-                                <th class="primeng-table-header-center">Speak</th>
-                                <th class="primeng-table-header-center">Action</th>
+                                <th class="primeng-table-header-left">Language</th>
+                                <th class="primeng-table-header-left ">Read</th>
+                                <th class="primeng-table-header-left">Write</th>
+                                <th class="primeng-table-header-left">Speak</th>
+                                <th class="primeng-table-header-left">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-Language>
                             <tr>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{Language.language}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left padding-left-21"><span>
                                         {{Language.read}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span> {{Language.write}}</span></td>
+                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.write}}</span></td>
 
-                                <td class="primeng-table-header-center"><span> {{Language.speak}}</span></td>
+                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.speak}}</span></td>
 
-                                <td class="primeng-table-header-center">
+                                <td class="primeng-table-header-left padding-left-24">
                                     <span>
                                         <i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
                                             (click)="editLanguageRow(Language)"></i>

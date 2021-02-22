@@ -53,84 +53,24 @@ export class EmploymentSummaryComponent implements OnInit {
     } else {
       this.employementReJoiningInfoId = false;
     }
-
-    // this.summarySubscription = this.EventEmitterService.setNavigateToEmploymentSummary().subscribe(res => {
-    //   
-    //   const empId = localStorage.getItem('employeeMasterId')
-    //   this.employeeMasterId = Number(empId);
-
-    //   this.getSummaryEmploymentInfo();
-    //   this.TransactionHistorySummary();
-    // })
   }
 
   getSummaryEmploymentInfo() {
 
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
-
+      
       this.EmploymentInformationSumarry = res.data.results;
       this.joiningDate = res.data.results[0].joiningDate;
-      localStorage.setItem('joiningDate', res.data.results[0].joiningDate);
-      // res.data.results.forEach(element => {
-      //   let obj = {
+      if (res.data.results[0].joiningDate) {
+        localStorage.setItem('joiningDate', res.data.results[0].joiningDate);
+      }
+      if (res.data.results[0].rejoiningDate) {
+        localStorage.setItem('rejoiningDate', res.data.results[0].rejoiningDate);
+      }
 
-      //     // 'Employement Info Id': res.data.results[0].employementInfoId,
-      //     // 'EmployeeMaster Id': res.data.results[0].employeeMasterId,
-      //     'CompanyName': element.companyName,
-      //     'joiningDate': element.joiningDate,
-      //     'rejoinee': element.rejoinee,
-      //     'originalHireDate': element.originalHireDate,
-      //     'employmentAge': element.employmentAge,
-
-      //     'serviceAge': element.serviceAge,
-      //     'serviceAgeShort': element.serviceAgeShort,
-      //     'gratuityPeriod': element.gratuityPeriod,
-      //     'originalDOJService': element.originalDOJService,
-      //     'originalDOJServiceShort': element.originalDOJServiceShort,
-      //     'gratuityPeriodShort': element.gratuityPeriodShort,
-      //     'remainingMonthOrDays': element.remainingMonthOrDays,
-      //     'remainingMonthOrDaysShort': element.remainingMonthOrDaysShort,
-
-      //     'Confirmation Date': element.confirmationDate,
-      //     'lastWorkingDate': element.lastWorkingDate,
-      //     'employeeStatus': element.employeeStatus,
-      //     // 'EmployeeExit Info Id': res.data.results[0].employeeExitInfoId,
-
-      //   }
-      //   this.EmploymentInformationSumarry.push(obj);
-      // });
-      // let obj = {
-
-      //   // 'Employement Info Id': res.data.results[0].employementInfoId,
-      //   // 'EmployeeMaster Id': res.data.results[0].employeeMasterId,
-      //   'CompanyName': res.data.results[0].companyName,
-      //   'joiningDate': res.data.results[0].joiningDate,
-      //   'rejoinee': res.data.results[0].rejoinee,
-      //   'originalHireDate': res.data.results[0].originalHireDate,
-      //   'employmentAge': res.data.results[0].employmentAge,
-
-      //   'serviceAge': res.data.results[0].serviceAge,
-      //   'serviceAgeShort': res.data.results[0].serviceAgeShort,
-      //   'gratuityPeriod': res.data.results[0].gratuityPeriod,
-      //   'gratuityPeriodShort': res.data.results[0].gratuityPeriodShort,
-      //   'remainingMonthOrDays': res.data.results[0].remainingMonthOrDays,
-      //   'remainingMonthOrDaysShort': res.data.results[0].remainingMonthOrDaysShort,
-
-      //   'Confirmation Date': res.data.results[0].confirmationDate,
-      //   'lastWorkingDate': res.data.results[0].lastWorkingDate,
-      //   'employeeStatus': res.data.results[0].employeeStatus,
-      //   // 'EmployeeExit Info Id': res.data.results[0].employeeExitInfoId,
-
-      // }
-      // this.EmploymentInformationSumarry.push(obj);
-
-      // if (this.EmploymentInformationSumarry['Employee Status'] == 1) {
-      //   this.EmploymentInformationSumarry['Employee Status'] = 'Active';
-      // } else {
-      //   this.EmploymentInformationSumarry['Employee Status'] = 'InActive';
-      // }
-      // this.employeeExitInfoId = this.TransactionHistory[0].exitId;
-      //this.EmploymentInformationSumarryData = this._getData();
+      if (res.data.results[0].employementInfoId) {
+        localStorage.setItem('employementJoiningInfoId', res.data.results[0].employementInfoId);
+      }
     })
   }
 

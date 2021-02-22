@@ -20,20 +20,25 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import { PostOfficeService } from '../../../80C/post-office/post-office.service';
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-
+import { Mediclaim80DService } from '../mediclaim80-d.service';
+import { MultiSelect} from '../../../../../../assets/plugins/multi-select/js/jquery.multi-select.js';
+declare var MultiSelect: any;
 
 @Component({
   selector: 'app-mediclaim-master',
   templateUrl: './mediclaim-master.component.html',
   styleUrls: ['./mediclaim-master.component.scss']
 })
+
 export class MediclaimMasterComponent implements OnInit {
+
+  // declare MultiSelect: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -43,6 +48,7 @@ export class MediclaimMasterComponent implements OnInit {
   public name = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
+
   public summaryGridData: Array<any> = [];
   public summaryComputationGridDate: any;
   public masterGridData: Array<any> = [];
@@ -52,7 +58,7 @@ export class MediclaimMasterComponent implements OnInit {
   public depositTypeList : Array<any> =[];
   public typeOfExpenceList : Array<any> =[];
   public frequencyOfPaymentList: Array<any> = [];
-  public frequencyOfRecurringPaymentList: Array<any> = [];
+  public frequencyOfPaymentListInMediclaim: Array<any> = [];
   public frequencyOfTermDepositPaymentList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
@@ -115,10 +121,18 @@ export class MediclaimMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public visibilityFlag = true;
+
+  public dropdownSettings: any;
+  public ServicesList = [];
+  public dropdownList = [];
+  public selectedItems = [];
+  public selectedEstablishmentMasterId = [];
+
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private postOfficeService : PostOfficeService,
+    private mediclaim80DService : Mediclaim80DService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -130,49 +144,42 @@ export class MediclaimMasterComponent implements OnInit {
     public sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
+      expenseType : new FormControl("", Validators.required),
       institution: new FormControl(null, Validators.required),
-      policyNo: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl(null, Validators.required),
-      relationship: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
-
-      familyMemberInfoId: new FormControl(null, Validators.required),
-      active: new FormControl(true, Validators.required),
-      remark: new FormControl(null),
-      frequencyOfPayment: new FormControl("", Validators.required),
-      premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
+      policyNumber: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
-      ecs: new FormControl(0),
-      masterPaymentDetailId: new FormControl(0),
-      investmentGroup1MasterId: new FormControl(0),
-      depositType: new FormControl("", Validators.required),
+
+      frequencyOfPayment: new FormControl("", Validators.required),
+      premiumAmount: new FormControl(null, Validators.required),
+      annualAmount: new FormControl({ value: null, disabled: true },Validators.required),
+      mediclaimBenefeciaryDetailList: new FormControl([], Validators.required),
+      ecs: new FormControl(false),
+      fromDate: new FormControl(null, Validators.required),
+      toDate: new FormControl(null, Validators.required),
+      mediclaimMasterId: new FormControl(0),
+      mediclaimPaymentDetailId: new FormControl(0),
+      // depositType: new FormControl("", Validators.required),
+
     });
     this.typeOfExpenceList = [
       {label: 'Mediclaim Premium', value: 'Mediclaim Premium'},
-      {label: 'Recurring Deposit', value: 'Recurring Deposit'},
-      {label: 'Medical Expenses For Parents(Senior Citizen/S)', value: 'Medical Expenses For Parents(Senior Citizen/S)'},
+      {label: 'Preventive Health Check Up', value: 'Preventive Health Check Up'},
+      {label: 'Medical Expenses For Parents(Senior Citizen/S)', value: 'Medical Expenses for Parents'},
+
+      // {label: 'Term Deposit', value: 'Term Deposit'},
+      // {label: 'Recurring Deposit', value: 'Recurring Deposit'},
     ];
-    this.depositTypeList = [
-      {label: 'Term Deposit', value: 'Term Deposit'},
-      {label: 'Recurring Deposit', value: 'Recurring Deposit'},
-    ];
-    this.frequencyOfRecurringPaymentList = [
+    this.frequencyOfPaymentListInMediclaim = [
       { label: 'Monthly', value: 'Monthly' },
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
     ];
-    this.frequencyOfTermDepositPaymentList = [
-      { label: 'One-Time', value: 'One Time' },
-    ];
-    this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
+    // this.frequencyOfTermDepositPaymentList = [
+    //   { label: 'One-Time', value: 'One Time' },
+    // ];
+    // this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -183,31 +190,80 @@ export class MediclaimMasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-
+  abc(){
+    console.log(this.ServicesList)
+  }
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+      this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'familyMemberInfoId',
+      textField: 'name',
+      itemsShowLimit: 2,
+      allowSearchFilter: true,
+    };
 
+  //   this.dropdownSettings = {
+  //     singleSelection: false,
+  //     idField: 'id',
+  //     textField: 'label',
+  //     selectAllText: 'Select All',
+  //     unSelectAllText: 'UnSelect All',
+  //     itemsShowLimit: 2,
+  //     allowSearchFilter: true
+  //  };
+
+  //  this.dropdownList1 = [
+  //     { id: 1, label: 'ABC' },
+  //     { id: 2, label: 'PQR' },
+  //     { id: 3, label: 'XYZ' },
+  //     { id: 4, label: 'qpb' },]
+
+    // this.dropdownList.push({familyMemberInfoId:'ab1c', name:1});
+    // this.dropdownList.push({familyMemberInfoId:'abc1', name:12});
+    // this.dropdownList.push({familyMemberInfoId:'ab1c', name:134});
+    // this.dropdownList.push({familyMemberInfoId:'abc1', name:155});
+    // this.dropdownList.push({familyMemberInfoId:'abc1', name:166});
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].startDate;
+      this.financialYearStart = res.data.results[0].fromDate;
     });
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
-      this.familyMemberGroup = res.data.results;
+      // this.dropdownList = res.data.results;
+      let abc = [];
       res.data.results.forEach((element) => {
         const obj = {
-          label: element.familyMemberName,
-          value: element.familyMemberName,
+
+
+          // label: element.familyMemberName,
+          // value: element.familyMemberInfoId,
+
+          familyMemberInfoId: element.familyMemberInfoId,
+          familyMemberName: element.name,
+          relation: element.relationship,
+
         };
-        if(element.relation ==='Self'){
-          this.familyMemberName.push(obj);
+
+
+        if (element.relation !== 'Brother' || element.relation !== 'Sister' ){
+          let familyNameWithRelation = element.familyMemberName +  "("  + element.relation + ")";
+          abc.push({familyMemberInfoId:element.familyMemberInfoId, name: familyNameWithRelation });
+          console.log("family List", this.dropdownList);
         }
 
+        //   if (element.relation !== 'Brother' || element.relation !== 'Sister' ){
+        //   abc.push({label:element.familyMemberName, value:element.familyMemberInfoId});
+        //   console.log("family List", this.dropdownList);
+        // }
+
       });
+      this.dropdownList = abc;
+      console.log('dropdownList::' , this.dropdownList);
     });
 
-    this.deactivateRemark();
+    // this.deactivateRemark();
 
     // Get All Institutes From Global Table
     this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
@@ -249,6 +305,16 @@ export class MediclaimMasterComponent implements OnInit {
     return this.form.controls;
   }
 
+   // Family relationship shown on Policyholder selection
+   OnSelectionfamilyMemberGroup() {
+    const toSelect = this.familyMemberGroup.find(
+      (c) => c.familyMemberName === this.form.get('policyNumber').value
+    );
+    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+    this.form.get('relationship').setValue(toSelect.relation);
+  }
+
+
   // Policy End Date Validations with Policy Start Date
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
@@ -268,7 +334,7 @@ export class MediclaimMasterComponent implements OnInit {
       fromDate: this.policyMinDate,
     });
 
-    this.setPaymentDetailToDate();
+    // this.setPaymentDetailToDate();
   }
 
   // Policy End Date Validations with Current Finanacial Year
@@ -289,7 +355,7 @@ export class MediclaimMasterComponent implements OnInit {
       this.form.controls.policyEndDate.reset();
     } else {
       this.form.patchValue({
-        endDate: this.form.value.policyEndDate,
+        toDate: this.form.value.policyEndDate,
       });
       this.maxFromDate = this.form.value.policyEndDate;
     }
@@ -297,24 +363,24 @@ export class MediclaimMasterComponent implements OnInit {
 
   // Payment Detail To Date Validations with Payment Detail From Date
   setPaymentDetailToDate() {
-    this.paymentDetailMinDate = this.form.value.startDate;
+    this.paymentDetailMinDate = this.form.value.fromDate;
     const from = this.datePipe.transform(
-      this.form.get('startDate').value,
+      this.form.get('fromDate').value,
       'yyyy-MM-dd'
     );
     const to = this.datePipe.transform(
-      this.form.get('endDate').value,
+      this.form.get('toDate').value,
       'yyyy-MM-dd'
     );
     if (from > to) {
-      this.form.controls.endDate.reset();
+      this.form.controls.toDate.reset();
     }
   }
 
   // Payment Detail To Date Validations with Current Finanacial Year
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
-      this.form.get('endDate').value,
+      this.form.get('toDate').value,
       'yyyy-MM-dd'
     );
     const financialYearStartDate = this.datePipe.transform(
@@ -332,14 +398,14 @@ export class MediclaimMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
+    this.mediclaim80DService.getMediclaimMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
       this.masterGridData.forEach((element) => {
         element.policyStartDate = new Date(element.policyStartDate);
         element.policyEndDate = new Date(element.policyEndDate);
-        element.StartDate = new Date(element.StartDate);
-        element.EndDate = new Date(element.EndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
 
       });
     });
@@ -348,35 +414,62 @@ export class MediclaimMasterComponent implements OnInit {
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
-    console.log(this.form.value);
+    console.log("Add master", this.form.value);
     if (this.form.invalid) {
       return;
     }
 
     if (this.masterfilesArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'Post Office Document Needed to Create Master.'
+        'Mediclaim  Document Needed to Create Master.'
       );
       return;
     } else {
       const from = this.datePipe.transform(
-        this.form.get('startDate').value,
+        this.form.get('fromDate').value,
         'yyyy-MM-dd'
       );
       const to = this.datePipe.transform(
-        this.form.get('endDate').value,
+        this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
-      const data = this.form.getRawValue();
 
-      data.startDate = from;
-      data.endDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      let data: any = {};
+      if(this.form.value.expenseType == 'Mediclaim Premium') {
+        data = {
+          mediclaimMasterId: 0,
+          expenseType: this.masterForm.expenseType.value,
+          institution: this.masterForm.institution.value,
+          policyNumber: this.masterForm.policyNumber.value,
+          policyStartDate: this.masterForm.policyStartDate.value,
+          policyEndDate: this.masterForm.policyEndDate.value,
+          mediclaimBenefeciaryDetailList: this.masterForm.mediclaimBenefeciaryDetailList.value,
 
-      console.log('Postoffice::', data);
+          mediclaimPaymentDetail : {
+            mediclaimPaymentDetailId: 0,
+            frequencyOfPayment: this.masterForm.frequencyOfPayment.value,
+            premiumAmount: this.masterForm.premiumAmount.value.toString().replace(',', ''),
+            annualAmount: this.masterForm.annualAmount.value,
+            ecs: this.masterForm.ecs.value,
+            fromDate: this.masterForm.fromDate.value,
+            toDate: this.masterForm.toDate.value
+          }
+        }
+      } else {
+          data = {
+            mediclaimMasterId: 0,
+            expenseType: this.masterForm.expenseType.value,
+            institution: this.masterForm.institution.value,
+            policyNumber: this.masterForm.policyNumber.value,
+            policyStartDate: this.masterForm.policyStartDate.value,
+            policyEndDate: this.masterForm.policyEndDate.value,
+            mediclaimBenefeciaryDetailList: this.masterForm.mediclaimBenefeciaryDetailList.value,
+          }
+      }
+      console.log('Mediclaim Master::', data);
 
-      this.postOfficeService
-        .uploadMultiplePostOfficeRecurringDepositMasterFiles(this.masterfilesArray, data)
+      this.mediclaim80DService
+        .uploadMultipleMediclaimMasterFiles(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
           if (res) {
@@ -385,8 +478,8 @@ export class MediclaimMasterComponent implements OnInit {
               this.masterGridData.forEach((element) => {
                 element.policyStartDate = new Date(element.policyStartDate);
                 element.policyEndDate = new Date(element.policyEndDate);
-                element.StartDate = new Date(element.StartDate);
-                element.EndDate = new Date(element.EndDate);
+                element.fromDate = new Date(element.fromDate);
+                element.toDate = new Date(element.toDate);
 
               });
               this.alertService.sweetalertMasterSuccess(
@@ -407,8 +500,8 @@ export class MediclaimMasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
-      this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      // this.form.get('active').setValue(true);
+      this.form.get('ecs').setValue(false);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
@@ -435,7 +528,7 @@ export class MediclaimMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
-  if(this.form.value.depositType == 'Recurring Deposit') {
+  if(this.form.value.expenseType == 'Mediclaim Premium') {
       if (
         this.form.value.premiumAmount != null &&
         this.form.value.frequencyOfPayment != null
@@ -469,33 +562,25 @@ export class MediclaimMasterComponent implements OnInit {
     }
   }
 
-  // Family relationship shown on Policyholder selection
-  OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find(
-      (c) => c.familyMemberName === this.form.get('accountHolderName').value
-    );
-    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    this.form.get('relationship').setValue(toSelect.relation);
-  }
 
   // Deactivate the Remark
-  deactivateRemark() {
-    if (this.form.value.active === false) {
-      // this.form.get('remark').enable();
-      this.hideRemarkDiv = true;
-      this.form.get('remark').setValidators([Validators.required]);
-    } else {
-      this.form.get('remark').clearValidators();
-      this.hideRemarkDiv = false;
-      // this.form.get('remark').disable();
-      this.form.get('remark').reset();
-    }
-  }
+  // deactivateRemark() {
+  //   if (this.form.value.active === false) {
+  //     // this.form.get('remark').enable();
+  //     this.hideRemarkDiv = true;
+  //     this.form.get('remark').setValidators([Validators.required]);
+  //   } else {
+  //     this.form.get('remark').clearValidators();
+  //     this.hideRemarkDiv = false;
+  //     // this.form.get('remark').disable();
+  //     this.form.get('remark').reset();
+  //   }
+  // }
 
   // On Master Edit functionality
   editMaster(i: number) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+    this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -511,8 +596,8 @@ export class MediclaimMasterComponent implements OnInit {
   // On Edit Cancel
   cancelEdit() {
     this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    // this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue(false);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
@@ -521,7 +606,7 @@ export class MediclaimMasterComponent implements OnInit {
   // On Master Edit functionality
   viewMaster(i: number) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+    this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -537,8 +622,8 @@ export class MediclaimMasterComponent implements OnInit {
   // On View Cancel
   cancelView() {
     this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    // this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue(false);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;
@@ -551,21 +636,56 @@ export class MediclaimMasterComponent implements OnInit {
   }
 
   onChangeDeposit() {
-    if(this.form.value.depositType == 'Term Deposit') {
+    if(this.form.value.expenseType !== 'Mediclaim Premium') {
       this.visibilityFlag = false;
-      this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
-      this.form.get('endDate').clearValidators();
-      this.form.get('endDate').updateValueAndValidity();
+      // this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
+      this.form.get('frequencyOfPayment').clearValidators();
+      this.form.get('frequencyOfPayment').updateValueAndValidity();
+      this.form.get('premiumAmount').clearValidators();
+      this.form.get('premiumAmount').updateValueAndValidity();
+      this.form.get('fromDate').clearValidators();
+      this.form.get('fromDate').updateValueAndValidity();
+      this.form.get('toDate').clearValidators();
+      this.form.get('toDate').updateValueAndValidity();
+      // this.form.reset();
     } else {
       this.visibilityFlag = true;
-      this.frequencyOfPaymentList = this.frequencyOfRecurringPaymentList;
-      this.form.controls.premiumAmount.setValue(null);
-      this.form.controls.annualAmount.setValue(null);
-      this.form.get('endDate').setValidators([Validators.required]);
-      this.form.get('endDate').updateValueAndValidity();
+      // this.frequencyOfPaymentList = this.frequencyOfPaymentListInMediclaim;
+      // this.form.controls.premiumAmount.setValue(null);
+      // this.form.controls.annualAmount.setValue(null);
+      this.form.get('frequencyOfPayment').setValidators([Validators.required]);
+      this.form.get('frequencyOfPayment').updateValueAndValidity();
+      this.form.get('premiumAmount').setValidators([Validators.required]);
+      this.form.get('premiumAmount').updateValueAndValidity();
+      this.form.get('fromDate').setValidators([Validators.required]);
+      this.form.get('fromDate').updateValueAndValidity();
+      this.form.get('toDate').setValidators([Validators.required]);
+      this.form.get('toDate').updateValueAndValidity();
     }
   }
 
+  selectionChallenged(event) {
+    console.log(event.target.defaultValue);
+  }
+  onItemSelect(item: any) {
+    console.log(item)
+    this.ServicesList.push({ mediclaimBenefeciaryDetailList: item.mediclaimBenefeciaryDetailList, establishmentCode: item.establishmentCode });
+    console.log(item.establishmentCode);
+  }
+  onItemDeSelect(item: any) {
+    let index = this.ServicesList.findIndex((o) => o.establishmentCode == item.establishmentCode);
+    this.ServicesList.splice(index, 1);
+    console.log(this.ServicesList);
+  }
+
+  onSelectAll(items: any) {
+    console.log(items);
+    this.ServicesList = [];
+    this.ServicesList = items;
+  }
+  onDeselectAll(items: any) {
+    this.ServicesList = [];
+  }
 }
 
 

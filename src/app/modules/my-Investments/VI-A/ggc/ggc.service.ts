@@ -40,7 +40,7 @@ export class GgcService {
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));

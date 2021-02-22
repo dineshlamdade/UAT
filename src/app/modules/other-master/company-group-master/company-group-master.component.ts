@@ -29,7 +29,7 @@ export class CompanyGroupMasterComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private companyGroupMasterService: CompanyGroupMasterService, private datePipe: DatePipe,
               private alertService: AlertServiceService) {
     this.form = this.formBuilder.group({
-      companyGroupCode: new FormControl(null, Validators.required),
+      companyGroupCode: new FormControl(null),
       companyGroupName: new FormControl(null, Validators.required),
       shortName: new FormControl(null, Validators.required),
       startDate: new FormControl(null, Validators.required),
@@ -118,6 +118,7 @@ export class CompanyGroupMasterComponent implements OnInit {
         if (res.data.results.length > 0) {
           console.log('data is updated');
           this.alertService.sweetalertMasterSuccess('Company Group Master Updated Successfully.', '');
+          this.companyGroupId   = 0;
           //  this.isEditMode = false;
           this.form.get('companyGroupCode').disable();
           this.saveFormValidation();
@@ -134,7 +135,7 @@ export class CompanyGroupMasterComponent implements OnInit {
       });
 
     } else {
-      console.log('clcicked on new record save button');
+      console.log('clicked on new record save button');
       const companyGroupName = this.form.get('companyGroupName').value;
       const scale = this.form.get('scale').value;
       const companyGroupCode = this.form.get('companyGroupCode').value;
@@ -167,7 +168,7 @@ export class CompanyGroupMasterComponent implements OnInit {
   }
 
   reset() {
-    //   this.isEditMode = false;
+   // this.isEditMode = false;
     this.companyGroupId = 0;
     this.showButtonSaveAndReset = true;
     this.companyGroupId = 0;

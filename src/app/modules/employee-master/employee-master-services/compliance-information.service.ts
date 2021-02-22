@@ -22,9 +22,9 @@ export class complianceInformationService {
     }))
   }
 
-  //GET by compliance type API call
-  getComplianceDetails(comapnyId,establishmentId,complianceType){
-    return this.httpClient.get(environment.baseUrl8083 + '/compliance-master/' + comapnyId +'/'+establishmentId+'/'+complianceType , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+  //GET by compliance type API call to other master
+  getComplianceDetails(complianceMasterId){
+    return this.httpClient.get(environment.baseUrl8083 + '/compliance-master/' + complianceMasterId , {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))
@@ -79,6 +79,15 @@ export class complianceInformationService {
   getOrganizationDetails(employeeMasterId){
 
     return this.httpClient.get(environment.baseUrl8082 + '/employee-organization/employeeMasterId/' + employeeMasterId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
+    .pipe(map((res: any) =>{
+      return res;
+    }))
+  }
+
+
+  //GET Assignment form API
+  getComplianceAssignmentDetails(employeeMasterId,complianceType){
+    return this.httpClient.get(environment.baseUrl8082 + '/compliance-info/employee-compliance/' + employeeMasterId +'/'+complianceType, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;
     }))

@@ -35,11 +35,13 @@ export class PersonalInformationComponent implements OnInit {
   PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '', '', '')
   bloodGroups = 'A+,A-,B+,B-,AB+,AB-,O+,O-'.split(',');
   maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+  maritalStatusTotal = 'Single,Married,Widow,Widower,Divorced'.split(',');
   physicallyChallengedDropdown = 'Visual,Hearing,Locomotive'.split(',');
+  titleList = 'Mr.,Mrs.,Ms.,Dr.'.split(',');
   physicallyChallengedBoolean = 'Yes,No'.split(',');
   expatBooleanOptions = 'Yes,No'.split(',');
   weatherOnCOCOptions = 'Yes,No'.split(',');
-  allGenders = 'Male,Female,Trans'.split(',');
+  allGenders = 'Male,Female,Transgender'.split(',');
   @Input() staticLabels: boolean;
   @Input() item: any
   physicallyChallenged: any
@@ -78,7 +80,7 @@ export class PersonalInformationComponent implements OnInit {
   validBirthDate: boolean;
   saveNextBoolean: boolean = false;
   birthdateClickboolean: boolean = false;
-
+  severityCountValidation: boolean;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -87,7 +89,7 @@ export class PersonalInformationComponent implements OnInit {
     private EventEmitterService: EventEmitterService,
     public dialog: MatDialog, public datepipe: DatePipe,
     private SharedInformationService: SharedInformationService,
-    private router: Router,) { }
+    private router: Router,private CommonDataService: SharedInformationService) { }
 
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
@@ -95,11 +97,11 @@ export class PersonalInformationComponent implements OnInit {
       alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
       title: [''],
       // firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)])],
-      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      middleName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      middleName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       fullName: [{ value: null, disabled: true },],
-      displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       birthDate: [this.tomorrow, Validators.required],
       bloodGroup: [''],
       maritalStatus: [''],
@@ -139,7 +141,7 @@ export class PersonalInformationComponent implements OnInit {
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
       this.validBirthDate = null;
       this.BasicInfoForm.get('birthDate').reset();
-
+      return;
     })
 
     this.PersonalInformationService.getLocationInformation().subscribe(res => {
@@ -305,7 +307,7 @@ export class PersonalInformationComponent implements OnInit {
         // this.EventEmitterService.getBirthDateToEmploymentForm(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
-        this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
         if (this.rejoinee == true) {
           this.router.navigate(['/employee-master/employment-information/re-joining-information']);
@@ -317,7 +319,7 @@ export class PersonalInformationComponent implements OnInit {
         this.BasicInfoForm.markAsUntouched();
         this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
@@ -335,7 +337,7 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeMasterId', res.data.results[0].employeeMasterId);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode);
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
-        this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.BasicInfoForm.markAsUntouched();
@@ -345,7 +347,7 @@ export class PersonalInformationComponent implements OnInit {
         }
         this.router.navigate(['/employee-master/employment-information/joining-information']);
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
     }
@@ -409,6 +411,7 @@ export class PersonalInformationComponent implements OnInit {
       const severityLevel = this.BasicInfoForm.get('severityLevel');
       severityLevel.enable();
     }
+    this.validateGender();
   }
   // getImage(employeeMasterId) {
   //   this.PersonalInformationService.getImage(employeeMasterId).subscribe((res: any) => {
@@ -433,6 +436,8 @@ export class PersonalInformationComponent implements OnInit {
       this.selectedImg = null;
       uploadFile = null;
       event = null;
+      this.imageUrl = "./assets/emp-master-images/empIcon5.png";
+      this.CommonDataService.sweetalertWarning('Selected Image Size Should be less than 1 Mb');
     } else {
       this.selectedImageFile = uploadFile.files[0];
       this.BasicInfoForm.markAsTouched();
@@ -509,9 +514,17 @@ export class PersonalInformationComponent implements OnInit {
     this.exportFullNameToIdentityInformation = this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.middleName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.lastName;
-    localStorage.setItem('fullName', this.exportFullNameToIdentityInformation)
+    localStorage.setItem('fullName', this.exportFullNameToIdentityInformation);
+    this.formTouch();
   }
+
+  formTouch() {
+    this.BasicInfoForm.markAsTouched();
+  }
+
   resetForm() {
+
+    this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
 
     this.BasicInfoForm.reset();
     this.imageUrl = "./assets/emp-master-images/empIcon5.png";
@@ -546,8 +559,14 @@ export class PersonalInformationComponent implements OnInit {
       this.personalInformationModel.anniversaryDate = '';
     }
   }
-  birthDateValidation(event) {
 
+  birthDateClickEvent(event) {
+    
+    this.birthdateClickboolean = true;
+  }
+
+  birthDateValidation(event) {
+    
     if ((this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
       let dateObj = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
@@ -560,7 +579,13 @@ export class PersonalInformationComponent implements OnInit {
       if (this.validBirthDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
         this.birthD(this.validBirthDate);
       }
+      if(this.validBirthDate == true){
+        this.birthdateClickboolean = false;
+        return
+      }
     }
+
+    return this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
   }
   birthD(validDate) {
     this.birthdateClickboolean = false;
@@ -608,44 +633,22 @@ export class PersonalInformationComponent implements OnInit {
       isOnCOC.enable();
     }
   }
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
-
-  birthDateClickEvent(event) {
-
-    this.birthdateClickboolean = true;
-  }
+ 
 
   validateSaverityLevel(severityLevel) {
-
-    if (severityLevel > 100) {
-      this.sweetalertError('Severity Level should be up to 100%');
+  
+    if (severityLevel > 100 || severityLevel < 0) {
+      this.CommonDataService.sweetalertWarning('Severity Level should be up to 100%');
+      this.severityCountValidation = false;
+      // this.BasicInfoForm.get('severityLevel').setValue('');
+      // this.BasicInfoForm.get('severityLevel').setValidators(Validators.required);
+      // this.BasicInfoForm.get('severityLevel').updateValueAndValidity();
+    }
+    if (severityLevel > 0 && severityLevel < 100 || severityLevel == 100) {
+      this.severityCountValidation = true;
+      // this.BasicInfoForm.get('severityLevel').clearValidators();
+      // this.BasicInfoForm.get('severityLevel').updateValueAndValidity();
     }
   }
 
@@ -667,5 +670,18 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
+  validateGender() {
+
+    this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Male') {
+      this.maritalStatus.splice(2, 1);
+      this.personalInformationModel.maritialStatus = '';
+    }
+
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Female') {
+      this.maritalStatus.splice(3, 1);
+      this.personalInformationModel.maritialStatus = '';
+    }
+  }
 
 }

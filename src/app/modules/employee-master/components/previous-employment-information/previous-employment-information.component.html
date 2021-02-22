@@ -32,7 +32,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="Select Joining Date" bsDatepicker
-                                                    [maxDate]="JoiningDate" formControlName="joiningDate"
+                                                    [maxDate]="validationDate" formControlName="joiningDate"
                                                     [(ngModel)]="previousEmploymentInformation.dateOfJoining">
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                     <select class="form-control selectpicker" placeholder="Select"
                                                         formControlName="currency" (change)="validateCTCperAnum()"
                                                         [(ngModel)]="previousEmploymentInformation.currency">
-                                                        <option value="" data-hidden="true">Select</option>
+                                                        <option value="" data-hidden="true">Currency</option>
                                                         <option *ngFor="let currency of currencyArray"
                                                             [value]="currency">
                                                             {{currency}}

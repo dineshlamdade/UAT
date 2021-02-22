@@ -16,7 +16,7 @@
                                     <div class="row">
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Payroll Area</label>
-                                            <select class="form-control custom-select" placeholder="Select"
+                                            <select class="form-control" placeholder="Select"
                                                 formControlName="payrollAreaCode"
                                                 [(ngModel)]="PayrollAreaRequestModel.payrollAreaCode"
                                                 (change)="bankDetailsEnable(); payrollAssignValues(PayrollAreaRequestModel.payrollAreaCode)">
@@ -25,14 +25,6 @@
                                                     {{payroll}}
                                                 </option>
                                             </select>
-
-                                            <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList"
-                                                (completeMethod)=" filterpayrollArea($event)" placeholder="Select"
-                                                formControlName="payrollAreaCode"
-                                                [(ngModel)]="PayrollAreaRequestModel.payrollAreaCode"
-                                                (change)="bankDetailsEnable()">
-                                            </p-autoComplete>
-                                            <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                         </div>
 
                                         <div class="col-sm-6 col-md-3">
@@ -44,24 +36,18 @@
 
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Type</label>
-                                            <select class="form-control custom-select" placeholder="Select"
-                                                formControlName="type" [(ngModel)]="PayrollAreaRequestModel.type">
+                                            <select class="form-control" placeholder="Select" formControlName="type"
+                                                [(ngModel)]="PayrollAreaRequestModel.type">
                                                 <option value="" selected disabled>Select</option>
                                                 <option *ngFor="let type of typeList" [value]="type">
                                                     {{type}}
                                                 </option>
                                             </select>
-
-                                            <!-- <p-autoComplete [suggestions]="filteredTypeList"
-                                                (completeMethod)="filtertype($event)" placeholder="Select"
-                                                formControlName="type" [(ngModel)]="PayrollAreaRequestModel.type">
-                                            </p-autoComplete>
-                                            <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                         </div>
 
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Payment Mode</label>
-                                            <select class="form-control custom-select" placeholder="Select"
+                                            <select class="form-control" placeholder="Select"
                                                 formControlName="paymentMode"
                                                 [(ngModel)]="PayrollAreaRequestModel.paymentMode"
                                                 (change)="bankDetailsValidations()">
@@ -71,14 +57,6 @@
                                                     {{paymentMode}}
                                                 </option>
                                             </select>
-
-                                            <!-- <p-autoComplete [suggestions]="filteredpaymentModeList"
-                                                (completeMethod)="filterpaymentMode($event)" placeholder="Select"
-                                                formControlName="paymentMode"
-                                                [(ngModel)]="PayrollAreaRequestModel.paymentMode"
-                                                (onSelect)="bankDetailsValidations()">
-                                            </p-autoComplete> -->
-                                            <!-- <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                         </div>
 
                                         <div class="col-sm-6 col-md-3 mt-15">
@@ -123,7 +101,7 @@
                                                 <label class="form-label">Bank Name</label>
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-10">
-                                                        <select class="form-control custom-select" placeholder="Select"
+                                                        <select class="form-control" placeholder="Select"
                                                             [(ngModel)]="PayrollAreaRequestModel.bankName"
                                                             formControlName="bankName" (change)="flterBankDetails();">
                                                             <option value="" selected disabled>Select</option>
@@ -131,12 +109,6 @@
                                                                 {{bank}}
                                                             </option>
                                                         </select>
-                                                        <!-- <p-autoComplete [suggestions]="filteredbankList"
-                                                            (completeMethod)="filterbanks($event)" placeholder="Select"
-                                                            [(ngModel)]="PayrollAreaRequestModel.bankName"
-                                                            formControlName="bankName" (onSelect)="flterBankDetails();">
-                                                        </p-autoComplete>
-                                                        <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                                     </div>
                                                     <div class="col-sm-2 col-md-2">
                                                         <mat-icon class="copy-btn" (click)="getBankFromGrid()"
@@ -148,32 +120,24 @@
 
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Bank Account No.</label>
-                                                <select class="form-control custom-select" placeholder="Select"
+                                                <select class="form-control" placeholder="Select"
                                                     formControlName="bankAccount"
                                                     [(ngModel)]="PayrollAreaRequestModel.bankAccountNumber"
-                                                    [type]="password">
+                                                    type="password">
                                                     <option value="" selected disabled>Select</option>
                                                     <option *ngFor="let bankAccount of bankAccountList"
-                                                        [value]="bankAccount.accountNo">
+                                                        [value]="bankAccount.accountNo" type="password">
                                                         {{bankAccount.accountNo}}
                                                     </option>
                                                 </select>
-
-                                                <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList"
-                                                    (completeMethod)="filterpayrollArea($event)" placeholder="Select"
-                                                    formControlName="bankAccount"
-                                                    [(ngModel)]="PayrollAreaRequestModel.bankAccount"
-                                                    [type]="accountNo ? 'number' : 'password'">
-                                                </p-autoComplete> -->
                                                 <mat-icon matSuffix (click)="accountNo = !accountNo"
                                                     class="eye-icon-payroll">
                                                     {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
-                                                <!-- <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
                                                 <label class="form-label">Type of Payment</label>
-                                                <select class="form-control custom-select" placeholder="Select"
+                                                <select class="form-control" placeholder="Select"
                                                     formControlName="typeOfPayment"
                                                     [(ngModel)]="PayrollAreaRequestModel.typeOfPayment">
                                                     <option value="" selected disabled>Select</option>
@@ -182,13 +146,6 @@
                                                         {{typeOfPayment}}
                                                     </option>
                                                 </select>
-
-                                                <!-- <p-autoComplete [suggestions]="filteredtypeOfPaymentList"
-                                                    (completeMethod)="filtertypeOfPayment($event)" placeholder="Select"
-                                                    formControlName="typeOfPayment"
-                                                    [(ngModel)]="PayrollAreaRequestModel.typeOfPayment">
-                                                </p-autoComplete> -->
-                                                <!-- <i class="fa fa-chevron-down down-arrow-icon"></i> -->
                                             </div>
 
                                             <div class="col-sm-6 col-md-3 mt-25">
@@ -358,8 +315,8 @@
                                                                 <th scope="col" class="font700 wd-20">Type of Payment
                                                                 </th>
                                                                 <th scope="col" class="font700 wd-20">Bank Name</th>
-                                                                <th scope="col" class="font700 wd-20">Bank Account No.
-                                                                </th>
+                                                                <!-- <th scope="col" class="font700 wd-20">Bank Account No.
+                                                                </th> -->
                                                                 <th scope="col" class="font700 wd-20">% Net Pay
                                                                 </th>
                                                                 <th scope="col" class="font700 wd-20">Amount
@@ -379,10 +336,18 @@
                                                             <tr *ngFor="let bank of PayrollAreaSummaryGridData">
                                                                 <td><span>{{bank.typeOfPayment}}</span></td>
                                                                 <td><span>{{bank.bankName}}</span></td>
-                                                                <td><span>{{bank.bankAccountNumber}}</span></td>
-                                                                <td><span>{{bank.percentageOfNetPay}}</span></td>
-                                                                <td><span>{{bank.amount}}</span></td>
-                                                                <td><span>{{bank.priority}}</span></td>
+                                                                <!-- <td><span>{{bank.bankAccountNumber}}</span></td> -->
+                                                                <td *ngIf="bank.percentageOfNetPay">
+                                                                    <span>{{bank.percentageOfNetPay}}</span>
+                                                                </td>
+                                                                <td *ngIf="!bank.percentageOfNetPay"><span>-</span></td>
+                                                                <td *ngIf="bank.amount > 0">
+                                                                    <span>{{bank.amount}}</span>
+                                                                </td>
+                                                                <td *ngIf="bank.amount == 0"><span>-</span></td>
+                                                                <td *ngIf="bank.priority"><span>{{bank.priority}}</span>
+                                                                </td>
+                                                                <td *ngIf="!bank.priority"><span>-</span></td>
                                                                 <td><span>{{bank.payFromDate}}</span></td>
                                                                 <td><span>{{bank.payToDate}}</span></td>
                                                             </tr>
@@ -393,19 +358,9 @@
                                         </div>
                                     </fieldset>
 
-                                    <div class="row mt-15">
+                                    <!-- <div class="row mt-15">
                                         <div class="col-12">
                                             <div class="float-right mb-15">
-                                                <!-- <button type="button"
-                                                    (click)="addPush=true;pushToGrid(previousEmploymentInformation);"
-                                                    class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
-                                                    tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button> -->
-
-                                                <!-- <button type="button"
-                                                    (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
-                                                    class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                    tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button> -->
-
                                                 <button type="button" tooltip="Add"
                                                     (click)="additionPayrollValidation();"
                                                     class="custom_button custom_btn btn-add-payroll btn-labeled btn-labeled-left ml-10"><b><i
@@ -413,9 +368,9 @@
                                                     Area</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
-
+                                    <br>
                                     <legend>Payroll Area Summary</legend>
                                     <div class="row mt-20">
                                         <div class="col-md-12">
@@ -429,7 +384,7 @@
                                                             <th scope="col" class="font700 wd-20">To Date</th>
                                                             <th scope="col" class="font700 wd-20">Type of Payment</th>
                                                             <th scope="col" class="font700 wd-20">Bank Name</th>
-                                                            <th scope="col" class="font700 wd-20">Bank Account No.</th>
+                                                            <!-- <th scope="col" class="font700 wd-20">Bank Account No.</th> -->
                                                             <!-- <th scope="col" class="font700 wd-20">Name as par Bank</th> -->
                                                             <th scope="col" class="font700 wd-20">% Net Pay
                                                             </th>
@@ -454,9 +409,15 @@
                                                             <td><span>{{payroll.payrollAreaToDate}}</span></td>
                                                             <td><span>{{payroll.typeOfPayment}}</span></td>
                                                             <td><span>{{payroll.bankName}}</span></td>
-                                                            <td><span>{{payroll.bankAccountNumber}}</span></td>
-                                                            <td><span>{{payroll.percentageOfNetPay}}</span></td>
-                                                            <td><span>{{payroll.amount}}</span></td>
+                                                            <!-- <td><span>{{payroll.bankAccountNumber}}</span></td> -->
+                                                            <td *ngIf="payroll.percentageOfNetPay">
+                                                                <span>{{payroll.percentageOfNetPay}}</span>
+                                                            </td>
+                                                            <td *ngIf="!payroll.percentageOfNetPay"><span>-</span></td>
+                                                            <td *ngIf="payroll.amount > 0">
+                                                                <span>{{payroll.amount}}</span>
+                                                            </td>
+                                                            <td *ngIf="payroll.amount == 0"><span>-</span></td>
 
 
                                                             <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
@@ -468,7 +429,6 @@
                                                                 <i class="fa fa-times font-16 text-red cursor-pointer"
                                                                     tooltip="Delete"
                                                                     (click)="deletePayroll(payroll)"></i>
-
                                                             </td>
                                                         </tr>
                                                     </tbody>

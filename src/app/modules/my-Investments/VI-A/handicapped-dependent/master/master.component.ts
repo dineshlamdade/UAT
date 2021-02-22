@@ -109,7 +109,7 @@ export class MasterComponent implements OnInit {
   public disability : string;
   public severity : string;
   public isClaiming80U: boolean = true;
-
+  public isSaveVisible: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -406,5 +406,13 @@ export class MasterComponent implements OnInit {
 
   resetForm() {
     this.form.reset();
+  }
+
+
+  onRadioChange(checked) {
+    this.isSaveVisible = true;
+    if(checked) {
+      this.isSaveVisible = false;
+    }
   }
 }

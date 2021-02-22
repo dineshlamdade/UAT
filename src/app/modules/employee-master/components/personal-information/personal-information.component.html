@@ -39,14 +39,14 @@
                                     <div class="col-sm-6 col-md-3 code-line">
                                         <label class="form-label">{{ PersonalInfoLabels.employeeCode }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Employee Code"
-                                            formControlName="employeeCode"
+                                            formControlName="employeeCode" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.employeeCode"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('employeeCode').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3 code-line">
                                         <label class="form-label">{{ PersonalInfoLabels.alternateEmployeeCode }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Alternate Code"
-                                            formControlName="alternateCode"
+                                            formControlName="alternateCode" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.alternateEmployeeCode"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('alternateCode').status == 'INVALID'}">
                                     </div>
@@ -56,28 +56,44 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.title== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.title }}</label>
-                                        <input type="text" class="form-control" placeholder="Enter Title"
-                                            formControlName="title" (change)="concateFullName()"
+                                        <select class="form-control" placeholder="Select" formControlName="title"
+                                            (change)="concateFullName()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let title of titleList" [value]="title">
+                                                {{title}}
+                                            </option>
+                                        </select>
+
+
+                                        <!-- <input type="text" class="form-control" placeholder="Enter Title"
+                                            formControlName="title" (change)="concateFullName()" (keyup)="formTouch()"
+                                            [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.title"> -->
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.firstName== ''">
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.firstName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.firstName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter First Name"
                                             formControlName="firstName" (change)="concateFullName()"
+                                            (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.firstName"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('firstName').status == 'INVALID'}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.middleName== ''">
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.middleName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.middleName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Middle Name"
                                             formControlName="middleName" (change)="concateFullName()"
+                                            (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.middleName"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('middleName').status == 'INVALID'}">
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mt-10 mb-1" [hidden]="PersonalInfoLabels.lastName== ''">
+                                    <div class="col-sm-6 col-md-3 mt-10 mb-1"
+                                        [hidden]="PersonalInfoLabels.lastName== ''">
                                         <label class="form-label">{{ PersonalInfoLabels.lastName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Last Name"
                                             formControlName="lastName" (change)="concateFullName()"
+                                            (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.lastName"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('lastName').status == 'INVALID'}">
                                     </div>
@@ -93,7 +109,7 @@
                                     <div class="col-sm-6 col-md-3 mt-20">
                                         <label class="form-label">{{ PersonalInfoLabels.displayName }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Display Name"
-                                            formControlName="displayName"
+                                            formControlName="displayName" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.displayName">
                                     </div>
                                     <!-- </div> -->
@@ -104,7 +120,7 @@
                                         <label class="form-label">{{ PersonalInfoLabels.gender }}</label>
                                         <select class="form-control" placeholder="Select" formControlName="gender"
                                             [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.gender"
-                                            (change)="validateDropdown()"
+                                            (change)="validateDropdown(); validateGender()"
                                             [ngClass]="{'is-invalid' : BasicInfoForm.get('gender').status == 'INVALID'}">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let gender of allGenders" [value]="gender">
@@ -125,7 +141,7 @@
                                                     [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     (click)="birthDateClickEvent($event)"
-                                                    (ngModelChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth);"
+                                                    (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth);"
                                                     [ngClass]="{'is-invalid' : BasicInfoForm.get('birthDate').status == 'INVALID'}">
                                             </div>
                                         </div>
@@ -179,6 +195,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" [maxDate]="today"
+                                                    [minDate]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     placeholder="Select Marriage Date" bsDatepicker
                                                     formControlName="marriageDate"
                                                     [(ngModel)]="personalInformationModel.anniversaryDate">
@@ -216,6 +233,7 @@
                                             }}</label>
                                         <input type="number" class="form-control" placeholder="Enter Severity Level"
                                             formControlName="severityLevel" maxlength="3" max="100"
+                                            (keyup)="formTouch()"
                                             (change)="validateSaverityLevel(personalInformationModel.severityLevel)"
                                             [(ngModel)]="personalInformationModel.severityLevel">
                                     </div>
@@ -260,7 +278,7 @@
                                         <label class="form-label">{{ 'PersonalInformationForm.cocNo' | transloco
                                             }}</label>
                                         <input type="text" class="form-control" placeholder="Enter COC No."
-                                            formControlName="cocNo"
+                                            formControlName="cocNo" (keyup)="formTouch()"
                                             [(ngModel)]="internationalWorkerRequestDTO.cocNumber">
                                     </div>
                                     <div class="col-sm-6 col-md-3 mt-20"
@@ -286,7 +304,7 @@
                                         <label class="form-label">{{ PersonalInfoLabels.PersonalAdditional1 }}</label>
                                         <input type="text" class="form-control"
                                             placeholder="Enter {{ PersonalInfoLabels.PersonalAdditional1 }}"
-                                            formControlName="PersonalAdditional1"
+                                            formControlName="PersonalAdditional1" (keyup)="formTouch()"
                                             [(ngModel)]="personalInformationModel.PersonalAdditional1">
                                     </div>
 
@@ -300,7 +318,7 @@
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
-                                                    class="form-control"
+                                                    class="form-control" (keyup)="formTouch()"
                                                     placeholder="Select {{PersonalInfoLabels.PersonalAdditional2}}"
                                                     bsDatepicker formControlName="PersonalAdditional2"
                                                     [(ngModel)]="personalInformationModel.PersonalAdditional2">
@@ -330,17 +348,17 @@
 
                                             <button type="button"
                                                 (click)="saveNextPersonalInfoSubmit(personalInformationModel)"
-                                                [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched"
+                                                [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
-                                                tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched,
-                                   'btn-bg-green': !BasicInfoForm.invalid}"><b><i class="fa fa-floppy-o"></i></b>
+                                                tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false,
+                                   'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i class="fa fa-floppy-o"></i></b>
                                                 Save & Next</button>
 
                                             <button type="submit"
-                                                [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched"
+                                                [disabled]="BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10"
-                                                tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched,
-                           'btn-bg-green': !BasicInfoForm.invalid}"><b><i class="fa fa-floppy-o"></i></b> Save</button>
+                                                tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : BasicInfoForm.invalid || BasicInfoForm.untouched || severityCountValidation == false,
+                           'btn-bg-green': !BasicInfoForm.invalid || severityCountValidation == true}"><b><i class="fa fa-floppy-o"></i></b> Save</button>
 
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"

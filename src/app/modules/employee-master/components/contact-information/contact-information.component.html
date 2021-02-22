@@ -28,11 +28,12 @@
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
                                                                 <select class="form-control selectpicker"
-                                                                    placeholder="Select"
+                                                                    placeholder="ISD" (change)="formTouch(); validOfficialMobNo()"
                                                                     formControlName="officialCountryCode"
                                                                     [(ngModel)]="ngOfficialCountryCode"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('officialCountryCode').status == 'INVALID'}">
-                                                                    <option value="" data-hidden="true">select
+                                                                    <option value="" data-hidden="true"
+                                                                        class="placeholder-control">ISD
                                                                     </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
@@ -44,10 +45,14 @@
                                                                 <input type="text" class="form-control"
                                                                     placeholder="Enter Mobile No." minlength="1"
                                                                     maxlength="10" (keypress)="keyPress($event)"
-                                                                    formControlName="officialMobileNumber"
+                                                                    formControlName="officialMobileNumber" (change)="validOfficialCountryCode()"
+                                                                    (keyup)="formTouch();" pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
                                                                     [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('officialMobileNumber').status == 'INVALID'}">
                                                             </div>
+                                                            <mat-error class="mobile-number-error"
+                                                                *ngIf="ContactInfoForm.get('officialMobileNumber').status == 'INVALID'">
+                                                                Mobile Number must be 10 digit & Should not start with 0</mat-error>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4">
@@ -56,8 +61,11 @@
                                                             }}</label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Email" formControlName="officialEmail"
-                                                            pattern="\S+@\S+\.\S+" (change)="validateOfficialEmail(contactInformation.employeeMasterRequestDTO.officialEmailId)"
+                                                            tooltip="{{contactInformation.employeeMasterRequestDTO.officialEmailId}}"
+                                                            pattern="\S+@\S+\.\S+"
+                                                            (change)="validateOfficialEmail(contactInformation.employeeMasterRequestDTO.officialEmailId)"
                                                             [(ngModel)]="contactInformation.employeeMasterRequestDTO.officialEmailId"
+                                                            (keyup)="formTouch()"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('officialEmail').status == 'INVALID'}">
                                                     </div>
                                                 </div>
@@ -73,12 +81,12 @@
                                                             }}</label>
                                                         <div class="row">
                                                             <div class="col-sm-3 col-md-5 country-code">
-                                                                <select class="form-control" placeholder="Select"
+                                                                <select class="form-control" placeholder="ISD"
                                                                     formControlName="personalCountryCode"
                                                                     [(ngModel)]="ngPersonalCountryCode"
-                                                                    (change)="validatePersonalMobile(ngPersonalCountryCode)"
+                                                                    (change)="validatePersonalMobile(ngPersonalCountryCode);formTouch()"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('personalCountryCode').status == 'INVALID'}">
-                                                                    <option value="" selected disabled>Select
+                                                                    <option value="" selected disabled>ISD
                                                                     </option>
                                                                     <option *ngFor="let code of countryCode"
                                                                         [value]="code">
@@ -91,10 +99,14 @@
                                                                     placeholder="Enter Mobile No." minlength="1"
                                                                     maxlength="10" (keypress)="keyPress($event)"
                                                                     formControlName="personalmobileNumber"
+                                                                    (keyup)="formTouch()" pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
                                                                     (change)="validatePersonalMobile(ngPersonalCountryCode)"
                                                                     [(ngModel)]="contactInformation.employeeMasterRequestDTO.personalMobileNumber"
                                                                     [ngClass]="{'is-invalid' : ContactInfoForm.get('personalmobileNumber').status == 'INVALID'}">
                                                             </div>
+                                                            <mat-error class="mobile-number-error"
+                                                            *ngIf="ContactInfoForm.get('personalmobileNumber').status == 'INVALID' && contactInformation.employeeMasterRequestDTO.personalMobileNumber?.length>0">
+                                                            Mobile Number must be 10 digit & Should not start with 0</mat-error>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4">
@@ -103,7 +115,10 @@
                                                             }}</label>
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Email" formControlName="personalEmail"
+                                                            (keyup)="formTouch()"
+                                                            tooltip="{{contactInformation.employeePersonalInfoRequestDTO.personalEmailID}}"
                                                             pattern="\S+@\S+\.\S+"
+                                                            (change)="validatePersonalEmailId(contactInformation.employeePersonalInfoRequestDTO.personalEmailID)"
                                                             [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.personalEmailID"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('personalEmail').status == 'INVALID'}">
                                                     </div>
@@ -122,8 +137,9 @@
                                                 <label class="form-label">{{
                                                     'ContactInformationForm.emergencyContactName' | transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter Name"
-                                                    formControlName="emergencyContactName"
-                                                    [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactName1">
+                                                    formControlName="emergencyContactName" (keyup)="formTouch()"
+                                                    [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactName1"
+                                                    [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactName').status == 'INVALID'}">
                                             </div>
 
                                             <div class="col-sm-3 col-md-6 ">
@@ -132,9 +148,10 @@
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-5 country-code ">
                                                         <select class="form-control" placeholder="Select"
-                                                            formControlName="emergencyCountryCode"
-                                                            [(ngModel)]="ngEmergencyCountryCode">
-                                                            <option value="" selected disabled>Select</option>
+                                                            formControlName="emergencyCountryCode" 
+                                                            (change)="formTouch();validEmergencyMobNo()" [(ngModel)]="ngEmergencyCountryCode"
+                                                            [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyCountryCode').status == 'INVALID'}">
+                                                            <option value="" selected disabled>ISD</option>
                                                             <option *ngFor="let code of countryCode" [value]="code">
                                                                 {{code}}
                                                             </option>
@@ -143,11 +160,15 @@
                                                     <div class="col-sm-3 col-md-7 ml-2">
                                                         <input type="text" class="form-control"
                                                             placeholder="Enter Mobile No." minlength="1" maxlength="10"
-                                                            formControlName="emergencyContactNumber"
-                                                            (keypress)="keyPress($event)"
+                                                            formControlName="emergencyContactNumber" pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
+                                                            (keypress)="keyPress($event)" (keyup)="formTouch()"
+                                                            (change)="validEmergencyCountryCode()"
                                                             [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'}">
                                                     </div>
+                                                    <mat-error class="mobile-number-error"
+                                                    *ngIf="ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'">
+                                                    Mobile Number must be 10 digit & Should not start with 0</mat-error>
                                                 </div>
                                             </div>
                                         </div>
@@ -174,7 +195,7 @@
                                                                 placeholder="Enter Address 1"
                                                                 formControlName="localAddress1"
                                                                 [(ngModel)]="localAddressInformation.address1"
-                                                                (keyup)="checkLocalAddress()"
+                                                                (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{localAddressInformation.address1}}"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('localAddress1').status == 'INVALID'}">
                                                         </div>
@@ -185,7 +206,7 @@
                                                                 placeholder="Enter Address 2"
                                                                 formControlName="localAddress2"
                                                                 [(ngModel)]="localAddressInformation.address2"
-                                                                (keyup)="checkLocalAddress()"
+                                                                (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{localAddressInformation.address2}}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
@@ -195,7 +216,7 @@
                                                                 placeholder="Enter Address 3"
                                                                 formControlName="localAddress3"
                                                                 [(ngModel)]="localAddressInformation.address3"
-                                                                (keyup)="checkLocalAddress()"
+                                                                (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{localAddressInformation.address3}}">
                                                         </div>
 
@@ -205,7 +226,7 @@
                                                             <select class="form-control" placeholder="Select"
                                                                 formControlName="localCountry"
                                                                 [(ngModel)]="localAddressInformation.country"
-                                                                (change)="checkLocalAddress(); clearLocalAddressFields()">
+                                                                (change)="checkLocalAddress(); clearLocalAddressFields();formTouch()">
                                                                 <option value="" selected disabled>Select</option>
                                                                 <option *ngFor="let country of countries"
                                                                     [value]="country">
@@ -221,7 +242,7 @@
                                                                 formControlName="localPin"
                                                                 [(ngModel)]="localAddressInformation.postalCode"
                                                                 pattern="[0-9]{6}" (keypress)="keyPress($event)"
-                                                                (keyup)="checkLocalAddress(); getLocalAddressFromPIN();"
+                                                                (keyup)="checkLocalAddress(); getLocalAddressFromPIN();formTouch()"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('localPin').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
@@ -256,7 +277,7 @@
                                                                 placeholder="Enter Village"
                                                                 formControlName="localVillege"
                                                                 [(ngModel)]="localAddressInformation.village"
-                                                                (keyup)="checkLocalAddress()">
+                                                                (keyup)="checkLocalAddress();formTouch()">
                                                         </div>
                                                     </div>
 
@@ -264,14 +285,14 @@
                                             </div>
                                             <div class="copy-from-btn">
                                                 <i class="fa fa-arrow-circle-right" style="font-size: 29px;"
-                                                    tooltip="Copy from Local to Permanent Address"
+                                                    tooltip="Copy Local Address to Permanent Address"
                                                     (click)="ConfirmationFromLocalToPermanent()"></i>
                                                 <!-- <mat-icon tooltip="Copy from Local to Permanent Address"
                                                     (click)="ConfirmationFromLocalToPermanent()">
                                                     arrow_forward</mat-icon> -->
                                                 <br>
                                                 <i class="fa fa-arrow-circle-left" style="font-size: 29px;"
-                                                    tooltip="Copy from Permanent to Local Address"
+                                                    tooltip="Copy Permanent Address to Local Address"
                                                     (click)="ConfirmationFromPermanentToLocal()"></i>
                                                 <!-- <mat-icon tooltip="Copy from Permanent to Local Address"
                                                     (click)="ConfirmationFromPermanentToLocal()">
@@ -291,7 +312,7 @@
                                                                 placeholder="Enter Address 1"
                                                                 formControlName="permanentAddress1"
                                                                 [(ngModel)]="permanentAddressInformation.address1"
-                                                                (keyup)="checkLocalAddress()"
+                                                                (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{permanentAddressInformation.address1}}"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentAddress1').status == 'INVALID'}">
                                                         </div>
@@ -302,7 +323,7 @@
                                                                 placeholder="Enter Address 2"
                                                                 formControlName="permanentAddress2"
                                                                 [(ngModel)]="permanentAddressInformation.address2"
-                                                                (keyup)="checkLocalAddress()"
+                                                                (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{permanentAddressInformation.address2}}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
@@ -312,7 +333,7 @@
                                                                 placeholder="Enter Address 3"
                                                                 formControlName="permanentAddress3"
                                                                 [(ngModel)]="permanentAddressInformation.address3"
-                                                                (keyup)="checkLocalAddress()"
+                                                                (keyup)="checkLocalAddress();formTouch()"
                                                                 tooltip="{{permanentAddressInformation.address3}}">
                                                         </div>
 
@@ -322,7 +343,7 @@
                                                             <select class="form-control" placeholder="Select"
                                                                 formControlName="permanentCountry"
                                                                 [(ngModel)]="permanentAddressInformation.country"
-                                                                (change)="checkLocalAddress(); clearPermanentAddressFields();">
+                                                                (change)="checkLocalAddress(); clearPermanentAddressFields();formTouch()">
                                                                 <option value="" selected disabled>Select
                                                                 </option>
                                                                 <option *ngFor="let country of countries"
@@ -339,7 +360,7 @@
                                                                 formControlName="permanentPin"
                                                                 [(ngModel)]="permanentAddressInformation.postalCode"
                                                                 pattern="[0-9]{6}" (keypress)="keyPress($event)"
-                                                                (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();"
+                                                                (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();formTouch()"
                                                                 [ngClass]="{'is-invalid' : ContactInfoForm.get('permanentPin').status == 'INVALID'}">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
@@ -349,7 +370,7 @@
                                                                 placeholder="Enter State"
                                                                 formControlName="permanentState"
                                                                 [(ngModel)]="permanentAddressInformation.state"
-                                                                (keyup)="checkLocalAddress()">
+                                                                (keyup)="checkLocalAddress();formTouch()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{
@@ -358,7 +379,7 @@
                                                                 placeholder="Enter District"
                                                                 formControlName="permanentDistrict"
                                                                 [(ngModel)]="permanentAddressInformation.district"
-                                                                (keyup)="checkLocalAddress()">
+                                                                (keyup)="checkLocalAddress();formTouch()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{ 'ContactInformationForm.City' |
@@ -366,7 +387,7 @@
                                                             <input type="text" class="form-control"
                                                                 placeholder="Enter City" formControlName="permanentCity"
                                                                 [(ngModel)]="permanentAddressInformation.city"
-                                                                (keyup)="checkLocalAddress()">
+                                                                (keyup)="checkLocalAddress();formTouch()">
                                                         </div>
                                                         <div class="col-sm-6 col-md-6 mt-10">
                                                             <label class="form-label">{{
@@ -375,7 +396,7 @@
                                                                 placeholder="Enter Village"
                                                                 formControlName="permanentVillege"
                                                                 [(ngModel)]="permanentAddressInformation.village"
-                                                                (keyup)="checkLocalAddress()">
+                                                                (keyup)="checkLocalAddress();formTouch()">
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -454,8 +475,9 @@
 
                                             <button type="submit"
                                                 [disabled]="ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched"
-                                                (click)="contactFormSubmit(contactInformation)" [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
-                                               'btn-bg-green': !ContactInfoForm.invalid || communicationAddress}"
+                                                (click)="contactFormSubmit(contactInformation)"
+                                                [ngClass]="{'disabled-btn-bg-green' : ContactInfoForm.invalid || !communicationAddress || ContactInfoForm.untouched,
+                                               'btn-bg-green': !ContactInfoForm.invalid || communicationAddress || ContactInfoForm.touched}"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
                                                 tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> Save</button>
 

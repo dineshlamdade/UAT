@@ -63,11 +63,6 @@ export class ReJoiningInformationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // if(!this.confirmMsg){
-    //   let dateOfBirth = new Date(this.birthDate);
-    //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-    //   this.ReJoiningInformationModel.rejoiningDate = '';
-    // }
     this.ReJoiningForm = this.formBuilder.group({
       rejoiningDate: ['', Validators.required],
       originalHireDate: [''],
@@ -271,16 +266,7 @@ export class ReJoiningInformationComponent implements OnInit {
         else {
           this.ReJoiningForm.get('ContinuationService').setValue('No');
         }
-
       }
-
-      // if(!this.ReJoiningInformationModel.projectedRetirementDate){
-      //   let dateOfBirth = new Date(this.birthDate);
-      //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-      // }
-      // if(this.confirmMsg){
-      //   this.ReJoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
-      // }
     })
     this.ReJoiningForm.markAsUntouched();
   }
@@ -328,19 +314,6 @@ export class ReJoiningInformationComponent implements OnInit {
   resetForm() {
     this.ReJoiningForm.reset();
   }
-  // searchEmployeeCode(value) {
-  //   setTimeout(() => {
-  //     this.EmploymentInformationService.getPreviousStintInfoBySearch(value).subscribe(res => {
-  //       this.PreviousStintInfoData = res.data.results[0];
-
-  //       if (this.continuationServiceBoolean == 'Yes' && this.PreviousStintInfoData.length>0) {
-  //         this.ReJoiningInformationModel.originalHireDate = res.data.results[0][0].originalHireDate;
-  //         this.ReJoiningInformationModel.joiningDateForGratuity = res.data.results[0][0].originalHireDate;
-  //       }
-  //       this.pushToGrid();
-  //     })
-  //   }, 1000)
-  // }
 
   pushToGrid() {
 

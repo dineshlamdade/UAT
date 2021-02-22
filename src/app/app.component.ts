@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
       }
       this.bnIdle.startWatching(2).subscribe((res) => {
         if(res) {
-            console.log("session expired");
+           // console.log("session expired"); commented by Anant
         }
       })
      }

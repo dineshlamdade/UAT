@@ -74,7 +74,8 @@ export class EmployeeSummaryComponent implements OnInit {
 
         //set default company
         let result=res.data.results[0];
-        this.companyName = result[0].payrollAreaId.companyId.companyName;
+        this.companyName = result[0].payrollAreaAndCompany; 
+        //this.companyName = result[0].payrollAreaId.companyId.companyName;
         localStorage.setItem('jobInformationCompanyName',  this.companyName);
       }
       else {
@@ -127,14 +128,14 @@ export class EmployeeSummaryComponent implements OnInit {
 
   //set PayrollArea and company name in local storage when dropdown chanegs
   selectPayrollArea(event) {
-    debugger
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
 
     const toSelect = this.filteredPayrollAreaList.find(
       (c) => c.payrollAreaCode ===  this.payrollAreaCode
     );
-    this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    //this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    this.companyName = toSelect.payrollAreaAndCompany;
     localStorage.setItem('jobInformationCompanyName',  this.companyName);
 
     this.getSummaryForm();

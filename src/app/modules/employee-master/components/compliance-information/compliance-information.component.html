@@ -10,40 +10,52 @@
                         <div class="card-body">
                             <div class="tabview">
                                 <input name="nav" type="radio" class="about-radio" id="complianceSummary"
-                                    [checked]="tabIndex==2" />
-                                <label class="nav" for="complianceSummary" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/compliance-information/compliance-summary']"
-                                    (click)="hiddenSummary = false">
+                                    [checked]="tabIndex==0" />
+                                <div class="tabs emptabs about-page" *ngIf="complianceSummaryTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="complianceSummary"  (click)="complianceSummaryTabValidation()"
+                                    [routerLink]="['/employee-master/compliance-information/compliance-summary']">
                                     <span>
                                         Summary
                                     </span>
                                 </label>
 
-                                <input name="nav" type="radio" class="about-radio" id="Input" [checked]="tabIndex==2" />
-                                <label class="nav" for="Input" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/compliance-information/input']"
-                                    (click)="hiddenSummary = false">
+                                <input name="nav" type="radio" class="about-radio" id="Input" [checked]="tabIndex==1" />
+                                <div class="tabs emptabs about-page" *ngIf="complianceInputTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="Input"  (click)="complianceInputTabValidation()"
+                                    [routerLink]="['/employee-master/compliance-information/input']">
                                     <span>
                                         Input
                                     </span>
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="complianceType"
-                                    [checked]="tabIndex==3" />
-                                <label class="nav" for="complianceType" (click)="hideSummaryGrid = true"
-                                    [routerLink]="['/employee-master/compliance-information/compliance-type']"
-                                    (click)="hiddenSummary = false">
+                                    [checked]="tabIndex==2" />
+                                <div class="tabs emptabs about-page" *ngIf="complianceTypeTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="complianceType" (click)="complianceTypeTabValidation()"
+                                    [routerLink]="['/employee-master/compliance-information/compliance-type']">
                                     <span>
                                         Compliance Type
                                     </span>
                                 </label>
 
 
-                                <div class="tabs about-page">
+                                <!-- <div class="tabs about-page">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

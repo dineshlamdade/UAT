@@ -27,7 +27,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
         this.summaryHtmlDataList = [];
         this.form = forms_1.FormGroup;
         this.form = this.formBuilder.group({
-            companyGroupCode: new forms_1.FormControl(null, forms_1.Validators.required),
+            companyGroupCode: new forms_1.FormControl(null),
             companyGroupName: new forms_1.FormControl(null, forms_1.Validators.required),
             shortName: new forms_1.FormControl(null, forms_1.Validators.required),
             startDate: new forms_1.FormControl(null, forms_1.Validators.required),
@@ -110,6 +110,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
                 if (res.data.results.length > 0) {
                     console.log('data is updated');
                     _this.alertService.sweetalertMasterSuccess('Company Group Master Updated Successfully.', '');
+                    _this.companyGroupId = 0;
                     //  this.isEditMode = false;
                     _this.form.get('companyGroupCode').disable();
                     _this.saveFormValidation();
@@ -126,7 +127,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
             });
         }
         else {
-            console.log('clcicked on new record save button');
+            console.log('clicked on new record save button');
             var companyGroupName = this.form.get('companyGroupName').value;
             var scale = this.form.get('scale').value;
             var companyGroupCode = this.form.get('companyGroupCode').value;
@@ -156,7 +157,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
         }
     };
     CompanyGroupMasterComponent.prototype.reset = function () {
-        //   this.isEditMode = false;
+        // this.isEditMode = false;
         this.companyGroupId = 0;
         this.showButtonSaveAndReset = true;
         this.companyGroupId = 0;

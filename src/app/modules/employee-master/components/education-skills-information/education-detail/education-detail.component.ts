@@ -22,7 +22,7 @@ export class EducationDetailComponent implements OnInit {
   SkillInfoForm: FormGroup;
   date = { startDate: "", endDate: "" }
   addPush: boolean;
-  public employeeEducationRequestModel = new employeeEducationRequest('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
+  public employeeEducationRequestModel = new employeeEducationRequest('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
   public employeeSkillDetailsRequestModel = new employeeSkillDetailsRequest('', '', '', '', '')
   EmptyGridTrue: boolean;
   proficiency: any;
@@ -30,10 +30,11 @@ export class EducationDetailComponent implements OnInit {
   educationList: Array<any> = [];
   SkillSetList: Array<any> = [];
   filteredSkillSetList: Array<any> = [];
-  highestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
-  filteredHighestEducationList = 'Select,Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
-  courseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
-  filteredcourseTypeList = 'Select,Full-Time, Part-Time, Correspondance'.split(',');
+  standardDurationList = 'Days,Weeks,Months,Years'.split(',');
+  highestEducationList = 'Doctorate,Post Graduate,Graduate,Technical(Professional),Higher Secondary,Senior Secondary,Non Matric,Illiterate'.split(',');
+  filteredHighestEducationList = 'Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
+  courseTypeList = 'Full-Time, Part-Time, Correspondance'.split(',');
+  filteredcourseTypeList = 'Full-Time, Part-Time, Correspondance'.split(',');
   EducationSummaryGridData: Array<any> = [];
   EducationSummaryData: Array<any> = [];
   SkillSummaryGridData: Array<any> = [];
@@ -82,6 +83,7 @@ export class EducationDetailComponent implements OnInit {
       education: ['', Validators.required],
       degreeName: [''],
       durationOfCourse: [''],
+      duration: [''],
       courseType: [''],
       location: [''],
       instituteUniversityName: [''],
@@ -109,11 +111,14 @@ export class EducationDetailComponent implements OnInit {
     temp3.disable();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
-      
+
       if (res == 'educationItemDelete') {
         this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
 
           this.getAllEducationSummary();
+          this.resetEducationForm();
+          this.educationEditFlag = false;
+          this.educationviewFlag = false;
           this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         })
       }
@@ -124,7 +129,7 @@ export class EducationDetailComponent implements OnInit {
   getAllEducationSummary() {
 
     this.EducationSkillsInformationService.getAllEducationSummary(this.employeeMasterId).subscribe(res => {
-      
+
       // this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
@@ -211,6 +216,7 @@ export class EducationDetailComponent implements OnInit {
     this.employeeEducationRequestModel.location = education.location;
     this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
     this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
+    this.employeeEducationRequestModel.durationOfCourseValue = education.durationOfCourseValue;
     this.employeeEducationRequestModel.startDate = education.startDate;
     this.employeeEducationRequestModel.endDate = education.endDate;
     this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
@@ -262,6 +268,7 @@ export class EducationDetailComponent implements OnInit {
     this.employeeEducationRequestModel.location = education.location;
     this.employeeEducationRequestModel.instituteUniversityName = education.instituteUniversityName;
     this.employeeEducationRequestModel.durationOfCourse = education.durationOfCourse;
+    this.employeeEducationRequestModel.durationOfCourseValue = education.durationOfCourseValue
     this.employeeEducationRequestModel.startDate = education.startDate;
     this.employeeEducationRequestModel.endDate = education.endDate;
     this.employeeEducationRequestModel.percentageOrCGPAOrGrade = education.percentageOrCGPAOrGrade;
@@ -316,6 +323,9 @@ export class EducationDetailComponent implements OnInit {
     this.educationviewFlag = false;
     this.validateQualification = false;
     this.employeeEducationRequestModel.employeeEducationID = 0;
+    this.employeeEducationRequestModel.education = '';
+    this.EducationInfoForm.get('education').setValue('');
+    this.employeeEducationRequestModel.durationOfCourseValue = '';
     this.resetEducationForm();
     const temp1 = this.EducationInfoForm.get('education');
     temp1.enable();
@@ -352,6 +362,9 @@ export class EducationDetailComponent implements OnInit {
     this.EducationInfoForm.reset();
     this.educationEditFlag = false;
     this.educationviewFlag = false;
+    this.employeeEducationRequestModel.education = '';
+    this.EducationInfoForm.get('education').setValue('');
+    this.employeeEducationRequestModel.durationOfCourseValue = '';
   }
 
 
@@ -602,5 +615,10 @@ export class EducationDetailComponent implements OnInit {
 
   resetSkillForm() {
     this.SkillInfoForm.reset();
+  }
+
+  clearDuration() {
+
+    this.employeeEducationRequestModel.durationOfCourse = '';
   }
 }

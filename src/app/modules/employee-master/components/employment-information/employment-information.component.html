@@ -9,7 +9,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="emptabview">
-                                <input name="nav" type="radio" class="about-radio" id="summary" [checked]="tabIndex==0"/>
+                                <input name="nav" type="radio" class="about-radio" id="summary"
+                                    [checked]="tabIndex==0" />
                                 <div class="tabs emptabs about-page" *ngIf="EmpSummaryTab==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
@@ -22,35 +23,38 @@
                                     </span>
                                 </label>
 
-                                <input name="joining" type="radio" class="about-radio" id="joining" [checked]="tabIndex==1"/>
+                                <input name="joining" type="radio" class="about-radio" id="joining"
+                                    [checked]="tabIndex==1" />
                                 <div class="tabs emptabs about-page" *ngIf="joiningTab==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
                                 <label class="nav" for="joining" [class.disabled]="employementJoiningInfoId"
-                                (click)="joiningTabValidation()"
+                                    (click)="joiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/joining-information']">
                                     <span>
                                         Joining
                                     </span>
                                 </label>
 
-                                <input name="rejoining" type="radio" class="about-radio" id="rejoining" [checked]="tabIndex==2"/>
+                                <input name="rejoining" type="radio" class="about-radio" id="rejoining"
+                                    [checked]="tabIndex==2" />
                                 <div class="tabs emptabs about-page" *ngIf="reJoiningTab==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
                                 <label class="nav" for="rejoining" [class.disabled]="!rejoiningBoolean"
-                                (click)="reJoiningTabValidation()"
+                                    (click)="reJoiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/re-joining-information']">
                                     <span>
                                         Re - Joining
                                     </span>
                                 </label>
 
-                                <input name="transfer" type="radio" class="about-radio" id="transfer" [checked]="tabIndex==3"/>
+                                <input name="transfer" type="radio" class="about-radio" id="transfer"
+                                    [checked]="tabIndex==3" />
                                 <div class="tabs emptabs about-page" *ngIf="transferTab==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
@@ -63,7 +67,7 @@
                                     </span>
                                 </label>
 
-                                <input name="exit" type="radio" class="about-radio" id="exit" [checked]="tabIndex==4"/>
+                                <input name="exit" type="radio" class="about-radio" id="exit" [checked]="tabIndex==4" />
                                 <div class="tabs emptabs about-page" *ngIf="exitTab==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
@@ -75,12 +79,6 @@
                                         Exit
                                     </span>
                                 </label>
-
-                                <!-- <div class="emptabs about-page">
-                                    <div class="tabview-contents">
-                                        <router-outlet></router-outlet>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>

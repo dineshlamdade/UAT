@@ -76,7 +76,7 @@ export class EmploymentInformationComponent implements OnInit {
     // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
     //   this.rejoiningBoolean = res.data.results[0];
     // })
-
+    
     this.employementJoiningInfoId = Number(localStorage.getItem('employementJoiningInfoId'));
 
     this.RejoiningEmployementInfoId = Number(localStorage.getItem('RejoiningEmployementInfoId'));
@@ -94,7 +94,7 @@ export class EmploymentInformationComponent implements OnInit {
 
       this.rejoiningBoolean = res.rejoinee;
       // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
-      //   debugger
+      //   
       //   this.rejoiningBoolean = res.data.results[0];
       // })
     })

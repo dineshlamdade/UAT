@@ -56,7 +56,7 @@
 
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">Relationship</label>
-                                        <select class="form-control custom-select" placeholder="Select"
+                                        <select class="form-control" placeholder="Select"
                                             (completeMethod)="filterRelationship($event)" formControlName="relation"
                                             [(ngModel)]="familyMemberInfoRequestDTO.relation"
                                             placeholder="Enter Relationship" #relation
@@ -88,10 +88,10 @@
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
                                         </p-autoComplete> -->
 
-                                        <select class="form-control custom-select" placeholder="Select"
+                                        <select class="form-control" placeholder="Select"
                                             (completeMethod)="filterGender($event)" formControlName="gender"
                                             [dropdown]="true" [(ngModel)]="familyMemberInfoRequestDTO.gender"
-                                            placeholder="Select"
+                                            placeholder="Select" (change)="validateGender()"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
                                             <option value="" selected disabled>Select</option>
                                             <option *ngFor="let gender of allGenders" [value]="gender">
@@ -102,7 +102,7 @@
 
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">Marital Status</label>
-                                        <select class="form-control custom-select" placeholder="Select"
+                                        <select class="form-control" placeholder="Select"
                                             (completeMethod)="filterMaritalStatus($event)"
                                             formControlName="maritalStatus" [dropdown]="true"
                                             [(ngModel)]="familyMemberInfoRequestDTO.maritalStatus" placeholder="Select"
@@ -133,7 +133,7 @@
                                         <label class="form-label">Aadhaar Number </label>
                                         <input type="text" class="form-control" placeholder="Enter Aadhaar No."
                                             minlength="1" maxlength="12" formControlName="aadhaar"
-                                            (keypress)="keyPress($event)"
+                                            (keypress)="keyPress($event)" (keyup)="updateAadhaarName(familyMemberInfoRequestDTO.aadhaar)"
                                             [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('aadhaar').status == 'INVALID'}"
                                             [(ngModel)]="familyMemberInfoRequestDTO.aadhaar">
                                     </div>
@@ -196,12 +196,12 @@
                                                     No</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="dependentOnEmployee == ''">
+                                        <mat-error *ngIf="!dependentOnEmployee" class="mat-error">
                                             Please Select Option</mat-error>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-5 mt-15">
+                                <div class="col-sm-6 col-md-5 mt-15 margin-left">
                                     <div class="form-group">
                                         <label class="form-label">
                                             Part Of Company Mediclaim Insurance</label>
@@ -222,25 +222,26 @@
                                                     No</span>
                                             </label>
                                         </div>
-                                        <mat-error *ngIf="companyMediclaim == ''">
+                                        <mat-error *ngIf="!companyMediclaim" class="mat-error">
                                             Please Select Option</mat-error>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row row-margin-left">
-                                <div class="col-sm-6 col-md-3">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3 row-margin-left">
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            checked formControlName="isActive" (change)="activeSetBoolean($event)"
+                                            checked formControlName="isActive" (change)="activeSetBoolean(IsActive)"
                                             [(ngModel)]="IsActive">
                                         <span class="custom-control-label">Active</span>
                                     </label>
                                 </div>
-                                <div class="col-sm-6 col-md-3 ml-35">
+                                <div class="col-sm-6 col-md-3 margin-left">
                                     <label class="form-label">Remark</label>
                                     <input type="text" class="form-control" placeholder="Enter Remark"
-                                        formControlName="remark" [(ngModel)]="familyMemberInfoRequestDTO.remark">
+                                        formControlName="remark" [(ngModel)]="familyMemberInfoRequestDTO.remark"
+                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('remark').status == 'INVALID'}">
                                 </div>
                             </div>
                         </fieldset>
@@ -254,7 +255,7 @@
                                     <label class="form-label">Phone No.</label>
                                     <div class="row">
                                         <div class="col-sm-3 col-md-4 country-code">
-                                            <select class="form-control custom-select" placeholder="Select"
+                                            <select class="form-control" placeholder="Select"
                                                 [(ngModel)]="addressCountryCode"
                                                 (completeMethod)="filtercountryCode($event)"
                                                 formControlName="addressDetailsCountryCode" placeholder="Select">
@@ -281,7 +282,7 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Copy From</label>
-                                    <select class="form-control custom-select" placeholder="Select"
+                                    <select class="form-control" placeholder="Select"
                                         (completeMethod)="filterCopyFromList($event)" #copy formControlName="copyFrom"
                                         (change)="getAddressFromCopyList(copy)" placeholder="Select">
                                         <option value="" selected disabled>Select</option>
@@ -376,7 +377,7 @@
                                     <label class="form-label">Phone No.</label>
                                     <div class="row">
                                         <div class="col-sm-3 col-md-5 country-code">
-                                            <select class="form-control custom-select" placeholder="Select"
+                                            <select class="form-control" placeholder="Select"
                                                 [(ngModel)]="guardianCountryCode"
                                                 (completeMethod)="filtercountryCode($event)"
                                                 formControlName="guardianCountryCode" placeholder="Select">
