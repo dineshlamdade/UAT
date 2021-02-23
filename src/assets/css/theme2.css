@@ -2707,3 +2707,10 @@ legend {
     /* margin-top: 3px; */
     color: #f44336;
   }
+
+  .invalid-mob-error-message{
+    font-size: 9px;
+    margin-left: 12px;
+    margin-top: 3px;
+    color: #f44336;
+  }

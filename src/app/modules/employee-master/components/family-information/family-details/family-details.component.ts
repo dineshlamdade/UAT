@@ -112,7 +112,7 @@ export class FamilyDetailsComponent implements OnInit {
       companyMediclaimToggle: ['', Validators.required],
       dependentOnEmployeeToggle: ['', Validators.required],
       addressDetailsCountryCode: [''],
-      addressDetailsMobileNumber: [''],
+      addressDetailsMobileNumber: ['', Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")],
       copyFrom: [''],
       addressDetailsAddress1: [''],
       addressDetailsAddress2: [''],
@@ -124,7 +124,7 @@ export class FamilyDetailsComponent implements OnInit {
       addressDetailsVillege: [''],
       guardianName: [''],
       guardianCountryCode: [''],
-      guardianMobileNumber: [''],
+      guardianMobileNumber: ['', Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")],
       guardianAddress1: [''],
       guardianAddress2: [''],
       guardianAddress3: [''],
@@ -261,6 +261,16 @@ export class FamilyDetailsComponent implements OnInit {
     this.FamilyDetailsInfoForm.get('guardianCountryCode').setValue('');
     const isActive = this.FamilyDetailsInfoForm.get('isActive');
     isActive.disable();
+
+    this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').clearValidators();
+    this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+    this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').clearValidators();
+    this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').updateValueAndValidity();
+
+    this.FamilyDetailsInfoForm.get('guardianMobileNumber').clearValidators();
+    this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+    this.FamilyDetailsInfoForm.get('guardianCountryCode').clearValidators();
+    this.FamilyDetailsInfoForm.get('guardianCountryCode').updateValueAndValidity();
   }
 
   getGuardianAddressFromPIN() {
@@ -454,7 +464,7 @@ export class FamilyDetailsComponent implements OnInit {
   populateGender(relation) {
 
     if (relation.value == 'Father' || relation.value == 'Brother' || relation.value == 'Son' ||
-      relation.value == 'Husband' || relation.value == 'Father in Law') {
+      relation.value == 'Husband' || relation.value == 'Father-in-law') {
       this.familyMemberInfoRequestDTO.gender = 'Male';
       this.validateGender();
     } else {
@@ -481,6 +491,8 @@ export class FamilyDetailsComponent implements OnInit {
         this.familyMemberInfoRequestDTO.ageBracket = 'Adult';
         const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
         temp13.enable();
+        this.dependentOnEmployee = '';
+        this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('');
       }
     }
 
@@ -516,15 +528,21 @@ export class FamilyDetailsComponent implements OnInit {
 
     if (this.getAge(birthDateString) >= 60 && this.getAge(birthDateString) < 80) {
       this.familyMemberInfoRequestDTO.ageBracket = 'Senior Citizen';
+      this.dependentOnEmployee = '';
+      this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('');
     }
     if (this.getAge(birthDateString) > 80) {
       this.familyMemberInfoRequestDTO.ageBracket = 'Very Senior Citizen';
+      this.dependentOnEmployee = '';
+      this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('');
     }
   }
   validateIsdependant() {
     if (this.familyMemberInfoRequestDTO.ageBracket != 'Minor') {
       const temp13 = this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle');
       temp13.enable();
+      this.dependentOnEmployee = '';
+      this.FamilyDetailsInfoForm.get('dependentOnEmployeeToggle').setValue('');
     } else {
       this.dependentOnEmployee = 'yes';
       this.familyMemberInfoRequestDTO.isDependant = 1;
@@ -574,12 +592,12 @@ export class FamilyDetailsComponent implements OnInit {
 
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
-      
+      debugger
       let num: string
       if (copyAddress.value == 'Employee Local Address') {
         if (element.local) {
           return this.familyAddressDetailRequestDTO = element.local,
-            this.familyAddressDetailRequestDTO.pinCode = element.local.pinCode,
+            this.familyAddressDetailRequestDTO.pinCode = element.local.postalCode,
             this.addressPhoneNo = element.local.phoneNumber.slice(element.local.phoneNumber.length - 10),
             num = element.local.phoneNumber,
             this.addressCountryCode = num.slice(0, num.length - 10);
@@ -588,7 +606,7 @@ export class FamilyDetailsComponent implements OnInit {
       if (copyAddress.value == 'Employee Permanent Address') {
         if (element.permanent) {
           return this.familyAddressDetailRequestDTO = element.permanent,
-            this.familyAddressDetailRequestDTO.pinCode = element.permanent.pinCode,
+            this.familyAddressDetailRequestDTO.pinCode = element.permanent.postalCode,
             this.addressPhoneNo = element.permanent.phoneNumber.slice(element.permanent.phoneNumber.length - 10),
             num = element.permanent.phoneNumber,
             this.addressCountryCode = num.slice(0, num.length - 10);
@@ -977,11 +995,115 @@ export class FamilyDetailsComponent implements OnInit {
     this.maritalStatusList = 'Single,Married,Widow,Widower,Divorced'.split(',');
     if (this.familyMemberInfoRequestDTO.gender == 'Male') {
       this.maritalStatusList.splice(2, 1);
-      this.familyMemberInfoRequestDTO.maritalStatus = '';
+      // this.familyMemberInfoRequestDTO.maritalStatus = '';
     }
     if (this.familyMemberInfoRequestDTO.gender == 'Female') {
       this.maritalStatusList.splice(3, 1);
-      this.familyMemberInfoRequestDTO.maritalStatus = '';
+      // this.familyMemberInfoRequestDTO.maritalStatus = '';
+    }
+  }
+
+  validMobNo() {
+
+    if (this.addressCountryCode && !this.addressPhoneNo) {
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+    }
+    if (!this.addressCountryCode && !this.addressPhoneNo) {
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').clearValidators();
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').clearValidators();
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').updateValueAndValidity();
+    }
+
+    if (!this.addressCountryCode && this.addressPhoneNo) {
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValidators(Validators.required);
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').updateValueAndValidity();
+    }
+  }
+
+  validCountryCode() {
+    if (this.addressPhoneNo && (this.addressPhoneNo.length > 0 && this.addressPhoneNo.length == 10) && !this.addressCountryCode) {
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValidators(Validators.required);
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').updateValueAndValidity();
+    }
+    if (this.addressPhoneNo && (this.addressPhoneNo.length > 0 && this.addressPhoneNo.length < 10) && !this.addressCountryCode) {
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').setValidators(Validators.required);
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+    }
+    if (this.addressPhoneNo && (this.addressPhoneNo.length > 0 && this.addressPhoneNo.length < 10) && this.addressCountryCode) {
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+    }
+
+    if (this.addressCountryCode && !this.addressPhoneNo) {
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+    }
+
+    if (!this.addressCountryCode && !this.addressPhoneNo) {
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').clearValidators();
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').clearValidators();
+      this.FamilyDetailsInfoForm.get('addressDetailsCountryCode').updateValueAndValidity();
+    }
+    if (this.addressPhoneNo && (this.addressPhoneNo.length > 0 && this.addressPhoneNo.length == 10) && this.addressCountryCode) {
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^[1-9a-zA-Z][0-9a-zA-Z]*$")]));
+      this.FamilyDetailsInfoForm.get('addressDetailsMobileNumber').updateValueAndValidity();
+    }
+  }
+
+  validGuardianMobNo() {
+    debugger
+    if (this.guardianCountryCode && !this.guardianPhoneNo) {
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+    }
+    if (!this.guardianCountryCode && !this.guardianPhoneNo) {
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').clearValidators();
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').clearValidators();
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').updateValueAndValidity();
+    }
+
+    if (!this.guardianCountryCode && this.guardianPhoneNo) {
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').setValidators(Validators.required);
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').updateValueAndValidity();
+    }
+  }
+
+  validGuardianCountryCode() {
+    if (this.guardianPhoneNo && (this.guardianPhoneNo.length > 0 && this.guardianPhoneNo.length == 10) && !this.guardianCountryCode) {
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').setValidators(Validators.required);
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').updateValueAndValidity();
+    }
+    if (this.guardianPhoneNo && (this.guardianPhoneNo.length > 0 && this.guardianPhoneNo.length < 10) && !this.guardianCountryCode) {
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').setValidators(Validators.required);
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+    }
+    if (this.guardianPhoneNo && (this.guardianPhoneNo.length > 0 && this.guardianPhoneNo.length < 10) && this.guardianCountryCode) {
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+    }
+
+    if (this.guardianCountryCode && !this.guardianPhoneNo) {
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+    }
+
+    if (!this.guardianCountryCode && !this.guardianPhoneNo) {
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').clearValidators();
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').clearValidators();
+      this.FamilyDetailsInfoForm.get('guardianCountryCode').updateValueAndValidity();
+    }
+    if (this.guardianPhoneNo && (this.guardianPhoneNo.length > 0 && this.guardianPhoneNo.length == 10) && this.guardianCountryCode) {
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^[1-9a-zA-Z][0-9a-zA-Z]*$")]));
+      this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();
     }
   }
 

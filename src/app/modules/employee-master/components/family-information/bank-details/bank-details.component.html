@@ -44,6 +44,7 @@
                                         <input type="text" class="form-control" [(ngModel)]="bank.bankIFSC"
                                             placeholder="Enter IFSC" (keyup)="getDataFromIFSC(bank.bankIFSC, bank)"
                                             [ngModelOptions]="{standalone: true}" maxlength="11"
+                                            tooltip="{{bank.bankIFSC}}"
                                             (ngModelChange)="bank.bankIFSC = $event?.toUpperCase()">
                                     </span></td>
 
