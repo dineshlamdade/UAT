@@ -17,7 +17,7 @@
                                         <div class="col-sm-6 col-md-3">
                                             <label class="form-label">Payroll Area</label>
                                             <select class="form-control" placeholder="Select"
-                                                formControlName="payrollAreaCode" 
+                                                formControlName="payrollAreaCode"
                                                 [ngClass]="{'is-invalid' : PayrollAreaInfoForm.get('payrollAreaCode').status == 'INVALID'}"
                                                 [(ngModel)]="PayrollAreaRequestModel.payrollAreaCode"
                                                 (change)="bankDetailsEnable(); payrollAssignValues(PayrollAreaRequestModel.payrollAreaCode)">
@@ -434,7 +434,7 @@
                                                                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
                                                                     tooltip="View"
                                                                     (click)="viewPayroll(payroll)"></i>&nbsp;&nbsp;
-                                                                <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                                <i class="fa fa-trash-o font-16 text-red cursor-pointer"
                                                                     tooltip="Delete"
                                                                     (click)="deletePayroll(payroll, confirmation)"></i>
                                                             </td>

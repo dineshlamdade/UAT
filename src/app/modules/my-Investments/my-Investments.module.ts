@@ -16,17 +16,30 @@ import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
 import { MatSliderModule } from '@angular/material/slider';
-import { EightyCComponent } from './eighty-c/eighty-c.component';
+import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingloandeclarationComponent } from './housingloan/housingloandeclaration/housingloandeclaration.component';
+import { HousingloanmasterComponent } from './housingloan/housingloanmaster/housingloanmaster.component';
+import { HousingloansummaryComponent } from './housingloan/housingloansummary/housingloansummary.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { PrimeNGModule } from '../../app.primeNG.module';
-// import { PrimeNGModule } from 'src/app/app.primeNG.module';
-
+import { PrimeNGModule } from 'src/app/app.primeNG.module';
+import { HousingrentComponent } from './housingrent/housingrent.component';
+import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
+import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
+import { HouserentsummaryComponent } from './housingrent/houserentsummary/houserentsummary.component';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-    EightyCComponent,
-   ],
+    
+    HousingloanComponent,
+    HousingloanmasterComponent,
+    HousingloansummaryComponent,
+    HousingloandeclarationComponent,
+    HousingrentComponent,
+    HouserentdeclarationComponent,
+    HouserentmasterComponent,
+    HouserentsummaryComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -53,7 +66,7 @@ import { PrimeNGModule } from '../../app.primeNG.module';
     PrimeNGModule,
   ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [ DatePipe, NumberFormatPipe ],
 
 })
 export class MyInvestmentsModule { }

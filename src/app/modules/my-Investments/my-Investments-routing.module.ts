@@ -25,6 +25,8 @@ import { ChildEducationAllowanceComponent } from './others/childEducationAllowan
 import { DonationsForScientificResearchComponent } from './VI-A/donations-for-scientific-research/donations-for-scientific-research.component';
 import { GGCComponent } from './VI-A/ggc/ggc.component';
 import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.component';
+import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingrentComponent } from './housingrent/housingrent.component';
 import { TreatmentOfSpecifiedDiseasesComponent } from './VI-A/treatment-of-specified-diseases/treatment-of-specified-diseases.component';
 
 const routes: Routes = [
@@ -156,6 +158,16 @@ const routes: Routes = [
         path:   'Chapter-VI-A-Mediclaim80D',
         component:  Mediclaim80DComponent,
         data: { title:  ':: DelziaHR :: Mediclaim80D' },
+      },
+      {
+        path:   'HousingLoan',
+        component:  HousingloanComponent,
+        data: { title: ':: DelziaHR :: HousingLoan' },
+      },
+      {
+        path:   'HouseRent',
+        component:  HousingrentComponent,
+        data: { title: ':: DelziaHR :: HouseRent' },
       },
       {
         path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
