@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class workflowService {
   apiUrl = environment.baseUrl8088;
+  apiurlSDM = environment.baseUrl8083;
   //public apiUrl = 'http://localhost:8088/hrms/v1/';
 
   
@@ -81,6 +82,13 @@ putMasterFormData(data): Observable<any>   {
     .pipe(map((res: any) => {
       return res;
     }));
+}
+
+getSdmApplicationModule() {
+  return this._HTTP.get(this.apiurlSDM + '/source-derived-matrix/derived-module-mapping/workflow/SDM/')
+  .pipe(map((res: any) => {
+    return res;
+  }));
 }
 
 }

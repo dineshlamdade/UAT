@@ -18,6 +18,7 @@ const routes: Routes = [
     loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
   },
   { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
+  { path: 'sdm', loadChildren: './modules/sdm/sdm.module#sdmModule' },
   { path: 'workflow', loadChildren: './modules/workflow/workflow.module#workflowModule' },
   {
     path: 'employee-master',

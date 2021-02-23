@@ -24,8 +24,6 @@
                                     <span *ngIf="stepperIndex !=1">1</span>
                                   </ng-template>
                                 </button>
-                                <div class="step-bar-left">q</div>
-                                <div class="step-bar-right"></div>
                              </div>
                              <div class="col-sm-3">
                                <button class="stepbutton" (click)="abc(2)">
@@ -83,7 +81,7 @@
                            </div>
 
                            <form class="card" role="form" [formGroup]="generalForm" #formDirective="ngForm" method="post" novalidate>
-
+                            <div class="tabview-contents">
                           <div [ngSwitch]="stepperIndex">
                             <div *ngSwitchCase="0" [@slideInOut]>
                                 <div class="row mt-10">
@@ -701,6 +699,7 @@
                             </div>
                             <div *ngSwitchDefault>Saved Successfully</div>
                           </div>
+                        </div>
                         </form>
                         <div class="row mt-15">
                           <div class="col-12">

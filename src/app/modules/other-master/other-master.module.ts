@@ -16,7 +16,6 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
-
 import { MatSliderModule } from '@angular/material/slider';
 import { CompanyGroupMasterComponent } from './company-group-master/company-group-master.component';
 import { CompanyMasterComponent } from './company-master/company-master.component';
@@ -36,7 +35,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     StatutoryComplianceComponent,
     EstablishmentMasterComponent,
     ComplianceMasterComponent,
-    CertificationMasterComponent
+    CertificationMasterComponent,
   ],
   imports: [
     CommonModule,

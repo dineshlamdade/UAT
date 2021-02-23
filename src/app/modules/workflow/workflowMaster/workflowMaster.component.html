@@ -17,12 +17,6 @@
                         <small *ngIf="workflowCodeFLag" class="text-red"> This code name already exist. Please enter other code name</small>
                       </div>
 
-                      <div class="col-sm-3">
-                        <label class="form-label">Description</label>
-                        <input type="text" formControlName="description" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('description').status == 'INVALID'}">
-                      </div>
-
 
                     <div class="col-sm-3">
                       <label class="form-label ml-15" placement="left">
@@ -67,24 +61,35 @@
                         </option>
                       </select> -->
                     </div>
-
+                    
+                    <div class="col-sm-3">
+                      <label class="form-label ml-15" placement="left">
+                        Change of Approver by Manager
+                      </label>
+                      <div class="custom-controls-stacked ml-15 mt-10">
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input formControlName="changeOfApproverByManager" type="radio"
+                            class="custom-control-input" [value]="true">
+                         <span class="custom-control-label">Yes</span>
+                         </label>
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input formControlName="changeOfApproverByManager" type="radio"
+                            class="custom-control-input" [value]="false">
+                         <span class="custom-control-label">No</span>
+                         </label>
+                      </div>
+                    </div>
 
 
                   </div>
                   <!-- end of row -->
                   <div class="row mt-15">
-                      <div class="col-sm-3" *ngIf="form.get('defined').value === false">
-                        <label class="form-label">Number of Approval</label>
-                        <select (change)="numberofApproverValidation($event.target.value)"
-                            formControlName="numberOfApprover" class="form-control custom-select"
-                            [ngClass]="{'is-invalid' : form.get('numberOfApprover').status == 'INVALID'}">
-                            <option [ngValue]="null">Select</option>
-                            <option *ngFor="let data of noOfApprovers"  [value]=data>
-                            {{data}}
-                          </option>
-                        </select>
-                      </div>
 
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Description</label>
+                        <textarea formControlName="description" class="form-control"></textarea>
+                      </div>
                       <div class="col-sm-3" *ngIf="form.get('defined').value === true">
                         <label class="form-label">Template Defined</label>
                         <select
@@ -95,23 +100,6 @@
                             {{data.templateCode}}
                           </option>
                         </select>
-                      </div>
-                      <div class="col-sm-3">
-                        <label class="form-label ml-15" placement="left">
-                          Change of Approver by Manager
-                        </label>
-                        <div class="custom-controls-stacked ml-15 mt-10">
-                           <label class="custom-control custom-radio custom-control-inline">
-                           <input formControlName="changeOfApproverByManager" type="radio"
-                              class="custom-control-input" [value]="true">
-                           <span class="custom-control-label">Yes</span>
-                           </label>
-                           <label class="custom-control custom-radio custom-control-inline">
-                           <input formControlName="changeOfApproverByManager" type="radio"
-                              class="custom-control-input" [value]="false">
-                           <span class="custom-control-label">No</span>
-                           </label>
-                        </div>
                       </div>
                       
                     </div>
@@ -144,7 +132,7 @@
         </form>
 
 
-          <div class="row" *ngIf="form.get('numberOfApprover').value">
+          <div class="row" *ngIf="!form.get('autoApproval').value">
             <div class="col-12">
               <div class="card">
                 <div class="mb-0">
@@ -165,22 +153,16 @@
                           <!-- <th *ngIf="arrayApproverMaster.length > form.get('numberOfApprover').value" scope="col" class="wd-5">Action</th> -->
                         </tr>
                       </thead>
-                      <tbody  *ngFor="let item of arrayApproverMaster; let i = index;">
+                      <tbody *ngFor="let item of arrayApproverMaster; let i = index; let c =count">
 
                         <tr> 
                           
                           <td> {{i+1}}
-                            <!-- <select  class="form-control custom-select">
-                              <option *ngFor="let data of sequence">
-                              {{data}}
-                              </option>
-                            </select> -->
                           </td>
 
                           <td>
-                            <select [(ngModel)]="item.sequence" class="form-control custom-select" (change)="sequenceTableValidation(i,item)"
-                            [ngClass]="{'is-invalid' : item.sequence > form.get('numberOfApprover').value}">
-                              <option *ngFor="let data of sequence[i]" [value]=data>
+                            <select [(ngModel)]="item.sequence" class="form-control custom-select">
+                              <option *ngFor="let data of sequence" [value]=data>
                               {{data}}
                               </option>
                             </select>
@@ -203,30 +185,35 @@
                           </td>
                           <td>
                             <select [(ngModel)]="item.sdm" [ngClass]="{'is-invalid' : (item.sdm === null)}"  [disabled]="item.approverMethod == 'Reporting Manager'" class="form-control custom-select">
-                                <option *ngFor="let data of dummyArray">
-                                {{data}}
+                              <option *ngFor="let item of sdmApplicabilityArray"
+                              [value]="item.sdmMaster.sdmMasterId">
+                              {{item.sdmMaster.sdmName}}
                                 </option>
                             </select>
                           </td>
                           <td>
-                            <select [(ngModel)]="item.treatmentUnActionedPlan" [ngClass]="{'is-invalid' : (item.treatmentUnActionedPlan === null)}" (change)="unactionedAppValidation(i)" class="form-control custom-select">
+                            <select [(ngModel)]="item.treatmentUnActionedPlan" [ngClass]="{'is-invalid' : (item.treatmentUnActionedPlan === null)}" class="form-control custom-select">
                               <option *ngFor="let data of treatmentUnActionedPlanArray">
                               {{data}}
                               </option>
                             </select>
                           </td>
                           <td>
-                            <input type="text"  [(ngModel)]="item.numberOfDays" min="0" class="form-control" [ngClass]="{'is-invalid' : (item.numberOfDays === null)}">
+                            <input type="number"  [(ngModel)]="item.numberOfDays" min="0" class="form-control" [ngClass]="{'is-invalid' : (item.numberOfDays === null)}">
                           </td>
                           <td>
                             <i *ngIf="item.treatmentUnActionedPlan === 'Reassign'" class="fa fa-plus-circle font-16 text-blue cursor-pointer ml-3"
                             tooltip="Add Reassign Method" (click)="reassignedValidation(template, item)"></i>
-                            <i *ngIf="deleteApproverListsButtonShow" class="fa fa-trash font-16 text-red cursor-pointer ml-3"
-                            tooltip="Delete" (click)="hideApproverDeleteOption(i)"></i>
+                            <i *ngIf="c !=1" class="fa fa-trash font-16 text-red cursor-pointer ml-3"
+                            tooltip="Delete" (click)="deleteApprover(i)"></i>
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    <div class="float-right mb-15">
+                    <button (click)="addAprrover()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+                      <b><i class="fa fa-plus"></i></b> Add Approver</button>
+                      </div>
                 </div>
                 
                
@@ -365,7 +352,7 @@
 
                                   <td>
                                     <i class="fa fa-pencil font-16 text-blue cursor-pointer ml-3"
-                                    tooltip="Edit" (click)="editReassignMethodDetails(item)"></i>
+                                    tooltip="Edit" (click)="editReassignMethodDetails(item, i)"></i>
                                     <i class="fa fa-trash font-16 text-red cursor-pointer ml-3"
                                     tooltip="Delete" (click)="deleteReassignMethodDetails(i)"></i>
                                   </td>
@@ -375,7 +362,7 @@
 
                             <tr>
                               <td>
-                                {{reassignedSequenceArrayForm.get('approverMethod').sequence}}
+                                {{reassignedSequenceArrayForm.get('sequence').value}}
                               </td>
                               <td>
                                 <select

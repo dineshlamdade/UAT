@@ -19,11 +19,12 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { PayrollComponent } from './payroll.component';
 import { PayrollAreaMasterComponent } from './payrollAreaMaster/payrollAreaMaster.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { YesNoPipe } from '../../core/utility/pipes/yesNo.pipe';
 
 
 @NgModule({
   declarations: [PayrollComponent,
-    PayrollAreaMasterComponent],
+    PayrollAreaMasterComponent,],
   imports: [
       PayrollRoutingModule,
     CommonModule,
@@ -49,7 +50,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     SharedlayoutModule,
   ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [ DatePipe, NumberFormatPipe,
+    YesNoPipe],
 
 })
 export class PayrollModule { }

@@ -1,7 +1,7 @@
 import { CompanySettingsService } from './../company-settings.service';
 import { AlertServiceService } from './../../../core/services/alert-service.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { HostListener } from '@angular/core';
+import { ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { trigger, transition, animate, style } from '@angular/animations'
@@ -49,7 +49,7 @@ export class LoanMasterComponent implements OnInit {
   interval;
   stepperIndex= 0;
 
-
+  @ViewChild('step1') step1Element: ElementRef;
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private service: CompanySettingsService,

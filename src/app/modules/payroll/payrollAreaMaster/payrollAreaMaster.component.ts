@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { PayrollService } from '../payroll.service';
 
 @Component({
   selector: 'app-payrollAreaMaster',
@@ -15,22 +16,29 @@ export class PayrollAreaMasterComponent implements OnInit {
   public selectedItems = [];
   public dropdownSettings: IDropdownSettings = {};
 
-  constructor(private formBuilder: FormBuilder,) {
-    
-    
+  constructor(private formBuilder: FormBuilder,
+    private service: PayrollService) {
     this.form = this.formBuilder.group({
-      code: new FormControl(null),
-      description: new FormControl(null),
-      id: new FormControl(0),
-      numberOfApprover: new FormControl(null),
-      changeOfApproverByManager: new FormControl(null),
+      payrollAreaId: new FormControl(null),
+      payrollAreaCode: new FormControl(null, Validators.required),
+      payrollAreaDescription: new FormControl(null),
+      headGroupDefinitionId: new FormControl(0),
+      currency: new FormControl(null),
+      companyId: new FormControl(null),
+      businessCycleDefinitionId: new FormControl(null),
       policyStartDate: new FormControl(null),
-      active: new FormControl(null),
+      defaultAttendace: new FormControl(null),
+      defaultLanguage: new FormControl(null),
+      minNetPaySDM: new FormControl(null),
+      effectiveFromDate: new FormControl(null),
+      effectiveToDate: new FormControl(null),
+      isActive: new FormControl(null),
       remark: new FormControl(null),
     });
    }
 
   ngOnInit() {
+    this.onPageLoad()
     this.dropdownList = [
       { item_id: 1, item_text: 'Mumbai' },
       { item_id: 2, item_text: 'Bangaluru' },
@@ -52,13 +60,14 @@ export class PayrollAreaMasterComponent implements OnInit {
       allowSearchFilter: true
     };
   }
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
 
-  setPolicyEndDate() {}
+  onPageLoad() {
+    this.service.getPayrollAreaDetails().subscribe((data)=>{
+      console.log(data)
+    })
+    this.service.getBussinessCycleDetails().subscribe((data)=>{
+      console.log(data)
+    })
+  }
 
 }

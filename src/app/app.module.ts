@@ -58,12 +58,12 @@ import { investmentOthersModule } from './modules/my-Investments/others/others.m
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
+import { sdmModule } from './modules/sdm/sdm.module';
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     SettingsComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -71,6 +71,7 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
     DashboardModule,
     PayrollModule,
     MyInvestmentsModule,
+    sdmModule,
     compannySettingsModule,
     EightyCModule,
     ProfileModule,

@@ -12,7 +12,7 @@ const routes: Routes = [
       {
         component:  PayrollAreaMasterComponent,
         data: { title: ':: DelziaHR :: Area Master' },
-        path:   'payroll-area-master',
+        path:   'area-master',
         },
       ],
       canActivate: [AuthGuard],

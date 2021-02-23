@@ -12,14 +12,13 @@
                     <div class="row">
                       <div class="col-sm-3">
                         <label class="form-label">Code</label>
-                        <input type="text" formControlName="code" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('code').status == 'INVALID'}">
+                        <input type="text" formControlName="payrollAreaCode" class="form-control"
+                        [ngClass]="{'is-invalid' : form.get('payrollAreaCode').status == 'INVALID'}">
                       </div>
 
                       <div class="col-sm-3">
                         <label class="form-label">Description</label>
-                        <input type="text" formControlName="description" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('description').status == 'INVALID'}">
+                        <input type="text" formControlName="payrollAreaDescription" class="form-control">
                       </div>
 
 
@@ -27,15 +26,13 @@
                       <label class="form-label ml-15" placement="left">
                         Cycle Definition
                       </label>
-                      <ng-multiselect-dropdown
-                      [placeholder]="'custom placeholder'"
-                      [settings]="dropdownSettings"
-                      [data]="dropdownList"
-                      [(ngModel)]="selectedItems"
-                      (onSelect)="onItemSelect($event)"
-                      (onSelectAll)="onSelectAll($event)" [ngModelOptions]="{standalone: true}"
-                    >
-                    </ng-multiselect-dropdown>
+                      <select formControlName="businessCycleDefinitionId" class="form-control custom-select"
+                          [ngClass]="{'is-invalid' : form.get('businessCycleDefinitionId').status == 'INVALID'}">
+                          <option [ngValue]="null">Select</option>
+                          <option *ngFor="let data of noOfApprovers"  [value]=data>
+                          {{data}}
+                        </option>
+                      </select>
                     </div>
 
                     <div class="col-sm-3">
@@ -43,8 +40,8 @@
                         PHG
                       </label>
                         <select
-                            formControlName="numberOfApprover" class="form-control custom-select"
-                            [ngClass]="{'is-invalid' : form.get('numberOfApprover').status == 'INVALID'}">
+                            formControlName="headGroupDefinitionId" class="form-control custom-select"
+                            [ngClass]="{'is-invalid' : form.get('headGroupDefinitionId').status == 'INVALID'}">
                             <option [ngValue]="null">Select</option>
                             <option *ngFor="let data of noOfApprovers"  [value]=data>
                             {{data}}
@@ -60,8 +57,8 @@
                       <div class="col-sm-3">
                         <label class="form-label">Currency</label>
                           <select
-                              formControlName="numberOfApprover" class="form-control custom-select"
-                              [ngClass]="{'is-invalid' : form.get('numberOfApprover').status == 'INVALID'}">
+                              formControlName="currency" class="form-control custom-select"
+                              [ngClass]="{'is-invalid' : form.get('currency').status == 'INVALID'}">
                               <option [ngValue]="null">Select</option>
                               <option *ngFor="let data of noOfApprovers"  [value]=data>
                               {{data}}
@@ -118,9 +115,9 @@
                     <div class="row mt-15">
                       <div class="col-sm-3">
                         <label class="form-label ml-15" placement="left">
-                         Company
+                          Company
                         </label>
-                          <select formControlName="numberOfApprover" class="form-control custom-select"
+                        <select formControlName="numberOfApprover" class="form-control custom-select"
                             [ngClass]="{'is-invalid' : form.get('numberOfApprover').status == 'INVALID'}">
                               <option [ngValue]="null">Select</option>
                               <option *ngFor="let data of noOfApprovers"  [value]=data>
