@@ -43,11 +43,11 @@ export class AppComponent implements OnInit {
           this.updateLocale(this.selectedLanguage);
         }
       }
-      this.bnIdle.startWatching(2).subscribe((res) => {
-        if(res) {
-            console.log("session expired");
-        }
-      })
+      // this.bnIdle.startWatching(2).subscribe((res) => {
+      //   if(res) {
+      //       console.log("session expired");
+      //   }
+      // })
      }
   public ngOnInit(): void {
     // if (this.router.getCurrentNavigation() === null) {

@@ -1,17 +1,10 @@
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { PreloadModulesStrategy } from './core/strategies/preload-module.strategy';
-
-//////////////////
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-import {HeadcreationComponent} from './modules/companysetting/headcreation/headcreation.component';
-import {AttributecreationComponent} from './modules/companysetting/attributecreation/attributecreation.component';
-import {AttributeselectionComponent} from './modules/companysetting/attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
 
 
-////////////////////
+
+
 
 
 const routes: Routes = [
@@ -30,6 +23,12 @@ const routes: Routes = [
     loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
   },
 
+  {
+    path: 'PayrollInputs',
+    loadChildren: './modules/payroll-inputs/payroll-inputs.module#PayrollInputsModule'
+  },
+
+
   { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
   { path: 'workflow', loadChildren: './modules/workflow/workflow.module#workflowModule' },
   
@@ -38,44 +37,10 @@ const routes: Routes = [
     loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
   },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
-  // { path: 'company-setting', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
-  // { path: 'company-setting', 
-  // loadChildren: './modules/company-setting/company-setting.module#Company-setting' },
+  
   
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
-  { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
-
-
-    //////////////////////////////////////////
-    
-    // {
-    //   path: 'payroll',
-    //   component: payrollComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'headcreation',
-    //   component: HeadcreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'attributecreation',
-    //   component: AttributecreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'attributeselection',
-    //   component: AttributeselectionComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'payrollheadgroupcreation',
-    //   component: PayrollheadgroupcreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-  
-  
-    ///////////////////////////////////////////////////
+  { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },   
 ];
 
 @NgModule({

@@ -26,36 +26,39 @@ export class GarnishmentMasterComponent implements OnInit {
   isSaveAndReset: boolean = true;
   isEditMode: boolean = false;
   tempObjForGarnishmentMaster: any;
+  tempObjForComplianceHeadMaster: any;
+  tempObjForInstitutionMaster: any;
   public form: any = FormGroup;
- // GarnishmentService: any;
+  // GarnishmentService: any;
   formulaList: Array<any> = [];
   sdmList: Array<any> = [];
   frequencyList: Array<any> = [];
   arningHeadlist: Array<any> = [];
   hideRemarkDiv: boolean;
-  documentId:number=0;
+  documentId: number = 0;
 
- // thirdPartyMasterId: number = 0;
-  incomeTexList:  Array<any> = [];
-  countryList:  Array<any> = [];
-  pinCodeList:  Array<any> = [];
+  // thirdPartyMasterId: number = 0;
+  incomeTexList: Array<any> = [];
+  countryList: Array<any> = [];
+  pinCodeList: Array<any> = [];
   complianceHeadNameList: Array<any> = [];
-  complianceInstitutionMasterDetails:Array<any> = [];
-  complianceInstitutionMasterDetails1:Array<any> = [];
+  complianceInstitutionMasterDetails: Array<any> = [];
+  complianceInstitutionMasterDetails1: Array<any> = [];
   MasterHead: Array<any> = [];
- 
-  
 
 
-  constructor(private formbuilder: FormBuilder, private garnishmentService: GarnishmentService,
-    private alertService: AlertServiceService) {
+
+
+  constructor(private formbuilder: FormBuilder,
+     private garnishmentService: GarnishmentService,
+    private alertService: AlertServiceService) 
+    {
     this.form = this.formbuilder.group({
-      nameOfInstitution: new FormControl('',  Validators.required),
+      nameOfInstitution: new FormControl('', Validators.required),
       complianceHeadName: new FormControl(''),
       label: new FormControl(''),
       documentId: new FormControl(1),
       headMasterId: new FormControl(null, Validators.required),
-    
       thirdPartyMasterId: new FormControl(0),
       description: new FormControl(null, Validators.required),
       contactNumber: new FormControl('', [Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
@@ -80,35 +83,35 @@ export class GarnishmentMasterComponent implements OnInit {
       remark: new FormControl(null, Validators.required),
       active: new FormControl('0'),
       generalRemark: new FormControl(null, Validators.required),
-     
+
     });
-    
+
 
   }
 
 
   ngOnInit(): void {
     this.refreshHtmlTableData();
-     // -------------------- Get All  country -------------------------
-      this.garnishmentService.getLocationInformationOrCountryList().subscribe((res) => {
-        console.log('country', res);
-        const test2 = res.data.results;
-        test2.forEach((element) => {
-  
-          const obj = {
-            label: element,
-            value: element,
-          };
-          this.countryList.push(obj);
-        });
-      });
+    // -------------------- Get All  country -------------------------
+    this.garnishmentService.getLocationInformationOrCountryList().subscribe((res) => {
+      console.log('country', res);
+      const test2 = res.data.results;
+      test2.forEach((element) => {
 
-     // -------------------- Get All  Heads -------------------------
+        const obj = {
+          label: element,
+          value: element,
+        };
+        this.countryList.push(obj);
+      });
+    });
+
+    // -------------------- Get All  Heads -------------------------
     this.garnishmentService.getloanMasterAllDeductionHead().subscribe((res) => {
       this.MasterHead = res;
       console.log('dedection', res);
-     
-    res.forEach((element) => {
+
+      res.forEach((element) => {
 
         const obj = {
           label: element.standardName,
@@ -170,7 +173,7 @@ export class GarnishmentMasterComponent implements OnInit {
       });
     });
 
-     //-----------------------Get  compliance  head  Name  API ------------------------------
+    //-----------------------Get  compliance  head  Name  API ------------------------------
 
     //  this.garnishmentService.getComplianceHeadNane().subscribe((res) => {
     //   console.log(res);
@@ -183,9 +186,9 @@ export class GarnishmentMasterComponent implements OnInit {
     //     this.complianceHeadNameList.push(obj);
     //   });
     // });
-     this.garnishmentService.getComplianceHeadNane().subscribe((res) => {
-      this.tempObjForGarnishmentMaster = res.data.results;
-      console.log('tempObjForGarnishmentMaster:', this.tempObjForGarnishmentMaster);
+    this.garnishmentService.getComplianceHeadNane().subscribe((res) => {
+      this.tempObjForComplianceHeadMaster = res.data.results;
+      console.log('getComplianceHeadNane:', this.tempObjForComplianceHeadMaster);
       res.data.results.forEach((element) => {
         const obj = {
           label: element.complianceHeadName,
@@ -195,26 +198,26 @@ export class GarnishmentMasterComponent implements OnInit {
       });
     });
 
- //-----------------------Get Institution API api------------------------------
+    //-----------------------Get Institution API api------------------------------
     this.garnishmentService.getInstitutionMaster().subscribe((res) => {
-      this.tempObjForGarnishmentMaster = res.data.results;
-      console.log('tempObjForGarnishmentMaster:', this.tempObjForGarnishmentMaster);
+      this.tempObjForInstitutionMaster = res.data.results;
+      console.log('getInstitutionMaster:', this.tempObjForInstitutionMaster);
       res.data.results.forEach((element) => {
-        const obj = {
-          label: element.institutionName,
-          value: element.institutionName,
-        };
-        this.complianceInstitutionMasterDetails1.push(obj);
+        // const obj = {
+        //   label: element.institutionName,
+        //   value: element.institutionName,
+        // };
+        // this.complianceInstitutionMasterDetails.push(obj);
       });
     });
 
-   
 
-this.deactivateRemark();
 
-    
+    this.deactivateRemark();
 
-   //-----------------------All data Get API------------------------------
+
+
+    //-----------------------All data Get API------------------------------
     // this.garnishmentService.getGarnishmentMaster().subscribe(data => this.success(data), err => this.failed(err));
 
     // console.log('showButtonSaveAndReset::', this.showButtonSaveAndReset);
@@ -224,14 +227,14 @@ this.deactivateRemark();
   // success(res) {
   //   console.log('summaryHtmlDataList::', res);
   //   this.summaryHtmlDataList = res.data.results;
-  
+
   //   console.log('summaryHtmlDataList2::', this.summaryHtmlDataList);
-// }
+  // }
 
   // failed(data) {
   //   console.log('err',data)
   // }
-checkLocalAddress() {
+  checkLocalAddress() {
   }
   getPermanentAddressFromPIN() {
     console.log(this.form.get('pinCode').value);
@@ -244,7 +247,7 @@ checkLocalAddress() {
         console.log(res);
         this.form.get('state').setValue(res.data.results[0].state);
         this.form.get('city').setValue(res.data.results[0].city);
-       
+
 
       }, (error: any) => {
         this.alertService.sweetalertError(error['error']['status']['messsage']);
@@ -259,7 +262,7 @@ checkLocalAddress() {
     this.garnishmentService.getGarnishmentMaster().subscribe(res => {
       this.summaryHtmlDataList = [];
       this.companyRegistrationMasterList = res.data.results;
-      
+
       let i = 1;
       this.masterGridDataList = res.data.results;
       res.data.results.forEach(element => {
@@ -267,7 +270,7 @@ checkLocalAddress() {
         const obj = {
           SrNo: i++,
           nameOfInstitution: element.nameOfInstitution,
-          complianceHeadName:element.complianceHeadName,
+          complianceHeadName: element.complianceHeadName,
           thirdPartyMasterId: element.thirdPartyMasterId,
           description: element.description,
           contactPerson: element.contactPerson,
@@ -291,13 +294,13 @@ checkLocalAddress() {
           familyMember: element.familyMember,
           documentId: element.documentId,
           remark: element.remark,
-          isActive:element.isActive,
+          isActive: element.isActive,
 
         };
-        if(element.isActive == false){
+        if (element.isActive == false) {
           this.summaryHtmlDataList.push(obj);
         }
-       var s = this.complianceInstitutionMasterDetails.findIndex(function (o) {
+        var s = this.complianceInstitutionMasterDetails.findIndex(function (o) {
           return o.thirdPartyMasterId === obj.thirdPartyMasterId;
         });
         if (s !== -1) {
@@ -339,10 +342,10 @@ checkLocalAddress() {
       const data = {
         nameOfInstitution: this.form.get('nameOfInstitution').value,
         complianceHeadName: this.form.get('complianceHeadName').value,
-       thirdPartyMasterId: this.form.get('thirdPartyMasterId').value,
+        thirdPartyMasterId: this.form.get('thirdPartyMasterId').value,
         documentId: this.form.get('documentId').value,
         headMasterId: this.form.get('headMasterId').value,
-        description:this.form.get('description').value,
+        description: this.form.get('description').value,
         contactPerson: this.form.get('contactPerson').value,
         contactNumber: this.form.get('contactNumber').value,
         emailId: this.form.get('emailId').value,
@@ -360,20 +363,20 @@ checkLocalAddress() {
         formula: this.form.get('formula').value,
         sdm: this.form.get('sdm').value,
         frequency: this.form.get('frequency').value,
-        investmentSection:this.form.get('investmentSection').value,
-        familyMember:this.form.get('familyMember').value,
-         remark:this.form.get('remark').value
+        investmentSection: this.form.get('investmentSection').value,
+        familyMember: this.form.get('familyMember').value,
+        remark: this.form.get('remark').value
 
 
       };
-      console.log('garnishment Data',data);
+      console.log('garnishment Data', data);
       console.log(JSON.stringify(data));
 
       this.garnishmentService.updateGarnishmentMasterDetails(data).subscribe(res => {
         console.log('after save..', res);
         if (res.data.results.length > 0) {
           console.log('data is updated');
-          
+
           this.alertService.sweetalertMasterSuccess(res.data.messsage, '');
           this.form.get('nameOfInstitution').disable();
           this.isSaveAndReset = true;
@@ -396,10 +399,9 @@ checkLocalAddress() {
       const data = {
         nameOfInstitution: this.form.get('nameOfInstitution').value,
         complianceHeadName: this.form.get('complianceHeadName').value,
-        
-          documentId: this.form.get('documentId').value,
-          headMasterId: this.form.get('headMasterId').value,
-          description:this.form.get('description').value,
+        documentId: this.form.get('documentId').value,
+        headMasterId: this.form.get('headMasterId').value,
+        description: this.form.get('description').value,
         contactPerson: this.form.get('contactPerson').value,
         contactNumber: this.form.get('contactNumber').value,
         emailId: this.form.get('emailId').value,
@@ -417,72 +419,136 @@ checkLocalAddress() {
         formula: this.form.get('formula').value,
         sdm: this.form.get('sdm').value,
         frequency: this.form.get('frequency').value,
-        investmentSection:this.form.get('investmentSection').value,
-        familyMember:this.form.get('familyMember').value,
-        remark:this.form.get('remark').value
+        investmentSection: this.form.get('investmentSection').value,
+        familyMember: this.form.get('familyMember').value,
+        remark: this.form.get('remark').value
       };
       // console.log("before save",data)
       this.garnishmentService.postGarnishmentMaster(data).subscribe(res => {
-        console.log("before save",data)
+        console.log("before save", data)
         // console.log("after save",res);
         if (res.data.results.length > 0) {
           this.alertService.sweetalertMasterSuccess('Garnishment master Details Saved Successfully.', '');
           this.form.reset();
-         
+
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
         this.form.reset();
         this.refreshHtmlTableData();
-      }, 
+      },
 
-      (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        (error: any) => {
+          this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
-      });
+        });
     }
   }
 
-  onSelectHeadName(evt:any){
+
+  onSelectMasterHead(evt: any) {
     console.log(evt.target.value)
-    this.form.get('nameOfInstitution').setValue(evt.target.value);
+    const toSelect = this.MasterHead.find(
+      (c) => c.standardName === evt.target.value
+    );
+    this.form.get('headMasterId').setValue(toSelect.headMasterId);
 
-    this.complianceInstitutionMasterDetails1 = this.complianceInstitutionMasterDetails.filter
-    (complianceHeadName => complianceHeadName.value == evt.target.value);
-     
-  
   }
- onSelectMasterHead(evt:any){
-  console.log(evt.target.value)
-  const toSelect = this.MasterHead.find(
-    (c) => c.standardName === evt.target.value
-  );
-  this.form.get('headMasterId').setValue(toSelect.headMasterId);
 
- }
 
-  onSelectThirdPartyMasterId(evt: any) {
-   console.log('tempObjForGarnishmentMaster', this.tempObjForGarnishmentMaster);
+  // onSelectHeadName(evt: any) {
+  //   this.tempObjForInstitutionMaster="";
+    
+  //   let temp = this.complianceHeadNameList.find(o => 
+  //   o.complianceHead === evt.target.value);
+    
+  //   if (temp) {
+  //     this.complianceInstitutionMasterDetails = temp.complianceInstitutionMasterDetails;
+  //     if(this.complianceInstitutionMasterDetails)
+  //     {
+  //       this.tempObjForInstitutionMaster=this.complianceInstitutionMasterDetails;       
+  //     }
+      
+  //   } else {
+  //     this.complianceInstitutionMasterDetails = [];
+  //   }
+  // }
 
-    let temp = this.tempObjForGarnishmentMaster.find
-  (o => o.institutionName == this.form.get('nameOfInstitution').value);
-    console.log('temp::',temp);
+onSelectHeadName(evt: any) {
+  this.complianceInstitutionMasterDetails=[];
+    console.log(evt.target.value)
+    let temp2 = this.tempObjForComplianceHeadMaster.find
+      (o => o.complianceHeadName === evt.target.value);
+    console.log('temp2::', temp2);
+
+    let temp = this.tempObjForInstitutionMaster.find
+      (o => o.complianceHeadId === temp2.complianceHeadId);
+    console.log('temp::', temp);
+    const obj = {
+      label: temp.institutionName,
+      value: temp.institutionName,
+    };
+    this.complianceInstitutionMasterDetails.push(obj);
+
+   // this.complianceInstitutionMasterDetails.push(institutionName);
+ 
+
+    // this.form.get('nameOfInstitution').setValue(temp.institutionName);
     this.form.patchValue({
-
       address1: temp.address1,
       address2: temp.address2,
       city: temp.city,
       country: temp.country,
       emailId: temp.emailId,
       pinCode: temp.pinCode,
-      state : temp.state,
-      contactNumber:temp.telephoneNumber,
-      villege : temp.village,
-      address3 : temp.address3,
+      state: temp.state,
+      contactNumber: temp.contactNumber,
+      villege: temp.village,
+      address3: temp.address3,
     });
+  }
+
+    // const toSelect = this.MasterHead.find(
+    //   (c) => c.standardName === evt.target.value
+    // );
+
+    // this.complianceInstitutionMasterDetails1 = this.complianceInstitutionMasterDetails.filter
+    // (complianceHeadName => complianceHeadName.value == evt.target.value);
+  // }
+
+  //----------- Family relationship shown on Policyholder selection ---------------
+  //  OnSelectionfamilyMemberGroup() {
+  //   const toSelect = this.familyMemberGroup.find(
+  //     (c) => c.familyMemberName === this.form.get('policyholdername').value
+  //   );
+  //   this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  //   this.form.get('relationship').setValue(toSelect.relation);
+  // }
+
+
+
+
+  onSelectThirdPartyMasterId(evt: any) {
+    console.log('tempObjForInstitutionMaster', this.tempObjForInstitutionMaster);
+
+    // let temp = this.tempObjForInstitutionMaster.find
+    //   (o => o.institutionName == this.form.get('nameOfInstitution').value);
+    // console.log('temp::', temp);
+    // this.form.patchValue({
+    //   address1: temp.address1,
+    //   address2: temp.address2,
+    //   city: temp.city,
+    //   country: temp.country,
+    //   emailId: temp.emailId,
+    //   pinCode: temp.pinCode,
+    //   state: temp.state,
+    //   contactNumber: temp.contactNumber,
+    //   villege: temp.village,
+    //   address3: temp.address3,
+    // });
 
   }
- 
+
 
   editMaster(i: number) {
     console.log(i);
@@ -492,12 +558,13 @@ checkLocalAddress() {
     this.showButtonSaveAndReset = true;
     this.form.enable();
     this.form.reset();
-    
+
     this.form.patchValue(this.summaryHtmlDataList[i]);
+    this.form.get('complianceHeadName').disable();
     this.form.get('nameOfInstitution').disable();
     console.log(this.form.value);
 
-    
+
 
   }
 
@@ -528,13 +595,13 @@ checkLocalAddress() {
     this.nameOfInstitution = 0;  // for save it should be 0 and update it should have any integer value
 
   }
-  deleteMaster(masterid:number){
+  deleteMaster(masterid: number) {
     console.log(masterid);
     this.garnishmentService.deleteGarnishmentMasterDetails(masterid)
-    .subscribe(()=>{
-      this.alertService.sweetalertMasterSuccess('Garnishment master Details Deleted successfully', '');
-      // this.summaryHtmlDataList.splice(masterid, thirdPartyMasterId);
-    })
+      .subscribe(() => {
+        this.alertService.sweetalertMasterSuccess('Garnishment master Details Deleted successfully', '');
+        // this.summaryHtmlDataList.splice(masterid, thirdPartyMasterId);
+      })
   }
 
   // removeSelectedRow(index: number) {

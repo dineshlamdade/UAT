@@ -1,10 +1,7 @@
 import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
-
 import { DragDropModule } from '@angular/cdk/drag-drop';
-// transloco
-// import your locales
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeGb from '@angular/common/locales/en-GB';
@@ -58,6 +55,9 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 
+import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.module';
+
+
 
 
 
@@ -68,6 +68,7 @@ import { CompanySettingModule } from './modules/companysetting/companysetting.mo
     AppComponent,
     ProfileComponent,
     SettingsComponent,
+   
 
   ],
   imports: [
@@ -75,11 +76,10 @@ import { CompanySettingModule } from './modules/companysetting/companysetting.mo
     AuthModule,
     DashboardModule,
     PayrollModule,
-/////////////////
-  //  payrollModule,
+
     CompanySettingModule,
-////////////////////////////////
     MyInvestmentsModule,
+    PayrollInputsModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,
@@ -104,7 +104,7 @@ import { CompanySettingModule } from './modules/companysetting/companysetting.mo
     AppRoutingModule,
     DashboardModule,
     MyInvestmentsModule,
-    PayrollModule,
+  
     EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,

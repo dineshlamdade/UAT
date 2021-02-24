@@ -938,6 +938,10 @@ strong {
   color: #38b449!important;
 }
 
+.text-center {
+  text-align: center!important;
+}
+
 .inline_center {
   display: inline!important;
 }
@@ -983,6 +987,14 @@ strong {
   color: #000!important;
 }
 
+.action-button {
+  background-color: #fff!important;
+  border: 1px solid #999!important;
+  border-radius: 5px!important;
+  padding: 7px;
+  margin-right: 8px;
+}
+
 .padding-right-2 {
   padding-right: 2px!important;
 }
@@ -993,6 +1005,10 @@ strong {
 
 .d-flex {
   display: flex!important;
+}
+
+.mt_2 {
+  margin-top: -2px!important;
 }
 
 
@@ -1099,6 +1115,10 @@ strong {
 
 .wd-20 {
   width: 20%!important;
+}
+
+.wd-23 {
+  width: 23%!important;
 }
 
 .wd-25 {
@@ -1640,8 +1660,8 @@ button:focus {
   border-radius: 13px;
   border: 2px solid #ddd;
   /* // -webkit-transform: translate(-50%,-50%);
-  //     -ms-transform: translate(-50%,-50%);
-  //         transform: translate(-50%,-50%); */
+//     -ms-transform: translate(-50%,-50%);
+//         transform: translate(-50%,-50%); */
 }
 
 .image-size-info {
@@ -1676,7 +1696,7 @@ button:focus {
 
 
 /* .p-button-label {
-  visibility: hidden !important;
+visibility: hidden !important;
 } */
 
 .p-inputtext:invalid {
@@ -2506,4 +2526,26 @@ CSS for the main interaction
   font-size: 45px;
   padding: 20px;
   text-align: center;
+}
+
+.border-card {
+  border: 2px solid #ddd!important;
+  background: #f2f2f2!important;
+}
+
+.border-dark-card {
+  border: 2px solid #999!important;
+  background: #ddd!important;
+}
+
+.radius {
+  border-radius: 10px!important;
+}
+
+.justify-content-center {
+  justify-content: center!important;
+}
+
+.mt-7 {
+  margin-top: 7px!important;
 }

@@ -3,7 +3,7 @@ import { HeadcreationComponent } from './headcreation/headcreation.component';
 import { AttributecreationComponent } from './attributecreation/attributecreation.component';
 import { AttributeselectionComponent } from './attributeselection/attributeselection.component';
 import { PayrollheadgroupcreationComponent } from './payrollheadgroupcreation/payrollheadgroupcreation.component';
-import { FinancialMasterComponent } from './payroll/financial-master/financial-master.component';
+// import { FinancialMasterComponent } from './payroll/financial-master/financial-master.component';
 import { GarnishmentMasterComponent } from './payroll/garnishment-master/garnishment-master.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -46,11 +46,11 @@ const routes: Routes = [
             data: { title: ':: Garnishment-Master' },
           },
 
-          {
-            path:   'Financial-Master',
-            component:  FinancialMasterComponent,
-            data: { title: '::Financial-Master' },
-          },
+          // {
+          //   path:   'Financial-Master',
+          //   component:  FinancialMasterComponent,
+          //   data: { title: '::Financial-Master' },
+          // },
 
     ],
 

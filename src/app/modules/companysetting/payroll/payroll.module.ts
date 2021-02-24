@@ -15,7 +15,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 import { GarnishmentMasterComponent } from './garnishment-master/garnishment-master.component';
-import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CompanySettingRoutingModule } from '../companysetting.routing.module';
 import {TableModule} from 'primeng/table';
@@ -35,7 +34,6 @@ import {ProgressBarModule} from 'primeng/progressbar';
 @NgModule({
 
   declarations: [ 
-    FinancialMasterComponent,
     GarnishmentMasterComponent,
     
 

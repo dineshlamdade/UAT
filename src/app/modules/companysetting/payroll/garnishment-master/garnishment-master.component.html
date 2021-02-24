@@ -11,6 +11,7 @@
               <div class="col-sm-3">
                 <label class="form-label">ComplianceHeadName</label>
                 <select name="complianceHeadName" id="complianceHeadName" class="form-control"
+                [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'}"
                    formControlName="complianceHeadName" (change)='onSelectHeadName($event)'>
                   <option *ngFor="let complianceHeadName of complianceHeadNameList" 
                     [value]="complianceHeadName.value">
@@ -23,7 +24,7 @@
                 <select name="nameOfInstitution" id="nameOfInstitution" class="form-control"
                   [ngClass]="{'is-invalid' : form.get('nameOfInstitution').status == 'INVALID'}"
                   formControlName="nameOfInstitution" (change)='onSelectThirdPartyMasterId($event)'>
-                  <option *ngFor="let nameOfInstitution of complianceInstitutionMasterDetails1" 
+                  <option *ngFor="let nameOfInstitution of complianceInstitutionMasterDetails" 
                     [value]="nameOfInstitution.value">
                 {{nameOfInstitution.label}}
                   </option>
@@ -50,9 +51,9 @@
                 <label class="form-label">Contact Person Name</label>
                 <input type="text" formControlName="contactPerson" class="form-control"
                    [ngClass]="{ 'is-invalid': submitted && form.contactPerson.errors }"  >
-                <!-- <div *ngIf="submitted && form.contactPerson.errors" class="invalid-feedback">
+                <div *ngIf="submitted && form.contactPerson.errors" class="invalid-feedback">
                    <div *ngIf="form.contactPerson.errors.required">Contact Person is mandatory</div>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="row mt-4 mb-10">
@@ -116,8 +117,7 @@
            
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Country</label>
-                <select name="country" id="country" formControlName="country" class="form-control custom-select"
-                  [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}">
+                <select name="country" id="country" formControlName="country" class="form-control custom-select">
                   <option *ngFor="let country of countryList" [value]="country.value" >
                     {{country.value}}
                   </option >
@@ -221,8 +221,7 @@
 
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Formula</label>
-                <select name="formula" id="formula" formControlName="formula" class="form-control custom-select"
-                  [ngClass]="{'is-invalid' : form.get('formula').status == 'INVALID'}">
+                <select name="formula" id="formula" formControlName="formula" class="form-control custom-select">
                   <option *ngFor="let formula of formulaList" [value]="formula.value">
                     {{formula.value}}
                   </option>
@@ -232,8 +231,7 @@
               </div>
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">SDM</label>
-                <select name="sdm" id="sdm" formControlName="sdm" class="form-control custom-select"
-                  [ngClass]="{'is-invalid' : form.get('sdm').status == 'INVALID'}">
+                <select name="sdm" id="sdm" formControlName="sdm" class="form-control custom-select">
                   <option *ngFor="let sdm of sdmList" [value]="sdm.value">
                     {{sdm.value}}
                   </option>
