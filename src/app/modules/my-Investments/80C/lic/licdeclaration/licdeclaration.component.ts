@@ -210,13 +210,13 @@ export class LicdeclarationComponent implements OnInit {
       this.declarationPage();
       this.canEdit = true;
     } else {
-      const dataValues = this.data;
-      this.globalInstitution = dataValues.institution;
-      this.globalPolicy = dataValues.policyNo;
+      const input = this.data;
+      this.globalInstitution = input.institution;
+      this.globalPolicy = input.policyNo;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(dataValues.institution, dataValues.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
       this.isDisabled = false;
-      this.canEdit = dataValues.canEdit;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -825,6 +825,7 @@ export class LicdeclarationComponent implements OnInit {
   deleteRow(j: number) {
     const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
     // console.log('rowcount::', rowCount);
+    // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
@@ -1368,8 +1369,7 @@ export class LicdeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getTransactionByProofSubmissionId
-    (proofSubmissionId).subscribe(
+    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
         this.urlArray =

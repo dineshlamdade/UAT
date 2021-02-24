@@ -8,6 +8,7 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: '/login' },
   { path: 'auth', loadChildren: './modules/auth/auth.module#AuthModule' },
   { path: '', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
  

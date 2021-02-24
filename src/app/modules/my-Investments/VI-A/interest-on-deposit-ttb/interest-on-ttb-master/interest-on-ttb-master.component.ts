@@ -57,7 +57,10 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public stateNameList: Array<any> = [];
   public ifscCodeList: Array<any> = [];
   public bankNameLsit: Array<any> = [];
+  public bankIFSC:any;
 
+
+  public  TotalIFSCcodeList: Array<any> = [];
   public urlArray: Array<any> = [];
   public urlIndex: number;
   public glbalECS: number;
@@ -90,8 +93,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public addNewRowId: number;
   public declarationTotal: number;
   public declaredAmount: number;
-  public actualTotal: number;
-  public actualAmount: number;
+  // public actualTotal: number;
+  // public actualAmount: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
   public isClear: boolean;
@@ -108,6 +111,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public selectedState: string;
 
   public disability : string;
   public severity : string;
@@ -142,12 +146,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
     this.globalSelectedAmount = this.numberFormat.transform(0);
     this.initiateMasterForm();
 
-    this.bankNameLsit = [
-      { label: 'Bank of India', value: 'BankofIndia' },
-      { label: 'Indian Bank', value: 'IndianBank' },
-      { label: 'Bank of Baroda', value: 'BankofBaroda' },
-      { label: 'Canara Bank', value: 'CanaraBank' },
-    ];
+
   }
 
  public ngOnInit(): void {
@@ -174,20 +173,14 @@ export class InterestOnTtbMasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-
-      // disabilityType: new FormControl(null, Validators.required),
-      // severity: new FormControl(null, Validators.required),
-      savingBankMasterId: new FormControl(null),
-      // familyMemberName: new FormControl(null, Validators.required),
-      familyMemberInfoId: new FormControl(null, Validators.required),
+      savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
-      state:  new FormControl(null, Validators.required),
-      relationship: new FormControl({value: null, disabled: true },Validators.required),
-      bankName: new FormControl(null,Validators.required),
+      state:  new FormControl(null),
+      bankName: new FormControl({value: null, disabled: true },Validators.required),
       branchName: new FormControl({value: null, disabled: true },Validators.required),
       bankAddress: new FormControl({value: null, disabled: true },Validators.required),
       accountNumber: new FormControl(null, Validators.required),
-
+      interestOnSavingDeposit80TTMasterId: new FormControl(0),
     });
   }
 
@@ -203,19 +196,135 @@ export class InterestOnTtbMasterComponent implements OnInit {
     });
   }
 
-      // State Code List API call
-      getMasterStateList() {
-        this.interestOnTtbService.getStateInfoList().subscribe((res) => {
-          res.data.results.forEach((element) => {
-            const obj = {
-              label: element,
-              value: element,
-            };
-            this.stateNameList.push(obj);
+    // State Code List API call
+    getMasterStateList() {
+
+      this.interestOnTtbService.getStateInfoList().subscribe((res) => {
+        this.stateNameList = res.data.results;
+      });
+      // this.interestOnTtbService.getStateInfoList().subscribe((res) => {
+      //   res.data.results.forEach((element) => {
+      //     const obj = {
+      //       label: element,
+      //       value: element,
+      //     };
+      //     this.stateNameList.push(obj);
+      //   });
+      //   console.log("statelist",this.stateNameList);
+      // });
+    }
+
+      //get ifsc detail
+      IFSCDetails(bankIFSC) {
+        if(bankIFSC.length == 11) {
+        this.interestOnTtbService.getDataFromIFSC(bankIFSC).subscribe(res => {
+
+          console.log(res);
+          this.form.patchValue({
+            branchName: res.data.results[0].branchName,
+            bankAddress: res.data.results[0].address,
+            bankName: res.data.results[0].bankName,
           });
-          console.log("statelist",this.stateNameList);
+
         });
       }
+      }
+      // search IFSC code
+      onSelectIFSCCode(evt: any) {
+        if (evt.length == 11) {
+
+        console.log('evt::==', evt);
+        this.interestOnTtbService.getDataFromIFSC(evt).subscribe((res) => {
+          console.log(res);
+          this.form.patchValue({
+            branchName: res.data.results[0].branchName,
+            bankAddress: res.data.results[0].address,
+            bankName: res.data.results[0].bankName,
+          });
+        });
+      }
+      }
+
+    getDataFromIFSC(bankIFSC) {
+      if (bankIFSC.length < 11) {
+        // this.BankInformationModel.bankName = '';
+        // this.BankInformationModel.branchName = '';
+        // this.BankInformationModel.bankAddress = '';
+        // this.confirmAccountNumber = '';
+        // this.BankInformationModel.accountNo = '';
+        // this.BankInformationModel.nameAsPerBank = '';
+      }
+      if (bankIFSC.length == 11) {
+        this.IFSCDetails(bankIFSC);
+      }
+      if (bankIFSC) {
+        // this.gridEditIFSC1 = bankIFSC
+        // this.IFSCGridDetails(bankIFSC);
+      }
+    }
+
+    searchIFSC(searchTerm, bankIFSC) {
+      this.form.patchValue({
+        branchName:'',
+        bankAddress: '',
+        bankName:'',
+      });
+
+      if (searchTerm.query.length < 11) {
+        this.ifscCodeList = []
+
+      }
+      if (bankIFSC.length < 11) {
+        // this.BankInformationModel.bankName = '';
+        // this.BankInformationModel.branchName = '';
+        // this.BankInformationModel.bankAddress = '';
+        // this.confirmAccountNumber = '';
+        // this.BankInformationModel.accountNo = '';
+        // this.BankInformationModel.nameAsPerBank = '';
+      }
+      if (searchTerm.query.length == 2) {
+        // setTimeout(() => {
+        this.interestOnTtbService.searchIFSC(searchTerm.query, this.form.get('state').value).subscribe(res => {
+          console.log(res);
+          this.ifscCodeList = res.data.results[0];
+          this.TotalIFSCcodeList = res.data.results[0];
+          if (this.ifscCodeList.length > 0) {
+            this.filterIFSCCodes(searchTerm.query);
+          } else {
+           // this.alertService.sweetalertError('Record Not Found');
+            // this.notifyService.showError ('Recordnot found', "Error..!!")
+          }
+        });
+        // }, 1500)
+      }
+      this.filterIFSCCodes(searchTerm.query);
+
+      if (bankIFSC.length == 11) {
+        const ifsc = this.TotalIFSCcodeList.filter((item) => {
+          return item == searchTerm.query;
+        });
+        if (ifsc == searchTerm.query) {
+           this.IFSCDetails(searchTerm.query);
+        }
+      }
+    }
+
+    filterIFSCCodes(searchTerm) {
+      if (searchTerm.length > 2) {
+        searchTerm = searchTerm.toLowerCase();
+        const ifsc = this.TotalIFSCcodeList.filter((item) => {
+          return JSON.stringify(item).toLowerCase().includes(searchTerm);
+        });
+        this.ifscCodeList = ifsc;
+        // this.GridIFSCcodeList = ifsc;
+        // this.showOptios = true;
+      }
+    }
+
+    onSelectState(evt: any) {
+    this.selectedState = evt;
+     this.bankIFSC ='';
+    }
 
     // IFSC Code List API call
     getMasterIFSCCodeList() {
@@ -233,30 +342,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
       }
     }
 
-
-
-  // Family relationship shown on Policyholder selection
-  OnSelectionfamilyMemberGroup() {
-    const toSelect = this.ifscCodeList.find(
-      (element) => element.familyMemberName == this.form.get('familyMemberName').value
-    );
-    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    // this.form.get('familyMemberName').setValue(toSelect.familyMemberName);
-    this.form.get('relationship').setValue(toSelect.relation);
-  }
-
-  // Identity Information API Call
-  // getIdentityInformation() {
-  //   this.interestOnTtbService.getIdentityInformation().subscribe((res) => {
-  //     console.log('get Identity Information', res);
-  //     this.form.patchValue({
-  //       pran: res.data.results[0].employeePersonalInfoResponseDTO.pran,
-  //     });
-  //   });
-  // }
-
-
-
   // Get All Previous Employer
   getPreviousEmployer() {
     this.myInvestmentsService.getAllPreviousEmployer().subscribe((res) => {
@@ -266,8 +351,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
       }
     });
   }
-
-
 
   // Get Master Page Data API call
   masterPage() {
@@ -283,7 +366,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
     if (this.form.invalid) {
       return;
-
     }
 
     if (this.masterfilesArray.length === 0) {
@@ -337,10 +419,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
       this.submitted = false;
 
     }
-    // this.form.patchValue({
-    //   accountType: 'Tier_1',
-    // });
-    // this.getIdentityInformation();
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -359,8 +437,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
     console.log('this.filesArray::', this.masterfilesArray);
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
-
-
 
   // On Master Edit functionality
   editMaster(i: number) {
@@ -393,11 +469,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    // const formatedPremiumAmount = this.numberFormat.transform(
-    //   this.masterGridData[i].premiumAmount
-    // );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+
     this.isCancel = true;
   }
 
@@ -420,6 +492,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
   resetForm() {
     this.form.reset();
   }
+
 }
 
 

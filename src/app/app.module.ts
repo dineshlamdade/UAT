@@ -40,8 +40,7 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-import { PrimeNGModule } from './app.primeNG.module';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+  //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
@@ -62,6 +61,10 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
 
 
 
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
+
+
 
 @NgModule({
   declarations: [
@@ -74,12 +77,20 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
 
     CompanySettingModule,
     MyInvestmentsModule,
     PayrollInputsModule,
+    /////////////////
+    //  payrollModule,
+    CompanySettingModule,
+    ////////////////////////////////
+    MyInvestmentsModule,
+    investmentChapterVIAModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,
@@ -110,6 +121,7 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
     AccordionModule,
     OtherMasterModule,
 	  AdminApprovalModule,
+    AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
@@ -121,7 +133,7 @@ import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.mod
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
-        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
         listenToLangChange: true,
         reRenderOnLangChange: true,
         defaultLang: 'en',

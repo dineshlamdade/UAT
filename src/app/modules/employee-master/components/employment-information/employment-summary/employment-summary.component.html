@@ -1,48 +1,15 @@
 <div>
-    <legend style="font-size: 17px !important;">Employment Summary
-    </legend>
+    <h3 class="font-14 text-purple font-bold">Employment Summary</h3>
+
     <p-table [value]="EmploymentInformationSumarry" [scrollable]="true" [style]="{width:'1000px'}" scrollHeight="200px">
-        <!-- <ng-template pTemplate="colgroup" let-employmentHeader>
-        <colgroup>
-            <col style="width:150px">
-            <col style="width:120px">
-            <col style="width:120px">
-            <col style="width:170px">
-            <col style="width:175px">
-            <col style="width:300px">
-            <col style="width:120px">
-            <col style="width:120px">
-            <col style="width:170px">
-        </colgroup>
-    </ng-template> -->
         <ng-template pTemplate="header">
-            <!-- <tr>
-            <th class="primeng-table-header-center">Company</th>
-            <th class="primeng-table-header-center">Joining Date</th>
-            <th class="primeng-table-header-center">Re-Joinee</th>
-            <th class="primeng-table-header-center">Original Hire Date</th>
-            <th class="primeng-table-header-center">Emp. Age</th>
-            <th class="primeng-table-header-center">Service Age
-        <tr>
-            <br>
-            <th class="primeng-table-header-center">Date Of Joining(DOJ)</th>
-            <th class="primeng-table-header-center">Original DOJ</th>
-            <th class="primeng-table-header-center">Gratuity</th>
-
-        </tr>
-        </th>
-        <th class="primeng-table-header-center">Remaining Service</th>
-        <th class="primeng-table-header-center">Exit Date</th>
-        <th class="primeng-table-header-center">Employment Status</th>
-        </tr> -->
-
             <tr>
                 <th rowspan="2" class=" font700"> Company</th>
                 <th rowspan="2" class=" font700">Joining Date</th>
                 <th rowspan="2" class=" font700">Re-Joinee</th>
                 <th rowspan="2" class=" font700">Original Hire Date</th>
                 <th rowspan="2" class=" font700">Emp. Age</th>
-                <th colspan="3" class=" font700">Service Age</th>
+                <th colspan="3" class=" font700 header-center">Service Age</th>
                 <th rowspan="2" class=" font700">Remaining Service</th>
                 <th rowspan="2" class="">Exit Date</th>
                 <th rowspan="2" class=" font700">Employment Status</th>
@@ -56,138 +23,120 @@
         <ng-template pTemplate="body" let-element>
             <tr>
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.companyName}}">
                         {{element.companyName}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.joiningDate}}">
                         {{element.joiningDate}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.rejoinee}}">
                         {{element.rejoinee}} </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.originalHireDate}}">
                         {{element.originalHireDate}}</span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
-                        {{element.employmentAge}}
+                    <span tooltip="{{element.employmentAge}}">
+                        {{element.employmentAgeShort}}
                     </span>
                 </td>
 
-                <!-- <td>
-                <tr> -->
                 <td class="primeng-table-header-center pd-5">
-                    {{element.serviceAgeShort}}
-                </td>
-                <td class="primeng-table-header-center pd-5">
-                    {{element.originalDOJServiceShort}}
-                </td>
-                <td class="primeng-table-header-center pd-5">
-                    {{element.gratuityPeriod}}
-                </td>
-                <!-- </tr> -->
-                <!-- <div class="pd-5" >
-                    <div rowspan="1" tooltip="{{element.serviceAge}}">
+                    <span tooltip="{{element.serviceAge}}">
                         {{element.serviceAgeShort}}
-                    </div>
-                </div>
-
-                <div class="pd-5" >
-                    <div rowspan="1" tooltip="{{element.serviceAge}}">
-                        {{element.serviceAgeShort}}
-                    </div>
-                </div>
-
-                <div class="pd-5" >
-                    <div rowspan="1" tooltip="{{element.gratuityPeriod}}">
+                    </span>
+                </td>
+                <td class="primeng-table-header-center pd-5">
+                    <span tooltip="{{element.originalDOJServiceShort}}">
+                        {{element.originalDOJServiceShort}}
+                    </span>
+                </td>
+                <td class="primeng-table-header-center pd-5">
+                    <span tooltip="{{element.gratuityPeriod}}">
                         {{element.gratuityPeriodShort}}
-                    </div>
-                </div> -->
-
-                <!-- </td> -->
-                <!-- <td class="primeng-table-header-center" tooltip="{{element.serviceAge}}"><span>
-                    {{element.serviceAgeShort}}
-                </span></td>
-
-            <td class="primeng-table-header-center" tooltip="{{element.serviceAge}}"><span>
-                    {{element.serviceAgeShort}}
-                </span></td>
-
-            <td class="primeng-table-header-center" tooltip="{{element.gratuityPeriod}}"><span>
-                    {{element.gratuityPeriodShort}}
-                </span></td> -->
-
-                <td class="primeng-table-header-center">
-                    <span>
-                        {{element.remainingMonthOrDays}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.remainingMonthOrDays}}">
+                        {{element.remainingMonthOrDaysShort}}
+                    </span>
+                </td>
+
+                <td class="primeng-table-header-center">
+                    <span tooltip="{{element.lastWorkingDate}}">
                         {{element.lastWorkingDate}}
                     </span>
                 </td>
 
                 <td class="primeng-table-header-center">
-                    <span>
+                    <span tooltip="{{element.employeeStatus}}">
                         {{element.employeeStatus}} </span>
                 </td>
-
-                <!-- <td class="primeng-table-header-center"><span><i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10"
-                        tooltip="Edit"></i>
-
-                    <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1" tooltip="View"></i></span>
-            </td> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr *ngIf="EmploymentInformationSumarry.length == 0">
+                <td colspan="9" class="text-center"><span class="font-14 font500 text-red">No Data
+                        Available</span></td>
             </tr>
         </ng-template>
     </p-table>
-    <br>
-    <br>
-    <legend style="font-size: 17px !important;">Milestones Summary
-    </legend>
-    <p-table [value]="TransactionHistory" [scrollable]="true" [style]="{width:'1000px'}" scrollHeight="200px">
-        <ng-template pTemplate="colgroup" let-education>
-            <colgroup>
-                <col style="width:150px">
-                <col style="width:120px">
-                <col style="width:120px">
-            </colgroup>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th class="primeng-table-header-center">Date</th>
-                <th class="primeng-table-header-center">Type Of Transacton</th>
-                <th class="primeng-table-header-center">Action</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-element>
-            <tr>
-                <td class="primeng-table-header-center"><span>
-                        {{element.date}}
-                    </span></td>
 
-                <td class="primeng-table-header-center"><span>
-                        {{element.transaction}}</span></td>
 
-                <td class="primeng-table-header-center"><span>
-                        <i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
-                            (click)="EditPopup(element)"></i>
+    <h3 class="font-14 text-purple font-bold mt-25">Milestones Summary</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <p-table [value]="TransactionHistory" [scrollable]="true" [style]="{width:'1000px'}" scrollHeight="200px">
+                <ng-template pTemplate="colgroup" let-education>
+                    <colgroup>
+                        <col class="wd-40">
+                        <col class="wd-45">
+                        <col class="wd-15">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="primeng-table-header-center">Date</th>
+                        <th class="primeng-table-header-center">Type Of Transacton</th>
+                        <th class="primeng-table-header-center">Action</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-element>
+                    <tr>
+                        <td class="primeng-table-header-center"><span>
+                                {{element.date}}
+                            </span></td>
 
-                        <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1" tooltip="View"
-                            (click)="viewPopup(element)"></i>
-                    </span>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+                        <td class="primeng-table-header-center"><span>
+                                {{element.transaction}}</span></td>
+
+                        <td class="primeng-table-header-center"><span>
+                                <i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
+                                    (click)="EditPopup(element)"></i>
+
+                                <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1" tooltip="View"
+                                    (click)="viewPopup(element)"></i>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr *ngIf="TransactionHistory.length == 0">
+                        <td colspan="3" class="text-center"><span class="font-14 font500 text-red">No Data
+                                Available</span></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
 </div>

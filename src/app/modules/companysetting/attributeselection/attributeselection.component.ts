@@ -16,15 +16,7 @@ import { SaveAttributeSelection} from './attributeselection.model';
 
 //sneha
 import Swal from 'sweetalert2';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-/////////////////bharati
-//import { SaveAttributeCreation} from './attributecreation.model';
-import { BsDatepickerConfig, BsDatepickerViewMode } from 'ngx-bootstrap/datepicker';
-import { de } from 'date-fns/locale';
-import { element } from 'protractor';
-import {DropdownModule} from 'primeng/dropdown';
-//import { PrimeIcons} from 'primeng/api';
-import { Variable } from '@angular/compiler/src/render3/r3_ast';
+
 
 @Component({
   selector: 'app-attributeselection',
@@ -66,7 +58,7 @@ export class AttributeselectionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private attributeSelectionService: attributeselection,
   )
-   { 
+   {
     this.cities = [
       {name: 'New York', code: 'NY'},
       {name: 'Rome', code: 'RM'},
@@ -83,7 +75,7 @@ export class AttributeselectionComponent implements OnInit {
     this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
         debugger
         this.sourceProducts = res.data.results;
-        });  
+        });
     //  }
    // this.attributeSelectionService.getAllAttributeCreation().then(products => this.sourceProducts = products);
     this.targetProducts = [];
@@ -179,7 +171,7 @@ RowSelected(u:any){
   {
     debugger
     // const sss=this.newarray;
-    // this.selectedUser.forEach(function(f){           
+    // this.selectedUser.forEach(function(f){
     //  sss.push(f);
     // });
 
@@ -194,7 +186,7 @@ RowSelected(u:any){
   //   });
 
     // for(var i=0;i<v.length;++i)
-    // {     
+    // {
     // this.targetProducts.push(v[0]);
     // }
 
@@ -205,14 +197,14 @@ RowSelected(u:any){
        this.sourceProducts.splice(index,1)
       }
     });
-  
+
 
     // var index=this.sourceProducts.indexOf(this.selectedUser[0])
     // this.selectedUser=[];
     // if (index > -1) {
     //  this.sourceProducts.splice(index,1)
     // this.selectedUser=[];
-     
+
    // }
    // this.sourceProducts.splice(this.selectedUser.indexOf(0))
   }
@@ -240,7 +232,7 @@ RowSelected(u:any){
   //   this.selectedUser2=[];
   //   if (index > -1) {
   //    this.targetProducts.splice(index,1)
-  
+
   // }
 }
 resetAttributeSelection(): void
@@ -253,7 +245,7 @@ resetAttributeSelection(): void
     debugger
     this.sourceProducts = res.data.results;
     });
-    
+
   this.targetProducts=[];
 }
 CancelAttributeCreation(): void
@@ -262,7 +254,7 @@ CancelAttributeCreation(): void
   this.disabled=true;
   this.hidevalue=false;
   this.AttributeCreationForm.reset();
-  this.viewCancelButton=false; 
+  this.viewCancelButton=false;
   this.viewupdateButton=false;
   this.targetProducts=[];
 
@@ -278,7 +270,7 @@ CancelAttributeCreation(): void
   this.attributeSelectionService.getAllAttributeSelection().subscribe(res => {
       debugger
       this.AttributeSelectionList = res.data.results;
-      });  
+      });
     }
 
     onStatusChange(event)
@@ -291,9 +283,9 @@ CancelAttributeCreation(): void
                     debugger
                     this.targetProducts =res.data.results[0].attributeMasters;
 
-                    this.targetProducts.forEach(element => {          
+                    this.targetProducts.forEach(element => {
                       var index=this.targetProducts.indexOf(element)
-                      this.sourceProducts = this.sourceProducts.filter(e => e.code !== element.code);  
+                      this.sourceProducts = this.sourceProducts.filter(e => e.code !== element.code);
                     });
 
             //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
@@ -301,50 +293,50 @@ CancelAttributeCreation(): void
             //     this.sourceProducts = res.data.results;
             //     });
 
-            // this.targetProducts.forEach(element => {          
+            // this.targetProducts.forEach(element => {
             //   var index=this.targetProducts.indexOf(element)
-            //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);  
+            //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);
             // });
 
-                    }); 
+                    });
             }
 
 // Get Attribute Selection ById
     GetAttributeSelectionByIdDisable(id): void {
       debugger;
-      // this.CycleupdateFlag=true; 
-      // this.CycleupdateFlag1=false; 
+      // this.CycleupdateFlag=true;
+      // this.CycleupdateFlag1=false;
       this.disabled= false;
       this.viewupdateButton=false;
       this.viewCancelButton= true;
 
       this.attributeSelectionService.GetAttributeSelectionById(id)
-      .subscribe(response => { 
+      .subscribe(response => {
         debugger
         this.targetProducts=response.data.results[0].attributeMasters;
-        this.targetProducts.forEach(element => {          
+        this.targetProducts.forEach(element => {
           var index=this.targetProducts.indexOf(element)
-          this.sourceProducts = this.sourceProducts.filter(e => e.code !== element.code);  
+          this.sourceProducts = this.sourceProducts.filter(e => e.code !== element.code);
         });
     //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
       this.AttributeCreationForm.patchValue({ name: response.data.results[0].name });
       this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
       this.AttributeCreationForm.patchValue({ attributeNature: response.data.results[0].name });
-     
+
     });
   }
 
   // Get Attribute Selection ById
   GetAttributeSelectionById(id): void {
     debugger;
-    // this.CycleupdateFlag=true; 
-    // this.CycleupdateFlag1=false; 
+    // this.CycleupdateFlag=true;
+    // this.CycleupdateFlag1=false;
     this.disabled= true;
     this.viewupdateButton=true;
     this.viewCancelButton= true;
     this.attributeGroupId=id;
     this.attributeSelectionService.GetAttributeSelectionById(id)
-    .subscribe(response => { 
+    .subscribe(response => {
       debugger
       this.targetProducts=response.data.results[0].attributeMasters;
 
@@ -373,16 +365,16 @@ CancelAttributeCreation(): void
     this.AttributeCreationForm.patchValue({ name: response.data.results[0].name });
     this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
     //this.AttributeCreationForm.patchValue({ attributeNature: response.data.results[0].name });
-   
+
   });
 }
 
 
 //Delete Attribute Selection by id
     DeleteAttributeSelection(id): void {
-      debugger; 
+      debugger;
       // this.CycleupdateFlag=false;
-      // this.CycleupdateFlag1=false;            
+      // this.CycleupdateFlag1=false;
       this.attributeSelectionService.DeleteAttributeSelection(id)
         .subscribe(response => { //: saveBusinessYear[]
             debugger
@@ -396,33 +388,33 @@ CancelAttributeCreation(): void
 //add new AttributeCreation
     addAttributeSelection(): void{
       debugger
-        const addAttributeCreation:SaveAttributeSelection=Object.assign({}); 
+        const addAttributeCreation:SaveAttributeSelection=Object.assign({});
         addAttributeCreation.attributeMasterIdList=[];
-        this.targetProducts.forEach(function(f){           
+        this.targetProducts.forEach(function(f){
           addAttributeCreation.attributeMasterIdList.push(f.attributeMasterId);
-        });         
+        });
         addAttributeCreation.name=this.AttributeCreationForm.value.name;
         addAttributeCreation.description=this.AttributeCreationForm.value.description;
         //addAttributeCreation.createdBy="nisha";
        // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
         if( addAttributeCreation.attributeGroupDefinitionId==undefined || addAttributeCreation.attributeGroupDefinitionId==0)
         {
-         
+
             this.attributeSelectionService.AddAttributeSelection(addAttributeCreation).subscribe((res:any )=> {
-            debugger       
+            debugger
             addAttributeCreation.attributeMasterIdList=[];
             this.targetProducts=[];
             this.sweetalertMasterSuccess("Success..!!", res.status.message);
             this.getAllAttributeSelection();
             this.hidevalue=false;
-            this.AttributeCreationForm.reset();      
+            this.AttributeCreationForm.reset();
             },
              (error: any) => {
                 this.sweetalertError(error["error"]["status"]["message"]);
-              });           
-        } 
+              });
+        }
         else{
-          debugger              
+          debugger
         this.attributeSelectionService.UpdateAttributeGroup(addAttributeCreation.attributeGroupDefinitionId,addAttributeCreation).subscribe((res:any )=> {
         debugger
         this.sweetalertMasterSuccess("Updated..!!", res.status.message);
@@ -431,27 +423,27 @@ CancelAttributeCreation(): void
        // this.updateFlag=false;
         },
         (error: any) => {
-           this.sweetalertError(error["error"]["status"]["message"]);    
-         });                 
+           this.sweetalertError(error["error"]["status"]["message"]);
+         });
       }
       }
 
       UpdateAttributeSelection(): void{
         debugger
-        const addAttributeCreation:SaveAttributeSelection=Object.assign({}); 
+        const addAttributeCreation:SaveAttributeSelection=Object.assign({});
         addAttributeCreation.attributeMasterIdList=[];
-        this.targetProducts.forEach(function(f){           
+        this.targetProducts.forEach(function(f){
           addAttributeCreation.attributeMasterIdList.push(f.attributeMasterId);
-        });         
+        });
         addAttributeCreation.name=this.AttributeCreationForm.value.name;
         addAttributeCreation.description=this.AttributeCreationForm.value.description;
         //addAttributeCreation.createdBy="nisha";
        // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
         if( addAttributeCreation.attributeGroupDefinitionId==undefined || addAttributeCreation.attributeGroupDefinitionId==0)
         {
-         
+
           this.attributeSelectionService.UpdateAttributeGroup(this.attributeGroupId,addAttributeCreation).subscribe((res:any )=> {
-            debugger       
+            debugger
             addAttributeCreation.attributeMasterIdList=[];
             this.targetProducts=[];
             this.viewCancelButton=false;
@@ -459,12 +451,12 @@ CancelAttributeCreation(): void
             this.sweetalertMasterSuccess("Success..!!", res.status.message);
             this.getAllAttributeSelection();
             this.hidevalue=false;
-            this.AttributeCreationForm.reset();      
+            this.AttributeCreationForm.reset();
             },
              (error: any) => {
                 this.sweetalertError(error["error"]["status"]["message"]);
-              });           
-        } 
+              });
+        }
 
       }
 

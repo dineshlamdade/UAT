@@ -113,3 +113,10 @@ export class TotalPercentageDTO {
         public totalSalary: any
     ){} 
 } 
+
+export class documentElementDTO {  
+    constructor(  
+        public Nomination : any,
+        public Document : any,
+    ){} 
+} 

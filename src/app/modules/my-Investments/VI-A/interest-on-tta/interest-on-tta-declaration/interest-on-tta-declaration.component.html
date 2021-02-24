@@ -13,19 +13,26 @@
       <label class="form-label mt-2">Bank Name <span class="text-red">*</span></label>
     </div>
     <div class="col-md-3 pr-0">
-      <select name="Institution" class="form-control custom-select"
-        (change)="selectedTransactionInstName($event.target.value)">
-        <option *ngFor="let bankName of lenderNameList" [value]="bankName.value"
-          [selected]="bankName.value == globalInstitution">
-          {{ bankName.label }}
-        </option>
-      </select>
+      <select
+      name="bankName"
+      class="form-control custom-select"
+      (change)="selectedTransactionBankName($event.target.value)"
+    >
+      <option
+        *ngFor="let bankName of bankNameList"
+        [value]="bankName.value"
+        [selected]="bankName.value == globalBank"
+      >
+        {{ bankName.label }}
+      </option>
+    </select>
     </div>
+
   </div>
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Bank Name</label>
+        <label class="form-label mt-1">Bank Name:</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -34,7 +41,7 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Account Number</label>
+        <label class="form-label mt-1 pl-10">Account Number:</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -42,7 +49,7 @@
           {{ item.accountNumber }}
         </label>
       </div>
-      <div class="ml-2 pl-1 pr-0">
+      <!-- <div class="ml-2 pl-1 pr-0">
         <label class="form-label mt-1">Account Holder Name</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
@@ -50,7 +57,7 @@
           tooltip="{{ item.accountHolderName }}">
           {{ item.accountHolderName }}
         </label>
-      </div>
+      </div> -->
     </div>
     <div class="row mt-15">
       <div class="col-12">
@@ -104,13 +111,13 @@
             </thead>
             <tbody>
               <tr *ngFor="
-                  let summary of item.groupTransactionList;
+                  let summary of item.interestOnSavingDeposit80TTTransactionList;
                   let i = index;
                   count as c
                 ">
                 <td scope="row">
                   <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                    tooltip="Select institution for proof submission">
+                    tooltip="Select bankName for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j);
@@ -132,7 +139,7 @@
                     (change)="updatePreviousEmpId($event, i, j)" [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
                     ">
-                    <option [ngValue]="0">Select Previous Emp.</option>
+                    <option [ngValue]="0">Select</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
                       [selected]="
                         previousEmployee.value == summary.previousEmployerId
@@ -142,11 +149,11 @@
                   </select>
                 </td>
                 <td>
-                  <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                  <input type="text" [ngModel]="summary.interestReceivedDate  | date: 'dd-MMM-yyyy'"
                     [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
                     (ngModelChange)="
-                      summary.dateOfPayment = $event.toLocaleDateString();
+                      summary.interestReceivedDate  = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
                     " [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
@@ -158,9 +165,6 @@
                       name="declaredAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
-                    <!-- <span class="clone_Icon" tooltip="Copy to Actual"
-                              (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
-                              class=" fa fa-files-o cursor-pointer"></i> </span> -->
                   </div>
                 </td>
                 <td>
@@ -194,14 +198,14 @@
                 </td>
               </tr>
               <tr *ngIf="!isDisabled">
-                <td *ngIf="previousEmployeeList?.length" colspan="12"
+                <td *ngIf="previousEmployeeList?.length" colspan="10"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
-                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
+                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j,item.interestOnSavingDeposit80TTMasterId)"></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(j)"></i>
                 </td>
-                <td *ngIf="!previousEmployeeList?.length" colspan="11"
+                <td *ngIf="!previousEmployeeList?.length" colspan="10"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
                   <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
@@ -321,7 +325,7 @@
   </div>
   <div class="row mt-30">
     <div class="col-12">
-      <div class="card">
+      <!-- <div class="card">
         <div class="mb-10 row">
           <div class="col-md-6">
             <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
@@ -379,7 +383,6 @@
                               )
                             : UploadModal(template4)
                         "></i>&nbsp;&nbsp;
-                      <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
                     </td>
                   </tr>
                 </tbody>
@@ -387,19 +390,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
     <div class="col-12">
       <div class="float-right mb-15">
-        <button type="button" (click)="
-            receiptAmount < globalSelectedAmount
-              ? sweetalertError(
-                  'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
-                )
-              : upload()
-          " class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+        <button type="button" (click)="upload()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
           <b><i class="fa fa-floppy-o"></i></b> Save
         </button>
       </div>
@@ -444,24 +441,26 @@
                       {{ documentSummary.proofSubmissionId }}
                     </span>
                   </td>
-                  <td>
-                    {{ documentSummary.bankName}}
-                    {{ documentSummary.accountNo}}
+                  <td class="padding-0"  *ngIf = "documentSummary.interest80TTBankList.length == 1">
+                    <!-- {{ documentSummary.bankName}} -->
+                    <!-- {{ documentSummary.accountNo}} -->
+                    {{ documentSummary.interest80TTBankList[0].bankName }}
+                    {{ documentSummary.interest80TTBankList[0].accountNumber }}
                   </td>
                   <td>
                     <span
                       tooltip="{{
-                        documentSummary.dateOfSubmission | date: 'dd-MMM-yyyy'
+                        documentSummary.interestReceivedDate  | date: 'dd-MMM-yyyy'
                       }}"
                     >
                       {{
-                        documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
+                        documentSummary.interestReceivedDate  | date: "dd-MMM-yyyy"
                       }}</span
                     >
                   </td>
-                  <!-- <td class="padding-0"  *ngIf = "documentSummary.group1MasterList.length > 1">
+                  <!-- <td class="padding-0"  *ngIf = "documentSummary.interest80TTBankList.length > 1">
                     <div class="pd-5"
-                      *ngFor="let policyNo of documentSummary.group1MasterList"
+                      *ngFor="let policyNo of documentSummary.interest80TTBankList"
                       tooltip="{{ policyNo.policyNo }}"
                     >
                       <div colspan="1">
@@ -469,16 +468,25 @@
                       </div>
                     </div>
                   </td> -->
-                  <td class="padding-0"  *ngIf = "documentSummary.group1MasterList.length == 1">
+                  <!-- <td class="padding-0"  *ngIf = "documentSummary.interest80TTBankList.length == 1">
 
                     <span
                     tooltip="{{
-                      documentSummary.group1MasterList[0].accountNumber
+                      documentSummary.interest80TTBankList[0].accountNumber
                     }}"
                   >
-                        {{ documentSummary.group1MasterList[0].accountNumber }}
+                        {{ documentSummary.interest80TTBankList[0].accountNumber }}
                     </span>
 
+                  </td> -->
+                  <td>
+                    <span
+                      tooltip="{{
+                        documentSummary.receiptAmount | number: '1.2-2'
+                      }}"
+                    >
+                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                    </span>
                   </td>
                   <td>
                     <span
@@ -535,7 +543,7 @@
                     ></i>
                   </td>
                 </tr>
-                <!-- <tr *ngFor="let policyNo of documentSummary.group1MasterList">
+                <!-- <tr *ngFor="let policyNo of documentSummary.interest80TTBankList">
               <td>{{ policyNo.policyNo }}</td>
               <td>{{ documentSummary.receiptAmount | number: "1.2-2" }}</td>
             </tr> -->
@@ -624,7 +632,7 @@
             {{ item.accountNo }}</label
           >
         </div>
-        <div class="ml-2 pl-1 pr-0">
+        <!-- <div class="ml-2 pl-1 pr-0">
           <label class="form-label mt-1">Account Holder Name</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
@@ -634,7 +642,7 @@
           >
             {{ item.accountHolderName }}</label
           >
-        </div>
+        </div> -->
       </div>
       <div class="row mt-15">
         <div class="col-12">
@@ -685,7 +693,7 @@
               <tbody>
                 <tr
                   *ngFor="
-                    let summary of item.groupTransactionList;
+                    let summary of item.interestOnSavingDeposit80TTTransactionList;
                     let i = index;
                     count as c
                   "
@@ -710,13 +718,13 @@
                   <td>
                     <input
                       type="text"
-                      [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                      [ngModel]="summary.interestReceivedDate  | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate"
                       [maxDate]="financialYearEndDate"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"
-                      (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
+                      (ngModelChange)="summary.interestReceivedDate  = $event.toLocaleDateString();
                         setDateOfPaymentInEditCase(summary, i, j)"
                       [disabled]="summary.transactionStatus=='Approved'"
                       class="form-control"
@@ -732,7 +740,7 @@
                         name="declaredAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
-                        (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
+                        (change)="onDeclaredAmountChange(summary, i, j)"
                         [disabled]="!summary.additionalPayment"
                       />
                     </div>
@@ -744,10 +752,11 @@
                       name="actualAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                       [disabled]="!summary.additionalPayment"
                       [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChangeInEditCase(summary, i, j)"
+                      (change)="onActualAmountChange(summary, i, j)"
                       class="form-control align-right"
                     />
                   </td>
+                  <!--  (change)="onActualAmountChangeInEditCase(summary, i, j)" -->
                   <td>
                     <input
                       type="text"

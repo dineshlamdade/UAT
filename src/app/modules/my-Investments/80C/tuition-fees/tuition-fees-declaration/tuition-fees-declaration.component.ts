@@ -719,7 +719,6 @@ export class TuitionFeesDeclarationComponent implements OnInit {
   addRowInList(
     summarynew: {
       tuitionFeesTransactionId: number;
-      investmentGroup2MasterPaymentDetailId: number;
       previousEmployerId: number;
       declaredAmount: any;
       childName: string;
@@ -1482,7 +1481,6 @@ export class TuitionFeesDeclarationComponent implements OnInit {
 
     class DeclarationService {
       public tuitionFeesTransactionId = 0;
-      public investmentGroup2MasterPaymentDetailId: number;
       public previousEmployerId = 0;
       public institution: 0;
       public childName: string;
