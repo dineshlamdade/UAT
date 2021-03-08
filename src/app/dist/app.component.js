@@ -37,7 +37,7 @@ var AppComponent = /** @class */ (function () {
         }
         this.bnIdle.startWatching(2).subscribe(function (res) {
             if (res) {
-                console.log("session expired");
+                // console.log("session expired"); commented by Anant
             }
         });
     }

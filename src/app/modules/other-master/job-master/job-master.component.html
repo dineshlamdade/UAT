@@ -266,14 +266,14 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let summary of summaryCompanyHtmlDataList; let i = index">
+                          <!-- <tr *ngFor="let summary of summaryCompanyHtmlDataList; let i = index">
                             <td><input type="checkbox" [(ngModel)]="enableCompanyCheckAll"
                                 value (change)="onCheckCompanyboxChange($event,i)"></td>
                             <td class="wd-10"><span tooltip="{{summary.companyName}}">{{summary.companyName}}</span>
                             </td>
-                          </tr>
-                          <tr *ngIf="!summaryCompanyHtmlDataList?.length">
-                            <td colspan="10">
+                          </tr> -->
+                          <tr *ngIf="summaryCompanyHtmlDataList?.length">
+                            <td colspan="2">
                               <span class="font-14 font500 align-center text-red">No Data Available</span>
                             </td>
                           </tr>

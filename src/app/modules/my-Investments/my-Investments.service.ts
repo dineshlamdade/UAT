@@ -1,15 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of , throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
-//import { environment } from 'src/environments/environment';
-import { environment } from 'src/environments/environment';
+ import { HttpClient, HttpHeaders } from '@angular/common/http';
+ import { Injectable } from '@angular/core';
+ import { BehaviorSubject, Observable, of , throwError } from 'rxjs';
+ import { map } from 'rxjs/operators';
+ //import { environment } from 'src/environments/environment';
+ import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root',
+ @Injectable({
+   providedIn: 'root',
 })
-export class MyInvestmentsService {
-public apiUrl = environment.apiBaseUrl;
+ export class MyInvestmentsService {
+ public apiUrl = environment.apiBaseUrl;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -28,6 +28,13 @@ public apiUrl = environment.apiBaseUrl;
       return res;
     }));
   }
+    //Summary services
+    get80CSummary() {
+      return this._HTTP.get(this.apiUrl + 'elssmaster-detail/80C')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
 
   getNPSMaster() {
     return this._HTTP.get(this.apiUrl + 'npsmaster-detail/3')
@@ -581,5 +588,33 @@ public apiUrl = environment.apiBaseUrl;
 
       });
   }
+
+
+  //--------------------------------Housing Loan -------------------------------------------------------//
+  getCountryList() {
+
+    return this._HTTP.get(environment.baseUrl8082+ '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+  getEmployeeAddressList() : Observable<any>  {
+
+    return this._HTTP.get(environment.baseUrl8082+ '/employeeContact-information/1',)
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+  getAddressFromPIN(pinCode) :  Observable<any>  {
+
+    return this._HTTP.get(environment.baseUrl8082+ '/pincode-details-check/' + pinCode , { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+
 
 }

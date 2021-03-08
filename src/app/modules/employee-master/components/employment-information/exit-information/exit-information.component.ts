@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ExitInformationModel } from './../../../dto-models/employment-forms-models/exit-information.model';
-import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service'
+import { ExitInformationModel } from './../employment-forms-models/exit-information.model';
+import { EmploymentInformationService } from './../employment-information.service'
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -29,6 +29,9 @@ export class ExitInformationComponent implements OnInit {
   exitSubscription: Subscription;
   JoiningDate: any;
   @Input() data: any;
+  public today = new Date();
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
@@ -212,5 +215,29 @@ export class ExitInformationComponent implements OnInit {
   }
   cancel() {
     this.EventEmitterService.getEmpSummaryInitiate();
+  }
+
+  calculateExpectedLeavingDateFromMonths(resignationDate) {
+    
+    if (resignationDate) {
+      let noticePeriodDaysModel = Number(localStorage.getItem('noticePeriodDaysModel'));
+      let noticePeriodMonthModel = Number(localStorage.getItem('noticePeriodMonthModel'));
+
+      if (noticePeriodDaysModel) {
+        let noticePeriodDaysModel = Number(localStorage.getItem('noticePeriodDaysModel'));
+        resignationDate.setDate(resignationDate.getDate() + noticePeriodDaysModel);  // for Days
+
+        this.ExitInformation.expectedLeavingDate = resignationDate;
+      }
+
+      if (noticePeriodMonthModel) {
+        let expectedLeavingDate: any;
+
+        resignationDate.setMonth(resignationDate.getMonth() + noticePeriodMonthModel); // for Months
+        expectedLeavingDate = resignationDate.toISOString().slice(0, 10);
+        expectedLeavingDate = this.datepipe.transform(expectedLeavingDate, 'dd-MMM-yyyy');
+        this.ExitInformation.expectedLeavingDate = expectedLeavingDate;
+      }
+    }
   }
 }

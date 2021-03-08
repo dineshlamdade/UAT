@@ -5954,7 +5954,7 @@
 }
 
 .font-16 {
-    font-size: 16px
+    font-size: 16px!important;
 }
 
 .font-17,
@@ -5965,7 +5965,7 @@
 }
 
 .font-18 {
-    font-size: 18px
+    font-size: 18px!important;
 }
 
 .font-19 {
@@ -6585,6 +6585,10 @@
 .new_timeline .bullet,
 .team-info {
     margin-top: 5px
+}
+
+.mt_5 {
+    margin-top: -5px!important;
 }
 
 .mr-5,
@@ -7493,7 +7497,7 @@
 .selectgroup-button,
 .file_folder .icon,
 .blog_left .blog_post .content .actions_sidebar a {
-    text-align: center
+    text-align: center!important;
 }
 
 .align-right,
@@ -8166,16 +8170,18 @@ body.boxlayout .container-fluid {
 
 body *::-webkit-scrollbar {
     width: 0px;
-    height: 12px;
+    height: 7px;
     transition: .3s background
 }
 
 body *::-webkit-scrollbar-thumb {
-    background: #c3bac9
+    /* background: #f8f9fa; */
+    background: #bfbfbf!important;
+    border-radius: 50px;
 }
 
 body *:hover::-webkit-scrollbar-thumb {
-    background: #c3bac9
+    background: #8c8c8c
 }
 
 a:hover {
@@ -12491,7 +12497,7 @@ a.tag-addon:hover {
     *display: inline;
     height: 1.25rem;
     width: 2.25rem;
-    background: #D1D3D4;
+    background: #999;
     transition: .3s border-color, .3s background-color;
     position: relative;
     vertical-align: bottom;

@@ -35,7 +35,8 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="resignationDate" [minDate]="JoiningDate"
-                                                (change)="calcExpectedLeavingDate(ExitInformation.resignationDate)"
+                                                [maxDate]="today"
+                                                (bsValueChange)="calculateExpectedLeavingDateFromMonths(ExitInformation.resignationDate)"
                                                 [(ngModel)]="ExitInformation.resignationDate" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
@@ -77,10 +78,10 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Reason For Leaving</label>
-                                    <select class="form-control" placeholder="Select Reason"
+                                    <select class="form-control" placeholder="Select"
                                         formControlName="reasonForLeaving"
                                         [(ngModel)]="ExitInformation.reasonForLeaving">
-                                        <option value="" selected disabled>Select Reason</option>
+                                        <option value="" selected>Select</option>
                                         <option *ngFor="let option of reasonForLeavingList" [value]="option">
                                             {{option}}
                                         </option>
@@ -91,10 +92,11 @@
                                     <label class="form-label">
                                         Remark</label>
                                     <input type="text" class="form-control" formControlName="Exitremark"
-                                        [isRequired]="false" [(ngModel)]="ExitInformation.remark">
+                                        [isRequired]="false" [(ngModel)]="ExitInformation.remark"
+                                        placeholder="Enter Remark">
                                 </div>
 
-                                <div class="col-sm-6 col-md-5">
+                                <!-- <div class="col-sm-6 col-md-5">
                                     <div class="form-group">
                                         <div class="form-label">Employee Status</div>
                                         <div class="custom-controls-stacked">
@@ -117,7 +119,7 @@
                                             </label>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </fieldset>
 

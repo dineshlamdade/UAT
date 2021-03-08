@@ -2,18 +2,13 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-// import * as wjcGrid from '@grapecity/wijmo.grid';
-// import * as wjcCore from '@grapecity/wijmo';
-// import * as wjcInput from '@grapecity/wijmo.input';
-import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
-// import { NotificationsService } from '@src/app/core/services/notifications.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { PayrollAreaRequestModel } from './../../dto-models/payroll-area-information.model';
-import { PayrollAreaInformationService } from './../../employee-master-services/payroll-area-information.service';
+import { PayrollAreaRequestModel } from './payroll-area-information.model';
+import { PayrollAreaInformationService } from './payroll-area-information.service';
 import { SharedInformationService } from '../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
-import { PreviousEmploymentInformationService } from '../../employee-master-services/previous-employment-information/previous-employment-information.service';
+import { PreviousEmploymentInformationService } from '../previous-employment-information/previous-employment-information.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 
@@ -26,6 +21,8 @@ import { PreviousEmploymentInformationService } from '../../employee-master-serv
 export class PayrollAreaInformationComponent implements OnInit {
 
   PayrollAreaInfoForm: FormGroup;
+  modalRef: BsModalRef;
+
   public PayrollAreaRequestModel = new PayrollAreaRequestModel('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   NewPayrollAreaRequestModel: any;
   PayrollAreaFormSubscription: Subscription;
@@ -62,8 +59,8 @@ export class PayrollAreaInformationComponent implements OnInit {
   confirmDeleteSubscription: Subscription;
   setCancelPayrollEditPopupSubscription: Subscription;
   NewPayrollPopupFormSaveSubscription: Subscription;
-  additionPayrollFlag: boolean = false;
-  additionalPayrollButton: boolean = true;
+  // additionPayrollFlag: boolean = false;
+  additionalPayrollButton: boolean = false;
   TotalPercentLimit: any = 100;
   payrollAreaArray: Array<any> = [];
   multipleBankBoolean: boolean = true;
@@ -82,40 +79,17 @@ export class PayrollAreaInformationComponent implements OnInit {
   public today = new Date();
   JoiningDate: any;
   currencyArray: Array<any> = [];
+  confirmationMsg: string;
+  currentPayroll: any;
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
-    public dialog: MatDialog, private PayrollAreaService: PayrollAreaInformationService,
-    private matDialog: MatDialog,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    private PayrollAreaService: PayrollAreaInformationService,
     private router: Router,
     private CommonDataService: SharedInformationService,
-    private PreviousEmpInformationService: PreviousEmploymentInformationService,) {
-
-    if (data?.payrollFlag) {
-      this.payrollFlag = data.payrollFlag;
-      if (this.payrollFlag == 'viewpayroll') {
-        this.bankList = data.bankList;
-        this.PayrollAreaRequestModel = data.payrollViewItem;
-      }
-      if (this.payrollFlag == 'editpayroll') {
-
-        this.bankList = data.bankList;
-        this.bankCount = data.bankCount;
-        this.bankDetailsArray = data.bankDetailsArray;
-        this.payrollAreaArray = data.payrollAreaArray;
-        this.payrollAreaList = data.payrollAreaList;
-        this.PayrollAreaRequestModel = data.payrollEditItem;
-        this.payrollAreaBackFromDate = data.payrollEditItem.payrollAreaFromDate;
-        this.NewPayrollAreaRequestModel = data.payrollEditItem;
-        // this.TotalPercentLimit = data.TotalPercentLimit;
-        if (this.PayrollAreaRequestModel.isAmount == 1) {
-          this.percentOrAmountModel = 'amount'
-        }
-      }
-    }
-  }
+    private PreviousEmpInformationService: PreviousEmploymentInformationService,
+    private modalService: BsModalService) { }
 
 
   ngOnInit(): void {
@@ -126,13 +100,13 @@ export class PayrollAreaInformationComponent implements OnInit {
       fromDate: [this.date.fromDate, Validators.required],
       toDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
       paymentMode: [this.PayrollAreaRequestModel.paymentMode, Validators.required],
-      bankName: [''],
+      bankName: ['', Validators.required],
       bankAccount: [''],
-      typeOfPayment: [''],
-      percent: [''],
+      typeOfPayment: ['', Validators.required],
+      percent: ['', Validators.required],
       amount: [''],
       toggle: [''],
-      priority: [''],
+      priority: [{ value: this.date.toDate, disabled: true }],
       bankfromDate: [this.date.fromDate, Validators.required],
       banktoDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
       currency: ['']
@@ -163,6 +137,9 @@ export class PayrollAreaInformationComponent implements OnInit {
     // this.PayrollAreaRequestModel.percentageOfNetPay = 100;
     if (!this.multipleBankBoolean) {
       this.PayrollAreaRequestModel.percentageOfNetPay = 100;
+      this.PayrollAreaInfoForm.patchValue({
+        percent: 100,
+      })
       const temp13 = this.PayrollAreaInfoForm.get('percent');
       temp13.disable();
     }
@@ -172,7 +149,7 @@ export class PayrollAreaInformationComponent implements OnInit {
 
     this.getPayrollAreaInformation();
     this.PayrollAreaService.getPayrollAreaDetails().subscribe(res => {
-      
+
       this.payrollAreaArray = res.data.results;
       res.data.results.forEach(res => {
         this.payrollAreaList.push(res.payrollAreaCode);
@@ -183,51 +160,41 @@ export class PayrollAreaInformationComponent implements OnInit {
       })
     })
 
-    if (!this.data) {
-      this.PayrollAreaRequestModel.typeOfPayment = 'Salary';
-      this.PayrollAreaRequestModel.type = 'Primary';
-
-      this.PayrollAreaService.getBankAccountDetails(this.employeeMasterId).subscribe(res => {
-
-        this.bankDetailsArray = res.data.results[0];
-        // this.bankCount = res.data.results[0].length;
-        this.bankList = [];
-        res.data.results[0].forEach(res => {
-          this.bankList.push(res.bankName);
-
-          setTimeout(() => {
-            this.PayrollAreaRequestModel.bankName = '';
-          }, 100)
-        })
-      })
-    }
-
-    this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePayrollArea().subscribe(res => {
-
-      if (res.confirmMsg == 'payrollItemDelete') {
-        this.PayrollAreaService.deletePayrollAreaGridItem(res.payrollAreaInformationId).subscribe(res => {
-
-          this.getPayrollAreaInformation();
-          this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-          this.payrollEditFlag = false;
-          this.payrollviewFlag = false;
-
-        })
-      }
-    })
 
     this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
       this.currencyArray = res.data.results;
     })
+
+    this.PayrollAreaRequestModel.typeOfPayment = 'Salary';
+    this.PayrollAreaRequestModel.type = 'Primary';
+    this.PayrollAreaInfoForm.patchValue({
+      type: 'Primary',
+      typeOfPayment: 'Salary'
+    })
+
+    this.PayrollAreaService.getBankAccountDetails(this.employeeMasterId).subscribe(res => {
+
+      this.bankDetailsArray = res.data.results[0];
+      // this.bankCount = res.data.results[0].length;
+      this.bankList = [];
+      res.data.results[0].forEach(res => {
+        this.bankList.push(res.bankName);
+
+        setTimeout(() => {
+          this.PayrollAreaRequestModel.bankName = '';
+        }, 100)
+      })
+    })
   }
 
-  payrollAssignValues(payrollAreaCode){
+  payrollAssignValues(payrollAreaCode) {
 
-    this.payrollAreaArray.forEach(element =>{
-      if(element.payrollAreaCode == payrollAreaCode){
-        
+    this.payrollAreaArray.forEach(element => {
+      if (element.payrollAreaCode == payrollAreaCode) {
+
         this.PayrollAreaRequestModel.description = element.headGroupDefinitionResponse.description;
         this.PayrollAreaRequestModel.currency = element.currency;
+        // this.PayrollAreaRequestModel.payrollAreaId = element.payrollAreaId;
         this.PayrollAreaInfoForm.get('currency').setValue(element.currency);
       }
     })
@@ -243,13 +210,6 @@ export class PayrollAreaInformationComponent implements OnInit {
 
   savePayrollArea(PayrollAreaRequestModel) {
 
-    if (this.additionPayrollFlag == false) {
-      PayrollAreaRequestModel.additionalPayrollAllowed = 0;
-    }
-    if (this.additionPayrollFlag == true) {
-      PayrollAreaRequestModel.additionalPayrollAllowed = 1;
-    }
-
     if (this.multipleBankBoolean == false) {
       PayrollAreaRequestModel.multibankingAllowed = 0;
     }
@@ -260,6 +220,7 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
+    PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
 
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
@@ -269,7 +230,7 @@ export class PayrollAreaInformationComponent implements OnInit {
 
       this.getPayrollAreaInformation();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-      this.payrollAreaDisable();
+      // this.payrollAreaDisable();
 
       this.PayrollAreaRequestModel.bankName = '';
       this.PayrollAreaRequestModel.bankAccountNumber = '';
@@ -295,13 +256,6 @@ export class PayrollAreaInformationComponent implements OnInit {
 
   updatePayrollArea(PayrollAreaRequestModel) {
 
-    if (this.additionPayrollFlag == false) {
-      PayrollAreaRequestModel.additionalPayrollAllowed = 0;
-    }
-    if (this.additionPayrollFlag == true) {
-      PayrollAreaRequestModel.additionalPayrollAllowed = 1;
-    }
-
     if (this.multipleBankBoolean == false) {
       PayrollAreaRequestModel.multibankingAllowed = 0;
     }
@@ -312,6 +266,7 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
+    PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
 
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
@@ -331,6 +286,8 @@ export class PayrollAreaInformationComponent implements OnInit {
       this.PayrollAreaRequestModel.amount = '';
       this.payrollEditFlag = false;
       this.payrollviewFlag = false;
+      const temp15 = this.PayrollAreaInfoForm.get('toDate');
+      temp15.disable();
       if (this.multipleBankBoolean == true) {
         this.PayrollAreaRequestModel.percentageOfNetPay = '';
       }
@@ -344,16 +301,26 @@ export class PayrollAreaInformationComponent implements OnInit {
 
 
 
-  deletePayroll(payroll) {
+  deletePayroll(payroll, confirmation) {
 
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      disableClose: true,
-      width: '664px', height: '241px',
-      data: {
-        pageValue: 'payrollItemDelete', info: 'Do you really want to delete?',
-        payrollEditItem: payroll,
-      }
-    });
+    this.currentPayroll = payroll;
+    this.confirmationMsg = 'Do you really want to delete?';
+    this.modalRef = this.modalService.show(
+      confirmation,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  deleteRecord() {
+    this.PayrollAreaService.deletePayrollAreaGridItem(this.currentPayroll.payrollAreaInformationId).subscribe(res => {
+
+      this.getPayrollAreaInformation();
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.payrollEditFlag = false;
+      this.payrollviewFlag = false;
+      this.resetPayrollAreaForm();
+      this.modalRef.hide();
+    })
   }
 
   getPayrollAreaInformation() {
@@ -369,7 +336,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   editPayroll(payroll) {
-    
+
     this.payrollEditFlag = true;
     this.payrollviewFlag = false;
     this.bankDetailsEnable();
@@ -378,7 +345,8 @@ export class PayrollAreaInformationComponent implements OnInit {
       const temp15 = this.PayrollAreaInfoForm.get('priority');
       temp15.enable();
     }
-
+    const temp15 = this.PayrollAreaInfoForm.get('toDate');
+    temp15.enable();
     this.PayrollAreaRequestModel.payrollAreaInformationId = payroll.payrollAreaInformationId;
     this.PayrollAreaRequestModel.payrollAreaCode = payroll.payrollAreaCode;
     this.PayrollAreaRequestModel.description = payroll.description;
@@ -396,6 +364,11 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.payToDate = payroll.payToDate;
     this.PayrollAreaRequestModel.priority = payroll.priority;
     this.flterBankDetails();
+    this.PayrollAreaInfoForm.patchValue(this.PayrollAreaRequestModel)
+    this.PayrollAreaInfoForm.patchValue({
+      fromDate: this.PayrollAreaRequestModel.payrollAreaFromDate,
+      bankfromDate: this.PayrollAreaRequestModel.payFromDate
+    })
   }
 
   viewPayroll(payroll) {
@@ -423,12 +396,15 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   cancelSkillView() {
- 
+
     this.payrollEditFlag = false;
     this.payrollviewFlag = false;
 
+    const temp15 = this.PayrollAreaInfoForm.get('toDate');
+    temp15.disable();
+
     this.resetPayrollAreaForm();
-    
+
   }
   // PayrollAreaToGrid(PayrollAreaRequestModel) {
   //   if (this.additionPayrollFlag) {
@@ -467,12 +443,6 @@ export class PayrollAreaInformationComponent implements OnInit {
     // temp5.enable();
     const temp9 = this.PayrollAreaInfoForm.get('paymentMode');
     temp9.enable();
-  }
-
-
-  closePopup() {
-    this.matDialog.closeAll();
-    // this.EventEmitterService.getCancelPayrollEditPopup();
   }
 
   percentOrAmount(event) {
@@ -524,6 +494,8 @@ export class PayrollAreaInformationComponent implements OnInit {
     // this.PayrollAreaInfoForm.get('banktoDate').reset();
     this.PayrollAreaInfoForm.get('currency').reset();
     this.PayrollAreaRequestModel.payrollAreaInformationId = 0;
+    const temp15 = this.PayrollAreaInfoForm.get('toDate');
+    temp15.disable();
   }
 
   bankDetailsValidations() {
@@ -599,7 +571,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   flterBankDetails() {
-    
+
     const bank = this.bankDetailsArray.filter(item => {
       if (item.bankName == this.PayrollAreaRequestModel.bankName) {
         return item;
@@ -637,60 +609,6 @@ export class PayrollAreaInformationComponent implements OnInit {
     }
   }
 
-  // bankInitializeGrid(bankFlex) {
-  //   this.bankFlex = bankFlex;
-  //   bankFlex.rows.defaultSize = 40;
-  //   // custom formatter to paint buttons and editors
-  //   bankFlex.formatItem.addHandler((s: wjcGrid.FlexGrid, e: wjcGrid.FormatItemEventArgs) => {
-  //     if (e.panel == s.cells) {
-  //       let col = s.columns[e.col],
-  //         item = s.rows[e.row].dataItem;
-  //       if (item == this._currentEditItem) {
-  //         // create editors and buttons for the item being edited
-  //         switch (col.binding) {
-  //           case 'payrollButtons':
-  //             e.cell.innerHTML = document.getElementById('payrollBtnViewMode').innerHTML;
-  //             e.cell['dataItem'] = item;
-  //             break;
-  //           case 'bankAccount':
-  //           case 'nameAsPerBank':
-  //           case 'typeOfPayment':
-  //           case 'percentageOfNetPay':
-  //           case 'amount':
-  //           case 'payFromDate':
-  //           case 'payToDate':
-  //           case 'priority':
-  //             e.cell.innerHTML = '<input class="form-control" ' +
-  //               'id="' + col.binding + '" ' +
-  //               'value="' + s.getCellData(e.row, e.col, true) + '"/>';
-  //             break;
-  //         }
-  //       } else {
-  //         // create buttons for items not being edited
-  //         switch (col.binding) {
-  //           case 'payrollButtons':
-  //             e.cell.innerHTML = document.getElementById('payrollBtnViewMode').innerHTML;
-  //             e.cell['dataItem'] = item;
-  //             break;
-  //         }
-  //       }
-  //     }
-  //   });
-
-  //   bankFlex.addEventListener(bankFlex.hostElement, 'click', (e: MouseEvent) => {
-  //     let targetBtn: HTMLButtonElement;
-  //     if (e.target instanceof HTMLButtonElement) {
-  //       targetBtn = e.target;
-  //     } else if (e.target instanceof HTMLSpanElement && e.target.classList.contains('glyphicon')) {
-  //       targetBtn = e.target.parentElement as HTMLButtonElement;
-  //     }
-
-
-  //     let ht = bankFlex.hitTest(e);
-  //     this.payrollHT = ht;
-  //   });
-  // }
-
   amountValidCheck() {
     if (this.PayrollAreaRequestModel.amount) {
       this.amountValid = false;
@@ -700,7 +618,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   additionPayrollValidation() {
-    this.additionPayrollFlag = true;
+    // this.additionPayrollFlag = true;
     this.resetPayrollAreaForm();
     this.TotalPercentLimit = 100;
     const temp1 = this.PayrollAreaInfoForm.get('payrollAreaCode');
@@ -834,201 +752,126 @@ export class PayrollAreaInformationComponent implements OnInit {
       }
     }
 
-    if (percentShouldBe100 != true) {
-      if (this.validateBankGridRow != true) {
-        if (!this.additionPayrollFlag) {
-          if (this.AdditionalPayrollAreaSummaryGridData.length > 1) {
-            const temp1 = this.PayrollAreaInfoForm.get('payrollAreaCode');
-            temp1.disable();
-          }
-        } else {
-          if (this.AdditionalPayrollAreaSummaryGridData.length > 1) {
-            const temp1 = this.PayrollAreaInfoForm.get('payrollAreaCode');
-            temp1.enable();
-          }
-        }
-
-        let data = [];
-        let Additional = [];
-        let PayrollAreaSummaryGridData = [];
-        let AdditionalPayrollAreaSummaryGridData = [];
-
-        if (this.percentOrAmountModel == 'percentOfNetPay') {
-          PayrollAreaRequestModel.isPercentOfNetPay = 1;
-          PayrollAreaRequestModel.percentageOfNetPay = PayrollAreaRequestModel.percentageOfNetPay;
-        } else {
-          PayrollAreaRequestModel.isAmount = 1;
-          PayrollAreaRequestModel.amount = PayrollAreaRequestModel.amount;
-        }
-        PayrollAreaSummaryGridData.push(PayrollAreaRequestModel);
-        AdditionalPayrollAreaSummaryGridData.push(PayrollAreaRequestModel);
-        // for (let i = 0; i < this.companyList.length; i++) {
-        for (var val of PayrollAreaSummaryGridData) {
-          let i = 0;
-          data.push({
-            payrollAreaCode: val.payrollAreaCode,
-            description: val.description,
-            type: val.type,
-            payrollAreaFromDate: val.payrollAreaFromDate,
-            payrollAreaToDate: val.payrollAreaToDate,
-            paymentMode: val.paymentMode,
-            bankName: val.bankName,
-            bankAccount: val.bankAccount,
-            typeOfPayment: val.typeOfPayment,
-            isPercentOfNetPay: val.isPercentOfNetPay,
-            percentageOfNetPay: val.percentageOfNetPay,
-            isAmount: val.isAmount,
-            amount: val.amount,
-            payFromDate: val.payFromDate,
-            payToDate: val.payToDate,
-            priority: val.priority
-          });
-
-        }
-        for (var val of AdditionalPayrollAreaSummaryGridData) {
-          let i = 0;
-          Additional.push({
-            payrollAreaCode: val.payrollAreaCode,
-            description: val.description,
-            type: val.type,
-            payrollAreaFromDate: val.payrollAreaFromDate,
-            payrollAreaToDate: val.payrollAreaToDate,
-            paymentMode: val.paymentMode,
-            bankName: val.bankName,
-            bankAccount: val.bankAccount,
-            typeOfPayment: val.typeOfPayment,
-            isPercentOfNetPay: val.isPercentOfNetPay,
-            percentageOfNetPay: val.percentageOfNetPay,
-            isAmount: val.isAmount,
-            amount: val.amount,
-            payFromDate: val.payFromDate,
-            payToDate: val.payToDate,
-            priority: val.priority
-          });
-        }
-
-        if (this.PayrollAreaSummaryGridData.length > 0) {
-          let newData = data.concat(this.PayrollAreaSummaryGridData);
-          this.PayrollAreaSummaryGridData = newData;
-
-          let additionalNewData = Additional.concat(this.AdditionalPayrollAreaSummaryGridData);
-          this.AdditionalPayrollAreaSummaryGridData = additionalNewData;
-
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payrollAreaFromDate = this.datepipe.transform(data.payrollAreaFromDate, 'dd-MMM-yyyy');
-          })
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payrollAreaToDate = this.datepipe.transform(data.payrollAreaToDate, 'dd-MMM-yyyy');
-          })
-
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payFromDate = this.datepipe.transform(data.payFromDate, 'dd-MMM-yyyy');
-          })
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payToDate = this.datepipe.transform(data.payToDate, 'dd-MMM-yyyy');
-          })
-
-        } else {
-          this.PayrollAreaSummaryGridData = data;
-          this.AdditionalPayrollAreaSummaryGridData = data;
-
-
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payrollAreaFromDate = this.datepipe.transform(data.payrollAreaFromDate, 'dd-MMM-yyyy');
-          })
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payrollAreaToDate = this.datepipe.transform(data.payrollAreaToDate, 'dd-MMM-yyyy');
-          })
-
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payFromDate = this.datepipe.transform(data.payFromDate, 'dd-MMM-yyyy');
-          })
-          this.PayrollAreaSummaryGridData.forEach(data => {
-            return data.payToDate = this.datepipe.transform(data.payToDate, 'dd-MMM-yyyy');
-          })
-        }
-
-        this.PayrollAreaRequestModel.bankName = '';
-        this.PayrollAreaRequestModel.bankAccountNumber = '';
-        this.PayrollAreaRequestModel.typeOfPayment = '';
-        // if (this.multipleBankBoolean) {
-        //   this.PayrollAreaRequestModel.percentageOfNetPay = '';
-        // }
-        this.PayrollAreaRequestModel.amount = '';
-        this.PayrollAreaRequestModel.payFromDate = '';
-        // this.PayrollAreaRequestModel.payToDate = '';
-        // this.PayrollAreaRequestModel.priority = '';
-        // this.bankDetailsDisable();
-        this.percentOrAmountModel = 'percentOfNetPay';
-        this.PayrollAreaRequestModel.priority = '';
-        this.existingPayrollEditingItem = localStorage.getItem('payrollEditingItem');
-        this.existingPayrollEditingItem = JSON.parse(this.existingPayrollEditingItem);
+    if (this.validateBankGridRow != true) {
+      if (this.AdditionalPayrollAreaSummaryGridData.length > 1) {
+        const temp1 = this.PayrollAreaInfoForm.get('payrollAreaCode');
+        temp1.disable();
+      } else {
+        const temp1 = this.PayrollAreaInfoForm.get('payrollAreaCode');
+        temp1.enable();
       }
-    }
-  }
 
-  filterpayrollArea(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.payrollAreaList.length; i++) {
-      let country = this.payrollAreaList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
-      }
-    }
-    this.filteredPayrollAreaList = filtered;
-  }
+      let data = [];
+      let Additional = [];
+      let PayrollAreaSummaryGridData = [];
+      let AdditionalPayrollAreaSummaryGridData = [];
 
-  filterpaymentMode(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.paymentModeList.length; i++) {
-      let country = this.paymentModeList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
+      if (this.percentOrAmountModel == 'percentOfNetPay') {
+        PayrollAreaRequestModel.isPercentOfNetPay = 1;
+        PayrollAreaRequestModel.percentageOfNetPay = PayrollAreaRequestModel.percentageOfNetPay;
+      } else {
+        PayrollAreaRequestModel.isAmount = 1;
+        PayrollAreaRequestModel.amount = PayrollAreaRequestModel.amount;
       }
-    }
-    this.filteredpaymentModeList = filtered;
-  }
+      PayrollAreaSummaryGridData.push(PayrollAreaRequestModel);
+      AdditionalPayrollAreaSummaryGridData.push(PayrollAreaRequestModel);
+      for (var val of PayrollAreaSummaryGridData) {
+        let i = 0;
+        data.push({
+          payrollAreaCode: val.payrollAreaCode,
+          description: val.description,
+          type: val.type,
+          payrollAreaFromDate: val.payrollAreaFromDate,
+          payrollAreaToDate: val.payrollAreaToDate,
+          paymentMode: val.paymentMode,
+          bankName: val.bankName,
+          bankAccount: val.bankAccount,
+          typeOfPayment: val.typeOfPayment,
+          isPercentOfNetPay: val.isPercentOfNetPay,
+          percentageOfNetPay: val.percentageOfNetPay,
+          isAmount: val.isAmount,
+          amount: val.amount,
+          payFromDate: val.payFromDate,
+          payToDate: val.payToDate,
+          priority: val.priority
+        });
 
-  filterbanks(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.bankList.length; i++) {
-      let country = this.bankList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
       }
-    }
-    this.filteredbankList = filtered;
-  }
+      for (var val of AdditionalPayrollAreaSummaryGridData) {
+        let i = 0;
+        Additional.push({
+          payrollAreaCode: val.payrollAreaCode,
+          description: val.description,
+          type: val.type,
+          payrollAreaFromDate: val.payrollAreaFromDate,
+          payrollAreaToDate: val.payrollAreaToDate,
+          paymentMode: val.paymentMode,
+          bankName: val.bankName,
+          bankAccount: val.bankAccount,
+          typeOfPayment: val.typeOfPayment,
+          isPercentOfNetPay: val.isPercentOfNetPay,
+          percentageOfNetPay: val.percentageOfNetPay,
+          isAmount: val.isAmount,
+          amount: val.amount,
+          payFromDate: val.payFromDate,
+          payToDate: val.payToDate,
+          priority: val.priority
+        });
+      }
 
-  filtertypeOfPayment(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.typeOfPaymentList.length; i++) {
-      let country = this.typeOfPaymentList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
-      }
-    }
-    this.filteredtypeOfPaymentList = filtered;
-  }
+      if (this.PayrollAreaSummaryGridData.length > 0) {
+        let newData = data.concat(this.PayrollAreaSummaryGridData);
+        this.PayrollAreaSummaryGridData = newData;
 
-  filtertype(event) {
-    //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-    let filtered: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < this.typeList.length; i++) {
-      let country = this.typeList[i];
-      if (country.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(country);
+        let additionalNewData = Additional.concat(this.AdditionalPayrollAreaSummaryGridData);
+        this.AdditionalPayrollAreaSummaryGridData = additionalNewData;
+
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payrollAreaFromDate = this.datepipe.transform(data.payrollAreaFromDate, 'dd-MMM-yyyy');
+        })
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payrollAreaToDate = this.datepipe.transform(data.payrollAreaToDate, 'dd-MMM-yyyy');
+        })
+
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payFromDate = this.datepipe.transform(data.payFromDate, 'dd-MMM-yyyy');
+        })
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payToDate = this.datepipe.transform(data.payToDate, 'dd-MMM-yyyy');
+        })
+
+      } else {
+        this.PayrollAreaSummaryGridData = data;
+        this.AdditionalPayrollAreaSummaryGridData = data;
+
+
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payrollAreaFromDate = this.datepipe.transform(data.payrollAreaFromDate, 'dd-MMM-yyyy');
+        })
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payrollAreaToDate = this.datepipe.transform(data.payrollAreaToDate, 'dd-MMM-yyyy');
+        })
+
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payFromDate = this.datepipe.transform(data.payFromDate, 'dd-MMM-yyyy');
+        })
+        this.PayrollAreaSummaryGridData.forEach(data => {
+          return data.payToDate = this.datepipe.transform(data.payToDate, 'dd-MMM-yyyy');
+        })
       }
+
+      this.PayrollAreaRequestModel.bankName = '';
+      this.PayrollAreaRequestModel.bankAccountNumber = '';
+      this.PayrollAreaRequestModel.typeOfPayment = '';
+      this.PayrollAreaRequestModel.amount = '';
+      this.PayrollAreaRequestModel.payFromDate = '';
+      // this.PayrollAreaRequestModel.payToDate = '';
+      // this.PayrollAreaRequestModel.priority = '';
+      // this.bankDetailsDisable();
+      this.percentOrAmountModel = 'percentOfNetPay';
+      this.PayrollAreaRequestModel.priority = '';
+      this.existingPayrollEditingItem = localStorage.getItem('payrollEditingItem');
+      this.existingPayrollEditingItem = JSON.parse(this.existingPayrollEditingItem);
     }
-    this.filteredTypeList = filtered;
   }
 }

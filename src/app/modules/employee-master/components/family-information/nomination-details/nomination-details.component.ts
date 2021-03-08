@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 // import { CoreService } from './core.service';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
-import { BankInformationService } from './../../../employee-master-services/bank-information.service';
+import { BankInformationService } from './../../bank-information/bank-information.service';
 // import { NotificationsService } from '@src/app/core/services/notifications.service';
-import { FamilyInformationService } from './../../../employee-master-services/family-information.service';
+import { FamilyInformationService } from './../family-information.service';
 // import { NominationElement } from './periodic';
-import { NominationElementDTO, NominationInformation, TotalPercentageDTO } from './../../../dto-models/family-information.model';
+import { NominationElementDTO, NominationInformation, TotalPercentageDTO } from './../family-information.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { DatePipe } from '@angular/common';
 
 
 export interface NominationElement {
@@ -54,6 +55,7 @@ export class NominationDetailsComponent implements OnInit {
   employeeMasterId: number;
   ELEMENT_DATA: []
   FamilyMemberList: Array<any> = [];
+  DocumentMemberList: Array<any> = [];
   ESICDataSource: MatTableDataSource<any>;
   ESICMemberList: Array<any> = [];
   public FamilyMember = new NominationElementDTO('', '', '', '', '', '', '', '', '');
@@ -103,13 +105,16 @@ export class NominationDetailsComponent implements OnInit {
     private BankInformationService: BankInformationService,
     private EventEmitterService: EventEmitterService,
     private sanitizer: DomSanitizer,
-    private CommonDataService: SharedInformationService) { }
+    private CommonDataService: SharedInformationService,
+    public datepipe: DatePipe,) { }
 
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
     const data = 'some text';
     const blob = new Blob([data], { type: 'application/octet-stream' });
+
+    this.getNomination();
 
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
     this.FamilyInformationService.getAllESICLocation().subscribe(res => {
@@ -133,43 +138,76 @@ export class NominationDetailsComponent implements OnInit {
 
 
 
-    this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
 
+    // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
+    //   
+    //   res.isMemberActive == 'isMemberActive';
+    //   this.dataSource.data.forEach(element => {
+
+    //     if (res.isMemberActive == element.IsActive) {
+    //       element.pfPercentage = 0;
+    //       element.epsPercentage = 0;
+    //       element.gratuityPercentage = 0;
+    //       element.salaryPercentage = 0;
+    //       element.superAnnuationPercentage = 0;
+    //       element.lifeInsurancePercentage = 0;
+    //       element.esicPercentage = 0;
+    //       element.personalAccidentInsurancePercentage = 0;
+    //       element.mediclaimInsurancePercentage = 0;
+    //       element.IsActive = 0;
+    //     }
+    //   })
+    // })
+  }
+
+  getNomination() {
+    this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
+      
       // if (!this.dataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-        const obj = {
-          'familyMemberInfoId': element.familyMemberInfoId,
-          'familyMemberName': element.familyMemberName,
-          'isActive': element.status,
-          'pfPercentage': 0,
-          'epsPercentage': 0,
-          'gratuityPercentage': 0,
-          'salaryPercentage': 0,
-          'superAnnuationPercentage': 0,
-          'lifeInsurancePercentage': 0,
-          'esicPercentage': 0,
-          'personalAccidentInsurancePercentage': 0,
-          'mediclaimInsurancePercentage': 0
+        if (element.status == 1) {
+          const obj = {
+            'familyMemberInfoId': element.familyMemberInfoId,
+            'familyMemberName': element.familyMemberName,
+            'isActive': element.status,
+            'pfPercentage': 0,
+            'epsPercentage': 0,
+            'gratuityPercentage': 0,
+            'salaryPercentage': 0,
+            'superAnnuationPercentage': 0,
+            'lifeInsurancePercentage': 0,
+            'esicPercentage': 0,
+            'personalAccidentInsurancePercentage': 0,
+            'mediclaimInsurancePercentage': 0
+          }
+          this.FamilyMemberList.push(obj);
         }
-
-
-        this.FamilyMemberList.push(obj);
 
         // const TABLE_DATA: NominationElement[] = this.FamilyMemberList;
         // this.dataSource = new MatTableDataSource(TABLE_DATA);
       })
       // }
       this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
-
+        
         this.AllNominationList = res.data.results[0].familyNominationResponseDTO;
         this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
-        // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
-        // this.dataSource = new MatTableDataSource(TABLE_DATA);
+    
+        this.FamilyMemberList.forEach((element1) => {
+          this.AllNominationList.some(res => {
+            if (element1.familyMemberInfoId == res.familyMemberInfoId) {
+              res.familyMemberName = element1.familyMemberName;
+            }
+          })
+        })
+        
         this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
         this.lastUpdatedDate = new Date(Math.max.apply(null, this.AllNominationList.map(function (e) {
           return new Date(e.lastModifiedDateTime);
         })));
-
+        this.lastUpdatedDate = this.datepipe.transform(this.lastUpdatedDate, "dd-MMM-yyyy");
+        if(this.lastUpdatedDate == '01-Jan-1970'){
+          this.lastUpdatedDate = ''; 
+        }
         const newNomination = [];
         this.FamilyMemberList.filter(element => {
           newNomination.push(element.familyMemberInfoId);
@@ -248,6 +286,9 @@ export class NominationDetailsComponent implements OnInit {
           // return this.dataSource = new MatTableDataSource(TABLE_DATA);
           return this.nominationDataSource = this.AllNominationList;
         }
+      }, (error: any) => {
+        // this.nominationDataSource = this.FamilyMemberList;
+        // this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
 
       if (this.extractedInfoID.length == 0 && this.AllNominationList.length == 0) {
@@ -277,19 +318,19 @@ export class NominationDetailsComponent implements OnInit {
       }
       // if (!this.ESICDataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-        const obj1 = {
-          'familyMemberInfoId': element.familyMemberInfoId,
-          'familyMemberName': element.familyMemberName,
-          // 'isActive': element.status,
-          'state': '',
-          'city': '',
-          'dispensaryName': '',
-          'dispensaryAddress': ''
+        
+        if (element.status == 1) {
+          const obj1 = {
+            'familyMemberInfoId': element.familyMemberInfoId,
+            'familyMemberName': element.familyMemberName,
+            // 'isActive': element.status,
+            'state': '',
+            'city': '',
+            'dispensaryName': '',
+            'dispensaryAddress': ''
+          }
+          this.ESICMemberList.push(obj1);
         }
-
-
-        this.ESICMemberList.push(obj1);
-
         // const TABLE_DATA1: ESICElement[] = this.ESICMemberList;
         // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
       })
@@ -300,11 +341,9 @@ export class NominationDetailsComponent implements OnInit {
 
 
         this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
-
+          
           this.AllESICList = res.data.results[0];
           this.getStates();
-          // const TABLE_DATA1: ESICElement[] = res.data.results[0];
-          // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
 
           const newESIC = [];
           this.ESICMemberList.filter(element => {
@@ -323,14 +362,22 @@ export class NominationDetailsComponent implements OnInit {
                 if (element == element1.familyMemberInfoId) {
                   this.AllESICList.push(element1);
                   // const TABLE_DATA1: ESICElement[] = this.AllESICList;
-                  this.AllESICList.forEach(res => {
-                    res.stateList = this.states;
-                    res.familyMemberName = element1.familyMemberName;
-                  })
+                  // this.AllESICList.forEach(res => {
+                  //   res.stateList = this.states;
+                  //   res.familyMemberName = element1.familyMemberName;
+                  // })
                   return this.esicDataSource = this.AllESICList;
                   // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
                 }
               });
+            })
+            this.ESICMemberList.forEach((element1) => {
+              this.AllESICList.some(res => {
+                res.stateList = this.states;
+                if (element1.familyMemberInfoId == res.familyMemberInfoId) {
+                  res.familyMemberName = element1.familyMemberName;
+                }
+              })
             })
           } else {
             const TABLE_DATA1: ESICElement[] = this.AllESICList;
@@ -359,29 +406,11 @@ export class NominationDetailsComponent implements OnInit {
 
       // }
     })
-
-    // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
-    //   
-    //   res.isMemberActive == 'isMemberActive';
-    //   this.dataSource.data.forEach(element => {
-
-    //     if (res.isMemberActive == element.IsActive) {
-    //       element.pfPercentage = 0;
-    //       element.epsPercentage = 0;
-    //       element.gratuityPercentage = 0;
-    //       element.salaryPercentage = 0;
-    //       element.superAnnuationPercentage = 0;
-    //       element.lifeInsurancePercentage = 0;
-    //       element.esicPercentage = 0;
-    //       element.personalAccidentInsurancePercentage = 0;
-    //       element.mediclaimInsurancePercentage = 0;
-    //       element.IsActive = 0;
-    //     }
-    //   })
-    // })
   }
-  filterCity(state, ESIC) {
 
+
+  filterCity(state, ESIC) {
+    
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {
@@ -389,6 +418,12 @@ export class NominationDetailsComponent implements OnInit {
       }
     })
     ESIC.cities = cities.filter(this.onlyUnique);
+    if(ESIC.cities.length == 0){
+      delete ESIC.cities;
+    }
+    ESIC.city = '';
+    ESIC.dispensaryName = '';
+    ESIC.dispensaryAddress = '';
     // if(state){
     //   ESIC.city = '';
     // }
@@ -498,7 +533,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.superAnnuationPercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingSupeAnnuationPercentage(){
+  getRemainingSupeAnnuationPercentage() {
     return 100 - this.getTotalsupeannuationPercentage();
   }
   getTotallifeInsurancePercentage() {
@@ -506,7 +541,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.lifeInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingLifeInsurancePercentage(){
+  getRemainingLifeInsurancePercentage() {
     return 100 - this.getTotallifeInsurancePercentage();
   }
   getTotalMediclaimInsurancePercentage() {
@@ -514,7 +549,7 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.mediclaimInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingMediclaimInsurancePercentage(){
+  getRemainingMediclaimInsurancePercentage() {
     return 100 - this.getTotalMediclaimInsurancePercentage();
   }
   getTotalpersonalAccidentInsurance() {
@@ -522,92 +557,92 @@ export class NominationDetailsComponent implements OnInit {
       return this.nominationDataSource.map(t => t.personalAccidentInsurancePercentage).reduce((acc, value) => acc + value, 0);
     }
   }
-  getRemainingpersonalAccidentInsurance(){
+  getRemainingpersonalAccidentInsurance() {
     return 100 - this.getTotalpersonalAccidentInsurance();
   }
   saveNominationsDetails(nominationDataSource, esicDataSource) {
+    
+    // nominationDataSource.forEach(element => {
+    //   this.PFcount = this.PFcount + element.pfPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.EPScount = this.EPScount + element.epsPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.salarycount = this.salarycount + element.salaryPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.ESICcount = this.ESICcount + element.esicPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.Gratuitycount = this.Gratuitycount + element.gratuityPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.SuperAnutationcount = this.SuperAnutationcount + element.superAnnuationPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.LifeInsurancecount = this.LifeInsurancecount + element.lifeInsurancePercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.PersonalAccInsurancecount = this.PersonalAccInsurancecount + element.personalAccidentInsurancePercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.MediclaimInsurancecount = this.MediclaimInsurancecount + element.mediclaimInsurancePercentage;
+    // });
+    // if (this.PFcount > 100 && this.PFcount != 0) {
+    //   this.PFcountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Provident Fund Should be 100%');
+    // }
+    // if (this.EPScount > 100 && this.EPScount != 0) {
+    //   this.EPScountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for EPS Should be 100%');
+    // }
+    // if (this.salarycount > 100 && this.salarycount != 0) {
+    //   this.salarycountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Salary Should be 100%');
+    // }
+    // if (this.ESICcount > 100 && this.ESICcount != 0) {
+    //   this.ESICcountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for ESIC Should be 100%');
+    // }
+    // if (this.Gratuitycount > 100 && this.Gratuitycount != 0) {
+    //   this.GratuitycountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Gratuity Should be 100%');
+    // }
+    // if (this.SuperAnutationcount > 100 && this.SuperAnutationcount != 0) {
+    //   this.SuperAnutationcountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Super Annuation Should be 100%');
+    // }
+    // if (this.LifeInsurancecount > 100 && this.LifeInsurancecount != 0) {
+    //   this.LifeInsurancecountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Life Insurance Should be 100%');
+    // }
+    // if (this.PersonalAccInsurancecount > 100 && this.PersonalAccInsurancecount != 0) {
+    //   this.PersonalAccInsurancecountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Personal Accident Insurance Should be 100%');
+    // }
+    // if (this.MediclaimInsurancecount > 100 && this.MediclaimInsurancecount != 0) {
+    //   this.MediclaimInsurancecountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Mediclaim Insurance Fund Should be 100%');
+    // }
+    // this.PFcount = 0;
+    // this.EPScount = 0;
+    // this.salarycount = 0;
+    // this.ESICcount = 0;
+    // this.Gratuitycount = 0;
+    // this.SuperAnutationcount = 0;
+    // this.LifeInsurancecount = 0;
+    // this.PersonalAccInsurancecount = 0;
+    // this.MediclaimInsurancecount = 0;
+    // if (this.PFcountBoolean != true && this.EPScountBoolean != true && this.salarycountBoolean != true
+    //   && this.ESICcountBoolean != true && this.GratuitycountBoolean != true && this.SuperAnutationcountBoolean != true
+    //   && this.LifeInsurancecountBoolean != true && this.PersonalAccInsurancecountBoolean != true
+    //   && this.MediclaimInsurancecountBoolean != true) {
+    //   this.SaveBoolean = true;
+    // }
 
-    nominationDataSource.forEach(element => {
-      this.PFcount = this.PFcount + element.pfPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.EPScount = this.EPScount + element.epsPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.salarycount = this.salarycount + element.salaryPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.ESICcount = this.ESICcount + element.esicPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.Gratuitycount = this.Gratuitycount + element.gratuityPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.SuperAnutationcount = this.SuperAnutationcount + element.superAnnuationPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.LifeInsurancecount = this.LifeInsurancecount + element.lifeInsurancePercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.PersonalAccInsurancecount = this.PersonalAccInsurancecount + element.personalAccidentInsurancePercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.MediclaimInsurancecount = this.MediclaimInsurancecount + element.mediclaimInsurancePercentage;
-    });
-    if (this.PFcount > 100 && this.PFcount != 0) {
-      this.PFcountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Provident Fund Should be 100%');
-    }
-    if (this.EPScount > 100 && this.EPScount != 0) {
-      this.EPScountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for EPS Should be 100%');
-    }
-    if (this.salarycount > 100 && this.salarycount != 0) {
-      this.salarycountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Salary Should be 100%');
-    }
-    if (this.ESICcount > 100 && this.ESICcount != 0) {
-      this.ESICcountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for ESIC Should be 100%');
-    }
-    if (this.Gratuitycount > 100 && this.Gratuitycount != 0) {
-      this.GratuitycountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Gratuity Should be 100%');
-    }
-    if (this.SuperAnutationcount > 100 && this.SuperAnutationcount != 0) {
-      this.SuperAnutationcountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Super Annuation Should be 100%');
-    }
-    if (this.LifeInsurancecount > 100 && this.LifeInsurancecount != 0) {
-      this.LifeInsurancecountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Life Insurance Should be 100%');
-    }
-    if (this.PersonalAccInsurancecount > 100 && this.PersonalAccInsurancecount != 0) {
-      this.PersonalAccInsurancecountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Personal Accident Insurance Should be 100%');
-    }
-    if (this.MediclaimInsurancecount > 100 && this.MediclaimInsurancecount != 0) {
-      this.MediclaimInsurancecountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Mediclaim Insurance Fund Should be 100%');
-    }
-    this.PFcount = 0;
-    this.EPScount = 0;
-    this.salarycount = 0;
-    this.ESICcount = 0;
-    this.Gratuitycount = 0;
-    this.SuperAnutationcount = 0;
-    this.LifeInsurancecount = 0;
-    this.PersonalAccInsurancecount = 0;
-    this.MediclaimInsurancecount = 0;
-    if (this.PFcountBoolean != true && this.EPScountBoolean != true && this.salarycountBoolean != true
-      && this.ESICcountBoolean != true && this.GratuitycountBoolean != true && this.SuperAnutationcountBoolean != true
-      && this.LifeInsurancecountBoolean != true && this.PersonalAccInsurancecountBoolean != true
-      && this.MediclaimInsurancecountBoolean != true) {
-      this.SaveBoolean = true;
-    }
 
-
-    if (this.SaveBoolean == true) {
+    // if (this.SaveBoolean == true) {
 
       this.NominationInformation.familyNominationRequestDTO = nominationDataSource;
       this.NominationInformation.familyESICDetailRequestDTO = esicDataSource;
@@ -617,37 +652,26 @@ export class NominationDetailsComponent implements OnInit {
       })
       this.NominationInformation.familyNominationRequestDTO.forEach(data => {
         delete data.disable;
+        delete data.familyMemberInfo;
       })
       this.NominationInformation.familyESICDetailRequestDTO.forEach(data => {
         delete data.dispensaryList;
-      })
-      this.NominationInformation.familyESICDetailRequestDTO.forEach(data => {
         delete data.stateList;
-      })
-      this.FamilyInformationService.postNominationDetails(this.NominationInformation).subscribe(res => {
-        this.PFcount = 0;
-        this.EPScount = 0;
-        this.salarycount = 0;
-        this.ESICcount = 0;
-        this.Gratuitycount = 0;
-        this.SuperAnutationcount = 0;
-        this.LifeInsurancecount = 0;
-        this.PersonalAccInsurancecount = 0;
-        this.MediclaimInsurancecount = 0;
 
-        // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
-        // this.dataSource = new MatTableDataSource(TABLE_DATA);
-        this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
-        // const TABLE_DATA1: ESICElement[] = res.data.results[0].familyESICDetailResponseDTO;
-        // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
-        this.esicDataSource = res.data.results[0].familyESICDetailResponseDTO;
+      })
+
+      this.FamilyInformationService.postNominationDetails(this.NominationInformation).subscribe(res => {
+
+        // this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
+        this.getNomination();
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
       }, (error: any) => {
+        this.getNomination();
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
-    }
-    this.SaveBoolean = false;
+    // }
+    // this.SaveBoolean = false;
   }
 
   /** Gets the total cost of all transactions. */
@@ -665,7 +689,6 @@ export class NominationDetailsComponent implements OnInit {
 
     this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
 
-      console.log(res.data.results[0]);
       // const TABLE_DATA1: ESICElement[] = res.data.results[0];
       // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
       this.esicDataSource = res.data.results[0];
@@ -675,8 +698,6 @@ export class NominationDetailsComponent implements OnInit {
   getAllNominations() {
 
     this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
-
-      console.log(res.data.results[0].totalPercentageResponseDTO);
 
       this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
       // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
@@ -728,6 +749,16 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   resetNomination() {
+    this.getNomination();
+  }
 
+  esicPercentageValidation(esicPercentage) {
+    
+    if (esicPercentage == 0) {
+      return
+    }
+    if (esicPercentage != 100) {
+      this.CommonDataService.sweetalertError('Nomination for ESIC should be 100% for a single family member');
+    }
   }
 }

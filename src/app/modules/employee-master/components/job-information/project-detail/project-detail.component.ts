@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ProjectDetailsModel } from './../../../dto-models/project-details.model';
+import { ProjectDetailsModel } from './../job-information-models/project-details.model';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { JobInformationService } from '../../../employee-master-services/job-information.service';
+import { JobInformationService } from '../job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
+import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,7 +28,7 @@ export class ProjectDetailComponent implements OnInit {
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaCode: any;
-  companyName:any;
+  companyName: any;
   joiningDate: any;
 
   constructor(public datepipe: DatePipe,
@@ -54,18 +54,18 @@ export class ProjectDetailComponent implements OnInit {
     });
 
     this.payrollAreaCode = null;
-    this.companyName='';
+    this.companyName = '';
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
 
-      //get company name from local storage
-   const companyName = localStorage.getItem('jobInformationCompanyName')
-   if(companyName!=null){
-    this.companyName = new String(companyName);
-   }
+    //get company name from local storage
+    const companyName = localStorage.getItem('jobInformationCompanyName')
+    if (companyName != null) {
+      this.companyName = new String(companyName);
+    }
 
     //get payroll area's list
     this.getPayrollAreaInformation();
@@ -75,7 +75,7 @@ export class ProjectDetailComponent implements OnInit {
 
   //get project details service calling
   getProjectFormForm() {
-    debugger
+
     this.JobInformationService.getProjectDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       if (res.data.results[0]) {
@@ -83,12 +83,33 @@ export class ProjectDetailComponent implements OnInit {
         this.employeeProjectDetailId = res.data.results[0].employeeProjectDetailId;
         this.projectDetailsModel = res.data.results[0];
 
+        //dates conversion  
+        if (res.data.results[0].projectFromDate != null) {
+          this.projectDetailsModel.projectFromDate = new Date(res.data.results[0].projectFromDate);
+        }
+        if (res.data.results[0].projectToDate != null) {
+          this.projectDetailsModel.projectToDate = new Date(res.data.results[0].projectToDate);
+        }
+        if (res.data.results[0].billableFromDate != null) {
+          this.projectDetailsModel.billableFromDate = new Date(res.data.results[0].billableFromDate);
+        }
+        if (res.data.results[0].billableToDate != null) {
+          this.projectDetailsModel.billableToDate = new Date(res.data.results[0].billableToDate);
+        }
+        if (res.data.results[0].benchFromDate != null) {
+          this.projectDetailsModel.benchFromDate = new Date(res.data.results[0].benchFromDate);
+        }
+        if (res.data.results[0].benchToDate != null) {
+          this.projectDetailsModel.benchToDate = new Date(res.data.results[0].benchToDate);
+        }
 
         //bench 
         if (this.projectDetailsModel.isOnBench == 1) {
           // this.projectDetailsModel.isOnBench = 'yes';
           this.isOnBenchBoolean = 'yes';
           this.projectForm.value.isOnBenchControl = 'yes';
+
+          this.validateSaveBenchDates();
         }
         else {
           this.disableBenchDates();
@@ -108,6 +129,8 @@ export class ProjectDetailComponent implements OnInit {
           projectFromDate.enable();
           const projectToDate = this.projectForm.get('projectToDateControl');
           projectToDate.enable();
+
+          this.validateProjectDatesSave();
         }
         else {
           this.disableProjectDates();
@@ -119,6 +142,8 @@ export class ProjectDetailComponent implements OnInit {
           billableFromDate.enable();
           const billableToDate = this.projectForm.get('billableToDateControl');
           billableToDate.enable();
+
+          this.validateSaveBillableDates();
         }
         else {
           this.disableBillableDates();
@@ -159,9 +184,9 @@ export class ProjectDetailComponent implements OnInit {
     projectDetailsModel.employeeMasterId = this.employeeMasterId;
     projectDetailsModel.employeeProjectDetailId = this.employeeProjectDetailId;
     if (this.payrollAreaList.length == 1) {
-     // projectDetailsModel.payrollAreaCode = this.payrollAreaList[0];
-     this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
-     localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+      // projectDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+      this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+      localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
     }
     else {
       //get payroll area code from local storage
@@ -169,15 +194,15 @@ export class ProjectDetailComponent implements OnInit {
       // this.payrollAreaCode = new String(payrollAreaCode);
       // projectDetailsModel.payrollAreaCode = new String(payrollAreaCode);
 
-       //get payroll area code from local storage
-       const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
-       this.payrollAreaCode = new String(payrollAreaCode);
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
 
-         //get company from local storage
-         const companyName = localStorage.getItem('jobInformationCompanyName')
-         if(companyName!=null){
-           this.companyName = new String(companyName);
-         }
+      //get company from local storage
+      const companyName = localStorage.getItem('jobInformationCompanyName')
+      if (companyName != null) {
+        this.companyName = new String(companyName);
+      }
     }
 
     if (this.isOnBenchBoolean == 'yes') {
@@ -187,7 +212,7 @@ export class ProjectDetailComponent implements OnInit {
     if (this.isOnBenchBoolean == 'no') {
       this.projectDetailsModel.isOnBench = 0;
     }
-    projectDetailsModel.payrollAreaCode=new String( this.payrollAreaCode);
+    projectDetailsModel.payrollAreaCode = new String(this.payrollAreaCode);
 
     projectDetailsModel.projectFromDate = this.datepipe.transform(projectDetailsModel.projectFromDate, "dd-MMM-yyyy");
     projectDetailsModel.projectToDate = this.datepipe.transform(projectDetailsModel.projectToDate, "dd-MMM-yyyy");
@@ -201,6 +226,7 @@ export class ProjectDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.projectDetailsModel = res.data.results[0];
       this.employeeProjectDetailId = this.projectDetailsModel.employeeProjectDetailId;
+      this.EventEmitterService.getJobSummaryInitiate('project');
 
       //this.getProjectFormForm();
       //redirecting page to summary page
@@ -222,7 +248,9 @@ export class ProjectDetailComponent implements OnInit {
 
   validateProjectDatesSave() {
     this.projectForm.controls['projectFromDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.projectFromDateControl.updateValueAndValidity();
     this.projectForm.controls['projectToDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.projectToDateControl.updateValueAndValidity();
 
   }
   enableProjectDate() {
@@ -256,7 +284,9 @@ export class ProjectDetailComponent implements OnInit {
   }
   validateSaveBillableDates() {
     this.projectForm.controls['billableFromDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.billableFromDateControl.updateValueAndValidity();
     this.projectForm.controls['billableToDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.billableToDateControl.updateValueAndValidity();
 
   }
   enableBillableDate() {
@@ -291,7 +321,9 @@ export class ProjectDetailComponent implements OnInit {
 
   validateSaveBenchDates() {
     this.projectForm.controls['benchFromDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.benchFromDateControl.updateValueAndValidity();
     this.projectForm.controls['benchToDateControl'].setValidators([Validators.required]);
+    this.projectForm.controls.benchToDateControl.updateValueAndValidity();
 
   }
 
@@ -337,28 +369,29 @@ export class ProjectDetailComponent implements OnInit {
         // this.payrollAreaCode = this.payrollAreaList[0];
         // localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
 
-         //set default payroll area
-         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
-         localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
- 
-          //set default company
-          let result=res.data.results[0];
-          this.companyName = result[0].payrollAreaId.companyId.companyName;
-          localStorage.setItem('jobInformationCompanyName',  this.companyName);
+        //set default payroll area
+        this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+        localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
+
+        //set default company
+        let result = res.data.results[0];
+        //this.companyName = result[0].payrollAreaId.companyId.companyName;
+        this.companyName = result[0].payrollAreaAndCompany;
+        localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
         //get payroll area code from local storage
         const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
         this.payrollAreaCode = new String(payrollAreaCode);
 
-         //get company from local storage
-         const companyName = localStorage.getItem('jobInformationCompanyName')
-         if(companyName!=null){
-           this.companyName = new String(companyName);
-         }
+        //get company from local storage
+        const companyName = localStorage.getItem('jobInformationCompanyName')
+        if (companyName != null) {
+          this.companyName = new String(companyName);
+        }
       }
     })
-  
+
   }
 
   filterpayrollArea(event) {
@@ -380,17 +413,18 @@ export class ProjectDetailComponent implements OnInit {
     this.payrollAreaCode = event;
 
     const toSelect = this.filteredPayrollAreaList.find(
-      (c) => c.payrollAreaCode ===  this.payrollAreaCode
+      (c) => c.payrollAreaCode === this.payrollAreaCode
     );
-    this.companyName = toSelect.payrollAreaId.companyId.companyName;
-    localStorage.setItem('jobInformationCompanyName',  this.companyName);
+    //this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    this.companyName = toSelect.payrollAreaAndCompany;
+    localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.resetProjectForm();
     this.getProjectFormForm();
   }
 
   resetProjectForm() {
-    debugger
+
     this.projectForm.reset();
     this.employeeProjectDetailId = 0;
     this.isOnBenchBoolean = 'no';

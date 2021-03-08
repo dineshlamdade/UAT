@@ -1,5 +1,3 @@
-import { IDSATTBSummaryComponent } from './IDSA-TTB/IDSA-TTB-summary/IDSA-TTB-summary.component';
-import { IDSATTBComponent } from './IDSA-TTB/IDSA-TTB.component';
 import { IDSASummaryComponent } from './interest-deposit-savingAccount/IDSA-summary/IDSA-summary.component';
 import { InterestDepositSavingAccountComponent } from './interest-deposit-savingAccount/interest-deposit-savingAccount.component';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -22,8 +20,6 @@ import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
 import { IDSAMasterComponent } from './interest-deposit-savingAccount/IDSA-master/IDSA-master.component';
 import { IDSADeclarationComponent } from './interest-deposit-savingAccount/IDSA-declaration/IDSA-declaration.component';
-import { IDSATTBMasterComponent } from './IDSA-TTB/IDSA-TTB-master/IDSA-TTB-master.component';
-import { IDSATTBDeclarationComponent } from './IDSA-TTB/IDSA-TTB-declaration/IDSA-TTB-declaration.component';
 import { NPSComponent } from './nps/nps.component';
 import { NpsSummaryComponent } from './nps/nps-summary/nps-summary.component';
 import { NpsMasterComponent } from './nps/nps-master/nps-master.component';
@@ -63,7 +59,14 @@ import { Mediclaim80DComponent } from './mediclaim80-d/mediclaim80-d.component';
 import { MediclaimSummaryComponent } from './mediclaim80-d/mediclaim-summary/mediclaim-summary.component';
 import { MediclaimMasterComponent } from './mediclaim80-d/mediclaim-master/mediclaim-master.component';
 import { MediclaimDeclarationComponent } from './mediclaim80-d/mediclaim-declaration/mediclaim-declaration.component';
+import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import {MatSelectModule} from '@angular/material/select';
+import { TreatmentOfSpecifiedDiseasesComponent } from './treatment-of-specified-diseases/treatment-of-specified-diseases.component';
+import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-diseases/treatment-of-specified-summary/treatment-of-specified-summary.component';
+import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
+import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
 
 @NgModule({
   declarations: [
@@ -71,10 +74,6 @@ import { MediclaimDeclarationComponent } from './mediclaim80-d/mediclaim-declara
       IDSASummaryComponent,
       IDSAMasterComponent,
       IDSADeclarationComponent,
-      IDSATTBComponent,
-      IDSATTBSummaryComponent,
-      IDSATTBMasterComponent,
-      IDSATTBDeclarationComponent,
       NPSComponent,
       NpsSummaryComponent,
       NpsMasterComponent,
@@ -112,8 +111,14 @@ import { MediclaimDeclarationComponent } from './mediclaim80-d/mediclaim-declara
       MediclaimSummaryComponent,
       MediclaimMasterComponent,
       MediclaimDeclarationComponent,
+      ChapterVIASummaryComponent,
+      TreatmentOfSpecifiedDiseasesComponent,
+      TreatmentOfSpecifiedSummaryComponent,
+      TreatmentOfSpecifiedMasterComponent,
+      TreatmentOfSpecifiedDeclarationComponent,
      ],
   imports: [
+    MatSelectModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
@@ -138,6 +143,7 @@ import { MediclaimDeclarationComponent } from './mediclaim80-d/mediclaim-declara
     MyInvestmentsRoutingModule,
     PrimeNGModule,
     MyInvestmentsModule,
+    NgMultiSelectDropDownModule
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

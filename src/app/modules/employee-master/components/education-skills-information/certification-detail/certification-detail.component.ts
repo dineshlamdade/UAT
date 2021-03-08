@@ -2,13 +2,13 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest, employeeCertificateRequest } from '../../../dto-models/educatio-skills.model';
+import { employeeCertificateRequest } from './../educatio-skills.model';
 import { ConfirmationModalComponent } from '../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
+import { EducationSkillsInformationService } from '../education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PreviousEmploymentInformationService } from './../../../employee-master-services/previous-employment-information/previous-employment-information.service';
+import { PreviousEmploymentInformationService } from './../../previous-employment-information/previous-employment-information.service';
 
 
 var certificateNameArray = [
@@ -114,7 +114,7 @@ export class CertificationDetailComponent implements OnInit {
 
     this.getCertificateMapping();
     this.getAllCertificateSummary();
-    this.getCertificateMapping()
+    // this.getCertificateMapping()
     this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
 
       this.currencyArray = res.data.results;
@@ -127,7 +127,6 @@ export class CertificationDetailComponent implements OnInit {
 
     this.EducationSkillsInformationService.getAllCertificates().subscribe(res => {
       
-
       this.CertificateMappingList.forEach(element1 => {
         res.data.results.forEach(element2 => {
           if (element1.certificateMasterId == element2.certificateMasterId) {
@@ -154,7 +153,6 @@ export class CertificationDetailComponent implements OnInit {
     this.EducationSkillsInformationService.getAllCertificateSummary(this.employeeMasterId).subscribe(res => {
       
       this.certificateSummaryGridData = res.data.results[0];
-      console.log((this.certificateSummaryGridData));
 
       this.certificateSummaryGridData.forEach(element => {
         if (element.renewable == 0) {
@@ -230,18 +228,27 @@ export class CertificationDetailComponent implements OnInit {
 
   onSelectionName(certificate) {
     
+    let renewable;
+    const certificateNew = this.ToFilteredCertificateAllList.filter(element =>{
+      if(element.certificateMasterMappingId == certificate){
+        this.employeeCertificateRequestModel.certificateMasterMappingId = element.certificateMasterMappingId;
+        renewable = element.certificateMasterDetails.renewable
+        return element;
+      }
+    })
+    
     this.employeeCertificateRequestModel.cerificateNumber = '';
-    if (certificate == "false") {
+    if (renewable == false) {
       this.renewableModel = 'no';
       // this.employeeCertificateRequestModel.renewable = 0;
     }
-    if (certificate == "true") {
+    if (renewable == true) {
       this.renewableModel = 'yes';
       // this.employeeCertificateRequestModel.renewable = 1;
     }
     // this.employeeCertificateRequestModel.renewalFeesCurrency = certificate.certificateMasterDetails.renewalFeesCurrency;
     // this.employeeCertificateRequestModel.renewalFees = certificate.certificateMasterDetails.amount;
-    this.employeeCertificateRequestModel.certificateMasterMappingId = certificate.certificateMasterMappingId;
+    // this.employeeCertificateRequestModel.certificateMasterMappingId = certificate.certificateMasterMappingId;
 
     // setTimeout(() => {
     //   this.certificateModel = certificate.certificateMasterDetails.certificateName;
@@ -268,7 +275,7 @@ export class CertificationDetailComponent implements OnInit {
       this.employeeCertificateRequestModel.cerificateNumber = res.data.results[0].cerificateNumber;
       this.employeeCertificateRequestModel.certificateMasterMappingId = res.data.results[0].certificateMasterMappingId;
       this.employeeCertificateRequestModel.employeeCertificateId = res.data.results[0].employeeCertificateId;
-      this.certificateModel = res.data.results[0].certificateMasterMapping;
+      this.certificateModel = res.data.results[0].certificateMasterMapping.certificateMaster.certificateName;
 
       if (res.data.results[0].renewable == 0) {
         this.renewableModel = 'no';

@@ -1,4 +1,4 @@
-<div class="card landing-card">
+<!-- <div class="card landing-card">
     <fieldset>
         <div class="col-12">
             <button type="button" (click)="AddJoinee()"
@@ -8,19 +8,215 @@
             <div class="col-sm-6 col-md-8 mt-20">
                 <label class="form-label">Employee List</label>
                 <select class="form-control custom-select" placeholder="Select" [(ngModel)]="employee"
-                (change)="employeeSelection(employee)">
+                    (change)="employeeSelection(employee)">
                     <option value="" selected disabled>Select</option>
-                    <option *ngFor="let emp of employeeList" [value]="emp.employeeMasterId" >
+                    <option *ngFor="let emp of employeeList" [value]="emp.employeeMasterId">
                         {{emp.firstName}} {{emp.lastName }}
                     </option>
                 </select>
             </div>
 
-            <button type="button" (click)="addReJoinee(employeeItem)" [disabled]="!validRejoinee"
-            [ngClass]="{'disabled-btn-bg-green' : !validRejoinee,
+            <button type="button" (click)="addReJoinee(employeeItem, confirmation)" [disabled]="!validRejoinee"
+                [ngClass]="{'disabled-btn-bg-green' : !validRejoinee,
                            'btn-bg-green': validRejoinee}"
-                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mt-15" tooltip="Add Re-Joinee">
+                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mt-15"
+                tooltip="Add Re-Joinee">
                 Add Re-Joinee</button>
         </div>
     </fieldset>
+</div> -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <legend style="font-size: 17px !important;">Employee Details</legend>
+                    <div class="row">
+                        <div class="ml-15 title-label">
+                            <label>Total Count:</label>&nbsp;{{employeeList.length}}
+                        </div>
+
+                        <button type="button"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mb-15 ml-15"
+                            tooltip="Download Template"><b><i class="fa fa-download" aria-hidden="true"></i></b>
+                            Download Template</button>
+                        <button type="button"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mb-15 ml-15"
+                            tooltip="Bulk Upload"><b><i class="fa fa-upload" aria-hidden="true"></i></b>
+                            Bulk Upload</button>
+                        <div style="margin-left: auto;">
+                            <button type="button"
+                                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mr-15 mb-15"
+                                tooltip="Add Fields"><b><i class="icon-plus" aria-hidden="true"></i></b>
+                                Add Fields</button>
+
+                            <button type="button" (click)="AddJoinee()"
+                                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mr-15 mb-15"
+                                tooltip="Add Joinee"><b><i class="icon-plus" aria-hidden="true"></i></b>
+                                Add Joinee</button>
+
+                            <button type="button" (click)="addReJoinee(employeeItem, confirmation)"
+                                [disabled]="!validRejoinee" [ngClass]="{'disabled-btn-bg-green' : !validRejoinee,
+                                   'btn-bg-green': validRejoinee}"
+                                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mb-15 mr-15"
+                                tooltip="Add Re-Joinee"><b><i class="icon-plus" aria-hidden="true"></i></b>
+                                Add Re-Joinee</button>
+
+                            <button type="button"
+                                class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mb-15 mr-15"
+                                tooltip="Approvals"><b><i class="fa fa-check-square-o" aria-hidden="true"></i></b>
+                                Approvals</button>
+                        </div>
+                    </div>
+                    <p-table [value]="employeeList" [(selection)]="selectedEmployees" [scrollable]="true"
+                        [style]="{width:'1000px'}" scrollHeight="350px">
+                        <ng-template pTemplate="colgroup">
+                            <colgroup>
+                                <col style="width:25px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                                <col style="width:110px">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 3rem">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </th>
+                                <th pSortableColumn="employeeCode" class="primeng-table-header-left">Employee No.
+                                    <p-sortIcon field="employeeCode"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="firstName" class="primeng-table-header-left">First Name <p-sortIcon
+                                        field="firstName"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="lastName" class="primeng-table-header-left">Last Name <p-sortIcon
+                                        field="lastName"></p-sortIcon>
+                                </th>
+                                <th class="primeng-table-header-left">Joining Date</th>
+                                <th class="primeng-table-header-left">Employee Type</th>
+                                <th class="primeng-table-header-left">Location</th>
+                                <th class="primeng-table-header-left">Grade</th>
+                                <th class="primeng-table-header-left">Designation</th>
+                                <th class="primeng-table-header-left">Department</th>
+                                <th class="primeng-table-header-left">Status</th>
+                                <th class="primeng-table-header-left">Action</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-employee>
+                            <tr>
+                                <td>
+                                    <p-tableCheckbox [value]="employee" (click)="getSelectedEmployees(employee)">
+                                    </p-tableCheckbox>
+                                </td>
+
+                                <td class="primeng-table-header-left"><span>
+                                        {{employee.employeeCode}}
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-21"><span>
+                                        {{employee.firstName}}
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-24"><span>
+                                        {{employee.lastName}}</span></td>
+
+                                <td class="primeng-table-header-left"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-21"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-24"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-21"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-24"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-24"><span>
+
+                                    </span></td>
+
+                                <td class="primeng-table-header-left"><span><i
+                                            class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
+                                            (click)="editEmployeeRow(employee)"></i>
+
+                                        <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10" tooltip="View"
+                                            (click)="viewEmployeeRow(employee)"></i>
+
+                                        <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
+                                            (click)="deleteEmployeeRow(employee, confirmation)"></i></span>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center" *ngIf="employeeList.length==0">No
+                        data found</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{confirmationMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="No()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="Yes()">Yes</button>
+
+    </div>
+</ng-template>

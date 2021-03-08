@@ -65,6 +65,9 @@ import { SeniorCitizenDeclarationComponent } from './senior-citizen-saving-schem
 import { TuitionFeesComponent } from './tuition-fees/tuition-fees.component';
 import { TuitionFeesSummaryComponent } from './tuition-fees/tuition-fees-summary/tuition-fees-summary.component';
 import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-declaration/tuition-fees-declaration.component';
+import { SummaryComponent } from './summary/summary.component';
+import { EmployeeContributionToProvidentFundPFComponent } from './employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
+import { EmployeeContributionToVPFComponent } from './employee-contribution-to-vpf/employee-contribution-to-vpf.component';
 
 @NgModule({
   declarations: [
@@ -115,6 +118,9 @@ import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-dec
     TuitionFeesComponent,
     TuitionFeesSummaryComponent,
     TuitionFeesDeclarationComponent,
+    SummaryComponent,
+    EmployeeContributionToProvidentFundPFComponent,
+    EmployeeContributionToVPFComponent,
 
      ],
   imports: [

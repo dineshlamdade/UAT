@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, Input, Optional, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReJoiningInformationModel } from './../../../dto-models/employment-forms-models/re-Joining-information.model';
-import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
+import { ReJoiningInformationModel } from './../employment-forms-models/re-Joining-information.model';
+import { EmploymentInformationService } from './../employment-information.service';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
@@ -63,11 +63,6 @@ export class ReJoiningInformationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // if(!this.confirmMsg){
-    //   let dateOfBirth = new Date(this.birthDate);
-    //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-    //   this.ReJoiningInformationModel.rejoiningDate = '';
-    // }
     this.ReJoiningForm = this.formBuilder.group({
       rejoiningDate: ['', Validators.required],
       originalHireDate: [''],
@@ -105,6 +100,9 @@ export class ReJoiningInformationComponent implements OnInit {
       });
       if (this.companyListForJoining.length == 1) {
         this.ReJoiningInformationModel.companyName = this.companyListForJoining[0];
+        this.ReJoiningForm.patchValue({
+          companyName: this.ReJoiningInformationModel.companyName,
+        })
       }
     })
 
@@ -245,6 +243,10 @@ export class ReJoiningInformationComponent implements OnInit {
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
 
+        this.ReJoiningForm.patchValue({
+          rejoiningDate: this.ReJoiningInformationModel.rejoiningDate,
+          companyName: this.ReJoiningInformationModel.companyName,
+        })
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId)
         if (this.ReJoiningInformationModel.isNoticePeriodInMonth == 1) {
           this.noticeMonthsDays = 'false';
@@ -271,16 +273,7 @@ export class ReJoiningInformationComponent implements OnInit {
         else {
           this.ReJoiningForm.get('ContinuationService').setValue('No');
         }
-
       }
-
-      // if(!this.ReJoiningInformationModel.projectedRetirementDate){
-      //   let dateOfBirth = new Date(this.birthDate);
-      //   this.ReJoiningInformationModel.projectedRetirementDate = this.add_years(dateOfBirth, 58).toString();
-      // }
-      // if(this.confirmMsg){
-      //   this.ReJoiningInformationModel.projectedRetirementDate = this.projectedRetirementDate;
-      // }
     })
     this.ReJoiningForm.markAsUntouched();
   }
@@ -328,19 +321,6 @@ export class ReJoiningInformationComponent implements OnInit {
   resetForm() {
     this.ReJoiningForm.reset();
   }
-  // searchEmployeeCode(value) {
-  //   setTimeout(() => {
-  //     this.EmploymentInformationService.getPreviousStintInfoBySearch(value).subscribe(res => {
-  //       this.PreviousStintInfoData = res.data.results[0];
-
-  //       if (this.continuationServiceBoolean == 'Yes' && this.PreviousStintInfoData.length>0) {
-  //         this.ReJoiningInformationModel.originalHireDate = res.data.results[0][0].originalHireDate;
-  //         this.ReJoiningInformationModel.joiningDateForGratuity = res.data.results[0][0].originalHireDate;
-  //       }
-  //       this.pushToGrid();
-  //     })
-  //   }, 1000)
-  // }
 
   pushToGrid() {
 

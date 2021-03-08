@@ -6,7 +6,6 @@
            <select name="beast" id="Institution" class="form-control custom-select"
                 formControlName="institutionName"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.institutionName.errors }">
-              <option [ngValue]="null">Select</option>
               <option *ngFor="let institutionName of institutionNameList"
                 [value]="institutionName.value">
                 {{institutionName.label}}
@@ -30,8 +29,7 @@
            <select name="Policy_Holder_Name" id="PolicyHolderName" class="form-control custom-select"
                 formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'
                 [ngClass]="{ 'is-invalid': submitted && masterForm.policyholdername.errors }">
-                <option [ngValue]="null">Select</option>
-                <option *ngFor="let familyMember of familyMemberName"
+              <option *ngFor="let familyMember of familyMemberName"
                 [value]="familyMember.value">
                 {{familyMember.label}}
               </option>
@@ -90,12 +88,11 @@
               <legend>Payment Details</legend>
               <div class="row">
                  <div class="col-sm-6 col-md-3">
-                    <label class="form-label">Frequency Of Payment</label>
+                    <label class="form-label">Frequency of Payment</label>
                     <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
-                        <option [ngValue]="null">Select</option>
-                        <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}
                       </option>
@@ -302,12 +299,8 @@
      <div class="row mt-15">
         <div class="col-12">
            <div class="float-right mb-15">
-            <button type="button"  (click)="resetForm()"
-            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Cancel"><b>
-              <i class="fa fa-floppy-o"></i></b> Cancel</button> &nbsp;
-            <button type="submit" tooltip="Save"
-            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
-              <i class="fa fa-floppy-o"></i></b> Save</button>
+              <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+                <i class="fa fa-floppy-o"></i></b> Save</button>
            </div>
         </div>
      </div>
@@ -344,9 +337,9 @@
                             </td>
                             <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{ summary.policyStartDate | date :'dd-MMM-yyyy' }}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
+                            <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
                             </td>
-                            <td class="wd-10"><span tooltip="{{summary.policyEndDate | date :'dd-MMM-yyyy' }}">{{summary.policyEndDate | date :"dd-MMM-yyyy"}}</span>
+                            <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date :"dd-MMM-yyyy"}}</span>
                             </td>
                             <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
                             </td>

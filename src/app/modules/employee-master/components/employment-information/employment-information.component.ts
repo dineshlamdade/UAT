@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EmploymentInformationService } from './../../employee-master-services/employment-information.service';
+import { EmploymentInformationService } from './employment-information.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 
 @Component({
@@ -32,27 +32,28 @@ export class EmploymentInformationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
     private EventEmitterService: EventEmitterService, private router: Router) {
-      if (router.url == '/employee-master/employment-information/employment-summary') {
-        this.tabIndex = 0;
-        this.EmpSummaryTabValidation();
-      }
-      if (router.url == '/employee-master/employment-information/joining-information') {
-        this.tabIndex = 1;
-        this.joiningTabValidation();
-      }
-      if (router.url == '/employee-master/employment-information/re-joining-information') {
-        this.tabIndex = 2;
-        this.reJoiningTabValidation();
-      }
-      if (router.url == '/employee-master/employment-information/transfer-information') {
-        this.tabIndex = 3;
-        this.transferTabValidation();
-      }
-      if (router.url == '/employee-master/employment-information/exit-information') {
-        this.tabIndex = 4;
-        this.exitTabValidation();
-      }
-     }
+    // Active tab selection based on URLS
+    if (router.url == '/employee-master/employment-information/employment-summary') {
+      this.tabIndex = 0;
+      this.EmpSummaryTabValidation();
+    }
+    if (router.url == '/employee-master/employment-information/joining-information') {
+      this.tabIndex = 1;
+      this.joiningTabValidation();
+    }
+    if (router.url == '/employee-master/employment-information/re-joining-information') {
+      this.tabIndex = 2;
+      this.reJoiningTabValidation();
+    }
+    if (router.url == '/employee-master/employment-information/transfer-information') {
+      this.tabIndex = 3;
+      this.transferTabValidation();
+    }
+    if (router.url == '/employee-master/employment-information/exit-information') {
+      this.tabIndex = 4;
+      this.exitTabValidation();
+    }
+  }
 
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
@@ -94,11 +95,12 @@ export class EmploymentInformationComponent implements OnInit {
 
       this.rejoiningBoolean = res.rejoinee;
       // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
-      //   debugger
+      //   
       //   this.rejoiningBoolean = res.data.results[0];
       // })
     })
 
+    // Active Tab event Subscription from other components
     this.tabSubscription = this.EventEmitterService.setJoiningInitiate().subscribe(res => {
 
       this.joiningTabValidation()
