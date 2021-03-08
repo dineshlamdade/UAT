@@ -1,0 +1,84 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="educatiotabview">
+                                <input name="nav" type="radio" class="about-radio" id="educationDetails"
+                                    [checked]="tabIndex==0" />
+                                <div class="tabs educationtabs about-page" *ngIf="educationTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="educationDetails"
+                                    (click)="hideSummaryGrid = true;educationTabValidation()"
+                                    [routerLink]="['/employee-master/education-skills-information/education-details']">
+                                    <span>
+                                        Education
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="skillsDetails"
+                                    [checked]="tabIndex==1" />
+                                <div class="tabs educationtabs about-page">
+                                    <div class="tabview-contents" *ngIf="skillTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="skillsDetails" (click)="hideSummaryGrid = true;skillTabValidation()"
+                                    [routerLink]="['/employee-master/education-skills-information/skills-details']">
+                                    <span>
+                                        Skills
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="languageDetails"
+                                    [checked]="tabIndex==2" />
+                                <div class="tabs educationtabs about-page">
+                                    <div class="tabview-contents" *ngIf="languageTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="languageDetails"
+                                    (click)="hideSummaryGrid = true;languageTabValidation()"
+                                    [routerLink]="['/employee-master/education-skills-information/language-details']">
+                                    <span>
+                                        Language
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="CertificationDetails"
+                                    [checked]="tabIndex==3" />
+                                <div class="tabs educationtabs about-page">
+                                    <div class="tabview-contents" *ngIf="certificationTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="CertificationDetails"
+                                    (click)="hideSummaryGrid = true;certificationTabValidation()"
+                                    [routerLink]="['/employee-master/education-skills-information/certification-details']">
+                                    <span>
+                                        Certification
+                                    </span>
+                                </label>
+
+
+                                <!-- <div class="tabs about-page">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

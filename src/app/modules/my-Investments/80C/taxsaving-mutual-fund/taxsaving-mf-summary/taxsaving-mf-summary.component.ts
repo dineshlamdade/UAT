@@ -62,7 +62,7 @@ export class TaxsavingMfSummaryComponent implements OnInit {
           this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+          this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
            console.log(res);
@@ -71,8 +71,6 @@ export class TaxsavingMfSummaryComponent implements OnInit {
 
     // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
 
         const data = {
             futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
@@ -84,7 +82,7 @@ export class TaxsavingMfSummaryComponent implements OnInit {
             this.summaryGridData = res.data.results[0].transactionDetailList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+            this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
             this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         });
@@ -94,7 +92,7 @@ export class TaxsavingMfSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
+      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
       this.addFuturePolicy();
     }
 

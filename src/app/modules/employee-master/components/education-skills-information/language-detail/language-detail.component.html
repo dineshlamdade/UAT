@@ -1,0 +1,204 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form [formGroup]="LanguageInfoForm">
+                        <!-- Member Details -->
+                        <fieldset>
+                            <legend>
+                                Language Information</legend>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4" style="margin-left: 25px;">
+                                    <label class="form-label">Language</label>
+                                    <select class="form-control" placeholder="Select" formControlName="language"
+                                        [(ngModel)]="employeeLanguageRequestModel.language" (change)="clearLanguageInformation();
+                                    validateGridLanguage();"
+                                        [ngClass]="{'is-invalid' : LanguageInfoForm.get('language').status == 'INVALID'}">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let language of languageArray" [value]="language">
+                                            {{language}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredLanguageArray" placeholder="Select"
+                                        (completeMethod)="filterLanguages($event)" [dropdown]="true"
+                                        formControlName="language" [(ngModel)]="employeeLanguageRequestModel.language"
+                                        (onSelect)="clearLanguageInformation();
+                                        validateGridLanguage();">
+                                    </p-autoComplete> -->
+                                </div>
+                            </div>
+
+                            <div class="mt-20 ml-20" style="margin-left: 25px;">
+
+                                <div class="form-label">Read</div>
+                                <div class="form-group">
+                                    <div class="custom-controls-stacked">
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Basic"
+                                                formControlName="languageRead"
+                                                [(ngModel)]="employeeLanguageRequestModel.read">
+                                            <span class="custom-control-label">Basic</span>
+                                        </label>
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Intermediate"
+                                                formControlName="languageRead"
+                                                [(ngModel)]="employeeLanguageRequestModel.read">
+                                            <span class="custom-control-label">Intermediate</span>
+                                        </label>
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Proficient"
+                                                formControlName="languageRead"
+                                                [(ngModel)]="employeeLanguageRequestModel.read">
+                                            <span class="custom-control-label">Proficient</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-15" style="margin-left: 25px;">
+                                <div class="form-label">Write</div>
+                                <div class="form-group">
+                                    <div class="custom-controls-stacked">
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input"
+                                                formControlName="languageWrite" value="Basic"
+                                                [(ngModel)]="employeeLanguageRequestModel.write">
+                                            <span class="custom-control-label">Basic</span>
+                                        </label>
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Intermediate"
+                                                formControlName="languageWrite"
+                                                [(ngModel)]="employeeLanguageRequestModel.write">
+                                            <span class="custom-control-label">Intermediate</span>
+                                        </label>
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Proficient"
+                                                formControlName="languageWrite"
+                                                [(ngModel)]="employeeLanguageRequestModel.write">
+                                            <span class="custom-control-label">Proficient</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-10" style="margin-left: 25px;">
+                                <div class="form-label">Speak</div>
+                                <div class="form-group">
+                                    <div class="custom-controls-stacked">
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input"
+                                                formControlName="languageSpeak" value="Basic"
+                                                [(ngModel)]="employeeLanguageRequestModel.speak">
+                                            <span class="custom-control-label">Basic</span>
+                                        </label>
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Intermediate"
+                                                formControlName="languageSpeak"
+                                                [(ngModel)]="employeeLanguageRequestModel.speak">
+                                            <span class="custom-control-label">Intermediate</span>
+                                        </label>
+                                        <label class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" class="custom-control-input" value="Proficient"
+                                                formControlName="languageSpeak"
+                                                [(ngModel)]="employeeLanguageRequestModel.speak">
+                                            <span class="custom-control-label">Proficient</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <div class="row mt-15">
+                        <div class="col-12">
+                            <div class="float-right mb-15">
+                                <button type="submit" (click)="postLanguageForm(employeeLanguageRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" [ngClass]="{'disabled-btn-bg-green':!employeeLanguageRequestModel.read &&
+                            !employeeLanguageRequestModel.write && !employeeLanguageRequestModel.speak,
+                                'btn-bg-green':employeeLanguageRequestModel.read || employeeLanguageRequestModel.write ||
+                            employeeLanguageRequestModel.speak}" [disabled]="!employeeLanguageRequestModel.read && !employeeLanguageRequestModel.write &&
+                            !employeeLanguageRequestModel.speak" tooltip="Save"
+                                    [hidden]="LanguageEditFlag || LanguageviewFlag"><b><i
+                                            class="fa fa-floppy-o"></i></b>Save</button>
+
+                                <button type="submit" [ngClass]="{'disabled-btn-bg-green':!employeeLanguageRequestModel.read&&
+                                !employeeLanguageRequestModel.write&& !employeeLanguageRequestModel.speak,
+                                    'btn-bg-green':employeeLanguageRequestModel.read&&employeeLanguageRequestModel.write&&
+                                employeeLanguageRequestModel.speak}" [disabled]="!employeeLanguageRequestModel.read&&!employeeLanguageRequestModel.write&&
+                                !employeeLanguageRequestModel.speak"
+                                    (click)="updateLanguageForm(employeeLanguageRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Update"
+                                    *ngIf="LanguageEditFlag"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                <button type="button" tooltip="Reset" (click)="resetLanguageForm()"
+                                    [hidden]="LanguageviewFlag"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
+
+                                <button type="button" *ngIf="LanguageEditFlag || LanguageviewFlag"
+                                    (click)="cancelLanguageView()"
+                                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <legend style="font-size: 17px !important;">Summary</legend>
+                    <p-table [value]="LanguageSummaryGridData" [scrollable]="true" [style]="{width:'1000px'}"
+                        scrollHeight="200px">
+                        <ng-template pTemplate="colgroup" let-languageHeader>
+                            <colgroup>
+                                <col style="width:150px">
+                                <col style="width:150px">
+                                <col style="width:150px">
+                                <col style="width:150px">
+                                <col style="width:100px">
+                            </colgroup>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="primeng-table-header-left">Language</th>
+                                <th class="primeng-table-header-left ">Read</th>
+                                <th class="primeng-table-header-left">Write</th>
+                                <th class="primeng-table-header-left">Speak</th>
+                                <th class="primeng-table-header-left">Action</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-Language>
+                            <tr>
+                                <td class="primeng-table-header-left"><span>
+                                        {{Language.language}}
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-21"><span>
+                                        {{Language.read}}
+                                    </span></td>
+
+                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.write}}</span></td>
+
+                                <td class="primeng-table-header-left padding-left-21"><span> {{Language.speak}}</span></td>
+
+                                <td class="primeng-table-header-left padding-left-24">
+                                    <span>
+                                        <i class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
+                                            (click)="editLanguageRow(Language)"></i>
+
+                                        <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10" tooltip="View"
+                                            (click)="viewLanguageRow(Language)"></i>
+                                        <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
+                                            (click)="deleteLanguageRow(Language)"></i>
+                                    </span>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <span class="font-14 font500 align-center text-red no-data-center"
+                        *ngIf="LanguageSummaryGridData.length==0">No
+                        data found</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

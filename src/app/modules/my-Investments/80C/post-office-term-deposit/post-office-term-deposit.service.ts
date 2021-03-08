@@ -17,7 +17,6 @@ export class PostOfficeTermDepositService {
 
 
   getPOTDepositSummary() {
-    // return this._HTTP.get(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummary')
     return this._HTTP.get(this.apiUrl + 'postOfficeTermedDeposit-transaction/summary')
     .pipe(map((res: any) => {
       return res;
@@ -26,7 +25,6 @@ export class PostOfficeTermDepositService {
   }
 
   postPOTDepositSummaryFuturePolicy(data) {
-    // return this._HTTP.post(this.apiUrl + 'pensionPlanMaster-detail/pensionPlanMasterSummaryFuturePolicy', data)
     return this._HTTP.post(this.apiUrl + 'postOfficeTermedDeposit-transaction/SummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;
@@ -34,15 +32,6 @@ export class PostOfficeTermDepositService {
   }
 
    //Declaration services
-  //  postOfficeTermedDeposit-transaction/SummaryFuturePolicy
-
-  //service to be created
-  // getTransactionFilterData(institution:String, policyNo:String, transactionStatus:String) {
-  //   return this._HTTP.get(this.apiUrl + 'fdmorethan5years-transaction/' + institution + '/' + policyNo + '/' + transactionStatus)
-  //   .pipe(map((res: any) => {
-  //     return res;
-  //   }));
-  // }
 
   //service to be created
   getTransactionFilterData() {
@@ -81,27 +70,6 @@ export class PostOfficeTermDepositService {
     }));
   }
 
-  // uploadMultipleNSCMasterFiles(files: File[], data:any): Observable<any> {
-  //   var formData: any = new FormData();
-  //   console.log('in uploadMultipleFiles Service::', files);
-  //   for (let file of files) {
-  //     formData.append('group2MasterDocuments', file);
-  //   }
-  //   //formData.append('licDocuments', files);
-  //   formData.append('investmentGroup2MasterRequestDTO', JSON.stringify(data));
-
-  //   console.log('formData', formData);
-
-  //   formData.forEach((value, key) => {
-  //     console.log(key," ",value)
-  //   });
-  //   //return null;
-  //   return this._HTTP.post<any>(
-  //     this.apiUrl + 'nscMaster-detail',
-  //     formData,
-  //     {
-  //     });
-  // }
 
   uploadPOTDepositTransactionwithDocument(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();
@@ -119,10 +87,9 @@ export class PostOfficeTermDepositService {
     });
     //return null;
     return this._HTTP.post<any>(
-      this.apiUrl + 'postOfficeTermedDeposit-transaction/uploadpostOfficeTermedDepositTransactionDocuments',formData,
+      this.apiUrl + 'postOfficeTermedDeposit-transaction/uploadpostOfficeTermedDepositDocuments',formData,
       {
 
       });
   }
 }
-

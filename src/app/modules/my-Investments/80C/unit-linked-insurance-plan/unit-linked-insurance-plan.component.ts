@@ -15,12 +15,18 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class UnitLinkedInsurancePlanComponent implements OnInit {
   public tabIndex = 0;
+  public accountNo: string;
   public windowScrolled: boolean;
   public data: any;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.accountNo = event;
   }
 
   changeTabIndexForRedirect(event: any) {
@@ -31,8 +37,12 @@ export class UnitLinkedInsurancePlanComponent implements OnInit {
 
   changeTabIndex(index: number)
   {
+    console.log(this.accountNo)
     if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.accountNo = undefined;
     }
     this.tabIndex = index;
   }

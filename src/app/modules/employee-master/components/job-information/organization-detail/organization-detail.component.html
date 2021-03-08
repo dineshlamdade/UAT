@@ -1,0 +1,719 @@
+<form [formGroup]="OrganizationForm" (ngSubmit)="OrganizationFormSubmit(organizationDetailsModel)">
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label">Payroll Area</label>
+            <!-- <select class="form-control" placeholder="Select Payroll Area"
+            (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select Payroll Area</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
+                {{option}}
+            </option>
+        </select> -->
+            <select class="form-control" placeholder="Select"
+                (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+                (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
+                [ngModelOptions]="{standalone: true}">
+                <option value="" selected disabled>Select</option>
+                <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                    {{option.payrollAreaCode}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <label class="form-label">Company Name</label>
+            <input type="text" class="form-control" [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}"
+                disabled>
+        </div>
+    </div>
+    <br>
+    <div class="row row-cards">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Business Area</label>
+                <!-- <p-autoComplete [suggestions]="filteredBusinessAreaList" placeholder="Select"
+                    (completeMethod)="SearchBusinessArea($event)" [dropdown]="true"
+                    formControlName="businessAreaMasterIdControl" [(ngModel)]="businessAreaCode"
+                    (onSelect)="validateBusiDatesSave();businessAreaObject($event);"
+                    field="certificateMasterDetails.certificateName">
+
+                    <ng-template let-business pTemplate="item">
+                        {{certificate.certificateMasterDetails.certificateName}}
+                    </ng-template>
+
+                </p-autoComplete> -->
+                <select class="form-control custom-select" placeholder="Select"
+                    (completeMethod)="SearchBusinessArea(businessAreaCode)"
+                    (change)="validateBusiDatesSave();businessAreaObject(businessAreaCode);"
+                    formControlName="businessAreaMasterIdControl" [(ngModel)]="businessAreaCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let businessArea of filteredBusinessAreaList" [value]="businessArea.masterCode">
+                        {{businessArea.masterCode}}
+                    </option>
+                </select>
+
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="businessAreaDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="businessAreaFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.businessAreaFromDate"
+                            (bsValueChange)="validateBusinessAreaToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('businessAreaFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="businessAreaToDateControl"
+                            [minDate]="organizationDetailsModel.businessAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.businessAreaToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('businessAreaToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Sub - Area</label>
+                <!-- <p-autoComplete [suggestions]="filteredSubAreaList" placeholder="Select"
+                    (completeMethod)="SearchSubArea($event)" [dropdown]="true" formControlName="subAreaIdControl"
+                    [(ngModel)]="subAreaCode" (onSelect)="validateSubAreaDatesSave();subAreaObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchSubArea(subArea.masterCode)"
+                    (change)="validateSubAreaDatesSave();subAreaObject(subArea);" formControlName="subAreaIdControl"
+                    [(ngModel)]="subAreaCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let subArea of subAreaList" [value]="subArea.masterCode">
+                        {{subArea.masterCode}}
+                    </option>
+                </select>
+
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="subAreaDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subAreaFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.subAreaFromDate"
+                            (bsValueChange)="validateSubAreaToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subAreaFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+                
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subAreaToDateControl" [minDate]="organizationDetailsModel.subAreaFromDate"
+                            [(ngModel)]="organizationDetailsModel.subAreaToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subAreaToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Strategic Business Unit</label>
+                <!-- <p-autoComplete [suggestions]="filteredStrategicBusinessAreaList" placeholder="Select"
+                    (completeMethod)="SearchStrategic($event)" [dropdown]="true"
+                    formControlName="strategicBusinessUnitIdControl" [(ngModel)]="strategicCode"
+                    (onSelect)="validateSBUDatesSave();strategicObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="SearchStrategic(strategic.masterCode)"
+                    (change)="validateSBUDatesSave();strategicObject(strategic);"
+                    formControlName="strategicBusinessUnitIdControl" [(ngModel)]="strategicCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let strategic of filteredStrategicBusinessAreaList" [value]="strategic.masterCode">
+                        {{strategic.masterCode}}
+                    </option>
+                </select>
+
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="strategicDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="strategicBusinessFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.strategicBusinessFromDate"
+                            (bsValueChange)="validateStrategicToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('strategicBusinessFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="strategicBusinessToDateControl"
+                            [minDate]="organizationDetailsModel.strategicBusinessFromDate"
+                            [(ngModel)]="organizationDetailsModel.strategicBusinessToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('strategicBusinessToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Division</label>
+                <!-- <p-autoComplete [suggestions]="filteredDivisionList" placeholder="Select"
+                    (completeMethod)="SearchDivision($event)" [dropdown]="true"
+                    formControlName="divisionMasterIdControl" [(ngModel)]="divisionCode"
+                    (onSelect)="validateDivisionDatesSave();divisionObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchDivision(division.masterCode)"
+                    (change)="validateDivisionDatesSave();divisionObject(division);"
+                    formControlName="divisionMasterIdControl" [(ngModel)]="divisionCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let division of filteredDivisionList" [value]="division.masterCode">
+                        {{division.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="divisionDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="divisionFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.divisionFromDate"
+                            (bsValueChange)="validateDivisionToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('divisionFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="divisionToDateControl"
+                            [minDate]="organizationDetailsModel.divisionFromDate"
+                            [(ngModel)]="organizationDetailsModel.divisionToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('divisionToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Profit Center</label>
+                <!-- <p-autoComplete [suggestions]="filteredProfitCenterList" placeholder="Select"
+                    (completeMethod)="SearchProfit($event)" [dropdown]="true"
+                    formControlName="profitCentreMasterIdControl" [(ngModel)]="profitCentreCode"
+                    (onSelect)="validateProfitDatesSave();profitObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchProfit(profitCentreCode)"
+                    (change)="validateProfitDatesSave();profitObject(profitCentreCode);"
+                    formControlName="profitCentreMasterIdControl" [(ngModel)]="profitCentreCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let profit of filteredProfitCenterList" [value]="profit.masterCode">
+                        {{profit.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="profitDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="profitCentreFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.profitCentreFromDate"
+                            (bsValueChange)="validateProfitToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('profitCentreFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="profitCentreToDateControl"
+                            [minDate]="organizationDetailsModel.profitCentreFromDate"
+                            [(ngModel)]="organizationDetailsModel.profitCentreToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('profitCentreToDateControl').status == 'INVALID'}">
+                   
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Establishment</label>
+                <!-- <p-autoComplete [suggestions]="filteredEstablishmentList" placeholder="Select"
+                    (completeMethod)="SearchEstablishment($event)" [dropdown]="true"
+                    formControlName="establishmentMasterIdControl" [(ngModel)]="establishmentCode"
+                    (onSelect)="validatEstSave();establishmentObject($event);" field="establishmentCode">
+
+                    <ng-template let-establishment pTemplate="filteredEstablishmentList">
+                        {{establishment.establishmentCode}}
+                    </ng-template>
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="SearchEstablishment(establishment.establishmentCode)"
+                    (change)="validatEstSave();establishmentObject(establishment);"
+                    formControlName="establishmentMasterIdControl" [(ngModel)]="establishmentCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let establishment of filteredEstablishmentList"
+                        [value]="establishment.establishmentCode">
+                        {{establishment.establishmentCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="establishmentDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="establishmentFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.establishmentFromDate"
+                            (bsValueChange)="validateEstablishmentToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('establishmentFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="establishmentToDateControl"
+                            [minDate]="organizationDetailsModel.establishmentFromDate"
+                            [(ngModel)]="organizationDetailsModel.establishmentToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('establishmentToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Sub - Location</label>
+                <!-- <p-autoComplete [suggestions]="filteredSubLocationList" placeholder="Select"
+                    (completeMethod)="SearchSubLocation($event)" [dropdown]="true"
+                    formControlName="subLocationMasterIdControl" [(ngModel)]="subLocationCode"
+                    (onSelect)="validatSubLocSave();subLocationObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="SearchSubLocation(sublocation.masterCode)"
+                    (change)="validatSubLocSave();subLocationObject(sublocation);"
+                    formControlName="subLocationMasterIdControl" [(ngModel)]="subLocationCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let sublocation of filteredSubLocationList" [value]="sublocation.masterCode">
+                        {{sublocation.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="subLocationDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subLocationFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.subLocationFromDate"
+                            (bsValueChange)="validateSubLocToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subLocationFromDateControl').status == 'INVALID'}">
+                   
+
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subLocationToDateControl"
+                            [minDate]="organizationDetailsModel.subLocationFromDate"
+                            [(ngModel)]="organizationDetailsModel.subLocationToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subLocationToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Work - Location</label>
+                <!-- <p-autoComplete [suggestions]="filteredWorkLocationList" placeholder="Select"
+                    (completeMethod)="SearchWorkLocation($event)" [dropdown]="true"
+                    formControlName="workLocationMasterIdControl" [(ngModel)]="workLocationCode"
+                    (onSelect)="validateWorkLocSave();workLocationObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchWorkLocation(work.masterCode)"
+                    (change)="validateWorkLocSave();workLocationObject(work);"
+                    formControlName="workLocationMasterIdControl" [(ngModel)]="workLocationCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let work of filteredWorkLocationList" [value]="work.masterCode">
+                        {{work.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="workLocationDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="workLocationFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.workLocationFromDate"
+                            (bsValueChange)="validateWorkLocToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('workLocationFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="workLocationToDateControl"
+                            [minDate]="organizationDetailsModel.workLocationFromDate"
+                            [(ngModel)]="organizationDetailsModel.workLocationToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('workLocationToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Cost Center</label>
+                <!-- <p-autoComplete [suggestions]="filteredCostCenterList" placeholder="Select"
+                    (completeMethod)="SearchCost($event)" [dropdown]="true" formControlName="costCentreIdControl"
+                    [(ngModel)]="costCode" (onSelect)="validateCostDatesSave();costObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchCost(cost.masterCode)"
+                    (change)="validateCostDatesSave();costObject(cost);" formControlName="costCentreIdControl"
+                    [(ngModel)]="costCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let cost of filteredCostCenterList" [value]="cost.masterCode">
+                        {{cost.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="costDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="costCentreFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.costCentreFromDate"
+                            (bsValueChange)="validateCostToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('costCentreFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="costCentreToDateControl"
+                            [minDate]="organizationDetailsModel.costCentreFromDate"
+                            [(ngModel)]="organizationDetailsModel.costCentreToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('costCentreToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Sub - Cost Center</label>
+                <!-- <p-autoComplete [suggestions]="filteredSubCostCenterList" placeholder="Select"
+                    (completeMethod)="SearchSubCost($event)" [dropdown]="true" formControlName="subCostCentreIdControl"
+                    [(ngModel)]="subCostCode" (onSelect)="validateSubCostDatesSave();subCostObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select" (completeMethod)="SearchSubCost(subCost.masterCode)"
+                    (change)="validateSubCostDatesSave();subCostObject(subCost);"
+                    formControlName="subCostCentreIdControl" [(ngModel)]="subCostCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let subCost of filteredSubCostCenterList" [value]="subCost.masterCode">
+                        {{subCost.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="subCostDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subCostCentreFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.subCostCentreFromDate"
+                            (bsValueChange)="validateSubCostToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subCostCentreFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subCostCentreToDateControl"
+                            [minDate]="organizationDetailsModel.subCostCentreFromDate"
+                            [(ngModel)]="organizationDetailsModel.subCostCentreToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subCostCentreToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Department</label>
+                <!-- <p-autoComplete [suggestions]="filteredDepartmentList" placeholder="Select"
+                    (completeMethod)="SearchDepartment($event)" [dropdown]="true"
+                    formControlName="departmentMasterIdControl" [(ngModel)]="departmentCode"
+                    (onSelect)="validateDepartmentDatesSave();departmentObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="SearchDepartment(department.masterCode)"
+                    (change)="validateDepartmentDatesSave();departmentObject(department);"
+                    formControlName="departmentMasterIdControl" [(ngModel)]="departmentCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let department of filteredDepartmentList" [value]="department.masterCode">
+                        {{department.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="departmentDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="departmentFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.departmentFromDate"
+                            (bsValueChange)="validateDepartmentToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('departmentFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="departmentToDateControl"
+                            [minDate]="organizationDetailsModel.departmentFromDate"
+                            [(ngModel)]="organizationDetailsModel.departmentToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('departmentToDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+            <div class="card p-3 row-card-color">
+                <label class="form-label">Sub - Department</label>
+                <!-- <p-autoComplete [suggestions]="filteredSubDepartmentList" placeholder="Select"
+                    (completeMethod)="SearchSubDepartment($event)" [dropdown]="true"
+                    formControlName="subDepartmentMasterIdControl" [(ngModel)]="subDepCode"
+                    (onSelect)="validateSubDepDatesSave();sunDepartmentObject($event);">
+                </p-autoComplete> -->
+                <select class="form-control" placeholder="Select"
+                    (completeMethod)="SearchSubDepartment(department.masterCode)"
+                    (change)="validateSubDepDatesSave();sunDepartmentObject(department);"
+                    formControlName="subDepartmentMasterIdControl" [(ngModel)]="subDepCode">
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let department of filteredSubDepartmentList" [value]="department.masterCode">
+                        {{department.masterCode}}
+                    </option>
+                </select>
+                <label class="form-label mt-10">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="subDepDescription"
+                    [ngModelOptions]="{standalone: true}" disabled>
+
+                <label class="form-label mt-10">From Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subDepartmentFromDateControl" [minDate]="joiningDate"
+                            [(ngModel)]="organizationDetailsModel.subDepartmentFromDate"
+                            (bsValueChange)="validateSubDepartmentToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subDepartmentFromDateControl').status == 'INVALID'}">
+                   
+                    </div>
+                </div>
+
+                <label class="form-label">To Date</label>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                            data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
+                            formControlName="subDepartmentToDateControl"
+                            [minDate]="organizationDetailsModel.subDepartmentFromDate"
+                            [(ngModel)]="organizationDetailsModel.subDepartmentToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subDepartmentToDateControl').status == 'INVALID'}">
+                   
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-15">
+        <div class="col-12">
+            <div class="float-right mb-15">
+                <button type="submit" [disabled]="OrganizationForm.invalid || OrganizationForm.untouched"
+                    class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green" tooltip="Save" [ngClass]="{'disabled-btn-bg-green' : OrganizationForm.invalid || OrganizationForm.untouched,
+                           'btn-bg-green': !OrganizationForm.invalid}"><b><i
+                            class="fa fa-floppy-o"></i></b>Save</button>
+
+                <!-- <button type="button" tooltip="Previous"
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                            class="fa fa-refresh" aria-hidden="true"></i></b>Previous</button> -->
+
+                <button type="button" tooltip="Next"
+                    [routerLink]="['/employee-master/job-information/position-details']"
+                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                            class="fa fa-chevron-circle-right" aria-hidden="true"></i></b>Next</button>
+            </div>
+        </div>
+    </div>
+</form>

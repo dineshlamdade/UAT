@@ -15,9 +15,10 @@
               </thead>
               <tbody>
                  <tr *ngFor="let summary of summaryGridData; let i = index">
-                    <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
-                       <span tooltip="{{summary.intstituion}}">{{summary.institution}}</span>
+                    <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.accountNumber)">
+                       <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
                     </td>
+
                     <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
                     </td>
                     <td class="wd-20">
@@ -35,10 +36,12 @@
                        {{summary.actualAmount | number:'1.2-2'}}
                        </span>
                     </td>
-                    <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                      (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
+                    <td class="wd-10">
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                      (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
                       <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                       tooltip="View"></i></td>
+                      (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'view')" tooltip="View"></i>
+                    </td>
                  </tr>
                  <tr *ngIf="!summaryGridData?.length">
                     <td colspan="6">
@@ -65,10 +68,10 @@
                        <span class="Letterbadge">B</span>
                     </td>
                     <td>
-                       <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                       (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
-                       class="form-control width120 inline_center align-right">
-                    </td>
+                      <p-inputNumber   class="form-control align- right"
+                      [(ngModel)]="futureNewPolicyDeclaredAmount" (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2" [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber>
+                     </td>
                     <td></td>
                     <td></td>
                  </tr>

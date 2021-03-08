@@ -16,22 +16,32 @@ import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
 import { MatSliderModule } from '@angular/material/slider';
-import { EightyCComponent } from './eighty-c/eighty-c.component';
+import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingloandeclarationComponent } from './housingloan/housingloandeclaration/housingloandeclaration.component';
+import { HousingloanmasterComponent } from './housingloan/housingloanmaster/housingloanmaster.component';
+import { HousingloansummaryComponent } from './housingloan/housingloansummary/housingloansummary.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { NPSComponent } from './VI-A/nps/nps.component';
-import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
-import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
-import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
-
+import { PrimeNGModule } from '../../app.primeNG.module';
+// import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { HousingrentComponent } from './housingrent/housingrent.component';
+import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
+import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
+import { HouserentsummaryComponent } from './housingrent/houserentsummary/houserentsummary.component';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-    EightyCComponent,
-    NPSComponent,
-    NpsSummaryComponent,
-    NpsMasterComponent,
-    NpsDeclarationComponent,
+
+    HousingloanComponent,
+    HousingloanmasterComponent,
+    HousingloansummaryComponent,
+    HousingloandeclarationComponent,
+    HousingrentComponent,
+    HouserentdeclarationComponent,
+    HouserentmasterComponent,
+    HouserentsummaryComponent,
   ],
   imports: [
     CommonModule,
@@ -56,9 +66,15 @@ import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declarat
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
+    // BrowserModule,
+    // BrowserAnimationsModule,
+    InputNumberModule,
+    FormsModule
+
   ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [ DatePipe, NumberFormatPipe ],
 
 })
 export class MyInvestmentsModule { }

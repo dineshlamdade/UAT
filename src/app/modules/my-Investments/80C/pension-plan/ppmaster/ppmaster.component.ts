@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -32,6 +33,8 @@ import { PensionPlanService } from '../pension-plan.service';
   styleUrls: ['./ppmaster.component.scss'],
 })
 export class PpmasterComponent implements OnInit {
+  @Input() public accountNo: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -155,7 +158,7 @@ export class PpmasterComponent implements OnInit {
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
     ];
-    this.masterPage();
+
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
     this.hideRemoveRow = false;
@@ -169,6 +172,7 @@ export class PpmasterComponent implements OnInit {
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
+    this.masterPage();
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
@@ -221,6 +225,15 @@ export class PpmasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo !== undefined || this.accountNo !== null) {
+      const input = this.accountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -417,7 +430,7 @@ export class PpmasterComponent implements OnInit {
     ) {
       let installment = this.form.value.premiumAmount;
 
-      installment = installment.toString().replace(',', '');
+      // installment = installment.toString().replace(',', '');
 
       // console.log(installment);
       if (!this.form.value.frequencyOfPayment) {
@@ -432,9 +445,9 @@ export class PpmasterComponent implements OnInit {
       } else {
         installment = installment * 1;
       }
-      const formatedPremiumAmount = this.numberFormat.transform(
-        this.form.value.premiumAmount
-      );
+      const formatedPremiumAmount =
+        this.form.value.premiumAmount;
+
       // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
       this.form.get('premiumAmount').setValue(formatedPremiumAmount);
       this.form.get('annualAmount').setValue(installment);
@@ -465,23 +478,58 @@ export class PpmasterComponent implements OnInit {
   }
 
   // On Master Edit functionality
-  editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isClear = true;
+  // editMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.masterGridData[i].premiumAmount;
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isClear = true;
+  // }
+
+  editMaster(accountNumber){
+
+    this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(accountNumber)
+
+      const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.accountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+
+      // this.masterfilesArray = this.masterGridData[institude.policyNo].documentInformationList;
+      // this.masterfilesArray = institude.masterGridData[institude.policyNo].documentInformationList
+      this.masterfilesArray = obj.documentInformationList;
+      }
+
+    });
   }
 
+  findByPolicyNo(accountNumber,masterGridData){
+    return masterGridData.find(x => x.accountNumber === accountNumber)
+  }
+
+
   // On Edit Cancel
-  cancelEdit() {
+  resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
@@ -498,9 +546,7 @@ export class PpmasterComponent implements OnInit {
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
+    const formatedPremiumAmount = this.masterGridData[i].premiumAmount
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isCancel = true;

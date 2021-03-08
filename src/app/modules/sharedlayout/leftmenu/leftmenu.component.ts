@@ -1,19 +1,32 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
+import { EventEmitterService } from './../../employee-master/employee-master-services/event-emitter/event-emitter.service';
 @Component({
   selector: 'app-leftmenu',
   templateUrl: './leftmenu.component.html',
   styleUrls: ['./leftmenu.component.scss'],
 })
 export class LeftmenuComponent implements OnInit {
-public menuDetails: Array<any>;
+  public menuDetails: Array<any>;
   public isCollapsed = true;
+
+  public isEmployeeMaster = true;
+  public isProjectCollapsed = true;
+  public isJobportalCollapsed = true;
+
   public isInvestmentCollapsed = true;
+  public isEightyCCollapsed = true;
+  public isChapetr6ACollapsed = true;
+
   public isOtherMaster = true;
+  isUploadExcel= true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
+  public isCollapsedLMS = true;
+  public isCollapsedWorkflowSettings = true;
   public contactTab: boolean;
   public chatTab = true;
   public toggle1: boolean;
@@ -30,18 +43,38 @@ public menuDetails: Array<any>;
   public menuIconSelect: any;
   public staticscard = true;
   public friendscard = true;
-  constructor(private router: Router, @Inject(AppComponent) private app: AppComponent) {
+  updateEmpIdSubscription: Subscription;
+  employeeMasterId: number;
+  ischaptersettingCollapsed = true;
+
+  constructor(private router: Router, @Inject(AppComponent) private app: AppComponent,
+    private EventEmitterService: EventEmitterService) {
+
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
     }
     if ((this.router.url).includes('investment')) {
       this.isInvestmentCollapsed = false;
     }
+    if ((this.router.url).includes('80C')) {
+      this.isEightyCCollapsed = false;
+    }
+    if ((this.router.url).includes('Chapter-VI-A')) {
+      this.isChapetr6ACollapsed = false;
+    }
     if ((this.router.url).includes('otherMaster')) {
       this.isOtherMaster = false;
     }
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
+    }
+    if ((this.router.url).includes('uploadexcel')) {
+      this.isUploadExcel = false;}
+    if ((this.router.url).includes('companysetting')) {
+      this.ischaptersettingCollapsed = false;
+    }
+    if ((this.router.url).includes('employee-master')) {
+      this.isEmployeeMaster = false;
     }
   }
 
@@ -51,42 +84,78 @@ public menuDetails: Array<any>;
       icon: 'icon-rocket',
       name: 'Dashboard',
       routerlink: '/dashboard',
-      },
-      {
+    },
+    ////////////////////
+    {
       collapsed: true,
       icon: 'icon-credit-card',
-        name: 'Investment',
-        subDetails: [{
-          name: '80C-LIC',
-          routerlink: '/investment/80C-LIC',
-        },
-        {
-          name: '80C-PPF',
-          routerlink: '/otherMaster/companyRegistrationDetails',
-        },
-        {
-          name: 'Compliance Head',
-          routerlink: '/otherMaster/complianceHead',
-        }],
+      name: 'Company Settings',
+      subDetails: [{
+        name: 'payroll',
+        routerlink: '/companysetting/payroll',
+      },
+        // {
+        //   name: '80C-PPF',
+        //   routerlink: '/otherMaster/companyRegistrationDetails',
+        // },
+        // {
+        //   name: 'Compliance Head',
+        //   routerlink: '/otherMaster/complianceHead',
+        // }
+      ],
+    },
+
+    //////////////////////////////
+
+    {
+      collapsed: true,
+      icon: 'icon-credit-card',
+      name: 'Investment',
+      subDetails: [{
+        name: '80C-LIC',
+        routerlink: '/investment/80C-LIC',
       },
       {
-        collapsed: true,
-        icon: 'icon-rocket',
-          name: 'Other Master',
-          subDetails: [{
-            name: 'Company Group Master',
-            routerlink: '/otherMaster/companyGroupMaster',
-          },
-          {
-            name: 'Company Registration Details',
-            routerlink: '/otherMaster/companyRegistrationDetails',
-          },
-          {
-            name: 'Compliance Head',
-            routerlink: '/otherMaster/complianceHead',
-          }],
-        },
+        name: '80C-PPF',
+        routerlink: '/otherMaster/companyRegistrationDetails',
+      },
+      {
+        name: 'Compliance Head',
+        routerlink: '/otherMaster/complianceHead',
+      }],
+    },
+    {
+      collapsed: true,
+      icon: 'icon-rocket',
+      name: 'Other Master',
+      subDetails: [{
+        name: 'Company Group Master',
+        routerlink: '/otherMaster/companyGroupMaster',
+      },
+      {
+        name: 'Company Registration Details',
+        routerlink: '/otherMaster/companyRegistrationDetails',
+      },
+      {
+        name: 'Compliance Head',
+        routerlink: '/otherMaster/complianceHead',
+      }],
+    },
     ];
+
+    this.updateEmpIdSubscription = this.EventEmitterService.setUpdateEmployeeId().subscribe(res => {
+      this.employeeMasterId = res;
+      this.checkEmpId();
+    })
+  }
+
+  checkEmpId() {
+    const empId = localStorage.getItem('employeeMasterId')
+    this.employeeMasterId = Number(empId);
+
+    if (this.employeeMasterId) {
+      return true;
+    }
   }
 
   ngAfterViewInit() {
@@ -411,5 +480,4 @@ public menuDetails: Array<any>;
   CardRemoveFriends() {
     this.friendscard = false;
   }
-
 }

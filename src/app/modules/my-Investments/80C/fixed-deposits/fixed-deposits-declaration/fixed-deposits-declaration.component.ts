@@ -26,7 +26,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
-import { NscService } from '../../national-seving-certificate/nsc.service';
 import { FixedDepositsService } from '../fixed-deposits.service';
 
 @Component({
@@ -249,7 +248,6 @@ export class FixedDepositsDeclarationComponent implements OnInit {
 
   //--------- Setting Actual amount ---------------
   setActualAmout(event: { target: { value: any } }) {
-
     console.log('event::', event);
     const declaredAmountFormatted = event.target.value;
     console.log('declaredAmountFormatted::', declaredAmountFormatted);

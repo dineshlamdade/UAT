@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 // public apiUrl = environment.apiBaseUrl;
-public apiUrl = environment.baseUrlUAt;
+public apiUrl = environment.baseUrl8080;
 private readonly JWT_TOKEN = '%qycutr';
     private readonly REFRESH_TOKEN = '';
     public loggedUser: string;
@@ -66,6 +66,7 @@ private readonly JWT_TOKEN = '%qycutr';
   logout() {
 
     this.doLogoutUser();
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 

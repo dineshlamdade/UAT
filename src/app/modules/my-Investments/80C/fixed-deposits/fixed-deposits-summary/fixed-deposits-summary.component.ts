@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
-import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { FixedDepositsService } from '../fixed-deposits.service';
 
@@ -11,18 +10,18 @@ import { FixedDepositsService } from '../fixed-deposits.service';
 })
 export class FixedDepositsSummaryComponent implements OnInit {
   @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
 
-  onEditSummary(institution: string, policyNo: string) {
+  onEditSummary(institution: string, accountNumber: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
-      policyNo: policyNo,
+      accountNumber: accountNumber,
       tabIndex: this.tabIndex,
     };
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
 
     this.myEvent.emit(data);
   }
@@ -44,7 +43,6 @@ export class FixedDepositsSummaryComponent implements OnInit {
   constructor(
     private service: MyInvestmentsService,
     private fixedDepositsService:FixedDepositsService,
-    private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
 
@@ -57,28 +55,21 @@ export class FixedDepositsSummaryComponent implements OnInit {
   // Summary get Call
   summaryPage() {
     this.fixedDepositsService.getFDSummary().subscribe((res) => {
-      if (res.data.results.length > 0) {
+      // if (res.data.results.length > 0) {
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].futureNewPolicyDeclaredAmount
-        );
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
+        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         console.log(res);
-      }
+      // }
     });
   }
 
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
-      .toString()
-      .replace(',', '');
-
     const data = {
       futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
     };
@@ -87,29 +78,23 @@ export class FixedDepositsSummaryComponent implements OnInit {
     this.fixedDepositsService
       .getFDSummaryFuturePolicy(data)
       .subscribe((res) => {
-        if (res.data.length > 0 ) {
+        // if (res.data.length > 0 ) {
           //console.log('addFuturePolicy Res..', res);
           this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-            res.data.results[0].futureNewPolicyDeclaredAmount
-          );
-          this.grandTotalDeclaredAmount =
-            res.data.results[0].grandTotalDeclaredAmount;
-          this.grandTotalActualAmount =
-            res.data.results[0].grandTotalActualAmount;
-        }
+          this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+          this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+          this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+        // }
         this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
       });
   }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-      this.futureNewPolicyDeclaredAmount
-    );
     this.addFuturePolicy();
+    console.log(this.addFuturePolicy)
   }
 
   jumpToMasterPage(n: number) {
@@ -119,12 +104,12 @@ export class FixedDepositsSummaryComponent implements OnInit {
   }
 
   // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
+  onEditSummary1(institution: string, accountNumber: string) {
     this.tabIndex = 2;
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
     console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
+    console.log('accountNumber::', accountNumber);
   }
 }
 

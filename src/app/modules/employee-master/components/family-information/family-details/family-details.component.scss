@@ -1,0 +1,53 @@
+.family-first-line{
+  margin-left: 143px;
+  margin-top: -156px;
+}
+
+.custom-controls-stacked{
+  margin-left: 8px;
+}
+
+.custom-control{
+  margin-left: 8px
+}
+
+.p-autocomplete-error{
+  border-color: #dc3545 !important;
+  // font-family: "Montserrat", sans-serif!important;
+  // font-size: 12px !important;
+  // color: #495057 !important;
+  // background: #fff !important;
+  // padding: 0.40rem 0 !important;
+  // line-height: 1.5 !important;
+  // border: 1px solid #E8E9E9 !important;
+  // border-radius: .25rem !important;
+  // // transition: background-color .2s;
+  // appearance: none !important;
+  // border-radius: 3px !important;
+}
+// padding: 0.40rem 0 !important;
+p-autocomplete.ng-invalid > .p-autocomplete > .p-inputtext {
+  border-color: #f44336 !important;
+}
+
+.margin-top-img{
+  margin-top: -11px;
+  margin-left: 9px;
+}
+.img-height{
+  height: 22px;
+}
+.row-margin-left{
+  margin-left: 137px;
+}
+// .p-inputtext.is-invalid {
+//   border-color: #dc3545 !important;
+// }
+
+.margin-left{
+  margin-left: 45px;
+}
+
+.mat-error{
+  font-size: 11px;
+}

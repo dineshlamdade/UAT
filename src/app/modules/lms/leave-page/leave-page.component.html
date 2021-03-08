@@ -1,0 +1,160 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+
+    <div class="section-body mt-3">
+        <div class="tabs home-page">
+            <form class="card" role="form" (ngSubmit)="submit(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
+                <div class="tabview-contents">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">Employee ID</label>
+                            <input type="number" formControlName="empId" class="form-control align-right">
+                        </div>
+
+                        <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">Leave Type</label>
+                            <select name="beast" id="Institution" class="form-control custom-select" formControlName="leaveType" [ngClass]="{ 'is-invalid': submitted && form.controls.leaveType.hasError('required') }">
+                             <option *ngFor="let object of leaveTypes"
+                               [value]="object">
+                               {{object}}
+                             </option>
+                          </select>
+                            <div *ngIf="submitted && form.controls.leaveType.hasError('required')" class="invalid-feedback">
+                                Leave Type is mandatory
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">Remark</label>
+                            <textarea class="form-control" formControlName="remark" rows="1"></textarea>
+                        </div> -->
+                        <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">Start Date</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="setPolicyEndDate()" placeholder="Policy Start Date" bsDatepicker [ngClass]="{ 'is-invalid': submitted && form.controls.fromDate.errors }"
+                                        [maxDate]="today">
+                                    <div *ngIf="submitted && form.controls.fromDate.errors" class="invalid-feedback">
+                                        Start Date is mandatory
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">End Date</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()" [minDate]="policyMinDate" placeholder="Policy End Date"
+                                        bsDatepicker [ngClass]="{ 'is-invalid': submitted && form.controls.fromDate.errors }">
+                                    <div *ngIf="submitted && form.controls.fromDate.errors" class="invalid-feedback">
+                                        End Date is mandatory
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">Leave Days</label>
+                            <input type="number" formControlName="leaveDays" class="form-control align-right">
+                        </div>
+
+                        <!-- <div class="col-sm-6 col-md-3 mt-10">
+                            <label class="form-label">Remark</label>
+                            <textarea class="form-control" formControlName="remark" rows="1"></textarea>
+                        </div> -->
+                    </div>
+
+                    <div class="row mt-15">
+                        <div class="col-12">
+                            <div class="float-right mb-15">
+                                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+                              <i class="fa fa-floppy-o"></i></b> Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card">
+            <div class="row mt-10">
+                <div class="col-12">
+                   <div class="table-responsive Custom_Table">
+                      <table class="table table-striped table-hover table-bordered m-b-0">
+                         <thead class="thead-dark">
+                            <tr>
+                            
+                                <th scope="col" class="wd-20">Leave Application ID</th>
+                                <th scope="col" class="wd-20">Employee ID</th>
+                               <th scope="col" class="wd-20">Leave Type</th>
+                               <th scope="col" class="wd-20">Status</th>
+                               <th scope="col" class="wd-15">Start Date</th>
+                               <th scope="col" class="wd-15">End Date</th>
+                               <th scope="col" class="wd-10">Submitted On</th>
+                               <th scope="col" class="wd-20">Active</th>
+                               <th scope="col" class="wd-20">Updated On</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                            <tr *ngFor="let summary of summaryGridData; let i = index">
+                                <td class="wd-20">
+                                    <span class="padding-right-12" tooltip="{{summary.leaveApplicationId}}">{{summary.leaveApplicationId}}
+                                    </span>
+                                 </td>
+                               <td class="wd-20">
+                                  <span tooltip="{{summary.empId}}">{{summary.empId}}</span>
+                               </td>
+                               <td class="wd-20">
+                                 <span tooltip="{{summary.leaveType}}">{{summary.leaveType}}</span>
+                               </td>
+                               <td class="wd-20">
+                                 <span tooltip="{{summary.status}}">{{summary.status}}</span>
+                               </td>
+                               <td class="wd-20">
+                                  <span class="padding-right-12" tooltip="{{summary.fromDate}}">{{summary.fromDate}}
+                                  </span>
+                               </td>
+                               <td class="wd-15 align-right">
+                                  <span  class="padding-right-12" tooltip="{{summary.toDate | date :'dd-MMM-yyyy'}}">
+                                  {{summary.toDate | date :'dd-MMM-yyyy'}}
+                                  </span>
+                               </td>
+                               <td class="wd-15 align-right">
+                                <span  class="padding-right-12" tooltip="{{summary.createdOn | date :'dd-MMM-yyyy'}}">
+                                {{summary.createdOn | date :'dd-MMM-yyyy'}}
+                                </span>
+                             </td>
+                               
+                              <td class="wd-20">
+                                  <span class="padding-right-12" tooltip="{{summary.active}}">{{summary.active}}
+                                  </span>
+                               </td>
+                               <td class="wd-20">
+                                 <span class="padding-right-12" tooltip="{{summary.updatedOn}}">{{summary.updatedOn}}
+                                 </span>
+                               </td>
+                            </tr>
+                            <tr *ngIf="!summaryGridData?.length">
+                               <td colspan="6">
+                                  <span class="font-14 font500 align-center text-red">No Data
+                                  Available</span>
+                               </td>
+                            </tr>
+                         </tbody>
+                      </table>
+ 
+                   </div>
+                </div>
+             </div>
+            </div>
+        </div>
+    </div>

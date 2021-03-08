@@ -7,7 +7,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
-
 @Component({
   selector: 'app-lic',
   templateUrl: './lic.component.html',
@@ -16,6 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class LicComponent implements OnInit {
 
   public tabIndex = 0;
+  public policyNumber: string;
   public windowScrolled: boolean;
   public data: any;
 
@@ -30,10 +30,20 @@ export class LicComponent implements OnInit {
     console.log('data::',this.data);
   }
 
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.policyNumber = event;
+  }
+
+
   changeTabIndex(index: number)
   {
+    console.log(this.policyNumber)
     if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.policyNumber = undefined;
     }
     this.tabIndex = index;
   }

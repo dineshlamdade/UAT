@@ -1,0 +1,116 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="jobtabview">
+                                <input name="nav" type="radio" class="about-radio" id="jobSummary"
+                                    [checked]="tabIndex==0" />
+                                <div class="tabs jobtabs about-page" *ngIf="jobSummaryTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="jobSummary"
+                                    [routerLink]="['/employee-master/job-information/job-summary']"
+                                    (click)="hiddenSummary = false;jobSummaryTabValidation()">
+                                    <span>
+                                        Job Summary
+                                    </span>
+                                </label>
+
+
+                                <input name="nav" type="radio" class="about-radio" id="organizationDetails"
+                                    [checked]="tabIndex==1" />
+                                <div class="tabs jobtabs about-page">
+                                    <div class="tabview-contents" *ngIf="organizationTab==true">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="organizationDetails"
+                                    (click)="hiddenSummary = false;organizationTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/organization-details']">
+                                    <span>
+                                        Organization
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="positionDetails"
+                                    [checked]="tabIndex==2" />
+                                <div class="tabs jobtabs about-page" *ngIf="positionTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="positionDetails"
+                                    (click)="hiddenSummary = false;positionTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/position-details']">
+                                    <span>
+                                        Position
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="minimumWagesDetails"
+                                    [checked]="tabIndex==3" />
+                                <div class="tabs jobtabs about-page" *ngIf="minimumWagesTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="minimumWagesDetails"
+                                    (click)="hiddenSummary = false;minimumWagesTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/minimum-wages-details']">
+                                    <span>
+                                        Minimum Wages
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="projectDetails"
+                                    [checked]="tabIndex==4" />
+                                <div class="tabs jobtabs about-page" *ngIf="projectTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="projectDetails"
+                                    (click)="hiddenSummary = false;projectTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/project-details']">
+                                    <span>
+                                        Project
+                                    </span>
+                                </label>
+
+                                <input name="nav" type="radio" class="about-radio" id="deputationDetails"
+                                    [checked]="tabIndex==5" />
+                                <div class="tabs jobtabs about-page" *ngIf="deputationTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="deputationDetails"
+                                    (click)="hiddenSummary = false;deputationTabValidation()"
+                                    [routerLink]="['/employee-master/job-information/deputation-details']">
+                                    <span>
+                                        Deputation
+                                    </span>
+                                </label>
+
+
+                                <!-- <div class="jobtabs about-page">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

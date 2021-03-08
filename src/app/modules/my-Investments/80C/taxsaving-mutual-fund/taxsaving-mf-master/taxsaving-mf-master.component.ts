@@ -426,35 +426,22 @@ export class TaxsavingMfMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
-    if (
-      this.form.value.premiumAmount != null &&
-      this.form.value.frequencyOfPayment != null
-    ) {
-      let installment = this.form.value.premiumAmount;
-
-      installment = installment.toString().replace(',', '');
-
-      // console.log(installment);
-      if (!this.form.value.frequencyOfPayment) {
-        installment = 0;
-      }
-      if (this.form.value.frequencyOfPayment === 'Monthly') {
-        installment = installment * 12;
-      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-        installment = installment * 4;
-      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-        installment = installment * 2;
-      } else {
-        installment = installment * 1;
-      }
-      const formatedPremiumAmount = this.numberFormat.transform(
-        this.form.value.premiumAmount,
-      );
-      // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-      this.form.get('annualAmount').setValue(installment);
+    let installment = this.form.value.premiumAmount;
+    if (!this.form.value.frequencyOfPayment) {
+      installment = 0;
     }
+    if (this.form.value.frequencyOfPayment === 'Monthly') {
+      installment = installment * 12;
+    } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+      installment = installment * 4;
+    } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+      installment = installment * 2;
+    } else {
+      installment = installment * 1;
+    }
+    this.form.get('annualAmount').setValue(installment);
   }
+
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
@@ -522,7 +509,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
   }
 
   // On View Cancel
-  cancelView() {
+  resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
