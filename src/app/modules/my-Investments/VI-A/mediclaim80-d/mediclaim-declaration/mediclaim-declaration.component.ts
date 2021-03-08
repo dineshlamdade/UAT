@@ -442,7 +442,7 @@ export class MediclaimDeclarationComponent implements OnInit {
 
 selectedTransactionInstName(institution: any) {
     this.globalPolicy = institution;
-    if (institution == 'All' && this.expenseType == 'Mediclaim Premium') {
+    if (institution == 'All') {
       this.isDisabled = true;
     } else {
       this.isDisabled = false;
@@ -908,28 +908,29 @@ selectedTransactionInstName(institution: any) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
-    const formatedDeclaredAmount = this.numberFormat.transform(
-      this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].declaredAmount,
-    );
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+    // const formatedDeclaredAmount = this.numberFormat.transform(
+    //   this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].declaredAmount,
+    // );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[
-      i
-    ].declaredAmount = formatedDeclaredAmount;
+    // this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[
+    //   i
+    // ].declaredAmount = ;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[i].forEach((element) => {
-      console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', ''),
-      );
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList.forEach((element) => {
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      // this.declarationTotal += Number(
+      //   element.declaredAmount.toString().replace(',', ''),
+      // );
+      this.declarationTotal += element.declaredAmount;
       console.log(this.declarationTotal);
-      this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
+      this.declaredAmount+= element.actualAmount;
     });
 
-    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].declarationTotal = this.declarationTotal;
+    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].declaredTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.mediclaimTransactionDetail[j].declarationTotal);
   }
 

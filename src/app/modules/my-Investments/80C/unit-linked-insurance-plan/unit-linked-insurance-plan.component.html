@@ -18,7 +18,9 @@
                   [checked]="tabIndex == 0"
                 />
                 <div class="tabs about-page">
-                  <app-unit-linked-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-unit-linked-summary>
+                  <app-unit-linked-summary *ngIf="tabIndex == 0"
+                  (myEvent)="changeTabIndexForRedirect($event)"
+                  (accountNo)="redirectToMaster($event)"></app-unit-linked-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -33,7 +35,8 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-unit-linked-master *ngIf="tabIndex == 1"> </app-unit-linked-master>
+                  <app-unit-linked-master *ngIf="tabIndex == 1"
+                  [accountNo]="accountNo"> </app-unit-linked-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>

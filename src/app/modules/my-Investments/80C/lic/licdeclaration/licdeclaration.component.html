@@ -329,8 +329,9 @@
                     type="text"
                     [ngModel]="summary.amountApproved | number: '1.2-2'"
                     class="form-control align-right"
-                    disabled
+                    disabled tooltip="{{summary.amountApproved | number: '1.2-2'}}"
                   />
+
                 </td>
                 <td>
                   <span tooltip="{{ summary.remark }}">
@@ -548,6 +549,7 @@
       </div>
     </div>
   </div>
+
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -606,12 +608,9 @@
                     </td>
                     <td>
                       <span>
-                        <input
-                          type="text"
-                          class="form-control align-right"
-                          (change)="changeReceiptAmountFormat()"
-                          [(ngModel)]="receiptAmount"
-                        />
+                          <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+
                       </span>
                     </td>
                     <td>

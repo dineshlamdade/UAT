@@ -98,9 +98,6 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public hideRemoveRow: boolean;
   public isClear: boolean;
   public isCancel: boolean;
-  public financialYear: any;
-  public financialYearStartDate: Date;
-  public financialYearEndDate: Date;
   public today = new Date();
 
   public transactionStatustList: any;
@@ -207,10 +204,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
       }
     });
-    const splitYear = this.financialYear.split('-', 2);
 
-    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
   // ------------------------------------Master----------------------------

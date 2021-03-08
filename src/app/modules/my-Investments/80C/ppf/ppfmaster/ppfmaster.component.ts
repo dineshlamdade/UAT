@@ -18,7 +18,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./ppfmaster.component.scss']
 })
 export class PPFMasterComponent implements OnInit {
-  @Input() public policyNumber: string;
+  @Input() public accountNo: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -194,6 +194,15 @@ this.masterPage();
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
 
+    if (this.accountNo !== undefined || this.accountNo !== null) {
+      const input = this.accountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.accountNumber);
+      console.log('editMaster policyNo', input.accountNumber);
+    }
+
   }
 
   // ------------------------------------Master----------------------------
@@ -301,9 +310,9 @@ this.masterPage();
             element.toDate = new Date(element.toDate);
             }
           });
-          if (this.policyNumber !== undefined || this.policyNumber !== null) {
-            this.getInstituteDetails(this.policyNumber)
-          }
+          // if (this.policyNumber !== undefined || this.policyNumber !== null) {
+          //   this.getInstituteDetails(this.policyNumber)
+          // }
         });
       }
 
@@ -317,7 +326,7 @@ this.masterPage();
         }
 
         if (this.masterfilesArray.length === 0) {
-          this.alertService.sweetalertWarning('LIC Document needed to Create Master.');
+          this.alertService.sweetalertWarning('PPF Document needed to Create Master.');
           return;
         }
 
@@ -411,7 +420,7 @@ this.masterPage();
           }
           else{
           let installment = this.form.value.premiumAmount;
-          installment = installment.toString().replace(',', '');
+          // installment = installment.toString().replace(',', '');
           // console.log(installment);
 
           if (!this.form.value.frequencyOfPayment) {
@@ -427,9 +436,9 @@ this.masterPage();
           else {
               installment = installment * 1;
           }
-          const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
+          // const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
           // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+          // this.form.get('premiumAmount').setValue(installment);
           this.form.get('annualAmount').setValue(installment);
         }
       }
@@ -470,37 +479,86 @@ this.masterPage();
               fromDate: this.masterGridData[i].fromDate,
               familyMemberInfoId: this.masterGridData[i].familyMemberInfoId,
               frequencyOfPayment: this.masterGridData[i].frequencyOfPayment,
-              //premiumAmount: this.masterGridData[i].institution,
-              //annualAmount: this.masterGridData[i].institution,
-
-              //toDate: new FormControl(null),
-              //ecs: new FormControl(0),
-
-
-
           });
 
           }
           else{
           this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
           this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
           this.Index = i;
           this.showUpdateButton = true;
-          const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
-          // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+          const formatedPremiumAmount = this.masterGridData[i].premiumAmount;
           this.form.get('premiumAmount').setValue(formatedPremiumAmount);
           this.isClear = true;
         }
       }
 
+      //      editMaster(accountNumber) {
+      //     // this.scrollToTop();
+      //     this.Service.getPPFMaster().subscribe((res) => {
+      //       console.log('masterGridData::', res);
+      //       this.masterGridData = res.data.results;
+      //       this.masterGridData.forEach((element) => {
+      //         if (element.policyStartDate !== null) {
+      //         element.policyStartDate = new Date(element.policyStartDate);
+      //         }
+      //         if (element.policyEndDate !== null) {
+      //         element.policyEndDate = new Date(element.policyEndDate);
+      //         }
+      //         if (element.fromDate !== null) {
+      //         element.fromDate = new Date(element.fromDate);
+      //         }
+      //         if (element.toDate !== null) {
+      //         element.toDate = new Date(element.toDate);
+      //         }
+      //       });
+      //       // if (this.policyNumber !== undefined || this.policyNumber !== null) {
+      //       //   this.getInstituteDetails(this.policyNumber)
+      //       // }
+      //       const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+      //       console.log('inedit as and when', this.masterGridData[accountNumber].frequency);
+      //     if (this.masterGridData[accountNumber].frequency === 'As & When') {
+
+      //       this.form.patchValue({
+      //         institution: this.masterGridData[accountNumber].institution,
+      //         accountNumber: this.masterGridData[accountNumber].accountNumber,
+      //         accountHolderName: this.masterGridData[accountNumber].accountHolderName,
+      //         relationship: this.masterGridData[accountNumber].relationship,
+      //         policyStartDate:this.masterGridData[accountNumber].policyStartDate,
+      //         fromDate: this.masterGridData[accountNumber].fromDate,
+      //         familyMemberInfoId: this.masterGridData[accountNumber].familyMemberInfoId,
+      //         frequencyOfPayment: this.masterGridData[accountNumber].frequencyOfPayment,
+      //     });
+
+      //     }
+      //     else{
+      //     this.paymentDetailGridData = this.masterGridData[accountNumber].paymentDetails;
+      //     this.form.patchValue(this.masterGridData[accountNumber]);
+      //     this.Index = accountNumber;
+      //     this.showUpdateButton = true;
+      //     const formatedPremiumAmount = this.masterGridData[accountNumber].premiumAmount;
+      //     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+      //     this.isClear = true;
+      //   }
+      //     });
+      //  }
+
+      //  findByPolicyNo(accountNumber,masterGridData){
+      //   return masterGridData.find(x => x.accountNumber === accountNumber)
+      // }
+
+
+
+
       // On Edit Cancel
-        cancelEdit() {
+      resetView() {
           this.form.reset();
           this.form.get('active').setValue(true);
           this.form.get('ecs').setValue(0);
           this.showUpdateButton = false;
           this.paymentDetailGridData = [];
+          this.masterfilesArray = [];
           this.isClear = false;
         }
 
@@ -509,10 +567,9 @@ this.masterPage();
           //this.scrollToTop();
           this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
           this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
           this.Index = i;
           this.showUpdateButton = true;
-          const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
+          const formatedPremiumAmount = this.masterGridData[i].premiumAmount;
           // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
           this.form.get('premiumAmount').setValue(formatedPremiumAmount);
           this.isCancel = true;

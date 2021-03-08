@@ -425,16 +425,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         ].specifiedDiseaseTransactionPreviousEmployerList[
           i
         ].dateOfPayment = new Date(data.dueDate);
-        console.log(
-          'in IS actualAmount::',
-          this.transactionDetail[j]
-            .specifiedDiseaseTransactionPreviousEmployerList[i].actualAmount
-        );
-        console.log(
-          'in IS dateOfPayment::',
-          this.transactionDetail[j]
-            .specifiedDiseaseTransactionPreviousEmployerList[i].dateOfPayment
-        );
       } else {
         this.transactionDetail[
           j
@@ -452,11 +442,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
-      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.specifiedDiseaseTransactionId);
-
-      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-      // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
         this.transactionDetail[
@@ -475,7 +461,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
-      // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(
         data.specifiedDiseaseTransactionId
       );
@@ -483,12 +468,10 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
-    console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
@@ -498,8 +481,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     if (this.uploadGridData.length) {
       this.enableFileUpload = true;
     }
-    console.log(this.uploadGridData);
-    console.log(this.uploadGridData.length);
   }
 
   public onCurrentSelectCheckBox(
@@ -518,12 +499,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
     let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
-    // console.log(
-    //   'in IS ECS::',
-    //   this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
-    //     i
-    //   ].isECS
-    // );
     if (checked) {
       if (
         this.transactionDetail[j]
@@ -538,16 +513,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         ].specifiedDiseaseTransactionList[
           i
         ].dateOfPayment = new Date(data.dueDate);
-        console.log(
-          'in IS actualAmount::',
-          this.transactionDetail[j]
-            .specifiedDiseaseTransactionList[i].actualAmount
-        );
-        console.log(
-          'in IS dateOfPayment::',
-          this.transactionDetail[j]
-            .specifiedDiseaseTransactionList[i].dateOfPayment
-        );
+
       } else {
         this.transactionDetail[
           j
@@ -565,11 +531,8 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
-      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.specifiedDiseaseTransactionId);
 
-      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-      // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
         this.transactionDetail[
@@ -588,7 +551,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
-      // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(
         data.specifiedDiseaseTransactionId
       );
@@ -596,12 +558,10 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
-    console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
@@ -611,8 +571,6 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     if (this.uploadGridData.length) {
       this.enableFileUpload = true;
     }
-    console.log(this.uploadGridData);
-    console.log(this.uploadGridData.length);
   }
 
 

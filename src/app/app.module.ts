@@ -43,8 +43,7 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-import { PrimeNGModule } from './app.primeNG.module';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+  //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
@@ -69,6 +68,10 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
 ////////////////////////////////////
 
 
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
+
+
 
 @NgModule({
   declarations: [
@@ -86,6 +89,8 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
 /////////////////

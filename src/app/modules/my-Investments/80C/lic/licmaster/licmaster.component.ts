@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -32,6 +33,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 
 export class LicmasterComponent implements OnInit {
+  @Input() public policyNumber: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -66,6 +68,7 @@ export class LicmasterComponent implements OnInit {
   public tabIndex = 0;
   public radioSelected: string;
   public familyRelationSame: boolean;
+
 
   public documentRemark: any;
   public isECS = true;
@@ -109,6 +112,8 @@ export class LicmasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public proofSubmissionId ;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -147,8 +152,7 @@ export class LicmasterComponent implements OnInit {
       ecs: new FormControl('0'),
       licMasterPaymentDetailsId: new FormControl(0),
       licMasterId: new FormControl(0),
-      proofSubmissionId: new FormControl(null),
-
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -158,7 +162,7 @@ export class LicmasterComponent implements OnInit {
       { label: 'Yearly', value: 'Yearly' },
     ];
 
-    this.masterPage();
+
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
     this.hideRemoveRow = false;
@@ -168,9 +172,9 @@ export class LicmasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-
   public ngOnInit(): void {
-
+    this.masterPage();
+    console.log('masterPage::', this.policyNumber);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     //-------------- Business Financial Year API Call -------------------------------
@@ -181,6 +185,7 @@ export class LicmasterComponent implements OnInit {
     //-------------- Family Member List API call ---------------------------
     this.Service.getFamilyInfo().subscribe((res) => {
       this.familyMemberGroup = res.data.results;
+      console.log('familyMemberName::', res);
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
@@ -195,12 +200,15 @@ export class LicmasterComponent implements OnInit {
     //-------------------- Get All Institutes From Global Table -------------------------
     this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
       res.data.results.forEach((element: { insurerName: any }) => {
+        console.log('institutionNameList::', res);
         const obj = {
           label: element.insurerName,
           value: element.insurerName,
         };
         this.institutionNameList.push(obj);
       });
+
+
     });
 
     //------------------ Get All Previous Employer -----------------------------
@@ -222,6 +230,16 @@ export class LicmasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.policyNumber != undefined || this.policyNumber != null) {
+      const input = this.policyNumber;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.policyNo);
+      console.log('editMaster policyNo', input.policyNo);
+    }
+
   }
 
   // ------------------------------------Master----------------------------
@@ -333,8 +351,8 @@ export class LicmasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
-    if (this.masterfilesArray.length === 0) {
+    console.log("urlArray.length",this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'LIC Document needed to Create Master.'
       );
@@ -348,11 +366,17 @@ export class LicmasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
-      const data = this.form.getRawValue();
 
-      data.fromDate = from;
-      data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      // const data = {
+
+      // }
+      console.log('proofSubmissionId::', this.proofSubmissionId);
+      const data = this.form.getRawValue();
+            data.proofSubmissionId = this.proofSubmissionId;
+
+            data.fromDate = from;
+            data.toDate = to;
+            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
       console.log('LICdata::', data);
 
@@ -391,7 +415,9 @@ export class LicmasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
+
     }
   }
 
@@ -415,8 +441,6 @@ export class LicmasterComponent implements OnInit {
   //---------------- Calculate annual amount on basis of premium and frquency -----------
   calculateAnnualAmount() {
     let installment = this.form.value.premiumAmount;
-    installment = installment.toString().replace(',', '');
-    // console.log(installment);
     if (!this.form.value.frequencyOfPayment) {
       installment = 0;
     }
@@ -429,11 +453,6 @@ export class LicmasterComponent implements OnInit {
     } else {
       installment = installment * 1;
     }
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.form.value.premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.form.get('annualAmount').setValue(installment);
   }
 
@@ -460,25 +479,41 @@ export class LicmasterComponent implements OnInit {
     }
   }
 
-  //------------- On Master Edit functionality --------------------
-  editMaster(i: number) {
+  //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
+  editMaster(policyNo) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    // this.showUpdateButton = true;
-    // const formatedPremiumAmount = this.numberFormat.transform(
-    //   this.masterGridData[i].premiumAmount
-    // );
-    // // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    // this.form.get('proofSubmissionId').setValue(this.masterGridData[i].proofSubmissionId);
-    // this.isClear = true;
+    this.Service.getEightyCMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(policyNo)
+      const obj =  this.findByPolicyNo(policyNo,this.masterGridData);
 
-    // this.masterfilesArray = this.masterGridData[i].documentInformationList
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.policyNo;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
+
+      }
+    });
+
   }
 
+  findByPolicyNo(policyNo,masterGridData){
+    return masterGridData.find(x => x.policyNo === policyNo)
+  }
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.form.reset();
@@ -490,29 +525,32 @@ export class LicmasterComponent implements OnInit {
   }
 
   //------------------- On Master View functionality -----------------------
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
+  // viewMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.numberFormat.transform(
+  //     this.masterGridData[i].premiumAmount
+  //   );
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isCancel = true;
+  // }
 
   //---------- On View Cancel -------------------
-  cancelView() {
+  resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
     this.isCancel = false;
+    // this.masterfilesArray = [];
+    this.urlArray = [];
   }
 
   UploadModal(template: TemplateRef<any>) {

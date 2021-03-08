@@ -36,8 +36,8 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-licmaster *ngIf="tabIndex == 1" >
-                    <!-- [policyNumber]="policyNumber"   -->
+                  <app-licmaster *ngIf="tabIndex == 1"
+                    [policyNumber]="policyNumber" >
                   </app-licmaster>
                 </div>
                 <label class="nav" for="Master">

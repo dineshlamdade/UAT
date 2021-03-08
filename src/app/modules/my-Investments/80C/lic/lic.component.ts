@@ -38,8 +38,12 @@ export class LicComponent implements OnInit {
 
   changeTabIndex(index: number)
   {
+    console.log(this.policyNumber)
     if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.policyNumber = undefined;
     }
     this.tabIndex = index;
   }

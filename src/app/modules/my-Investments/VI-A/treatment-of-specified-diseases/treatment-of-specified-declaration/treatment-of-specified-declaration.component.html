@@ -112,7 +112,7 @@
                   </label>
                   <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
-                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                      [disabled]="isDisabled || summary.proofSubmissionId || summary.particulars === 'Reimbursement from the Employer'" (change)="
                       onCurrentSelectCheckBox(summary, $event, i, j);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.specifiedDiseaseTransactionId }}" />
@@ -120,10 +120,26 @@
                   </label>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.particulars }}">
+                  <!-- <span tooltip="{{ summary.particulars }}">
                     {{ summary.particulars }}
-                  </span>
-
+                  </span> -->
+                  <!-- <select name="Particulars" id="particulars"
+                  class="form-control custom-select">
+                <option *ngFor="let Particular of particularsList" [value]="Particular.value"
+                [selected]="
+                Particular.value == summary.particulars
+                ">
+                {{summary.particulars.label }}
+              </select> -->
+              <select name="Purpose" class="form-control custom-select"
+              [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+              [ngModel]="summary.particulars">
+                <option [ngValue]="0">Select</option>
+                <option *ngFor="let particulars of particularsList"
+                [value]="particulars.value">
+                {{particulars.label}}
+              </option>
+              </select>
 
 
                 </td>
@@ -133,7 +149,7 @@
                       name="declaredAmount{{ summary.specifiedDiseaseTransactionId }}"
                       [(ngModel)]="summary.declaredAmount" class="form-control align-right"
                       (change)="onDeclaredAmountChangeCurrentEmp(summary, i, j)"
-                      [disabled]="isDisabled || summary.transactionStatus === 'Submitted'" />
+                      [disabled]="isDisabled || summary.transactionStatus === 'Submitted' || summary.particulars === 'Reimbursement from the Employer'" />
                   </div>
                 </td>
                 <td>
@@ -141,8 +157,7 @@
                     name="actualAmount{{ summary.specifiedDiseaseTransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeCurrent(summary, i, j)"
                     class="form-control align-right"
-                    [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
-                    />
+                    [disabled]="isDisabled || summary.transactionStatus === 'Submitted' || summary.particulars === 'Reimbursement from the Employer'"/>
                 </td>
 
                 <td>
