@@ -2505,4 +2505,5 @@ input[type=number] {
 object-fit: cover!important;
 height: 100%!important;
 width: 100%!important;
+height: 100vh; width: 100%; display: block;
 }
