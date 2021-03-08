@@ -62,6 +62,9 @@ import { ExitInformationComponent } from './components/employment-information/ex
 import { EmployeeSummaryComponent } from './components/employee-summary/employee-summary.component';
 import { EmploymentSummaryComponent } from './components/employment-information/employment-summary/employment-summary.component';
 import { ComplianceSummaryComponent } from './components/compliance-information/compliance-summary/compliance-summary.component';
+import { JobSummaryComponent } from './components/job-information/job-summary/job-summary.component';
+import { LandingPageComponent } from './../../modules/employee-master/components/landing-page/landing-page.component';
+import { BlockCopyPasteDirective } from './../../core/utility/directives/appBlockCopyPasteDirective';
 
 @NgModule({
     declarations: [
@@ -98,7 +101,10 @@ import { ComplianceSummaryComponent } from './components/compliance-information/
         ExitInformationComponent,
         EmployeeSummaryComponent,
         EmploymentSummaryComponent,
-        ComplianceSummaryComponent
+        ComplianceSummaryComponent,
+        JobSummaryComponent,
+        LandingPageComponent,
+        BlockCopyPasteDirective
     ],
     imports: [
         CommonModule,
@@ -132,7 +138,7 @@ import { ComplianceSummaryComponent } from './components/compliance-information/
         translocoLoader, {
             provide: TRANSLOCO_CONFIG,
             useValue: {
-                availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+                availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
                 listenToLangChange: true,
                 reRenderOnLangChange: true,
                 defaultLang: 'en',

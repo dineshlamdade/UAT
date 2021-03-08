@@ -7,27 +7,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.AppComponent = void 0;
-var auth_service_1 = require("./modules/auth/auth.service");
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var operators_1 = require("rxjs/operators");
-auth_service_1.AuthService;
 var AppComponent = /** @class */ (function () {
-    function AppComponent(router, activatedRoute, titleService, authService, translocoService) {
+    function AppComponent(router, activatedRoute, titleService, authService, translocoService, bnIdle) {
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.titleService = titleService;
         this.authService = authService;
         this.translocoService = translocoService;
+        this.bnIdle = bnIdle;
         this.title = 'Delizia-HR';
         this.cyanClass = true;
         this.locales = [
             { label: '🇺🇸 English (US)', value: 'en-US' },
             // { label: '🇬🇧 English (UK)', value: 'en-GB' },
-            { label: '🇫🇷 Français', value: 'fr' }
+            { label: '🇫🇷 Français', value: 'fr' },
         ];
         this.locale = this.locales[0].value;
-        this.selectedLanguage = localStorage.getItem("selectedLanguage");
+        this.selectedLanguage = localStorage.getItem('selectedLanguage');
         // generate a regex from the locales we support
         if (this.selectedLanguage) {
             var supportedRegex = new RegExp('^' + this.locales.map(function (l) { return l.value.substring(0, 2); }).join('|^'));
@@ -36,6 +35,11 @@ var AppComponent = /** @class */ (function () {
                 this.updateLocale(this.selectedLanguage);
             }
         }
+        this.bnIdle.startWatching(2).subscribe(function (res) {
+            if (res) {
+                // console.log("session expired"); commented by Anant
+            }
+        });
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -47,21 +51,21 @@ var AppComponent = /** @class */ (function () {
         // }
         // }
         var body = document.getElementsByTagName('body')[0];
-        body.classList.add("offcanvas-active");
+        body.classList.add('offcanvas-active');
         body.classList.add('font-montserrat');
-        sessionStorage.setItem("MinSideClass", "");
-        sessionStorage.setItem("HeaderClass", "top_dark");
-        sessionStorage.setItem("MenuIcon", "list-a");
-        sessionStorage.setItem("Toggle", "");
-        sessionStorage.setItem("Toggle2", "");
-        sessionStorage.setItem("Toggle3", "true");
-        sessionStorage.setItem("Toggle4", "");
-        sessionStorage.setItem("Toggle5", "");
-        sessionStorage.setItem("Toggle6", "");
-        sessionStorage.setItem("Toggle7", "");
-        sessionStorage.setItem("Toggle8", "");
-        sessionStorage.setItem("Toggle9", "");
-        sessionStorage.setItem("Toggle10", "");
+        sessionStorage.setItem('MinSideClass', '');
+        sessionStorage.setItem('HeaderClass', 'top_dark');
+        sessionStorage.setItem('MenuIcon', 'list-a');
+        sessionStorage.setItem('Toggle', '');
+        sessionStorage.setItem('Toggle2', '');
+        sessionStorage.setItem('Toggle3', 'true');
+        sessionStorage.setItem('Toggle4', '');
+        sessionStorage.setItem('Toggle5', '');
+        sessionStorage.setItem('Toggle6', '');
+        sessionStorage.setItem('Toggle7', '');
+        sessionStorage.setItem('Toggle8', '');
+        sessionStorage.setItem('Toggle9', '');
+        sessionStorage.setItem('Toggle10', '');
         this.router.events.pipe(operators_1.filter(function (event) { return event instanceof router_1.NavigationEnd; }))
             .subscribe(function () {
             var rt = _this.getChild(_this.activatedRoute);
@@ -70,7 +74,7 @@ var AppComponent = /** @class */ (function () {
             });
         });
         setTimeout(function () {
-            document.getElementsByClassName('page-loader-wrapper')[0].classList.add("HideDiv");
+            document.getElementsByClassName('page-loader-wrapper')[0].classList.add('HideDiv');
         }, 1000);
     };
     AppComponent.prototype.getChild = function (activatedRoute) {
@@ -86,9 +90,9 @@ var AppComponent = /** @class */ (function () {
         className.classList.toggle('open');
     };
     AppComponent.prototype.closeMenu = function () {
-        document.getElementsByClassName('right_sidebar')[0].classList.remove("open");
-        document.getElementsByClassName('user_div')[0].classList.remove("open");
-        document.getElementsByClassName('overlay')[0].classList.remove("open");
+        document.getElementsByClassName('right_sidebar')[0].classList.remove('open');
+        document.getElementsByClassName('user_div')[0].classList.remove('open');
+        document.getElementsByClassName('overlay')[0].classList.remove('open');
     };
     // change locale/language at runtime
     AppComponent.prototype.updateLocale = function (locale) {

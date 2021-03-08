@@ -122,7 +122,7 @@
                       type="checkbox"
                       class="custom-control-input"
                       [ngModel]="isCheckAll"
-                      [disabled]="isDisabled"
+                      [disabled]="canEdit && isDisabled"
                       name="select"
                       value="isCheckAll{{ j }}"
                       (change)="checkUncheckAll(item, j)"
@@ -362,7 +362,7 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
+              <tr *ngIf="!isDisabled && canEdit">
                 <td
                   *ngIf="previousEmployeeList?.length"
                   colspan="12"
@@ -644,7 +644,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
+  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
         <button
@@ -773,7 +773,7 @@
                       ></iframe>
                     </div>
                     &nbsp;&nbsp;
-                    <i
+                    <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
                         declarationEditUpload(

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NpsSummaryComponent } from './nps-summary.component';
 
@@ -6,7 +6,7 @@ describe('NpsSummaryComponent', () => {
   let component: NpsSummaryComponent;
   let fixture: ComponentFixture<NpsSummaryComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NpsSummaryComponent ]
     })

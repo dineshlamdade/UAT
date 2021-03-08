@@ -25,7 +25,7 @@ export class PPFDeclarationComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Input() data: any;
-
+  @Input() public policyNumber: string;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -61,6 +61,7 @@ export class PPFDeclarationComponent implements OnInit {
   public Index: number;
   public showUpdateButton: boolean;
   public tabIndex = 0;
+  public canEdit : boolean;
   public radioSelected: string;
   public familyRelationSame: boolean;
   public enableEditRow: number;
@@ -190,12 +191,16 @@ export class PPFDeclarationComponent implements OnInit {
     console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
+      console.log('else view', input);
       this.globalInstitution = input.institution;
       this.globalPolicy = input.policyNo;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);

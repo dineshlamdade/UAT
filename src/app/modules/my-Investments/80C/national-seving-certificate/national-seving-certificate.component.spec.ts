@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NationalSevingCertificateComponent } from './national-seving-certificate.component';
 
@@ -6,7 +6,7 @@ describe('NationalSevingCertificateComponent', () => {
   let component: NationalSevingCertificateComponent;
   let fixture: ComponentFixture<NationalSevingCertificateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NationalSevingCertificateComponent ]
     })

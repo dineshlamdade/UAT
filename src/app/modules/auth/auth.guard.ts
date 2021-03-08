@@ -13,9 +13,7 @@ export class AuthGuard implements CanActivate {
               private router: Router) {}
 
     canActivate() {
-      console.log('sdsd')
-      // return this.canLoad();
-      return true;
+      return this.canLoad();
     }
 
     canLoad() {

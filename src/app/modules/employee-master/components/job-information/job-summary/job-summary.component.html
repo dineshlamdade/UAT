@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-sm-6 col-md-3" *ngIf="hiddenSummary">
+        <label class="form-label">Payroll Area</label>
+        <select class="form-control" placeholder="Select" (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+            (change)="selectPayrollArea(payrollAreaCode)" [(ngModel)]="payrollAreaCode"
+            [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                {{option.payrollAreaCode}}
+            </option>
+        </select>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+        <label class="form-label">Company Name</label>
+        <input type="text" class="form-control" [(ngModel)]="companyName" [ngModelOptions]="{standalone: true}"
+            disabled>
+    </div>
+</div>
+
+<br>
+<h3 class="font-14 text-purple font-bold" *ngIf="hiddenSummary">Nomination</h3>
+<p-table [value]="summaryGridData" [scrollable]="true" [style]="{width:'1000px'}" scrollHeight="200px"
+    *ngIf="hiddenSummary">
+    <ng-template pTemplate="colgroup" let-education>
+        <colgroup>
+            <col class="wd-20">
+            <col class="wd-20">
+            <col class="wd-10">
+            <col class="wd-20">
+            <col class="wd-20">
+            <col class="wd-10">
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="primeng-table-header-center">Job Detail</th>
+            <th class="primeng-table-header-center">Job Field</th>
+            <th class="primeng-table-header-center">Value</th>
+            <th class="primeng-table-header-center">From Date</th>
+            <th class="primeng-table-header-center">To Date</th>
+            <th class="primeng-table-header-center">Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-job>
+        <tr>
+            <td class="primeng-table-header-center"><span>
+                    {{job.jobDetail}}
+                </span></td>
+
+            <td class="primeng-table-header-center"><span>
+                    {{job.jobField}}
+                </span></td>
+
+            <td class="primeng-table-header-center"><span>
+                    {{job.value}}
+                </span></td>
+
+            <td class="primeng-table-header-center"><span>
+                    {{job.fromDate}}
+                </span></td>
+
+            <td class="primeng-table-header-center"><span>
+                    {{job.toDate}}
+                </span></td>
+            <td class="primeng-table-header-center"><span><i *ngIf="job.jobDetail"
+                        class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
+                        (click)="editJobDetails(job.jobDetail)"></i>
+
+                    <!-- <i class="fa fa-eye font-16 text-blue cursor-pointer mr-1"
+                        tooltip="View"></i> -->
+                </span>
+
+                <!-- <i class="fa fa-times font-16 text-red cursor-pointer"
+                    tooltip="Delete"></i> -->
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr *ngIf="summaryGridData.length == 0">
+            <td colspan="6" class="text-center"><span class="font-14 font500 text-red">No Data
+                    Available</span></td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<div class="row mt-15">
+    <div class="col-12">
+        <div class="float-right mb-15">
+            <button type="button" tooltip="Previous" [routerLink]="['/employee-master/payroll-area-information']"
+                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                        class="fa fa-angle-double-left" aria-hidden="true"></i></b>Previous</button>
+
+            <button type="button" tooltip="Next" [routerLink]="['/employee-master/identity-information']"
+                class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                        class="fa fa-angle-double-right" aria-hidden="true"></i></b>Next</button>
+
+            <!-- <button type="button" (click)="organizationSaveNextSubmit(organizationDetailsModel)"
+                [disabled]="OrganizationForm.invalid || OrganizationForm.untouched" [ngClass]="{'disabled-btn-bg-green' : OrganizationForm.invalid || OrganizationForm.untouched,
+       'btn-bg-green': !OrganizationForm.invalid}" class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                Save & Next</button> -->
+
+        </div>
+    </div>
+</div>

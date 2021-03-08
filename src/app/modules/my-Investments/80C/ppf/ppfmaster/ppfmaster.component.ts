@@ -1,6 +1,6 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, Input, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -18,11 +18,13 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./ppfmaster.component.scss']
 })
 export class PPFMasterComponent implements OnInit {
+  @Input() public policyNumber: string;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc = 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
-  public name = 'Set iframe source';
+  public name :string = 'Set iframe source';
   public urlSafe: SafeResourceUrl;
   public summarynew: any = {};
   public summaryGridData: Array<any> = [];
@@ -299,6 +301,9 @@ this.masterPage();
             element.toDate = new Date(element.toDate);
             }
           });
+          if (this.policyNumber !== undefined || this.policyNumber !== null) {
+            this.getInstituteDetails(this.policyNumber)
+          }
         });
       }
 
@@ -527,6 +532,13 @@ this.masterPage();
               template,
               Object.assign({}, { class: 'gray modal-md' }),
           );
+
+      }
+      getInstituteDetails(policNo) {
+        const institude = this.masterGridData.find(
+          (element) => element.policyNo === policNo.number
+        );
+        this.form.patchValue(institude);
       }
 
 }

@@ -1,19 +1,14 @@
 import { Component, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { IdentityInformation, VisaInformation } from './../../dto-models/identity-information.model';
-// import * as wjcGrid from '@grapecity/wijmo.grid';
-// import * as wjcCore from '@grapecity/wijmo';
+import { IdentityInformation, VisaInformation } from './identity-information.model';
 import { DatePipe } from '@angular/common';
-import { IdentityInformationService } from './../../employee-master-services/identity-informmation/identity-information.service';
+import { IdentityInformationService } from './identity-information.service';
 import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-// import * as wjcInput from '@grapecity/wijmo.input';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-// import { CopyFromConfirmationModal } from '../contact-information/contact-information.component';
-import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 
 
@@ -26,7 +21,7 @@ export class IdentityInformationComponent implements OnInit {
 
   IdentityInfoForm: FormGroup;
   IdentityInformation = new IdentityInformation();
-  VisaInformation = new VisaInformation('', '', '', '', '', '')
+  VisaInformation = new VisaInformation('', '', '', '', '', '', '')
   countryList: Array<any> = [];
   visaTypeList = 'Business,Tourist,Work Permit'.split(',');
   data: any[];
@@ -34,17 +29,6 @@ export class IdentityInformationComponent implements OnInit {
   fullName: any;
   item: any;
   modalRef: BsModalRef;
-  // references FlexGrid named 'flex' in the view
-  // @ViewChild('flex') flex: wjcGrid.FlexGrid;
-  // @ViewChild('editcell') editcell: wjcInput.Popup;
-  // @ViewChild('viewPopUp') viewPopUp: wjcInput.Popup;
-  // @ViewChild('gridVisaType') gridVisaType: wjcInput.InputNumber;
-  // @ViewChild('gridoriginCountry') gridoriginCountry: wjcInput.InputNumber;
-  // @ViewChild('gridVisaValidTill') gridVisaValidTill: wjcInput.InputNumber;
-
-  // @ViewChild('gridViewVisaType') gridViewVisaType: wjcInput.InputNumber;
-  // @ViewChild('gridViewOriginCountry') gridViewOriginCountry: wjcInput.InputNumber;
-  // @ViewChild('gridViewVisaValidTill') gridViewVisaValidTill: wjcInput.InputNumber;
   date = { dateOfIssue: new Date(), expiryDate: "" }
   tableCountries: Array<any> = [];
   typeOfVisa: Array<any> = [];
@@ -74,6 +58,8 @@ export class IdentityInformationComponent implements OnInit {
   public today = new Date();
   editVisaDialogFlag: any;
   visaItem: any;
+  saveNextBoolean: boolean = false
+  confirmationMsg: any;
 
   constructor(private formBuilder: FormBuilder,
     public datepipe: DatePipe,
@@ -81,33 +67,10 @@ export class IdentityInformationComponent implements OnInit {
     private EventEmitterService: EventEmitterService,
     private SharedInformationService: SharedInformationService,
     private modalService: BsModalService,
-    public dialog: MatDialog,
-    @Optional() @Inject(MAT_DIALOG_DATA) public VisaDialog: any,) {
-      
-    if (VisaDialog?.VisaDialog) {
-      this.editVisaDialogFlag = VisaDialog.VisaDialog;
-      if (this.editVisaDialogFlag == 'editVisaDialog') {
-
-        this.countryList = VisaDialog.countryList
-        this.VisaInformation = VisaDialog.visa;
-      }
-
-    }
+    private router: Router) {
 
     this.tomorrow.setDate(this.tomorrow.getDate());
     this.yesterday.setDate(this.yesterday.getDate() - 1);
-
-    let pastportExpiry = new Date();
-    let drivingExpiry = new Date();
-    let visaDate = new Date();
-    this.pastportExpiryDate1 = new Date(pastportExpiry.setDate(pastportExpiry.getDate()));
-    this.pastportExpiryDate2 = new Date(pastportExpiry.setDate(pastportExpiry.getDate() - pastportExpiry.getDay() + 3650));
-
-    this.drivingExpiryDate1 = new Date(drivingExpiry.setDate(drivingExpiry.getDate()));
-    this.drivingExpiryDate2 = new Date(drivingExpiry.setDate(drivingExpiry.getDate() - drivingExpiry.getDay() + 3650));
-
-    this.visaValidTill1 = new Date(visaDate.setDate(visaDate.getDate()));
-    this.visaValidTill2 = new Date(visaDate.setDate(visaDate.getDate() - visaDate.getDay() + 3650));
   }
 
   ngOnInit(): void {
@@ -147,36 +110,36 @@ export class IdentityInformationComponent implements OnInit {
 
     this.SharedInformationService.getLocationInformation().subscribe(res => {
       this.countryList = res.data.results;
-
-      // setTimeout(() => {
-      //   this.VisaInformation.countryName = '';
-      //   this.IdentityInformation.employeePersonalInfoRequestDTO.countryOfOrigin = '';
-      // })
     })
     this.getIdentityInfoData();
-    // this.initiateidentityForm = this.EventEmitterService.setidentityFormInitiate().subscribe(res => {
 
-    //   this.VisaInformation.countryName = '';
-    // })
-    // this.shareCountryDataSubcription = this.EventEmitterService.setCountryData().subscribe(res => {
-    //   if (res) {
-    //     this.countryList = res.countryList;
-    //     this.VisaInformation.countryName = '';
-    //   }
-    // })
-    this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(res => {
-      
-     
-      // (<wjcCore.CollectionView>this.flex.collectionView).remove(this.item);
-      this.deleteInternationalWorkerID.push(this.item.employeeVisaDetailId);
+    // Grid delete row Sucscription event from Confirmation dialog
+    this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(element => {
+
+      this.deleteInternationalWorkerID.push(element.employeeVisaDetailId);
       this.IdentityInfoForm.markAsTouched();
+      this.data.find(res => {
+
+        const index = this.data.findIndex(x => res.employeeVisaDetailId == element.employeeVisaDetailId);
+        if (res.employeeVisaDetailId == element.employeeVisaDetailId) {
+          this.data.splice(index, 1);
+        }
+      })
       // this.VisaInformation.countryName = '';
     })
   }
 
+  // Save&Next Submit method
+  IdentitySaveNextSubmit(IdentityInformation) {
+    this.saveNextBoolean = true;
 
+    this.IdentityInfoFormSubmit(IdentityInformation);
+  }
+
+
+  // Identity form save method
   IdentityInfoFormSubmit(IdentityInformation) {
-    
+
     IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate =
       this.datepipe.transform(IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate, "dd-MMM-yyyy");
 
@@ -210,32 +173,41 @@ export class IdentityInformationComponent implements OnInit {
 
       this.dataBinding(res);
       // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
-      this.sweetalertMasterSuccess(res.status.messsage, "Success..!!");
+      this.SharedInformationService.sweetalertMasterSuccess(res.status.messsage, "Success..!!");
       this.IdentityInfoForm.markAsUntouched();
 
       if (this.deleteInternationalWorkerID.length > 0) {
         this.deleteInternationalWorkerID.forEach(id => {
           this.IdentityInformationService.deleteGridRow(this.employeeMasterId, id).subscribe(res => {
-            if (res.data.results[0]) {
-              this.data = res.data.results[0];
-            }
+            this.getIdentityInfoData();
+            // if (res.data.results[0]) {
+            //   this.data = res.data.results[0];
+            // }
           })
         })
       }
+      if (this.saveNextBoolean == true) {
+        this.saveNextBoolean = false;
+        this.router.navigate(['/employee-master/compliance-information/compliance-summary']);
+      }
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.SharedInformationService.sweetalertError(error["error"]["status"]["messsage"]);
       // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
     })
   }
+
+  // Get API of Identity form data
   getIdentityInfoData() {
     this.IdentityInformationService.getIdentityInfoData().subscribe((res: any) => {
-      
+
       this.newData = res;
       this.dataBinding(res);
     })
   }
+
+  // Data binding function of Get API of Identity form
   dataBinding(res) {
-    
+
     if (res.data.results[0].employeeESICDTOResponseDTO) {
       this.IdentityInformation.employeeESICDTORequestDTO = res.data.results[0].employeeESICDTOResponseDTO;
     }
@@ -246,66 +218,99 @@ export class IdentityInformationComponent implements OnInit {
       this.data = res.data.results[0].employeeVisaDetailResponseDTOList;
     }
   }
-  
+
+  // Edit Visa grid row method
   editVisaInfo(visa) {
-    
-    // this.modalRef = this.modalService.show(template);
-    const dialogRef = this.dialog.open(IdentityInformationComponent, {
-      disableClose: true,
-      width: '100%', height: '92%', maxWidth: '83vw',
-      data: {
-        VisaDialog: 'editVisaDialog', visa: visa,
-        countryList: this.countryList
-      }
-    });
+
+    this.VisaInformation.countryName = visa.countryName;
+    this.VisaInformation.visaType = visa.visaType;
+    this.VisaInformation.validTill = visa.validTill;
+    this.VisaInformation.employeeVisaDetailId = visa.employeeVisaDetailId;
   }
 
-  removeVisaItem(visa){
+  // Delete Visa grid row confirmation dialog method
+  removeVisaItem(visa, confirmation) {
     this.visaItem = visa;
-    // this.modalRef = this.modalService.show(template);
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      width: '664px', height: '241px',
-      data: { pageValue: 'IdentityForm', info: 'Do you really want to delete?' }
-    });
+
+    this.confirmationMsg = 'Do you really want to delete?';
+    this.modalRef = this.modalService.show(
+      confirmation,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  // Delete Visa grid row method
+  deleteRecord() {
+    this.deleteInternationalWorkerID.push(this.visaItem.employeeVisaDetailId);
+    this.IdentityInfoForm.markAsTouched();
+    this.data.find(res => {
+
+      const index = this.data.findIndex(x => res.employeeVisaDetailId == this.visaItem.employeeVisaDetailId);
+      if (res.employeeVisaDetailId == this.visaItem.employeeVisaDetailId) {
+        this.data.splice(index, 1);
+        this.modalRef.hide();
+        this.VisaInformation.validTill = '';
+        this.VisaInformation.countryName = '';
+        this.VisaInformation.visaType = '';
+        this.VisaInformation.employeeVisaDetailId = '';
+      }
+    })
   }
 
 
-
+  // Push Visa information in array for Save method
   pushToGrid() {
     let data = [];
-    
-    this.tableCountries = []; this.typeOfVisa = []; this.validTill = [];
-    this.tableCountries.push(this.VisaInformation.countryName);
-    this.typeOfVisa.push(this.VisaInformation.visaType);
-    this.validTill.push(this.VisaInformation.validTill);
 
-    for (let i = 0; i < this.tableCountries.length; i++) {
-      data.push({
-        employeeMasterId: this.employeeMasterId,
-        id: i,
-        countryName: this.tableCountries[i],
-        visaType: this.typeOfVisa[i],
-        validTill: this.validTill[i],
-      });
-    }
-    this.VisaInformation.validTill = '';
-    this.VisaInformation.countryName = '';
-    this.VisaInformation.visaType = '';
+    if (!this.VisaInformation.employeeVisaDetailId) {
+      this.tableCountries = []; this.typeOfVisa = []; this.validTill = [];
+      this.tableCountries.push(this.VisaInformation.countryName);
+      this.typeOfVisa.push(this.VisaInformation.visaType);
+      this.validTill.push(this.VisaInformation.validTill);
 
-    if (this.data) {
-      let newData = data.concat(this.data);
-      this.data = newData;
+      for (let i = 0; i < this.tableCountries.length; i++) {
+        data.push({
+          employeeMasterId: this.employeeMasterId,
+          id: i,
+          countryName: this.tableCountries[i],
+          visaType: this.typeOfVisa[i],
+          validTill: this.validTill[i],
+        });
+      }
+      this.VisaInformation.validTill = '';
+      this.VisaInformation.countryName = '';
+      this.VisaInformation.visaType = '';
 
-      let temp = this.data.forEach(data => {
-        return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
-      })
+      if (this.data) {
+        let newData = data.concat(this.data);
+        this.data = newData;
 
+        let temp = this.data.forEach(data => {
+          return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
+        })
+
+      } else {
+        data.forEach(data => {
+          return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
+        })
+        this.data = data;
+      }
     } else {
-      data.forEach(data => {
-        return data.validTill = this.datepipe.transform(data.validTill, 'dd-MMM-yyyy');
+      this.data.find(res => {
+
+        if (res.employeeVisaDetailId == this.VisaInformation.employeeVisaDetailId) {
+          res.countryName = this.VisaInformation.countryName;
+          res.visaType = this.VisaInformation.visaType;
+          res.validTill = this.VisaInformation.validTill;
+          res.employeeVisaDetailId = this.VisaInformation.employeeVisaDetailId;
+        }
       })
-      this.data = data;
+      this.VisaInformation.validTill = '';
+      this.VisaInformation.countryName = '';
+      this.VisaInformation.visaType = '';
+      this.VisaInformation.employeeVisaDetailId = '';
     }
+
   }
 
   // private _updateCurrentInfo() {
@@ -315,7 +320,8 @@ export class IdentityInformationComponent implements OnInit {
   // }
 
   updateAadhaarName(aadhaar) {
-    if (this.IdentityInfoForm.controls.aadhaarNo.valid == true) {
+
+    if (this.IdentityInfoForm.controls.aadhaarNo.valid == true && aadhaar) {
       this.IdentityInformation.employeeMasterRequestDTO.nameAsPerAADHAAR = this.fullName;
     }
     if (aadhaar.length == 0 || this.IdentityInfoForm.controls.aadhaarNo.valid == false) {
@@ -379,32 +385,13 @@ export class IdentityInformationComponent implements OnInit {
     this.data = [];
   }
 
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
+  keyPress(event: any) {
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    })
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

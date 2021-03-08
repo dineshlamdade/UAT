@@ -9,6 +9,8 @@ exports.__esModule = true;
 exports.OtherMasterRoutingModule = void 0;
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
+var bank_master_at_group_component_1 = require("./bank-master-at-group/bank-master-at-group.component");
 // import { CompanyMasterComponent } from '../create-company/company-master/company-master.component';
 var company_group_master_component_1 = require("./company-group-master/company-group-master.component");
 var company_master_component_1 = require("./company-master/company-master.component");
@@ -16,6 +18,7 @@ var company_registration_details_component_1 = require("./company-registration-d
 var compliance_head_component_1 = require("./compliance-head/compliance-head.component");
 var compliance_master_component_1 = require("./compliance-master/compliance-master.component");
 var establishment_master_component_1 = require("./establishment-master/establishment-master.component");
+var job_master_component_1 = require("./job-master/job-master.component");
 var statutory_compliance_component_1 = require("./statutory-compliance/statutory-compliance.component");
 var routes = [
     {
@@ -51,6 +54,21 @@ var routes = [
     {
         path: 'complianceMaster',
         component: compliance_master_component_1.ComplianceMasterComponent,
+        data: { title: ':: Delizia-HR :: Home' }
+    },
+    {
+        path: 'bankMasterAtGroup',
+        component: bank_master_at_group_component_1.BankMasterAtGroupComponent,
+        data: { title: ':: Delizia-HR :: Home' }
+    },
+    {
+        path: 'bankMasterAtCompany',
+        component: bank_master_at_company_component_1.BankMasterAtCompanyComponent,
+        data: { title: ':: Delizia-HR :: Home' }
+    },
+    {
+        path: 'jobMaster',
+        component: job_master_component_1.JobMasterComponent,
         data: { title: ':: Delizia-HR :: Home' }
     },
 ];

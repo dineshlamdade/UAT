@@ -1,4 +1,3 @@
-import { compannySettingsModule } from './modules/company-settings/company-settings.module';
 import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
@@ -12,7 +11,6 @@ import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -44,44 +42,69 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-import { PrimeNGModule } from './app.primeNG.module';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+  //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
-
-import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-import { PayrollModule } from './modules/payroll/payroll.module';
-
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
+import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+import { PayrollModule } from './modules/payroll/payroll.module';
 
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
-import { sdmModule } from './modules/sdm/sdm.module';
+
+//////////////////////addaed by bharati////
+//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
+
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
+import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
+import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
+import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
+
+////////////////////////////////////
+
+
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
     ProfileComponent,
     SettingsComponent,
+    //////////////////////////
+    // payrollComponent,
+    // HeadcreationComponent,
+    // AttributecreationComponent,
+    // AttributeselectionComponent,
+    // PayrollheadgroupcreationComponent,
+    ///////////////////////////////////////
   ],
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
+    /////////////////
+    //  payrollModule,
+    CompanySettingModule,
+    ////////////////////////////////
     MyInvestmentsModule,
-    sdmModule,
-    compannySettingsModule,
+    investmentChapterVIAModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,
-    workflowModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     DragDropModule,
-    MatSliderModule,
     NgApexchartsModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
@@ -100,13 +123,15 @@ import { sdmModule } from './modules/sdm/sdm.module';
     MyInvestmentsModule,
     PayrollModule,
 
-    EmployeeMasterModule,
+    //EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	 AdminApprovalModule,
+    AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
+
+
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,
@@ -114,7 +139,7 @@ import { sdmModule } from './modules/sdm/sdm.module';
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
-        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
         listenToLangChange: true,
         reRenderOnLangChange: true,
         defaultLang: 'en',

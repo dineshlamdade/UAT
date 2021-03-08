@@ -11,7 +11,10 @@
   .emptabview input[type="radio"] {
     display: none;
   }
-  
+  .disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
   .emptabview label.nav {
     display: flex;
     align-items: center;
@@ -46,10 +49,10 @@
   }
 
   .emptabs {
-    grid-column-start: 1;
-    grid-row-start: 2;
-    grid-column-end: span 5;
-    padding: 0px 0px;
+    grid-column-start: 1 !important;
+    grid-row-start: 2 !important;
+    grid-column-end: span 5 !important;
+    padding: 0px 0px !important;
     /* display: flex; */
     align-items: center;
   }

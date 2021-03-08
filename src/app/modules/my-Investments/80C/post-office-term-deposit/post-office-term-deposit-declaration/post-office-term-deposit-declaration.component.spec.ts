@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PostOfficeTermDepositDeclarationComponent } from './post-office-term-deposit-declaration.component';
 
@@ -6,7 +6,7 @@ describe('PostOfficeTermDepositDeclarationComponent', () => {
   let component: PostOfficeTermDepositDeclarationComponent;
   let fixture: ComponentFixture<PostOfficeTermDepositDeclarationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PostOfficeTermDepositDeclarationComponent ]
     })

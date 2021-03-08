@@ -2,12 +2,13 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest } from '../../../dto-models/educatio-skills.model';
-import { ConfirmationModalComponent } from '../../../shared modals/confirmation-modal/confirmation-modal.component';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { employeeLanguageRequest } from '../educatio-skills.model';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
+import { EducationSkillsInformationService } from '../education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+
 
 @Component({
   selector: 'app-language--detail',
@@ -17,7 +18,8 @@ import { SharedInformationService } from '../../../employee-master-services/shar
 
 export class LanguageDetailComponent implements OnInit {
   LanguageInfoForm: FormGroup;
-  CertificationInfoForm: FormGroup;
+  modalRef: BsModalRef;
+  // CertificationInfoForm: FormGroup;
   date = { startDate: "", endDate: "" }
   addPush: boolean;
   public employeeLanguageRequestModel = new employeeLanguageRequest('', '', '', '', '', '');
@@ -47,16 +49,15 @@ export class LanguageDetailComponent implements OnInit {
   LanguageEditFlag: boolean = false;
   LanguageviewFlag: boolean = false;
   languageId: number;
+  confirmationMsg: string;
 
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
-    public dialog: MatDialog,
-    private matDialog: MatDialog,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private EducationSkillsInformationService: EducationSkillsInformationService,
-    private CommonDataService: SharedInformationService) { }
+    private CommonDataService: SharedInformationService,
+    private modalService: BsModalService) { }
 
   ngOnInit(): void {
     this.LanguageInfoForm = this.formBuilder.group({
@@ -71,7 +72,7 @@ export class LanguageDetailComponent implements OnInit {
 
     this.getLanguagesList();
     this.getAllLanguageSummary();
-
+    this.disableLanguageOptions();
 
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteEducationSkills().subscribe(res => {
 
@@ -98,21 +99,31 @@ export class LanguageDetailComponent implements OnInit {
   getAllLanguageSummary() {
 
     this.EducationSkillsInformationService.getAllLanguageSummary(this.employeeMasterId).subscribe(res => {
-      
+
       this.LanguageSummaryGridData = res.data.results[0];
 
       // this.validatingHigherQualification();
+    }, (error: any) => {
+      
+      this.LanguageSummaryGridData.find(res => {
+
+        const index = this.LanguageSummaryGridData.findIndex(x => res.employeeLanguageinfoId == this.languageId);
+        if (res.employeeLanguageinfoId == this.languageId) {
+          this.LanguageSummaryGridData.splice(index, 1);
+        }
+      })
     })
   }
 
   postLanguageForm(employeeLanguageRequestModel) {
-    
+
     employeeLanguageRequestModel.employeeMasterId = this.employeeMasterId
 
     this.EducationSkillsInformationService.postLanguageInfoForm(employeeLanguageRequestModel).subscribe(res => {
-      
+
       this.getAllLanguageSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.resetLanguageForm()
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -128,6 +139,10 @@ export class LanguageDetailComponent implements OnInit {
       this.getAllLanguageSummary();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.employeeLanguageRequestModel.employeeLanguageinfoId = 0;
+      this.resetLanguageForm();
+      this.LanguageEditFlag = false;
+      this.LanguageviewFlag = false;
+      this.disableLanguageOptions();
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -135,7 +150,7 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   editLanguageRow(language) {
-    
+
     this.LanguageEditFlag = true;
     this.LanguageviewFlag = false;
     this.employeeLanguageRequestModel.employeeLanguageinfoId = language.employeeLanguageinfoId;
@@ -146,52 +161,53 @@ export class LanguageDetailComponent implements OnInit {
 
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.enable();
-    const temp2 = this.LanguageInfoForm.get('languageRead');
-    temp2.enable();
-    const temp3 = this.LanguageInfoForm.get('languageWrite');
-    temp3.enable();
-    const temp4 = this.LanguageInfoForm.get('languageSpeak');
-    temp4.enable();
+    temp1.setValue(language.language);
+    this.enableLanguageOptions();
   }
 
   viewLanguageRow(language) {
-    
+
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = true;
-    this.employeeLanguageRequestModel = language;
-
+    this.employeeLanguageRequestModel.language = language.language;
+    this.employeeLanguageRequestModel.read = language.read;
+    this.employeeLanguageRequestModel.write = language.write;
+    this.employeeLanguageRequestModel.speak = language.speak;
+    this.employeeLanguageRequestModel.employeeLanguageinfoId = language.employeeLanguageinfoId;
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.disable();
-    const temp2 = this.LanguageInfoForm.get('languageRead');
-    temp2.disable();
-    const temp3 = this.LanguageInfoForm.get('languageWrite');
-    temp3.disable();
-    const temp4 = this.LanguageInfoForm.get('languageSpeak');
-    temp4.disable();
-  }
-  deleteLanguageRow(language) {
-    
-    this.languageId = language.employeeLanguageinfoId;
-    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-      disableClose: true,
-      width: '664px', height: '241px',
-      data: { pageValue: 'languageItemDelete', info: 'Do you really want to delete?' }
-    });
+    this.disableLanguageOptions();
   }
 
-  cancelSkillView() {
+  deleteLanguageRow(language, confirmation) {
+
+    this.languageId = language.employeeLanguageinfoId;
+    this.confirmationMsg = 'Do you really want to delete?';
+    this.modalRef = this.modalService.show(
+      confirmation,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  deleteRecord() {
+
+    this.EducationSkillsInformationService.deleteLanguageGridItem(this.languageId).subscribe(res => {
+      this.getAllLanguageSummary();
+      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.modalRef.hide();
+      this.resetLanguageForm();
+    })
+  }
+
+
+  cancelLanguageView() {
     this.LanguageEditFlag = false;
     this.LanguageviewFlag = false;
     this.resetLanguageForm();
     this.employeeLanguageRequestModel.employeeLanguageinfoId = 0;
     const temp1 = this.LanguageInfoForm.get('language');
     temp1.enable();
-    const temp2 = this.LanguageInfoForm.get('languageRead');
-    temp2.enable();
-    const temp3 = this.LanguageInfoForm.get('languageWrite');
-    temp3.enable();
-    const temp4 = this.LanguageInfoForm.get('languageSpeak');
-    temp4.enable();
+    this.disableLanguageOptions();
     this.getAllLanguageSummary();
   }
 
@@ -213,14 +229,57 @@ export class LanguageDetailComponent implements OnInit {
     this.employeeLanguageRequestModel.read = '';
     this.employeeLanguageRequestModel.write = '';
     this.employeeLanguageRequestModel.speak = '';
+
+    this.enableLanguageOptions();
   }
 
   resetLanguageForm() {
     this.LanguageInfoForm.reset();
+    this.LanguageEditFlag = false;
+    this.LanguageviewFlag = false;
+    this.disableLanguageOptions();
+    this.employeeLanguageRequestModel.employeeLanguageinfoId = 0;
+    this.employeeLanguageRequestModel.language = '';
+    this.LanguageInfoForm.get('language').setValue('');
   }
 
 
   // Certificates Information
 
+  disableLanguageOptions() {
+    const temp2 = this.LanguageInfoForm.get('languageRead');
+    temp2.disable();
+    const temp3 = this.LanguageInfoForm.get('languageWrite');
+    temp3.disable();
+    const temp4 = this.LanguageInfoForm.get('languageSpeak');
+    temp4.disable();
+  }
 
+  enableLanguageOptions() {
+    const temp2 = this.LanguageInfoForm.get('languageRead');
+    temp2.enable();
+    const temp3 = this.LanguageInfoForm.get('languageWrite');
+    temp3.enable();
+    const temp4 = this.LanguageInfoForm.get('languageSpeak');
+    temp4.enable();
+  }
+
+  validateGridLanguage() {
+    if (this.LanguageSummaryGridData.length > 0) {
+      this.LanguageSummaryGridData.forEach(res => {
+
+        if (res.language == this.employeeLanguageRequestModel.language) {
+          // this.validateLanguageGridRow = true;
+          // this.notifyService.showError('This Record is already exist in Grid Summary', "Attention..!!");
+          this.CommonDataService.sweetalertError('This Record is already exist in Grid Summary');
+          this.disableLanguageOptions()
+          this.employeeLanguageRequestModel.language = '';
+          this.LanguageInfoForm.get('language').setValue('');
+          return;
+        } else {
+          this.enableLanguageOptions();
+        }
+      })
+    }
+  }
 }

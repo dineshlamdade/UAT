@@ -103,6 +103,7 @@ export class LicdeclarationComponent implements OnInit {
   public grandTabStatus: boolean;
   public isCheckAll: boolean;
   public isDisabled: boolean;
+  public canEdit: boolean;
   public enableSelectAll: boolean;
   public enableFileUpload: boolean;
   public documentRemark: any;
@@ -207,6 +208,7 @@ export class LicdeclarationComponent implements OnInit {
     console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
       this.globalInstitution = input.institution;
@@ -214,6 +216,7 @@ export class LicdeclarationComponent implements OnInit {
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.policyNo, 'All');
       this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);

@@ -13,13 +13,13 @@
                                 <!-- <div class="tabview"> -->
                                 <div class="row">
                                     <div class="col-sm-6 col-md-3">
-                                        <label
-                                            class="form-label">{{ 'PreviousEmploymentInfo.companyName' | transloco }}</label>
+                                        <label class="form-label">{{ 'PreviousEmploymentInfo.companyName' | transloco
+                                            }}</label>
                                         <input type="text" class="form-control" placeholder="Enter Employer Name"
                                             formControlName="companyName"
                                             [(ngModel)]="previousEmploymentInformation.previousEmployerName"
                                             (keyup)="checkValidations()"
-                                            matTooltip="{{previousEmploymentInformation.previousEmployerName}}"
+                                            tooltip="{{previousEmploymentInformation.previousEmployerName}}"
                                             [ngClass]="{'is-invalid' : previousEmploymentInfoForm.get('companyName').status == 'INVALID'}">
                                     </div>
                                     <div class="col-sm-6 col-md-3">
@@ -32,7 +32,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="Select Joining Date" bsDatepicker
-                                                    [maxDate]="today" formControlName="joiningDate"
+                                                    [maxDate]="validationDate" formControlName="joiningDate"
                                                     [(ngModel)]="previousEmploymentInformation.dateOfJoining">
                                             </div>
                                         </div>
@@ -57,7 +57,7 @@
                                         <label class="form-label">Remark</label>
                                         <input type="text" class="form-control" placeholder="Enter Remark"
                                             formControlName="remark" [(ngModel)]="previousEmploymentInformation.remark"
-                                            matTooltip="{{previousEmploymentInformation.remark}}">
+                                            tooltip="{{previousEmploymentInformation.remark}}">
                                     </div>
                                 </div>
 
@@ -71,7 +71,7 @@
                                             <input type="text" class="form-control" placeholder="Enter Designation"
                                                 formControlName="designation"
                                                 [(ngModel)]="previousEmploymentInformation.previousDesignation"
-                                                matTooltip="{{previousEmploymentInformation.previousDesignation}}">
+                                                tooltip="{{previousEmploymentInformation.previousDesignation}}">
                                         </div>
 
                                         <div class="col-sm-6 col-md-4">
@@ -79,17 +79,17 @@
                                             <input type="text" class="form-control" placeholder="Enter Job Profile"
                                                 formControlName="jobProfile"
                                                 [(ngModel)]="previousEmploymentInformation.previousJobProfile"
-                                                matTooltip="{{previousEmploymentInformation.previousJobProfile}}">
+                                                tooltip="{{previousEmploymentInformation.previousJobProfile}}">
                                         </div>
 
                                         <div class="col-sm-3 col-md-4">
                                             <label class="form-label">CTC - Per Annum</label>
                                             <div class="row">
                                                 <div class="col-sm-3 col-md-5 country-code">
-                                                    <select class="form-control selectpicker"
-                                                        placeholder="Select Currency" formControlName="currency"
+                                                    <select class="form-control selectpicker" placeholder="Select"
+                                                        formControlName="currency" (change)="validateCTCperAnum()"
                                                         [(ngModel)]="previousEmploymentInformation.currency">
-                                                        <option value="" data-hidden="true">Select Curr</option>
+                                                        <option value="" data-hidden="true">Currency</option>
                                                         <option *ngFor="let currency of currencyArray"
                                                             [value]="currency">
                                                             {{currency}}
@@ -144,25 +144,56 @@
                                 <div class="row mt-15">
                                     <div class="col-12">
                                         <div class="float-right mb-15">
+                                            <button type="button" tooltip="Previous"
+                                                [routerLink]="['/employee-master/compliance-information/compliance-summary']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                        class="fa fa-angle-double-left"
+                                                        aria-hidden="true"></i></b>Previous</button>
+
+                                            <button type="button" tooltip="Next"
+                                                [routerLink]="['/employee-master/family-information/family-details']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                        class="fa fa-angle-double-right"
+                                                        aria-hidden="true"></i></b>Next</button>
+
                                             <button type="button"
-                                                [hidden]="previousEmploymentInformation.employeePreviousEmploymentId"
+                                                (click)="PreviousEmpSaveNextSubmit(previousEmploymentInformation)"
+                                                [hidden]="previousEmploymentInformation.employeePreviousEmploymentId || viewEmploymentInfoForm"
+                                                [disabled]="!previousEmploymentInformation.previousEmployerName"
+                                                [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
+                                    'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                                tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                                                Save & Next</button>
+
+                                            <button type="button"
+                                                [hidden]="previousEmploymentInformation.employeePreviousEmploymentId || viewEmploymentInfoForm"
                                                 [disabled]="!previousEmploymentInformation.previousEmployerName"
                                                 [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
                                         'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
-                                                (click)="addPush=true;pushToGrid(previousEmploymentInformation);"
+                                                (click)="postEmploymentInfoForm(previousEmploymentInformation);"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
 
                                             <button type="button"
                                                 *ngIf="previousEmploymentInformation.employeePreviousEmploymentId"
                                                 [disabled]="!previousEmploymentInformation.previousEmployerName"
-                                                [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
+                                                [hidden]="viewEmploymentInfoForm" [ngClass]="{'disabled-btn-bg-green':!previousEmploymentInformation.previousEmployerName,
                                         'btn-bg-green':previousEmploymentInformation.previousEmployerName}"
                                                 (click)="addPush=true;updateEmpGridRow(previousEmploymentInformation);"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                                tooltip="Add"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+                                                tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+
+                                            <button type="button"
+                                                *ngIf="viewEmploymentInfoForm || previousEmploymentInformation.employeePreviousEmploymentId"
+                                                (click)="closePreviousEmpGridRow();"
+                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                Cancel</button>
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                [hidden]="viewEmploymentInfoForm"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
                                         </div>
@@ -182,9 +213,13 @@
                                                     <th scope="col" class="font700 wd-30">Joining Date</th>
                                                     <th scope="col" class="font700 wd-20">Leaving Date</th>
                                                     <th scope="col" class="font700 wd-20">CTC Per Annum</th>
-                                                    <th scope="col" class="font700 wd-20">Actions</th>
+                                                    <th scope="col" class="font700 wd-10">Actions</th>
                                                 </tr>
                                             </thead>
+                                            <tr *ngIf="previousSmmaryGridData.length == 0">
+                                                <td colspan="6"><span class="font-14 font500 align-center text-red">No
+                                                        data found</span></td>
+                                            </tr>
                                             <tbody>
                                                 <tr *ngFor="let employee of previousSmmaryGridData">
                                                     <td><span>{{employee.previousEmployerName}}</span></td>
@@ -196,7 +231,11 @@
                                                     <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
                                                             tooltip="Edit"
                                                             (click)="editEmpGridRow(employee)"></i>&nbsp;&nbsp;
-                                                        <i class="fa fa-times font-16 text-red cursor-pointer"
+
+                                                        <i class="fa fa-eye font-16 text-blue cursor-pointer mr-10"
+                                                            tooltip="View" (click)="viewEmpGridRow(employee)"></i>
+
+                                                        <i class="fa fa-trash-o font-16 text-red cursor-pointer"
                                                             tooltip="Delete"
                                                             (click)="deleteEmpGridRowDiaglog(employee)"></i>
                                                     </td>

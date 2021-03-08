@@ -18,7 +18,7 @@
                   [checked]="tabIndex == 0"
                 />
                 <div class="tabs about-page">
-                  <app-ppfsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-ppfsummary>
+                  <app-ppfsummary  *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)" (policyNumber)="redirectToMaster($event)"></app-ppfsummary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -33,7 +33,7 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-ppfmaster *ngIf="tabIndex == 1"> </app-ppfmaster>
+                  <app-ppfmaster *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-ppfmaster>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>

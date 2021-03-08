@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'
 import jwt_decode from 'jwt-decode';
@@ -11,9 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 // public apiUrl = environment.apiBaseUrl;
-public apiUrl = environment.baseUrl;
-public token:any = 'eyJhbGciOiJSUzI1NiJ9.eyJwcml2aWxlZ2VzIjpbeyJYLVRlbmFudElkIjoiUGF5c3F1YXJlRGVmYXVsdCIsImNvbXBhbnlHcm91cE1hc3RlcklkIjoxLCJjb21wYW55TmFtZSI6IldoaXRlSGVkZ2UiLCJnbG9iYWxDb21wYW55TWFzdGVySWQiOjEsImFwcGxpY2F0aW9uUm9sZUlkIjoyLCJ1c2VyTmFtZSI6IlJhZ2h1SyIsImVtcGxveWVlTWFzdGVySWQiOjJ9LHsiWC1UZW5hbnRJZCI6IlBheXNxdWFyZURlZmF1bHQiLCJjb21wYW55R3JvdXBNYXN0ZXJJZCI6MSwiY29tcGFueU5hbWUiOiJUQVRBIE1PVE9SUyIsImdsb2JhbENvbXBhbnlNYXN0ZXJJZCI6MywiYXBwbGljYXRpb25Sb2xlSWQiOjMsInVzZXJOYW1lIjoiUmFnaHVLIiwiZW1wbG95ZWVNYXN0ZXJJZCI6MH1dLCJzdWIiOiIyIiwiaXNzIjoiaHR0cDovL3BheXNxdWFyZS5jb20iLCJleHAiOjE2MDkzMzAzNDMsImlhdCI6MTYwOTMyOTc0MywianRpIjoiNjRiOTk5MjEtNTk4Mi00N2JkLWE4MzctODBkMTMzODkxMjU4In0.mLfM1fLqpCGto2NTrVZMKRBkE0-qiT4VpJHAUuZF9HhZHVTeEwlP9OsdRwbSKzzUZO6nW-I6p4T0q6vbut0Sh5uf6zh_WKOpotx6Czc7ULjuJACkipxGBBl-s6tTeQi4-VrXz6Xcdea67ACDbEPidG7u7tlFdncKMq6Z_wKOs72WR_vugXGHl8_RzRfWsDJp0uX6lQNwzWvX_MJxiFHd3cqryeaF55MfYkWluyPyPk_5xXUmoTWAbAsQ1yaLHUG_8Xy17ktBHObFu94DxDOTDMumjwdiQF6lKagPeuItydja7JBENW5A1Ca0ZNs1CPvD9MOnToqDSuAChSvWZq60PQ';
-public decodedToken: any;
+public apiUrl = environment.baseUrl8080;
 private readonly JWT_TOKEN = '%qycutr';
     private readonly REFRESH_TOKEN = '';
     public loggedUser: string;
@@ -31,18 +29,7 @@ private readonly JWT_TOKEN = '%qycutr';
   postOTP(data) {
     return this.http.post(this.apiUrl + 'otp/validate', data)
     .pipe(map((res: any) => {
-      this.token = res.data.results[0].token;
-      return res;
-    }));
-  }
-
-  getApplicationRoleID(data) {
-    const headers = new HttpHeaders()
-    .set('X-Authorization', this.token);
-    console.log(data, headers)
-    return this.http.get(this.apiUrl + 'applicationRolePrivilegesMatrix/'+ data, { 'headers': headers })
-    .pipe(map((res: any) => {
-      this.doLoginUser(this.token);
+      this.doLoginUser(res.data.results[0].token);
       return res;
     }));
   }
@@ -79,6 +66,7 @@ private readonly JWT_TOKEN = '%qycutr';
   logout() {
 
     this.doLogoutUser();
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 

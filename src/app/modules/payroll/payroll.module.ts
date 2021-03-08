@@ -1,4 +1,3 @@
-import { PayrollRoutingModule } from './payroll-routing.module';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,23 +12,31 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
+import { PayrollRoutingModule } from './payroll-routing.module';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { TableModule } from 'primeng/table';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
+import { yesNoPipeModule } from '../../core/utility/pipes/yesNoPipe/yesNo.pipe.module';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
+import { FinancialMasterComponent } from './financial-master/financial-master.component';
+import { PayrollInputsComponent } from './payroll-Inputs/payroll-Inputs.component';
 import { PayrollComponent } from './payroll.component';
 import { PayrollAreaMasterComponent } from './payrollAreaMaster/payrollAreaMaster.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { YesNoPipe } from '../../core/utility/pipes/yesNo.pipe';
-
 
 @NgModule({
   declarations: [PayrollComponent,
-    PayrollAreaMasterComponent,],
+    PayrollAreaMasterComponent,
+    FinancialMasterComponent,
+    PayrollInputsComponent,
+  ],
   imports: [
       PayrollRoutingModule,
+      yesNoPipeModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    TableModule,
     NgMultiSelectDropDownModule.forRoot(),
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
@@ -51,7 +58,7 @@ import { YesNoPipe } from '../../core/utility/pipes/yesNo.pipe';
   ],
 
   providers: [ DatePipe, NumberFormatPipe,
-    YesNoPipe],
+    ],
 
 })
 export class PayrollModule { }

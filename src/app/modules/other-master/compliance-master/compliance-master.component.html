@@ -92,7 +92,7 @@
                               style="font-size: small;" [settings]="dropdownSettings" [data]="dropdownList"
                               (onSelect)="onItemSelect($event)" (onDeSelectAll)="onDeselectAll($event)"
                               (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)"
-                              [(ngModel)]= "selectedEstablishmentMasterId"
+                              [(ngModel)]="selectedEstablishmentMasterId"
                               [ngClass]="{'is-invalid' : form.get('establishmentMasterId').status == 'INVALID'}"
                               formControlName="establishmentMasterId" [disabled]=isEditableEstablismentMasterId>
                             </ng-multiselect-dropdown>
@@ -132,46 +132,29 @@
                               name="userNameForWebsite" placeholder="Enter User Name">
                           </div>
 
-                          <div class="col-sm-3 mt-2">
+                        </div>
+
+                        <div class="row pull-right">
+                          <div class="col-sm-12 pull-right">
                             <div *ngIf="isActivateButton ==0">
                               <button type="button"
-                              class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                              tooltip="Delete" (click)="activateComplianceMaster()"><b><i
-                                  class="fa fa-times-circle"></i></b> Activate Record</button>
+                                class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                tooltip="Delete" (click)="activateComplianceMaster()"><b><i
+                                    class="fa fa-times-circle"></i></b> Activate Record</button>
                             </div>
                             <div *ngIf="isGlobalView == false && isEditMode == true">
                               <button type="button"
-                              class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                              tooltip="Delete" (click)="DeleteComplianceMaster()"><b><i
-                                  class="fa fa-times-circle"></i></b> Delete</button>
+                                class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                tooltip="Delete" (click)="DeleteComplianceMaster()"><b><i
+                                    class="fa fa-times-circle"></i></b> Delete</button>
 
-                            <button type="submit"
-                              class="pull-right custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                              tooltip="Update" (click)="UpdateComplianceMaster()"><b><i class="fa fa-floppy-o"></i></b>
-                              Update</button>
-
+                              <button type="submit"
+                                class="pull-right custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                tooltip="Update" (click)="UpdateComplianceMaster()"><b><i
+                                    class="fa fa-floppy-o"></i></b>
+                                Update</button>
                             </div>
-                            <ng-container>
-                              <ng-template *ngIf ="isActivateButton ==0">
-
-                              </ng-template>
-
-                              <ng-template  *ngIf="isGlobalView ==false">
-
-
-                              </ng-template>
-
-                            </ng-container>
-
-
-
-
-
-
-
                           </div>
-
-
                         </div>
 
                       </fieldset>
@@ -333,7 +316,6 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeFromDate"
-
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('employeeFromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 (bsValueChange)="onChangeEmpFromDate($event, i)" placeholder="From Date" bsDatepicker>
@@ -345,7 +327,6 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeToDate"
-
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('employeeToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
@@ -385,7 +366,6 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyFromDate"
-
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('companyFromDate').status == 'INVALID'}"
                                 class="form-control" data-provide="datepicker" data-date-autoclose="true"
                                 class="form-control" placeholder="From Date" bsDatepicker>
@@ -397,7 +377,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyToDate"
-                              [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('companyToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('companyToDate').status == 'INVALID'}"
                                 class="form-control" data-provide="datepicker" data-date-autoclose="true"
                                 class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
@@ -406,7 +386,7 @@
 
 
                         </div>
-                        <div class="row pull-right"  *ngIf="isGlobalView ==false">
+                        <div class="row pull-right" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbutton"
                               onclick="document.getElementById('submitbutton').disabled = true;document.getElementById('submitbutton').style.opacity='0.5';"
@@ -446,7 +426,6 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1FromDate"
-
                                 [ngClass]="{'is-invalid' :form.get('eps1FromDate').status  == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
@@ -495,7 +474,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
-                              [ngClass]="{'is-invalid' : form.get('esic1FromDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('esic1FromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
                             </div>
@@ -506,7 +485,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
-                              [ngClass]="{'is-invalid' : form.get('esic1ToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('esic1ToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -527,8 +506,8 @@
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
-                            [ngClass]="{'is-invalid' : form.get('ptState').status == 'INVALID'}"
-                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              [ngClass]="{'is-invalid' : form.get('ptState').status == 'INVALID'}"
+                              (change)='onSelectPtState($event.target.value)'>
                               <option *ngFor="let state of states" [value]="state">
                                 {{state}}
                               </option>
@@ -538,10 +517,9 @@
                           <div class="col-sm-3">
                             <label class="form-label">City</label>
                             <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
-                            [ngClass]="{'is-invalid' : form.get('ptCity').status == 'INVALID'}"
-
-                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
-                              <option *ngFor="let issuedBy of officePremisesOwnershipList" [value]="issuedBy">
+                              [ngClass]="{'is-invalid' : form.get('ptCity').status == 'INVALID'}"
+                              (change)='onSelectPtCity($event.target.value)'>
+                              <option *ngFor="let issuedBy of cityList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
                             </select>
@@ -561,7 +539,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
-                            [ngClass]="{'is-invalid' : form.get('lwfState').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' : form.get('lwfState').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
                               <option *ngFor="let issuedBy of states" [value]="issuedBy">
                                 {{issuedBy}}
@@ -582,21 +560,20 @@
                           <div class="col-sm-3">
                             <label class="form-label">TAN</label>
                             <input type="text" formControlName="tan" class="form-control" name="tan"
-                            [ngClass]="{'is-invalid' : form.get('tan').status == 'INVALID'}"
-                              placeholder="Enter TAN">
+                              [ngClass]="{'is-invalid' : form.get('tan').status == 'INVALID'}" placeholder="Enter TAN">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">TDS Circle</label>
                             <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
-                            [ngClass]="{'is-invalid' : form.get('tdsCircle').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' : form.get('tdsCircle').status == 'INVALID'}"
                               placeholder="Enter TDS Circle">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">Deductor Status</label>
                             <input type="text" formControlName="deductorStatus" class="form-control"
-                            [ngClass]="{'is-invalid' : form.get('deductorStatus').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' : form.get('deductorStatus').status == 'INVALID'}"
                               name="deductorStatus" placeholder="Enter Deductor Status">
                           </div>
 
@@ -615,7 +592,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Dividing Factor % </label>
                             <input type="number" formControlName="gratuityDividingFactor" class="form-control"
-                            [ngClass]="{'is-invalid' : form.get('gratuityDividingFactor').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' : form.get('gratuityDividingFactor').status == 'INVALID'}"
                               name="gratuityDividingFactor" placeholder="Enter Dividing Factor">
                           </div>
 
@@ -624,7 +601,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityFromDate"
-                              [ngClass]="{'is-invalid' : form.get('gratuityFromDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('gratuityFromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
                             </div>
@@ -635,7 +612,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityToDate"
-                              [ngClass]="{'is-invalid' : form.get('gratuityToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('gratuityToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -655,7 +632,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Status</label>
                             <select class="form-control" formControlName="pfStatus"
-                            [ngClass]="{'is-invalid' : form.get('pfStatus').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' : form.get('pfStatus').status == 'INVALID'}"
                               (change)='onSelectPfStatus($event.target.value)'>
                               <option *ngFor="let issuedBy of pfStatusList" [value]="issuedBy">
                                 {{issuedBy}}
@@ -797,7 +774,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeToDate"
-                              [ngClass]="{'is-invalid' : form.get('employeeToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('employeeToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -835,7 +812,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyFromDate"
-                              [ngClass]="{'is-invalid' : form.get('companyFromDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('companyFromDate').status == 'INVALID'}"
                                 class="form-control" data-provide="datepicker" data-date-autoclose="true"
                                 class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
@@ -846,7 +823,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyToDate"
-                              [ngClass]="{'is-invalid' : form.get('companyToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('companyToDate').status == 'INVALID'}"
                                 class="form-control" data-provide="datepicker" data-date-autoclose="true"
                                 class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
@@ -866,7 +843,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Max Percentage</label>
                             <input type="number" formControlName="saMaxPercentage" class="form-control"
-                            [ngClass]="{'is-invalid' : form.get('saMaxPercentage').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' : form.get('saMaxPercentage').status == 'INVALID'}"
                               name="saMaxPercentage" placeholder="Enter Max Percentage">
                           </div>
 
@@ -875,7 +852,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saFromDate"
-                              [ngClass]="{'is-invalid' : form.get('saFromDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('saFromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
                             </div>
@@ -886,7 +863,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saToDate"
-                              [ngClass]="{'is-invalid' : form.get('saToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('saToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -917,7 +894,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">EPS</label>
                             <input type="text" formControlName="eps1" class="form-control" name="eps1"
-                            [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1').status == 'INVALID'}"
                               placeholder="Enter EPS Status">
                           </div>
 
@@ -926,7 +903,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1FromDate"
-                              [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1FromDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1FromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="From Date" bsDatepicker>
                             </div>
@@ -937,7 +914,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1ToDate"
-                              [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1ToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1ToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -974,25 +951,25 @@
                       <fieldset [formGroupName]="i">
                         <legend>EMPLOYEE STATE INSURANCE (ESI)</legend>
 
-                          <div class="row">
+                        <div class="row">
 
-                            <div class="col-sm-3">
-                              <label class="form-label">Establishment Name</label>
-                              <select class="form-control" formControlName="establishmentName"
-                                (change)='onSelectEstablishmentName($event.target.value,i)'>
-                                <option *ngFor="let issuedBy of savedEstablishmentList"
-                                  [value]="issuedBy.establishmentMasterId">
-                                  {{issuedBy.establishmentCode}}
-                                </option>
-                              </select>
-                            </div>
-                            <div class="col-sm-3">
-                              <label class="form-label">ESI</label>
-                              <input type="text" formControlName="esic1" class="form-control" name="esic1"
-                                [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1').status == 'INVALID'}"
-                                placeholder="Enter ESI">
-                            </div>
-<!--
+                          <div class="col-sm-3">
+                            <label class="form-label">Establishment Name</label>
+                            <select class="form-control" formControlName="establishmentName"
+                              (change)='onSelectEstablishmentName($event.target.value,i)'>
+                              <option *ngFor="let issuedBy of savedEstablishmentList"
+                                [value]="issuedBy.establishmentMasterId">
+                                {{issuedBy.establishmentCode}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3">
+                            <label class="form-label">ESI</label>
+                            <input type="text" formControlName="esic1" class="form-control" name="esic1"
+                              [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1').status == 'INVALID'}"
+                              placeholder="Enter ESI">
+                          </div>
+                          <!--
                             <div class="col-sm-3">
                               <label class="form-label">Company Contribution</label>
                               <select name="esic1" id="esic1" class="form-control" formControlName="esic1"
@@ -1003,29 +980,29 @@
                               </select>
                             </div> -->
 
-                            <div class="col-sm-3">
-                              <label class="form-label">From Date</label>
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
+                          <div class="col-sm-3">
+                            <label class="form-label">From Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
                                 [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1FromDate').status == 'INVALID'}"
-                                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                  placeholder="From Date" bsDatepicker>
-                              </div>
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="From Date" bsDatepicker>
                             </div>
-
-                            <div class="col-sm-3">
-                              <label class="form-label">To Date</label>
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
-                                [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1ToDate').status == 'INVALID'}"
-                                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                  placeholder="To Date" bsDatepicker>
-                              </div>
-                            </div>
-
                           </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">To Date</label>
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
+                                [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1ToDate').status == 'INVALID'}"
+                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placeholder="To Date" bsDatepicker>
+                            </div>
+                          </div>
+
+                        </div>
 
                         <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
@@ -1061,7 +1038,6 @@
                           <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
-
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
                               <option *ngFor="let issuedBy of savedEstablishmentList"
                                 [value]="issuedBy.establishmentMasterId">
@@ -1073,8 +1049,8 @@
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
-                            [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptState').status == 'INVALID'}"
-                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptState').status == 'INVALID'}"
+                              (change)='onSelectPtState($event.target.value)'>
                               <option *ngFor="let state of states" [value]="state">
                                 {{state}}
                               </option>
@@ -1084,10 +1060,9 @@
                           <div class="col-sm-3">
                             <label class="form-label">City</label>
                             <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
-
-                            [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptCity').status == 'INVALID'}"
-                              (change)='onSelectOfficePremisesOwnership($event.target.value)'>
-                              <option *ngFor="let issuedBy of officePremisesOwnershipList" [value]="issuedBy">
+                              [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptCity').status == 'INVALID'}"
+                              (change)='onSelectPtCity($event.target.value)'>
+                              <option *ngFor="let issuedBy of cityList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
                             </select>
@@ -1127,7 +1102,6 @@
                           <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
-
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
                               <option *ngFor="let issuedBy of savedEstablishmentList"
                                 [value]="issuedBy.establishmentMasterId">
@@ -1140,7 +1114,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
-                            [ngClass]="{'is-invalid' :form.get('lwfArray')['controls'][i].get('lwfState').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' :form.get('lwfArray')['controls'][i].get('lwfState').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
                               <option *ngFor="let issuedBy of states" [value]="issuedBy">
                                 {{issuedBy}}
@@ -1183,7 +1157,6 @@
                           <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
-
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
                               <option *ngFor="let issuedBy of savedEstablishmentList"
                                 [value]="issuedBy.establishmentMasterId">
@@ -1195,26 +1168,26 @@
                           <div class="col-sm-3">
                             <label class="form-label">TAN</label>
                             <input type="text" formControlName="tan" class="form-control" name="tan"
-                            [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tan').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tan').status == 'INVALID'}"
                               placeholder="Enter TAN">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">TDS Circle</label>
                             <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
-                            [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tdsCircle').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tdsCircle').status == 'INVALID'}"
                               placeholder="Enter TDS Circle">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">Deductor Status</label>
                             <input type="text" formControlName="deductorStatus" class="form-control"
-                            [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('deductorStatus').status == 'INVALID'}"
+                              [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('deductorStatus').status == 'INVALID'}"
                               name="deductorStatus" placeholder="Enter Deductor Status">
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20"  *ngIf="isGlobalView ==false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonTds"
                               onclick="document.getElementById('submitbuttonTds').disabled = true;document.getElementById('submitbuttonTds').style.opacity='0.5';"
@@ -1284,7 +1257,7 @@
                           </div>
 
                         </div>
-                        <div class="row pull-right mt-20"  *ngIf="isGlobalView ==false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonGratuity"
                               onclick="document.getElementById('submitbuttonGratuity').disabled = true;document.getElementById('submitbuttonGratuity').style.opacity='0.5';"
@@ -1353,7 +1326,7 @@
 
                         </div>
                         <!-- end of row -->
-                        <div class="row pull-right mt-20"  *ngIf="isGlobalView ==false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonSa"
                               onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
@@ -1397,22 +1370,6 @@
                                 class="fa  fa-refresh"></i></b> Reset</button>
 
                         </ng-container>
-
-                        <!-- <ng-template #newDeb>
-
-                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
-                        'btn-bg-green': !form.invalid}"
-                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
-                            (click)="save()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
-                            Update</button>
-
-
-                          <button type="button"
-                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                            tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
-                            Cancel</button>
-
-                        </ng-template> -->
 
                       </ng-container>
                       <ng-container *ngIf="!showButtonSaveAndReset">
@@ -1497,15 +1454,18 @@
                             (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
                             tooltip="View"></i> -->
 
-                            <span *ngIf="summary.isActive ==0">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" style="visibility: hidden;"
-                                (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)" tooltip="Edit"></i> </span>
-                            <span *ngIf="summary.isActive ==1">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                                (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)" tooltip="Edit"></i> </span>
+                          <span *ngIf="summary.isActive ==0">
+                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer" style="visibility: hidden;"
+                              (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
+                              tooltip="Edit"></i> </span>
+                          <span *ngIf="summary.isActive ==1">
+                            <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                              (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
+                              tooltip="Edit"></i> </span>
 
-                            <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,summary.isActive)"
-                              tooltip="View"></i>
+                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
+                            (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,summary.isActive)"
+                            tooltip="View"></i>
                         </td>
 
                       </tr>

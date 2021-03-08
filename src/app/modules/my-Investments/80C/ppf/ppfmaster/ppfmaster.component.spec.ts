@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PPFMasterComponent } from './ppfmaster.component';
 
@@ -6,7 +6,7 @@ describe('PPFMasterComponent', () => {
   let component: PPFMasterComponent;
   let fixture: ComponentFixture<PPFMasterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PPFMasterComponent ]
     })
