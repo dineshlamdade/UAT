@@ -27,6 +27,9 @@ import { HousingrentComponent } from './housingrent/housingrent.component';
 import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
 import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
 import { HouserentsummaryComponent } from './housingrent/houserentsummary/houserentsummary.component';
+import { PreviousemployerComponent } from './previousemployer/previousemployer.component';
+import { PreviousemployersummaryComponent } from './previousemployer/previousemployersummary/previousemployersummary.component';
+import { PreviousemployermasterComponent } from './previousemployer/previousemployermaster/previousemployermaster.component';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
@@ -39,6 +42,9 @@ import { HouserentsummaryComponent } from './housingrent/houserentsummary/houser
     HouserentdeclarationComponent,
     HouserentmasterComponent,
     HouserentsummaryComponent,
+    PreviousemployerComponent,
+    PreviousemployersummaryComponent,
+    PreviousemployermasterComponent
   ],
   imports: [
     CommonModule,

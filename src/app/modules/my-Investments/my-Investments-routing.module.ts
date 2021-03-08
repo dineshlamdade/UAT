@@ -28,6 +28,7 @@ import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.compon
 import { HousingloanComponent } from './housingloan/housingloan.component';
 import { HousingrentComponent } from './housingrent/housingrent.component';
 import { TreatmentOfSpecifiedDiseasesComponent } from './VI-A/treatment-of-specified-diseases/treatment-of-specified-diseases.component';
+import { PreviousemployerComponent } from './previousemployer/previousemployer.component';
 
 const routes: Routes = [
 
@@ -169,6 +170,13 @@ const routes: Routes = [
         component:  HousingrentComponent,
         data: { title: ':: DelziaHR :: HouseRent' },
       },
+
+      {
+        path:   'previousemployer',
+        component: PreviousemployerComponent,
+        data: { title: ':: DelziaHR :: previousemployer' },
+      },
+
       {
         path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
         component:  TreatmentOfSpecifiedDiseasesComponent,
