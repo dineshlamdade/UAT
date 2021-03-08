@@ -11,20 +11,35 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var rxjs_1 = require("rxjs");
 var ComplianceMasterComponent = /** @class */ (function () {
-    function ComplianceMasterComponent(formBuilder, complianceHeadService, statuatoryComplianceService, establishmentMasterService, datePipe, complianceMasterService, alertService) {
+    function ComplianceMasterComponent(formBuilder, complianceHeadService, modalService, statuatoryComplianceService, establishmentMasterService, datePipe, complianceMasterService, alertService) {
         this.formBuilder = formBuilder;
         this.complianceHeadService = complianceHeadService;
+        this.modalService = modalService;
         this.statuatoryComplianceService = statuatoryComplianceService;
         this.establishmentMasterService = establishmentMasterService;
         this.datePipe = datePipe;
         this.complianceMasterService = complianceMasterService;
         this.alertService = alertService;
+        this.basicDABelowWageCellingList = [{ id: 1, itemName: 'All Heads' }, { id: 2, itemName: 'Wage Celling' }, { id: 3, itemName: 'Immediate Wage Celling' }];
+        this.basicDAAboveWageCellingList = [{ id: 1, itemName: 'All Heads' }, { id: 2, itemName: 'Basic DA' }];
+        this.companySpecialRateApplicableList = [{ id: 1, itemName: 'Organization Level' }, { id: 2, itemName: 'Employee Level' }];
+        this.employeeSpecialRateApplicableList = [{ id: 1, itemName: 'Organization Level' }, { id: 2, itemName: 'Employee Level' }];
+        this.companySpecialRateApplicableList1 = [{ id: 1, itemName: 'Organization Level' }, { id: 2, itemName: 'Employee Level' }];
+        // public companySpecialRateApplicableList = [{ id: 1, itemName: 'All Heads' }, { id: 2, itemName: 'Wage Celling' }];
+        this.industryTypeList = [{ id: 1, itemName: 'Brick' }, { id: 2, itemName: 'Bidi' }, { id: 3, itemName: 'Jute' }, { id: 4, itemName: 'Guar Gum' }, { id: 5, itemName: 'Coir' }, { id: 6, itemName: 'Other' }];
+        this.complianceSDMMappingIdToDelete = 0;
+        this.complianceApplicabilitySDMIdDropDownList = [];
+        this.statutoryFrequencySDMIdDropDownList = [];
         this.form = forms_1.FormGroup;
         this.SelectedemployeeContribtionMultiSelect = [];
         this.selectedCompanyContribtionMultiSelect = [];
         this.selectedEstablishmentMasterId = [];
         this.isView = false;
         this.isGlobalView = false;
+        this.statutoryFreqPeriodsDefList = [{ id: 1, itemName: 'Jan-Mar' }, { id: 2, itemName: 'Feb-May' }, { id: 3, itemName: 'Mar-June' }];
+        this.deductionFrequencyList = [{ id: 1, itemName: 'Payroll' }, { id: 2, itemName: 'Statutory-Begin' }, { id: 3, itemName: ' Statutory-Last' }];
+        // statutoryFreqPeriodsDefList = [{ id: 1, name: 'MAR-MAY' }];
+        //deductionFrequencyList = [{ id: 1, name: "MONTHLY" }, { id: 2, name: "WEEKLY" }];
         this.complianceApplicationForm = forms_1.FormGroup;
         this.isPf = false;
         this.isPfNew = false;
@@ -52,9 +67,12 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.primaryBusinessActivityList = ['Payroll', 'PayRoll', 'IT', 'HR1', '22'];
         this.officePremisesOwnershipList = ['Owned', 'RENT', 'Lease'];
         this.showButtonSaveAndReset = true;
+        this.showButtonSaveAndReset1 = true;
+        this.showButtonSaveAndResetComplianceApplicability = true;
         this.masterGridDataList = [];
         this.companyMasterId = 0;
         this.isSaveAndReset = true;
+        this.isSaveAndReset1 = true;
         this.countries = [];
         this.establishmentMasterId = 0;
         this.regionMasterDetails = [];
@@ -93,11 +111,12 @@ var ComplianceMasterComponent = /** @class */ (function () {
             complianceHeadName: new forms_1.FormControl({ value: null, disabled: true }),
             shortName: new forms_1.FormControl({ value: null, disabled: true }),
             groupCompanyId: new forms_1.FormControl(''),
-            establishmentCode: new forms_1.FormControl(''),
+            administratedBy: new forms_1.FormControl('', forms_1.Validators.required),
+            // establishmentCode: new FormControl(''),
             issueDate: new forms_1.FormControl(''),
             coverageDate: new forms_1.FormControl(''),
             userNameForWebsite: new forms_1.FormControl(''),
-            establishmentMasterId: new forms_1.FormControl(''),
+            establishmentMasterId: new forms_1.FormControl('', forms_1.Validators.required),
             city: new forms_1.FormControl({ value: null, disabled: true }),
             esic1: new forms_1.FormControl(''),
             esic1FromDate: new forms_1.FormControl(''),
@@ -122,6 +141,14 @@ var ComplianceMasterComponent = /** @class */ (function () {
             employeeCompanyContributionDiff: new forms_1.FormControl('0'),
             edliExemption: new forms_1.FormControl('0'),
             contributionMethodChoice: new forms_1.FormControl('0'),
+            specialRateApplicableEMPCount: new forms_1.FormControl(''),
+            specialRateEMPCountPercent: new forms_1.FormControl(''),
+            specialRateApplicableCompCount: new forms_1.FormControl(''),
+            specialRateCompCountPercent: new forms_1.FormControl(''),
+            industryType: new forms_1.FormControl('Other'),
+            // check DA Or PF
+            basicDABelowWageCelling: new forms_1.FormControl(''),
+            basicDAAboveWageCelling: new forms_1.FormControl(''),
             companyContribution: new forms_1.FormControl({ value: null, disabled: true }),
             employeeContribution: new forms_1.FormControl(''),
             companyContribtionMultiSelect: new forms_1.FormControl(''),
@@ -132,14 +159,22 @@ var ComplianceMasterComponent = /** @class */ (function () {
             employeeToDate: new forms_1.FormControl('31-Dec-9999')
         });
         this.complianceApplicationForm = this.formBuilder.group({
-            complianceName: new forms_1.FormControl('', forms_1.Validators.required),
-            jobMasterType: new forms_1.FormControl('', forms_1.Validators.required),
-            allOtherMasterMappingDetails: new forms_1.FormControl('', forms_1.Validators.required)
+            complianceMasterId: new forms_1.FormControl('', forms_1.Validators.required),
+            // jobMasterType: new FormControl(''),
+            // allOtherMasterMappingDetails: new FormControl(''),
+            complianceApplicabilitySDMId: new forms_1.FormControl('', forms_1.Validators.required),
+            statutoryFrequencySDMId: new forms_1.FormControl('', forms_1.Validators.required),
+            incomePeriod: new forms_1.FormControl('', forms_1.Validators.required),
+            statutoryFreqPeriodsDef: new forms_1.FormControl('', forms_1.Validators.required),
+            deductionFrequency: new forms_1.FormControl('', forms_1.Validators.required)
         });
         this.form.get('employeeCompanyContributionDiff').disable();
     }
     ComplianceMasterComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.getDropDownValuesForApplicabilityCompliance();
+        this.getDropDownValuesForComplianceStatutoryFrequencyFromSDM();
+        // this.refreshHtmlTableDataOfComplianceApplicability();
         this.dropdownSettings = {
             singleSelection: false,
             idField: 'establishmentMasterId',
@@ -251,17 +286,20 @@ var ComplianceMasterComponent = /** @class */ (function () {
     //   // console.log(this.summaryHtmlDataList);
     //   this.commonValidation();
     // }
+    // save() {
+    //   const data = this.form.getRawValue();
+    //   console.log(data.specialRateApplicableCompCount);
+    // }
     ComplianceMasterComponent.prototype.save = function () {
         var _this = this;
-        console.log(this.ServicesList);
         var complianceDetails = [];
         var pfNilOptionChoiceOption = 'NO';
         var edliExemptionOption = 'NO';
         var contributionMethodChoiceOption = 'NO';
         var employeeCompanyContributionDiffOption = 'NO';
         var data = this.form.getRawValue();
-        delete data.jobMaster;
-        delete data.establishmentCode;
+        // delete data.jobMaster;
+        //delete data.establishmentCode;
         delete data.groupCompanyId;
         data.groupCompanyId = 1;
         // for radio button
@@ -321,111 +359,114 @@ var ComplianceMasterComponent = /** @class */ (function () {
         }
         if (data.shortName === 'PF') {
             if (data.contributionMethodChoice == 'YES') {
-                for (var i = 0; i < this.ServicesList.length; i++) {
-                    complianceDetails.push({
-                        establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                        pfStatus: data.pfStatus,
-                        pfNilOptionChoice: data.pfNilOptionChoice,
-                        employeeCompanyContributionDiff: data.employeeCompanyContributionDiff,
-                        edliExemption: data.edliExemption,
-                        contributionMethodChoice: 'YES',
-                        companyContribution: selectedStringCompanyContributionList,
-                        companyFromDate: data.companyFromDate,
-                        companyToDate: data.companyToDate,
-                        employeeContribution: selectedStringEmployeeContributionList,
-                        employeeFromDate: data.employeeFromDate,
-                        employeeToDate: data.employeeToDate
-                    });
-                }
+                // for (let i = 0; i < this.ServicesList.length; i++) {
+                complianceDetails.push({
+                    // establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                    pfStatus: data.pfStatus,
+                    pfNilOptionChoice: data.pfNilOptionChoice,
+                    employeeCompanyContributionDiff: data.employeeCompanyContributionDiff,
+                    edliExemption: data.edliExemption,
+                    contributionMethodChoice: 'YES',
+                    companyContribution: selectedStringCompanyContributionList,
+                    companyFromDate: data.companyFromDate,
+                    companyToDate: data.companyToDate,
+                    employeeContribution: selectedStringEmployeeContributionList,
+                    employeeFromDate: data.employeeFromDate,
+                    employeeToDate: data.employeeToDate,
+                    specialRateApplicableEMPCount: data.specialRateApplicableEMPCount,
+                    specialRateApplicableCompCount: data.specialRateApplicableCompCount,
+                    specialRateCompCountPercent: data.specialRateCompCountPercent,
+                    specialRateEMPCountPercent: data.specialRateEMPCountPercent,
+                    industryType: data.industryType
+                });
             }
             else if (data.contributionMethodChoice == 'NO') {
-                for (var i = 0; i < this.ServicesList.length; i++) {
-                    complianceDetails.push({
-                        establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                        pfStatus: data.pfStatus,
-                        pfNilOptionChoice: data.pfNilOptionChoice,
-                        employeeCompanyContributionDiff: data.employeeCompanyContributionDiff,
-                        edliExemption: data.edliExemption,
-                        contributionMethodChoice: 'NO',
-                        companyContribution: data.companyContribution,
-                        companyFromDate: data.companyFromDate,
-                        companyToDate: data.companyToDate,
-                        employeeContribution: data.employeeContribution,
-                        employeeFromDate: data.employeeFromDate,
-                        employeeToDate: data.employeeToDate
-                    });
-                }
+                //   for (let i = 0; i < this.ServicesList.length; i++) {
+                complianceDetails.push({
+                    pfStatus: data.pfStatus,
+                    pfNilOptionChoice: data.pfNilOptionChoice,
+                    employeeCompanyContributionDiff: data.employeeCompanyContributionDiff,
+                    edliExemption: data.edliExemption,
+                    contributionMethodChoice: 'NO',
+                    companyContribution: data.companyContribution,
+                    companyFromDate: data.companyFromDate,
+                    companyToDate: data.companyToDate,
+                    employeeContribution: data.employeeContribution,
+                    employeeFromDate: data.employeeFromDate,
+                    employeeToDate: data.employeeToDate,
+                    specialRateApplicableEMPCount: data.specialRateApplicableEMPCount,
+                    specialRateApplicableCompCount: data.specialRateApplicableCompCount,
+                    specialRateCompCountPercent: data.specialRateCompCountPercent,
+                    specialRateEMPCountPercent: data.specialRateEMPCountPercent,
+                    industryType: data.industryType
+                });
             }
             else {
-                console.log('errrrorrrorr');
+                console.log('error line no 427');
             }
         }
         if (data.shortName === 'EPS') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    eps1: data.eps1,
-                    eps1FromDate: data.eps1FromDate,
-                    eps1ToDate: data.eps1ToDate
-                });
-            }
+            var index = this.summaryHtmlDataList.findIndex(function (o) { return o.complianceName === data.complianceName; });
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                //  establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                // complianceDetailId: this.summaryHtmlDataList[index].complianceDetailId,
+                // complianceMasterId: this.summaryHtmlDataList[index].complianceMasterId,
+                eps1: data.eps1,
+                eps1FromDate: data.eps1FromDate,
+                eps1ToDate: data.eps1ToDate
+            });
         }
         if (data.shortName === 'PT') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    ptState: data.ptState,
-                    ptCity: data.ptCity
-                });
-            }
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                //   establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                ptState: data.ptState,
+                ptCity: data.ptCity
+            });
         }
         if (data.shortName === 'TDS') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    tan: data.tan,
-                    tdsCircle: data.tdsCircle,
-                    deductorStatus: data.deductorStatus
-                });
-            }
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                // establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                tan: data.tan,
+                tdsCircle: data.tdsCircle,
+                deductorStatus: data.deductorStatus
+            });
         }
         if (data.shortName === 'ESIC') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    esic1: data.esic1,
-                    esic1FromDate: data.esic1FromDate,
-                    esic1ToDate: data.esic1ToDate
-                });
-            }
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                //  establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                esic1: data.esic1,
+                esic1FromDate: data.esic1FromDate,
+                esic1ToDate: data.esic1ToDate
+            });
         }
         if (data.shortName === 'LWF') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    lwfState: data.lwfState
-                });
-            }
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                //   establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                lwfState: data.lwfState
+            });
         }
         if (data.shortName === 'Gratuity') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    gratuityDividingFactor: data.gratuityDividingFactor,
-                    gratuityFromDate: data.gratuityFromDate,
-                    gratuityToDate: data.gratuityToDate
-                });
-            }
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                //   establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                gratuityDividingFactor: data.gratuityDividingFactor,
+                gratuityFromDate: data.gratuityFromDate,
+                gratuityToDate: data.gratuityToDate
+            });
         }
         if (data.shortName === 'SA') {
-            for (var i = 0; i < this.ServicesList.length; i++) {
-                complianceDetails.push({
-                    establishmentMasterId: this.ServicesList[i].establishmentMasterId,
-                    saMaxPercentage: data.saMaxPercentage,
-                    saFromDate: data.saFromDate,
-                    saToDate: data.saToDate
-                });
-            }
+            // for (let i = 0; i < this.ServicesList.length; i++) {
+            complianceDetails.push({
+                //  establishmentMasterId: this.ServicesList[i].establishmentMasterId,
+                saMaxPercentage: data.saMaxPercentage,
+                saFromDate: data.saFromDate,
+                saToDate: data.saToDate
+            });
         }
         if (data.shortName === 'S&E') {
             console.log('Not Avail');
@@ -450,55 +491,170 @@ var ComplianceMasterComponent = /** @class */ (function () {
         }
         var tempObj = this.institutionMasterList.find(function (o) { return o.complianceHeadId == data.statutoryInstituteName; });
         console.log(tempObj);
-        var saveData = {
-            complianceName: data.complianceName,
-            statutoryInstituteName: tempObj.institutionName,
-            complianceHeadShortName: data.shortName,
-            accountNumber: data.accountNumber,
-            groupCompanyId: data.groupCompanyId,
-            registrationNumber: data.registrationNumber,
-            issueDate: data.issueDate,
-            coverageDate: data.coverageDate,
-            userNameForWebsite: data.userNameForWebsite,
-            complianceDetails: complianceDetails
-        };
-        console.log(saveData);
-        this.complianceMasterService.postComplianceMaster(saveData).subscribe(function (res) {
-            console.log(res);
-            if (res.data.results.length > 0) {
+        if (this.isEditMode == false) {
+            var saveData = {
+                complianceName: data.complianceName,
+                statutoryInstituteName: tempObj.institutionName,
+                complianceHeadShortName: data.shortName,
+                establishmentMasterId: this.selectedEstablishmentId,
+                accountNumber: data.accountNumber,
+                groupCompanyId: data.groupCompanyId,
+                registrationNumber: data.registrationNumber,
+                issueDate: data.issueDate,
+                coverageDate: data.coverageDate,
+                userNameForWebsite: data.userNameForWebsite,
+                administratedBy: data.administratedBy,
+                complianceDetails: complianceDetails[0],
+                pfWagesDetails: {
+                    basicDABelowWageCelling: data.basicDABelowWageCelling,
+                    basicDAAboveWageCelling: data.basicDAAboveWageCelling
+                }
+            };
+            console.log('s', saveData);
+            console.log(JSON.stringify(saveData));
+            this.complianceMasterService.postComplianceMaster(saveData).subscribe(function (res) {
                 console.log(res);
-                _this.alertService.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
-                _this.form.setControl('pfFormArray', new forms_1.FormArray([]));
-                _this.form.setControl('epsArray', new forms_1.FormArray([]));
-                _this.form.setControl('esiArray', new forms_1.FormArray([]));
-                _this.form.setControl('ptArray', new forms_1.FormArray([]));
-                _this.form.setControl('lwfArray', new forms_1.FormArray([]));
-                _this.form.setControl('tdsArray', new forms_1.FormArray([]));
-                _this.form.setControl('gratuityArray', new forms_1.FormArray([]));
-                _this.form.setControl('epsArray', new forms_1.FormArray([]));
-                _this.form.reset();
-                _this.isSaveAndReset = true;
-                _this.showButtonSaveAndReset = true;
-                _this.setPfDefaultValueAfterReset();
-                _this.isPf = false;
-                _this.isPfNew = false;
-                _this.isEps = false;
-                _this.isEsi = false;
-                _this.isPt = false;
-                _this.isLw = false;
-                _this.isTaxDeductedAtSource = false;
-                _this.isGratuity = false;
-                _this.isSa = false; // Super Annuation
-                _this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
-            }
-            else {
-                _this.alertService.sweetalertWarning(res.status.messsage);
-            }
-        }, function (error) {
-            _this.alertService.sweetalertError(error['error']['status']['messsage']);
-        });
+                if (res.data.results.length > 0) {
+                    console.log(res);
+                    _this.alertService.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
+                    _this.form.setControl('pfFormArray', new forms_1.FormArray([]));
+                    _this.form.setControl('epsArray', new forms_1.FormArray([]));
+                    _this.form.setControl('esiArray', new forms_1.FormArray([]));
+                    _this.form.setControl('ptArray', new forms_1.FormArray([]));
+                    _this.form.setControl('lwfArray', new forms_1.FormArray([]));
+                    _this.form.setControl('tdsArray', new forms_1.FormArray([]));
+                    _this.form.setControl('gratuityArray', new forms_1.FormArray([]));
+                    _this.form.setControl('epsArray', new forms_1.FormArray([]));
+                    _this.form.reset();
+                    _this.isSaveAndReset = true;
+                    _this.showButtonSaveAndReset = true;
+                    _this.setPfDefaultValueAfterReset();
+                    _this.isPf = false;
+                    _this.isPfNew = false;
+                    _this.isEps = false;
+                    _this.isEsi = false;
+                    _this.isPt = false;
+                    _this.isLw = false;
+                    _this.isTaxDeductedAtSource = false;
+                    _this.isGratuity = false;
+                    _this.isSa = false; // Super Annuation
+                    console.log('i m in refresh table');
+                    _this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+                    _this.getInstitutionMaster();
+                }
+                else {
+                    _this.alertService.sweetalertWarning(res.status.messsage);
+                }
+            }, function (error) {
+                _this.alertService.sweetalertError(error['error']['status']['messsage']);
+            });
+        }
+        else {
+            //  const tempObj = this.institutionMasterList.find((o) => o.complianceHeadId == data.statutoryInstituteName);
+            var index = this.summaryHtmlDataList.findIndex(function (o) { return o.complianceName === data.complianceName; });
+            var saveData = {
+                complianceMasterId: this.summaryHtmlDataList[index].complianceMasterId,
+                complianceName: data.complianceName,
+                statutoryInstituteName: this.summaryHtmlDataList[index].statutoryInstituteName,
+                complianceHeadShortName: data.shortName,
+                establishmentMasterId: this.summaryHtmlDataList[index].establishmentCode,
+                accountNumber: data.accountNumber,
+                groupCompanyId: data.groupCompanyId,
+                registrationNumber: data.registrationNumber,
+                issueDate: data.issueDate,
+                coverageDate: data.coverageDate,
+                userNameForWebsite: data.userNameForWebsite,
+                administratedBy: data.administratedBy,
+                complianceDetails: complianceDetails[0],
+                pfWagesDetails: {
+                    basicDABelowWageCelling: data.basicDABelowWageCelling,
+                    basicDAAboveWageCelling: data.basicDAAboveWageCelling
+                }
+            };
+            console.log(saveData);
+            console.log(JSON.stringify(saveData));
+            this.complianceMasterService.putComplianceMaster(saveData).subscribe(function (res) {
+                console.log(res);
+                if (res.data.results.length > 0) {
+                    console.log(res);
+                    _this.alertService.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
+                    _this.form.setControl('pfFormArray', new forms_1.FormArray([]));
+                    _this.form.setControl('epsArray', new forms_1.FormArray([]));
+                    _this.form.setControl('esiArray', new forms_1.FormArray([]));
+                    _this.form.setControl('ptArray', new forms_1.FormArray([]));
+                    _this.form.setControl('lwfArray', new forms_1.FormArray([]));
+                    _this.form.setControl('tdsArray', new forms_1.FormArray([]));
+                    _this.form.setControl('gratuityArray', new forms_1.FormArray([]));
+                    _this.form.setControl('epsArray', new forms_1.FormArray([]));
+                    _this.form.reset();
+                    _this.isSaveAndReset = true;
+                    _this.showButtonSaveAndReset = true;
+                    _this.setPfDefaultValueAfterReset();
+                    _this.isPf = false;
+                    _this.isPfNew = false;
+                    _this.isEps = false;
+                    _this.isEsi = false;
+                    _this.isPt = false;
+                    _this.isLw = false;
+                    _this.isTaxDeductedAtSource = false;
+                    _this.isGratuity = false;
+                    _this.isSa = false; // Super Annuation
+                    _this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+                    _this.getInstitutionMaster();
+                }
+                else {
+                    _this.alertService.sweetalertWarning(res.status.messsage);
+                }
+            }, function (error) {
+                _this.alertService.sweetalertError(error['error']['status']['messsage']);
+            });
+        }
     };
     ComplianceMasterComponent.prototype.saveComplianceApplication = function () {
+        var _this = this;
+        if (this.complianceSDMMappingIdToDelete > 0) {
+            var data = this.complianceApplicationForm.getRawValue();
+            data.complianceSDMMappingId = this.complianceSDMMappingIdToDelete;
+            console.log('raw data', data);
+            console.log(JSON.stringify(data));
+            this.complianceMasterService.putComplianceApplicability(data).subscribe(function (res) {
+                console.log(res);
+                if (res.data.results.length > 0) {
+                    _this.alertService.sweetalertMasterSuccess('Compliance Applicability Saved Successfully.', '');
+                    _this.complianceApplicationForm.reset();
+                    _this.refreshHtmlTableDataOfComplianceApplicability();
+                    _this.resetComplianceApplicability();
+                }
+                else {
+                    _this.alertService.sweetalertWarning(res.status.messsage);
+                }
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+            });
+        }
+        else {
+            var data = this.complianceApplicationForm.getRawValue();
+            console.log('raw data', data);
+            // delete data.allOtherMasterMappingDetails;
+            // delete data.jobMasterType
+            console.log(JSON.stringify(data));
+            this.complianceMasterService.postComplianceApplicability(data).subscribe(function (res) {
+                console.log(res);
+                if (res.data.results.length > 0) {
+                    _this.alertService.sweetalertMasterSuccess('Compliance Applicability Saved Successfully.', '');
+                    _this.complianceApplicationForm.reset();
+                    _this.refreshHtmlTableDataOfComplianceApplicability();
+                    _this.resetComplianceApplicability();
+                }
+                else {
+                    _this.alertService.sweetalertWarning(res.status.messsage);
+                }
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+            });
+        }
+    };
+    ComplianceMasterComponent.prototype.saveComplianceApplication1 = function () {
         var _this = this;
         var applicabilityDetails = [];
         var data = this.complianceApplicationForm.getRawValue();
@@ -545,11 +701,15 @@ var ComplianceMasterComponent = /** @class */ (function () {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         });
     };
-    ComplianceMasterComponent.prototype.editMaster = function (i, establishmentMasterId, complianceHeadShortName, establishmentNames, isView) {
+    ComplianceMasterComponent.prototype.editMaster = function (i, complianceMasterId, complianceHeadShortName, establishmentNames, isView) {
+        var _this = this;
+        console.log(this.summaryHtmlDataList);
+        var ind1 = this.summaryHtmlDataList.findIndex(function (o) { return o.complianceMasterId == complianceMasterId; });
+        console.log(this.summaryHtmlDataList[ind1]);
         this.form.enable();
         this.isGlobalView = false;
         this.isView = isView;
-        this.editedRecordIndex = i;
+        this.editedRecordIndex = complianceMasterId;
         this.isEditableEstablismentMasterId = true;
         this.isDefaultContribution = false;
         this.savedEstablishmentList = [];
@@ -594,19 +754,15 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 this.saArray.removeAt(i_8);
             }
         }
-        var establishmentNamesArray = establishmentNames.split(',');
-        console.log(establishmentNamesArray);
-        var establishmentNamesArrayMultiselect = [];
-        var _loop_1 = function (i_9) {
-            var a = this_1.dropdownList.findIndex(function (o) { return o.establishmentCode == establishmentNamesArray[i_9].trim(); });
-            establishmentNamesArrayMultiselect.push(this_1.dropdownList[a]);
-            this_1.ServicesList.push({ establishmentMasterId: this_1.dropdownList[a].establishmentMasterId, establishmentCode: this_1.dropdownList[a].establishmentCode });
-            this_1.savedEstablishmentList.push({ establishmentMasterId: this_1.dropdownList[a].establishmentMasterId, establishmentCode: this_1.dropdownList[a].establishmentCode });
-        };
-        var this_1 = this;
-        for (var i_9 = 0; i_9 < establishmentNamesArray.length; i_9++) {
-            _loop_1(i_9);
-        }
+        // let establishmentNamesArray = establishmentNames.split(',');
+        // console.log(establishmentNamesArray);
+        // const establishmentNamesArrayMultiselect = [];
+        // for (let i = 0; i < establishmentNamesArray.length; i++) {
+        //   const a = this.dropdownList.findIndex((o) => o.establishmentCode == establishmentNamesArray[i].trim());
+        //   establishmentNamesArrayMultiselect.push(this.dropdownList[a]);
+        //   this.ServicesList.push({ establishmentMasterId: this.dropdownList[a].establishmentMasterId, establishmentCode: this.dropdownList[a].establishmentCode });
+        //   this.savedEstablishmentList.push({ establishmentMasterId: this.dropdownList[a].establishmentMasterId, establishmentCode: this.dropdownList[a].establishmentCode });
+        // }
         this.selectedObjectForUpdate = this.summaryHtmlDataList[i];
         this.isEditMode = true;
         this.isDefaultContribution = true;
@@ -621,27 +777,27 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.isSa = false; // Super Annuation
         if (complianceHeadShortName === 'PF') {
             // this.isPf = true;
-            this.addPfFormControl(this.editedRecordIndex, this.ServicesList[0], false);
+            this.addPfFormControl(this.editedRecordIndex, false);
         }
         if (complianceHeadShortName === 'EPS') {
             // this.isEps = true;
-            this.addEpsFormControl(this.editedRecordIndex, this.ServicesList[0], false);
+            this.addEpsFormControl(this.editedRecordIndex, false);
         }
         if (complianceHeadShortName === 'PT') {
             // this.isPt = true;
-            this.addPtFormControl(this.editedRecordIndex, this.ServicesList[0], false);
+            this.addPtFormControl(this.editedRecordIndex, false);
         }
         if (complianceHeadShortName === 'TDS') {
             // this.isTaxDeductedAtSource = true;
-            this.addTdsFormControl(this.editedRecordIndex, this.ServicesList[0], false);
+            this.addTdsFormControl(this.editedRecordIndex, false);
         }
         if (complianceHeadShortName === 'ESIC') {
             // this.isEsi = true;
-            this.addEsiFormControl(this.editedRecordIndex, this.ServicesList[0], false);
+            this.addEsiFormControl(this.editedRecordIndex, false);
         }
         if (complianceHeadShortName === 'LWF') {
             // this.isLw = true;
-            this.addLWFFormControl(this.editedRecordIndex, this.ServicesList[0], false);
+            this.addLWFFormControl(this.editedRecordIndex, false);
         }
         if (complianceHeadShortName === 'S&E') {
             console.log('Not Avail');
@@ -650,7 +806,9 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log('Not Avail');
         }
         if (complianceHeadShortName === 'SA') {
-            this.isSa = true;
+            this.addSaFormControl(this.editedRecordIndex, false);
+            // this.isGlobalView = false;
+            // this.isSa = true;
         }
         if (complianceHeadShortName === 'Gratuity') {
             this.isGratuity = true;
@@ -669,39 +827,52 @@ var ComplianceMasterComponent = /** @class */ (function () {
         }
         this.isSaveAndReset = false;
         this.showButtonSaveAndReset = true;
-        this.establishmentMasterId = establishmentMasterId;
+        // let ind1= this.masterGridDataList.findIndex(o=>o.complianceMasterId == complianceMasterId);
+        // console.log('index is', ind1);
+        var inn = this.establishmentCodeAndId.findIndex(function (o) { return o.value == _this.masterGridDataList[ind1].establishmentMasterId; });
+        this.selectedEstablishmentMasterId = this.establishmentCodeAndId[inn];
+        console.log('administratedBy ', this.masterGridDataList[ind1]);
         this.form.patchValue({
-            complianceName: this.masterGridDataList[i].complianceName,
-            complianceHeadShortName: this.masterGridDataList[i].complianceHeadShortName,
-            statutoryInstituteName: this.masterGridDataList[i].statutoryInstituteName,
-            complianceHeadName: this.summaryHtmlDataList[i].filter.complianceDetailObject.complianceHeadName,
+            complianceName: this.masterGridDataList[ind1].complianceName,
+            complianceHeadShortName: this.masterGridDataList[ind1].complianceHeadShortName,
+            statutoryInstituteName: this.masterGridDataList[ind1].statutoryInstituteName,
+            complianceHeadName: this.summaryHtmlDataList[ind1].filter.complianceDetailObject.complianceHeadName,
             shortName: complianceHeadShortName,
-            accountNumber: this.masterGridDataList[i].accountNumber,
-            groupCompanyId: this.masterGridDataList[i].groupCompanyId,
-            establishmentMasterId: establishmentNamesArray,
-            registrationNumber: this.masterGridDataList[i].registrationNumber,
-            establishmentCode: this.masterGridDataList[i].establishmentCode,
-            issueDate: this.masterGridDataList[i].issueDate,
-            coverageDate: this.masterGridDataList[i].coverageDate,
-            userNameForWebsite: this.masterGridDataList[i].userNameForWebsite,
-            eps1: this.masterGridDataList[i].complianceDetail[0].eps1,
-            eps1FromDate: this.masterGridDataList[i].complianceDetail[0].eps1FromDate,
-            eps1ToDate: this.masterGridDataList[i].complianceDetail[0].eps1ToDate,
-            esic1: this.masterGridDataList[i].complianceDetail[0].esic1,
-            esic1FromDate: this.masterGridDataList[i].complianceDetail[0].esic1FromDate,
-            esic1ToDate: this.masterGridDataList[i].complianceDetail[0].esic1ToDate,
-            gratuityDividingFactor: this.masterGridDataList[i].complianceDetail[0].gratuityDividingFactor,
-            gratuityFromDate: this.masterGridDataList[i].complianceDetail[0].gratuityFromDate,
-            gratuityToDate: this.masterGridDataList[i].complianceDetail[0].gratuityToDate,
-            saFromDate: this.masterGridDataList[i].complianceDetail[0].saFromDate,
-            saMaxPercentage: this.masterGridDataList[i].complianceDetail[0].saMaxPercentage,
-            saToDate: this.masterGridDataList[i].complianceDetail[0].saToDate,
-            lwfState: this.masterGridDataList[i].complianceDetail[0].lwfState,
-            ptCity: this.masterGridDataList[i].complianceDetail[0].ptCity,
-            ptState: this.masterGridDataList[i].complianceDetail[0].ptState,
-            tan: this.masterGridDataList[i].complianceDetail[0].tan,
-            tdsCircle: this.masterGridDataList[i].complianceDetail[0].tdsCircle,
-            deductorStatus: this.masterGridDataList[i].complianceDetail[0].deductorStatus
+            //administratedBy: this.summaryHtmlDataList[ind1].administratedBy,
+            administratedBy: this.masterGridDataList[ind1].administratedBy,
+            accountNumber: this.masterGridDataList[ind1].accountNumber,
+            groupCompanyId: this.masterGridDataList[ind1].groupCompanyId,
+            establishmentMasterId: this.masterGridDataList[ind1].establishmentMasterId,
+            registrationNumber: this.masterGridDataList[ind1].registrationNumber,
+            establishmentCode: this.masterGridDataList[ind1].establishmentCode,
+            issueDate: this.masterGridDataList[ind1].issueDate,
+            coverageDate: this.masterGridDataList[ind1].coverageDate,
+            userNameForWebsite: this.masterGridDataList[ind1].userNameForWebsite,
+            eps1: this.masterGridDataList[ind1].complianceDetail.eps1,
+            eps1FromDate: this.masterGridDataList[ind1].complianceDetail.eps1FromDate,
+            eps1ToDate: this.masterGridDataList[ind1].complianceDetail.eps1ToDate,
+            esic1: this.masterGridDataList[ind1].complianceDetail.esic1,
+            esic1FromDate: this.masterGridDataList[ind1].complianceDetail.esic1FromDate,
+            esic1ToDate: this.masterGridDataList[ind1].complianceDetail.esic1ToDate,
+            gratuityDividingFactor: this.masterGridDataList[ind1].complianceDetail.gratuityDividingFactor,
+            gratuityFromDate: this.masterGridDataList[ind1].complianceDetail.gratuityFromDate,
+            gratuityToDate: this.masterGridDataList[ind1].complianceDetail.gratuityToDate,
+            saFromDate: this.masterGridDataList[ind1].complianceDetail.saFromDate,
+            saMaxPercentage: this.masterGridDataList[ind1].complianceDetail.saMaxPercentage,
+            saToDate: this.masterGridDataList[ind1].complianceDetail.saToDate,
+            lwfState: this.masterGridDataList[ind1].complianceDetail.lwfState,
+            ptCity: this.masterGridDataList[ind1].complianceDetail.ptCity,
+            ptState: this.masterGridDataList[ind1].complianceDetail.ptState,
+            tan: this.masterGridDataList[ind1].complianceDetail.tan,
+            tdsCircle: this.masterGridDataList[ind1].complianceDetail.tdsCircle,
+            deductorStatus: this.masterGridDataList[ind1].complianceDetail.deductorStatus,
+            specialRateApplicableEMPCount: this.masterGridDataList[ind1].complianceDetail.specialRateApplicableEMPCount,
+            specialRateApplicableCompCount: this.masterGridDataList[ind1].complianceDetail.specialRateApplicableCompCount,
+            specialRateCompCountPercent: this.masterGridDataList[ind1].complianceDetail.specialRateCompCountPercent,
+            specialRateEMPCountPercent: this.masterGridDataList[ind1].complianceDetail.specialRateEMPCountPercent,
+            industryType: this.masterGridDataList[ind1].complianceDetail.industryType,
+            basicDABelowWageCelling: this.masterGridDataList[ind1].pfWagesDetails.basicDABelowWageCelling,
+            basicDAAboveWageCelling: this.masterGridDataList[ind1].pfWagesDetails.basicDAAboveWageCelling
         });
         this.form.get('complianceHeadName').disable();
         this.form.get('shortName').disable();
@@ -730,14 +901,15 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.form.reset();
         this.editMaster(i, establishmentMasterId, complianceHeadShortName, establishmentNames, true);
         this.form.disable();
-        this.form.get('pfFormArray').controls
-            .forEach(function (control) {
-            control.controls.establishmentName.enable();
-        });
+        // this.form.get('pfFormArray').controls
+        //   .forEach((control) => {
+        //     control.controls.establishmentName.enable();
+        //   });
         this.isGlobalView = true;
         this.isView = true;
     };
     ComplianceMasterComponent.prototype.cancelView = function () {
+        this.isActivateButton = 1;
         this.isGlobalView = false;
         this.form.setControl('pfFormArray', new forms_1.FormArray([]));
         this.form.setControl('epsArray', new forms_1.FormArray([]));
@@ -747,6 +919,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.form.setControl('tdsArray', new forms_1.FormArray([]));
         this.form.setControl('gratuityArray', new forms_1.FormArray([]));
         this.form.setControl('epsArray', new forms_1.FormArray([]));
+        this.form.setControl('saArray', new forms_1.FormArray([]));
         this.isEditableEstablismentMasterId = false;
         this.isEditMode = false;
         this.isDefaultContribution = true;
@@ -773,9 +946,9 @@ var ComplianceMasterComponent = /** @class */ (function () {
         console.log(tempObjEstablishmentAddress);
     };
     ComplianceMasterComponent.prototype.onSelectTypeOfEstablishment = function (evt) { };
-    ComplianceMasterComponent.prototype.onBsValueChangeDateOfSetup = function (evt) { };
+    ComplianceMasterComponent.prototype.onBsValueChangeDateOfSetup = function () { };
     ComplianceMasterComponent.prototype.onSelectOfficePremisesOwnership = function (evt) { };
-    ComplianceMasterComponent.prototype.onBsValueChangeDateOfGstIssueDate = function () { };
+    ComplianceMasterComponent.prototype.onBsValueChangeDateOfGstIssuisAeDate = function () { };
     ComplianceMasterComponent.prototype.onBsValueChangeLinIssueDate = function () { };
     ComplianceMasterComponent.prototype.onBsValueChangeStpiIssueDate = function () { };
     ComplianceMasterComponent.prototype.onSelectPfStatus = function (evt) { };
@@ -896,7 +1069,13 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.getInstitutionMaster = function () {
         var _this = this;
+        console.log('getInstitutionMaster');
+        this.institutionNameList = [];
         this.institutionMasterList = [];
+        this.complianceHeadNameList = [];
+        this.institutionMasterObject = [];
+        this.summaryHtmlDataList = [];
+        this.masterGridDataList = [];
         this.getComplianceInstitutionMasterGridListObject = {};
         this.complianceHeadDetailsObject = {};
         rxjs_1.combineLatest([this.complianceHeadService.getComplianceHeadDetails(), this.statuatoryComplianceService.getCompliaceInstitutionMasterDetails(), this.complianceMasterService.getComplianceMasterDetails()]).subscribe(function (res) {
@@ -937,8 +1116,6 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 };
                 _this.institutionMasterList.push(obj);
             });
-            _this.summaryHtmlDataList = [];
-            _this.masterGridDataList = [];
             var srNo = 1;
             res[2].data.results.forEach(function (element) {
                 // if (element.isActive == 0) {
@@ -948,38 +1125,36 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 var filteredEvents = _this.institutionMasterList.filter(function (event) {
                     return event.institutionName == element.statutoryInstituteName;
                 });
-                var establishmentNames;
-                var _loop_2 = function (i) {
-                    if (i == 0) {
-                        var index = _this.dropdownList.findIndex(function (o) { return o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId; });
-                        establishmentNames = _this.dropdownList[index].establishmentCode;
-                    }
-                    else {
-                        establishmentNames += ', ';
-                        var index = _this.dropdownList.findIndex(function (o) { return o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId; });
-                        establishmentNames += _this.dropdownList[index].establishmentCode;
-                    }
-                };
-                for (var i = 0; i < element.complianceDetail.length; i++) {
-                    _loop_2(i);
-                }
-                var tempObjEstablishmentAddress = _this.establishmentDetailsMasterList.find(function (o) { return o.establishmentMasterId == element.complianceDetail[0].establishmentMasterId; });
+                console.log('filteredEvents', filteredEvents[0]);
+                // let establishmentNames: string;
+                // for (let i = 0; i < element.complianceDetail.length; i++) {
+                //   if (i == 0) {
+                //     const index = this.dropdownList.findIndex((o) => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+                //     establishmentNames = this.dropdownList[index].establishmentCode;
+                //   } else {
+                //     establishmentNames += ', ';
+                //     const index = this.dropdownList.findIndex((o) => o.establishmentMasterId == element.complianceDetail[i].establishmentMasterId);
+                //     establishmentNames += this.dropdownList[index].establishmentCode;
+                //   }
+                // }
+                var tempObjEstablishmentAddress = _this.establishmentDetailsMasterList.find(function (o) { return o.establishmentMasterId == element.establishmentMasterId; });
+                console.log('tempObjEstablishmentAddress', tempObjEstablishmentAddress);
                 var obj = {
                     SrNo: srNo++,
                     complianceName: element.complianceName,
                     statutoryInstituteName: element.statutoryInstituteName,
+                    complianceHeadName: filteredEvents[0].complianceDetailObject.complianceHeadName,
                     complianceHeadShortName: element.complianceHeadShortName,
                     accountNumber: element.accountNumber,
                     establishmentCode: tempObjEstablishmentAddress.establishmentCode,
+                    establishmentMasterId: element.establishmentMasterId,
                     registrationNumber: element.registrationNumber,
                     complianceMasterId: element.complianceMasterId,
-                    tempObjEstablishmentAddress: tempObjEstablishmentAddress,
                     groupCompanyId: element.groupCompanyId,
                     issueDate: element.issueDate,
                     coverageDate: element.coverageDate,
                     userNameForWebsite: element.userNameForWebsite,
                     filter: filteredEvents[0],
-                    establishmentNames: establishmentNames,
                     isActive: element.isActive
                 };
                 _this.summaryHtmlDataList.push(obj);
@@ -1031,84 +1206,88 @@ var ComplianceMasterComponent = /** @class */ (function () {
         // });
     };
     ComplianceMasterComponent.prototype.onSelectStatuatoryInstitutionMaster = function (value, label) {
-        this.clearEpsValidation();
-        this.clearPfValidation();
-        this.clearEsiValidation();
-        this.clearPtValidation();
-        this.clearlwfValidation();
-        this.clearTdsValidation();
-        this.clearGratuityValidation();
-        this.clearSaValidation();
-        this.isPf = false;
-        this.isEps = false;
-        this.isEsi = false;
-        this.isPt = false;
-        this.isLw = false;
-        this.isTaxDeductedAtSource = false;
-        this.isGratuity = false;
-        this.isSa = false; // Super Annuation
-        this.isPfNew = false;
-        this.isEpsNew = false;
-        // blank if user has already selected establishment multi checkbox
-        this.ServicesList = [];
-        this.selectedEstablishmentMasterId = [];
-        var tempObj = this.institutionMasterList.find(function (o) { return o.complianceHeadId == value; });
-        console.log(tempObj);
-        this.complianceHeadTempObj = this.complianceHeadDetailsObject.find(function (o) { return o.complianceHeadId == tempObj.complianceHeadId; });
-        console.log(this.complianceHeadTempObj);
-        this.form.patchValue({
-            complianceHeadName: this.complianceHeadTempObj.complianceHeadName,
-            shortName: this.complianceHeadTempObj.shortName
-        });
-        if (this.complianceHeadTempObj.shortName === 'PF') {
-            this.isPfNew = true;
-            this.pfValidation();
+        if (value == '') {
         }
-        if (this.complianceHeadTempObj.shortName === 'EPS') {
-            this.isEpsNew = true;
-            this.epsValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'PT') {
-            this.isPt = true;
-            this.ptValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'TDS') {
-            this.isTaxDeductedAtSource = true;
-            this.tdsValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'ESIC') {
-            this.isEsi = true;
-            this.esiValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'LWF') {
-            this.isLw = true;
-            this.lwfValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'S&E') {
-            console.log('Not Avail');
-        }
-        if (this.complianceHeadTempObj.shortName === 'Factories') {
-            console.log('Not Avail');
-        }
-        if (this.complianceHeadTempObj.shortName === 'SA') {
-            this.isSa = true;
-            this.saValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'Gratuity') {
-            this.isGratuity = true;
-            this.gratuityValidation();
-        }
-        if (this.complianceHeadTempObj.shortName === 'BOCW') {
-            console.log('Not Avail');
-        }
-        if (this.complianceHeadTempObj.shortName === 'CLRA') {
-            console.log('Not Avail');
-        }
-        if (this.complianceHeadTempObj.shortName === 'EE') {
-            console.log('Not Avail'); // Employment Exchanges
-        }
-        if (this.complianceHeadTempObj.shortName === 'PWD') {
-            console.log('Not Avail'); // Public works department
+        else {
+            this.clearEpsValidation();
+            this.clearPfValidation();
+            this.clearEsiValidation();
+            this.clearPtValidation();
+            this.clearlwfValidation();
+            this.clearTdsValidation();
+            this.clearGratuityValidation();
+            this.clearSaValidation();
+            this.isPf = false;
+            this.isEps = false;
+            this.isEsi = false;
+            this.isPt = false;
+            this.isLw = false;
+            this.isTaxDeductedAtSource = false;
+            this.isGratuity = false;
+            this.isSa = false; // Super Annuation
+            this.isPfNew = false;
+            this.isEpsNew = false;
+            // blank if user has already selected establishment multi checkbox
+            this.ServicesList = [];
+            this.selectedEstablishmentMasterId = [];
+            var tempObj_1 = this.institutionMasterList.find(function (o) { return o.complianceHeadId == value; });
+            console.log(tempObj_1);
+            this.complianceHeadTempObj = this.complianceHeadDetailsObject.find(function (o) { return o.complianceHeadId == tempObj_1.complianceHeadId; });
+            console.log(this.complianceHeadTempObj);
+            this.form.patchValue({
+                complianceHeadName: this.complianceHeadTempObj.complianceHeadName,
+                shortName: this.complianceHeadTempObj.shortName
+            });
+            if (this.complianceHeadTempObj.shortName === 'PF') {
+                this.isPfNew = true;
+                this.pfValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'EPS') {
+                this.isEpsNew = true;
+                this.epsValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'PT') {
+                this.isPt = true;
+                this.ptValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'TDS') {
+                this.isTaxDeductedAtSource = true;
+                this.tdsValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'ESIC') {
+                this.isEsi = true;
+                this.esiValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'LWF') {
+                this.isLw = true;
+                this.lwfValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'S&E') {
+                console.log('Not Avail');
+            }
+            if (this.complianceHeadTempObj.shortName === 'Factories') {
+                console.log('Not Avail');
+            }
+            if (this.complianceHeadTempObj.shortName === 'SA') {
+                this.isSa = true;
+                this.saValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'Gratuity') {
+                this.isGratuity = true;
+                this.gratuityValidation();
+            }
+            if (this.complianceHeadTempObj.shortName === 'BOCW') {
+                console.log('Not Avail');
+            }
+            if (this.complianceHeadTempObj.shortName === 'CLRA') {
+                console.log('Not Avail');
+            }
+            if (this.complianceHeadTempObj.shortName === 'EE') {
+                console.log('Not Avail'); // Employment Exchanges
+            }
+            if (this.complianceHeadTempObj.shortName === 'PWD') {
+                console.log('Not Avail'); // Public works department
+            }
         }
     };
     ComplianceMasterComponent.prototype.getEstablishmentMasterDetailsAndRefreshHtmlTable = function () {
@@ -1159,24 +1338,23 @@ var ComplianceMasterComponent = /** @class */ (function () {
     ComplianceMasterComponent.prototype.selectionChallenged = function (event) {
         console.log(event.target.defaultValue);
     };
-    ComplianceMasterComponent.prototype.onItemSelect = function (item) {
-        this.ServicesList.push({ establishmentMasterId: item.establishmentMasterId, establishmentCode: item.establishmentCode });
-        console.log(item.establishmentCode);
-    };
-    ComplianceMasterComponent.prototype.onItemDeSelect = function (item) {
-        var index = this.ServicesList.findIndex(function (o) { return o.establishmentCode == item.establishmentCode; });
-        this.ServicesList.splice(index, 1);
-        console.log(this.ServicesList);
-    };
-    ComplianceMasterComponent.prototype.onSelectAll = function (items) {
-        this.ServicesList = [];
-        this.ServicesList = items;
-    };
-    ComplianceMasterComponent.prototype.onDeselectAll = function (items) {
-        this.ServicesList = [];
-    };
+    // onItemSelect(item: any) {
+    //   this.ServicesList.push({ establishmentMasterId: item.establishmentMasterId, establishmentCode: item.establishmentCode });
+    //   console.log(item.establishmentCode);
+    // }
+    // onItemDeSelect(item: any) {
+    //   let index = this.ServicesList.findIndex((o) => o.establishmentCode == item.establishmentCode);
+    //   this.ServicesList.splice(index, 1);
+    //   console.log(this.ServicesList);
+    // }
+    // onSelectAll(items: any) {
+    //   this.ServicesList = [];
+    //   this.ServicesList = items;
+    // }
+    // onDeselectAll(items: any) {
+    //   this.ServicesList = [];
+    // }
     ComplianceMasterComponent.prototype.onDeselectAllDefaultEmpContribution = function (items, i) {
-        debugger;
         if (i == -1) {
             this.defaultEmployeeContributionList = [];
             if (this.form.get('employeeCompanyContributionDiff').value == 0) {
@@ -1315,125 +1493,125 @@ var ComplianceMasterComponent = /** @class */ (function () {
         var index = this.allOtherMappingDetailsList.indexOf(items.masterCode);
         this.allOtherMappingDetailsList.splice(index, 1);
     };
-    ComplianceMasterComponent.prototype.onSelectJobMasterType = function (evt) {
-        this.complianceApplicationForm.patchValue({
-            allOtherMasterMappingDetails: ''
-        });
-        this.getFilteredRecordOfAllOtherMastersMappingDetailsList = [];
-        this.tempGetAllOtherMastersMappingDetails = [];
-        if (evt == 'CostCentre') {
-            evt = 'CostCentre' + 'Mapping';
-            var filteredEvents_1 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_1;
-        }
-        if (evt == 'DivisionMaster') {
-            evt = 'DivisionMaster' + 'Mapping';
-            var filteredEvents_2 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_2;
-        }
-        if (evt == 'DepartmentMaster') {
-            evt = 'DepartmentMaster' + 'Mapping';
-            var filteredEvents_3 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_3;
-        }
-        if (evt == 'SubDepartment') {
-            evt = 'SubDepartment' + 'Mapping';
-            var filteredEvents_4 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_4;
-        }
-        if (evt == 'GLCodeMaster') {
-            evt = 'GLCodeMaster' + 'Mapping';
-            var filteredEvents_5 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_5;
-        }
-        if (evt == 'GradeMaster') {
-            evt = 'GradeMaster' + 'Mapping';
-            var filteredEvents_6 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_6;
-        }
-        if (evt == 'StrategicBusinessUnit') {
-            evt = 'StrategicBusinessUnit' + 'Mapping';
-            var filteredEvents_7 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_7;
-        }
-        if (evt == 'WorkLocationMaster') {
-            evt = 'WorkLocationMaster' + 'Mapping';
-            var filteredEvents_8 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_8;
-        }
-        if (evt == 'SubCostCenter') {
-            evt = 'SubCostCentre' + 'Mapping';
-            var filteredEvents_9 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_9;
-        }
-        if (evt == 'SubArea') {
-            evt = 'SubArea' + 'Mapping';
-            var filteredEvents_10 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_10;
-        }
-        if (evt == 'BusinessAreaMaster') {
-            evt = 'BusinessAreaMaster' + 'Mapping';
-            var filteredEvents_11 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_11;
-        }
-        if (evt == 'PlantMaster') {
-            evt = 'PlantMaster' + 'Mapping';
-            var filteredEvents_12 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_12;
-        }
-        if (evt == 'ProjectMaster') {
-            evt = 'ProjectMaster' + 'Mapping';
-            var filteredEvents_13 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_13;
-        }
-        if (evt === 'ProfitCentreMaster') {
-            evt = 'ProfitCentreMaster' + 'Mapping';
-            var filteredEvents_14 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_14;
-        }
-        if (evt === 'RegionMaster') {
-            evt = evt + 'Mapping';
-            var filteredEvents_15 = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents_15;
-        }
-        if (evt === 'SubLocationMaster') {
-            evt = 'SubLocationMapping';
-            var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
-                return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
-            });
-            this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
-        }
-    };
+    // onSelectJobMasterType(evt: any) {
+    //   this.complianceApplicationForm.patchValue({
+    //     allOtherMasterMappingDetails: '',
+    //   });
+    //   this.getFilteredRecordOfAllOtherMastersMappingDetailsList = [];
+    //   this.tempGetAllOtherMastersMappingDetails = [];
+    //   if (evt == 'CostCentre') {
+    //     evt = 'CostCentre' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'DivisionMaster') {
+    //     evt = 'DivisionMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'DepartmentMaster') {
+    //     evt = 'DepartmentMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'SubDepartment') {
+    //     evt = 'SubDepartment' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'GLCodeMaster') {
+    //     evt = 'GLCodeMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'GradeMaster') {
+    //     evt = 'GradeMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'StrategicBusinessUnit') {
+    //     evt = 'StrategicBusinessUnit' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'WorkLocationMaster') {
+    //     evt = 'WorkLocationMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'SubCostCenter') {
+    //     evt = 'SubCostCentre' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'SubArea') {
+    //     evt = 'SubArea' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'BusinessAreaMaster') {
+    //     evt = 'BusinessAreaMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'PlantMaster') {
+    //     evt = 'PlantMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt == 'ProjectMaster') {
+    //     evt = 'ProjectMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt === 'ProfitCentreMaster') {
+    //     evt = 'ProfitCentreMaster' + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt === 'RegionMaster') {
+    //     evt = evt + 'Mapping';
+    //     let filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    //   if (evt === 'SubLocationMaster') {
+    //     evt = 'SubLocationMapping';
+    //     var filteredEvents = this.getAllOtherMastersMappingDetailsResponse.filter(function (event) {
+    //       return event.masterMappingType == evt && event.isActive == 1 && event.groupCompanyId == 1;
+    //     });
+    //     this.getFilteredRecordOfAllOtherMastersMappingDetailsList = filteredEvents;
+    //   }
+    // }
     ComplianceMasterComponent.prototype.commonValidation = function () {
         this.form.get('complianceName').setValidators([forms_1.Validators.required]);
         this.form.get('statutoryInstituteName').setValidators([forms_1.Validators.required]);
@@ -1580,135 +1758,136 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.form.get('companyToDate').clearValidators();
         this.form.controls.companyToDate.updateValueAndValidity();
     };
-    ComplianceMasterComponent.prototype.refreshHtmlTableDataOfComplianceApplicability = function () {
+    ComplianceMasterComponent.prototype.addEpsFormControl = function (editRowIndex, isView) {
         var _this = this;
-        this.summaryHtmlDataListComplianceApplicability = [];
-        this.masterGridDataListComplianceAppicability = [];
-        this.complianceMasterService.getComplianceApplicabilityDetails().subscribe(function (res) {
-            _this.masterGridDataListComplianceAppicability = res.data.results;
-            var i = 1;
-            res.data.results.forEach(function (element) {
-                var obj = {
-                    SrNo: i++,
-                    jobMasterType: element.jobMasterType
-                };
-                _this.summaryHtmlDataListComplianceApplicability.push(obj);
-            });
-        });
-        console.log(this.summaryHtmlDataListComplianceApplicability);
-    };
-    ComplianceMasterComponent.prototype.viewMasterComplianceApplicability = function (editRowIndex) { };
-    ComplianceMasterComponent.prototype.addEpsFormControl = function (editRowIndex, dropdownList, isView) {
+        console.log('this.masterGridDataList', this.masterGridDataList);
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        //const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        console.log('indexOfComplianceDetail', indexOfComplianceDetail);
+        // console.log('eps1', (this.masterGridDataList[editRowIndex].complianceDetail.eps1));
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            'eps1': new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1, forms_1.Validators.required),
-            eps1FromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1FromDate, forms_1.Validators.required),
-            eps1ToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1ToDate, forms_1.Validators.required),
-            complianceDetail: new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId)
+            //  establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            'eps1': new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1, forms_1.Validators.required),
+            //   'eps1': new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].eps1, Validators.required),
+            eps1FromDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1FromDate, forms_1.Validators.required),
+            eps1ToDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1ToDate, forms_1.Validators.required),
+            complianceDetail: new forms_1.FormControl(indexOfComplianceDetail)
         });
         this.form.get('epsArray').push(formGroup);
         console.log(this.form.get('epsArray'));
         // this.epsValidation();
     };
-    ComplianceMasterComponent.prototype.addTdsFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addTdsFormControl = function (editRowIndex, isView) {
+        var _this = this;
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        console.log('cx', this.masterGridDataList[indexOfComplianceDetail]);
+        // const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            'complianceDetail': new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
-            tan: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].tan, forms_1.Validators.required),
-            tdsCircle: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].tdsCircle, forms_1.Validators.required),
-            deductorStatus: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].deductorStatus, forms_1.Validators.required)
+            //  establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            //  complianceDetail: new FormControl(indexOfComplianceDetail),
+            //  establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail.establishmentMasterId),
+            tan: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.tan, forms_1.Validators.required),
+            tdsCircle: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.tdsCircle, forms_1.Validators.required),
+            deductorStatus: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.deductorStatus, forms_1.Validators.required)
         });
         this.form.get('tdsArray').push(formGroup);
         console.log(this.form.get('tdsArray'));
     };
-    ComplianceMasterComponent.prototype.addPtFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addPtFormControl = function (editRowIndex, isView) {
+        var _this = this;
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        // const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            ptState: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].ptState, forms_1.Validators.required),
-            ptCity: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].ptCity, forms_1.Validators.required),
-            complianceDetail: new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId)
+            //  establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            ptState: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.ptState, forms_1.Validators.required),
+            ptCity: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.ptCity, forms_1.Validators.required)
         });
         this.form.get('ptArray').push(formGroup);
         console.log(this.form.get('ptArray'));
     };
-    ComplianceMasterComponent.prototype.addEsiFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addEsiFormControl = function (editRowIndex, isView) {
+        var _this = this;
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        //  const indexOfComplianceDetail = this.masterGridDataList.findIndex(o => o.complianceMasterId == this.editedRecordIndex);
+        //const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            'complianceDetail': new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
-            esic1: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].esic1, forms_1.Validators.required),
-            esic1FromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].esic1FromDate, forms_1.Validators.required),
-            esic1ToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].esic1ToDate, forms_1.Validators.required)
+            //  establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            // 'complianceDetail': new FormControl(indexOfComplianceDetail),
+            //   establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+            esic1: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1, forms_1.Validators.required),
+            esic1FromDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1FromDate, forms_1.Validators.required),
+            esic1ToDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1ToDate, forms_1.Validators.required)
         });
         this.form.get('esiArray').push(formGroup);
         console.log(this.form.get('esiArray'));
     };
-    ComplianceMasterComponent.prototype.addLWFFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addLWFFormControl = function (editRowIndex, isView) {
+        var _this = this;
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        //  const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            'complianceDetail': new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
-            lwfState: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].lwfState)
+            //  establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            //  'complianceDetail': new FormControl(indexOfComplianceDetail),
+            //  establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail.establishmentMasterId),
+            lwfState: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.lwfState)
         });
         this.form.get('lwfArray').push(formGroup);
         console.log(this.form.get('lwfArray'));
     };
-    ComplianceMasterComponent.prototype.addGratuityFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addGratuityFormControl = function (editRowIndex, isView) {
+        var _this = this;
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        //  const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            'complianceDetail': new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
-            gratuityDividingFactor: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].gratuityDividingFactor, forms_1.Validators.required),
-            gratuityFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].gratuityFromDate, forms_1.Validators.required),
-            gratuityToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].gratuityToDate, forms_1.Validators.required)
+            // establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            // 'complianceDetail': new FormControl(indexOfComplianceDetail),
+            //  establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail.establishmentMasterId),
+            gratuityDividingFactor: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityDividingFactor, forms_1.Validators.required),
+            gratuityFromDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityFromDate, forms_1.Validators.required),
+            gratuityToDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityToDate, forms_1.Validators.required)
         });
         this.form.get('gratuityArray').push(formGroup);
         console.log(this.form.get('gratuityArray'));
     };
-    ComplianceMasterComponent.prototype.addSaFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addSaFormControl = function (editRowIndex, isView) {
+        var _this = this;
         this.isView = isView;
-        var indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
+        this.isGlobalView = false;
+        //  const indexOfComplianceDetail = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
         var formGroup = new forms_1.FormGroup({
-            establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-            'complianceDetail': new forms_1.FormControl(indexOfComplianceDetail),
-            establishmentId: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
-            saMaxPercentage: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].saMaxPercentage, forms_1.Validators.required),
-            saFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].saFromDate, forms_1.Validators.required),
-            saToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].saToDate, forms_1.Validators.required)
+            // establishmentName: new FormControl(dropdownList.establishmentMasterId),
+            //'complianceDetail': new FormControl(indexOfComplianceDetail),
+            // establishmentId: new FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetail].establishmentMasterId),
+            saMaxPercentage: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saMaxPercentage, forms_1.Validators.required),
+            saFromDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saFromDate, forms_1.Validators.required),
+            saToDate: new forms_1.FormControl(this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saToDate, forms_1.Validators.required)
         });
         this.form.get('saArray').push(formGroup);
         console.log(this.form.get('saArray'));
     };
-    ComplianceMasterComponent.prototype.addPfFormControl = function (editRowIndex, dropdownList, isView) {
+    ComplianceMasterComponent.prototype.addPfFormControl = function (editRowIndex, isView) {
+        var _this = this;
         console.log(editRowIndex);
         this.isView = isView;
         this.SelectedemployeeContribtionMultiSelect = [];
         this.selectedCompanyContribtionMultiSelect = [];
         console.log(editRowIndex);
-        console.log(this.editedRecordIndex);
-        var indexOfComplianceDetails = this.masterGridDataList[editRowIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == dropdownList.establishmentMasterId; });
-        console.log('--');
-        console.log(indexOfComplianceDetails);
-        console.log('--');
-        console.log(dropdownList.establishmentMasterId);
+        var index = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        console.log('index is ', index);
+        editRowIndex = index;
+        //  const indexOfComplianceDetails = this.masterGridDataList[editRowIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == dropdownList.establishmentMasterId);
+        // console.log('--');
+        // console.log(indexOfComplianceDetails);
+        // console.log('--');
         this.companyContributionList = [];
         this.defaultEmployeeContributionList = [];
-        console.log(dropdownList);
         var pfNilOptionChoice = '0';
         var edliExemption = '0';
         var contributionMethodChoice = '0';
@@ -1719,7 +1898,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
         var companyContribution;
         var companyContributionArray1;
         var employeeContributionArray1;
-        if (this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeCompanyContributionDiff == 'YES') {
+        if (this.masterGridDataList[editRowIndex].complianceDetail.employeeCompanyContributionDiff == 'YES') {
             employeeCompanyContributionDiff = '1';
         }
         else {
@@ -1728,10 +1907,10 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 control.controls.companyContribution.disable();
             });
         }
-        if (this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].edliExemption == 'YES') {
+        if (this.masterGridDataList[editRowIndex].complianceDetail.edliExemption == 'YES') {
             edliExemption = '1';
         }
-        if (this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].pfNilOptionChoice == 'YES') {
+        if (this.masterGridDataList[editRowIndex].complianceDetail.pfNilOptionChoice == 'YES') {
             this.dropdownList1 = [];
             this.dropdownList1 = [{ id: 0, itemName: 'FULL' }, { id: 1, itemName: 'RESTRICTED' }, { id: 2, itemName: 'EXPACT' }, { id: 3, itemName: 'NIL' }];
             this.ContributionMethodChoiceList = ['FULL', 'RESTRICTED', 'EXPACT', 'NIL'];
@@ -1743,41 +1922,41 @@ var ComplianceMasterComponent = /** @class */ (function () {
             this.ContributionMethodChoiceList = ['FULL', 'RESTRICTED', 'EXPACT'];
             this.dropdownList1 = [{ id: 0, itemName: 'FULL' }, { id: 1, itemName: 'RESTRICTED' }, { id: 2, itemName: 'EXPACT' }];
         }
-        if (this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].contributionMethodChoice == 'YES') {
+        if (this.masterGridDataList[editRowIndex].complianceDetail.contributionMethodChoice == 'YES') {
             contributionMethodChoice = '1';
             this.isDefaultContribution = false;
-            var companyContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyContribution;
-            var employeeContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeContribution;
+            var companyContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail.companyContribution;
+            var employeeContributionNameArray = this.masterGridDataList[editRowIndex].complianceDetail.employeeContribution;
             if (companyContributionNameArray != null || companyContributionNameArray != undefined) {
                 companyContributionArray1 = companyContributionNameArray.split(',');
                 if (companyContributionArray1.length > 0) {
-                    var _loop_3 = function (i) {
-                        var a = this_2.dropdownList1.findIndex(function (o) { return o.itemName == companyContributionArray1[i].trim(); });
+                    var _loop_1 = function (i) {
+                        var a = this_1.dropdownList1.findIndex(function (o) { return o.itemName == companyContributionArray1[i].trim(); });
                         console.log(a);
                         if (a != -1) {
-                            complianceContributionMultiselectArray.push(this_2.dropdownList1[a]);
-                            this_2.companyContributionList.push(this_2.dropdownList1[a]);
-                            this_2.selectedCompanyContribtionMultiSelect.push({ id: this_2.dropdownList1[a].id, itemName: this_2.dropdownList1[a].itemName });
+                            complianceContributionMultiselectArray.push(this_1.dropdownList1[a]);
+                            this_1.companyContributionList.push(this_1.dropdownList1[a]);
+                            this_1.selectedCompanyContribtionMultiSelect.push({ id: this_1.dropdownList1[a].id, itemName: this_1.dropdownList1[a].itemName });
                         }
                     };
-                    var this_2 = this;
+                    var this_1 = this;
                     for (var i = 0; i < companyContributionArray1.length; i++) {
-                        _loop_3(i);
+                        _loop_1(i);
                     }
                 }
             }
             if (employeeContributionNameArray != null || employeeContributionNameArray != undefined) {
                 employeeContributionArray1 = employeeContributionNameArray.split(',');
-                var _loop_4 = function (i) {
-                    var a = this_3.dropdownList1.findIndex(function (o) { return o.itemName == employeeContributionArray1[i].trim(); });
+                var _loop_2 = function (i) {
+                    var a = this_2.dropdownList1.findIndex(function (o) { return o.itemName == employeeContributionArray1[i].trim(); });
                     console.log(a);
-                    employeeContributionMultiSelectArray.push(this_3.dropdownList1[a]);
-                    this_3.defaultEmployeeContributionList.push(this_3.dropdownList1[a]);
-                    this_3.SelectedemployeeContribtionMultiSelect.push(this_3.dropdownList1[a]);
+                    employeeContributionMultiSelectArray.push(this_2.dropdownList1[a]);
+                    this_2.defaultEmployeeContributionList.push(this_2.dropdownList1[a]);
+                    this_2.SelectedemployeeContribtionMultiSelect.push(this_2.dropdownList1[a]);
                 };
-                var this_3 = this;
+                var this_2 = this;
                 for (var i = 0; i < employeeContributionArray1.length; i++) {
-                    _loop_4(i);
+                    _loop_2(i);
                 }
             }
         }
@@ -1785,11 +1964,11 @@ var ComplianceMasterComponent = /** @class */ (function () {
             // single select
             this.isDefaultContribution = true;
         }
-        if (this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].contributionMethodChoice == 'YES') {
+        if (this.masterGridDataList[editRowIndex].complianceDetail.contributionMethodChoice == 'YES') {
             console.log('in if');
             this.pfArray.push(this.formBuilder.group({
-                establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-                pfStatus: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].pfStatus, forms_1.Validators.required),
+                // establishmentName: new FormControl(dropdownList.establishmentMasterId),
+                pfStatus: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.pfStatus, forms_1.Validators.required),
                 pfNilOptionChoice: new forms_1.FormControl(pfNilOptionChoice),
                 employeeCompanyContributionDiff: new forms_1.FormControl(employeeCompanyContributionDiff),
                 edliExemption: new forms_1.FormControl(edliExemption),
@@ -1798,29 +1977,45 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 employeeContribution: new forms_1.FormControl(''),
                 companyContribtionMultiSelect: new forms_1.FormControl(complianceContributionMultiselectArray),
                 employeeContribtionMultiSelect: new forms_1.FormControl(employeeContributionMultiSelectArray),
-                companyFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyFromDate, forms_1.Validators.required),
-                companyToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyToDate, forms_1.Validators.required),
-                employeeFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeFromDate, forms_1.Validators.required),
-                employeeToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeToDate, forms_1.Validators.required)
+                companyFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.companyFromDate, forms_1.Validators.required),
+                companyToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.companyToDate, forms_1.Validators.required),
+                employeeFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.employeeFromDate, forms_1.Validators.required),
+                employeeToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.employeeToDate, forms_1.Validators.required),
+                specialRateApplicableEMPCount: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateApplicableEMPCount),
+                specialRateApplicableCompCount: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateApplicableCompCount),
+                specialRateCompCountPercent: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateCompCountPercent),
+                specialRateEMPCountPercent: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateEMPCountPercent),
+                industryType: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.industryType),
+                // check DA Or PF
+                basicDABelowWageCelling: new forms_1.FormControl(this.masterGridDataList[editRowIndex].pfWagesDetails.basicDABelowWageCelling),
+                basicDAAboveWageCelling: new forms_1.FormControl(this.masterGridDataList[editRowIndex].pfWagesDetails.basicDAAboveWageCelling)
             }));
         }
         else {
             console.log('in else');
             this.pfArray.push(this.formBuilder.group({
-                establishmentName: new forms_1.FormControl(dropdownList.establishmentMasterId),
-                pfStatus: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].pfStatus, forms_1.Validators.required),
+                //  establishmentName: new FormControl(dropdownList.establishmentMasterId),
+                pfStatus: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.pfStatus, forms_1.Validators.required),
                 pfNilOptionChoice: new forms_1.FormControl(pfNilOptionChoice),
                 contributionMethodChoice: new forms_1.FormControl(contributionMethodChoice),
                 employeeCompanyContributionDiff: new forms_1.FormControl(employeeCompanyContributionDiff),
                 edliExemption: new forms_1.FormControl(edliExemption),
                 companyContribtionMultiSelect: new forms_1.FormControl(''),
                 employeeContribtionMultiSelect: new forms_1.FormControl(''),
-                employeeContribution: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeContribution),
-                companyContribution: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyContribution),
-                companyFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyFromDate, forms_1.Validators.required),
-                companyToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].companyToDate, forms_1.Validators.required),
-                employeeFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeFromDate, forms_1.Validators.required),
-                employeeToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail[indexOfComplianceDetails].employeeToDate, forms_1.Validators.required)
+                employeeContribution: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.employeeContribution),
+                companyContribution: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.companyContribution),
+                companyFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.companyFromDate, forms_1.Validators.required),
+                companyToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.companyToDate, forms_1.Validators.required),
+                employeeFromDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.employeeFromDate, forms_1.Validators.required),
+                employeeToDate: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.employeeToDate, forms_1.Validators.required),
+                specialRateApplicableEMPCount: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateApplicableEMPCount),
+                specialRateApplicableCompCount: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateApplicableCompCount),
+                specialRateCompCountPercent: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateCompCountPercent),
+                specialRateEMPCountPercent: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.specialRateEMPCountPercent),
+                industryType: new forms_1.FormControl(this.masterGridDataList[editRowIndex].complianceDetail.industryType),
+                // check DA Or PF
+                basicDABelowWageCelling: new forms_1.FormControl(this.masterGridDataList[editRowIndex].pfWagesDetails.basicDABelowWageCelling),
+                basicDAAboveWageCelling: new forms_1.FormControl(this.masterGridDataList[editRowIndex].pfWagesDetails.basicDAAboveWageCelling)
             }));
             if (contributionMethodChoice == '0') {
                 this.form.get('pfFormArray').controls
@@ -1879,31 +2074,32 @@ var ComplianceMasterComponent = /** @class */ (function () {
         if (this.form.get('pfFormArray').value[0].employeeCompanyContributionDiff == undefined) {
             employeeCompanyContributionDiffOption = 'NO';
         }
-        for (var i_10 = 0; i_10 < this.companyContributionList.length; i_10++) {
-            if (i_10 == 0) {
-                selectedStringCompanyContributionList = this.companyContributionList[i_10].itemName;
+        for (var i_9 = 0; i_9 < this.companyContributionList.length; i_9++) {
+            if (i_9 == 0) {
+                selectedStringCompanyContributionList = this.companyContributionList[i_9].itemName;
             }
             else {
                 selectedStringCompanyContributionList += ',';
-                selectedStringCompanyContributionList += this.companyContributionList[i_10].itemName;
+                selectedStringCompanyContributionList += this.companyContributionList[i_9].itemName;
             }
         }
-        for (var i_11 = 0; i_11 < this.defaultEmployeeContributionList.length; i_11++) {
-            if (i_11 == 0) {
-                selectedStringEmployeeContributionList = this.defaultEmployeeContributionList[i_11].itemName;
+        for (var i_10 = 0; i_10 < this.defaultEmployeeContributionList.length; i_10++) {
+            if (i_10 == 0) {
+                selectedStringEmployeeContributionList = this.defaultEmployeeContributionList[i_10].itemName;
             }
             else {
                 selectedStringEmployeeContributionList += ',';
-                selectedStringEmployeeContributionList += this.defaultEmployeeContributionList[i_11].itemName;
+                selectedStringEmployeeContributionList += this.defaultEmployeeContributionList[i_10].itemName;
             }
         }
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('pfFormArray').value[i].establishmentName; });
+        // const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('pfFormArray').value[i].establishmentName);
         if (this.form.get('pfFormArray').value[0].contributionMethodChoice == 'NO') {
+            var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
             console.log('in if');
             saveData = {
-                complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-                complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-                establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].establishmentMasterId,
+                complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+                //   complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+                //   establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.establishmentMasterId,
                 pfStatus: this.form.get('pfFormArray').value[i].pfStatus,
                 pfNilOptionChoice: pfNilOptionChoiceOption,
                 employeeCompanyContributionDiff: employeeCompanyContributionDiffOption,
@@ -1920,9 +2116,9 @@ var ComplianceMasterComponent = /** @class */ (function () {
         else if (this.form.get('pfFormArray').value[0].contributionMethodChoice == 'YES') {
             console.log('in else if');
             saveData = {
-                complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-                complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-                establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].establishmentMasterId,
+                complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceDetailId,
+                complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+                //   establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.establishmentMasterId,
                 pfStatus: this.form.get('pfFormArray').value[i].pfStatus,
                 pfNilOptionChoice: pfNilOptionChoiceOption,
                 employeeCompanyContributionDiff: employeeCompanyContributionDiffOption,
@@ -1946,41 +2142,45 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.complianceMasterService.putComplianceMasterUpdateDetails(saveData).subscribe(function (res) {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('PF Compliance Details Updated Successfully.', '');
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
-            // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
-            // this.isEditMode = false;
-            // this.showButtonSaveAndReset = true;
-            // this.isSaveAndReset = true;
-            // if (this.form.get('pfFormArray').length > 0) {
-            //   (<FormArray>this.form.get('pfFormArray').removeAt(0));
-            // }
-            // if (this.form.get('epsArray').length > 0) {
-            //   (<FormArray>this.form.get('epsArray').removeAt(0));
-            // }
-            // this.form.setControl('pfFormArray', new FormArray([]));
-            // this.form.setControl('epsArray', new FormArray([]));
-            // this.form.setControl('esiArray', new FormArray([]));
-            // this.form.setControl('ptArray', new FormArray([]));
-            // this.form.setControl('lwfArray', new FormArray([]));
-            // this.form.setControl('tdsArray', new FormArray([]));
-            // this.form.setControl('gratuityArray', new FormArray([]));
-            // this.form.setControl('epsArray', new FormArray([]));
-            // this.form.reset();
+            _this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+            _this.isEditMode = false;
+            _this.showButtonSaveAndReset = true;
+            _this.isSaveAndReset = true;
+            if (_this.form.get('pfFormArray').length > 0) {
+                _this.form.get('pfFormArray').removeAt(0);
+            }
+            if (_this.form.get('epsArray').length > 0) {
+                _this.form.get('epsArray').removeAt(0);
+            }
+            _this.form.setControl('pfFormArray', new forms_1.FormArray([]));
+            _this.form.setControl('epsArray', new forms_1.FormArray([]));
+            _this.form.setControl('esiArray', new forms_1.FormArray([]));
+            _this.form.setControl('ptArray', new forms_1.FormArray([]));
+            _this.form.setControl('lwfArray', new forms_1.FormArray([]));
+            _this.form.setControl('tdsArray', new forms_1.FormArray([]));
+            _this.form.setControl('gratuityArray', new forms_1.FormArray([]));
+            _this.form.setControl('epsArray', new forms_1.FormArray([]));
+            _this.form.setControl('saArray', new forms_1.FormArray([]));
+            _this.form.reset();
             _this.resetAlllArrayAndFormField();
+            _this.getInstitutionMaster();
         });
     };
     ComplianceMasterComponent.prototype.UpdateEps = function (i) {
+        // console.log(this.form.get('epsArray').value[i].establishmentName);
+        // let index = this.masterGridDataList.findIndex(o => o.complianceMasterId == this.editedRecordIndex);
         var _this = this;
-        console.log(this.form.get('epsArray').value[i].establishmentName);
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('epsArray').value[i].establishmentName; });
-        console.log(complianceDetailIndexToChange);
-        console.log(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
+        // const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('epsArray').value[i].establishmentName);
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        //console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('epsArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+            //  complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            // establishmentMasterId: this.form.get('epsArray').value[i].establishmentName,
             eps1: this.form.get('epsArray').value[0].eps1,
             eps1FromDate: this.datePipe.transform(this.form.get('epsArray').value[0].eps1FromDate, 'dd-MMM-yyyy'),
             eps1ToDate: this.datePipe.transform(this.form.get('epsArray').value[0].eps1ToDate, 'dd-MMM-yyyy')
@@ -1990,6 +2190,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -1998,12 +2199,12 @@ var ComplianceMasterComponent = /** @class */ (function () {
         });
     };
     ComplianceMasterComponent.prototype.UpdateEsi = function (i) {
+        // const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('esiArray').value[i].establishmentName);
         var _this = this;
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('esiArray').value[i].establishmentName; });
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('esiArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceDetailId,
+            // complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            // establishmentMasterId: this.form.get('esiArray').value[i].establishmentName,
             esic1: this.form.get('esiArray').value[0].esic1,
             esic1FromDate: this.datePipe.transform(this.form.get('esiArray').value[0].esic1FromDate, 'dd-MMM-yyyy'),
             esic1ToDate: this.datePipe.transform(this.form.get('esiArray').value[0].esic1ToDate, 'dd-MMM-yyyy')
@@ -2013,6 +2214,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2021,13 +2223,15 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.UpdatePt = function (i) {
         var _this = this;
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('ptArray').value[i].establishmentName; });
-        console.log(complianceDetailIndexToChange);
-        console.log(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        //  const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('ptArray').value[i].establishmentName);
+        //   console.log(complianceDetailIndexToChange);
+        //  console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('ptArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+            // complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceDetailId,
+            // complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            //  establishmentMasterId: this.form.get('ptArray').value[i].establishmentName,
             ptCity: this.form.get('ptArray').value[0].ptCity,
             ptState: this.form.get('ptArray').value[0].ptState
         };
@@ -2036,6 +2240,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2044,13 +2249,14 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.UpdateLwf = function (i) {
         var _this = this;
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('lwfArray').value[i].establishmentName; });
-        console.log(complianceDetailIndexToChange);
-        console.log(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        // const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('lwfArray').value[i].establishmentName);
+        // console.log(complianceDetailIndexToChange);
+        //  console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('lwfArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+            //   complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            //   establishmentMasterId: this.form.get('lwfArray').value[i].establishmentName,
             lwfState: this.form.get('lwfArray').value[0].lwfState
         };
         console.log(JSON.stringify(complianceDetails));
@@ -2058,6 +2264,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2066,13 +2273,14 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.UpdateTds = function (i) {
         var _this = this;
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('tdsArray').value[i].establishmentName; });
-        console.log(complianceDetailIndexToChange);
-        console.log(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        // const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('tdsArray').value[i].establishmentName);
+        //  console.log(complianceDetailIndexToChange);
+        // console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('tdsArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+            // complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            //  establishmentMasterId: this.form.get('tdsArray').value[i].establishmentName,
             tan: this.form.get('tdsArray').value[0].tan,
             tdsCircle: this.form.get('tdsArray').value[0].tdsCircle,
             deductorStatus: this.form.get('tdsArray').value[0].deductorStatus
@@ -2082,6 +2290,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2090,13 +2299,14 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.UpdateGratuity = function (i) {
         var _this = this;
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('gratuityArray').value[i].establishmentName; });
-        console.log(complianceDetailIndexToChange);
-        console.log(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        //  const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('gratuityArray').value[i].establishmentName);
+        //  console.log(complianceDetailIndexToChange);
+        //  console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('gratuityArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+            // complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            // establishmentMasterId: this.form.get('gratuityArray').value[i].establishmentName,
             gratuityDividingFactor: this.form.get('gratuityArray').value[0].gratuityDividingFactor,
             gratuityFromDate: this.form.get('gratuityArray').value[0].gratuityFromDate,
             gratuityToDate: this.form.get('gratuityArray').value[0].gratuityToDate
@@ -2106,6 +2316,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2114,13 +2325,14 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.UpdateSa = function (i) {
         var _this = this;
-        var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('saArray').value[i].establishmentName; });
-        console.log(complianceDetailIndexToChange);
-        console.log(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        //  const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('saArray').value[i].establishmentName);
+        // console.log(complianceDetailIndexToChange);
+        //console.log( this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange]);
         var complianceDetails = {
-            complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId,
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceMasterId,
-            establishmentMasterId: this.form.get('saArray').value[i].establishmentName,
+            complianceDetailId: this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId,
+            //   complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.complianceMasterId,
+            //  establishmentMasterId: this.form.get('saArray').value[i].establishmentName,
             saFromDate: this.datePipe.transform(this.form.get('saArray').value[0].saFromDate, 'dd-MMM-yyyy'),
             saMaxPercentage: this.form.get('saArray').value[0].saMaxPercentage,
             saToDate: this.datePipe.transform(this.form.get('saArray').value[0].saToDate, 'dd-MMM-yyyy')
@@ -2130,6 +2342,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Details Updated Successfully.', '');
             _this.isEditMode = false;
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2138,19 +2351,23 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.UpdateComplianceMaster = function () {
         var _this = this;
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        // this.save();
         if (this.isView) {
             var tempObj = this.institutionMasterList.find(function (o) { return o.complianceHeadId == _this.masterGridDataList[_this.editedRecordIndex].statutoryInstituteName; });
             var saveData = ({
-                complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
+                complianceMasterId: this.masterGridDataList[complianceDetailIndexToChange].complianceMasterId,
                 complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
                 statutoryInstituteName: this.summaryHtmlDataList[this.editedRecordIndex].statutoryInstituteName,
-                complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
-                accountNumber: this.masterGridDataList[this.editedRecordIndex].accountNumber,
-                groupCompanyId: this.masterGridDataList[this.editedRecordIndex].groupCompanyId,
-                registrationNumber: this.masterGridDataList[this.editedRecordIndex].registrationNumber,
-                issueDate: this.masterGridDataList[this.editedRecordIndex].issueDate,
-                coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
-                userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite
+                establishmentMasterId: this.masterGridDataList[complianceDetailIndexToChange].establishmentMasterId,
+                complianceHeadShortName: this.masterGridDataList[complianceDetailIndexToChange].shortName,
+                accountNumber: this.masterGridDataList[complianceDetailIndexToChange].accountNumber,
+                groupCompanyId: this.masterGridDataList[complianceDetailIndexToChange].groupCompanyId,
+                registrationNumber: this.masterGridDataList[complianceDetailIndexToChange].registrationNumber,
+                issueDate: this.masterGridDataList[complianceDetailIndexToChange].issueDate,
+                coverageDate: this.masterGridDataList[complianceDetailIndexToChange].coverageDate,
+                userNameForWebsite: this.masterGridDataList[complianceDetailIndexToChange].userNameForWebsite,
+                administratedBy: this.masterGridDataList[complianceDetailIndexToChange].administratedBy
             });
             console.log(JSON.stringify(saveData));
             this.complianceMasterService.putComplianceMaster(saveData).subscribe(function (res) {
@@ -2178,9 +2395,10 @@ var ComplianceMasterComponent = /** @class */ (function () {
             var data_1 = this.form.getRawValue();
             var tempObj = this.institutionMasterList.find(function (o) { return o.complianceHeadId == data_1.statutoryInstituteName; });
             var saveData = ({
-                complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
+                complianceMasterId: this.masterGridDataList[complianceDetailIndexToChange].complianceMasterId,
                 complianceName: data_1.complianceName,
-                statutoryInstituteName: this.summaryHtmlDataList[this.editedRecordIndex].statutoryInstituteName,
+                statutoryInstituteName: this.summaryHtmlDataList[complianceDetailIndexToChange].statutoryInstituteName,
+                establishmentMasterId: this.masterGridDataList[complianceDetailIndexToChange].establishmentMasterId,
                 complianceHeadShortName: data_1.shortName,
                 accountNumber: data_1.accountNumber,
                 groupCompanyId: data_1.groupCompanyId,
@@ -2209,39 +2427,40 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 _this.form.setControl('tdsArray', new forms_1.FormArray([]));
                 _this.form.setControl('gratuityArray', new forms_1.FormArray([]));
                 _this.form.setControl('epsArray', new forms_1.FormArray([]));
+                _this.form.setControl('saArray', new forms_1.FormArray([]));
             });
         }
     };
     ComplianceMasterComponent.prototype.DeletePf = function (i) {
         var _this = this;
-        if (this.savedEstablishmentList.length == 1) {
-            this.DeleteComplianceMaster();
-        }
-        else {
-            console.log(i);
-            var complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex(function (o) { return o.establishmentMasterId == _this.form.get('pfFormArray').value[i].establishmentName; });
-            this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[this.editedRecordIndex].complianceDetail[complianceDetailIndexToChange].complianceDetailId).subscribe(function (res) {
-                console.log(res);
-                _this.alertService.sweetalertMasterSuccess('PF Compliance Details Deleted Successfully.', '');
-            }, function (error) {
-                _this.alertService.sweetalertError(error['error']['status']['messsage']);
-            }, function () {
-                // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
-                // this.form.reset();
-                // this.isEditMode = false;
-                // this.showButtonSaveAndReset = true;
-                // this.isSaveAndReset = true;
-                // this.form.setControl('pfFormArray', new FormArray([]));
-                // this.form.setControl('epsArray', new FormArray([]));
-                // this.form.setControl('esiArray', new FormArray([]));
-                // this.form.setControl('ptArray', new FormArray([]));
-                // this.form.setControl('lwfArray', new FormArray([]));
-                // this.form.setControl('tdsArray', new FormArray([]));
-                // this.form.setControl('gratuityArray', new FormArray([]));
-                // this.form.setControl('epsArray', new FormArray([]));
-                _this.resetAlllArrayAndFormField();
-            });
-        }
+        var complianceDetailIndexToChange = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        // if (this.savedEstablishmentList.length == 1) {
+        this.DeleteComplianceMaster();
+        // } else {
+        console.log(i);
+        //const complianceDetailIndexToChange = this.masterGridDataList[this.editedRecordIndex].complianceDetail.findIndex((o) => o.establishmentMasterId == this.form.get('pfFormArray').value[i].establishmentName);
+        this.complianceMasterService.deleteComplianceMasterDetail(this.masterGridDataList[complianceDetailIndexToChange].complianceDetail.complianceDetailId).subscribe(function (res) {
+            console.log(res);
+            _this.alertService.sweetalertMasterSuccess('PF Compliance Details Deleted Successfully.', '');
+            _this.getInstitutionMaster();
+        }, function (error) {
+            _this.alertService.sweetalertError(error['error']['status']['messsage']);
+        }, function () {
+            // this.getEstablishmentMasterDetailsAndRefreshHtmlTable();
+            // this.form.reset();
+            // this.isEditMode = false;
+            // this.showButtonSaveAndReset = true;
+            // this.isSaveAndReset = true;
+            // this.form.setControl('pfFormArray', new FormArray([]));
+            // this.form.setControl('epsArray', new FormArray([]));
+            // this.form.setControl('esiArray', new FormArray([]));
+            // this.form.setControl('ptArray', new FormArray([]));
+            // this.form.setControl('lwfArray', new FormArray([]));
+            // this.form.setControl('tdsArray', new FormArray([]));
+            // this.form.setControl('gratuityArray', new FormArray([]));
+            // this.form.setControl('epsArray', new FormArray([]));
+            _this.resetAlllArrayAndFormField();
+        });
     };
     ComplianceMasterComponent.prototype.DeleteEps = function (i) {
         var _this = this;
@@ -2322,9 +2541,12 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.DeleteComplianceMaster = function () {
         var _this = this;
-        this.complianceMasterService.deleteComplianceMaster(this.masterGridDataList[this.editedRecordIndex].complianceMasterId).subscribe(function (res) {
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
+        console.log(this.masterGridDataList[indexOfComplianceDetail]);
+        this.complianceMasterService.deleteComplianceMaster(this.masterGridDataList[indexOfComplianceDetail].complianceMasterId).subscribe(function (res) {
             console.log(res);
             _this.alertService.sweetalertMasterSuccess('Compliance Master  Deleted Successfully.', '');
+            _this.getInstitutionMaster();
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         }, function () {
@@ -2376,87 +2598,87 @@ var ComplianceMasterComponent = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    ComplianceMasterComponent.prototype.onSelectEstablishmentName = function (establishmentMasterId, i) {
-        if (this.pfArray.controls.length !== 0) {
-            for (var i_12 = 0; i_12 < this.pfArray.length; i_12++) {
-                this.pfArray.removeAt(i_12);
-            }
-        }
-        if (this.epsArray.controls.length !== 0) {
-            for (var i_13 = 0; i_13 < this.epsArray.length; i_13++) {
-                this.epsArray.removeAt(i_13);
-            }
-        }
-        if (this.esiArray.controls.length !== 0) {
-            for (var i_14 = 0; i_14 < this.esiArray.length; i_14++) {
-                this.esiArray.removeAt(i_14);
-            }
-        }
-        if (this.ptArray.controls.length !== 0) {
-            for (var i_15 = 0; i_15 < this.ptArray.length; i_15++) {
-                this.ptArray.removeAt(i_15);
-            }
-        }
-        if (this.lwfArray.controls.length !== 0) {
-            for (var i_16 = 0; i_16 < this.pfArray.length; i_16++) {
-                this.lwfArray.removeAt(i_16);
-            }
-        }
-        if (this.tdsArray.controls.length !== 0) {
-            for (var i_17 = 0; i_17 < this.tdsArray.length; i_17++) {
-                this.tdsArray.removeAt(i_17);
-            }
-        }
-        if (this.gratuityArray.controls.length !== 0) {
-            for (var i_18 = 0; i_18 < this.gratuityArray.length; i_18++) {
-                this.gratuityArray.removeAt(i_18);
-            }
-        }
-        if (this.saArray.controls.length !== 0) {
-            for (var i_19 = 0; i_19 < this.saArray.length; i_19++) {
-                this.saArray.removeAt(i_19);
-            }
-        }
-        var data = this.form.getRawValue();
-        console.log(establishmentMasterId);
-        var index = this.dropdownList.findIndex(function (o) { return o.establishmentMasterId == establishmentMasterId; });
-        if (data.shortName == 'PF') {
-            this.form.get('pfFormArray').removeAt(0);
-            this.addPfFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'EPS') {
-            this.form.get('epsArray').removeAt(0);
-            this.addEpsFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'PT') {
-            this.form.get('ptArray').removeAt(0);
-            this.addPtFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'TDS') {
-            this.form.get('tdsArray').removeAt(0);
-            this.addTdsFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'ESIC') {
-            this.form.get('esiArray').removeAt(0);
-            this.addEsiFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'ESI') {
-            this.form.get('esiArray').removeAt(0);
-            this.addEsiFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'LWF') {
-            this.form.get('lwfArray').removeAt(0);
-            this.addLWFFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'Gratuity') {
-            this.form.get('gratuityArray').removeAt(0);
-            this.addGratuityFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-        if (data.shortName == 'SA') {
-            this.form.get('saArray').removeAt(0);
-            this.addSaFormControl(this.editedRecordIndex, this.dropdownList[index], false);
-        }
-    };
+    // onSelectEstablishmentName(establishmentMasterId: any, i: number) {
+    //   if (this.pfArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.pfArray.length; i++) {
+    //       this.pfArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.epsArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.epsArray.length; i++) {
+    //       this.epsArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.esiArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.esiArray.length; i++) {
+    //       this.esiArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.ptArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.ptArray.length; i++) {
+    //       this.ptArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.lwfArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.lwfArray.length; i++) {
+    //       this.lwfArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.tdsArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.tdsArray.length; i++) {
+    //       this.tdsArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.gratuityArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.gratuityArray.length; i++) {
+    //       this.gratuityArray.removeAt(i);
+    //     }
+    //   }
+    //   if (this.saArray.controls.length !== 0) {
+    //     for (let i = 0; i < this.saArray.length; i++) {
+    //       this.saArray.removeAt(i);
+    //     }
+    //   }
+    //   const data = this.form.getRawValue();
+    //   console.log(establishmentMasterId);
+    //   const index = this.dropdownList.findIndex((o) => o.establishmentMasterId == establishmentMasterId);
+    //   if (data.shortName == 'PF') {
+    //     (this.form.get('pfFormArray').removeAt(0) as FormArray);
+    //     this.addPfFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'EPS') {
+    //     (this.form.get('epsArray').removeAt(0) as FormArray);
+    //     this.addEpsFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'PT') {
+    //     (this.form.get('ptArray').removeAt(0) as FormArray);
+    //     this.addPtFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'TDS') {
+    //     (this.form.get('tdsArray').removeAt(0) as FormArray);
+    //     this.addTdsFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'ESIC') {
+    //     (this.form.get('esiArray').removeAt(0) as FormArray);
+    //     this.addEsiFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'ESI') {
+    //     (this.form.get('esiArray').removeAt(0) as FormArray);
+    //     this.addEsiFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'LWF') {
+    //     (this.form.get('lwfArray').removeAt(0) as FormArray);
+    //     this.addLWFFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'Gratuity') {
+    //     (this.form.get('gratuityArray').removeAt(0) as FormArray);
+    //     this.addGratuityFormControl(this.editedRecordIndex, false);
+    //   }
+    //   if (data.shortName == 'SA') {
+    //     (this.form.get('saArray').removeAt(0) as FormArray);
+    //     this.addSaFormControl(this.editedRecordIndex, false);
+    //   }
+    // }
     ComplianceMasterComponent.prototype.onChangeContributionMethodIsDiffernt = function (event, i) {
         if (i == -1) { }
         else { }
@@ -2530,6 +2752,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.setPfDefaultValueAfterReset = function () {
         this.form.patchValue({
+            status: '',
             pfNilOptionChoice: '0',
             employeeCompanyContributionDiff: '0',
             edliExemption: '0',
@@ -2612,19 +2835,58 @@ var ComplianceMasterComponent = /** @class */ (function () {
     };
     ComplianceMasterComponent.prototype.activateComplianceMaster = function () {
         var _this = this;
+        var indexOfComplianceDetail = this.masterGridDataList.findIndex(function (o) { return o.complianceMasterId == _this.editedRecordIndex; });
         console.log(this.editedRecordIndex);
         var complianceDetails = [];
+        complianceDetails.push({
+            complianceDetailId: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.complianceDetailId,
+            complianceMasterId: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.complianceMasterId,
+            // establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.establishmentMasterId,
+            eps1: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1,
+            eps1FromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1FromDate,
+            eps1ToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1ToDate,
+            gratuityDividingFactor: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityDividingFactor,
+            gratuityFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityFromDate,
+            gratuityToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityToDate,
+            saMaxPercentage: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saMaxPercentage,
+            saFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saFromDate,
+            saToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saToDate,
+            esic1: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1,
+            esic1FromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1FromDate,
+            esic1ToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1ToDate,
+            pfStatus: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.pfStatus,
+            edliExemption: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.edliExemption,
+            pfNilOptionChoice: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.pfNilOptionChoice,
+            employeeCompanyContributionDiff: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeCompanyContributionDiff,
+            contributionMethodChoice: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.contributionMethodChoice,
+            companyContribution: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.companyContribution,
+            companyFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.companyFromDate,
+            companyToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.companyToDate,
+            employeeContribution: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeContribution,
+            employeeFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeFromDate,
+            employeeToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeToDate,
+            ptState: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.ptState,
+            ptCity: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.ptCity,
+            lwfState: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.lwfState,
+            tan: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.tan,
+            tdsCircle: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.tdsCircle,
+            deductorStatus: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.deductorStatus,
+            isActive: 1
+        });
         var saveData = {
-            complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceMasterId,
-            complianceName: this.masterGridDataList[this.editedRecordIndex].complianceName,
-            statutoryInstituteName: this.masterGridDataList[this.editedRecordIndex].institutionName,
-            complianceHeadShortName: this.masterGridDataList[this.editedRecordIndex].shortName,
-            accountNumber: this.masterGridDataList[this.editedRecordIndex].accountNumber,
-            groupCompanyId: this.masterGridDataList[this.editedRecordIndex].groupCompanyId,
-            registrationNumber: this.masterGridDataList[this.editedRecordIndex].registrationNumber,
-            issueDate: this.masterGridDataList[this.editedRecordIndex].issueDate,
-            coverageDate: this.masterGridDataList[this.editedRecordIndex].coverageDate,
-            userNameForWebsite: this.masterGridDataList[this.editedRecordIndex].userNameForWebsite
+            complianceMasterId: this.masterGridDataList[indexOfComplianceDetail].complianceMasterId,
+            complianceName: this.masterGridDataList[indexOfComplianceDetail].complianceName,
+            statutoryInstituteName: this.masterGridDataList[indexOfComplianceDetail].institutionName,
+            establishmentMasterId: this.masterGridDataList[indexOfComplianceDetail].establishmentMasterId,
+            complianceHeadShortName: this.masterGridDataList[indexOfComplianceDetail].shortName,
+            accountNumber: this.masterGridDataList[indexOfComplianceDetail].accountNumber,
+            groupCompanyId: this.masterGridDataList[indexOfComplianceDetail].groupCompanyId,
+            registrationNumber: this.masterGridDataList[indexOfComplianceDetail].registrationNumber,
+            issueDate: this.masterGridDataList[indexOfComplianceDetail].issueDate,
+            coverageDate: this.masterGridDataList[indexOfComplianceDetail].coverageDate,
+            userNameForWebsite: this.masterGridDataList[indexOfComplianceDetail].userNameForWebsite,
+            administratedBy: this.masterGridDataList[indexOfComplianceDetail].administratedBy,
+            isActive: 1
         };
         console.log(JSON.stringify(saveData));
         this.complianceMasterService.putComplianceMaster(saveData).subscribe(function (res) {
@@ -2639,54 +2901,55 @@ var ComplianceMasterComponent = /** @class */ (function () {
         }, function (error) {
             _this.alertService.sweetalertError(error['error']['status']['messsage']);
         });
-        for (var i = 0; i < this.masterGridDataList[i].complianceDetail.length; i++) {
-            complianceDetails.push({
-                complianceDetailId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].complianceDetailId,
-                complianceMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].complianceMasterId,
-                establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].establishmentMasterId,
-                eps1: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].eps1,
-                eps1FromDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].eps1FromDate,
-                eps1ToDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].eps1ToDate,
-                gratuityDividingFactor: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].gratuityDividingFactor,
-                gratuityFromDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].gratuityFromDate,
-                gratuityToDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].gratuityToDate,
-                saMaxPercentage: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].saMaxPercentage,
-                saFromDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].saFromDate,
-                saToDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].saToDate,
-                esic1: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].esic1,
-                esic1FromDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].esic1FromDate,
-                esic1ToDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].esic1ToDate,
-                pfStatus: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].pfStatus,
-                edliExemption: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].edliExemption,
-                pfNilOptionChoice: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].pfNilOptionChoice,
-                employeeCompanyContributionDiff: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeCompanyContributionDiff,
-                contributionMethodChoice: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].contributionMethodChoice,
-                companyContribution: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].companyContribution,
-                companyFromDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].companyFromDate,
-                companyToDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].companyToDate,
-                employeeContribution: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeContribution,
-                employeeFromDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeFromDate,
-                employeeToDate: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].employeeToDate,
-                ptState: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].ptState,
-                ptCity: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].ptCity,
-                lwfState: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].lwfState,
-                tan: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].tan,
-                tdsCircle: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].tdsCircle,
-                deductorStatus: this.masterGridDataList[this.editedRecordIndex].complianceDetail[i].deductorStatus
-            });
-        }
+        // for (let i = 0; i < this.masterGridDataList[i].complianceDetail.length; i++) {
+        complianceDetails.push({
+            complianceDetailId: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.complianceDetailId,
+            // complianceMasterId: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.complianceMasterId,
+            // establishmentMasterId: this.masterGridDataList[this.editedRecordIndex].complianceDetail.establishmentMasterId,
+            eps1: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1,
+            eps1FromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1FromDate,
+            eps1ToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.eps1ToDate,
+            gratuityDividingFactor: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityDividingFactor,
+            gratuityFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityFromDate,
+            gratuityToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.gratuityToDate,
+            saMaxPercentage: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saMaxPercentage,
+            saFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saFromDate,
+            saToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.saToDate,
+            esic1: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1,
+            esic1FromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1FromDate,
+            esic1ToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.esic1ToDate,
+            pfStatus: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.pfStatus,
+            edliExemption: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.edliExemption,
+            pfNilOptionChoice: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.pfNilOptionChoice,
+            employeeCompanyContributionDiff: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeCompanyContributionDiff,
+            contributionMethodChoice: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.contributionMethodChoice,
+            companyContribution: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.companyContribution,
+            companyFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.companyFromDate,
+            companyToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.companyToDate,
+            employeeContribution: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeContribution,
+            employeeFromDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeFromDate,
+            employeeToDate: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.employeeToDate,
+            ptState: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.ptState,
+            ptCity: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.ptCity,
+            lwfState: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.lwfState,
+            tan: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.tan,
+            tdsCircle: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.tdsCircle,
+            deductorStatus: this.masterGridDataList[indexOfComplianceDetail].complianceDetail.deductorStatus,
+            isActive: 1
+        });
+        // }
         console.log(JSON.stringify(complianceDetails));
-        for (var j = 0; j < complianceDetails.length; j++) {
-            this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails[j]).subscribe(function (res) {
-                console.log(res);
-                _this.alertService.sweetalertMasterSuccess('Compliance Master & Details Activated Successfully.', '');
-                _this.isEditMode = false;
-            }, function (error) {
-                _this.alertService.sweetalertError(error['error']['status']['messsage']);
-            }, function () {
-                _this.resetAlllArrayAndFormField();
-            });
-        }
+        // for (let j = 0; j < complianceDetails.length; j++) {
+        this.complianceMasterService.putComplianceMasterUpdateDetails(complianceDetails[0]).subscribe(function (res) {
+            console.log(res);
+            _this.alertService.sweetalertMasterSuccess('Compliance Master & Details Activated Successfully.', '');
+            _this.isEditMode = false;
+            _this.getInstitutionMaster();
+        }, function (error) {
+            _this.alertService.sweetalertError(error['error']['status']['messsage']);
+        }, function () {
+            _this.resetAlllArrayAndFormField();
+        });
     };
     ComplianceMasterComponent.prototype.onSelectPtState = function (evt) {
         var _this = this;
@@ -2697,6 +2960,166 @@ var ComplianceMasterComponent = /** @class */ (function () {
         });
     };
     ComplianceMasterComponent.prototype.onSelectPtCity = function (evt) { };
+    ComplianceMasterComponent.prototype.onSelectEstablishment = function (item) {
+        this.selectedEstablishmentId = item;
+    };
+    ComplianceMasterComponent.prototype.refreshHtmlTableDataOfComplianceApplicability = function () {
+        var _this = this;
+        this.summaryHtmlDataListComplianceApplicability = [];
+        this.complianceMasterService.getComplianceMasterSDMMapping().subscribe(function (res) {
+            console.log('compliance applicability sdm', res);
+            var i = 1;
+            res.data.results.forEach(function (element) {
+                var obj = {
+                    SrNo: i++,
+                    complianceSDMMappingId: element.complianceSDMMappingId,
+                    complianceMasterId: element.complianceMasterId,
+                    complianceApplicabilitySDMId: element.complianceApplicabilitySDMId,
+                    statutoryFrequencySDMId: element.statutoryFrequencySDMId,
+                    statutoryFreqPeriodsDef: element.statutoryFreqPeriodsDef,
+                    deductionFrequency: element.deductionFrequency,
+                    incomePeriod: element.incomePeriod
+                };
+                _this.summaryHtmlDataListComplianceApplicability.push(obj);
+            });
+        });
+        console.log(this.summaryHtmlDataListComplianceApplicability);
+    };
+    // http://localhost:8083/hrms/v1/source-derived-matrix/derived-module-mapping/compliance/applicability compliance/
+    ComplianceMasterComponent.prototype.getDropDownValuesForApplicabilityCompliance = function () {
+        var _this = this;
+        this.complianceApplicabilitySDMIdDropDownList = [];
+        // http://localhost:8083/hrms/v1/source-derived-matrix/derived-module-mapping/compliance/complianceApplicabilitySDMId/
+        //  let abc = 'complianceApplicabilitySDMId/';
+        this.complianceMasterService.getDropDownValuesByApplicationModuleName_FieldName('complianceApplicabilitySDMId/').subscribe(function (res) {
+            console.log('complianceApplicabilitySDMId sdm', res);
+            //let i = 1;
+            // complianceApplicabilitySDMId: 2
+            // complianceMasterId: 1
+            // complianceSDMMappingId: 1
+            // createDateTime: "2021-02-11T05:48:45.607+00:00"
+            // createdBy: "PaysquareDefault"
+            // deductionFrequency: "MONTHLY"
+            // incomePeriod: "0"
+            // isActive: 1
+            // lastModifiedBy: null
+            // lastModifiedDateTime: "2021-02-11T05:48:45.607+00:00"
+            // statutoryFreqPeriodsDef: "MAR-MAY"
+            // statutoryFrequencySDMId: 3
+            res.data.results.forEach(function (element) {
+                var obj = {
+                    applicationModuleId: element.applicationModuleId,
+                    fieldName: element.fieldName,
+                    sdmDerivedMappingId: element.sdmDerivedMappingId,
+                    sdmDerivedModuleMappingId: element.sdmDerivedModuleMappingId,
+                    sourcePeriod: element.sdmMaster.sourcePeriod,
+                    sdmMasterId: element.sdmMaster.sdmMasterId,
+                    sdmName: element.sdmMaster.sdmName
+                };
+                _this.complianceApplicabilitySDMIdDropDownList.push(obj);
+            });
+        });
+        // console.log(this.summaryHtmlDataListComplianceApplicability);
+    };
+    // compliance/statutory frequency/
+    // http://localhost:8083/hrms/v1/source-derived-matrix/derived-module-mapping/compliance/statutoryFrequencySDMId/
+    ComplianceMasterComponent.prototype.getDropDownValuesForComplianceStatutoryFrequencyFromSDM = function () {
+        var _this = this;
+        this.statutoryFrequencySDMIdDropDownList = [];
+        this.complianceMasterService.getDropDownValuesByApplicationModuleName_FieldName('statutoryFrequencySDMId/').subscribe(function (res) {
+            console.log('statutoryFrequencySDMId sdm', res);
+            res.data.results.forEach(function (element) {
+                var obj = {
+                    applicationModuleId: element.applicationModuleId,
+                    fieldName: element.fieldName,
+                    sdmDerivedMappingId: element.sdmDerivedMappingId,
+                    sdmDerivedModuleMappingId: element.sdmDerivedModuleMappingId,
+                    sourcePeriod: element.sdmMaster.sourcePeriod,
+                    sdmMasterId: element.sdmMaster.sdmMasterId,
+                    sdmName: element.sdmMaster.sdmName
+                };
+                _this.statutoryFrequencySDMIdDropDownList.push(obj);
+            });
+        });
+    };
+    ComplianceMasterComponent.prototype.editMasterComplinaceApplicability = function (i, complianceSDMMappingId, complianceMasterId) {
+        window.scrollTo(0, 0);
+        this.showButtonSaveAndResetComplianceApplicability = true;
+        this.complianceSDMMappingIdToDelete = complianceSDMMappingId;
+        this.isSaveAndReset1 = false;
+        // this.isSaveAndReset1 = true;
+        // this.showButtonSaveAndReset = false;
+        this.complianceApplicationForm.reset();
+        this.complianceApplicationForm.patchValue(this.summaryHtmlDataListComplianceApplicability[i]);
+    };
+    ComplianceMasterComponent.prototype.viewMasterComplianceApplicability = function (i, complianceSDMMappingId, complianceMasterId) {
+        window.scrollTo(0, 0);
+        //  this.showButtonSaveAndReset = false;
+        this.complianceApplicationForm.reset();
+        this.complianceApplicationForm.patchValue(this.summaryHtmlDataListComplianceApplicability[i]);
+        this.complianceApplicationForm.disable();
+        this.showButtonSaveAndResetComplianceApplicability = false;
+        this.isSaveAndReset1 = false;
+        this.showButtonSaveAndReset1 = false;
+    };
+    ComplianceMasterComponent.prototype.cancelViewComplianceApplicability = function () {
+        this.complianceApplicationForm.reset();
+        this.showButtonSaveAndResetComplianceApplicability = true;
+        this.isSaveAndReset1 = true;
+        this.complianceSDMMappingIdToDelete = 0;
+    };
+    ComplianceMasterComponent.prototype.resetComplianceApplicability = function () {
+        this.complianceApplicationForm.reset();
+        this.showButtonSaveAndResetComplianceApplicability = true;
+        this.isSaveAndReset1 = true;
+        this.showButtonSaveAndReset1 = true;
+        this.complianceSDMMappingIdToDelete = 0;
+        // this.isSaveAndReset1 = false;
+    };
+    ComplianceMasterComponent.prototype.ConfirmationDialog = function (confirmdialog, i, complianceSDMMappingId, complianceMasterId) {
+        this.complianceSDMMappingIdToDelete = complianceSDMMappingId;
+        this.modalRef = this.modalService.show(confirmdialog, Object.assign({}, { "class": 'gray modal-md' }));
+    };
+    ComplianceMasterComponent.prototype.clickedOnYes = function () {
+        var _this = this;
+        console.log('yes');
+        this.complianceMasterService.deleteComplianceApplicability(this.complianceSDMMappingIdToDelete).subscribe(function (res) {
+            console.log(res);
+            _this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
+        }, function (error) {
+            _this.alertService.sweetalertError(error.error.status.messsage);
+        }, function () {
+            _this.refreshHtmlTableDataOfComplianceApplicability();
+        });
+    };
+    ComplianceMasterComponent.prototype.onSelectEmployeeSpecialRateApplicable = function (evt) {
+        if (evt == '') {
+            this.form.get('specialRateEMPCountPercent').controls
+                .forEach(function (control) {
+                control.controls.employeeCompanyContributionDiff.disable();
+            });
+        }
+        else {
+            this.form.get('specialRateEMPCountPercent').controls
+                .forEach(function (control) {
+                control.controls.employeeCompanyContributionDiff.enable();
+            });
+        }
+    };
+    ComplianceMasterComponent.prototype.onSelectCompanySpecialRateApplicable = function (evt) {
+        if (evt == '') {
+            this.form.get('specialRateCompCountPercent').controls
+                .forEach(function (control) {
+                control.controls.employeeCompanyContributionDiff.disable();
+            });
+        }
+        else {
+            this.form.get('specialRateCompCountPercent').controls
+                .forEach(function (control) {
+                control.controls.employeeCompanyContributionDiff.enable();
+            });
+        }
+    };
     ComplianceMasterComponent = __decorate([
         core_1.Component({
             selector: 'app-compliance-master',

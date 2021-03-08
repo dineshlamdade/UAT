@@ -1,3 +1,4 @@
+
 import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
@@ -59,12 +60,15 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 //////////////////////addaed by bharati////
 //import { payrollModule } from './modules/companysetting/payroll/payroll.module';
 
-import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 //import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
-import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
-import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
+
+import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
+
+
+
 
 ////////////////////////////////////
 
@@ -74,24 +78,29 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
   declarations: [
     AppComponent,
     ProfileComponent,
+    ShortenStringPipe,
+
     SettingsComponent,
+
     //////////////////////////
-   // payrollComponent,
+    // payrollComponent,
     // HeadcreationComponent,
     // AttributecreationComponent,
     // AttributeselectionComponent,
     // PayrollheadgroupcreationComponent,
-///////////////////////////////////////
+    ///////////////////////////////////////
   ],
+  exports: [],
   imports: [
     BrowserModule,
     AuthModule,
     DashboardModule,
     PayrollModule,
-/////////////////
-  //  payrollModule,
+    /////////////////
+    //  payrollModule,
     CompanySettingModule,
-////////////////////////////////
+
+    ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
     EightyCModule,
@@ -124,12 +133,15 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	 AdminApprovalModule,
+
+    AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
 
+
   ],
+
   providers: [BsDatepickerModule,
     BnNgIdleService,
     AuthGuard,
@@ -150,7 +162,9 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
       useClass: TokenInterceptorService,
       multi: true,
     },
+    ShortenStringPipe,
   ],
+
 
   bootstrap: [AppComponent]
 })

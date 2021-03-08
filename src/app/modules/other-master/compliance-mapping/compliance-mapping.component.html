@@ -1,0 +1,281 @@
+<app-leftmenu></app-leftmenu>
+<form class="card" role="complianceApplicationForm" [formGroup]="complianceApplicationForm" #formDirective="ngForm"
+  method="post" novalidate>
+  <div class="page">
+    <app-header></app-header>
+    <div class="section-body mt-3">
+      <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
+        <div class="tabview-contents">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body p-0">
+
+
+                  <!-- <div class="row">
+                      <div class="col-md-12"> -->
+
+                  <fieldset>
+                    <legend>Compliance Mapping</legend>
+
+                    <div class="row">
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Compliance Master</label>
+                        <select name="complianceMasterId" id="complianceMasterId" class="form-control"
+                          formControlName="complianceMasterId" (change)="onChangeComplianceMaster($event.target.value)"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('complianceMasterId').status == 'INVALID'}">
+                          <option selected value=''>Select </option>
+                          <option *ngFor="let issuedBy of summaryHtmlDataList" [value]="issuedBy.complianceMasterId">
+                            {{issuedBy.complianceName}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-sm-3">
+                        <label class="form-label">Compliance Head Name</label>
+                        <input type="text" formControlName="complianceHeadName" class="form-control">
+                      </div>
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Applicability Compliance Master</label>
+                        <select name="complianceApplicabilitySDMId" id="complianceApplicabilitySDMId"
+                          class="form-control" formControlName="complianceApplicabilitySDMId"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('complianceApplicabilitySDMId').status == 'INVALID'}">
+                          <option selected value=''>Select </option>
+                          <option *ngFor="let issuedBy of complianceApplicabilitySDMIdDropDownList"
+                            [value]="issuedBy.sdmMasterId">
+                            {{issuedBy.sdmName}}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Statutory Frequency</label>
+                        <select name="statutoryFrequency" id="statutoryFrequency" class="form-control"
+                          formControlName="statutoryFrequency"
+                          (change)="onChangeStatutoryFrequency($event.target.value)"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('statutoryFrequency').status == 'INVALID'}">
+                          <option selected value=''>Select </option>
+                          <option *ngFor="let issuedBy of frequencyDropDownList" [value]="issuedBy.itemName">
+                            {{issuedBy.itemName}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row mt-10">
+
+
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Statutory Frequency Periods Definition</label>
+
+                        <select name="statutoryFreqPeriodsDef" id="statutoryFreqPeriodsDef" class="form-control"
+                          formControlName="statutoryFreqPeriodsDef"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('statutoryFreqPeriodsDef').status == 'INVALID'}">
+                          <option selected value=''>Select </option>
+                          <option *ngFor="let issuedBy of forHalfYearly" [value]="issuedBy.id">
+                            {{issuedBy.itemName}}
+                          </option>
+                        </select>
+
+                        <!-- <input type="text" formControlName="statutoryFreqPeriodsDef" class="form-control"
+                          name="statutoryFreqPeriodsDef"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('statutoryFreqPeriodsDef').status == 'INVALID'}"
+                          placeholder="Enter Statutory Frequency Periods Defs"> -->
+                      </div>
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Deduction Frequency</label>
+                        <select name="deductionFrequency" id="deductionFrequency" class="form-control"
+                          formControlName="deductionFrequency"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('deductionFrequency').status == 'INVALID'}">
+                          <option selected value=''>Select </option>
+                          <option *ngFor="let issuedBy of deductionFrequencyList" [value]="issuedBy.itemName">
+                            {{issuedBy.itemName}}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="col-sm-3">
+                        <label class="form-label">Income Period (For Last)</label>
+                        <input type="text" formControlName="incomePeriod" class="form-control" name="incomePeriod"
+                          [ngClass]="{'is-invalid' : complianceApplicationForm.get('incomePeriod').status == 'INVALID'}"
+                          placeholder="Enter Income Period for last">
+                      </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="col-12 mt-20">
+
+                      <div class="float-right mb-15">
+                        <ng-container *ngIf="showButtonSaveAndResetComplianceApplicability">
+
+                          <ng-container *ngIf="isSaveAndReset1; else newDeb">
+
+                            <button type="submit" [disabled]="complianceApplicationForm.invalid"
+                              class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                              (click)="saveComplianceApplication()"
+                              [ngClass]="{'disabled-btn-bg-green' : complianceApplicationForm.invalid,'btn-bg-green': !complianceApplicationForm.invalid}"><b><i
+                                  class="fa fa-floppy-o"></i></b> Save</button>
+
+                            <button type="button" tooltip="Reset" (click)="cancelViewComplianceApplicability()"
+                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                  class="fa  fa-refresh"></i></b> Reset</button>
+
+                          </ng-container>
+
+                          <ng-template #newDeb>
+
+                            <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : complianceApplicationForm.invalid,
+                                                              'btn-bg-green': !complianceApplicationForm.invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              tooltip="Update" (click)="saveComplianceApplication()"
+                              [disabled]="complianceApplicationForm.invalid"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelViewComplianceApplicability()"><b><i
+                                  class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
+                          </ng-template>
+
+                        </ng-container>
+                        <ng-container *ngIf="!showButtonSaveAndReset1">
+                          <button type="button"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="resetComplianceApplicability()"><b><i
+                                class="fa fa-times-circle"></i></b>
+                            Cancel</button>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </fieldset>
+
+
+
+
+
+
+                  <div class="row mt-20">
+                    <div class="col-12">
+                      <div class="card">
+                        <div class="mb-0">
+                          <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                        <!-- <div class=""> -->
+
+
+                        <div class="table-responsive Custom_Table">
+                          <table class="table table-striped table-hover table-bordered m-b-0">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col" class="wd-50">Sr. No.</th>
+                                <!-- <th scope="col" class="wd-50">Job Field</th> -->
+                                <th scope="col" class="wd-50">complianceSDMMappingId</th>
+                                <th scope="col" class="wd-50">complianceMasterId</th>
+                                <th scope="col" class="wd-50">complianceApplicabilitySDMId</th>
+                                <th scope="col" class="wd-50">statutoryFrequencySDMId</th>
+                                <th scope="col" class="wd-50">statutoryFreqPeriodsDef</th>
+                                <th scope="col" class="wd-50">deductionFrequency</th>
+                                <th scope="col" class="wd-50">incomePeriod</th>
+                                <th scope="col" class="wd-50">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                              <tr *ngFor="let summary of summaryHtmlDataListComplianceApplicability; let i = index">
+                                <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
+                                </td>
+                                <!-- <td class="wd-10"><span tooltip="{{summary.jobMasterType}}">{{summary.jobMasterType}}</span>
+                                            </td> -->
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.complianceSDMMappingId}}">{{summary.complianceSDMMappingId}}</span>
+                                </td>
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.complianceMasterId}}">{{summary.complianceMasterId}}</span>
+                                </td>
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.complianceApplicabilitySDMId}}">{{summary.complianceApplicabilitySDMId}}</span>
+                                </td>
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.statutoryFrequency}}">{{summary.statutoryFrequency}}</span>
+                                </td>
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.statutoryFreqPeriodsDef}}">{{summary.statutoryFreqPeriodsDef}}</span>
+                                </td>
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.deductionFrequency}}">{{summary.deductionFrequency}}</span>
+                                </td>
+                                <td class="wd-10"><span
+                                    tooltip="{{summary.incomePeriod}}">{{summary.incomePeriod}}</span>
+                                </td>
+
+                                <td class="wd-10">
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                    (click)="editMasterComplinaceApplicability(i,summary.complianceSDMMappingId,summary.complianceMasterId)"
+                                    tooltip="Edit"></i>
+
+                                  <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
+                                    (click)="viewMasterComplianceApplicability(i,summary.complianceSDMMappingId,summary.complianceMasterId)"
+                                    tooltip="View"></i> &nbsp;&nbsp;
+
+                                  <i class="fa fa-trash-o font-16 text-red cursor-pointer"
+                                    (click)="ConfirmationDialog(confirmdialog,i,summary.complianceSDMMappingId,summary.complianceMasterId)"
+                                    tooltip="Delete"></i>
+                                </td>
+                              </tr>
+                              <tr *ngIf="!summaryHtmlDataListComplianceApplicability?.length">
+                                <td colspan="9">
+                                  <span class="font-14 font500 align-center text-red">No Data Available</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div> <!-- card body -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</form>
+
+<ng-template #confirmdialog>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Confirmation Dialog</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card mb-0">
+      <div class="card-body p-0 m-0">
+        <div class="row clearfix">
+          <div class="col-md-12">
+            <i class="fa fa-question-circle font-18 font700" aria-hidden="true"></i> &nbsp; &nbsp; <label
+              class="font-14 mb-0 font700">Are You Sure do you want to delete Record.</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn bg-color-green" (click)="modalRef.hide()" (click)="clickedOnYes()"> <i
+        class="fa fa-check" aria-hidden="true"></i> &nbsp; Yes</button>
+    <button type="button" class="btn bg-btn-red" (click)="modalRef.hide()"> <i class="fa fa-times"
+        aria-hidden="true"></i> &nbsp; No</button>
+  </div>
+</ng-template>

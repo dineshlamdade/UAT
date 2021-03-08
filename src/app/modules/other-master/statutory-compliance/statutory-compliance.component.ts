@@ -5,6 +5,8 @@ import { StatuatoryComplianceService } from './statuatory-compliance.service';
 import { ComplianceHeadService } from '../compliance-head/compliance-head.service';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
+import { ShortenStringPipe } from './../../../core/utility/pipes/shorten-string.pipe';
+
 @Component({
   selector: 'app-statutory-compliance',
   templateUrl: './statutory-compliance.component.html',
@@ -30,35 +32,41 @@ export class StatutoryComplianceComponent implements OnInit {
   countries = [];
   public form: any = FormGroup;
   // applicabilityLevelList = [];
-  aplicabilityLevelList: Array<any> = ['Central', 'State', 'City', 'Municipal', 'Corporation', 'Establishment'];
+  hideRemark: boolean = false;
+  aplicabilityLevelList: Array<any> = ['Central', 'State', 'City', 'Municipal', 'Establishment'];
 
-  typeOfOfficeList = ['Area Office', 'Regional', 'Zonal'];
+  typeOfOfficeList = ['Area Office', 'Regional Office', 'Zonal Office'];
   complianceHeadDetailsObject: any;
   tempObjForgroupNameScaleStartDate: any;
   isEditMode: boolean = false;
 
 
   public groupNameScaleNameStartDateObject: any[] = [];
-  constructor(private formBuilder: FormBuilder, private statuatoryComplianceService: StatuatoryComplianceService, private complianceHeadService: ComplianceHeadService,
-        private alertService: AlertServiceService) {
+  constructor(private shortenString: ShortenStringPipe, private formBuilder: FormBuilder, private statuatoryComplianceService: StatuatoryComplianceService, private complianceHeadService: ComplianceHeadService,
+    private alertService: AlertServiceService) {
 
     this.form = this.formBuilder.group({
-      headName: new FormControl(null, Validators.required),
-      officialCountryCode: new FormControl(''),
+      headName: new FormControl('', Validators.required),
+      officialCountryCode: new FormControl('', Validators.required),
       address1: new FormControl(null, Validators.required),
       address2: new FormControl(null),
       address3: new FormControl(null),
-      country: new FormControl(null, Validators.required),
-      state: new FormControl(null),
-      city: new FormControl(null),
+      country: new FormControl('', Validators.required),
+      state: new FormControl({ value: null, disabled: true }),
+      city: new FormControl({ value: null, disabled: true }),
       village: new FormControl(null),
       pinCode: new FormControl(null, Validators.required),
       emailId: new FormControl(null, [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
-      typeOfOffice: new FormControl(null, Validators.required),
-      telephoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(10)]),
-      applicabilityLevel: new FormControl({ value: null, disabled: true }),
+      typeOfOffice: new FormControl('', Validators.required),
+      // telephoneNumber: new FormControl('', [Validators.required]),
+      telephoneNumber: ['', Validators.compose([Validators.required, Validators.pattern(/^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)])],
+      applicabilityLevel: new FormControl({ value: '', disabled: true }),
       institutionName: new FormControl(null, Validators.required),
       country1: new FormControl('', Validators.required),
+
+      remark: new FormControl(''),
+      institutionActive: new FormControl({ value: true, disabled: true }),
+      institutionCode: new FormControl({ value: '', disabled: true }),
 
     });
   }
@@ -76,18 +84,23 @@ export class StatutoryComplianceComponent implements OnInit {
     this.refreshHtmlTableData();
   }
   onSelectHeadName(evt: any) {
-    console.log(this.form.get('headName').value);
-    console.log(this.groupNameScaleNameStartDateObject);
+    if (evt == '') {
+      this.form.get('applicabilityLevel').setValue('');
+      this.form.get('country1').setValue('');
+    } else {
 
-    let tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.complianceHeadName == this.form.get('headName').value);
-    this.complianceHeadId = tempObjForgroupNameScaleStartDate.complianceHeadId;
+      console.log(this.form.get('headName').value);
+      console.log(this.groupNameScaleNameStartDateObject);
 
-    console.log(tempObjForgroupNameScaleStartDate);
-    this.form.patchValue({
-      country1: tempObjForgroupNameScaleStartDate.country,
-      applicabilityLevel: tempObjForgroupNameScaleStartDate.aplicabilityLevel
-    });
+      let tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.complianceHeadName == this.form.get('headName').value);
+      this.complianceHeadId = tempObjForgroupNameScaleStartDate.complianceHeadId;
 
+      console.log(tempObjForgroupNameScaleStartDate);
+      this.form.patchValue({
+        country1: tempObjForgroupNameScaleStartDate.country,
+        applicabilityLevel: tempObjForgroupNameScaleStartDate.aplicabilityLevel
+      });
+    }
 
 
   }
@@ -125,30 +138,27 @@ export class StatutoryComplianceComponent implements OnInit {
   save() {
     if (this.isEditMode == true) {
       console.log('clcicked on uodate record  button');
-      console.log('clcicked on new save button');
 
       const data = this.form.getRawValue();
       console.log(JSON.stringify(data));
       delete data.country1;
-
       delete data.headName;
       data.telephoneNumber = data.officialCountryCode + ' ' + data.telephoneNumber;
-
       delete data.officialCountryCode;
-
       data.complianceHeadId = this.complianceHeadId;
       data.complianceInstitutionMasterId = this.complianceInstitutionMasterId;
+      console.log(JSON.stringify(data));
       this.statuatoryComplianceService.putComplianceInstituionMaster(data).subscribe(res => {
         console.log(res);
         if (res.data.results.length > 0) {
+          this.isEditMode = false;
           console.log('data is updated');
           this.alertService.sweetalertMasterSuccess('Statutory Compliance Updated Successfully.', '');
-
-          this.saveFormValidation();
           this.form.reset();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
           this.refreshHtmlTableData();
+          this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -165,16 +175,18 @@ export class StatutoryComplianceComponent implements OnInit {
       delete data.officialCountryCode;
       delete data.headName;
       data.complianceHeadId = this.complianceHeadId;
+      console.log(JSON.stringify(data));
       this.statuatoryComplianceService.postComplianceInstituionMaster(data).subscribe(res => {
         console.log(res);
         if (res.data.results.length > 0) {
           console.log('data is updated');
           this.alertService.sweetalertMasterSuccess('Statutory Compliance Saved Successfully.', '');
-          this.saveFormValidation();
+
           this.form.reset();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
           this.refreshHtmlTableData();
+          this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -202,10 +214,20 @@ export class StatutoryComplianceComponent implements OnInit {
     this.isSaveAndReset = true;
     this.showButtonSaveAndReset = true;
     this.form.reset();
-    this.form.get('country1').disable();
-    this.form.get('applicabilityLevel').disable();
+
 
     this.saveFormValidation();
+
+    this.form.get('remark').disable();
+    this.form.get('country1').disable();
+    this.form.get('applicabilityLevel').disable();
+    this.form.get('state').disable();
+    this.form.get('city').disable();
+    this.form.get('institutionCode').disable();
+
+    //  this.form.get('complianceActive').setValue(true);
+    // this.form.get('complianceActive').disable();
+    this.hideRemark = false;
 
   }
 
@@ -237,6 +259,9 @@ export class StatutoryComplianceComponent implements OnInit {
     this.form.enable();
     this.form.get('country1').disable();
     this.form.get('applicabilityLevel').disable();
+    this.form.get('state').disable();
+    this.form.get('city').disable();
+    this.form.get('institutionCode').disable();
   }
   viewMaster(i: number) {
     this.isEditMode = false;
@@ -270,7 +295,7 @@ export class StatutoryComplianceComponent implements OnInit {
         this.headNameList.push(element.complianceHeadName);
         //  this.applicabilityLevelList.push(element.aplicabilityLevel);
         this.groupNameScaleNameStartDateObject.push({ complianceHeadId: element.complianceHeadId, country: element.country, aplicabilityLevel: element.aplicabilityLevel, complianceHeadName: element.complianceHeadName });
-       });
+      });
 
     }, (error: any) => {
       this.alertService.sweetalertError(error['error']['status']['messsage']);
@@ -299,8 +324,13 @@ export class StatutoryComplianceComponent implements OnInit {
             telephoneNumber: element.telephoneNumber,
             emailId: element.emailId,
             headName: tempObjForgroupNameScaleStartDate.complianceHeadName,
+            headNameShorten: this.shortenString.transform(tempObjForgroupNameScaleStartDate.complianceHeadName),
+            headNameFull: tempObjForgroupNameScaleStartDate.complianceHeadName,
             country1: tempObjForgroupNameScaleStartDate.country,
             complianceInstitutionMasterId: element.complianceInstitutionMasterId,
+            remark: element.remark,
+            institutionCode: element.institutionCode,
+            institutionActive: element.institutionActive,
           };
           this.summaryHtmlDataList.push(obj);
           console.log(this.summaryHtmlDataList);
@@ -311,5 +341,53 @@ export class StatutoryComplianceComponent implements OnInit {
   }
   saveFormValidation() {
     console.log('saveFormValidation');
+    this.form.patchValue({
+      headName: '',
+      applicabilityLevel: '',
+      officialCountryCode: '',
+      country: '',
+      typeOfOffice: '',
+      country1: '',
+    });
+
   }
+  onSelectCountry(evt: any) {
+    this.form.patchValue({
+      pinCode: '',
+      state: '',
+      city: '',
+      village: ''
+    });
+    this.form.get('state').disable();
+    this.form.get('city').disable();
+    this.form.get('institutionCode').disable();
+    this.form.get('institutionCode').disable();
+
+
+
+  }
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  deactiveActiveCheckBox() {
+    console.log('in deactive remakr');
+
+    if (this.form.get('institutionActive').value === false) {
+      this.form.get('remark').enable();
+      this.hideRemark = true;
+      this.form.controls['remark'].setValidators(Validators.required);
+      this.form.controls['remark'].updateValueAndValidity();
+    } else {
+      this.hideRemark = false;
+      this.form.controls["remark"].clearValidators();
+      this.form.controls["remark"].updateValueAndValidity();
+    }
+  }
+
 }

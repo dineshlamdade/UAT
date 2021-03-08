@@ -17,7 +17,7 @@ var companyMasterRequestDTOs = /** @class */ (function () {
 }());
 exports.companyMasterRequestDTOs = companyMasterRequestDTOs;
 var EmployeeMasterRequestDTO = /** @class */ (function () {
-    function EmployeeMasterRequestDTO(globalCompanyMasterId, code, companyName, shortName, formerName, companyGroupName, address1, address2, address3, country, pinCode, state, city, village, phoneNumber, isdCode, emailId, website, contractor, typeOfEstablishment, language, currency, industryType, scale, coClassification, startDate, endDate, reason, companyActive, remark, logo1, logo2, logo3) {
+    function EmployeeMasterRequestDTO(globalCompanyMasterId, code, companyName, shortName, formerName, companyGroupName, address1, address2, address3, country, pinCode, state, city, village, phoneNumber, isdCode, emailId, website, isContractor, typeOfEstablishment, language, currency, industryType, scale, coClassification, startDate, endDate, reason, companyActive, remark, logo1, logo2, logo3) {
         this.globalCompanyMasterId = globalCompanyMasterId;
         this.code = code;
         this.companyName = companyName;
@@ -36,7 +36,7 @@ var EmployeeMasterRequestDTO = /** @class */ (function () {
         this.isdCode = isdCode;
         this.emailId = emailId;
         this.website = website;
-        this.contractor = contractor;
+        this.isContractor = isContractor;
         this.typeOfEstablishment = typeOfEstablishment;
         this.language = language;
         this.currency = currency;

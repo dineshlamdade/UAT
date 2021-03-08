@@ -14,7 +14,7 @@
                                     (change)="masterPage()" [checked]="tabIndex==0" />
                                 <div class="tabs home-page">
                                     <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                                        [formGroup]="BusinessYearform" #formDirective="ngForm" method="post" novalidate
+                                        [formGroup]="BusinessYearform"  method="post" novalidate
                                         (ngSubmit)="addBusinessYear()">
                                         <div class="tabview-contents">
                                             <!-- <div *ngFor="let phone of getPhonesFormControls(); let i = index"> -->
@@ -53,7 +53,7 @@
                                                                     [ngClass]="{'is-invalid' : BusinessYearform.get('fromDate').status == 'INVALID'}"
                                                                     bsDatepicker
                                                                     [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
-                                                     
+
 
                                                             </div>
                                                         </div>
@@ -74,7 +74,7 @@
                                                                     bsDatepicker
                                                                     [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
 
-                                 
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -92,7 +92,7 @@
                                                             <b><i class="fa fa-floppy-o"></i></b>
                                                             Save</button>
 
-                                                    
+
 
                                                         <button type="submit" *ngIf="updateFlag"
                                                             [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
@@ -106,7 +106,7 @@
                                                             tooltip="Cancel"><b><i class="fa fa-times"
                                                                     aria-hidden="true"></i></b>
                                                             Cancel</button>
-                                                    
+
                                                         <button type="button" (click)="ResetBusiness()"
                                                             *ngIf="!updateFlag"
                                                             class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"
@@ -170,7 +170,7 @@
                                                                                     class="btn btn-icon js-sweetalert"
                                                                                     title="Delete"
                                                                                     data-type="confirm"><i
-                                                                                        class="fa fa-trash-o"></i></button>                                                                             
+                                                                                        class="fa fa-trash-o"></i></button>
                                                                             </td>
 
                                                                             <ng-template #template12>
@@ -253,14 +253,14 @@
                                                             class="form-control" placeholder="Enter Cycle Definition">
                                                     </div>
 
-                                              
+
                                                     <div class="col-sm-6 col-md-3"
                                                         [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                                                         <label class="form-label">Business Year</label>
                                                         <select placeholder="select" name="beast" id="Institution1"
                                                             class="form-control custom-select"
                                                             formControlName="businessYearDefinitionId"
-                                                            [ngClass]="{'is-invalid' : CycleDefinationForm.get('businessYearDefinitionId').status == 'INVALID'}">                                                         
+                                                            [ngClass]="{'is-invalid' : CycleDefinationForm.get('businessYearDefinitionId').status == 'INVALID'}">
                                                             <option *ngFor="let InstitutionName of BusinessyearList"
                                                                 [value]="InstitutionName.id">
                                                                 {{InstitutionName.yearDefinition}}
@@ -358,7 +358,7 @@
                                         </div>
 
 
-                                        <div class="tabview-contents">                                       
+                                        <div class="tabview-contents">
                                             <div class="row mt-20">
                                                 <div class="col-12">
                                                     <div class="card">
@@ -383,7 +383,7 @@
                                                                         </tr>
                                                                     </thead>
 
-                                                                    <tbody>                                                                      
+                                                                    <tbody>
                                                                         <tr
                                                                             *ngFor="let summary of CycleDefinitionList; let i = index">
                                                                             <td class="align-center wd-10">
@@ -483,7 +483,7 @@
 
 
                                 <input name="nav" type="radio" class="about-radio" id="Declaration"
-                                    (change)="declarationPage()" [checked]="tabIndex==2" />                            
+                                    (change)="declarationPage()" [checked]="tabIndex==2" />
                                 <div class="tabs about-page">
                                     <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
                                         [formGroup]="CycleCreationForm1" (ngSubmit)="addCycleCreation()"
@@ -515,7 +515,7 @@
                                                             {{by.label}}
                                                         </option>
                                                     </select>
-                                                </div>                                        
+                                                </div>
                                             </div>
 
 
@@ -538,7 +538,7 @@
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="mb-10">
-                                                            <h3 class="font-14 text-purple font-bold">Summary</h3>                                                           
+                                                            <h3 class="font-14 text-purple font-bold">Summary</h3>
                                                         </div>
                                                         <div class="">
                                                             <div class="table-responsive Custom_Table">
@@ -550,13 +550,13 @@
                                                                             </th>
                                                                             <th scope="col" class="font700 wd-12">Cycle
                                                                                 Definition</th>
-                                                                            <th scope="col" class="font700 wd-12">No. of Cycles</th>                                                                               
+                                                                            <th scope="col" class="font700 wd-12">No. of Cycles</th>
                                                                             <th scope="col" class="font700 wd-12">
                                                                                 Business Year</th>
                                                                             <th scope="col" class="font700 wd-12">From
                                                                                 Date</th>
                                                                             <th scope="col" class="font700 wd-12">To
-                                                                                Date</th>                                                                       
+                                                                                Date</th>
                                                                             <th scope="col" class="font700 wd-20">Action
                                                                             </th>
                                                                         </tr>
@@ -750,21 +750,21 @@
 
 
 
-    <ng-template #template2>      
+    <ng-template #template2>
         <div class="modal-header">
-            <h5 class="modal-title" id="UploadModalLabel">Preview Cycle</h5>         
+            <h5 class="modal-title" id="UploadModalLabel">Preview Cycle</h5>
         </div>
         <div class="modal-body">
             <div class="card">
                 <div class="card-body">
-                    <div class="row clearfix">            
-                          <div class="tabs about-page">                          
-                            <div class="tabview-contents">                      
+                    <div class="row clearfix">
+                          <div class="tabs about-page">
+                            <div class="tabview-contents">
 
                                 <div class="row">
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">Cycle Definition:&nbsp;&nbsp;&nbsp;&nbsp;<span
-                                                class="textcolor">{{Previewname}}</span></label> 
+                                                class="textcolor">{{Previewname}}</span></label>
                                     </div>
 
                                     <div class="col-sm-6 col-md-4">
@@ -781,12 +781,12 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">From Date:&nbsp;&nbsp;&nbsp;&nbsp;<span
-                                                class="textcolor">{{PreviewfromDate}}</span></label>                                      
+                                                class="textcolor">{{PreviewfromDate}}</span></label>
                                     </div>
 
                                     <div class="col-sm-6 col-md-4">
                                         <label class="form-label">To Date:&nbsp;&nbsp;&nbsp;&nbsp;<span
-                                                class="textcolor">{{PreviewtoDate}}</span></label>                               
+                                                class="textcolor">{{PreviewtoDate}}</span></label>
                                     </div>
 
                                 </div>
@@ -836,7 +836,7 @@
                                                                         data-date-autoclose="true" class="form-control"
                                                                         bsDatepicker>
                                                                 </td>
-                                                             
+
                                                                 <td class="wd-10"><span
                                                                         tooltip="{{summary.frequencyOfPayment}}">{{summary.noOfDays}}</span>
                                                                 </td>
@@ -944,13 +944,13 @@
         <div class="modal-body">
             <div class="card">
                 <div class="card-body">
-                    <div class="row clearfix">                     
+                    <div class="row clearfix">
 
                         <div class="tabs about-page">
-                      
+
                             <div class="tabview-contents">
                                 <div>
-                             
+
 
                                     <div class="row">
                                         <div class="col-sm-6 col-md-4">
@@ -969,12 +969,12 @@
                                     <div class="row">
                                         <div class="col-sm-6 col-md-4">
                                             <label class="form-label">From Date: {{fromDate}}</label>
-                                      
+
                                         </div>
 
                                         <div class="col-sm-6 col-md-4">
                                             <label class="form-label">To Date: {{toDate}}</label>
-                                        
+
                                         </div>
 
                                     </div>
@@ -1141,7 +1141,7 @@
 
                                     <div class="row mt-15">
                                         <div class="col-12">
-                                            <div class="float-right mb-15">                                             
+                                            <div class="float-right mb-15">
                                                 <button type="button" class="btn btn-primary btn-bg-green"
                                                     (click)="ForcetoYearEndofcycleCreation();modalRef.hide();">Force -
                                                     Year End</button>
@@ -1150,7 +1150,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                         </div>
 
 
@@ -1174,13 +1174,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row clearfix">
-                    
+
 
                         <div class="tabs about-page">
-                       
+
                             <div class="tabview-contents">
                                 <div>
-                                
+
 
                                     <div class="row">
                                         <div class="col-sm-6 col-md-4">
@@ -1198,11 +1198,11 @@
 
                                     <div class="row">
                                         <div class="col-sm-6 col-md-4">
-                                            <label class="form-label">From Date: {{fromDate}}</label>                                         
+                                            <label class="form-label">From Date: {{fromDate}}</label>
                                         </div>
 
                                         <div class="col-sm-6 col-md-4">
-                                            <label class="form-label">To Date: {{toDate}}</label>                                         
+                                            <label class="form-label">To Date: {{toDate}}</label>
                                         </div>
 
                                     </div>
@@ -1277,7 +1277,7 @@
                                         </div>
                                     </div>
 
-             
+
                                 </div>
                             </div>
                         </div>

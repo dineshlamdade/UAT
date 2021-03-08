@@ -1527,8 +1527,9 @@ button:focus {
   padding-left: 28px!important;
 }
 
+/*  changed by .country-code Anant -15px to 0 px */
 .country-code {
-  margin-right: -15px;
+  margin-right: 0px;
 }
 [hidden] { display: none !important;}
 .form-control.is-invalid {
@@ -2497,4 +2498,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* // added by Anant */
+.today {
+  color: white;
+  background-color: #006666
 }

@@ -141,6 +141,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
   }
   editMaster(accountNumber: number,companyBankMasterId:number,accountType:string) {
+    window.scrollTo(0, 0);
     this.form.setControl('pfFormArray', new FormArray([]));
     this.companyBankMasterId = companyBankMasterId;
     this.isGlobalView = false;
@@ -218,6 +219,7 @@ export class BankMasterAtCompanyComponent implements OnInit {
 
   }
   viewMaster(accountNumber: number,companyBankMasterId:number,accountType: string) {
+    window.scrollTo(0, 0);
     this.form.setControl('pfFormArray', new FormArray([]));
     this.companyBankMasterId =companyBankMasterId;
     this.isGlobalView = false;

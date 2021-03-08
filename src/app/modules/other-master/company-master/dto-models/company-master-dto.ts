@@ -1,11 +1,11 @@
 
 export class requestDTOString {
-  constructor() {}
+  constructor() { }
   public companyMasterRequestDTOs: Array<any> = [];
 }
 
 export class companyMasterRequestDTOs {
-  public employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','');
+  public employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   public companyMasterRequestDTOs: Array<any> = [];
 
   constructor() { }
@@ -31,7 +31,7 @@ export class EmployeeMasterRequestDTO {
     public isdCode: any,
     public emailId: any,
     public website: any,
-    public contractor: any,
+    public isContractor: any,
     public typeOfEstablishment: any,
     public language: any,
     public currency: any,

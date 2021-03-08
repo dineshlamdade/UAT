@@ -20,14 +20,14 @@ export class StatuatoryComplianceService {
 
   getCompliaceInstitutionMasterDetails() {
 
-    return this._HTTP.get(environment.baseUrl8083 + '/compliance-institution-master/details', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+    return this._HTTP.get(environment.baseUrl8083 + 'compliance-institution-master/details', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
       .pipe(map((res: any) => {
         return res;
       }));
   }
 
   postComplianceInstituionMaster(data) {
-    return this._HTTP.post(environment.baseUrl8083 + '/compliance-institution-master/add-institution', data)
+    return this._HTTP.post(environment.baseUrl8083 + 'compliance-institution-master/add-institution', data)
       .pipe(map((res: any) => {
         return res;
       }));
@@ -35,7 +35,7 @@ export class StatuatoryComplianceService {
 
   putComplianceInstituionMaster(data) {
 
-    return this._HTTP.put(environment.baseUrl8083 + '/compliance-institution-master/update', data)
+    return this._HTTP.put(environment.baseUrl8083 + 'compliance-institution-master/update', data)
       .pipe(map((res: any) => {
         return res;
       }));

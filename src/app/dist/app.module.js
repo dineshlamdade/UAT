@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.AppModule = void 0;
+var chapterVIA_module_1 = require("./modules/my-Investments/VI-A/chapterVIA.module");
 var other_master_module_1 = require("./modules/other-master/other-master.module");
 var drag_drop_1 = require("@angular/cdk/drag-drop");
 // transloco
@@ -48,12 +49,19 @@ var dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 var employee_master_module_1 = require("./modules/employee-master/employee-master.module");
 var app_primeNG_module_1 = require("./app.primeNG.module");
 var accordion_1 = require("primeng/accordion"); //accordion and accordion tab
+var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
 var payroll_module_1 = require("./modules/payroll/payroll.module");
-var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
 var admin_approval_module_1 = require("./modules/admin-approval/admin-approval.module");
 var uploadexcel_module_1 = require("./modules/uploadexcel/uploadexcel.module");
 var employeemasterlistpage_module_1 = require("./modules/employeemasterlistpage/employeemasterlistpage.module");
+//////////////////////addaed by bharati////
+//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
+//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+var shorten_string_pipe_1 = require("./core/utility/pipes/shorten-string.pipe");
+var companysetting_module_1 = require("./modules/companysetting/companysetting.module");
+////////////////////////////////////
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -62,14 +70,21 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 app_component_1.AppComponent,
                 profile_component_1.ProfileComponent,
+                shorten_string_pipe_1.ShortenStringPipe,
                 settings_component_1.SettingsComponent,
             ],
+            exports: [],
             imports: [
                 platform_browser_1.BrowserModule,
                 auth_module_1.AuthModule,
                 dashboard_module_1.DashboardModule,
                 payroll_module_1.PayrollModule,
+                /////////////////
+                //  payrollModule,
+                companysetting_module_1.CompanySettingModule,
+                ////////////////////////////////
                 my_Investments_module_1.MyInvestmentsModule,
+                chapterVIA_module_1.investmentChapterVIAModule,
                 eighty_c_module_1.EightyCModule,
                 profile_module_1.ProfileModule,
                 settings_module_1.SettingsModule,
@@ -119,7 +134,8 @@ var AppModule = /** @class */ (function () {
                     provide: http_1.HTTP_INTERCEPTORS,
                     useClass: token_interceptor_service_1.TokenInterceptorService,
                     multi: true
-                },],
+                },
+                shorten_string_pipe_1.ShortenStringPipe,],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
