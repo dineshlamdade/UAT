@@ -8,6 +8,8 @@ import { GarnishmentMasterComponent } from './payroll/garnishment-master/garnish
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
+
 
 const routes: Routes = [
 
@@ -44,6 +46,12 @@ const routes: Routes = [
             path:   'Garnishment-Master',
             component:  GarnishmentMasterComponent,
             data: { title: ':: Garnishment-Master' },
+          },
+
+          {
+            path: 'userrolesandpermission',
+            component: UserRolesandPermissionComponent,
+            data: { title: ':: Epic :: Company Settings' }
           },
 
           // {

@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { GarnishmentService } from './garnishment.service';
-import { AlertServiceService } from 'src/app/core/services/alert-service.service';
+import { AlertServiceService } from '../../../../core/services/alert-service.service';
 
 
 @Component({
@@ -16,6 +16,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
   styleUrls: ['./garnishment-master.component.scss']
 })
 export class GarnishmentMasterComponent implements OnInit {
+  public submitted = false;
   summaryHtmlDataList: Array<any> = [];
   showButtonSaveAndReset: boolean = true;
 
@@ -79,7 +80,7 @@ export class GarnishmentMasterComponent implements OnInit {
       sdm: new FormControl(null, Validators.required),
       frequency: new FormControl(null, Validators.required),
       investmentSection: new FormControl(null, Validators.required),
-      familyMember: new FormControl('0'),
+      familyMember: new FormControl('1'),
       remark: new FormControl(null, Validators.required),
       active: new FormControl('0'),
       generalRemark: new FormControl(null, Validators.required),
@@ -573,7 +574,7 @@ onSelectHeadName(evt: any) {
     this.isSaveAndReset = false;
     this.isEditMode = true;
     this.showButtonSaveAndReset = false;
-    this.showButtonSaveAndReset = false;
+    // this.showButtonSaveAndReset = false;
     this.form.reset();
     this.form.patchValue(this.summaryHtmlDataList[i]);
 

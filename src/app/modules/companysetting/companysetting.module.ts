@@ -39,6 +39,9 @@ import {ContextMenuModule} from 'primeng/contextmenu';
 import {ToastModule} from 'primeng/toast';
 import {InputTextModule} from 'primeng/inputtext';
 import {ProgressBarModule} from 'primeng/progressbar';
+import { UserRoleComponent } from './user-rolesand-permission/user-role/user-role.component';
+import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
+import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
 
 
 @NgModule({
@@ -49,8 +52,9 @@ import {ProgressBarModule} from 'primeng/progressbar';
     AttributeselectionComponent,
     PayrollheadgroupcreationComponent,
     CompanySettingComponent,
-   // GarnishmentMasterComponent,
-   // FinancialMasterComponent
+    UserRolesandPermissionComponent,
+    UserRoleComponent,
+    UserGroupComponent,
   ],
   imports: [
     CommonModule,
