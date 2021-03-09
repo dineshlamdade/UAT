@@ -15,7 +15,7 @@ export class LeftmenuComponent implements OnInit {
   public isEmployeeMaster = true;
   public isProjectCollapsed = true;
   public isJobportalCollapsed = true;
-
+  public isLock = true;
   public isInvestmentCollapsed = true;
   public isOtherMaster = true;
   isUploadExcel= true;
@@ -66,6 +66,9 @@ export class LeftmenuComponent implements OnInit {
     }
     if ((this.router.url).includes('employee-master')) {
       this.isEmployeeMaster = false;
+    }
+    if((this.router.url).includes('lock')){
+      this.isLock =  false;
     }
   }
 

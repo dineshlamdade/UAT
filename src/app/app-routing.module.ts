@@ -42,6 +42,7 @@ const routes: Routes = [
 
     //////////////////////////////////////////
     { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
+    { path: 'lock', loadChildren: './modules/lock/lock.module#LockModule' },
     // {
     //   path: 'payroll',
     //   component: payrollComponent,

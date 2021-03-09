@@ -24,6 +24,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+ 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { translocoLoader } from './core/strategies/transloco.loader';
@@ -65,8 +67,9 @@ import { HeadcreationComponent } from './modules/companysetting/headcreation/hea
 import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
 import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
 import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
-
-////////////////////////////////////
+  import { NgxbootstrapModule } from './app.ngxbootstrap.module';
+import { LockModule } from './modules/lock/lock.module';
+  ////////////////////////////////////
 
 
 
@@ -75,6 +78,8 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     AppComponent,
     ProfileComponent,
     SettingsComponent,
+
+ 
     //////////////////////////
    // payrollComponent,
     // HeadcreationComponent,
@@ -91,6 +96,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
 /////////////////
   //  payrollModule,
     CompanySettingModule,
+    LockModule,
 ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
@@ -127,8 +133,9 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
 	 AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
-
-
+    NgxbootstrapModule,
+    TabsModule.forRoot(),
+    
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,

@@ -24,6 +24,14 @@ import {AttributeselectionComponent} from './attributeselection/attributeselecti
 import { PayrollheadgroupcreationComponent } from './payrollheadgroupcreation/payrollheadgroupcreation.component';
 import { CompanySettingRoutingModule } from './companysetting.routing.module';
 import { CompanySettingComponent } from './companysetting.component';
+import { ReimbursementMasterComponent } from './reimbursement-master/reimbursement-master.component';
+import { RembSummaryComponent } from './reimbursement-master/remb-summary/remb-summary.component';
+import { RembGeneralComponent } from './reimbursement-master/remb-general/remb-general.component';
+import { RembComputationComponent } from './reimbursement-master/remb-computation/remb-computation.component';
+import { RegisterFormComponent} from './register-form/register-form.component';
+import { SummaryFormComponent } from './summary-form/summary-form.component';
+import { ClaimFormComponent } from './claim-form/claim-form.component';
+import { DeclarationFormComponent } from './declaration-form/declaration-form.component'; 
 @NgModule({
   declarations: [
     payrollComponent,
@@ -32,6 +40,14 @@ import { CompanySettingComponent } from './companysetting.component';
     AttributeselectionComponent,
     PayrollheadgroupcreationComponent,
     CompanySettingComponent,
+    ReimbursementMasterComponent,
+    RembSummaryComponent,
+    RembGeneralComponent,
+    RembComputationComponent,
+    RegisterFormComponent,
+    SummaryFormComponent,
+    ClaimFormComponent,
+    DeclarationFormComponent
   ],
   imports: [
     CommonModule,

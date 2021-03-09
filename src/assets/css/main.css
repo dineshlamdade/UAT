@@ -7508,7 +7508,7 @@
 }
 
 .font300 {
-    font-weight: 300!important;
+    font-weight: 300
 }
 
 .font500 {
@@ -8165,7 +8165,6 @@ body.boxlayout .container-fluid {
 }
 
 body *::-webkit-scrollbar {
-<<<<<<< HEAD
     width: 0px;
     height: 7px;
     transition: .3s background
@@ -8179,20 +8178,6 @@ body *::-webkit-scrollbar-thumb {
 
 body *:hover::-webkit-scrollbar-thumb {
     background: #8c8c8c
-=======
-    width: 13px;
-    height: 12px;
-    transition: .3s background;
-    background: #ffffff
-}
-
-body *::-webkit-scrollbar-thumb {
-    background: #eae5ed;
-}
-
-body *:hover::-webkit-scrollbar-thumb {
-    background: #eae5ed;
->>>>>>> d765f0b0e25483f82dc9733476ef64f014515dcf
 }
 
 a:hover {
@@ -17618,13 +17603,5 @@ svg {
     background-color: #fff!important;
     border: 1px solid #999!important;
     opacity: 1;
-    cursor: no-drop!important;
-}
-
-.custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
-    background: #999!important;
-}
-
-.custom-checkbox .custom-control-input:checked~.custom-control-label::after {
     cursor: no-drop!important;
 }
