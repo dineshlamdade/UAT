@@ -11,11 +11,10 @@
                 <div class="card-body p-0">
                   <div class="row">
 
-                    <div class="col-sm-3">
+
+                    <div class="col-sm-3" *ngIf="this.companyGroupId > 0">
                       <label class="form-label"> Code</label>
-                      <input type="text" formControlName="companyGroupCode" class="form-control" name="companyGroupCode"
-                        placeholder="Enter Group Code"
-                        [ngClass]="{'is-invalid' : form.get('companyGroupCode').status == 'INVALID'}">
+                      <input type="text" formControlName="companyGroupCode" class="form-control" name="companyGroupCode">
                     </div>
 
                     <div class="col-sm-3">

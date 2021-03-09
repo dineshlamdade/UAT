@@ -2,8 +2,10 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JobInformationService } from '../../employee-master-services/job-information.service';
-import { PayrollAreaInformationService } from '../../employee-master-services/payroll-area-information.service';
+import { Subscription } from 'rxjs';
+import { JobInformationService } from './job-information.service';
+import { PayrollAreaInformationService } from '../payroll-area-information/payroll-area-information.service';
+import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 
 @Component({
   selector: 'app-job-information',
@@ -18,9 +20,45 @@ export class JobInformationComponent implements OnInit {
   joiningDate: any;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
+  jobSummaryTab: boolean = true;
+  organizationTab: boolean = false;
+  positionTab: boolean = false;
+  minimumWagesTab: boolean = false;
+  projectTab: boolean = false;
+  deputationTab: boolean = false;
+  public tabIndex = 0;
+  tabSubscription: Subscription;
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
-    private router: Router, private PayrollAreaService: PayrollAreaInformationService, private JobInformationService: JobInformationService,) { }
+    private router: Router, private PayrollAreaService: PayrollAreaInformationService,
+    private JobInformationService: JobInformationService,
+    private EventEmitterService: EventEmitterService) {
+    if (router.url == '/employee-master/job-information/job-summary') {
+      this.tabIndex = 0;
+      this.jobSummaryTabValidation();
+    }
+    if (router.url == '/employee-master/job-information/organization-details') {
+      this.tabIndex = 1;
+      this.organizationTabValidation();
+    }
+    if (router.url == '/employee-master/job-information/position-details') {
+      this.tabIndex = 2;
+      this.positionTabValidation();
+    }
+    if (router.url == '/employee-master/job-information/minimum-wages-details') {
+      this.tabIndex = 3;
+      this.minimumWagesTabValidation();
+    }
+    if (router.url == '/employee-master/job-information/project-details') {
+      this.tabIndex = 4;
+      this.projectTabValidation();
+    }
+    if (router.url == '/employee-master/job-information/deputation-details') {
+      this.tabIndex = 5;
+      this.deputationTabValidation();
+    }
+  }
 
 
   ngOnInit(): void {
@@ -41,9 +79,26 @@ export class JobInformationComponent implements OnInit {
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
 
-
-
     this.getGridSummary()
+
+    this.tabSubscription = this.EventEmitterService.setJobSummaryInitiate().subscribe(res => {
+      
+      if (res == 'organization') {
+        this.jobSummaryTabValidation();
+      }
+      if (res == 'position') {
+        this.jobSummaryTabValidation();
+      }
+      if (res == 'minimumWages') {
+        this.jobSummaryTabValidation();
+      }
+      if (res == 'project') {
+        this.jobSummaryTabValidation();
+      }
+      if (res == 'deputation') {
+        this.jobSummaryTabValidation();
+      }
+    })
   }
 
   getGridSummary() {
@@ -65,7 +120,7 @@ export class JobInformationComponent implements OnInit {
   //get payroll area aasigned to that employee
   getPayrollAreaInformation() {
 
-    
+
     this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
@@ -102,7 +157,7 @@ export class JobInformationComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
-    
+
     localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
     this.getGridSummary()
@@ -123,6 +178,68 @@ export class JobInformationComponent implements OnInit {
     else if (job === "Project Details") {
       this.router.navigate(['/employee-master/job-information/project-details']);
     }
+  }
+
+
+  jobSummaryTabValidation() {
+    this.jobSummaryTab = true;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = false;
+    this.tabIndex = 0;
+  }
+
+  organizationTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = true;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = false;
+    this.tabIndex = 1;
+  }
+
+  positionTabValidation() {
+    
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = true;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = false;
+    this.tabIndex = 2;
+  }
+
+  minimumWagesTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = true;
+    this.projectTab = false;
+    this.deputationTab = false;
+    this.tabIndex = 3;
+  }
+
+  projectTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = true;
+    this.deputationTab = false;
+    this.tabIndex = 4;
+  }
+
+  deputationTabValidation() {
+    this.jobSummaryTab = false;
+    this.organizationTab = false;
+    this.positionTab = false;
+    this.minimumWagesTab = false;
+    this.projectTab = false;
+    this.deputationTab = true;
+    this.tabIndex = 5;
   }
 
 }

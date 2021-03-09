@@ -16,9 +16,15 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="joiningDate"
+                                                [(ngModel)]="JoiningInformationModel.joiningDate"
+                                                (bsValueChange)="assignJoiningDateTo(JoiningInformationModel.joiningDate);
+                                                calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, JoiningInformationModel.joiningDate)"
+                                                [maxDate]="today" class="form-control" placement="center" placeholder="  /   /"
+                                                bsDatepicker
+                                                [ngClass]="{'is-invalid' : JoiningForm.get('joiningDate').status == 'INVALID'}">
                                         </div>
                                     </div>
                                 </div>
@@ -30,8 +36,10 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
                                                 data-provide="datepicker" data-date-autoclose="true"
+                                                formControlName="originalHireDate" placement="center"
+                                                [(ngModel)]="JoiningInformationModel.originalHireDate" [maxDate]="today"
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
@@ -44,18 +52,26 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="joiningDateForGratuity" placement="center"
+                                                [(ngModel)]="JoiningInformationModel.joiningDateForGratuity"
+                                                [maxDate]="today" class="form-control" placeholder="  /   /"
+                                                bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Company</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
+                                    <select class="form-control" placeholder="Select Company"
+                                        formControlName="companyName" [(ngModel)]="JoiningInformationModel.companyName"
+                                        [ngClass]="{'is-invalid' : JoiningForm.get('companyName').status == 'INVALID'}">
+                                        <option value="" selected disabled>Select Company</option>
+                                        <option *ngFor="let option of companyListForJoining" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </fieldset>
@@ -71,61 +87,95 @@
                                             Probation </label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="false">
-                                                <span class="custom-control-label">Months</span>
+                                                <input type="radio" class="custom-control-input" value="false"
+                                                    (change)="probationPeriod($event)" formControlName="probationPeriod"
+                                                    [ngClass]="{'months-true' : probationMonthsDays == 'false',
+                        'months-false': probationMonthsDays == 'true'}">
+                                                <span class="custom-control-label"><b>Months</b></span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="true">
+                                                <input type="radio" class="custom-control-input" value="true"
+                                                    (change)="probationPeriod($event)" formControlName="probationPeriod"
+                                                    [ngClass]="{'months-false' : probationMonthsDays == 'false',
+                        'months-true': probationMonthsDays == 'true'}">
                                                 <span class="custom-control-label">
-                                                    Days</span>
+                                                    <b>Days</b></span>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <label class="form-label">Months</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
+                                    <label *ngIf="probationMonthsDays == 'false'" class="form-label">Months</label>
+                                    <input type="text" *ngIf="probationMonthsDays == 'false'" class="form-control"
+                                        placeholder="Enter Months" [(ngModel)]="probationPeriodMonthModel"
+                                        formControlName="probationPeriodMonth"
+                                        (change)="calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, JoiningInformationModel.joiningDate)">
+                                    <!-- <select *ngIf="probationMonthsDays == 'false'" class="form-control"
+                                        placeholder="Select Months" [(ngModel)]="probationPeriodMonthModel"
+                                        formControlName="probationPeriodMonth"
+                                        (change)="calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, JoiningInformationModel.joiningDate)">
+                                        <option value="" selected disabled>Select Months</option>
+                                        <option *ngFor="let option of monthsList" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select> -->
+
+                                    <label *ngIf="probationMonthsDays == 'true'" class="form-label">
+                                        Days</label>
+                                    <input *ngIf="probationMonthsDays == 'true'" type="text" class="form-control"
+                                        placeholder="Enter Days" formControlName="probationPeriodDays"
+                                        [(ngModel)]="probationPeriodDaysModel"
+                                        (change)="calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, JoiningInformationModel.joiningDate)">
                                 </div>
 
-                                <!-- <div class="col-sm-6 col-lg-3">
-                                    <label class="form-label">
-                                        Days</label>
-                                    <input type="text" class="form-control">
-                                </div> -->
-
+                                <!-- Notice Period -->
                                 <div class="col-sm-6 col-lg-3">
                                     <div class="form-group">
                                         <label class="form-label">
                                             Notice Period </label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="false">
-                                                <span class="custom-control-label">Months</span>
+                                                <input type="radio" class="custom-control-input" value="false"
+                                                    (change)="noticePeriod($event)" formControlName="noticePeriod"
+                                                    [ngClass]="{'months-true' : noticeMonthsDays == 'false',
+                        'months-false': noticeMonthsDays == 'true'}">
+                                                <span class="custom-control-label"><b>Months</b></span>
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="true">
+                                                <input type="radio" class="custom-control-input" value="true"
+                                                    (change)="noticePeriod($event)" formControlName="noticePeriod"
+                                                    [ngClass]="{'months-false' : noticeMonthsDays == 'false',
+                        'months-true': noticeMonthsDays == 'true'}">
                                                 <span class="custom-control-label">
-                                                    Days</span>
+                                                    <b>Days</b></span>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <label class="form-label">Months</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
-                                        (completeMethod)="filterSkillSet($event)" [dropdown]="true">
-                                    </p-autoComplete>
-                                </div>
-
-                                <!-- <div class="col-sm-6 col-lg-3">
-                                    <label class="form-label">
+                                    <label *ngIf="noticeMonthsDays == 'false'" class="form-label">Months</label>
+                                    <input type="text" *ngIf="noticeMonthsDays == 'false'" class="form-control"
+                                        placeholder="Emter Months" [(ngModel)]="noticePeriodMonthModel"
+                                        formControlName="noticePeriodMonth"
+                                        (change)="setNoticePeriodMonthModel(noticePeriodMonthModel)">
+                                    <!-- <select *ngIf="noticeMonthsDays == 'false'" class="form-control"
+                                        placeholder="Select Months" [(ngModel)]="noticePeriodMonthModel"
+                                        formControlName="noticePeriodMonth"
+                                        (change)="setNoticePeriodMonthModel(noticePeriodMonthModel)">
+                                        <option value="" selected disabled>Select Months</option>
+                                        <option *ngFor="let option of monthsList" [value]="option">
+                                            {{option}}
+                                        </option>
+                                    </select> -->
+                                    <label *ngIf="noticeMonthsDays == 'true'" class="form-label">
                                         Days</label>
-                                    <input type="text" class="form-control">
-                                </div> -->
+                                    <input *ngIf="noticeMonthsDays == 'true'" type="text" class="form-control"
+                                        placeholder="Enter Days" formControlName="noticePeriodDays"
+                                        [(ngModel)]="noticePeriodDaysModel"
+                                        (change)="setNoticePeriodDaysModel(noticePeriodDaysModel)">
+                                </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
                                     <label class="form-label">Expected Confirmation Date</label>
@@ -134,9 +184,13 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="expectedConfirmationDate" placement="center"
+                                                [(ngModel)]="JoiningInformationModel.expectedConfirmationDate"
+                                                [minDate]="JoiningInformationModel.joiningDate"
+                                                (change)="confirmationPopup()" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +198,9 @@
                                 <div class="col-sm-6 col-lg-3 mt-10">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" formControlName="expectedRemark"
+                                        [(ngModel)]="JoiningInformationModel.expectedConfirmationRemark"
+                                        tooltip="{{JoiningInformationModel.expectedConfirmationRemark}}">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-10">
@@ -154,9 +210,12 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                class="form-control" placeholder="  /   /" bsDatepicker>
+                                                formControlName="confirmationDate" placement="center"
+                                                [(ngModel)]="JoiningInformationModel.confirmationDate"
+                                                [minDate]="JoiningInformationModel.joiningDate" class="form-control"
+                                                placeholder="  /   /" bsDatepicker>
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +223,9 @@
                                 <div class="col-sm-6 col-lg-3 mt-10">
                                     <label class="form-label">
                                         Remark</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" formControlName="confirmationRemark"
+                                        [(ngModel)]="JoiningInformationModel.confirmationRemark"
+                                        tooltip="{{JoiningInformationModel.confirmationRemark}}">
                                 </div>
                             </div>
                         </fieldset>
@@ -172,9 +233,49 @@
                         <div class="row mt-15">
                             <div class="col-12">
                                 <div class="float-right mt-15">
-                                    <button type="submit"
-                                        class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
-                                        tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
+                                    <button type="button" tooltip="Previous"
+                                        [routerLink]="['/employee-master/personal-information']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                class="fa fa-angle-double-left"
+                                                aria-hidden="true"></i></b>Previous</button>
+
+                                    <button type="button" tooltip="Next"
+                                        [routerLink]="['/employee-master/contact-information']"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 mr-15 bg-teal-400"><b><i
+                                                class="fa fa-angle-double-right"
+                                                aria-hidden="true"></i></b>Next</button>
+
+                                    <button type="button" (click)="saveNextJoiningSubmit(JoiningInformationModel)"
+                                        [disabled]="JoiningForm.invalid || JoiningForm.untouched"
+                                        [hidden]="viewJoining || editJoining"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                        tooltip="Save & Next" [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
+                                        'btn-bg-green': !JoiningForm.invalid}"><b><i class="fa fa-floppy-o"></i></b>
+                                        Save & Next</button>
+
+                                    <button type="submit" [disabled]="JoiningForm.invalid || JoiningForm.untouched"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green mr-15"
+                                        [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
+                           'btn-bg-green': !JoiningForm.invalid}" tooltip="Save"
+                                        [hidden]="viewJoining || editJoining"><b><i
+                                                class="fa fa-floppy-o"></i></b>Save</button>
+
+                                    <button type="submit" *ngIf="editJoining"
+                                        [disabled]="JoiningForm.invalid || JoiningForm.untouched" [ngClass]="{'disabled-btn-bg-green' : JoiningForm.invalid || JoiningForm.untouched,
+                                        'btn-bg-green': !JoiningForm.invalid}"
+                                        class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                        tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                    <button type="button" toltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
+                                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i
+                                                class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
+
+
+                                    <button type="button" tooltip="Cancel" *ngIf="viewJoining || editJoining"
+                                        (click)="cancel()"
+                                        [routerLink]="['/employee-master/employment-information/employment-summary']"
+                                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
+                                                class="fa fa-times-circle" aria-hidden="true"></i></b>Cancel</button>
                                 </div>
                             </div>
                         </div>

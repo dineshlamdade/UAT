@@ -33,7 +33,7 @@ export class FileService {
   public uploadMultipleFiles(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
-    for (const file of files) {
+    for (const file of files) { 
       formData.append('licDocuments', file);
     }
     // formData.append('licDocuments', files);
@@ -52,6 +52,7 @@ export class FileService {
 
       });
   }
+
 
   public uploadMultipleMasterFiles(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();

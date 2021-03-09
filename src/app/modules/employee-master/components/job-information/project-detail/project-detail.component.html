@@ -1,15 +1,37 @@
 <form [formGroup]="projectForm" (ngSubmit)="projectDetailsSubmit(projectDetailsModel)">
+    <div class="row">
     <div class="col-sm-6 col-md-3">
         <label class="form-label">Payroll Area</label>
-        <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
+        <!-- <p-autoComplete [suggestions]="filteredPayrollAreaList" placeholder="Select"
             (completeMethod)="filterpayrollArea($event)" [dropdown]="true" (onSelect)="selectPayrollArea($event)"
-            [(ngModel)]="payrollAreaCode">
-        </p-autoComplete>
-        <!-- <select class="form-control" placeholder="Select Payroll Area">
-          <option value="ABC">ABC</option>
-          <option value="PQR">PQR</option>
-          <option value="XYZ">XYZ</option>
-      </select> -->
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+        </p-autoComplete> -->
+        
+        <!-- <select class="form-control" placeholder="Select Payroll Area"
+            (completeMethod)="filterpayrollArea(payrollAreaCode)" (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select Payroll Area</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option">
+                {{option}}
+            </option>
+        </select> -->
+
+        <select class="form-control" placeholder="Select"
+        (completeMethod)="filterpayrollArea(option.payrollAreaCode)"
+        (change)="selectPayrollArea(payrollAreaCode)"
+            [(ngModel)]="payrollAreaCode" [ngModelOptions]="{standalone: true}">
+            <option value="" selected disabled>Select</option>
+            <option *ngFor="let option of filteredPayrollAreaList" [value]="option.payrollAreaCode">
+                {{option.payrollAreaCode}}
+            </option>
+        </select>
+
+    </div>
+    <div class="col-sm-6 col-md-3" >
+        <label class="form-label">Company Name</label>
+        <input type="text" class="form-control" [(ngModel)]="companyName"
+            [ngModelOptions]="{standalone: true}" disabled>
+    </div>
     </div>
     <br>
     <div class="row row-cards">
@@ -21,11 +43,11 @@
                     formControlName="businessAreaMasterIdControl" [(ngModel)]="projectDetailsModel.projectName"
                     (onSelect)="enableProjectDate();validateProjectDatesSave();">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Project"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="enableProjectDate();validateProjectDatesSave(employee);"
                     formControlName="projectNameControl" [(ngModel)]="projectDetailsModel.projectName">
-                    <option value="" selected disabled>Select Project</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of projectList" [value]="employee">
                         {{employee}}
                     </option>
@@ -43,7 +65,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="projectFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="projectDetailsModel.projectFromDate" (bsValueChange)="validateProjectDate()">
+                            [(ngModel)]="projectDetailsModel.projectFromDate" (bsValueChange)="validateProjectDate()"
+                            [ngClass]="{'is-invalid' : projectForm.get('projectFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -56,7 +80,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="projectToDateControl" [minDate]="projectDetailsModel.projectFromDate"
-                            [(ngModel)]="projectDetailsModel.projectToDate">
+                            [(ngModel)]="projectDetailsModel.projectToDate"
+                            [ngClass]="{'is-invalid' : projectForm.get('projectToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -68,11 +94,11 @@
                 <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                     (completeMethod)="filterHighestEducation($event)" [dropdown]="true">
                 </p-autoComplete> -->
-                <select class="form-control" placeholder="Select Billable"
+                <select class="form-control" placeholder="Select"
                     (completeMethod)="employeeTypeList(employee.value)"
                     (change)="enableBillableDate();validateSaveBillableDates(employee);"
                     formControlName="billableControl" [(ngModel)]="projectDetailsModel.billable">
-                    <option value="" selected disabled>Select Billable</option>
+                    <option value="" selected disabled>Select</option>
                     <option *ngFor="let employee of billableList" [value]="employee">
                         {{employee}}
                     </option>
@@ -86,7 +112,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="billableFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="projectDetailsModel.billableFromDate" (bsValueChange)="validateBillableDate()">
+                            [(ngModel)]="projectDetailsModel.billableFromDate" (bsValueChange)="validateBillableDate()"
+                            [ngClass]="{'is-invalid' : projectForm.get('billableFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -99,7 +127,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="billableToDateControl" [minDate]="projectDetailsModel.billableFromDate"
-                            [(ngModel)]="projectDetailsModel.billableToDate">
+                            [(ngModel)]="projectDetailsModel.billableToDate"
+                            [ngClass]="{'is-invalid' : projectForm.get('billableToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -112,7 +142,7 @@
                         On - Bench </label>
                     <div class="custom-controls-stacked">
                         <label class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" value="yes" checked
+                            <input type="radio" class="custom-control-input" value="yes"
                                 formControlName="isOnBenchControl" [(ngModel)]="isOnBenchBoolean"
                                 (change)="enableBenchDate();validateSaveBenchDates();">
                             <span class="custom-control-label">Yes</span>
@@ -136,7 +166,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="benchFromDateControl" [minDate]="joiningDate"
-                            [(ngModel)]="projectDetailsModel.benchFromDate" (bsValueChange)="validateBenchDate()">
+                            [(ngModel)]="projectDetailsModel.benchFromDate" (bsValueChange)="validateBenchDate()"
+                            [ngClass]="{'is-invalid' : projectForm.get('benchFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -149,7 +181,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="benchToDateControl" [minDate]="projectDetailsModel.benchFromDate"
-                            [(ngModel)]="projectDetailsModel.benchToDate">
+                            [(ngModel)]="projectDetailsModel.benchToDate"
+                            [ngClass]="{'is-invalid' : projectForm.get('benchToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -166,12 +200,12 @@
                 <button type="button" tooltip="Previous"
                     [routerLink]="['/employee-master/job-information/minimum-wages-details']"
                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                            class="fa fa-refresh" aria-hidden="true"></i></b>Previous</button>
+                            class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>Previous</button>
 
                 <button type="button" tooltip="Next"
                     [routerLink]="['/employee-master/job-information/deputation-details']"
                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                            class="fa fa-refresh" aria-hidden="true"></i></b>Next</button>
+                            class="fa fa-chevron-circle-right" aria-hidden="true"></i></b>Next</button>
             </div>
         </div>
     </div>

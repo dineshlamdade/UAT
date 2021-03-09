@@ -3,15 +3,21 @@
 <div class="page">
     <app-header></app-header>
     <div class="section-body mt-3">
-        <div class="container-fluid">
+        <div class="container-fluid p-0">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="tabview">
                                 <input name="nav" type="radio" class="about-radio" id="familyDetails"
-                                     [checked]="tabIndex==0" />
-                                <label class="nav" for="familyDetails" (click)="hideSummaryGrid = true"
+                                    [checked]="tabIndex==0" />
+                                <div class="tabs about-page" *ngIf="familyTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="familyDetails"
+                                    (click)="hideSummaryGrid = true;familyTabValidation()"
                                     [routerLink]="['/employee-master/family-information/family-details']">
                                     <span>
                                         Family Details
@@ -20,7 +26,13 @@
 
                                 <input name="nav" type="radio" class="about-radio" id="nominationDetails"
                                     [checked]="tabIndex==1" />
-                                <label class="nav" for="nominationDetails" (click)="hideSummaryGrid = true"
+                                <div class="tabs about-page" *ngIf="nominationTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="nominationDetails"
+                                    (click)="hideSummaryGrid = true;nominationTabValidation()"
                                     [routerLink]="['/employee-master/family-information/nomination-details']">
                                     <span>
                                         Nomination Details
@@ -28,8 +40,14 @@
                                 </label>
 
                                 <input name="nav" type="radio" class="about-radio" id="bankDetails"
-                                     [checked]="tabIndex==2" />
-                                <label class="nav" for="bankDetails" (click)="hideSummaryGrid = true"
+                                    [checked]="tabIndex==2" />
+                                <div class="tabs about-page" *ngIf="bankTab==true">
+                                    <div class="tabview-contents">
+                                        <router-outlet></router-outlet>
+                                    </div>
+                                </div>
+                                <label class="nav" for="bankDetails"
+                                    (click)="hideSummaryGrid = true;bankTabValidation()"
                                     [routerLink]="['/employee-master/family-information/bank-details']">
                                     <span>
                                         Bank Account Details
@@ -37,11 +55,11 @@
                                 </label>
 
 
-                                <div class="tabs about-page">
+                                <!-- <div class="tabs about-page">
                                     <div class="tabview-contents">
-                                        <router-outlet></router-outlet>
+                                        <router-outlet></router-outlet> -->
 
-                                        <!-- <legend [hidden]="hideSummaryGrid">Summary</legend>
+                                <!-- <legend [hidden]="hideSummaryGrid">Summary</legend>
                                         <div class="row mt-20" [hidden]="hideSummaryGrid">
                                             <div class="col-md-12">
                                                 <div class="table-responsive Custom_Table">
@@ -75,8 +93,7 @@
                                                 </div>
                                             </div>
                                         </div> -->
-                                    </div>
-                                </div>
+                                <!-- </div> -->
                             </div>
                         </div>
                     </div>

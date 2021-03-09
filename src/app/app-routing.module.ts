@@ -15,6 +15,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
 
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: '/login' },
   { path: 'auth', loadChildren: './modules/auth/auth.module#AuthModule' },
   { path: '', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
   { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },

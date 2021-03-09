@@ -1,0 +1,45 @@
+
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <!-- <div class="tabview tabview_fixed_deposit"> -->
+              <div class="tabview tabview_fixed_deposit">
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
+                <div class="tabs about-page">
+                  <app-tuition-fees-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-tuition-fees-summary>
+                </div>
+                <label class="nav" for="summary">
+                  <span> Summary </span>
+                </label>
+
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 2" />
+                  <div class="tabs about-page">
+                    <app-tuition-fees-declaration [data] ="data" *ngIf="tabIndex == 2"> </app-tuition-fees-declaration>
+                  </div>
+                <label class="nav" for="Declaration">
+                  <span> Declaration & Actual </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

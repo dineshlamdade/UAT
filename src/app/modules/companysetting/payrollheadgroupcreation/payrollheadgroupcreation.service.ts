@@ -3,16 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { SavePHG,SaveAttributeSelection,SaveAttributeAssignment,UpdateflagCycleCreation} from './payrollheadgroupcreation.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 //import { Product } from './product';
 
 @Injectable({
     providedIn: 'root'
-  })  
+  })
 export class payrollheadgroupcreation {
 
-    url = 'http://localhost:8084/hrms/v1/';
+    // url = 'http://localhost:8084/hrms/v1/';
+    public url = environment.baseUrl8084;
     constructor(private _HTTP: HttpClient) { }
 
      // get All PayrollHeadGroup
@@ -33,7 +35,7 @@ export class payrollheadgroupcreation {
       }));
   }
 
-  
+
     //delete Payroll Head Group
     DeletePayrollHeadGroup(id: number) {
       return this._HTTP.delete(this.url + 'headGroup/delete/' + id)
@@ -69,7 +71,7 @@ export class payrollheadgroupcreation {
           }));
       }
 
-       
+
   //update BusinessYear
   UpdatePHGById(id: number, data: SavePHG): Observable<number | {}> {
     debugger
@@ -79,7 +81,7 @@ export class payrollheadgroupcreation {
       }));
   }
 
-    //get Head table list on slection of copy form dropdown 
+    //get Head table list on slection of copy form dropdown
     GetHeadListByPHGname(PHGname: string) {//: Observable<saveBusinessYear | {}> {
       debugger
       return this._HTTP.get(this.url + 'headGroup/getPHGByName/' + PHGname)
@@ -88,7 +90,7 @@ export class payrollheadgroupcreation {
         }));
     }
 
-    
+
       //get GetAttribute OptionList ByGroup
       GetAttributeOptionListByGroup(groupname: string) {//: Observable<saveBusinessYear | {}> {
         debugger
@@ -142,7 +144,7 @@ export class payrollheadgroupcreation {
       }));
   }
 
-   //update attribute list by id 
+   //update attribute list by id
    UpdateattributeListById(data: UpdateflagCycleCreation): Observable<number | {}> {
     debugger
     return this._HTTP.put(this.url + 'payrollhead-attribute-mapping', data)
@@ -161,10 +163,10 @@ export class payrollheadgroupcreation {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
 
 
- 
+
+
 
     // getProductsSmall() {
     //     return this.http.get<any>('assets/products-small.json')
@@ -206,11 +208,11 @@ export class payrollheadgroupcreation {
 //     generateId() {
 //         let text = "";
 //         let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        
+
 //         for (var i = 0; i < 5; i++) {
 //             text += possible.charAt(Math.floor(Math.random() * possible.length));
 //         }
-        
+
 //         return text;
 //     }
 

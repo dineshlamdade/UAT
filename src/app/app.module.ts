@@ -43,16 +43,13 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-import { PrimeNGModule } from './app.primeNG.module';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+  //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
-
-import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-import { PayrollModule } from './modules/payroll/payroll.module';
-
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
+import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+import { PayrollModule } from './modules/payroll/payroll.module';
 
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
@@ -71,6 +68,10 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
 ////////////////////////////////////
 
 
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
+
+
 
 @NgModule({
   declarations: [
@@ -78,23 +79,26 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     ProfileComponent,
     SettingsComponent,
     //////////////////////////
-   // payrollComponent,
+    // payrollComponent,
     // HeadcreationComponent,
     // AttributecreationComponent,
     // AttributeselectionComponent,
     // PayrollheadgroupcreationComponent,
-///////////////////////////////////////
+    ///////////////////////////////////////
   ],
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
-/////////////////
-  //  payrollModule,
+    /////////////////
+    //  payrollModule,
     CompanySettingModule,
-////////////////////////////////
+    ////////////////////////////////
     MyInvestmentsModule,
+    investmentChapterVIAModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,
@@ -125,11 +129,11 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	 AdminApprovalModule,
+    AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
-   
+
   ],
   providers: [BsDatepickerModule,
     BnNgIdleService,
@@ -137,7 +141,7 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
-        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
         listenToLangChange: true,
         reRenderOnLangChange: true,
         defaultLang: 'en',

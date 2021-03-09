@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-//import { NotificationsService } from '@src/app/core/services/notifications.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { JobInformationService } from '../../../employee-master-services/job-information.service';
-import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
+import { JobInformationService } from '../job-information.service';
+import { EducationSkillsInformationService } from '../../education-skills-information/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { BankInformationService } from './../../../employee-master-services/bank-information.service';
+import { BankInformationService } from './../../bank-information/bank-information.service';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { MinumumWagesDetailsModel } from './../../../dto-models/minimum-wages.model';
-import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
+import { MinumumWagesDetailsModel } from './../job-information-models/minimum-wages.model';
+import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-minimum-wages-detail',
@@ -43,11 +43,13 @@ export class MinimumWagesDetailComponent implements OnInit {
   workValidate: Boolean;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
-  payrollAreaCode: '';
+  payrollAreaCode: any;
+  companyName: any;
 
   constructor(private EducationSkillsInformationService: EducationSkillsInformationService, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService, private JobInformationService: JobInformationService,
-    private formBuilder: FormBuilder, private BankInformationService: BankInformationService, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService) {
+    private formBuilder: FormBuilder, private BankInformationService: BankInformationService, private PayrollAreaService: PayrollAreaInformationService, private CommonDataService: SharedInformationService
+    , private router: Router) {
     this.tomorrow.setDate(this.tomorrow.getDate());
 
   }
@@ -74,9 +76,21 @@ export class MinimumWagesDetailComponent implements OnInit {
       payrollAreaCode: ['']
     });
 
-    this.payrollAreaCode = null;
+    this.payrollAreaCode = '';
+    this.companyName = '';
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+
+    //get payroll area code from local storage
+    const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+    this.payrollAreaCode = new String(payrollAreaCode);
+
+    //get company name from local storage
+    const companyName = localStorage.getItem('jobInformationCompanyName')
+    if (companyName != null) {
+      this.companyName = new String(companyName);
+    }
 
     const joiningDate = localStorage.getItem('joiningDate');
     this.joiningDate = new Date(joiningDate);
@@ -121,21 +135,29 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   //get Minimum wages details service calling
   getMinimumWagesForm() {
-
     this.JobInformationService.getMinimumWagesDetails(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
 
       this.employeeMinimumWagesInfoId = res.data.results[0].employeeMinimumWagesInfoId;
       if (res.data.results[0]) {
 
+
         this.minumumWagesDetailsModel = res.data.results[0];
-        this.payrollAreaCode = res.data.results[0].payrollAreaCode;
 
-        //changing String to date format
-        // this.minumumWagesDetailsModel.skillStartDate = new Date(res.data.results[0].skillStartDate);
-        // this.minumumWagesDetailsModel.skillEndDate = new Date(res.data.results[0].skillEndDate);
+        //dates conversion
+        if (res.data.results[0].skillStartDate != null) {
+          this.minumumWagesDetailsModel.skillStartDate = new Date(res.data.results[0].skillStartDate);
+        }
+        if (res.data.results[0].billableToDate != null) {
+          this.minumumWagesDetailsModel.skillEndDate = new Date(res.data.results[0].skillEndDate);
+        }
+        if (res.data.results[0].skillEndDate != null) {
+          this.minumumWagesDetailsModel.workStartDate = new Date(res.data.results[0].workStartDate);
+        }
+        if (res.data.results[0].workEndDate != null) {
+          this.minumumWagesDetailsModel.workEndDate = new Date(res.data.results[0].workEndDate);
+        }
 
-        // this.minumumWagesDetailsModel.workStartDate = new Date(res.data.results[0].workStartDate);
-        // this.minumumWagesDetailsModel.workEndDate = new Date(res.data.results[0].workEndDate);
+        //this.payrollAreaCode = res.data.results[0].payrollAreaCode;
 
         //state
         if (this.minumumWagesDetailsModel.state != null) {
@@ -143,6 +165,8 @@ export class MinimumWagesDetailComponent implements OnInit {
           stateStartDate.enable();
           const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
           stateEndDate.enable();
+
+          this.validateStateDates();
         }
         else {
           this.disableStateDates();
@@ -154,6 +178,8 @@ export class MinimumWagesDetailComponent implements OnInit {
           zoneStartDate.enable();
           const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
           zoneEndDate.enable();
+
+          this.validateZoneDates();
         }
         else {
           this.disableZoneDates();
@@ -165,6 +191,8 @@ export class MinimumWagesDetailComponent implements OnInit {
           skillStartDate.enable();
           const skillEndDate = this.minimumWagesForm.get('skillEndDateControl');
           skillEndDate.enable();
+
+          this.validateSkillDates();
         }
         else {
           this.disableSkillDates();
@@ -176,6 +204,8 @@ export class MinimumWagesDetailComponent implements OnInit {
           establishmentStartDate.enable();
           const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
           establishmentEndDate.enable();
+
+          this.validateEstablishmentDates();
         }
         else {
           this.disableEstablishmentDates();
@@ -187,11 +217,12 @@ export class MinimumWagesDetailComponent implements OnInit {
           workStartDate.enable();
           const workEndDate = this.minimumWagesForm.get('workEndDateControl');
           workEndDate.enable();
+
+          this.validateWorkDates();
         }
         else {
           this.disableWorkDates();
         }
-
       }
     }, (error: any) => {
 
@@ -199,10 +230,20 @@ export class MinimumWagesDetailComponent implements OnInit {
 
     })
     if (this.payrollAreaList.length == 1) {
-      this.payrollAreaCode = this.payrollAreaList[0];
+      //this.payrollAreaCode = this.payrollAreaList[0];
+      this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+      localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
     }
     else {
-      this.payrollAreaCode = this.payrollAreaCode;
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+
+      //get company from local storage
+      const companyName = localStorage.getItem('jobInformationCompanyName')
+      if (companyName != null) {
+        this.companyName = new String(companyName);
+      }
     }
     this.minimumWagesForm.markAsUntouched();
   }
@@ -213,11 +254,25 @@ export class MinimumWagesDetailComponent implements OnInit {
     minumumWagesDetailsModel.employeeMinimumWagesInfoId = this.employeeMinimumWagesInfoId;
 
     if (this.payrollAreaList.length == 1) {
-      minumumWagesDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+      //minumumWagesDetailsModel.payrollAreaCode = this.payrollAreaList[0];
+
+      this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+      localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
     }
     else {
-      minumumWagesDetailsModel.payrollAreaCode = this.payrollAreaCode;
+      //get payroll area code from local storage
+      const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+      this.payrollAreaCode = new String(payrollAreaCode);
+      minumumWagesDetailsModel.payrollAreaCode = new String(payrollAreaCode);
+
+      //get company from local storage
+      const companyName = localStorage.getItem('jobInformationCompanyName')
+      if (companyName != null) {
+        this.companyName = new String(companyName);
+      }
     }
+
+    minumumWagesDetailsModel.payrollAreaCode = new String(this.payrollAreaCode);
 
     minumumWagesDetailsModel.stateStartDate = this.datepipe.transform(minumumWagesDetailsModel.stateStartDate, "dd-MMM-yyyy");
     minumumWagesDetailsModel.stateEndDate = this.datepipe.transform(minumumWagesDetailsModel.stateEndDate, "dd-MMM-yyyy");
@@ -236,9 +291,11 @@ export class MinimumWagesDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.minumumWagesDetailsModel = res.data.results[0];
       this.employeeMinimumWagesInfoId = this.minumumWagesDetailsModel.employeeMinimumWagesInfoId;
+      this.EventEmitterService.getJobSummaryInitiate('minimumWages');
 
-      this.getMinimumWagesForm();
-      this.EventEmitterService.getJobInformationInitiate();
+      //this.getMinimumWagesForm();
+      //redirecting page to summary page
+      this.router.navigate(['/employee-master/job-information/job-summary']);
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -256,7 +313,6 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   validateZoneDate() {
 
-
     if (this.minumumWagesDetailsModel.zoneEndDate == '' || this.minumumWagesDetailsModel.zoneEndDate == null) {
       this.minumumWagesDetailsModel.zoneEndDate = '31-Dec-9999';
       const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
@@ -265,7 +321,6 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   }
   validateSkillDate() {
-
 
     if (this.minumumWagesDetailsModel.skillEndDate == '' || this.minumumWagesDetailsModel.skillEndDate == null) {
       this.minumumWagesDetailsModel.skillEndDate = '31-Dec-9999';
@@ -276,7 +331,6 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
   validateEstablishmentDate() {
 
-
     if (this.minumumWagesDetailsModel.establishmentEndDate == '' || this.minumumWagesDetailsModel.establishmentEndDate == null) {
       this.minumumWagesDetailsModel.establishmentEndDate = '31-Dec-9999';
       const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
@@ -285,7 +339,6 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   }
   validateWorkDate() {
-
 
     if (this.minumumWagesDetailsModel.workEndDate == '' || this.minumumWagesDetailsModel.workEndDate == null) {
       this.minumumWagesDetailsModel.workEndDate = '31-Dec-9999';
@@ -296,7 +349,9 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
   validateStateDates() {
     this.minimumWagesForm.controls['stateStartDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.stateStartDateControl.updateValueAndValidity();
     this.minimumWagesForm.controls['stateEndDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.stateEndDateControl.updateValueAndValidity();
   }
   enableStateDate() {
 
@@ -312,14 +367,18 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
 
   disableStateDates() {
+    this.minimumWagesForm.get('stateStartDateControl').setValue(null);
     const stateStartDate = this.minimumWagesForm.get('stateStartDateControl');
     stateStartDate.disable();
+    this.minimumWagesForm.get('stateEndDateControl').setValue(null);
     const stateEndDate = this.minimumWagesForm.get('stateEndDateControl');
     stateEndDate.disable();
   }
   validateZoneDates() {
     this.minimumWagesForm.controls['zoneStartDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.zoneStartDateControl.updateValueAndValidity();
     this.minimumWagesForm.controls['zoneEndDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.zoneEndDateControl.updateValueAndValidity();
   }
   enableZoneDate() {
     const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
@@ -331,20 +390,25 @@ export class MinimumWagesDetailComponent implements OnInit {
       this.minumumWagesDetailsModel.zoneEndDate = null;
       this.disableZoneDates();
     }
-
   }
 
   disableZoneDates() {
+    this.minimumWagesForm.get('zoneStartDateControl').setValue(null);
     const zoneStartDate = this.minimumWagesForm.get('zoneStartDateControl');
     zoneStartDate.disable();
+    this.minimumWagesForm.get('zoneEndDateControl').setValue(null);
     const zoneEndDate = this.minimumWagesForm.get('zoneEndDateControl');
     zoneEndDate.disable();
   }
+
   validateSkillDates() {
     this.minimumWagesForm.controls['skillStartDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.skillStartDateControl.updateValueAndValidity();
     this.minimumWagesForm.controls['skillEndDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.skillEndDateControl.updateValueAndValidity();
   }
   enableSkillDate() {
+
     const skillStartDate = this.minimumWagesForm.get('skillStartDateControl');
     skillStartDate.enable();
     const skillEndDate = this.minimumWagesForm.get('skillEndDateControl');
@@ -357,15 +421,19 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
 
   disableSkillDates() {
+    this.minimumWagesForm.get('skillStartDateControl').setValue(null);
     const skillStartDate = this.minimumWagesForm.get('skillStartDateControl');
     skillStartDate.disable();
+    this.minimumWagesForm.get('skillEndDateControl').setValue(null);
     const skillEndDate = this.minimumWagesForm.get('skillEndDateControl');
     skillEndDate.disable();
   }
 
   validateEstablishmentDates() {
     this.minimumWagesForm.controls['establishmentStartDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.establishmentStartDateControl.updateValueAndValidity();
     this.minimumWagesForm.controls['establishmentEndDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.establishmentEndDateControl.updateValueAndValidity();
   }
   enableEstablishmentDate() {
     const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
@@ -377,50 +445,83 @@ export class MinimumWagesDetailComponent implements OnInit {
       this.minumumWagesDetailsModel.establishmentEndDate = null;
       this.disableEstablishmentDates();
     }
-
   }
 
   disableEstablishmentDates() {
+    this.minimumWagesForm.get('establishmentStartDateControl').setValue(null);
     const establishmentStartDate = this.minimumWagesForm.get('establishmentStartDateControl');
     establishmentStartDate.disable();
+    this.minimumWagesForm.get('establishmentEndDateControl').setValue(null);
     const establishmentEndDate = this.minimumWagesForm.get('establishmentEndDateControl');
     establishmentEndDate.disable();
-
   }
 
   validateWorkDates() {
     this.minimumWagesForm.controls['workStartDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.workStartDateControl.updateValueAndValidity();
     this.minimumWagesForm.controls['workEndDateControl'].setValidators([Validators.required]);
+    this.minimumWagesForm.controls.workEndDateControl.updateValueAndValidity();
   }
   enableWorkDate() {
-    const workStartDate = this.minimumWagesForm.get('workStartDateControl');
-    workStartDate.enable();
-    const workEndDate = this.minimumWagesForm.get('workEndDateControl');
-    workEndDate.enable();
     if (this.minumumWagesDetailsModel.workType == '' || this.minumumWagesDetailsModel.workType == null) {
       this.minumumWagesDetailsModel.workStartDate = null;
       this.minumumWagesDetailsModel.workEndDate = null;
       this.disableWorkDates();
     }
+    else {
+      const workStartDate = this.minimumWagesForm.get('workStartDateControl');
+      workStartDate.enable();
+      const workEndDate = this.minimumWagesForm.get('workEndDateControl');
+      workEndDate.enable();
+      this.validateWorkDates();
+    }
   }
 
   disableWorkDates() {
+    this.minimumWagesForm.get('workStartDateControl').setValue(null);
     const workStartDate = this.minimumWagesForm.get('workStartDateControl');
     workStartDate.disable();
+    this.minimumWagesForm.get('workEndDateControl').setValue(null);
     const workEndDate = this.minimumWagesForm.get('workEndDateControl');
     workEndDate.disable();
   }
 
   //get payroll area assigned to that employee
   getPayrollAreaInformation() {
-
-    this.PayrollAreaService.getPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
+    this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
 
       res.data.results[0].forEach(item => {
-        this.payrollAreaList.push(item.payrollAreaCode);
-        this.filteredPayrollAreaList.push(item.payrollAreaCode);
+        // this.payrollAreaList.push(item.payrollAreaCode);
+        // this.filteredPayrollAreaList.push(item.payrollAreaCode);
 
+        this.payrollAreaList.push(item);
+        this.filteredPayrollAreaList.push(item);
       });
+      if (this.payrollAreaList.length == 1) {
+        // this.payrollAreaCode = this.payrollAreaList[0];
+        // localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+
+        //set default payroll area
+        this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
+        localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
+
+        //set default company
+        let result = res.data.results[0];
+        this.companyName = result[0].payrollAreaAndCompany;
+        // this.companyName = result[0].payrollAreaId.companyId.companyName;
+        localStorage.setItem('jobInformationCompanyName', this.companyName);
+      }
+      else {
+        //get payroll area code from local storage
+        const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
+        this.payrollAreaCode = new String(payrollAreaCode);
+
+        //get company from local storage
+        const companyName = localStorage.getItem('jobInformationCompanyName')
+        if (companyName != null) {
+          this.companyName = new String(companyName);
+        }
+      }
     })
 
   }
@@ -440,13 +541,21 @@ export class MinimumWagesDetailComponent implements OnInit {
 
   //set PayrollArea
   selectPayrollArea(event) {
+    localStorage.setItem('jobInformationPayrollAreaCode', event);
     this.payrollAreaCode = event;
-    this. resetMinimumWagesForm();
+
+    const toSelect = this.filteredPayrollAreaList.find(
+      (c) => c.payrollAreaCode === this.payrollAreaCode
+    );
+    // this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    this.companyName = toSelect.payrollAreaAndCompany;
+    localStorage.setItem('jobInformationCompanyName', this.companyName);
+
+    this.resetMinimumWagesForm();
     this.getMinimumWagesForm();
   }
 
   searchSkill(skill) {
-
     this.minumumWagesDetailsModel.skillStartDate = null;
     this.minumumWagesDetailsModel.skillEndDate = null;
     this.disableSkillDates();
@@ -463,7 +572,6 @@ export class MinimumWagesDetailComponent implements OnInit {
   }
 
   workSkill(work) {
-
     this.minumumWagesDetailsModel.workStartDate = null;
     this.minumumWagesDetailsModel.workEndDate = null;
     this.disableWorkDates();
@@ -479,10 +587,10 @@ export class MinimumWagesDetailComponent implements OnInit {
     this.filteredWorkList = filtered;
   }
 
-  
+
   resetMinimumWagesForm() {
     this.minimumWagesForm.reset();
-    this.employeeMinimumWagesInfoId=0;
+    this.employeeMinimumWagesInfoId = 0;
 
     //disable dates
     this.disableEstablishmentDates();

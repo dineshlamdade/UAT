@@ -6,31 +6,43 @@
                     <form [formGroup]="SkillInfoForm">
                         <!-- Member Details -->
                         <fieldset>
-                            <legend><i class="fa fa-users"></i>
+                            <legend>
                                 Skill Information</legend>
                             <div class="row">
-                                <div class="col-sm-6 col-md-4">
+                                <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Skill</label>
-                                    <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
+                                    <select class="form-control" placeholder="Select" (change)="clearSkillsInformation();
+                                    validateGridSkills()" formControlName="skillName"
+                                        [(ngModel)]="employeeSkillDetailsRequestModel.skillName"
+                                        [ngClass]="{'is-invalid' : SkillInfoForm.get('skillName').status == 'INVALID'}">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let skill of SkillSetList" [value]="skill">
+                                            {{skill}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredSkillSetList" placeholder="Select"
                                         (completeMethod)="filterSkillSet($event)" [dropdown]="true" (onSelect)="clearSkillsInformation();
                                         validateGridSkills()" formControlName="skillName"
                                         [(ngModel)]="employeeSkillDetailsRequestModel.skillName">
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </div>
 
-                                <div class="col-sm-6 col-md-4">
+                                <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Description</label>
                                     <input type="text" class="form-control" placeholder="Enter Description"
-                                        formControlName="skillDescription" (change)="validateSkillsDescription()"
+                                        formControlName="skillDescription"
+                                        [ngClass]="{'is-invalid' : SkillInfoForm.get('skillDescription').status == 'INVALID'}"
                                         [(ngModel)]="employeeSkillDetailsRequestModel.skillDescription">
                                 </div>
 
-                                <div class="col-sm-6 col-md-4">
+                                <div class="col-sm-6 col-md-6">
                                     <div class="form-group">
                                         <div class="form-label">Proficiency Level</div>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input" value="Basic" checked
+                                                
                                                     formControlName="proficiency"
                                                     [(ngModel)]="employeeSkillDetailsRequestModel.proficiency">
                                                 <span class="custom-control-label">Basic</span>
@@ -51,73 +63,78 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row mt-15">
-                                <div class="col-12">
-                                    <div class="float-right mb-15">
-                                        <button type="submit" (click)="postSkillsForm(employeeSkillDetailsRequestModel)"
-                                            [ngClass]="{'disabled-btn-bg-green':!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency,
-                                        'btn-bg-green':employeeSkillDetailsRequestModel.skillDescription||employeeSkillDetailsRequestModel.proficiency}"
-                                            [disabled]="!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                            [hidden]="skillEditFlag || skillviewFlag"><b><i class="fa fa-floppy-o"
-                                                    tooltip="Save"></i></b>Save</button>
-
-                                        <button type="submit"
-                                            [ngClass]="{'disabled-btn-bg-green':!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency,
-                                        'btn-bg-green':employeeSkillDetailsRequestModel.skillDescription||employeeSkillDetailsRequestModel.proficiency}"
-                                            [disabled]="!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency"
-                                            (click)="updateSkillsForm(employeeSkillDetailsRequestModel)"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                            *ngIf="skillEditFlag"><b><i tooltip="Update"
-                                                    class="fa fa-floppy-o"></i></b>Update</button>
-
-                                        <button type="button" tooltip="Reset" [hidden]="skillviewFlag"
-                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
-
-                                        <button type="button" *ngIf="skillEditFlag || skillviewFlag"
-                                            (click)="cancelSkillView()"
-                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-times-circle" tooltip="Cancel"></i></b> Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
                         </fieldset>
                     </form>
-                    <br>
-                    <legend style="font-size: 17px !important;">Summary</legend>
+                    <div class="row mt-15">
+                        <div class="col-12">
+                            <div class="float-right mb-15">
+                                <button type="submit" (click)="postSkillsForm(employeeSkillDetailsRequestModel)"
+                                    [ngClass]="{'disabled-btn-bg-green':!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency,
+                                'btn-bg-green':employeeSkillDetailsRequestModel.skillDescription||employeeSkillDetailsRequestModel.proficiency}"
+                                    [disabled]="!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                    [hidden]="skillEditFlag || skillviewFlag"><b><i class="fa fa-floppy-o"
+                                            tooltip="Save"></i></b>Save</button>
+
+                                <button type="submit"
+                                    [ngClass]="{'disabled-btn-bg-green':!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency,
+                                'btn-bg-green':employeeSkillDetailsRequestModel.skillDescription||employeeSkillDetailsRequestModel.proficiency}"
+                                    [disabled]="!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency"
+                                    (click)="updateSkillsForm(employeeSkillDetailsRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left"
+                                    *ngIf="skillEditFlag"><b><i tooltip="Update"
+                                            class="fa fa-floppy-o"></i></b>Update</button>
+
+                                <button type="button" tooltip="Reset" [hidden]="skillviewFlag"
+                                    (click)="resetSkillForm()"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
+
+                                <button type="button" *ngIf="skillEditFlag || skillviewFlag" (click)="cancelSkillView()"
+                                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa fa-times-circle" tooltip="Cancel"></i></b> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-10">
+                        <div class="col-md-12">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                    </div>
                     <p-table [value]="SkillSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-skill>
                             <colgroup>
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
+                                <col class="wd-30">
+                                <col class="wd-30">
+                                <col class="wd-30">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Skill</th>
-                                <th class="primeng-table-header-center">Description</th>
-                                <th class="primeng-table-header-center">Proficiency</th>
-                                <th class="primeng-table-header-center">Action</th>
+                                <th class="primeng-table-header-center wd-30">Skill</th>
+                                <th class="primeng-table-header-center wd-30">Description</th>
+                                <th class="primeng-table-header-center wd-30">Proficiency</th>
+                                <th class="primeng-table-header-center wd-10">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-skill>
                             <tr>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{skill.skillName}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left padding-left-21"><span>
                                         {{skill.skillDescription}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span> {{skill.proficiency}}</span></td>
+                                <td class="primeng-table-header-left padding-left-24"><span>
+                                        {{skill.proficiency}}</span></td>
 
-                                <td class="primeng-table-header-center"><span><i
+                                <td class="primeng-table-header-left"><span><i
                                             class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
                                             (click)="editSkillRow(skill)"></i>
 
@@ -125,14 +142,41 @@
                                             (click)="viewSkillRow(skill)"></i>
 
                                         <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
-                                            (click)="deleteSkillRow(skill)"></i></span>
+                                            (click)="deleteSkillRow(skill, confirmation)"></i></span>
                                 </td>
                             </tr>
                         </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr *ngIf="SkillSummaryData.length == 0">
+                                <td colspan="4" class="text-center"><span class="font-14 font500 text-red">No Data
+                                        Available</span></td>
+                            </tr>
+                        </ng-template>
                     </p-table>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{confirmationMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteRecord()">Yes</button>
+
+    </div>
+</ng-template>

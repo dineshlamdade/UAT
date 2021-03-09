@@ -1,10 +1,25 @@
 .eye-icon-payroll{
     float: right;
-    /* margin-left: 0px; */
-    margin-right: 24px;
-    margin-top: -28px;
+    margin-right: 0px;
+    margin-top: -24px;
     position: relative;
     z-index: 2;
     color: #662d8c !important;
     cursor: pointer;
+    font-size: 20px;
 }
+
+.text-center{
+    text-align: center;
+}
+
+.bank-title{
+    font-size: 17px !important;
+}
+
+.invalid-acc-error-message{
+    font-size: 8px;
+    /* margin-left: 12px; */
+    /* margin-top: 3px; */
+    color: #f44336;
+  }

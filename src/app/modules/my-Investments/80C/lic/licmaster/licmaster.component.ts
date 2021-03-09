@@ -147,6 +147,8 @@ export class LicmasterComponent implements OnInit {
       ecs: new FormControl('0'),
       licMasterPaymentDetailsId: new FormControl(0),
       licMasterId: new FormControl(0),
+      proofSubmissionId: new FormControl(null),
+
     });
 
     this.frequencyOfPaymentList = [
@@ -471,6 +473,7 @@ export class LicmasterComponent implements OnInit {
     );
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+    this.form.get('proofSubmissionId').setValue(this.masterGridData[i].proofSubmissionId);
     this.isClear = true;
 
     this.masterfilesArray = this.masterGridData[i].documentInformationList

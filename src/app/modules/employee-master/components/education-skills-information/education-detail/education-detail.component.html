@@ -6,17 +6,27 @@
                     <form [formGroup]="EducationInfoForm">
                         <!-- Member Details -->
                         <fieldset>
-                            <legend><i class="fa fa-mortar-board"></i>
+                            <legend>
                                 Education Information</legend>
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Education</label>
-                                    <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
+                                    <select class="form-control" placeholder="Select" formControlName="education"
+                                        [(ngModel)]="employeeEducationRequestModel.education"
+                                        (onSelect)="IlliterateValidation()"
+                                        [ngClass]="{'is-invalid' : EducationInfoForm.get('education').status == 'INVALID'}">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let education of highestEducationList" [value]="education">
+                                            {{education}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredHighestEducationList" placeholder="Select"
                                         (completeMethod)="filterHighestEducation($event)" [dropdown]="true"
                                         formControlName="education"
                                         [(ngModel)]="employeeEducationRequestModel.education"
                                         (onSelect)="IlliterateValidation()">
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
@@ -42,7 +52,7 @@
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Specialization 1</label>
                                     <input type="text" class="form-control" placeholder="Enter Specialization 1"
-                                        formControlName="specialization1" (keyup)="comparespecialization()"
+                                        formControlName="specialization1" (change)="comparespecialization()"
                                         [(ngModel)]="employeeEducationRequestModel.specialisation1">
                                 </div>
 
@@ -50,24 +60,59 @@
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Specialization 2</label>
                                     <input type="text" class="form-control" placeholder="Enter Specialization 2"
-                                        formControlName="specialization2" (keyup)="comparespecialization()"
+                                        formControlName="specialization2" (change)="comparespecialization()"
                                         [(ngModel)]="employeeEducationRequestModel.specialisation2">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Course Type</label>
-                                    <p-autoComplete [suggestions]="filteredcourseTypeList"
+                                    <select class="form-control" placeholder="Select" formControlName="courseType"
+                                        [(ngModel)]="employeeEducationRequestModel.courseType">
+                                        <option value="" selected disabled>Select</option>
+                                        <option *ngFor="let courseType of courseTypeList" [value]="courseType">
+                                            {{courseType}}
+                                        </option>
+                                    </select>
+
+                                    <!-- <p-autoComplete [suggestions]="filteredcourseTypeList"
                                         (completeMethod)="filtercourseType($event)" [dropdown]="true"
                                         placeholder="Select" formControlName="courseType"
                                         [(ngModel)]="employeeEducationRequestModel.courseType">
-                                    </p-autoComplete>
+                                    </p-autoComplete> -->
                                 </div>
+
+                                <!-- <div class="col-sm-6 col-md-3 mt-15">
+                                    <label class="form-label">Standard Duration</label>
+                                    <input type="text" class="form-control" placeholder="Standard Duration"
+                                        formControlName="durationOfCourse" tooltip="standard Duration"
+                                        [(ngModel)]="employeeEducationRequestModel.durationOfCourse">
+                                </div> -->
+
 
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Standard Duration</label>
-                                    <input type="text" class="form-control" placeholder="Standard Duration"
-                                        formControlName="durationOfCourse" matTooltip="standard Duration"
-                                        [(ngModel)]="employeeEducationRequestModel.durationOfCourse">
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-5 country-code">
+                                            <input type="text" class="form-control" formControlName="durationOfCourse"
+                                                placeholder="Standard Duration"
+                                                [(ngModel)]="employeeEducationRequestModel.durationOfCourse"
+                                                tooltip="standard Duration">
+                                        </div>
+                                        <div class="col-sm-3 col-md-7 ml-2">
+                                            <select class="form-control selectpicker" placeholder="Select"
+                                                formControlName="duration"
+                                                [(ngModel)]="employeeEducationRequestModel.durationOfCourseValue"
+                                                tooltip="Standard Duration">
+                                                <option value="" data-hidden="true">select
+                                                </option>
+                                                <option *ngFor="let duration of standardDurationList"
+                                                    [value]="duration">
+                                                    {{duration}}
+                                                </option>
+                                                <!-- (change)="clearDuration()" -->
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
@@ -80,7 +125,7 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 class="form-control" placeholder="  /   /" bsDatepicker
-                                                formControlName="startDate"
+                                                formControlName="startDate" [maxDate]="today" (click)="validateStartingdate()"
                                                 [(ngModel)]="employeeEducationRequestModel.startDate">
                                         </div>
                                     </div>
@@ -94,9 +139,9 @@
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                data-provide="datepicker" data-date-autoclose="true"
+                                                data-provide="datepicker" data-date-autoclose="true" disabled
                                                 class="form-control" placeholder="  /   /" bsDatepicker
-                                                formControlName="endDate"
+                                                formControlName="endDate" [maxDate]="today" 
                                                 [minDate]="employeeEducationRequestModel.startDate"
                                                 [(ngModel)]="employeeEducationRequestModel.endDate">
                                         </div>
@@ -104,8 +149,8 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
-                                    <label class="form-label">Percentage/CGPA/Grade</label>
-                                    <input type="number" class="form-control" placeholder="Enter Percentage/CGPA/Grade"
+                                    <label class="form-label">Percentage/ CGPA/ Grade</label>
+                                    <input type="text" class="form-control" placeholder="Enter Percentage/CGPA/Grade"
                                         formControlName="percentageOrCGPAOrGrade"
                                         [(ngModel)]="employeeEducationRequestModel.percentageOrCGPAOrGrade">
                                 </div>
@@ -122,92 +167,115 @@
                                             checked [(ngModel)]="employeeEducationRequestModel.isHighestQualification"
                                             formControlName="isHighestQualificationBoolean"
                                             (change)="highestEducationBoolean(employeeEducationRequestModel.isHighestQualification)">
-                                        <span class="custom-control-label">Is Highest Level Qualification</span>
+                                        <span class="custom-control-label"><b>Highest level
+                                                qualification</b></span>
                                     </label>
-                                </div>
-                            </div>
-
-                            <div class="row mt-15">
-                                <div class="col-12">
-                                    <div class="float-right mb-15">
-                                        <button type="submit" (click)="postEducationForm(employeeEducationRequestModel)"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                                            [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
-                                            'btn-bg-green':!EducationInfoForm.invalid}"
-                                            [hidden]="educationEditFlag || educationviewFlag"
-                                            [disabled]="EducationInfoForm.invalid"><b><i
-                                                    class="fa fa-floppy-o"></i></b>Save</button>
-
-                                        <button type="submit" [disabled]="EducationInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
-                                        'btn-bg-green':!EducationInfoForm.invalid}"
-                                            (click)="updateEducationForm(employeeEducationRequestModel)"
-                                            class="custom_button custom_btn btn-labeled btn-labeled-left"
-                                            tooltip="Update" *ngIf="educationEditFlag"><b><i
-                                                    class="fa fa-floppy-o"></i></b>Update</button>
-
-                                        <button type="button" tooltip="Reset" (click)="resetEducationForm()"
-                                            [hidden]="educationviewFlag"
-                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                    class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
-
-                                        <button type="button" *ngIf="educationEditFlag || educationviewFlag"
-                                            (click)="cancelEducationEditView()"
-                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
-                                    </div>
                                 </div>
                             </div>
                         </fieldset>
                     </form>
-                    <br>
-                    <legend style="font-size: 17px !important;">Summary</legend>
+                    <div class="row mt-15">
+                        <div class="col-12">
+                            <div class="float-right mb-15">
+                                <button type="button" tooltip="Previous"
+                                    [routerLink]="['/employee-master/family-information/family-details']"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 mr-15 bg-teal-400"><b><i
+                                        class="fa fa-angle-double-left"
+                                            aria-hidden="true"></i></b>Previous</button>
+
+                                <!-- <button type="button" tooltip="Next"
+                                    [routerLink]="['/employee-master/employee-summary']"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                            class="fa fa-chevron-circle-right" aria-hidden="true"></i></b>Next</button> -->
+
+                                <!-- <button type="button" (click)="educationSaveNextSubmit(employeeEducationRequestModel)" [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
+                            'btn-bg-green':!EducationInfoForm.invalid}"
+                                    [hidden]="educationEditFlag || educationviewFlag"
+                                    [disabled]="EducationInfoForm.invalid"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                    tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                                    Save & Next</button> -->
+
+                                <button type="submit" (click)="postEducationForm(employeeEducationRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                                    [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
+                                    'btn-bg-green':!EducationInfoForm.invalid}"
+                                    [hidden]="educationEditFlag || educationviewFlag"
+                                    [disabled]="EducationInfoForm.invalid"><b><i
+                                            class="fa fa-floppy-o"></i></b>Save</button>
+
+                                <button type="submit" [disabled]="EducationInfoForm.invalid" [ngClass]="{'disabled-btn-bg-green':EducationInfoForm.invalid,
+                                'btn-bg-green':!EducationInfoForm.invalid}"
+                                    (click)="updateEducationForm(employeeEducationRequestModel)"
+                                    class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Update"
+                                    *ngIf="educationEditFlag"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+                                <button type="button" tooltip="Reset" (click)="resetEducationForm()"
+                                    [hidden]="educationviewFlag"
+                                    class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                            class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
+
+                                <button type="button" *ngIf="educationEditFlag || educationviewFlag"
+                                    (click)="cancelEducationEditView()"
+                                    class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                    tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b> Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-10">
+                        <div class="col-md-12">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                    </div>
                     <p-table [value]="EducationSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-education>
                             <colgroup>
-                                <col style="width:150px">
-                                <col style="width:120px">
-                                <col style="width:120px">
-                                <col style="width:170px">
-                                <col style="width:175px">
-                                <col style="width:170px">
-                                <col style="width:145px">
-                                <col style="width:150px">
+                                <col class="wd-15">
+                                <col class="wd-15">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-15">
+                                <col class="wd-15">
+                                <col class="wd-10">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Education</th>
-                                <th class="primeng-table-header-center">Degree Name</th>
-                                <th class="primeng-table-header-center">Starting Date</th>
-                                <th class="primeng-table-header-center">Completion Date</th>
-                                <th class="primeng-table-header-center">Institute/University</th>
-                                <th class="primeng-table-header-center">Percentage/CGPA/Grade</th>
-                                <th class="primeng-table-header-center">Specialization 1</th>
-                                <th class="primeng-table-header-center">Action</th>
+                                <th class="primeng-table-header-center wd-15">Education</th>
+                                <th class="primeng-table-header-center wd-15">Degree Name</th>
+                                <th class="primeng-table-header-center wd-10">Starting Date</th>
+                                <th class="primeng-table-header-center wd-10">Completion Date</th>
+                                <th class="primeng-table-header-center wd-15">Institute/University</th>
+                                <th class="primeng-table-header-center wd-15">Percentage/CGPA/Grade</th>
+                                <th class="primeng-table-header-center wd-10">Specialization 1</th>
+                                <th class="primeng-table-header-center wd-10">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-education>
                             <tr>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.education}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.degreeName}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span> {{education.startDate}}</span></td>
+                                <td class="primeng-table-header-left"><span> {{education.startDate}}</span></td>
 
-                                <td class="primeng-table-header-center"><span> {{education.endDate}}</span></td>
+                                <td class="primeng-table-header-left"><span> {{education.endDate}}</span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.instituteUniversityName}}</span></td>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.percentageOrCGPAOrGrade}}</span></td>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.specialization1}}</span></td>
-                                <td class="primeng-table-header-center"><span><i
+                                <td class="primeng-table-header-left"><span><i
                                             class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
                                             (click)="editEducationRow(education)"></i>
 
@@ -215,8 +283,14 @@
                                             (click)="viewEducationRow(education)"></i></span>
 
                                     <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
-                                        (click)="deleteEducationRow(education)"></i>
+                                        (click)="deleteEducationRow(education, confirmation)"></i>
                                 </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr *ngIf="EducationSummaryData.length==0">
+                                <td colspan="8" class="text-center"><span class="font-14 font500 text-red">No Data
+                                        Available</span></td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -225,3 +299,25 @@
         </div>
     </div>
 </div>
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{confirmationMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteRecord()">Yes</button>
+
+    </div>
+</ng-template>

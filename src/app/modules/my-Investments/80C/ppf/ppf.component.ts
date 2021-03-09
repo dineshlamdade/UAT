@@ -9,6 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 
 })
 export class PPFComponent implements OnInit {
+  policyNumber: string;
   constructor() { }
   public tabIndex = 0;
   public windowScrolled: boolean;
@@ -24,6 +25,12 @@ export class PPFComponent implements OnInit {
     this.data = event;
     console.log('data::',this.data);
   }
+
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.policyNumber = event;
+  }
+
 
   changeTabIndex(index: number)
   {

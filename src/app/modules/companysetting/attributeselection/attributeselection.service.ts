@@ -1,3 +1,4 @@
+import { environment } from './../../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -10,44 +11,11 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
   })
-  
+
 export class attributeselection {
+    //url = 'http://localhost:8084/hrms/v1/';
+    public url = environment.baseUrl8084;
 
-    // status: string[] = ['OUTOFSTOCK', 'INSTOCK', 'LOWSTOCK'];
-
-    // productNames: string[] = [
-    //     "Bamboo Watch", 
-    //     "Black Watch", 
-    //     "Blue Band", 
-    //     "Blue T-Shirt", 
-    //     "Bracelet", 
-    //     "Brown Purse", 
-    //     "Chakra Bracelet",
-    //     "Galaxy Earrings",
-    //     "Game Controller",
-    //     "Gaming Set",
-    //     "Gold Phone Case",
-    //     "Green Earbuds",
-    //     "Green T-Shirt",
-    //     "Grey T-Shirt",
-    //     "Headphones",
-    //     "Light Green T-Shirt",
-    //     "Lime Band",
-    //     "Mini Speakers",
-    //     "Painted Phone Case",
-    //     "Pink Band",
-    //     "Pink Purse",
-    //     "Purple Band",
-    //     "Purple Gemstone Necklace",
-    //     "Purple T-Shirt",
-    //     "Shoes",
-    //     "Sneakers",
-    //     "Teal T-Shirt",
-    //     "Yellow Earbuds",
-    //     "Yoga Mat",
-    //     "Yoga Set",
-    // ];
-    url = 'http://localhost:8084/hrms/v1/';
     constructor(private _HTTP: HttpClient) { }
 
      // get All AttributeCreation
@@ -77,7 +45,7 @@ export class attributeselection {
           }));
       }
 
-        
+
   //update attribute-group by id
   UpdateAttributeGroup(id: number, data: SaveAttributeSelection): Observable<number | {}> {
     debugger
@@ -156,11 +124,11 @@ export class attributeselection {
 //     generateId() {
 //         let text = "";
 //         let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        
+
 //         for (var i = 0; i < 5; i++) {
 //             text += possible.charAt(Math.floor(Math.random() * possible.length));
 //         }
-        
+
 //         return text;
 //     }
 
