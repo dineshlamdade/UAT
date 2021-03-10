@@ -1,8 +1,8 @@
-<div class="container-fluid">
+<div class="container-fluid p-0">
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body p-0">
                     <form [formGroup]="FamilyDetailsInfoForm"
                         (ngSubmit)="FamilyDetailsInfoSubmit(personalInformationModel)">
                         <!-- Member Details -->
@@ -10,238 +10,210 @@
                             <legend><i class="fa fa-users"></i>
                                 Member Details</legend>
                             <div class="row">
-                                <div class="row">
-                                    &nbsp;&nbsp;
-                                    <div class="circle thumbnail margin-top-img"
-                                        (click)="fileInput.click($event, fileInput)">
-                                        <div class="avatar-edit">
-                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput
-                                                (change)="uploadFile($event, fileInput)" hidden
-                                                [(ngModel)]="selectedImg" formControlName="image" />
-                                        </div>
-                                        <img [src]="imageUrl">
-                                        <h4 class="image-size-info img-height" tooltip="Size should be
-                                        less than 1 MB">Select Image <p class="small-size">(Size should be
-                                                less than 1 MB)</p>
-                                        </h4>
-                                    </div>
-                                </div>
-                                <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                                <div class="row family-first-line">
-                                    <div class="col-sm-6 col-md-4">
-                                        <label class="form-label">Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter Name"
-                                            formControlName="familyMemberName"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.familyMemberName"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('familyMemberName').status == 'INVALID'}">
-                                    </div>
-                                    <div class="col-sm-6 col-md-4">
-                                        <label class="form-label">Birth Date</label>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body p-1">
+                                            <div class="row">
+                                                &nbsp;&nbsp;
+                                                <div class="circle thumbnail margin-top-img"
+                                                    (click)="fileInput.click($event, fileInput)">
+                                                    <div class="avatar-edit position_relative">
+                                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg"
+                                                            #fileInput (change)="uploadFile($event, fileInput)" hidden
+                                                            [(ngModel)]="selectedImg" formControlName="image" />
+                                                        <div class="overlay_APP"><i class="fa fa-plus-circle"
+                                                                aria-hidden="true"></i></div>
+                                                        <img [src]="imageUrl">
+                                                    </div>
+                                                    <h4 class="image-size-info img-height" tooltip="Size should be
+                                                    less than 1 MB">Select Image <p class="small-size">(Size should be
+                                                            less than 1 MB)</p>
+                                                    </h4>
                                                 </div>
-                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
-                                                    class="form-control" placeholder="  /   /" bsDatepicker
-                                                    formControlName="dateOfBirth" [maxDate]="today"
-                                                    [(ngModel)]="familyMemberInfoRequestDTO.dateOfBirth"
-                                                    (click)="birthDateClickEvent($event)"
-                                                    [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('dateOfBirth').status == 'INVALID'}"
-                                                    (bsValueChange)="birthDateValidation();validDate(familyMemberInfoRequestDTO.dateOfBirth)">
+
+                                            </div>
+                                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                                            <div class="row family-first-line">
+                                                <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Name"
+                                                        formControlName="familyMemberName"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.familyMemberName"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('familyMemberName').status == 'INVALID'}">
+                                                </div>
+                                                <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Birth Date</label>
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="fa fa-calendar"></i></span>
+                                                            </div>
+                                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                                data-provide="datepicker" data-date-autoclose="true"
+                                                                class="form-control" placeholder="  /   /" bsDatepicker
+                                                                formControlName="dateOfBirth" [maxDate]="today"
+                                                                [(ngModel)]="familyMemberInfoRequestDTO.dateOfBirth"
+                                                                (click)="birthDateClickEvent($event)"
+                                                                [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('dateOfBirth').status == 'INVALID'}"
+                                                                (bsValueChange)="birthDateValidation();validDate(familyMemberInfoRequestDTO.dateOfBirth)">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Relationship</label>
+                                                    <select class="form-control" placeholder="Select"
+                                                        (completeMethod)="filterRelationship($event)"
+                                                        formControlName="relation"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.relation"
+                                                        placeholder="Enter Relationship" #relation
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
+                                                        (change)="populateGender(relation)">
+                                                        <option value="" selected>Select</option>
+                                                        <option *ngFor="let relationOption of relationshipList"
+                                                            [value]="relationOption">
+                                                            {{relationOption}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Gender</label>
+
+                                                    <select class="form-control" placeholder="Select"
+                                                        (completeMethod)="filterGender($event)" formControlName="gender"
+                                                        [dropdown]="true"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.gender"
+                                                        placeholder="Select" (change)="validateGender()"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
+                                                        <option value="" selected>Select</option>
+                                                        <option *ngFor="let gender of allGenders" [value]="gender">
+                                                            {{gender}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Marital Status</label>
+                                                    <select class="form-control" placeholder="Select"
+                                                        (completeMethod)="filterMaritalStatus($event)"
+                                                        formControlName="maritalStatus" [dropdown]="true"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.maritalStatus"
+                                                        placeholder="Select"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('maritalStatus').status == 'INVALID'}">
+                                                        <option value="" selected>Select</option>
+                                                        <option *ngFor="let marital of maritalStatusList"
+                                                            [value]="marital">
+                                                            {{marital}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Father / Husband Name</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Name"
+                                                        formControlName="fatherHusbandName"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.fatherHusbandName"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('fatherHusbandName').status == 'INVALID'}">
+                                                </div>
+
+                                                <div class="col-sm-6 col-md-4 mt-15">
+                                                    <label class="form-label">Aadhaar Number </label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter Aadhaar No." minlength="1" maxlength="12"
+                                                        formControlName="aadhaar" (keypress)="keyPress($event)"
+                                                        (keyup)="updateAadhaarName(familyMemberInfoRequestDTO.aadhaar)"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('aadhaar').status == 'INVALID'}"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.aadhaar">
+                                                </div>
+
+                                                <div class="col-sm-6 col-md-4 mt-15">
+                                                    <label class="form-label">Name As Per Aadhaar</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Name"
+                                                        formControlName="nameAsPerAadhaar"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.nameAsPerAadhaar">
+                                                </div>
+
+                                                <div class="col-sm-6 col-md-4 mt-15">
+                                                    <label class="form-label">Age Bracket</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Name"
+                                                        formControlName="ageBracket"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.ageBracket"
+                                                        (change)="validateIsdependant()"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
+                                                </div>
+
+                                                <div class=" col-md-4 mt-15">
+                                                    <label class="form-label">
+                                                        Dependent On Employee</label>
+                                                    <div class="custom-controls-stacked">
+                                                        <label
+                                                            class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" class="custom-control-input" value="yes"
+                                                                (change)="dependentOnEmployeeValidation($event)"
+                                                                formControlName="dependentOnEmployeeToggle"
+                                                                [(ngModel)]="dependentOnEmployee">
+                                                            <span class="custom-control-label">Yes</span>
+                                                        </label>
+                                                        <label
+                                                            class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" class="custom-control-input" value="no"
+                                                                (change)="dependentOnEmployeeValidation($event)"
+                                                                formControlName="dependentOnEmployeeToggle"
+                                                                [(ngModel)]="dependentOnEmployee">
+                                                            <span class="custom-control-label">
+                                                                No</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="invalid-error-message" *ngIf="!dependentOnEmployee">
+                                                        Please Select Option</div>
+                                                </div>
+
+                                                <div class=" col-md-4 mt-15">
+                                                    <label class="form-label">
+                                                        Part Of Company Mediclaim Insurance</label>
+                                                    <div class="custom-controls-stacked">
+                                                        <label
+                                                            class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" class="custom-control-input" value="yes"
+                                                                (change)="companyMediclaimValidation($event)"
+                                                                formControlName="companyMediclaimToggle"
+                                                                [(ngModel)]="companyMediclaim">
+                                                            <span class="custom-control-label">Yes</span>
+                                                        </label>
+                                                        <label
+                                                            class="custom-control custom-radio custom-control-inline">
+                                                            <input type="radio" class="custom-control-input" value="no"
+                                                                (change)="companyMediclaimValidation($event)"
+                                                                formControlName="companyMediclaimToggle"
+                                                                [(ngModel)]="companyMediclaim">
+                                                            <span class="custom-control-label">
+                                                                No</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="invalid-error-message" *ngIf="!companyMediclaim">
+                                                        Please Select Option</div>
+                                                </div>
+
+                                                <div class=" col-md-4 mt-15">
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            name="example-checkbox1" checked formControlName="isActive"
+                                                            (change)="activeSetBoolean(IsActive)"
+                                                            [(ngModel)]="IsActive">
+                                                        <span class="custom-control-label">Active</span>
+                                                    </label>
+                                                </div>
+                                                <div class=" col-md-4 mt-15">
+                                                    <label class="form-label">Remark</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Remark"
+                                                        formControlName="remark"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.remark"
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('remark').status == 'INVALID'}">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-6 col-md-4">
-                                        <label class="form-label">Relationship</label>
-                                        <select class="form-control" placeholder="Select"
-                                            (completeMethod)="filterRelationship($event)" formControlName="relation"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.relation"
-                                            placeholder="Enter Relationship" #relation
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
-                                            (change)="populateGender(relation)">
-                                            <option value="" selected disabled>Select</option>
-                                            <option *ngFor="let relationOption of relationshipList"
-                                                [value]="relationOption">
-                                                {{relationOption}}
-                                            </option>
-                                        </select>
-
-                                        <!-- <p-autoComplete [suggestions]="filteredRelationshipList"
-                                            (completeMethod)="filterRelationship($event)" formControlName="relation"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.relation"
-                                            placeholder="Enter Relationship" #relation [dropdown]="true"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
-                                            (onSelect)="populateGender(relation)">
-                                        </p-autoComplete> -->
-
-                                        <!-- <i class="fa fa-chevron-down down-arrow-icon"></i> -->
-                                    </div>
-                                    <div class="col-sm-6 col-md-4">
-                                        <label class="form-label">Gender</label>
-                                        <!-- <p-autoComplete [suggestions]="filteredallGendersList"
-                                            (completeMethod)="filterGender($event)" formControlName="gender"
-                                            [dropdown]="true" [(ngModel)]="familyMemberInfoRequestDTO.gender"
-                                            placeholder="Select"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
-                                        </p-autoComplete> -->
-
-                                        <select class="form-control" placeholder="Select"
-                                            (completeMethod)="filterGender($event)" formControlName="gender"
-                                            [dropdown]="true" [(ngModel)]="familyMemberInfoRequestDTO.gender"
-                                            placeholder="Select"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('gender').status == 'INVALID'}">
-                                            <option value="" selected disabled>Select</option>
-                                            <option *ngFor="let gender of allGenders" [value]="gender">
-                                                {{gender}}
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-4">
-                                        <label class="form-label">Marital Status</label>
-                                        <select class="form-control" placeholder="Select"
-                                            (completeMethod)="filterMaritalStatus($event)"
-                                            formControlName="maritalStatus" [dropdown]="true"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.maritalStatus" placeholder="Select"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('maritalStatus').status == 'INVALID'}">
-                                            <option value="" selected disabled>Select</option>
-                                            <option *ngFor="let marital of maritalStatusList" [value]="marital">
-                                                {{marital}}
-                                            </option>
-                                        </select>
-
-                                        <!-- <p-autoComplete [suggestions]="filteredmaritalStatusList"
-                                            (completeMethod)="filterMaritalStatus($event)"
-                                            formControlName="maritalStatus" [dropdown]="true"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.maritalStatus" placeholder="Select"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('maritalStatus').status == 'INVALID'}">
-                                        </p-autoComplete> -->
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-4">
-                                        <label class="form-label">Father / Husband Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter Name"
-                                            formControlName="fatherHusbandName"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.fatherHusbandName"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('fatherHusbandName').status == 'INVALID'}">
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-4 mt-15">
-                                        <label class="form-label">Aadhaar Number </label>
-                                        <input type="text" class="form-control" placeholder="Enter Aadhaar No."
-                                            minlength="1" maxlength="12" formControlName="aadhaar"
-                                            (keypress)="keyPress($event)"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('aadhaar').status == 'INVALID'}"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.aadhaar">
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-4 mt-15">
-                                        <label class="form-label">Name As Per Aadhaar</label>
-                                        <input type="text" class="form-control" placeholder="Enter Name"
-                                            formControlName="nameAsPerAadhaar"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.nameAsPerAadhaar">
-                                    </div>
-
-                                    <div class="col-sm-6 col-md-4 mt-15">
-                                        <label class="form-label">Age Bracket</label>
-                                        <input type="text" class="form-control" placeholder="Enter Name"
-                                            formControlName="ageBracket"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.ageBracket"
-                                            (change)="validateIsdependant()"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
-
-                                        <!-- <select class="form-control custom-select" placeholder="Select"
-                                            (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.ageBracket" [dropdown]="true"
-                                            (change)="validateIsdependant()" placeholder="Select"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
-                                            <option value="" selected disabled>Select</option>
-                                            <option *ngFor="let ageBracket of ageBracketList" [value]="ageBracket">
-                                                {{ageBracket}}
-                                            </option>
-                                        </select> -->
-
-                                        <!-- <p-autoComplete [suggestions]="filteredageBracketList"
-                                            (completeMethod)="filterAgeBracket($event)" formControlName="ageBracket"
-                                            [(ngModel)]="familyMemberInfoRequestDTO.ageBracket" [dropdown]="true"
-                                            (change)="validateIsdependant()" placeholder="Select"
-                                            [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('ageBracket').status == 'INVALID'}">
-                                        </p-autoComplete> -->
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6 col-md-3 mt-15 row-margin-left">
-                                    <div class="form-group">
-                                        <label class="form-label">
-                                            Dependent On Employee</label>
-                                        <div class="custom-controls-stacked">
-                                            <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="yes"
-                                                    (change)="dependentOnEmployeeValidation($event)"
-                                                    formControlName="dependentOnEmployeeToggle"
-                                                    [(ngModel)]="dependentOnEmployee">
-                                                <span class="custom-control-label">Yes</span>
-                                            </label>
-                                            <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="no"
-                                                    (change)="dependentOnEmployeeValidation($event)"
-                                                    formControlName="dependentOnEmployeeToggle"
-                                                    [(ngModel)]="dependentOnEmployee">
-                                                <span class="custom-control-label">
-                                                    No</span>
-                                            </label>
-                                        </div>
-                                        <mat-error *ngIf="dependentOnEmployee == ''">
-                                            Please Select Option</mat-error>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-5 mt-15 margin-left">
-                                    <div class="form-group">
-                                        <label class="form-label">
-                                            Part Of Company Mediclaim Insurance</label>
-                                        <div class="custom-controls-stacked">
-                                            <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="yes"
-                                                    (change)="companyMediclaimValidation($event)"
-                                                    formControlName="companyMediclaimToggle"
-                                                    [(ngModel)]="companyMediclaim">
-                                                <span class="custom-control-label">Yes</span>
-                                            </label>
-                                            <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="no"
-                                                    (change)="companyMediclaimValidation($event)"
-                                                    formControlName="companyMediclaimToggle"
-                                                    [(ngModel)]="companyMediclaim">
-                                                <span class="custom-control-label">
-                                                    No</span>
-                                            </label>
-                                        </div>
-                                        <mat-error *ngIf="companyMediclaim == ''">
-                                            Please Select Option</mat-error>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-6 col-md-3 row-margin-left">
-                                    <label class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="example-checkbox1"
-                                            checked formControlName="isActive" (change)="activeSetBoolean(IsActive)"
-                                            [(ngModel)]="IsActive">
-                                        <span class="custom-control-label">Active</span>
-                                    </label>
-                                </div>
-                                <div class="col-sm-6 col-md-3 margin-left">
-                                    <label class="form-label">Remark</label>
-                                    <input type="text" class="form-control" placeholder="Enter Remark"
-                                        formControlName="remark" [(ngModel)]="familyMemberInfoRequestDTO.remark"
-                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('remark').status == 'INVALID'}">
                                 </div>
                             </div>
                         </fieldset>
@@ -251,52 +223,45 @@
                             <legend><i class="fa fa-map-marker"></i>
                                 Address Details</legend>
                             <div class="row">
-                                <div class="col-sm-3 col-md-5">
+                                <div class="col-sm-3 col-md-3">
                                     <label class="form-label">Phone No.</label>
                                     <div class="row">
-                                        <div class="col-sm-3 col-md-4 country-code">
+                                        <div class="col-sm-3 col-md-4 mr-0 pr-0 country-code">
                                             <select class="form-control" placeholder="Select"
-                                                [(ngModel)]="addressCountryCode"
+                                                [(ngModel)]="addressCountryCode" (change)="validMobNo()"
                                                 (completeMethod)="filtercountryCode($event)"
-                                                formControlName="addressDetailsCountryCode" placeholder="Select">
-                                                <option value="" selected disabled>Select</option>
+                                                formControlName="addressDetailsCountryCode" placeholder="Select"
+                                                [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('addressDetailsCountryCode').status == 'INVALID'}">
+                                                <option value="" selected>Select</option>
                                                 <option *ngFor="let code of countryCode" [value]="code">
                                                     {{code}}
                                                 </option>
                                             </select>
-
-                                            <!-- <p-autoComplete [suggestions]="filteredcountryCode" #copyAddress
-                                                [(ngModel)]="addressCountryCode" [dropdown]="true"
-                                                (completeMethod)="filtercountryCode($event)"
-                                                formControlName="addressDetailsCountryCode" placeholder="Select">
-                                            </p-autoComplete> -->
                                         </div>
-                                        <div class="col-sm-3 col-md-6">
+                                        <div class="col-sm-3 col-md-8">
                                             <input type="text" class="form-control" placeholder="Enter Phone No."
                                                 minlength="1" maxlength="10" (keypress)="keyPress($event)"
                                                 formControlName="addressDetailsMobileNumber"
-                                                [(ngModel)]="addressPhoneNo">
+                                                [(ngModel)]="addressPhoneNo" (change)="validCountryCode()"
+                                                [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('addressDetailsMobileNumber').status == 'INVALID'}">
+                                        </div>
+                                        <div class="invalid-mob-error-message"
+                                            *ngIf="FamilyDetailsInfoForm.get('addressDetailsMobileNumber').status == 'INVALID'">
+                                            Mobile Number must be 10 digit & Should not start with 0
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-3">
+                                <div class="col-sm-6 col-md-2">
                                     <label class="form-label">Copy From</label>
                                     <select class="form-control" placeholder="Select"
                                         (completeMethod)="filterCopyFromList($event)" #copy formControlName="copyFrom"
                                         (change)="getAddressFromCopyList(copy)" placeholder="Select">
-                                        <option value="" selected disabled>Select</option>
+                                        <option value="" selected>Select</option>
                                         <option *ngFor="let copyFrom of CopyFromAddressList" [value]="copyFrom">
                                             {{copyFrom}}
                                         </option>
                                     </select>
-
-                                    <!-- <p-autoComplete [suggestions]="filteredCopyFromAddressList" #copyAddress
-                                        (completeMethod)="filterCopyFromList($event)" formControlName="copyFrom"
-                                        (onSelect)="getAddressFromCopyList($event)" placeholder="Select"
-                                        [dropdown]="true">
-                                    </p-autoComplete> -->
-
                                 </div>
                             </div>
 
@@ -380,23 +345,25 @@
                                             <select class="form-control" placeholder="Select"
                                                 [(ngModel)]="guardianCountryCode"
                                                 (completeMethod)="filtercountryCode($event)"
-                                                formControlName="guardianCountryCode" placeholder="Select">
-                                                <option value="" selected disabled>Select</option>
+                                                formControlName="guardianCountryCode" placeholder="Select"
+                                                (change)="validGuardianMobNo()" 
+                                                [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('guardianCountryCode').status == 'INVALID'}">
+                                                <option value="" selected>Select</option>
                                                 <option *ngFor="let code of countryCode" [value]="code">
                                                     {{code}}
                                                 </option>
                                             </select>
-
-                                            <!-- <p-autoComplete [suggestions]="filteredcountryCode"
-                                                [(ngModel)]="guardianCountryCode" [dropdown]="true"
-                                                (completeMethod)="filtercountryCode($event)"
-                                                formControlName="guardianCountryCode" placeholder="Select">
-                                            </p-autoComplete> -->
                                         </div>
                                         <div class="col-sm-3 col-md-6">
                                             <input type="text" class="form-control" placeholder="Enter Mobile No."
                                                 minlength="1" maxlength="10" formControlName="guardianMobileNumber"
-                                                [(ngModel)]="guardianPhoneNo" (keypress)="keyPress($event)">
+                                                [(ngModel)]="guardianPhoneNo" (keypress)="keyPress($event)"
+                                                (change)="validGuardianCountryCode()"
+                                                [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('guardianMobileNumber').status == 'INVALID'}">
+                                        </div>
+                                        <div class="invalid-mob-error-message"
+                                            *ngIf="FamilyDetailsInfoForm.get('guardianMobileNumber').status == 'INVALID'">
+                                            Mobile Number must be 10 digit & Should not start with 0
                                         </div>
                                     </div>
                                 </div>
@@ -468,13 +435,13 @@
                                     <button type="button" tooltip="Previous"
                                         [routerLink]="['/employee-master/previous-employment-information']"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
-                                                class="fa fa-chevron-circle-left"
+                                                class="fa fa-angle-double-left"
                                                 aria-hidden="true"></i></b>Previous</button>
 
                                     <button type="button" tooltip="Next"
                                         [routerLink]="['/employee-master/education-skills-information/education-details']"
                                         class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
-                                                class="fa fa-chevron-circle-right"
+                                                class="fa fa-angle-double-right"
                                                 aria-hidden="true"></i></b>Next</button>
 
                                     <button type="button" (click)="familySaveNextSubmit(familyMemberInfoRequestDTO, familyAddressDetailRequestDTO,
@@ -512,21 +479,17 @@
 
                         <legend>Summary</legend>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <div class="table-responsive Custom_Table">
                                     <table class="table table-striped table-hover table-bordered m-b-0">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th scope="col" class="font700 wd-30">Family Member Name</th>
+                                                <th scope="col" class="font700 wd-40">Family Member Name</th>
                                                 <th scope="col" class="font700 wd-30">Relationship</th>
-                                                <th scope="col" class="font700 wd-30">Status</th>
-                                                <th scope="col" class="font700 wd-20">Action</th>
+                                                <th scope="col" class="font700 wd-20">Status</th>
+                                                <th scope="col" class="font700 wd-10">Action</th>
                                             </tr>
                                         </thead>
-                                        <tr *ngIf="FamilySummaryGridData.length == 0">
-                                            <td colspan="4"><span class="font-14 font500 align-center text-red">No
-                                                    data found</span></td>
-                                        </tr>
                                         <tbody>
                                             <tr *ngFor="let family of FamilySummaryGridData">
                                                 <td><span>{{family.familyMemberName}}</span></td>
@@ -539,6 +502,11 @@
                                                     <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
                                                         (click)="viewFamilyMember(family)"></i>
                                                 </td>
+                                            </tr>
+                                            <tr *ngIf="FamilySummaryGridData.length == 0">
+                                                <td colspan="4"><span class="font-14 font500 align-center text-red">No
+                                                        Data
+                                                        Available</span></td>
                                             </tr>
                                         </tbody>
                                     </table>

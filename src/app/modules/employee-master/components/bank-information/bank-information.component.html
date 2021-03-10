@@ -1,6 +1,7 @@
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
 <div class="page">
+<<<<<<< HEAD
   <app-header></app-header>
   <div class="section-body mt-3">
     <div class="container-fluid">
@@ -23,6 +24,31 @@
                     </select>
 
                     <!-- <p-autoComplete [(ngModel)]="BankInformationModel.country"
+=======
+    <app-header></app-header>
+    <div class="section-body mt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form [formGroup]="bankInfoForm" class="tabview-contents" (ngSubmit)="bankInfoSubmit()">
+                                <!-- <div class="tabview"> -->
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">{{ 'BankInfoForm.Country' | transloco }}</label>
+                                        <select class="form-control custom-select"
+                                            [(ngModel)]="BankInformationModel.country" [suggestions]="filteredCountries"
+                                            (completeMethod)="filterCountry($event)" formControlName="country"
+                                            placeholder="Select" (change)="formTouch(bankInfoForm); selectCountry()">
+                                            <option value="" selected disabled>Select</option>
+                                            <option *ngFor="let country of countryList" [value]="country">
+                                                {{country}}
+                                            </option>
+                                        </select>
+
+                                        <!-- <p-autoComplete [(ngModel)]="BankInformationModel.country"
+>>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
                                             [suggestions]="filteredCountries" (completeMethod)="filterCountry($event)"
                                             formControlName="country" placeholder="Select">
                                         </p-autoComplete>
@@ -39,6 +65,7 @@
                                             </option>
                                         </select>
                                     </div> -->
+<<<<<<< HEAD
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
                     <input type="text" class="form-control" placeholder="Enter IFSC" maxlength="11"
@@ -47,6 +74,16 @@
                       (keyup)="getDataFromIFSC(BankInformationModel.bankIFSC);BankInformationModel.bankIFSC = $event?.toUpperCase();">
 
                     <!-- <p-autoComplete [(ngModel)]="BankInformationModel.bankIFSC"
+=======
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">{{ 'BankInfoForm.ifsc' | transloco }}</label>
+                                        <input type="text" class="form-control" placeholder="Enter IFSC" maxlength="11"
+                                            formControlName="bankIFSC" [(ngModel)]="BankInformationModel.bankIFSC"
+                                            (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();"
+                                            (keyup)="getDataFromIFSC(BankInformationModel.bankIFSC);BankInformationModel.bankIFSC = $event?.toUpperCase();formTouch(bankInfoForm)">
+
+                                        <!-- <p-autoComplete [(ngModel)]="BankInformationModel.bankIFSC"
+>>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
                                             [suggestions]="IFSCcodeList" placeholder="Search IFSC"
                                             (completeMethod)="searchIFSC($event, BankInformationModel.bankIFSC)"
                                             formControlName="bankIFSC" (ngModelChange)="BankInformationModel.bankIFSC = $event?.toUpperCase();
@@ -59,6 +96,7 @@
                                             </ng-template>
                                         </p-autoComplete>
                                         <i class="fa fa-chevron-down down-arrow-icon"></i> -->
+<<<<<<< HEAD
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">{{ 'BankInfoForm.bankName' | transloco }}</label>
@@ -91,6 +129,51 @@
                       [ngClass]="{'is-invalid' : bankInfoForm.get('accountNumber').status == 'INVALID'}">
                     <mat-icon matSuffix class="field-icon" (click)="toggleFieldTextType();hideAccountNo(accountNo)"
                       [ngClass]="{
+=======
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">{{ 'BankInfoForm.bankName' | transloco }}</label>
+                                        <input type="text" class="form-control" placeholder="Bank Name"
+                                            formControlName="bankName" [(ngModel)]="BankInformationModel.bankName"
+                                            tooltip="{{BankInformationModel.bankName}}"
+                                            (keyup)="formTouch(bankInfoForm)">
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-3">
+                                        <label class="form-label">{{ 'BankInfoForm.branchName' | transloco }}</label>
+                                        <input type="text" class="form-control" placeholder="Branch"
+                                            formControlName="branchName" [(ngModel)]="BankInformationModel.branchName"
+                                            tooltip="{{BankInformationModel.branchName}}"
+                                            (keyup)="formTouch(bankInfoForm)">
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 mt-15">
+                                        <label class="form-label">{{ 'BankInfoForm.branchAddress' | transloco }}</label>
+                                        <input type="text" class="form-control" placeholder="Branch Address"
+                                            formControlName="branchAddress"
+                                            [(ngModel)]="BankInformationModel.branchAddress"
+                                            tooltip="{{BankInformationModel.branchAddress}}"
+                                            (keyup)="formTouch(bankInfoForm)">
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 mt-15">
+                                        <label class="form-label">{{ 'BankInfoForm.nameAsPerBank' | transloco }}</label>
+                                        <input type="text" class="form-control"
+                                            placeholder="Enter Name As per Bank Acc." formControlName="nameAsPerBank"
+                                            [(ngModel)]="BankInformationModel.nameAsPerBank"
+                                            tooltip="{{BankInformationModel.nameAsPerBank}}"
+                                            (keyup)="formTouch(bankInfoForm)"
+                                            [ngClass]="{'is-invalid' : bankInfoForm.get('nameAsPerBank').status == 'INVALID'}">
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 mt-15">
+                                        <label class="form-label">{{ 'BankInfoForm.accountNumber' | transloco }}</label>
+                                        <input class="form-control" placeholder="Enter Account No."
+                                            formControlName="accountNumber" [(ngModel)]="BankInformationModel.accountNo"
+                                            minlength="1" maxlength="{{maxAccNumber}}" appBlockCopyPaste
+                                            [type]="accountNo ? 'text' : 'password'" (keypress)="keyPress($event)"
+                                            (keyup)="validateAccountNo(BankInformationModel.accountNo);accountNoMatchValidation();formTouch(bankInfoForm)"
+                                            [ngClass]="{'is-invalid' : bankInfoForm.get('accountNumber').status == 'INVALID'}">
+                                        <mat-icon matSuffix class="field-icon"
+                                            (click)="toggleFieldTextType();hideAccountNo(accountNo)" [ngClass]="{
+>>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
                                             'visibility': !accountNo,
                                             'visibility_off': accountNo
                                           }">
@@ -98,6 +181,7 @@
                     <!-- <i class="fa"
                                             [ngClass]="{'fa-eye-slash': !accountNo, 'fa-eye': accountNo}"
                                             (click)="toggleFieldTextType()"></i> -->
+<<<<<<< HEAD
                     <mat-error style="font-size: 11px;">
                       {{accountNumberCountError}}</mat-error>
                   </div>
@@ -158,6 +242,82 @@
                         *ngIf="BankInformationModel.employeeBankInfoId" [hidden]="viewBankForm"
                         class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
                         tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+=======
+                                        <div class="invalid-error-message">
+                                            {{accountNumberCountError}}</div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 mt-15">
+                                        <label class="form-label">{{ 'BankInfoForm.confirmAccountNumber' | transloco
+                                            }}</label>
+                                        <input class="form-control" placeholder="Re-Enter Account no." #confirmPassword
+                                            formControlName="confirmAccountNo" appBlockCopyPaste
+                                            (change)="confirmMatchAccountNo(confirmAccountNumber)" minlength="1"
+                                            maxlength="{{maxAccNumber}}" (keypress)="keyPress($event)"
+                                            [type]="confirmAccountNo1 ? 'text' : 'password'"
+                                            [(ngModel)]="confirmAccountNumber"
+                                            (keyup)="accountNoMatchValidation();validateConfirmAccountNo(confirmAccountNumber);"
+                                            [ngClass]="{'is-invalid' : bankInfoForm.get('confirmAccountNo').status == 'INVALID' && confirmAccountNumber?.length>0}">
+                                        <!-- && confirmAccountNumber?.length>0? -->
+                                        <mat-icon matSuffix
+                                            (click)="confirmAccountNo1 = !confirmAccountNo1;hideConfirmAccountNo(confirmAccountNo1)"
+                                            class="field-icon">
+                                            {{confirmAccountNo1 ? 'visibility' : 'visibility_off'}}
+                                        </mat-icon>
+
+                                        <div class="invalid-error-message" *ngIf="bankInfoForm.controls['confirmAccountNo'].hasError('mustMatch')&& confirmAccountNumber?.length>0
+                                            && bankInfoForm.get('confirmAccountNo').status == 'INVALID'">
+                                            {{ 'BankInfoForm.accountNoMatchError' | transloco }}</div>
+
+                                        <div class="invalid-error-message" *ngIf="confirmAccountNumber?.length>0">
+                                            {{confirmAccountNumberCountError}}</div>
+                                        <!-- <p *ngIf="bankInfoForm.controls['confirmAccountNo'].value == BankInformationModel.accountNo
+                && BankInformationModel.accountNo.length>0" class="match-accountNo">
+                                            {{ 'BankInfoForm.accountNoMatchSuccessMsg' | transloco }}</p> -->
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-15">
+                                    <div class="col-12">
+                                        <div class="float-right mb-15">
+                                            <button type="button" tooltip="Previous"
+                                                [routerLink]="['/employee-master/contact-information']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
+                                                        class="fa fa-angle-double-left"
+                                                        aria-hidden="true"></i></b>Previous</button>
+
+                                            <button type="button" tooltip="Next"
+                                                [routerLink]="['/employee-master/payroll-area-information']"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
+                                                        class="fa fa-angle-double-right"
+                                                        aria-hidden="true"></i></b>Next</button>
+
+                                            <button type="button" (click)="BankSaveNextSubmit(BankInformationModel)"
+                                                [hidden]="BankInformationModel.employeeBankInfoId || viewBankForm"
+                                                [disabled]="addButton == false || accountNoMatched ==false || bankInfoForm.untouched"
+                                                [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false || bankInfoForm.untouched,
+                                                'btn-bg-green':addButton == true || accountNoMatched == true || bankInfoForm.touched}"
+                                                class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
+                                                tooltip="Save & Next"><b><i class="fa fa-floppy-o"></i></b>
+                                                Save & Next</button>
+
+                                            <button type="button"
+                                                class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
+                                                [hidden]="BankInformationModel.employeeBankInfoId || viewBankForm"
+                                                [disabled]="addButton == false || accountNoMatched ==false || bankInfoForm.untouched"
+                                                [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false || bankInfoForm.untouched,
+                                                'btn-bg-green':addButton == true || accountNoMatched == true || bankInfoForm.touched}"
+                                                tooltip="Save" (click)="postBankInfoForm(BankInformationModel)"><b><i
+                                                        class="fa fa-floppy-o"></i></b>Save</button>
+
+                                            <button type="button" (click)="updateBankGridRow(BankInformationModel);"
+                                                *ngIf="BankInformationModel.employeeBankInfoId" [hidden]="viewBankForm"
+                                                [disabled]="addButton == false || accountNoMatched ==false || bankInfoForm.untouched"
+                                                [ngClass]="{'disabled-btn-bg-green':addButton == false || accountNoMatched == false || bankInfoForm.untouched,
+                                                'btn-bg-green':addButton == true || accountNoMatched == true || bankInfoForm.touched}"
+                                                class="custom_button btn-bg-green custom_btn btn-labeled btn-labeled-left"
+                                                tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
+>>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
 
                       <button type="button" *ngIf="viewBankForm || BankInformationModel.employeeBankInfoId"
                         (click)="closeBankGridRow(BankInformationModel);"

@@ -43,7 +43,7 @@ export class PreviousEmploymentInformationService {
   }
 
   deleteGridItem(deletePreviousEmploymentId){
-    debugger
+    
     return this.httpClient.put(environment.baseUrl8082 + '/employee-previous-employment/' + deletePreviousEmploymentId, {headers:{ 'X-TenantId': 'PaysquareDefault'}})
     .pipe(map((res: any) =>{
       return res;

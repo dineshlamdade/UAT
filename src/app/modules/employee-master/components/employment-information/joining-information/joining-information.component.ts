@@ -337,9 +337,11 @@ export class JoiningInformationComponent implements OnInit {
   }
   setNoticePeriodMonthModel(noticePeriodMonthModel) {
     localStorage.setItem('noticePeriodMonthModel', noticePeriodMonthModel);
+    localStorage.removeItem('noticePeriodDaysModel');
   }
   setNoticePeriodDaysModel(noticePeriodDaysModel) {
     localStorage.setItem('noticePeriodDaysModel', noticePeriodDaysModel);
+    localStorage.removeItem('noticePeriodMonthModel');
   }
   confirmationPopup() {
     if (this.JoiningInformationModel.expectedConfirmationDate) {

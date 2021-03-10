@@ -111,7 +111,8 @@ export class JobSummaryComponent implements OnInit {
 
         //set default company
         let result=res.data.results[0];
-        this.companyName = result[0].payrollAreaId.companyId.companyName;
+      //  this.companyName = result[0].payrollAreaId.companyId.companyName;
+      this.companyName = result[0].payrollAreaAndCompany;
         localStorage.setItem('jobInformationCompanyName',  this.companyName);
       }
       else {
@@ -150,7 +151,8 @@ export class JobSummaryComponent implements OnInit {
     const toSelect = this.filteredPayrollAreaList.find(
       (c) => c.payrollAreaCode ===  this.payrollAreaCode
     );
-    this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    //this.companyName = toSelect.payrollAreaId.companyId.companyName;
+    this.companyName = toSelect.payrollAreaAndCompany;
     localStorage.setItem('jobInformationCompanyName',  this.companyName);
 
     this.getGridSummary()

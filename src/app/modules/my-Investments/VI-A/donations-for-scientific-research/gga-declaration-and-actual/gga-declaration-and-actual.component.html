@@ -16,7 +16,7 @@
                   Previous Employer Name
                 </th>
                 <th rowspan="2" class="wd-10 font700">
-                  <span tooltip="School/Collage Name"
+                  <span tooltip="Donee"
                     >Donee</span
                   >
                 </th>
@@ -301,7 +301,7 @@
                 />
                 </td>
               </tr>
-                <tr>
+                <!-- <tr>
                 <td colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, transactionDetail.length + 1)"></i>
@@ -309,7 +309,7 @@
                   <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                     (click)="deleteRow(transactionDetail.length + 1)"></i>
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td *ngIf="previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left">Total</td>
@@ -637,7 +637,7 @@
                 Previous Employer Name
               </th>
               <th rowspan="2" class="wd-10 font700">
-                <span tooltip="School/Collage Name"
+                <span tooltip="Donee"
                   >Donee</span
                 >
               </th>
@@ -659,7 +659,7 @@
           <tbody>
             <tr
               *ngFor="
-                let summary of transactionDetail;
+                let summary of editTransactionUpload;
                 let i = index; let j = index;
                 count as c
               "
@@ -707,11 +707,12 @@
                   type="text"
                   class="form-control"
                   [ngModel]="summary.donee"
-                  [disabled]="summary.donee"
                 />
+                <!-- [disabled]="summary.donee" -->
+
               </td>
               <td>
-                <select name="Purpose" class="form-control custom-select" [disabled]="summary.purpose"
+                <select name="Purpose" class="form-control custom-select"
                 [ngModel]="summary.purpose">
                   <option [ngValue]="0">Select</option>
                   <option *ngFor="let purpose of purposeList"
@@ -719,6 +720,7 @@
                   {{purpose.label}}
                 </option>
                 </select>
+                <!-- [disabled]="summary.purpose" -->
               </td>
               <td>
                 <input
@@ -734,8 +736,9 @@
                   [disabled]="summary.transactionStatus=='Approved'"
                   class="form-control"
                   bsDatepicker
-                  [disabled]="summary.dateOfPayment"
                 />
+                <!-- [disabled]="summary.dateOfPayment" -->
+
               </td>
               <!-- <td>
                 <input type="text" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
@@ -759,9 +762,10 @@
                       summary.donations80GGTransactionId
                     }}"
                     [(ngModel)]="summary.declaredAmount"
-                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+
                     class="form-control align-right"
                   />
+                  <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                 </div>
               </td>
 
@@ -773,16 +777,16 @@
                     summary.donations80GGTransactionId
                   }}"
                   [(ngModel)]="summary.actualAmount"
-                  [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                   class="form-control align-right"
                 />
+                <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
+
               </td>
               <td>
                 <input
                   type="text"
                   [ngModel]="summary.amountRejected | number: '1.2-2'"
                   class="form-control align-right"
-                  disabled
                 />
               </td>
               <td>
@@ -790,7 +794,6 @@
                   type="text"
                   [ngModel]="summary.amountApproved | number: '1.2-2'"
                   class="form-control align-right"
-                  disabled
                 />
               </td>
               <td>
@@ -810,7 +813,7 @@
               </td>
             </tr>
             <!-- <tr [formGroup]="tuitionFeesFormForm"> -->
-            <tr
+            <!-- <tr
               role="form"
               (ngSubmit)="saveTransaction(formDirective)"
               [formGroup]="eightyGGAForm"
@@ -921,8 +924,8 @@
                 disabled
               />
               </td>
-            </tr>
-              <tr>
+            </tr> -->
+              <!-- <tr>
               <td colspan="12"
                 class="align-right font700 font-16 text-light-green cursor-pointer">
                 <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, transactionDetail.length + 1)"></i>
@@ -930,7 +933,7 @@
                 <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
                   (click)="deleteRow(transactionDetail.length + 1)"></i>
               </td>
-            </tr>
+            </tr> -->
             <tr>
               <td *ngIf="previousEmployeeList?.length"
                 class="bg-lightgray font-18 font700 align-left">Total</td>

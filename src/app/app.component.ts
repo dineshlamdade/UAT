@@ -21,9 +21,9 @@ export class AppComponent implements OnInit {
   public amethystClass: boolean;
   public selectedLanguage: any;
   public locales = [
-    { label: '🇺🇸 English (US)', value: 'en-US' },
-    // { label: '🇬🇧 English (UK)', value: 'en-GB' },
-    { label: '🇫🇷 Français', value: 'fr' },
+    { label: 'English', value: 'en' },
+    { label: 'French', value: 'fr' },
+    { label: 'Hindi', value: 'hi' },
   ];
   public locale = this.locales[0].value;
 
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
     this.selectedLanguage = localStorage.getItem('selectedLanguage');
     // generate a regex from the locales we support
     if (this.selectedLanguage) {
+
       const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
       // check if the user's preferred language is supported and if so, use it.
       if (this.selectedLanguage.match(supportedRegex)) {
@@ -52,9 +53,9 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     if (this.router.getCurrentNavigation() === null) {
       if (!this.authService.isLoggedIn()) {
-        // this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
       } else {
-        //  this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']);
       }
     }
     const body = document.getElementsByTagName('body')[0];

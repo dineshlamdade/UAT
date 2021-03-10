@@ -44,8 +44,7 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-import { PrimeNGModule } from './app.primeNG.module';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+//accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
@@ -73,6 +72,10 @@ import { CompanySettingRoutingModule } from './modules/companysetting/companyset
 ////////////////////////////////////
 
 
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
+
+
 
 @NgModule({
   declarations: [
@@ -94,12 +97,13 @@ import { CompanySettingRoutingModule } from './modules/companysetting/companyset
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
     /////////////////
     //  payrollModule,
     CompanySettingModule,
-
     ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
@@ -133,7 +137,6 @@ import { CompanySettingRoutingModule } from './modules/companysetting/companyset
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-
     AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
@@ -148,7 +151,7 @@ import { CompanySettingRoutingModule } from './modules/companysetting/companyset
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
-        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
         listenToLangChange: true,
         reRenderOnLangChange: true,
         defaultLang: 'en',

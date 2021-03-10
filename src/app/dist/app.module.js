@@ -47,8 +47,6 @@ var auth_guard_1 = require("./modules/auth/auth.guard");
 var token_interceptor_service_1 = require("./modules/auth/token-interceptor/token-interceptor.service");
 var dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 var employee_master_module_1 = require("./modules/employee-master/employee-master.module");
-var app_primeNG_module_1 = require("./app.primeNG.module");
-var accordion_1 = require("primeng/accordion"); //accordion and accordion tab
 var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
 var payroll_module_1 = require("./modules/payroll/payroll.module");
@@ -62,6 +60,8 @@ var employeemasterlistpage_module_1 = require("./modules/employeemasterlistpage/
 var shorten_string_pipe_1 = require("./core/utility/pipes/shorten-string.pipe");
 var companysetting_module_1 = require("./modules/companysetting/companysetting.module");
 ////////////////////////////////////
+var app_primeNG_module_1 = require("./app.primeNG.module");
+var accordion_1 = require("primeng/accordion");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -77,6 +77,8 @@ var AppModule = /** @class */ (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 auth_module_1.AuthModule,
+                app_primeNG_module_1.PrimeNGModule,
+                accordion_1.AccordionModule,
                 dashboard_module_1.DashboardModule,
                 payroll_module_1.PayrollModule,
                 /////////////////
@@ -123,7 +125,7 @@ var AppModule = /** @class */ (function () {
                 transloco_loader_1.translocoLoader, {
                     provide: transloco_1.TRANSLOCO_CONFIG,
                     useValue: {
-                        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+                        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
                         listenToLangChange: true,
                         reRenderOnLangChange: true,
                         defaultLang: 'en',

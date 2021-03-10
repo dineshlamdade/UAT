@@ -1,23 +1,15 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef, ViewEncapsulation, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 'use strict';
-// import * as input from '@grapecity/wijmo.input';
 import { PersonalInformationModel, internationalWorkerRequestDTO } from './../../dto-models/personal-information.model';
 import { PersonalInformationService } from './../../employee-master-services/personal-information/personal-information.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-// import { DomSanitizer } from '@angular/platform-browser';
-// import { NotificationsService } from '@src/app/core/services/notifications.service';
-import { MatDialog } from '@angular/material/dialog';
-// import { CopyFromConfirmationModal } from '../contact-information/contact-information.component';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import Swal from 'sweetalert2';
-import { ConfirmationModalComponent } from '../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
-import { PersonalInfoLabels } from '../../dto-models/personal-info-labels.model';
+import { PersonalInfoLabels } from '../../dto-models/language-info-labels/personal-info-labels.model';
 import { Router } from '@angular/router';
-
-// import { CommonDataService } from './../../core/services/common-data-service/common-data.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-personal-information',
@@ -29,24 +21,25 @@ export class PersonalInformationComponent implements OnInit {
 
   personalInfoForm: FormGroup;
   BasicInfoForm: FormGroup;
-  // personalInformationModel: Array<PersonalInformationModel> =[];
+  public modalRef: BsModalRef;
   personalInformationModel = new PersonalInformationModel('', '', '', '', '', '', '', '', '', '', '');
   internationalWorkerRequestDTO = new internationalWorkerRequestDTO('', '', '', '', '', '')
-  PersonalInfoLabels = new PersonalInfoLabels('Title', 'First Name', 'Middle Name', 'Last Name', 'Full Name', 'Display Name', 'Employee Code', 'Alternate Code', 'Date of Birth', 'Gender', 'Blood Group', 'Nationality', 'Marital Status', 'Marriage Date', 'Physically Challenged', 'Disability Type', 'Severity Level', 'Expat', 'Country Of Origin', 'Whether On COC', 'COC Valid Till', 'COC No.', '', '', '', '', '')
+  PersonalInfoLabels = new PersonalInfoLabels('', '', '', '', '', '', '', '', '', '', '', '', '', ' ', '', '', '', '', '', '', '', '', '', '', '', '', '')
   bloodGroups = 'A+,A-,B+,B-,AB+,AB-,O+,O-'.split(',');
   maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
   maritalStatusTotal = 'Single,Married,Widow,Widower,Divorced'.split(',');
   physicallyChallengedDropdown = 'Visual,Hearing,Locomotive'.split(',');
+  titleList = 'Mr.,Mrs.,Ms.,Dr.'.split(',');
   physicallyChallengedBoolean = 'Yes,No'.split(',');
   expatBooleanOptions = 'Yes,No'.split(',');
   weatherOnCOCOptions = 'Yes,No'.split(',');
-  allGenders = 'Male,Female,Trans'.split(',');
+  allGenders = 'Male,Female,Transgender'.split(',');
   @Input() staticLabels: boolean;
   @Input() item: any
   physicallyChallenged: any
   countryList: Array<any> = [];
   @ViewChild('fileInput') el: ElementRef;
-  imageUrl: any = "./assets/emp-master-images/empIcon5.png";
+  imageUrl: any = "./assets/images/userdefault.png";
   editFile: boolean = true;
   removeUpload: boolean = false;
   selectedImg: any;
@@ -79,16 +72,19 @@ export class PersonalInformationComponent implements OnInit {
   validBirthDate: boolean;
   saveNextBoolean: boolean = false;
   birthdateClickboolean: boolean = false;
-
+  severityCountValidation: boolean;
+  confirmation: TemplateRef<any>;
+  empBirthdateConfirmMsg: string;
+  selectedLanguage: any;
 
 
   constructor(private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private PersonalInformationService: PersonalInformationService,
     private EventEmitterService: EventEmitterService,
-    public dialog: MatDialog, public datepipe: DatePipe,
-    private SharedInformationService: SharedInformationService,
-    private router: Router,) { }
+    public datepipe: DatePipe,
+    private router: Router, private CommonDataService: SharedInformationService,
+    private modalService: BsModalService, private SharedInformationService: SharedInformationService) { }
 
   ngOnInit(): void {
     this.BasicInfoForm = this.formBuilder.group({
@@ -96,11 +92,11 @@ export class PersonalInformationComponent implements OnInit {
       alternateCode: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	\\_,/,-])[a-zA-Z0-9•	\\_,/,-]+$/)])],
       title: [''],
       // firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^([a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+[\ \-]?)+[a-zA-Z0-9'ÄäËëÏïÖöÜüŸÿ ]+$/)])],
-      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      middleName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
-      lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      middleName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      lastName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       fullName: [{ value: null, disabled: true },],
-      displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      displayName: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
       birthDate: [this.tomorrow, Validators.required],
       bloodGroup: [''],
       maritalStatus: [''],
@@ -124,6 +120,11 @@ export class PersonalInformationComponent implements OnInit {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
+    this.selectedLanguage = localStorage.getItem('selectedLanguage');
+    // if(this.selectedLanguage == 'hi'){
+    //   this.selectedLanguage = 'hindi';
+    // }
+
     this.Physically = 'No';
     this.expatBoolean1 = 'No';
     this.personalInformationModel.disabilityType = '';
@@ -132,30 +133,15 @@ export class PersonalInformationComponent implements OnInit {
       this.getEmployeeData();
     }
 
-
-
-    this.clearBirthDateSubsribtion = this.EventEmitterService.setClearBirthDate().subscribe(res => {
-
-      // this.clearBirthDate.reset();
-      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
-      this.validBirthDate = null;
-      this.BasicInfoForm.get('birthDate').reset();
-
-    })
-
     this.PersonalInformationService.getLocationInformation().subscribe(res => {
       this.countryList = res.data.results;
 
       this.PersonalInformationService.getCountryCodes().subscribe(res => {
         this.countryCode = res.data.results;
 
-        // if (this.newData['data']) {
-        //   this.getDataBinding(this.newData);
-        // }
         if (this.countryCode.length > 0 && this.countryList.length > 0) {
           this.shareCountryInfo.countryCode = this.countryCode;
           this.shareCountryInfo.countryList = this.countryList;
-          // this.shareCountryInfo['selectionEmploymentBoolean'] = this.selectionEmploymentBoolean
           this.EventEmitterService.getCountryData(this.shareCountryInfo);
         }
       })
@@ -169,62 +155,278 @@ export class PersonalInformationComponent implements OnInit {
       const severityLevel = this.BasicInfoForm.get('severityLevel');
       severityLevel.enable();
     }
+
+    this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(element => {
+
+      if (element.rejoinee == true) {
+        this.resetForm();
+        localStorage.clear();
+        this.employeeMasterId = null;
+        setTimeout(() => {
+          this.employeeMasterId = element.employeeMasterId;
+          localStorage.setItem('employeeMasterId', element.employeeMasterId)
+          this.getEmployeeData();
+        }, 400)
+        this.rejoinee = element.rejoinee;
+        this.sameCode = element.sameCode;
+
+        if (this.sameCode == true) {
+          const employeeCode = this.BasicInfoForm.get('employeeCode');
+          employeeCode.disable();
+        }
+        if (this.sameCode == false) {
+          const employeeCode = this.BasicInfoForm.get('employeeCode');
+          employeeCode.enable();
+        }
+      }
+
+      if (element.rejoinee == false) {
+
+        this.resetForm();
+        this.employeeMasterId = null;
+        localStorage.clear();
+      }
+    })
     // if(this.internationalWorkerRequestDTO.cocNumber != '' || this.internationalWorkerRequestDTO.cocValidTill != ''){
     //   const isOnCOC = this.BasicInfoForm.get('isOnCOC');
     //   isOnCOC.enable();
     // }
 
 
-    // this.SharedInformationService.getGlobalLabels().subscribe(res => {
+    this.SharedInformationService.getGlobalLabels(this.selectedLanguage).subscribe(res => {
+      
+      this.changesLabelArray = res.data.results.filter(item => {
+        // Change English Label's name as per Company setting
+        if (item.language == 'en') {
+          if (item.isDisplay == true && item.defaultLabelName == 'Employee Code') {
+            this.PersonalInfoLabels.employeeCode = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Alternate Code') {
+            this.PersonalInfoLabels.alternateEmployeeCode = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Title') {
+            this.PersonalInfoLabels.title = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
+            this.PersonalInfoLabels.firstName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Middle Name') {
+            this.PersonalInfoLabels.middleName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
+            this.PersonalInfoLabels.lastName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Full Name') {
+            this.PersonalInfoLabels.fullName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Display Name') {
+            this.PersonalInfoLabels.displayName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Gender') {
+            this.PersonalInfoLabels.gender = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Date of Birth') {
+            this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Nationality') {
+            this.PersonalInfoLabels.nationality = item.customLabelName;
+          }
 
-    //   this.changesLabelArray = res.data.results.filter(item => {
-    //     // Change Label's name as per Company setting
-    //     if (item.isDisplay == true && item.defaultLabelName == 'Title') {
-    //       this.PersonalInfoLabels.title = item.customLabelName;
-    //     }
-    //     if (item.isDisplay == true && item.defaultLabelName == 'First Name') {
-    //       this.PersonalInfoLabels.firstName = item.customLabelName;
-    //     }
-    //     if (item.isDisplay == true && item.defaultLabelName == 'Date of Birth') {
-    //       this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
-    //     }
-    //     if (item.isDisplay == true && item.defaultLabelName == 'Middle Name') {
-    //       this.PersonalInfoLabels.middleName = item.customLabelName;
-    //     }
-    //     if (item.isDisplay == true && item.defaultLabelName == 'Last Name') {
-    //       this.PersonalInfoLabels.lastName = item.customLabelName;
-    //     }
 
 
-    //     // Hide Labels As per Company setting
-    //     if (item.isDisplay == false && item.defaultLabelName == 'Title') {
-    //       this.PersonalInfoLabels.title = '';
-    //     }
-    //     if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
-    //       this.PersonalInfoLabels.gender = '';
-    //     }
-    //     if (item.isDisplay == false && item.defaultLabelName == 'Date of Birth') {
-    //       this.PersonalInfoLabels.dateOfBirth = '';
-    //     }
-    //     if (item.isDisplay == false && item.defaultLabelName == 'Middle Name') {
-    //       this.PersonalInfoLabels.middleName = '';
-    //     }
-    //     if (item.isDisplay == false && item.defaultLabelName == 'First Name') {
-    //       this.PersonalInfoLabels.firstName = '';
-    //     }
-    //     if (item.isDisplay == false && item.defaultLabelName == 'Last Name') {
-    //       this.PersonalInfoLabels.lastName = '';
-    //     }
-    //   })
-    // })
+          // Hide English Labels As per Company setting
+          if (item.isDisplay == false && item.defaultLabelName == 'Employee Code') {
+            this.PersonalInfoLabels.employeeCode = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Alternate Code') {
+            this.PersonalInfoLabels.alternateEmployeeCode = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Title') {
+            this.PersonalInfoLabels.title = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'First Name') {
+            this.PersonalInfoLabels.firstName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Middle Name') {
+            this.PersonalInfoLabels.middleName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Last Name') {
+            this.PersonalInfoLabels.lastName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Full Name') {
+            this.PersonalInfoLabels.fullName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Display Name') {
+            this.PersonalInfoLabels.displayName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Gender') {
+            this.PersonalInfoLabels.gender = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Date of Birth') {
+            this.PersonalInfoLabels.dateOfBirth = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Nationality') {
+            this.PersonalInfoLabels.nationality = false;
+          }
+        }
 
-    // this.SharedInformationService.getAdditionalFields().subscribe(res=>{
+        // Change French Label's name as per Company setting
+        if (item.language == 'fr') {
+          if (item.isDisplay == true && item.defaultLabelName == 'Code employé') {
+            this.PersonalInfoLabels.employeeCode = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Code alternatif') {
+            this.PersonalInfoLabels.alternateEmployeeCode = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Titre') {
+            this.PersonalInfoLabels.title = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Prénom') {
+            this.PersonalInfoLabels.firstName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Deuxième nom') {
+            this.PersonalInfoLabels.middleName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Nom de famille') {
+            this.PersonalInfoLabels.lastName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Nom complet') {
+            this.PersonalInfoLabels.fullName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Afficher un nom') {
+            this.PersonalInfoLabels.displayName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Le genre') {
+            this.PersonalInfoLabels.gender = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Date de naissance') {
+            this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'Nationalité') {
+            this.PersonalInfoLabels.nationality = item.customLabelName;
+          }
 
+
+
+          // Hide French Labels As per Company setting
+          if (item.isDisplay == false && item.defaultLabelName == 'Code employé') {
+            this.PersonalInfoLabels.employeeCode = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Code alternatif') {
+            this.PersonalInfoLabels.alternateEmployeeCode = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Titre') {
+            this.PersonalInfoLabels.title = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Prénom') {
+            this.PersonalInfoLabels.firstName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Deuxième nom') {
+            this.PersonalInfoLabels.middleName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Nom de famille') {
+            this.PersonalInfoLabels.lastName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Nom complet') {
+            this.PersonalInfoLabels.fullName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Afficher un nom') {
+            this.PersonalInfoLabels.displayName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Le genre') {
+            this.PersonalInfoLabels.gender = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Date de naissance') {
+            this.PersonalInfoLabels.dateOfBirth = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'Nationalité') {
+            this.PersonalInfoLabels.nationality = false;
+          }
+        }
+
+        // Change Hindi Label's name as per Company setting
+        if (item.language == 'hi') {
+          if (item.isDisplay == true && item.defaultLabelName == 'कर्मचारी कोड') {
+            this.PersonalInfoLabels.employeeCode = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'वैकल्पिक कोड') {
+            this.PersonalInfoLabels.alternateEmployeeCode = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'शीर्षक') {
+            this.PersonalInfoLabels.title = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'प्रथम नाम') {
+            this.PersonalInfoLabels.firstName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'मध्य नाम') {
+            this.PersonalInfoLabels.middleName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'सरनेम') {
+            this.PersonalInfoLabels.lastName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'पूरा नाम') {
+            this.PersonalInfoLabels.fullName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'प्रदर्शित होने वाला नाम') {
+            this.PersonalInfoLabels.displayName = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'लिंग') {
+            this.PersonalInfoLabels.gender = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'जन्म तिथि') {
+            this.PersonalInfoLabels.dateOfBirth = item.customLabelName;
+          }
+          if (item.isDisplay == true && item.defaultLabelName == 'राष्ट्रीयता') {
+            this.PersonalInfoLabels.nationality = item.customLabelName;
+          }
+
+
+
+          // Hide Labels As per Company setting
+          if (item.isDisplay == false && item.defaultLabelName == 'कर्मचारी कोड') {
+            this.PersonalInfoLabels.employeeCode = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'वैकल्पिक कोड') {
+            this.PersonalInfoLabels.alternateEmployeeCode = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'शीर्षक') {
+            this.PersonalInfoLabels.title = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'प्रथम नाम') {
+            this.PersonalInfoLabels.firstName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'मध्य नाम') {
+            this.PersonalInfoLabels.middleName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'सरनेम') {
+            this.PersonalInfoLabels.lastName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'पूरा नाम') {
+            this.PersonalInfoLabels.fullName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'प्रदर्शित होने वाला नाम') {
+            this.PersonalInfoLabels.displayName = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'लिंग') {
+            this.PersonalInfoLabels.gender = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'जन्म तिथि') {
+            this.PersonalInfoLabels.dateOfBirth = false;
+          }
+          if (item.isDisplay == false && item.defaultLabelName == 'राष्ट्रीयता') {
+            this.PersonalInfoLabels.nationality = false;
+          }
+        }
+      })
+    })
+
+    // this.SharedInformationService.getAdditionalFields().subscribe(res => {
+    //   
     //   res.data.results.filter(item => {
-    //     if(item.fieldName == 'PersonalAdditional1'){
+    //     if (item.fieldName == 'PersonalAdditional1') {
     //       this.PersonalInfoLabels.PersonalAdditional1 = item.fieldLabelName;
     //     }
-    //     if(item.fieldName == 'PersonalAdditional2'){
+    //     if (item.fieldName == 'PersonalAdditional2') {
     //       this.PersonalInfoLabels.PersonalAdditional2 = item.fieldLabelName;
     //     }
     //   })
@@ -306,7 +508,7 @@ export class PersonalInformationComponent implements OnInit {
         // this.EventEmitterService.getBirthDateToEmploymentForm(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
-        this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
         if (this.rejoinee == true) {
           this.router.navigate(['/employee-master/employment-information/re-joining-information']);
@@ -316,9 +518,10 @@ export class PersonalInformationComponent implements OnInit {
           this.router.navigate(['/employee-master/employment-information/joining-information']);
         }
         this.BasicInfoForm.markAsUntouched();
+        this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
         this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
@@ -336,9 +539,9 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeMasterId', res.data.results[0].employeeMasterId);
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode);
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
-        this.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+        this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.EventEmitterService.getRejoineeStatusCode(this.rejoinee);
-        // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
+        this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
         this.BasicInfoForm.markAsUntouched();
         if (this.saveNextBoolean == true) {
           this.saveNextBoolean = false;
@@ -346,7 +549,7 @@ export class PersonalInformationComponent implements OnInit {
         }
         this.router.navigate(['/employee-master/employment-information/joining-information']);
       }, (error: any) => {
-        this.sweetalertError(error["error"]["status"]["messsage"]);
+        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
       })
     }
@@ -365,6 +568,7 @@ export class PersonalInformationComponent implements OnInit {
   getDataBinding(res) {
 
     this.personalInformationModel = res.data.results[0];
+    this.personalInformationModel.maritialStatus = res.data.results[0].maritialStatus;
     this.personalInformationModel.employeeMasterRequestDTO = res.data.results[0].employeeMasterResponseDTO;
     if (!this.personalInformationModel.nationality) {
       this.personalInformationModel.nationality = '';
@@ -382,6 +586,8 @@ export class PersonalInformationComponent implements OnInit {
     if (res.data.results[0].imageResponseDTO) {
       this.imageUrl = 'data:' + res.data.results[0].imageResponseDTO.employeeProfileImage.type + ';base64,' + res.data.results[0].imageResponseDTO.employeeProfileImage.profilePicture;
     }
+    localStorage.setItem('birthDate', this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
+    localStorage.setItem('fullName', this.personalInformationModel.employeeMasterRequestDTO.fullName);
 
     // this.severity(this.personalInformationModel.severityLevel);
     // this.BasicInfoForm.patchValue({ severityLevel: this.personalInformationModel.severityLevel });
@@ -410,13 +616,17 @@ export class PersonalInformationComponent implements OnInit {
       const severityLevel = this.BasicInfoForm.get('severityLevel');
       severityLevel.enable();
     }
-  }
-  // getImage(employeeMasterId) {
-  //   this.PersonalInformationService.getImage(employeeMasterId).subscribe((res: any) => {
 
-  //     this.imageUrl = 'data:'+res.data.results[0].image.type+';base64,' + res.data.results[0].base64String;
-  //   })
-  // }
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Male') {
+      this.maritalStatus.splice(2, 1);
+    }
+
+    if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Female') {
+      this.maritalStatus.splice(3, 1);
+    }
+    this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
+  }
+
   createImageFromBlob(image: Blob) {
     let reader = new FileReader();
     reader.addEventListener("load", () => {
@@ -430,10 +640,13 @@ export class PersonalInformationComponent implements OnInit {
 
   // selected image bindind
   uploadFile(event, uploadFile) {
+
     if (uploadFile.files[0].size > 1000000) {
       this.selectedImg = null;
       uploadFile = null;
       event = null;
+      this.imageUrl = "./assets/images/userdefault.png";
+      this.CommonDataService.sweetalertWarning('Selected Image Size Should be less than 1 Mb');
     } else {
       this.selectedImageFile = uploadFile.files[0];
       this.BasicInfoForm.markAsTouched();
@@ -510,14 +723,20 @@ export class PersonalInformationComponent implements OnInit {
     this.exportFullNameToIdentityInformation = this.personalInformationModel.employeeMasterRequestDTO.firstName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.middleName + ' ' +
       this.personalInformationModel.employeeMasterRequestDTO.lastName;
-    localStorage.setItem('fullName', this.exportFullNameToIdentityInformation)
+    localStorage.setItem('fullName', this.exportFullNameToIdentityInformation);
+    this.formTouch();
   }
+
+  formTouch() {
+    this.BasicInfoForm.markAsTouched();
+  }
+
   resetForm() {
 
     this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
 
     this.BasicInfoForm.reset();
-    this.imageUrl = "./assets/emp-master-images/empIcon5.png";
+    this.imageUrl = "./assets/images/userdefault.png";
     const severityLevel = this.BasicInfoForm.get('severityLevel');
     severityLevel.disable();
     const isOnCOC = this.BasicInfoForm.get('isOnCOC');
@@ -548,8 +767,18 @@ export class PersonalInformationComponent implements OnInit {
     if (maritalStatusBoolean !== 'Married') {
       this.personalInformationModel.anniversaryDate = '';
     }
+
+    if (maritalStatusBoolean == 'Married') {
+      this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
+    }
   }
-  birthDateValidation(event) {
+
+  birthDateClickEvent(event) {
+
+    this.birthdateClickboolean = true;
+  }
+
+  birthDateValidation(event, confirmation) {
 
     if ((this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
       this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth) && this.birthdateClickboolean) {
@@ -561,22 +790,27 @@ export class PersonalInformationComponent implements OnInit {
 
       this.validBirthDate = new Date(year + 18, month - 1, day) <= new Date();
       if (this.validBirthDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
-        this.birthD(this.validBirthDate);
+        this.birthD(this.validBirthDate, confirmation);
+      }
+      if (this.validBirthDate == true) {
+        this.birthdateClickboolean = false;
+        return
       }
     }
+
+    return this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
   }
-  birthD(validDate) {
+  birthD(validDate, confirmation) {
     this.birthdateClickboolean = false;
     if (validDate == false && this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '') {
-      const dialogRef = this.dialog.open(ConfirmationModalComponent, {
-        disableClose: true, width: '664px', height: '241px',
-        data: { pageValue: 'EmployeeAgeConfirmation', info: 'Employee age is less than 18 years, Do you still want to proceed?' }
-      });
+      this.empBirthdateConfirmMsg = 'Employee age is less than 18 years, Do you still want to proceed?';
+      this.modalRef = this.modalService.show(
+        confirmation,
+        Object.assign({}, { class: 'gray modal-md' })
+      );
     }
   }
-  // get clearBirthDate(): any {
-  //   return this.BasicInfoForm.get('birthDate');
-  // }
+
   validateNationalty(nationality) {
 
     if (this.personalInformationModel.nationality) {
@@ -611,44 +845,22 @@ export class PersonalInformationComponent implements OnInit {
       isOnCOC.enable();
     }
   }
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
 
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
 
-  birthDateClickEvent(event) {
-
-    this.birthdateClickboolean = true;
-  }
 
   validateSaverityLevel(severityLevel) {
 
-    if (severityLevel > 100) {
-      this.sweetalertError('Severity Level should be up to 100%');
+    if (severityLevel > 100 || severityLevel < 0) {
+      this.CommonDataService.sweetalertWarning('Severity Level should be up to 100%');
+      this.severityCountValidation = false;
+      // this.BasicInfoForm.get('severityLevel').setValue('');
+      // this.BasicInfoForm.get('severityLevel').setValidators(Validators.required);
+      // this.BasicInfoForm.get('severityLevel').updateValueAndValidity();
+    }
+    if (severityLevel > 0 && severityLevel < 100 || severityLevel == 100) {
+      this.severityCountValidation = true;
+      // this.BasicInfoForm.get('severityLevel').clearValidators();
+      // this.BasicInfoForm.get('severityLevel').updateValueAndValidity();
     }
   }
 
@@ -671,27 +883,31 @@ export class PersonalInformationComponent implements OnInit {
   }
 
   validateGender() {
-    
+
     this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
     if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Male') {
       this.maritalStatus.splice(2, 1);
-      this.personalInformationModel.maritialStatus = '';
-      // this.maritalStatus.find(res=>{
-      //   if(res == 'Widower'){
-      //     this.maritalStatus.push('Widower');
-      //   }
-      // })
+      // this.personalInformationModel.maritialStatus = '';
     }
 
     if (this.personalInformationModel.employeeMasterRequestDTO.gender == 'Female') {
       this.maritalStatus.splice(3, 1);
-      this.personalInformationModel.maritialStatus = '';
-      // this.maritalStatus.find(res=>{
-      //   if(res == 'Widow'){
-      //     this.maritalStatus.push('Widow');
-      //   }
-      // })
+      // this.personalInformationModel.maritialStatus = '';
     }
   }
 
+  UploadModal(confirmation: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      confirmation,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  clearBithDate() {
+    this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
+    this.validBirthDate = null;
+    this.BasicInfoForm.get('birthDate').reset();
+    this.modalRef.hide();
+    return;
+  }
 }

@@ -65,7 +65,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   CTCANNUM: any;
   public today = new Date();
   viewEmploymentInfoForm: boolean = false;
-  JoiningDate: any;
+  validationDate: any;
   saveNextBoolean: boolean = false
 
 
@@ -107,7 +107,14 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     })
 
     const JoiningDate = localStorage.getItem('joiningDate');
-    this.JoiningDate = new Date(JoiningDate)
+    const ReJoiningDate = localStorage.getItem('rejoiningDate');
+
+    if(ReJoiningDate){
+      this.validationDate = new Date(ReJoiningDate)
+    } else{
+      this.validationDate = new Date(JoiningDate)
+
+    }
     // this.initiatePreviousEmploymentInfoForm = this.EventEmitterService.setPreviousEmploymentInfoInitiate().subscribe(res => {
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePreviousEmpForm().subscribe(res => {
@@ -284,7 +291,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
         this.previousSmmaryGridData.forEach(data => {
           return data.dateOfRelieving = this.datepipe.transform(data.dateOfRelieving, 'dd-MMM-yyyy');
         })
-
+        this.resetForm();
         if (this.summaryGridData.length > 0) {
           this.EmptyGridTrue = true;
         } else {
@@ -322,6 +329,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     this.previousEmploymentInformation.remark = '';
     this.previousEmploymentInformation.previousJobProfile = '';
     this.previousEmploymentInformation.currency = '';
+    this.previousEmploymentInfoForm.get('currency').setValue('');
     this.previousEmploymentInformation.exemptGratuityReceived = '';
     this.previousEmploymentInformation.exemptLeaveSalaryReceived = '';
     this.previousEmploymentInformation.exemptVRSReceived = '';

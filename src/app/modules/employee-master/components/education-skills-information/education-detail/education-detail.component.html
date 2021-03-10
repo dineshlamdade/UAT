@@ -102,7 +102,7 @@
                                             <select class="form-control selectpicker" placeholder="Select"
                                                 formControlName="duration"
                                                 [(ngModel)]="employeeEducationRequestModel.durationOfCourseValue"
-                                                tooltip="{{duration}}" (change)="clearDuration()">
+                                                tooltip="Standard Duration" (change)="clearDuration()">
                                                 <option value="" data-hidden="true">select
                                                 </option>
                                                 <option *ngFor="let duration of standardDurationList"
@@ -179,7 +179,7 @@
                                 <button type="button" tooltip="Previous"
                                     [routerLink]="['/employee-master/family-information/family-details']"
                                     class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 mr-15 bg-teal-400"><b><i
-                                            class="fa fa-chevron-circle-left"
+                                        class="fa fa-angle-double-left"
                                             aria-hidden="true"></i></b>Previous</button>
 
                                 <!-- <button type="button" tooltip="Next"
@@ -223,54 +223,58 @@
                     </div>
 
 
-                    <legend style="font-size: 17px !important;">Summary</legend>
+                    <div class="row mt-10">
+                        <div class="col-md-12">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                    </div>
                     <p-table [value]="EducationSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-education>
                             <colgroup>
-                                <col style="width:150px">
-                                <col style="width:120px">
-                                <col style="width:120px">
-                                <col style="width:170px">
-                                <col style="width:175px">
-                                <col style="width:200px">
-                                <col style="width:145px">
-                                <col style="width:100px">
+                                <col class="wd-15">
+                                <col class="wd-15">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-15">
+                                <col class="wd-15">
+                                <col class="wd-10">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Education</th>
-                                <th class="primeng-table-header-center">Degree Name</th>
-                                <th class="primeng-table-header-center">Starting Date</th>
-                                <th class="primeng-table-header-center">Completion Date</th>
-                                <th class="primeng-table-header-center">Institute/University</th>
-                                <th class="primeng-table-header-center">Percentage/CGPA/Grade</th>
-                                <th class="primeng-table-header-center">Specialization 1</th>
-                                <th class="primeng-table-header-center">Action</th>
+                                <th class="primeng-table-header-center wd-15">Education</th>
+                                <th class="primeng-table-header-center wd-15">Degree Name</th>
+                                <th class="primeng-table-header-center wd-10">Starting Date</th>
+                                <th class="primeng-table-header-center wd-10">Completion Date</th>
+                                <th class="primeng-table-header-center wd-15">Institute/University</th>
+                                <th class="primeng-table-header-center wd-15">Percentage/CGPA/Grade</th>
+                                <th class="primeng-table-header-center wd-10">Specialization 1</th>
+                                <th class="primeng-table-header-center wd-10">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-education>
                             <tr>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.education}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.degreeName}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span> {{education.startDate}}</span></td>
+                                <td class="primeng-table-header-left"><span> {{education.startDate}}</span></td>
 
-                                <td class="primeng-table-header-center"><span> {{education.endDate}}</span></td>
+                                <td class="primeng-table-header-left"><span> {{education.endDate}}</span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.instituteUniversityName}}</span></td>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.percentageOrCGPAOrGrade}}</span></td>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{education.specialization1}}</span></td>
-                                <td class="primeng-table-header-center"><span><i
+                                <td class="primeng-table-header-left"><span><i
                                             class="fa fa-pencil font-16 text-blue cursor-pointer mr-10" tooltip="Edit"
                                             (click)="editEducationRow(education)"></i>
 
@@ -278,16 +282,41 @@
                                             (click)="viewEducationRow(education)"></i></span>
 
                                     <i class="fa fa-trash-o font-16 text-red cursor-pointer" tooltip="Delete"
-                                        (click)="deleteEducationRow(education)"></i>
+                                        (click)="deleteEducationRow(education, confirmation)"></i>
                                 </td>
                             </tr>
                         </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr *ngIf="EducationSummaryData.length==0">
+                                <td colspan="8" class="text-center"><span class="font-14 font500 text-red">No Data
+                                        Available</span></td>
+                            </tr>
+                        </ng-template>
                     </p-table>
-                    <span class="font-14 font500 align-center text-red no-data-center"
-                        *ngIf="EducationSummaryData.length==0">No
-                        data found</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{confirmationMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteRecord()">Yes</button>
+
+    </div>
+</ng-template>

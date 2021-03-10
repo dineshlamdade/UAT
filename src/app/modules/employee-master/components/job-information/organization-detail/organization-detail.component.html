@@ -66,7 +66,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="businessAreaFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.businessAreaFromDate"
-                            (bsValueChange)="validateBusinessAreaToDate()">
+                            (bsValueChange)="validateBusinessAreaToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('businessAreaFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -80,7 +82,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="businessAreaToDateControl"
                             [minDate]="organizationDetailsModel.businessAreaFromDate"
-                            [(ngModel)]="organizationDetailsModel.businessAreaToDate">
+                            [(ngModel)]="organizationDetailsModel.businessAreaToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('businessAreaToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -116,9 +120,12 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subAreaFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.subAreaFromDate"
-                            (bsValueChange)="validateSubAreaToDate()">
+                            (bsValueChange)="validateSubAreaToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subAreaFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
+                
 
                 <label class="form-label">To Date</label>
                 <div class="form-group">
@@ -129,7 +136,9 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subAreaToDateControl" [minDate]="organizationDetailsModel.subAreaFromDate"
-                            [(ngModel)]="organizationDetailsModel.subAreaToDate">
+                            [(ngModel)]="organizationDetailsModel.subAreaToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subAreaToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -167,7 +176,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="strategicBusinessFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.strategicBusinessFromDate"
-                            (bsValueChange)="validateStrategicToDate()">
+                            (bsValueChange)="validateStrategicToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('strategicBusinessFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -181,7 +192,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="strategicBusinessToDateControl"
                             [minDate]="organizationDetailsModel.strategicBusinessFromDate"
-                            [(ngModel)]="organizationDetailsModel.strategicBusinessToDate">
+                            [(ngModel)]="organizationDetailsModel.strategicBusinessToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('strategicBusinessToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -217,7 +230,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="divisionFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.divisionFromDate"
-                            (bsValueChange)="validateDivisionToDate()">
+                            (bsValueChange)="validateDivisionToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('divisionFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -231,7 +246,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="divisionToDateControl"
                             [minDate]="organizationDetailsModel.divisionFromDate"
-                            [(ngModel)]="organizationDetailsModel.divisionToDate">
+                            [(ngModel)]="organizationDetailsModel.divisionToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('divisionToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -267,7 +284,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="profitCentreFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.profitCentreFromDate"
-                            (bsValueChange)="validateProfitToDate()">
+                            (bsValueChange)="validateProfitToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('profitCentreFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -281,7 +300,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="profitCentreToDateControl"
                             [minDate]="organizationDetailsModel.profitCentreFromDate"
-                            [(ngModel)]="organizationDetailsModel.profitCentreToDate">
+                            [(ngModel)]="organizationDetailsModel.profitCentreToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('profitCentreToDateControl').status == 'INVALID'}">
+                   
 
                     </div>
                 </div>
@@ -324,7 +345,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="establishmentFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.establishmentFromDate"
-                            (bsValueChange)="validateEstablishmentToDate()">
+                            (bsValueChange)="validateEstablishmentToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('establishmentFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -338,7 +361,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="establishmentToDateControl"
                             [minDate]="organizationDetailsModel.establishmentFromDate"
-                            [(ngModel)]="organizationDetailsModel.establishmentToDate">
+                            [(ngModel)]="organizationDetailsModel.establishmentToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('establishmentToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -375,7 +400,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subLocationFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.subLocationFromDate"
-                            (bsValueChange)="validateSubLocToDate()">
+                            (bsValueChange)="validateSubLocToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subLocationFromDateControl').status == 'INVALID'}">
+                   
 
                     </div>
                 </div>
@@ -390,7 +417,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subLocationToDateControl"
                             [minDate]="organizationDetailsModel.subLocationFromDate"
-                            [(ngModel)]="organizationDetailsModel.subLocationToDate">
+                            [(ngModel)]="organizationDetailsModel.subLocationToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subLocationToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -426,7 +455,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="workLocationFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.workLocationFromDate"
-                            (bsValueChange)="validateWorkLocToDate()">
+                            (bsValueChange)="validateWorkLocToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('workLocationFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -440,7 +471,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="workLocationToDateControl"
                             [minDate]="organizationDetailsModel.workLocationFromDate"
-                            [(ngModel)]="organizationDetailsModel.workLocationToDate">
+                            [(ngModel)]="organizationDetailsModel.workLocationToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('workLocationToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -475,7 +508,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="costCentreFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.costCentreFromDate"
-                            (bsValueChange)="validateCostToDate()">
+                            (bsValueChange)="validateCostToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('costCentreFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -489,7 +524,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="costCentreToDateControl"
                             [minDate]="organizationDetailsModel.costCentreFromDate"
-                            [(ngModel)]="organizationDetailsModel.costCentreToDate">
+                            [(ngModel)]="organizationDetailsModel.costCentreToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('costCentreToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -524,7 +561,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subCostCentreFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.subCostCentreFromDate"
-                            (bsValueChange)="validateSubCostToDate()">
+                            (bsValueChange)="validateSubCostToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subCostCentreFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -538,7 +577,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subCostCentreToDateControl"
                             [minDate]="organizationDetailsModel.subCostCentreFromDate"
-                            [(ngModel)]="organizationDetailsModel.subCostCentreToDate">
+                            [(ngModel)]="organizationDetailsModel.subCostCentreToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subCostCentreToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -575,7 +616,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="departmentFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.departmentFromDate"
-                            (bsValueChange)="validateDepartmentToDate()">
+                            (bsValueChange)="validateDepartmentToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('departmentFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -589,7 +632,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="departmentToDateControl"
                             [minDate]="organizationDetailsModel.departmentFromDate"
-                            [(ngModel)]="organizationDetailsModel.departmentToDate">
+                            [(ngModel)]="organizationDetailsModel.departmentToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('departmentToDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
             </div>
@@ -626,7 +671,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subDepartmentFromDateControl" [minDate]="joiningDate"
                             [(ngModel)]="organizationDetailsModel.subDepartmentFromDate"
-                            (bsValueChange)="validateSubDepartmentToDate()">
+                            (bsValueChange)="validateSubDepartmentToDate()"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subDepartmentFromDateControl').status == 'INVALID'}">
+                   
                     </div>
                 </div>
 
@@ -640,7 +687,9 @@
                             data-date-autoclose="true" class="form-control" placeholder="  /   /" bsDatepicker
                             formControlName="subDepartmentToDateControl"
                             [minDate]="organizationDetailsModel.subDepartmentFromDate"
-                            [(ngModel)]="organizationDetailsModel.subDepartmentToDate">
+                            [(ngModel)]="organizationDetailsModel.subDepartmentToDate"
+                            [ngClass]="{'is-invalid' : OrganizationForm.get('subDepartmentToDateControl').status == 'INVALID'}">
+                   
 
                     </div>
                 </div>

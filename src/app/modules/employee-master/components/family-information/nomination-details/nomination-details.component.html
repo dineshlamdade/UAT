@@ -3,13 +3,18 @@
         <div class="col-12"> -->
     <div class="card">
         <div class="card-body">
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-sm-6 col-md-3">
                             <legend class="nomination-title">Nomination</legend>
-                            <legend class="font-size-11">All nomination details are in %</legend>
+                            <div class="row mb-15">
+                                <div class="col-md-12">
+                                    <label class="mt-2 highlightlabel font-10 font600"><span class="text-red">*</span>Note: All nomination details are in %
+                                </label>
+                                </div>
+                            </div>
                         </div>
                         <!-- <div class="card"> -->
                         <div class="col-sm-6 col-md-3" style="margin-left: auto;">
@@ -30,30 +35,30 @@
                         scrollHeight="275px" [style]="{'overflow':'auto!important'}">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
-                                <col style="width:130px">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Name</th>
-                                <th class="primeng-table-header-center">Provident Fund (PF)</th>
-                                <th class="primeng-table-header-center">Emp. Pension Scheme (EPS)</th>
-                                <th class="primeng-table-header-center">Salary</th>
-                                <th class="primeng-table-header-center">Emp. State Ins. (ESI)</th>
-                                <th class="primeng-table-header-center">Gratuity</th>
-                                <th class="primeng-table-header-center">Super Annuation</th>
-                                <th class="primeng-table-header-center">Life Insurance</th>
-                                <th class="primeng-table-header-center">Mediclaim Ins.</th>
-                                <th class="primeng-table-header-center">Personal Accident Ins.</th>
+                                <th class="primeng-table-header-center wd-10">Name</th>
+                                <th class="primeng-table-header-center wd-10">Provident Fund (PF)</th>
+                                <th class="primeng-table-header-center wd-10">Employee Pension Scheme (EPS)</th>
+                                <th class="primeng-table-header-center wd-10">Salary</th>
+                                <th class="primeng-table-header-center wd-10">Employee State Insurance (ESI)</th>
+                                <th class="primeng-table-header-center wd-10">Gratuity</th>
+                                <th class="primeng-table-header-center wd-10">Super Annuation</th>
+                                <th class="primeng-table-header-center wd-10">Life Insurance</th>
+                                <th class="primeng-table-header-center wd-10">Mediclaim Annuation</th>
+                                <th class="primeng-table-header-center wd-10">Personal Accident Annuation</th>
                             </tr>
                         </ng-template>
 
@@ -80,13 +85,6 @@
 
                                 <td><span>
                                         <input type="number" class="form-control text-center"
-                                            [(ngModel)]="nomination.salaryPercentage"
-                                            [ngModelOptions]="{standalone: true}"
-                                            (change)="nomination.salaryPercentage < 0 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage; nomination.salaryPercentage > 100 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage;">
-                                    </span></td>
-
-                                <td><span>
-                                        <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.esicPercentage"
                                             [ngModelOptions]="{standalone: true}"
                                             (change)="esicPercentageValidation(nomination.esicPercentage);nomination.esicPercentage < 0 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage > 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage; nomination.esicPercentage < 100 ? nomination.esicPercentage = 0 : nomination.esicPercentage;">
@@ -104,6 +102,13 @@
                                             [(ngModel)]="nomination.superAnnuationPercentage"
                                             [ngModelOptions]="{standalone: true}"
                                             (change)="nomination.superAnnuationPercentage < 0 ? nomination.superAnnuationPercentage = 0 : nomination.superAnnuationPercentage; nomination.superAnnuationPercentage > 100 ? nomination.superAnnuationPercentage = 0 : nomination.superAnnuationPercentage;">
+                                    </span></td>
+
+                                <td><span>
+                                        <input type="number" class="form-control text-center"
+                                            [(ngModel)]="nomination.salaryPercentage"
+                                            [ngModelOptions]="{standalone: true}"
+                                            (change)="nomination.salaryPercentage < 0 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage; nomination.salaryPercentage > 100 ? nomination.salaryPercentage = 0 : nomination.salaryPercentage;">
                                     </span></td>
 
                                 <td><span>
@@ -133,10 +138,10 @@
                                 <td class="p-text-left">Totals %</td>
                                 <td class="primeng-table-header-center">{{getTotalPF()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalepsPercentage()}}</td>
-                                <td class="primeng-table-header-center">{{getTotalsalaryPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalesicPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalgratuityPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalsupeannuationPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getTotalsalaryPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotallifeInsurancePercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalMediclaimInsurancePercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getTotalpersonalAccidentInsurance()}}</td>
@@ -145,14 +150,44 @@
                                 <td class="p-text-left">Remaining Balance %</td>
                                 <td class="primeng-table-header-center">{{getRemainingTotalPF()}}</td>
                                 <td class="primeng-table-header-center">{{getRemainingTotalepsPercentage()}}</td>
-                                <td class="primeng-table-header-center">{{getRemainingTotalsalaryPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getRemainingTotalesicPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getRemainingTotalgratuityPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getRemainingSupeAnnuationPercentage()}}</td>
+                                <td class="primeng-table-header-center">{{getRemainingTotalsalaryPercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getRemainingLifeInsurancePercentage()}}</td>
                                 <td class="primeng-table-header-center">{{getRemainingMediclaimInsurancePercentage()}}
                                 </td>
                                 <td class="primeng-table-header-center">{{getRemainingpersonalAccidentInsurance()}}</td>
+                            </tr>
+                            <tr>
+                                <td class="p-text-left">Documents</td>
+                                <td class="primeng-table-header-center">Form 1 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 2 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 3 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 4 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 5 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 6 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 7 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 8 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
+                                <td class="primeng-table-header-center">Form 9 &nbsp;<a [href]="fileUrl" download="file.txt"><i
+                                            class="fa fa-cloud-download"></i>
+                                    </a></td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -161,7 +196,7 @@
                         data found</span>
 
 
-                    <br><br>
+                    <!-- <br><br>
 
                     <legend class="nomination-title">Document</legend>
                     <p-table [value]="FamilyMemberList" [scrollable]="true" [style]="{width:'1000px'}"
@@ -198,7 +233,7 @@
                     </p-table>
                     <span class="font-14 font500 align-center text-red no-data-center"
                         *ngIf="FamilyMemberList.length==0">No
-                        data found</span>
+                        data found</span> -->
                     <!-- </div> -->
 
 

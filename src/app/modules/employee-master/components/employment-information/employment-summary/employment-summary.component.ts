@@ -64,6 +64,9 @@ export class EmploymentSummaryComponent implements OnInit {
       if (res.data.results[0].joiningDate) {
         localStorage.setItem('joiningDate', res.data.results[0].joiningDate);
       }
+      if (res.data.results[0].rejoiningDate) {
+        localStorage.setItem('rejoiningDate', res.data.results[0].rejoiningDate);
+      }
 
       if (res.data.results[0].employementInfoId) {
         localStorage.setItem('employementJoiningInfoId', res.data.results[0].employementInfoId);
