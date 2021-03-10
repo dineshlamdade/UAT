@@ -2501,9 +2501,18 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.imagecover img{
-object-fit: cover!important;
+
+iframe html body img
+{
 height: 100%!important;
 width: 100%!important;
-height: 100vh; width: 100%; display: block;
+object-fit: cover!important;
+}
+iframe.imagecover {
+  height: 100vh!important;
+  width: 100%!important;
+}
+iframe.imagecover body img {
+  width: 100%!important;
+  height: 100%!important;
 }

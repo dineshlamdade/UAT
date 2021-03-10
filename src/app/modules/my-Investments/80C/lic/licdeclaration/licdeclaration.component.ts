@@ -28,6 +28,8 @@ import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormat
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 
+
+
 @Component({
   selector: 'app-licdeclaration',
   templateUrl: './licdeclaration.component.html',
@@ -1423,8 +1425,26 @@ export class LicdeclarationComponent implements OnInit {
       template3,
       Object.assign({}, { class: 'gray modal-xl' }),
     );
+
+   // const iframe   = document.getElementById('iframeId');
+   // console.log(iframe);
+   // const doc = iframe.ownerDocument ;
+    //console.log(doc);
+    //console.log(doc.getElementById('foo').innerText);
   }
 
+  downloadFiles(documentDetailList: any) {
+    var zip = new JSZip();
+   // zip.file("Title.txt", this.title);
+    var imgFolder = zip.folder("images");
+    for (let i = 0; i < documentDetailList?.length; i++) {
+      imgFolder.file(documentDetailList[i].fileName, this.documentDetailList[i], { base64: true });
+    }
+    zip.generateAsync({ type: "blob" })
+      .then(function (content) {
+        FileSaver.saveAs(content, "Sample.zip");
+      });
+  }
 }
 
 class DeclarationService {
