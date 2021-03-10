@@ -19,6 +19,8 @@ export class CompanyGroupMasterComponent implements OnInit {
   // isEditMode: boolean = false;
   masterGridDataList: Array<any> = [];
   index: number = 0;
+  // qwerty = 'disabled-button';
+
   companyGroupId: number = 0;
   reasonForExitList = [];
   view: boolean = false;
@@ -213,7 +215,6 @@ export class CompanyGroupMasterComponent implements OnInit {
 
   }
   onBsValueChangeDateOfSetup() {
-    console.log('change');
     console.log(this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y'));
   }
 
@@ -288,7 +289,7 @@ export class CompanyGroupMasterComponent implements OnInit {
           servicePeriodShort: element.servicePeriodShort
         };
         this.summaryHtmlDataList.push(obj);
-        console.log(this.summaryHtmlDataList);
+
       });
     });
 
@@ -346,6 +347,13 @@ export class CompanyGroupMasterComponent implements OnInit {
       this.form.controls["reasonForExit"].clearValidators();
       this.form.controls["reasonForExit"].updateValueAndValidity();
 
+      this.form.patchValue({
+        remark: '',
+        reasonForExit: '',
+      });
+      this.form.get('remark').disable();
+      this.form.get('reasonForExit').disable();
+
     } else {
       console.log(evt);
       console.log(this.form.get('endDate').value);
@@ -360,16 +368,14 @@ export class CompanyGroupMasterComponent implements OnInit {
 
       this.form.controls["reasonForExit"].setValidators(Validators.required);
       this.form.controls["reasonForExit"].updateValueAndValidity();
+
       this.form.get('companyGroupActive').setValue(true);
       this.deactivateRemark();
-
-
-
     }
 
 
   }
-  setPaymentDetailToDate(evt: any) {
+  onChangeEngagementEndDate(evt: any) {
     let endDate12 = this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y');
     // debugger
     // console.log(this.endDate1);
@@ -391,7 +397,16 @@ export class CompanyGroupMasterComponent implements OnInit {
       this.form.controls["reasonForExit"].clearValidators();
       this.form.controls["reasonForExit"].updateValueAndValidity();
 
+      this.form.patchValue({
+        remark: '',
+        reasonForExit: '',
+      });
+      this.form.get('remark').disable();
+      this.form.get('reasonForExit').disable();
+
     } else {
+      this.form.get('remark').enable();
+      this.form.get('reasonForExit').enable();
       this.form.controls["remark"].setValidators([Validators.required]);
       this.form.controls["remark"].updateValueAndValidity();
 

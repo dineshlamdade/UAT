@@ -392,12 +392,17 @@ var ComplianceMappingComponent = /** @class */ (function () {
         console.log('summaryHtmlDataList', this.summaryHtmlDataList);
         console.log(evt);
         if (evt == 'Half-Yearly') {
+            console.log('in half yearly');
             this.statutoryFreqPeriodsDefList = [];
             this.statutoryFreqPeriodsDefList = this.forHalfYearly;
         }
-        if (evt == 'Quarterly') {
+        else if (evt == 'Quarterly') {
+            console.log('in Quarterly');
             this.statutoryFreqPeriodsDefList = [];
             this.statutoryFreqPeriodsDefList = this.forQuarterly;
+        }
+        else {
+            this.statutoryFreqPeriodsDefList = [{ id: 0, itemName: 'dummy' }];
         }
     };
     ComplianceMappingComponent.prototype.onChangeComplianceMaster = function (complianceMasterId) {

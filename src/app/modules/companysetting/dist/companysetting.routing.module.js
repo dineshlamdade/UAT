@@ -21,7 +21,7 @@ var routes = [
             {
                 path: 'business-cycle',
                 component: business_cycle_component_1.BusinessCycleComponent,
-                data: { title: ':: Epic :: Company Settings' }
+                data: { title: ':: Epic :: Company Settings ' }
             },
             {
                 path: 'head-creation',

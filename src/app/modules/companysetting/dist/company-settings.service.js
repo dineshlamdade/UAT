@@ -86,7 +86,7 @@ var CompanySettingsService = /** @class */ (function () {
     };
     //get all businessyearlist
     CompanySettingsService.prototype.getAllBusinessYear = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year/getAll-bussiness-year')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -123,7 +123,7 @@ var CompanySettingsService = /** @class */ (function () {
     //CYCLE DEFINITION
     //get all cycle-definition
     CompanySettingsService.prototype.getAllCycleDefinition = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-cycle-definition')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year/getAll-bussiness-year')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -144,7 +144,7 @@ var CompanySettingsService = /** @class */ (function () {
     };
     //delete cycle-definition
     CompanySettingsService.prototype.DeleteCycleDefinitionById = function (id) {
-        return this._HTTP["delete"](environment_1.environment.baseUrl8086 + 'business-cycle-definition/' + id)
+        return this._HTTP["delete"](environment_1.environment.baseUrl8086 + '/business-year/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

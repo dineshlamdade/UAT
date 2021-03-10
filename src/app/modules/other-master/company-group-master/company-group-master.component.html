@@ -58,7 +58,7 @@
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                           </div>
                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
-                            data-provide="datepicker" class="form-control" placeholder="Select Birth Date" bsDatepicker
+                            data-provide="datepicker" class="form-control" placeholder="Select End Date" bsDatepicker
                             [maxDate]="today" formControlName="startDate" placement="center">
                         </div>
                       </div>
@@ -77,7 +77,7 @@
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY', 'customTodayClass': 'today'  }"
                           formControlName="endDate" placement="center"
                           [ngClass]="{'is-invalid' : form.get('endDate').status == 'INVALID'}" data-provide="datepicker"
-                          (bsValueChange)="setPaymentDetailToDate($event)" data-date-autoclose="true"
+                          (bsValueChange)="onChangeEngagementEndDate($event)" data-date-autoclose="true"
                           (focusout)="onChangeEndDate($event)" class="form-control" placeholder="Enter End Date"
                           bsDatepicker>
                       </div>
@@ -161,10 +161,12 @@
                         <ng-template #newDeb>
 
                           <button type="submit"
-                            [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid, 'btn-bg-green': !form.invalid}"
+                            [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                             (click)="save()" [disabled]="form.invalid">
                             <b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+
 
 
                           <button type="button"

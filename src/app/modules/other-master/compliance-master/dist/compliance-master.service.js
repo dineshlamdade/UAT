@@ -31,6 +31,13 @@ var ComplianceMasterService = /** @class */ (function () {
             return res;
         }));
     };
+    // http://localhost:8083/hrms/v1/compliance-master/update-all
+    ComplianceMasterService.prototype.putUpdateAllComlianceMaster = function (data) {
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'compliance-master/update-all', data)
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
     ComplianceMasterService.prototype.deleteComplianceMasterDetail = function (Id) {
         var headers = new http_1.HttpHeaders()
             .set('content-type', 'application/json')
@@ -41,6 +48,18 @@ var ComplianceMasterService = /** @class */ (function () {
             return res;
         }));
     };
+    ComplianceMasterService.prototype.deleteAllComplianc = function (Id) {
+        var headers = new http_1.HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('Access-Control-Allow-Origin', '*')
+            .set('X-TenantId', 'PaysquareDefault');
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'compliance-master/delete/' + Id, { headers: headers })
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    // compliance-master/delete/{complianceMasterId}
+    // http://localhost:8083/hrms/v1/compliance-master/delete/{complianceMasterId}
     ComplianceMasterService.prototype.deleteComplianceApplicability = function (id) {
         var headers = new http_1.HttpHeaders()
             .set('content-type', 'application/json')

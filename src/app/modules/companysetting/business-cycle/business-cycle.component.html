@@ -112,7 +112,7 @@
                         <div class="col-12">
                           <div class="card">
                             <div class="mb-0">
-                              <h3 class="font-14 text-purple font-bold">Summary</h3>
+                              <h3 class="font-14 text-purple font-bold">Summary1</h3>
                             </div>
                             <div class="">
                               <div class="table-responsive Custom_Table">
@@ -211,7 +211,7 @@
 
                 <div class="tabs about-page">
                   <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                    formGroup="CycleDefinationForm" #formDirective="ngForm" method="post"
+                    [formGroup]="CycleDefinationForm" #formDirective="ngForm" method="post"
                     (ngSubmit)="addCycleDefinition()" novalidate>
 
 
@@ -242,7 +242,7 @@
                           <div class="col-sm-6 col-md-3" ngClass="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                             <label class="form-label">Frequency</label>
                             <select [disabled]="!disabled" name="beast" id="Institution2"
-                              (change)="onStatusChange($event);" [(ngModel)]="selectedFrequency"
+                              (change)="onChangeFrequencyFromCycleDefinition($event);" [(ngModel)]="selectedFrequency"
                               class="form-control custom-select" formControlName="frequencyMasterId"
                               ngClass="{'is-invalid' : CycleDefinationForm.get('frequencyMasterId').status == 'INVALID'}">
                               <option *ngFor="let Frequency of FrequencyList" [value]="Frequency.id">
@@ -259,7 +259,7 @@
                           </div>
 
 
-                          <!-- <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
+                          <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
                             [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                             <label class="form-label">Services</label>
                             <select name="beast" id="Institution2" class="form-control custom-select"
@@ -278,7 +278,7 @@
                               (onDeSelect)="onItemDeSelect($event)" formControlName="serviceName"
                               [ngClass]="{'is-invalid' : CycleDefinationForm.get('serviceName').status == 'INVALID'}">
                             </ng-multiselect-dropdown>
-                          </div> -->
+                          </div>
 
 
 
@@ -320,7 +320,7 @@
                         <div class="col-12">
                           <div class="card">
                             <div class="mb-0">
-                              <h3 class="font-14 text-purple font-bold">Summary</h3>
+                              <h3 class="font-14 text-purple font-bold">Summary2</h3>
                             </div>
                             <div class="">
                               <div class="table-responsive Custom_Table">
@@ -347,7 +347,7 @@
                                         <span>{{summary.description}}</span>
                                       </td>
                                       <td class="wd-15">
-                                        <span> </span>
+                                        <span>{{summary.yearDefinition}} </span>
                                       </td>
 
 
@@ -426,8 +426,8 @@
                   [checked]="tabIndex==2" />
                 <div class="tabs about-page">
                   <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                    formGroup="CycleCreationForm1" (ngSubmit)="addCycleCreation()" #formDirective="ngForm" method="post"
-                    novalidate>
+                    [formGroup]="CycleCreationForm1" (ngSubmit)="addCycleCreation()" #formDirective="ngForm"
+                    method="post" novalidate>
                     <div class="tabview-contents">
                       <div class="row">
                         <div class="col-sm-6 col-md-3">
@@ -474,7 +474,7 @@
                         <div class="col-12">
                           <div class="card">
                             <div class="mb-10">
-                              <h3 class="font-14 text-purple font-bold">Summary</h3>
+                              <h3 class="font-14 text-purple font-bold">Summary3</h3>
                             </div>
                             <div class="">
                               <div class="table-responsive Custom_Table">

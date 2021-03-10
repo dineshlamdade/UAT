@@ -163,15 +163,15 @@
 
                         </div>
 
-                        <div class="row mt-20 pull-right">
-                          <div class="col-sm-12 pull-right">
-                            <div *ngIf="isActivateButton ==0">
+                        <!-- <div class="row mt-20 pull-right">
+                          <div class="col-sm-12 pull-right"> -->
+                        <!-- <div *ngIf="isActivateButton ==0">
                               <button type="button"
                                 class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                 tooltip="Delete" (click)="activateComplianceMaster()"><b><i
                                     class="fa fa-times-circle"></i></b> Activate Record</button>
-                            </div>
-                            <div *ngIf="isGlobalView == false && isEditMode == true && isActivateButton!==0">
+                            </div> -->
+                        <!-- <div *ngIf="isGlobalView == false && isEditMode == true && isActivateButton!==0">
                               <button type="button"
                                 class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                 tooltip="Delete" (click)="DeleteComplianceMaster()"><b><i
@@ -179,12 +179,11 @@
 
                               <button type="submit"
                                 class="pull-right custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                                tooltip="Update" (click)="UpdateComplianceMaster()"><b><i
-                                    class="fa fa-floppy-o"></i></b>
+                                tooltip="Update" (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                                 Update</button>
-                            </div>
-                          </div>
-                        </div>
+                            </div> -->
+                        <!-- </div>
+                        </div> -->
 
                       </fieldset>
 
@@ -448,7 +447,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Employee Special Rate Applicable</label>
                             <select class="form-control" formControlName="specialRateApplicableEMPCount"
-                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value)'>
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,1)'>
                               <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of employeeSpecialRateApplicableList"
                                 [value]="issuedBy.itemName">
@@ -467,7 +466,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Company Special Rate Applicable</label>
                             <select class="form-control" formControlName="specialRateApplicableCompCount"
-                              (change)='onSelectCompanySpecialRateApplicable($event.target.value)'>
+                              (change)='onSelectCompanySpecialRateApplicable($event.target.value,1)'>
                               <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of companySpecialRateApplicableList"
                                 [value]="issuedBy.itemName">
@@ -542,13 +541,18 @@
                                                                                         'btn-bg-green': !form.get('pfFormArray')['controls'][i].invalid}"
                                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                                   [disabled]="form.get('pfFormArray')['controls'][i].invalid" tooltip="Update"
-                                  (click)="UpdatePf(i)"><b><i class="fa fa-floppy-o"></i></b>
+                                  (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                                   Update</button>
 
                                 <button type="button"
                                   class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                   tooltip="Delete" (click)="DeletePf(i)"><b><i class="fa fa-times-circle"></i></b>
                                   Delete</button>
+
+                                <button type="button"
+                                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                  tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                                  Cancel</button>
                               </div>
                             </div>
                           </fieldset>
@@ -1025,7 +1029,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Employee Special Rate Applicable</label>
                             <select class="form-control" formControlName="specialRateApplicableEMPCount"
-                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value)'>
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
                               <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of employeeSpecialRateApplicableList"
                                 [value]="issuedBy.itemName">
@@ -1044,7 +1048,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Company Special Rate Applicable</label>
                             <select class="form-control" formControlName="specialRateApplicableCompCount"
-                              (change)='onSelectPfStatus($event.target.value)'>
+                              (change)='onSelectCompanySpecialRateApplicable($event.target.value,0)'>
                               <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of companySpecialRateApplicableList"
                                 [value]="issuedBy.itemName">
@@ -1065,7 +1069,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Industry Type</label>
                             <select class="form-control" formControlName="industryType"
-                              (change)='onSelectPfStatus($event.target.value)'>
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
                               <!-- <option selected value=''>Select </option> -->
                               <option *ngFor="let issuedBy of industryTypeList" [value]="issuedBy.itemName">
                                 {{issuedBy.itemName}}
@@ -1073,18 +1077,11 @@
                             </select>
                           </div>
                         </div>
-
-
-
-
                       </fieldset>
                     </div>
-
-
-
-
                   </div>
-                  <div class="col-md-12">
+
+                  <div class="col-md-12" *ngIf="isPfNew">
                     <fieldset>
 
                       <legend>Wages Celling Details</legend>
@@ -1113,11 +1110,7 @@
                       </div>
                     </fieldset>
                   </div>
-                  <div class="row mt-20">
 
-
-
-                  </div>
 
                   <div class="row" *ngIf="isSa">
                     <div class="col-md-12">
@@ -1155,7 +1148,7 @@
                           </div>
 
                         </div>
-                        <!-- <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
                           <div class="col-sm-12 pull-right">
                             <button type="submit" id="submitbuttonSa"
                               onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
@@ -1171,8 +1164,14 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteSa(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
-                        </div> -->
+                        </div>
                       </fieldset>
                     </div>
                   </div>
@@ -1233,7 +1232,7 @@
                             'btn-bg-green': !form.get('epsArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('epsArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateEps(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1241,6 +1240,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteEps(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1317,13 +1321,20 @@
                             'btn-bg-green': !form.get('esiArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('esiArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateEsi(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
                             <button type="button"
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteEsi(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
+
                           </div>
                         </div>
 
@@ -1384,7 +1395,7 @@
                             'btn-bg-green': !form.get('ptArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('ptArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdatePt(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1392,6 +1403,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeletePt(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1439,7 +1455,7 @@
                             'btn-bg-green': !form.get('lwfArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('lwfArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateLwf(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1447,6 +1463,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteLwf(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1504,7 +1525,7 @@
                             'btn-bg-green': !form.get('tdsArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('tdsArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateTds(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1512,6 +1533,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteTds(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1574,7 +1600,7 @@
                             'btn-bg-green': !form.get('gratuityArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('gratuityArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateGratuity(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1582,6 +1608,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteGratuity(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1643,7 +1674,7 @@
                             'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1651,6 +1682,12 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteSa(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
                           </div>
                         </div>
 
@@ -1688,12 +1725,48 @@
                           Cancel</button>
                       </ng-container>
                     </div>
-                    <div class="float-right mb-15" *ngIf="isEditMode">
+
+
+                    <div class="float-right mb-15" *ngIf="isView == true ">
+                      <!-- <button type="submit" id="submitbuttonSa"
+                        onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
+                        [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('saArray')['controls'][i].invalid,
+                                                                            'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                        [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
+                        (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
+                        Update</button> -->
+                      <!-- <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Delete"
+                        (click)="deleteAll()"><b><i class="fa fa-times-circle"></i></b>
+                        Delete</button> -->
+
+
+                      <span *ngIf="isActivateButton ==0">
+                        <button type="button"
+                          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                          tooltip="Delete" (click)="activateComplianceMaster()"><b><i
+                              class="fa fa-times-circle"></i></b>
+                          Activate Record</button>
+                      </span>
+
                       <button type="button"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
                         (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
                         Cancel</button>
+
+
                     </div>
+
+
+
+
+                    <!-- <div class="float-right mb-15" *ngIf="isEditMode">
+                      <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
+                        (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                        Cancel</button>
+                    </div> -->
                   </div> <!-- <end of div col-6 -->
 
 
@@ -1730,8 +1803,7 @@
                     <tbody>
 
                       <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
-                        <td class="wd-10"><span
-                            tooltip="{{summary.complianceMasterId}}">{{summary.complianceMasterId}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.complianceMasterId}}">{{summary.SrNo}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.complianceName}}">{{summary.complianceName}}</span>
                         </td>

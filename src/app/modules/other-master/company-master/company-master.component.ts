@@ -40,7 +40,7 @@ export class CompanyMasterComponent implements OnInit {
   currencyList: Array<any> = [];
   languageList: Array<any> = [];
   public summaryHtmlDataList = [];
-  public companyGroupNameList = [];
+  public companyGroupCodeList = [];
   masterGridDataList: Array<any> = [];
   public scaleList = [];
   public reasonForExitList = [];
@@ -76,8 +76,8 @@ export class CompanyMasterComponent implements OnInit {
       code: new FormControl({ value: null, disabled: true }),
       companyName: new FormControl('', Validators.required),
       shortName: new FormControl('', Validators.required),
-      companyGroupName: new FormControl('', Validators.required),
-      companyGroupName1: new FormControl({ value: null, disabled: true }),
+      companyGroupCode: new FormControl('', Validators.required),
+      companyGroupCode1: new FormControl({ value: null, disabled: true }),
       typeOfEstablishment: new FormControl('', Validators.required),
       industryType: new FormControl('', Validators.required),
       scale: new FormControl('', Validators.required),
@@ -223,10 +223,10 @@ export class CompanyMasterComponent implements OnInit {
     this.companyMasterform.patchValue(this.masterGridDataList[i]);
     console.log(this.masterGridDataList[i]);
 
-    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupName);
+    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupCode);
     console.log(this.tempObjForgroupNameScaleStartDate);
     this.companyMasterform.patchValue({
-      companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
+      companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
     });
 
     this.companyMasterform.controls['endDate'].clearValidators();
@@ -251,10 +251,10 @@ export class CompanyMasterComponent implements OnInit {
     this.showButtonSaveAndReset = false;
     this.companyMasterform.reset();
     this.companyMasterform.patchValue(this.masterGridDataList[i]);
-    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupName);
+    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupCode);
     console.log(this.tempObjForgroupNameScaleStartDate);
     this.companyMasterform.patchValue({
-      companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
+      companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
     });
     // if (this.employeeMasterRequestDTO.isContractor === true) {
     //   // this.companyMasterform.patchValue({
@@ -343,7 +343,7 @@ export class CompanyMasterComponent implements OnInit {
     console.log(this.summaryHtmlDataList);
 
     this.companyGroupMasterService.getCompanyGroupMasterActive().subscribe(res => {
-      //  this.companyGroupNameList = [];
+      this.companyGroupCodeList = [];
       this.groupNameScaleNameStartDateObject = [];
       let companyGroupcode;
       let startDate;
@@ -352,11 +352,11 @@ export class CompanyMasterComponent implements OnInit {
 
       res.data.results.forEach(element => {
         if (element.companyGroupActive == 1) {
-          this.companyGroupNameList.push({ name: element.companyGroupCode, disabled: false });
+          this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: false });
         } else {
-          this.companyGroupNameList.push({ name: element.companyGroupCode, disabled: true });
+          this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: true });
         }
-        this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupName: element.companyGroupName });
+        this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupCode: element.companyGroupCode });
       });
     });
   }
@@ -422,7 +422,18 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterform.controls['remark'].updateValueAndValidity();
       this.companyMasterform.get('reason').clearValidators();
       this.companyMasterform.controls['reason'].updateValueAndValidity();
+
+      this.companyMasterform.patchValue({
+        remark: '',
+        reason: '',
+      });
+
+      this.companyMasterform.get('remark').disable();
+      this.companyMasterform.get('reason').disable();
+
     } else {
+      this.companyMasterform.get('remark').enable();
+      this.companyMasterform.get('reason').enable();
 
       this.companyMasterform.controls['remark'].setValidators(Validators.required);
       this.companyMasterform.controls['remark'].updateValueAndValidity();
@@ -493,7 +504,7 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.shortName = this.companyMasterform.get('shortName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyName = this.companyMasterform.get('companyName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.formerName = this.companyMasterform.get('formerName').value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupName = this.companyMasterform.get('companyGroupName').value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupCode = this.companyMasterform.get('companyGroupCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address1 = this.companyMasterform.get('address1').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address2 = this.companyMasterform.get('address2').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address3 = this.companyMasterform.get('address3').value;
@@ -582,7 +593,7 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.shortName = this.companyMasterform.get('shortName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyName = this.companyMasterform.get('companyName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.formerName = this.companyMasterform.get('formerName').value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupName = this.companyMasterform.get('companyGroupName').value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupCode = this.companyMasterform.get('companyGroupCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address1 = this.companyMasterform.get('address1').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address2 = this.companyMasterform.get('address2').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address3 = this.companyMasterform.get('address3').value;
@@ -651,7 +662,7 @@ export class CompanyMasterComponent implements OnInit {
 
 
   }
-  onSelectScale() { }
+
 
   checkLocalAddress() {
   }
@@ -821,7 +832,7 @@ export class CompanyMasterComponent implements OnInit {
       this.tempObjForgroupNameScaleStartDate = null;
       this.companyMasterform.patchValue({
         scale: '',
-        companyGroupName1: '',
+        companyGroupCode1: '',
         startDate: ''
       });
     } else {
@@ -832,13 +843,11 @@ export class CompanyMasterComponent implements OnInit {
       console.log(this.tempObjForgroupNameScaleStartDate);
       this.companyMasterform.patchValue({
         scale: this.tempObjForgroupNameScaleStartDate.scale,
-        companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
+        companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
         startDate: ''
       });
       this.groupStartDateValidation = new Date(this.tempObjForgroupNameScaleStartDate.startDate);
-
     }
-
   }
 
   saveFormValidation() {
@@ -863,8 +872,8 @@ export class CompanyMasterComponent implements OnInit {
     this.companyMasterform.controls["address1"].setValidators(Validators.required);
     this.companyMasterform.controls["address1"].updateValueAndValidity();
 
-    this.companyMasterform.controls["companyGroupName"].setValidators(Validators.required);
-    this.companyMasterform.controls["companyGroupName"].updateValueAndValidity();
+    this.companyMasterform.controls["companyGroupCode"].setValidators(Validators.required);
+    this.companyMasterform.controls["companyGroupCode"].updateValueAndValidity();
 
     this.companyMasterform.controls["shortName"].setValidators(Validators.required);
     this.companyMasterform.controls["shortName"].updateValueAndValidity();
@@ -887,7 +896,7 @@ export class CompanyMasterComponent implements OnInit {
     });
     this.companyMasterform.patchValue({
       currency: this.currencyList[2],
-      companyGroupName: '',
+      companyGroupCode: '',
       country: '',
       isdCode: '',
       typeOfEstablishment: '',
@@ -924,8 +933,6 @@ export class CompanyMasterComponent implements OnInit {
 
     }
     if (this.companyNameInvalid == true) {
-      //this.companyGroupNameInvalid = false;
-      //   this.form.get('companyGroupName').inValid = true;
       this.companyMasterform.get('companyName').status = 'INVALID';
 
     }
@@ -944,10 +951,7 @@ export class CompanyMasterComponent implements OnInit {
 
     }
     if (this.shortNameInvalid == true) {
-      //this.companyGroupNameInvalid = false;
-      //   this.form.get('companyGroupName').inValid = true;
       this.companyMasterform.get('shortName').status = 'INVALID';
-
     }
   }
   keyPressedSpaceNotAllow(event: any) {

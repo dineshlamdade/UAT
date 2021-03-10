@@ -157,8 +157,8 @@ export class BusinessCycleComponent implements OnInit {
   previewCycleList: Array<any> = [];
   //tableData: any =[];
   serviceName = [];
-  selectedLevel;
-  minDate: Date;
+  //selectedLevel;
+  minDate: Date = new Date();
 
   dropdownList = [];
   //selectedItems=[];
@@ -170,24 +170,13 @@ export class BusinessCycleComponent implements OnInit {
   CycleCreationForm: FormGroup;
   CycleCreationForm1: FormGroup;
   BusinessYearId: string;
-  BusinessyearList: Array<any> = [{
-    used: true,
-    id: 1,
-    yearDefinition: 2010,
-    description: 'desc1',
-  },
-  {
-    id: 2,
-    used: false,
-    yearDefinition: 2010,
-    description: 'desc2'
-  }];
+  BusinessyearList: Array<any> = [];
   id: number = 0;
   updateFlag: boolean = false;
   bsConfig: Partial<BsDatepickerConfig>;
   myDateValue: Date;
   Name: string;
-  minDate1: Date;
+  // minDate1: Date;
   CycleName: string;
   CycleupdateFlag: boolean = false;
   CycleupdateFlag1: boolean = false;
@@ -345,16 +334,16 @@ export class BusinessCycleComponent implements OnInit {
     ];
 
 
-    this.frequencyOfPayment = [
-      { label: 'Weekly', value: 'Weekly' },
-      { label: 'Yearly', value: 'Yearly' },
-      { label: 'Biweekly', value: 'Biweekly' },
-      { label: 'Daily', value: 'Daily' },
-      { label: 'Semi Monthly', value: 'Semi Monthly' },
-      { label: 'Monthly', value: 'Monthly' },
-      { label: 'Adhoc', value: 'Adhoc' }
+    // this.frequencyOfPayment = [
+    //   { label: 'Weekly', value: 'Weekly' },
+    //   { label: 'Yearly', value: 'Yearly' },
+    //   { label: 'Biweekly', value: 'Biweekly' },
+    //   { label: 'Daily', value: 'Daily' },
+    //   { label: 'Semi Monthly', value: 'Semi Monthly' },
+    //   { label: 'Monthly', value: 'Monthly' },
+    //   { label: 'Adhoc', value: 'Adhoc' }
 
-    ];
+    // ];
 
     this.grandTabStatus = false;
     this.isCheckAll = false;
@@ -391,7 +380,7 @@ export class BusinessCycleComponent implements OnInit {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green custom' });
 
     this.getFrequency();
-    // this.getAllBusinessyear();
+    this.getAllBusinessyear();
     this.getAllCycleDefinition();
     this.getAllCycleCreation();
 
@@ -500,11 +489,9 @@ export class BusinessCycleComponent implements OnInit {
     });
   }
 
-  ///////////////////////////////////////Bharati////////////////////////////
-  //  onDateChange(newDate: Date) {
-  //     console.log(newDate);
-  //   }
-  onStatusChange(event) {
+
+  onChangeFrequencyFromCycleDefinition(event) {
+    console.log(this.selectedFrequency);
 
     this.selectedFrequency = event.target.value;
     if (this.selectedFrequency === "5") {
@@ -523,9 +510,9 @@ export class BusinessCycleComponent implements OnInit {
     }
     ;
   }
-  selected() {
-    this.selectedFrequency = this.selectedLevel.name;
-  }
+  // selected() {
+  //   this.selectedFrequency = this.selectedLevel.name;
+  // }
 
   Edit(val) {
     this.editRowID = val;
@@ -567,8 +554,8 @@ export class BusinessCycleComponent implements OnInit {
   OnDateChange(event): void {
 
 
-    this.minDate1 = event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
-    this.minDate = event.getTime();
+    // this.minDate1 = event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
+    // this.minDate = event.getTime();
     //    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) {
     //       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });
     //     }
@@ -590,6 +577,8 @@ export class BusinessCycleComponent implements OnInit {
     this.BusinessYearform.reset();
     this.BusinessYearform.enable();
     this.updateFlag = false;
+
+    this.BusinessYearform.get('description').disable();
   }
 
 
@@ -617,13 +606,16 @@ export class BusinessCycleComponent implements OnInit {
 
   //get all Businessyear
   getAllBusinessyear(): void {
+    this.BusinessyearList = [];
     this.payrollService.getAllBusinessYear().subscribe(res => {
+
 
       this.BusinessyearList = res.data.results;
     });
   }
   //get all cycle-definition
   getAllCycleDefinition(): void {
+    this.CycleDefinitionList = [];
     this.payrollService.getAllCycleDefinition().subscribe(res => {
 
       this.CycleDefinitionList = res.data.results;
@@ -632,6 +624,7 @@ export class BusinessCycleComponent implements OnInit {
 
   //get all cycle-Creation
   getAllCycleCreation(): void {
+    this.CycleCreationList = [];
     this.payrollService.getAllCycleCreation().subscribe(res => {
 
       this.CycleCreationList = res.data.results;
@@ -776,7 +769,7 @@ export class BusinessCycleComponent implements OnInit {
   }
 
   DeleteCycleDefinitionById(id): void {
-    ;
+    console.log('deleted id is', id);
     this.CycleupdateFlag = false;
     this.CycleupdateFlag1 = false;
     this.payrollService.DeleteCycleDefinitionById(id)
@@ -1086,6 +1079,7 @@ export class BusinessCycleComponent implements OnInit {
 
   // Post Master Page Data API call
   addMaster(formData: any, formDirective: FormGroupDirective): void {
+    console.log('in add master');
     if (this.form.invalid) {
       return;
     }

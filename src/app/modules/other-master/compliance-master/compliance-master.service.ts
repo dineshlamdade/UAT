@@ -28,6 +28,16 @@ export class ComplianceMasterService {
         return res;
       }));
   }
+
+  // http://localhost:8083/hrms/v1/compliance-master/update-all
+  putUpdateAllComlianceMaster(data) {
+    return this._HTTP.put(environment.baseUrl8083 + 'compliance-master/update-all', data)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+
+
+  }
   deleteComplianceMasterDetail(Id: number) {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
@@ -38,6 +48,20 @@ export class ComplianceMasterService {
         return res;
       }));
   }
+
+  deleteAllComplianc(Id: number) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('X-TenantId', 'PaysquareDefault');
+    return this._HTTP.put(environment.baseUrl8083 + 'compliance-master/delete/' + Id, { headers: headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+  // compliance-master/delete/{complianceMasterId}
+
+  // http://localhost:8083/hrms/v1/compliance-master/delete/{complianceMasterId}
 
   deleteComplianceApplicability(id: any) {
     const headers = new HttpHeaders()

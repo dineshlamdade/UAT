@@ -18,7 +18,7 @@ export class EmployeeMasterRequestDTO {
     public companyName: any,
     public shortName: any,
     public formerName: any,
-    public companyGroupName: any,
+    public companyGroupCode: any,
     public address1: any,
     public address2: any,
     public address3: any,

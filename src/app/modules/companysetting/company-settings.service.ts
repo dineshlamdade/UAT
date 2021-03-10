@@ -112,7 +112,7 @@ export class CompanySettingsService {
   //get all businessyearlist
   getAllBusinessYear() {
 
-    return this._HTTP.get(environment.baseUrl8086 + 'business-year')
+    return this._HTTP.get(environment.baseUrl8086 + 'business-year/getAll-bussiness-year')
       .pipe(map((res: any) => {
         return res;
       }));
@@ -157,7 +157,7 @@ export class CompanySettingsService {
   //get all cycle-definition
   getAllCycleDefinition() {
 
-    return this._HTTP.get(environment.baseUrl8086 + 'business-cycle-definition')
+    return this._HTTP.get(environment.baseUrl8086 + 'business-year/getAll-bussiness-year')
       .pipe(map((res: any) => {
         return res;
       }));
@@ -183,7 +183,7 @@ export class CompanySettingsService {
 
   //delete cycle-definition
   DeleteCycleDefinitionById(id: number) {
-    return this._HTTP.delete(environment.baseUrl8086 + 'business-cycle-definition/' + id)
+    return this._HTTP.delete(environment.baseUrl8086 + '/business-year/' + id)
       .pipe(map((res: any) => {
         return res;
       }));

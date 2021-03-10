@@ -49,14 +49,14 @@
                       <div class="row mt-10">
                         <div class="col-sm-3">
                           <label class="form-label">Group Code</label>
-                          <select name="companyGroupName" id="companyGroupName"
-                            [(ngModel)]="employeeMasterRequestDTO.companyGroupName" class="form-control"
-                            autocomplete="off" formControlName="companyGroupName"
+                          <select name="companyGroupCode" id="companyGroupCode"
+                            [(ngModel)]="employeeMasterRequestDTO.companyGroupCode" class="form-control"
+                            autocomplete="off" formControlName="companyGroupCode"
                             (change)='onSelectGroupMaster($event.target.value)'
-                            [ngClass]="{'is-invalid' : companyMasterform.get('companyGroupName').status == 'INVALID'}">
+                            [ngClass]="{'is-invalid' : companyMasterform.get('companyGroupCode').status == 'INVALID'}">
                             <!-- <option selected [ngValue]=null>Select </option> -->
                             <option selected value=''>Select </option>
-                            <option *ngFor="let code11 of companyGroupNameList" [disabled]='code11.disabled'
+                            <option *ngFor="let code11 of companyGroupCodeList" [disabled]='code11.disabled'
                               [value]="code11.name">
                               {{code11.name}}
                             </option>
@@ -65,8 +65,8 @@
 
                         <div class="col-sm-3">
                           <label class="form-label">Group Name</label>
-                          <input type="text" formControlName="companyGroupName1" class="form-control" autocomplete="off"
-                            name="companyGroupName">
+                          <input type="text" formControlName="companyGroupCode1" class="form-control" autocomplete="off"
+                            name="companyGroupCode">
                         </div>
 
 
@@ -249,8 +249,7 @@
                           <label class="form-label">Scale</label>
                           <select name="scale" id="scale" class="form-control"
                             [ngClass]="{'is-invalid' : companyMasterform.get('scale').status == 'INVALID'}"
-                            formControlName="scale" (change)='onSelectScale($event.target.value)'
-                            [(ngModel)]="employeeMasterRequestDTO.scale">
+                            formControlName="scale" [(ngModel)]="employeeMasterRequestDTO.scale">
                             <option selected value=''>Select </option>
                             <option *ngFor="let scales of scaleList" [value]="scales.label">
                               {{scales.label}}
@@ -334,7 +333,7 @@
                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY',  customTodayClass: 'today'  }"
                               formControlName="endDate" placement="center"
                               [ngClass]="{'is-invalid' : companyMasterform.get('endDate').status == 'INVALID'}"
-                              data-provide="datepicker" (bsValueChange)="setPaymentDetailToDate()"
+                              data-provide="datepicker" (bsValueChange)="onChangeEndDate($event)"
                               data-date-autoclose="true" (focusout)="onChangeEndDate($event)" class="form-control"
                               placeholder="Enter End Date" bsDatepicker>
                           </div>

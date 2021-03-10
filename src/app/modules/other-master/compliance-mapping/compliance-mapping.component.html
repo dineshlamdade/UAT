@@ -73,7 +73,7 @@
                           formControlName="statutoryFreqPeriodsDef"
                           [ngClass]="{'is-invalid' : complianceApplicationForm.get('statutoryFreqPeriodsDef').status == 'INVALID'}">
                           <option selected value=''>Select </option>
-                          <option *ngFor="let issuedBy of forHalfYearly" [value]="issuedBy.id">
+                          <option *ngFor="let issuedBy of statutoryFreqPeriodsDefList" [value]="issuedBy.id">
                             {{issuedBy.itemName}}
                           </option>
                         </select>

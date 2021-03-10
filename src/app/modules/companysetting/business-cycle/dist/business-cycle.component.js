@@ -105,22 +105,13 @@ var BusinessCycleComponent = /** @class */ (function () {
         this.previewCycleList = [];
         //tableData: any =[];
         this.serviceName = [];
+        //selectedLevel;
+        this.minDate = new Date();
         this.dropdownList = [];
         //selectedItems=[];
         // selectedItems:serviceDetails[];
         this.dropdownSettings = {};
-        this.BusinessyearList = [{
-                used: true,
-                id: 1,
-                yearDefinition: 2010,
-                description: 'desc1'
-            },
-            {
-                id: 2,
-                used: false,
-                yearDefinition: 2010,
-                description: 'desc2'
-            }];
+        this.BusinessyearList = [];
         this.id = 0;
         this.updateFlag = false;
         this.CycleupdateFlag = false;
@@ -222,15 +213,15 @@ var BusinessCycleComponent = /** @class */ (function () {
             { label: '2029', value: '2029' },
             { label: '2030', value: '2030' },
         ];
-        this.frequencyOfPayment = [
-            { label: 'Weekly', value: 'Weekly' },
-            { label: 'Yearly', value: 'Yearly' },
-            { label: 'Biweekly', value: 'Biweekly' },
-            { label: 'Daily', value: 'Daily' },
-            { label: 'Semi Monthly', value: 'Semi Monthly' },
-            { label: 'Monthly', value: 'Monthly' },
-            { label: 'Adhoc', value: 'Adhoc' }
-        ];
+        // this.frequencyOfPayment = [
+        //   { label: 'Weekly', value: 'Weekly' },
+        //   { label: 'Yearly', value: 'Yearly' },
+        //   { label: 'Biweekly', value: 'Biweekly' },
+        //   { label: 'Daily', value: 'Daily' },
+        //   { label: 'Semi Monthly', value: 'Semi Monthly' },
+        //   { label: 'Monthly', value: 'Monthly' },
+        //   { label: 'Adhoc', value: 'Adhoc' }
+        // ];
         this.grandTabStatus = false;
         this.isCheckAll = false;
         this.isDisabled = true;
@@ -258,7 +249,7 @@ var BusinessCycleComponent = /** @class */ (function () {
         this.myDateValue = new Date();
         this.bsConfig = Object.assign({}, { containerClass: 'theme-green custom' });
         this.getFrequency();
-        // this.getAllBusinessyear();
+        this.getAllBusinessyear();
         this.getAllCycleDefinition();
         this.getAllCycleCreation();
         // getAllServices(): void {
@@ -353,11 +344,8 @@ var BusinessCycleComponent = /** @class */ (function () {
             });
         });
     };
-    ///////////////////////////////////////Bharati////////////////////////////
-    //  onDateChange(newDate: Date) {
-    //     console.log(newDate);
-    //   }
-    BusinessCycleComponent.prototype.onStatusChange = function (event) {
+    BusinessCycleComponent.prototype.onChangeFrequencyFromCycleDefinition = function (event) {
+        console.log(this.selectedFrequency);
         this.selectedFrequency = event.target.value;
         if (this.selectedFrequency === "5") {
             this.CycleDefinationForm.controls['addDays'].setValidators([forms_1.Validators.required]);
@@ -372,9 +360,9 @@ var BusinessCycleComponent = /** @class */ (function () {
         }
         ;
     };
-    BusinessCycleComponent.prototype.selected = function () {
-        this.selectedFrequency = this.selectedLevel.name;
-    };
+    // selected() {
+    //   this.selectedFrequency = this.selectedLevel.name;
+    // }
     BusinessCycleComponent.prototype.Edit = function (val) {
         this.editRowID = val;
     };
@@ -406,8 +394,8 @@ var BusinessCycleComponent = /** @class */ (function () {
         console.log(items);
     };
     BusinessCycleComponent.prototype.OnDateChange = function (event) {
-        this.minDate1 = event; //this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
-        this.minDate = event.getTime();
+        // this.minDate1 = event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
+        // this.minDate = event.getTime();
         //    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) {
         //       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });
         //     }
@@ -424,6 +412,7 @@ var BusinessCycleComponent = /** @class */ (function () {
         this.BusinessYearform.reset();
         this.BusinessYearform.enable();
         this.updateFlag = false;
+        this.BusinessYearform.get('description').disable();
     };
     BusinessCycleComponent.prototype.resetCycledefinition = function () {
         this.CycleDefinationForm.reset();
@@ -447,6 +436,7 @@ var BusinessCycleComponent = /** @class */ (function () {
     //get all Businessyear
     BusinessCycleComponent.prototype.getAllBusinessyear = function () {
         var _this = this;
+        this.BusinessyearList = [];
         this.payrollService.getAllBusinessYear().subscribe(function (res) {
             _this.BusinessyearList = res.data.results;
         });
@@ -454,6 +444,7 @@ var BusinessCycleComponent = /** @class */ (function () {
     //get all cycle-definition
     BusinessCycleComponent.prototype.getAllCycleDefinition = function () {
         var _this = this;
+        this.CycleDefinitionList = [];
         this.payrollService.getAllCycleDefinition().subscribe(function (res) {
             _this.CycleDefinitionList = res.data.results;
         });
@@ -461,6 +452,7 @@ var BusinessCycleComponent = /** @class */ (function () {
     //get all cycle-Creation
     BusinessCycleComponent.prototype.getAllCycleCreation = function () {
         var _this = this;
+        this.CycleCreationList = [];
         this.payrollService.getAllCycleCreation().subscribe(function (res) {
             _this.CycleCreationList = res.data.results;
         });
@@ -578,7 +570,7 @@ var BusinessCycleComponent = /** @class */ (function () {
     };
     BusinessCycleComponent.prototype.DeleteCycleDefinitionById = function (id) {
         var _this = this;
-        ;
+        console.log('deleted id is', id);
         this.CycleupdateFlag = false;
         this.CycleupdateFlag1 = false;
         this.payrollService.DeleteCycleDefinitionById(id)
@@ -830,6 +822,7 @@ var BusinessCycleComponent = /** @class */ (function () {
     // Post Master Page Data API call
     BusinessCycleComponent.prototype.addMaster = function (formData, formDirective) {
         var _this = this;
+        console.log('in add master');
         if (this.form.invalid) {
             return;
         }

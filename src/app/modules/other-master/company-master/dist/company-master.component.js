@@ -34,7 +34,7 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.currencyList = [];
         this.languageList = [];
         this.summaryHtmlDataList = [];
-        this.companyGroupNameList = [];
+        this.companyGroupCodeList = [];
         this.masterGridDataList = [];
         this.scaleList = [];
         this.reasonForExitList = [];
@@ -56,8 +56,8 @@ var CompanyMasterComponent = /** @class */ (function () {
             code: new forms_1.FormControl({ value: null, disabled: true }),
             companyName: new forms_1.FormControl('', forms_1.Validators.required),
             shortName: new forms_1.FormControl('', forms_1.Validators.required),
-            companyGroupName: new forms_1.FormControl('', forms_1.Validators.required),
-            companyGroupName1: new forms_1.FormControl({ value: null, disabled: true }),
+            companyGroupCode: new forms_1.FormControl('', forms_1.Validators.required),
+            companyGroupCode1: new forms_1.FormControl({ value: null, disabled: true }),
             typeOfEstablishment: new forms_1.FormControl('', forms_1.Validators.required),
             industryType: new forms_1.FormControl('', forms_1.Validators.required),
             scale: new forms_1.FormControl('', forms_1.Validators.required),
@@ -188,10 +188,10 @@ var CompanyMasterComponent = /** @class */ (function () {
         console.log(this.masterGridDataList[i].isContractor);
         this.companyMasterform.patchValue(this.masterGridDataList[i]);
         console.log(this.masterGridDataList[i]);
-        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === _this.masterGridDataList[i].companyGroupName; });
+        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === _this.masterGridDataList[i].companyGroupCode; });
         console.log(this.tempObjForgroupNameScaleStartDate);
         this.companyMasterform.patchValue({
-            companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName
+            companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode
         });
         this.companyMasterform.controls['endDate'].clearValidators();
         this.companyMasterform.controls['remark'].clearValidators();
@@ -213,10 +213,10 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.showButtonSaveAndReset = false;
         this.companyMasterform.reset();
         this.companyMasterform.patchValue(this.masterGridDataList[i]);
-        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === _this.masterGridDataList[i].companyGroupName; });
+        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === _this.masterGridDataList[i].companyGroupCode; });
         console.log(this.tempObjForgroupNameScaleStartDate);
         this.companyMasterform.patchValue({
-            companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName
+            companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode
         });
         // if (this.employeeMasterRequestDTO.isContractor === true) {
         //   // this.companyMasterform.patchValue({
@@ -301,7 +301,7 @@ var CompanyMasterComponent = /** @class */ (function () {
         console.log('summary');
         console.log(this.summaryHtmlDataList);
         this.companyGroupMasterService.getCompanyGroupMasterActive().subscribe(function (res) {
-            //  this.companyGroupNameList = [];
+            _this.companyGroupCodeList = [];
             _this.groupNameScaleNameStartDateObject = [];
             var companyGroupcode;
             var startDate;
@@ -309,12 +309,12 @@ var CompanyMasterComponent = /** @class */ (function () {
             console.log(res);
             res.data.results.forEach(function (element) {
                 if (element.companyGroupActive == 1) {
-                    _this.companyGroupNameList.push({ name: element.companyGroupCode, disabled: false });
+                    _this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: false });
                 }
                 else {
-                    _this.companyGroupNameList.push({ name: element.companyGroupCode, disabled: true });
+                    _this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: true });
                 }
-                _this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupName: element.companyGroupName });
+                _this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupCode: element.companyGroupCode });
             });
         });
     };
@@ -369,8 +369,16 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterform.controls['remark'].updateValueAndValidity();
             this.companyMasterform.get('reason').clearValidators();
             this.companyMasterform.controls['reason'].updateValueAndValidity();
+            this.companyMasterform.patchValue({
+                remark: '',
+                reason: ''
+            });
+            this.companyMasterform.get('remark').disable();
+            this.companyMasterform.get('reason').disable();
         }
         else {
+            this.companyMasterform.get('remark').enable();
+            this.companyMasterform.get('reason').enable();
             this.companyMasterform.controls['remark'].setValidators(forms_1.Validators.required);
             this.companyMasterform.controls['remark'].updateValueAndValidity();
             this.companyMasterform.controls['reason'].setValidators(forms_1.Validators.required);
@@ -429,7 +437,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.shortName = this.companyMasterform.get('shortName').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyName = this.companyMasterform.get('companyName').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.formerName = this.companyMasterform.get('formerName').value;
-            this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupName = this.companyMasterform.get('companyGroupName').value;
+            this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupCode = this.companyMasterform.get('companyGroupCode').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.address1 = this.companyMasterform.get('address1').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.address2 = this.companyMasterform.get('address2').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.address3 = this.companyMasterform.get('address3').value;
@@ -512,7 +520,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.shortName = this.companyMasterform.get('shortName').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyName = this.companyMasterform.get('companyName').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.formerName = this.companyMasterform.get('formerName').value;
-            this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupName = this.companyMasterform.get('companyGroupName').value;
+            this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupCode = this.companyMasterform.get('companyGroupCode').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.address1 = this.companyMasterform.get('address1').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.address2 = this.companyMasterform.get('address2').value;
             this.companyMasterRequestDTOs.employeeMasterRequestDTO.address3 = this.companyMasterform.get('address3').value;
@@ -572,7 +580,6 @@ var CompanyMasterComponent = /** @class */ (function () {
             });
         }
     };
-    CompanyMasterComponent.prototype.onSelectScale = function () { };
     CompanyMasterComponent.prototype.checkLocalAddress = function () {
     };
     CompanyMasterComponent.prototype.clearLocalAddressFields = function () {
@@ -709,7 +716,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.tempObjForgroupNameScaleStartDate = null;
             this.companyMasterform.patchValue({
                 scale: '',
-                companyGroupName1: '',
+                companyGroupCode1: '',
                 startDate: ''
             });
         }
@@ -721,7 +728,7 @@ var CompanyMasterComponent = /** @class */ (function () {
             console.log(this.tempObjForgroupNameScaleStartDate);
             this.companyMasterform.patchValue({
                 scale: this.tempObjForgroupNameScaleStartDate.scale,
-                companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
+                companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
                 startDate: ''
             });
             this.groupStartDateValidation = new Date(this.tempObjForgroupNameScaleStartDate.startDate);
@@ -745,8 +752,8 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.companyMasterform.controls["code"].updateValueAndValidity();
         this.companyMasterform.controls["address1"].setValidators(forms_1.Validators.required);
         this.companyMasterform.controls["address1"].updateValueAndValidity();
-        this.companyMasterform.controls["companyGroupName"].setValidators(forms_1.Validators.required);
-        this.companyMasterform.controls["companyGroupName"].updateValueAndValidity();
+        this.companyMasterform.controls["companyGroupCode"].setValidators(forms_1.Validators.required);
+        this.companyMasterform.controls["companyGroupCode"].updateValueAndValidity();
         this.companyMasterform.controls["shortName"].setValidators(forms_1.Validators.required);
         this.companyMasterform.controls["shortName"].updateValueAndValidity();
         this.companyMasterform.controls["scale"].setValidators(forms_1.Validators.required);
@@ -763,7 +770,7 @@ var CompanyMasterComponent = /** @class */ (function () {
         });
         this.companyMasterform.patchValue({
             currency: this.currencyList[2],
-            companyGroupName: '',
+            companyGroupCode: '',
             country: '',
             isdCode: '',
             typeOfEstablishment: '',
@@ -799,8 +806,6 @@ var CompanyMasterComponent = /** @class */ (function () {
             }
         }
         if (this.companyNameInvalid == true) {
-            //this.companyGroupNameInvalid = false;
-            //   this.form.get('companyGroupName').inValid = true;
             this.companyMasterform.get('companyName').status = 'INVALID';
         }
     };
@@ -818,8 +823,6 @@ var CompanyMasterComponent = /** @class */ (function () {
             }
         }
         if (this.shortNameInvalid == true) {
-            //this.companyGroupNameInvalid = false;
-            //   this.form.get('companyGroupName').inValid = true;
             this.companyMasterform.get('shortName').status = 'INVALID';
         }
     };

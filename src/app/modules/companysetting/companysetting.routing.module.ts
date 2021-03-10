@@ -24,7 +24,7 @@ const routes: Routes = [
       {
         path: 'business-cycle',
         component: BusinessCycleComponent,
-        data: { title: ':: Epic :: Company Settings' }
+        data: { title: ':: Epic :: Company Settings ' }
       },
       {
         path: 'head-creation',

@@ -20,6 +20,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
         // isEditMode: boolean = false;
         this.masterGridDataList = [];
         this.index = 0;
+        // qwerty = 'disabled-button';
         this.companyGroupId = 0;
         this.reasonForExitList = [];
         this.view = false;
@@ -186,7 +187,6 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
         this.saveFormValidation();
     };
     CompanyGroupMasterComponent.prototype.onBsValueChangeDateOfSetup = function () {
-        console.log('change');
         console.log(this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y'));
     };
     CompanyGroupMasterComponent.prototype.editMaster = function (i, companyGroupId) {
@@ -253,7 +253,6 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
                     servicePeriodShort: element.servicePeriodShort
                 };
                 _this.summaryHtmlDataList.push(obj);
-                console.log(_this.summaryHtmlDataList);
             });
         });
     };
@@ -298,6 +297,12 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
             this.form.controls["remark"].updateValueAndValidity();
             this.form.controls["reasonForExit"].clearValidators();
             this.form.controls["reasonForExit"].updateValueAndValidity();
+            this.form.patchValue({
+                remark: '',
+                reasonForExit: ''
+            });
+            this.form.get('remark').disable();
+            this.form.get('reasonForExit').disable();
         }
         else {
             console.log(evt);
@@ -315,7 +320,7 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
             this.deactivateRemark();
         }
     };
-    CompanyGroupMasterComponent.prototype.setPaymentDetailToDate = function (evt) {
+    CompanyGroupMasterComponent.prototype.onChangeEngagementEndDate = function (evt) {
         var endDate12 = this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y');
         // debugger
         // console.log(this.endDate1);
@@ -331,8 +336,16 @@ var CompanyGroupMasterComponent = /** @class */ (function () {
             this.form.controls["remark"].updateValueAndValidity();
             this.form.controls["reasonForExit"].clearValidators();
             this.form.controls["reasonForExit"].updateValueAndValidity();
+            this.form.patchValue({
+                remark: '',
+                reasonForExit: ''
+            });
+            this.form.get('remark').disable();
+            this.form.get('reasonForExit').disable();
         }
         else {
+            this.form.get('remark').enable();
+            this.form.get('reasonForExit').enable();
             this.form.controls["remark"].setValidators([forms_1.Validators.required]);
             this.form.controls["remark"].updateValueAndValidity();
             this.form.controls["reasonForExit"].setValidators([forms_1.Validators.required]);
