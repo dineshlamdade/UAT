@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -32,6 +33,8 @@ import { NscService } from '../nsc.service';
   styleUrls: ['./national-seving-certificate-master.component.scss'],
 })
 export class NationalSevingCertificateMasterComponent implements OnInit {
+  @Input() public accountNo: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -109,6 +112,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public proofSubmissionId;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -152,6 +157,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       masterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
@@ -233,6 +239,15 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo != undefined || this.accountNo != null) {
+      const input = this.accountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -343,7 +358,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
@@ -358,12 +373,12 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
       const data = this.form.getRawValue();
+            data.proofSubmissionId = this.proofSubmissionId;
+            data.fromDate = from;
+            data.toDate = to;
+            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-      data.fromDate = from;
-      data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
-
-      console.log('Post Office Data::', data);
+               console.log('Post Office Data::', data);
 
       this.nscService
         .uploadMultipleNSCMasterFiles(this.masterfilesArray, data)
@@ -403,6 +418,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
     }
   }
@@ -486,17 +502,36 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
   }
 
   // On Master Edit functionality
-  editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
+  editMaster(accountNumber) {
+    this.nscService.getNSCMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(accountNumber)
+      const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+    // Object.assign({}, { class: 'gray modal-md' }),
+    console.log("Edit Master",obj);
+    if (obj!= 'undefined'){
+
+    this.paymentDetailGridData = obj.paymentDetails;
+    this.form.patchValue(obj);
+    this.Index = obj.policyNo;
     this.showUpdateButton = true;
     this.isClear = true;
-    this.masterfilesArray = this.masterGridData[i].documentInformationList
+    this.urlArray = obj.documentInformationList;
+    this.proofSubmissionId = obj.proofSubmissionId;
+    }
+    });
   }
 
+  findByPolicyNo(accountNumber,masterGridData){
+    return masterGridData.find(x => x.accountNumber === accountNumber)
+  }
 
   // On Master Edit functionality
   viewMaster(i: number) {
@@ -531,4 +566,44 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+    //---------- For Doc Viewer -----------------------
+    nextDocViewer() {
+
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      //   this.urlArray[this.urlIndex]
+      // );
+    }
+
+    previousDocViewer() {
+
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      //   this.urlArray[this.urlIndex]
+      // );
+    }
+
+    docViewer(template3: TemplateRef<any>,index:any) {
+      console.log("---in doc viewer--");
+      this.urlIndex = index;
+
+      console.log("urlArray::", this.urlArray);
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+      //this.urlSafe
+      console.log("urlSafe::",  this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
+
 }

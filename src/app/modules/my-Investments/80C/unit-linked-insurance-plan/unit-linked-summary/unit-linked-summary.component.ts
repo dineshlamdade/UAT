@@ -68,7 +68,6 @@ export class UnitLinkedSummaryComponent implements OnInit {
     this.accountNo.emit(accountNo);
   }
 
-
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -76,9 +75,8 @@ export class UnitLinkedSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-      this.grandTotalDeclaredAmount =
-        res.data.results[0].grandTotalDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount =res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       console.log(res);
     });
@@ -92,20 +90,15 @@ export class UnitLinkedSummaryComponent implements OnInit {
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.unitLinkedInsurancePlanService
-      .getULIPSummaryFuturePlan(data)
-      .subscribe((res) => {
+    this.unitLinkedInsurancePlanService.getULIPSummaryFuturePlan(data).subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
+        this.futureNewPolicyDeclaredAmount =res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-
       });
 
   }

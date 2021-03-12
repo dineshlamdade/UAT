@@ -110,6 +110,7 @@ export class PostOfficeMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -142,7 +143,9 @@ export class PostOfficeMasterComponent implements OnInit {
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
+      investmentGroup1MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -345,8 +348,8 @@ export class PostOfficeMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
-    if (this.masterfilesArray.length === 0) {
+    console.log("urlArray.length",this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
@@ -360,7 +363,9 @@ export class PostOfficeMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
+       data.proofSubmissionId = this.proofSubmissionId;
 
       data.fromDate = from;
       data.toDate = to;
@@ -410,6 +415,7 @@ export class PostOfficeMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
     }
   }
@@ -427,8 +433,8 @@ export class PostOfficeMasterComponent implements OnInit {
   // Remove Post Office Master Document
   removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
-    console.log('this.filesArray::', this.masterfilesArray);
-    console.log('this.filesArray.size::', this.masterfilesArray.length);
+    // console.log('this.filesArray::', this.masterfilesArray);
+    // console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
   // Calculate annual amount on basis of premium and frquency
@@ -473,8 +479,40 @@ export class PostOfficeMasterComponent implements OnInit {
     }
   }
 
-  // On Master Edit functionality
-  editOnSummary(accountNumber) {
+  // // On Master Edit functionality
+  // editOnSummary(accountNumber) {
+  //   //this.scrollToTop();
+  //   this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
+  //     console.log('masterGridData::', res);
+  //     this.masterGridData = res.data.results;
+  //     this.masterGridData.forEach((element) => {
+  //       element.policyStartDate = new Date(element.policyStartDate);
+  //       element.policyEndDate = new Date(element.policyEndDate);
+  //       element.fromDate = new Date(element.fromDate);
+  //       element.toDate = new Date(element.toDate);
+  //     });
+
+  //     console.log(accountNumber)
+  //     const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+
+  //     console.log("Edit Master",obj);
+  //     if (obj!= 'undefined'){
+
+  //   this.paymentDetailGridData = obj.paymentDetails;
+  //   this.form.patchValue(obj);
+  //   this.Index = obj.accountNumber;
+  //   this.showUpdateButton = true;
+  //   this.isClear = true;
+  //   this.proofSubmissionId = obj.proofSubmissionId;
+  //   this.urlArray = obj.documentInformationList;
+
+  //     }
+  // });
+  // }
+
+   //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
+   editOnSummary(accountNumber) {
     //this.scrollToTop();
     this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -485,24 +523,24 @@ export class PostOfficeMasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-
       console.log(accountNumber)
       const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
 
-
+      // Object.assign({}, { class: 'gray modal-md' }),
       console.log("Edit Master",obj);
       if (obj!= 'undefined'){
 
-    this.paymentDetailGridData = obj.paymentDetails;
-    this.form.patchValue(obj);
-    this.Index = obj.accountNumber;
-    this.showUpdateButton = true;
-    this.isClear = true;
-    this.urlArray = obj.documentInformationList;
-    this.proofSubmissionId = obj.proofSubmissionId;
-      }
-  });
-  }
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.accountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
+    }
+    });
+    }
+
 
   findByPolicyNo(accountNumber,masterGridData){
     return masterGridData.find(x => x.accountNumber === accountNumber)
@@ -532,6 +570,7 @@ export class PostOfficeMasterComponent implements OnInit {
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
+    this.masterfilesArray = [];
   }
 
   // On Master Edit functionality

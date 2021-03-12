@@ -83,7 +83,7 @@ export class PpsummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount =   res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -103,7 +103,7 @@ export class PpsummaryComponent implements OnInit {
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount =  res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
         this.grandTotalDeclaredAmount =
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =

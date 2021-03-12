@@ -1,5 +1,5 @@
 <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
-  <div class="tabview-contents">
+   <div class="tabview-contents">
      <div class="row">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Institution</label>
@@ -36,7 +36,7 @@
         </div>
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Relationship</label>
-           <input type="text" formControlName="relationship" class="form-control" disabled
+           <input type="text" formControlName="relationship" class="form-control"
               [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
            <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
               <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
@@ -274,17 +274,24 @@
                              </tr>
                           </thead>
                           <tbody>
-                             <tr>
-                                <th scope="row"><span tooltip="1">1</span></th>
-                                <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement</td>
-                                <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
-                                   class="fa fa-paperclip"
-                                   aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
-                                <td>
-                                   <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
-                                    data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
+                            <tr>
+                              <th scope="row"><span tooltip="1">1</span></th>
+                              <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement</td>
+                              <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
+                                 class="fa fa-paperclip"
+                                 aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                 <div class="col-md-12" *ngFor="let doc of urlArray">
+                                  <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                                    <i class="fa fa-paperclip text-orange"></i> &nbsp;
+                                    {{ doc.fileName }}
+                                  </div>
+                                </div>
                                 </td>
-                             </tr>
+                              <td>
+                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
+                                  data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
+                              </td>
+                           </tr>
                           </tbody>
                        </table>
                     </div>
@@ -348,7 +355,7 @@
                             <td class="wd-10"><span tooltip="Submitted">Submitted</span>
                             </td>
                             <td class="wd-5">
-                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;&nbsp;
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editSummaryMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                             </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">

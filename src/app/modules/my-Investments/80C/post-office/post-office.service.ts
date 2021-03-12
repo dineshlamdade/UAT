@@ -8,7 +8,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class PostOfficeService {
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -23,7 +23,7 @@ export class PostOfficeService {
 
   getPostOfficeSummaryFuturePlan(data) {
 
-    return this._HTTP.post(this.apiUrl + 
+    return this._HTTP.post(this.apiUrl +
       'postOfficeRecurringDepositMaster-detail/postOfficeRecurringDepositMasterSummaryFuturePolicy', data)
     .pipe(map((res: any) => {
       return res;

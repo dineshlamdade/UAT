@@ -14,7 +14,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
+              <td>
                 <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
               </td>
               <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>

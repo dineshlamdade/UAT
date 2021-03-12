@@ -2501,7 +2501,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.imagecover img{
+.imagecover {
 object-fit: cover!important;
 height: 100%!important;
 width: 100%!important;

@@ -9,7 +9,7 @@ import { Observable, of, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class PhysicallyHandicappedService {
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
