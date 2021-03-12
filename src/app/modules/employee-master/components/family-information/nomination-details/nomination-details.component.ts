@@ -410,7 +410,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
   filterCity(state, ESIC) {
-
+    
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {
@@ -418,6 +418,9 @@ export class NominationDetailsComponent implements OnInit {
       }
     })
     ESIC.cities = cities.filter(this.onlyUnique);
+    if(ESIC.cities.length == 0){
+      delete ESIC.cities;
+    }
     ESIC.city = '';
     ESIC.dispensaryName = '';
     ESIC.dispensaryAddress = '';
@@ -558,88 +561,88 @@ export class NominationDetailsComponent implements OnInit {
     return 100 - this.getTotalpersonalAccidentInsurance();
   }
   saveNominationsDetails(nominationDataSource, esicDataSource) {
+    debugger
+    // nominationDataSource.forEach(element => {
+    //   this.PFcount = this.PFcount + element.pfPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.EPScount = this.EPScount + element.epsPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.salarycount = this.salarycount + element.salaryPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.ESICcount = this.ESICcount + element.esicPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.Gratuitycount = this.Gratuitycount + element.gratuityPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.SuperAnutationcount = this.SuperAnutationcount + element.superAnnuationPercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.LifeInsurancecount = this.LifeInsurancecount + element.lifeInsurancePercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.PersonalAccInsurancecount = this.PersonalAccInsurancecount + element.personalAccidentInsurancePercentage;
+    // });
+    // nominationDataSource.forEach(element => {
+    //   this.MediclaimInsurancecount = this.MediclaimInsurancecount + element.mediclaimInsurancePercentage;
+    // });
+    // if (this.PFcount > 100 && this.PFcount != 0) {
+    //   this.PFcountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Provident Fund Should be 100%');
+    // }
+    // if (this.EPScount > 100 && this.EPScount != 0) {
+    //   this.EPScountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for EPS Should be 100%');
+    // }
+    // if (this.salarycount > 100 && this.salarycount != 0) {
+    //   this.salarycountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Salary Should be 100%');
+    // }
+    // if (this.ESICcount > 100 && this.ESICcount != 0) {
+    //   this.ESICcountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for ESIC Should be 100%');
+    // }
+    // if (this.Gratuitycount > 100 && this.Gratuitycount != 0) {
+    //   this.GratuitycountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Gratuity Should be 100%');
+    // }
+    // if (this.SuperAnutationcount > 100 && this.SuperAnutationcount != 0) {
+    //   this.SuperAnutationcountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Super Annuation Should be 100%');
+    // }
+    // if (this.LifeInsurancecount > 100 && this.LifeInsurancecount != 0) {
+    //   this.LifeInsurancecountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Life Insurance Should be 100%');
+    // }
+    // if (this.PersonalAccInsurancecount > 100 && this.PersonalAccInsurancecount != 0) {
+    //   this.PersonalAccInsurancecountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Personal Accident Insurance Should be 100%');
+    // }
+    // if (this.MediclaimInsurancecount > 100 && this.MediclaimInsurancecount != 0) {
+    //   this.MediclaimInsurancecountBoolean = true;
+    //   this.CommonDataService.sweetalertError('Nomination Percentage for Mediclaim Insurance Fund Should be 100%');
+    // }
+    // this.PFcount = 0;
+    // this.EPScount = 0;
+    // this.salarycount = 0;
+    // this.ESICcount = 0;
+    // this.Gratuitycount = 0;
+    // this.SuperAnutationcount = 0;
+    // this.LifeInsurancecount = 0;
+    // this.PersonalAccInsurancecount = 0;
+    // this.MediclaimInsurancecount = 0;
+    // if (this.PFcountBoolean != true && this.EPScountBoolean != true && this.salarycountBoolean != true
+    //   && this.ESICcountBoolean != true && this.GratuitycountBoolean != true && this.SuperAnutationcountBoolean != true
+    //   && this.LifeInsurancecountBoolean != true && this.PersonalAccInsurancecountBoolean != true
+    //   && this.MediclaimInsurancecountBoolean != true) {
+    //   this.SaveBoolean = true;
+    // }
 
-    nominationDataSource.forEach(element => {
-      this.PFcount = this.PFcount + element.pfPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.EPScount = this.EPScount + element.epsPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.salarycount = this.salarycount + element.salaryPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.ESICcount = this.ESICcount + element.esicPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.Gratuitycount = this.Gratuitycount + element.gratuityPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.SuperAnutationcount = this.SuperAnutationcount + element.superAnnuationPercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.LifeInsurancecount = this.LifeInsurancecount + element.lifeInsurancePercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.PersonalAccInsurancecount = this.PersonalAccInsurancecount + element.personalAccidentInsurancePercentage;
-    });
-    nominationDataSource.forEach(element => {
-      this.MediclaimInsurancecount = this.MediclaimInsurancecount + element.mediclaimInsurancePercentage;
-    });
-    if (this.PFcount > 100 && this.PFcount != 0) {
-      this.PFcountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Provident Fund Should be 100%');
-    }
-    if (this.EPScount > 100 && this.EPScount != 0) {
-      this.EPScountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for EPS Should be 100%');
-    }
-    if (this.salarycount > 100 && this.salarycount != 0) {
-      this.salarycountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Salary Should be 100%');
-    }
-    if (this.ESICcount > 100 && this.ESICcount != 0) {
-      this.ESICcountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for ESIC Should be 100%');
-    }
-    if (this.Gratuitycount > 100 && this.Gratuitycount != 0) {
-      this.GratuitycountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Gratuity Should be 100%');
-    }
-    if (this.SuperAnutationcount > 100 && this.SuperAnutationcount != 0) {
-      this.SuperAnutationcountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Super Annuation Should be 100%');
-    }
-    if (this.LifeInsurancecount > 100 && this.LifeInsurancecount != 0) {
-      this.LifeInsurancecountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Life Insurance Should be 100%');
-    }
-    if (this.PersonalAccInsurancecount > 100 && this.PersonalAccInsurancecount != 0) {
-      this.PersonalAccInsurancecountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Personal Accident Insurance Should be 100%');
-    }
-    if (this.MediclaimInsurancecount > 100 && this.MediclaimInsurancecount != 0) {
-      this.MediclaimInsurancecountBoolean = true;
-      this.CommonDataService.sweetalertError('Nomination Percentage for Mediclaim Insurance Fund Should be 100%');
-    }
-    this.PFcount = 0;
-    this.EPScount = 0;
-    this.salarycount = 0;
-    this.ESICcount = 0;
-    this.Gratuitycount = 0;
-    this.SuperAnutationcount = 0;
-    this.LifeInsurancecount = 0;
-    this.PersonalAccInsurancecount = 0;
-    this.MediclaimInsurancecount = 0;
-    if (this.PFcountBoolean != true && this.EPScountBoolean != true && this.salarycountBoolean != true
-      && this.ESICcountBoolean != true && this.GratuitycountBoolean != true && this.SuperAnutationcountBoolean != true
-      && this.LifeInsurancecountBoolean != true && this.PersonalAccInsurancecountBoolean != true
-      && this.MediclaimInsurancecountBoolean != true) {
-      this.SaveBoolean = true;
-    }
 
-
-    if (this.SaveBoolean == true) {
+    // if (this.SaveBoolean == true) {
 
       this.NominationInformation.familyNominationRequestDTO = nominationDataSource;
       this.NominationInformation.familyESICDetailRequestDTO = esicDataSource;
@@ -653,38 +656,22 @@ export class NominationDetailsComponent implements OnInit {
       })
       this.NominationInformation.familyESICDetailRequestDTO.forEach(data => {
         delete data.dispensaryList;
-      })
-      this.NominationInformation.familyESICDetailRequestDTO.forEach(data => {
         delete data.stateList;
+
       })
+
       this.FamilyInformationService.postNominationDetails(this.NominationInformation).subscribe(res => {
-        this.PFcount = 0;
-        this.EPScount = 0;
-        this.salarycount = 0;
-        this.ESICcount = 0;
-        this.Gratuitycount = 0;
-        this.SuperAnutationcount = 0;
-        this.LifeInsurancecount = 0;
-        this.PersonalAccInsurancecount = 0;
-        this.MediclaimInsurancecount = 0;
 
         // this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
         this.getNomination();
-
-        // let cities = [];
-        // this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
-        //   if (ESIC.state == city.state) {
-        //     cities.push(city.district);
-        //   }
-        // })
-        // ESIC.cities = cities.filter(this.onlyUnique);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
 
       }, (error: any) => {
+        this.getNomination();
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
-    }
-    this.SaveBoolean = false;
+    // }
+    // this.SaveBoolean = false;
   }
 
   /** Gets the total cost of all transactions. */
@@ -765,7 +752,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   resetNomination() {
-
+    this.getNomination();
   }
 
   esicPercentageValidation(esicPercentage) {

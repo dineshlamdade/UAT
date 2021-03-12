@@ -451,6 +451,7 @@ export class PositionDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.positionDetailsModel = res.data.results[0];
       this.employeePositionDetailId = this.positionDetailsModel.employeePositionDetailId;
+      this.EventEmitterService.getJobSummaryInitiate('position');
 
       // this.getPositionForm()
       //redirecting page to summary page

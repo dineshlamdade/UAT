@@ -7512,7 +7512,7 @@
 }
 
 .font300 {
-    font-weight: 300!important;
+    font-weight: 300
 }
 
 .font500 {
@@ -8169,7 +8169,6 @@ body.boxlayout .container-fluid {
 }
 
 body *::-webkit-scrollbar {
-<<<<<<< HEAD
     width: 0px;
     height: 7px;
     transition: .3s background
@@ -8183,20 +8182,6 @@ body *::-webkit-scrollbar-thumb {
 
 body *:hover::-webkit-scrollbar-thumb {
     background: #8c8c8c
-=======
-    width: 13px;
-    height: 12px;
-    transition: .3s background;
-    background: #ffffff
-}
-
-body *::-webkit-scrollbar-thumb {
-    background: #eae5ed;
-}
-
-body *:hover::-webkit-scrollbar-thumb {
-    background: #eae5ed;
->>>>>>> d765f0b0e25483f82dc9733476ef64f014515dcf
 }
 
 a:hover {
@@ -9058,18 +9043,18 @@ a:hover {
 }
 
 .metismenu ul a {
-  color: #4D5052;
-  font-size: 14px;
-  padding: 5px 15px 5px 10px;
-  position: relative;
+    color: #4D5052;
+    font-size: 14px;
+    padding: 5px 15px 5px 30px;
+    position: relative
 }
 
- .metismenu ul a::before {
+.metismenu ul a::before {
     font-size: 14px;
     font-family: 'feather' !important;
     content: "\e999";
     position: absolute;
-    left: 16px
+    left: 1px
 }
 
 .metismenu ul a.list-b::before {
@@ -9081,7 +9066,7 @@ a:hover {
 }
 
 .metismenu ul ul a {
-  padding: 10px 15px 10px 33px;
+    padding: 10px 15px 10px 70px
 }
 
 .metismenu ul.collapse a:hover,
@@ -17622,13 +17607,5 @@ svg {
     background-color: #fff!important;
     border: 1px solid #999!important;
     opacity: 1;
-    cursor: no-drop!important;
-}
-
-.custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
-    background: #999!important;
-}
-
-.custom-checkbox .custom-control-input:checked~.custom-control-label::after {
     cursor: no-drop!important;
 }

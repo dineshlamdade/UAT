@@ -13,16 +13,18 @@
 
                     <div class="col-sm-3">
                       <label class="form-label">Head Name</label>
-                      <input type="text" formControlName="complianceHeadName" class="form-control"
+                      <input type="text" formControlName="complianceHeadName" class="form-control" autocomplete="off"
                         name="complianceHeadName" placeholder="Enter Head Name"
-                        [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'}">
+                        (change)="isShortNameContainsOnlySpecialCharacter()" maxlength="20"
+                        [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'   || invalidComplianceHeadName == true  }">
                     </div>
 
                     <div class="col-sm-3">
-                      <label class="form-label">Short Name</label>
+                      <label class="form-label">Type</label>
                       <select name="shortName" id="shortName" class="form-control" formControlName="shortName"
                         [ngClass]="{'is-invalid' : form.get('shortName').status == 'INVALID'}"
                         (change)='onSelectShortName($event.target.value)'>
+                        <option selected value=''>Select </option>
                         <option *ngFor="let shortName of shortNameList" [value]="shortName">
                           {{shortName}}
                         </option>
@@ -33,10 +35,8 @@
                     <div class="col-sm-3">
                       <label class="form-label">Country</label>
                       <select name="country" id="country" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}" formControlName="country"
-                        [(ngModel)]="form.country">
-                        <option value="" selected disabled>Select Country
-                        </option>
+                        [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}" formControlName="country">
+                        <option selected value=''>Select</option>
                         <option *ngFor="let country of countries" [value]="country">
                           {{country}}
                         </option>
@@ -51,6 +51,7 @@
                         formControlName="aplicabilityLevel"
                         [ngClass]="{'is-invalid' : form.get('aplicabilityLevel').status == 'INVALID'}"
                         (change)='onSelectApplicabilityLevel($event.target.value)'>
+                        <option selected value=''>Select </option>
                         <option *ngFor="let applicabilityLevel of aplicabilityLevelList" [value]="applicabilityLevel">
                           {{applicabilityLevel}}
                         </option>
@@ -64,16 +65,34 @@
 
                     <div class="col-sm-3">
                       <label class="form-label">Authority Handling</label>
-                      <input type="text" formControlName="authorityHandling" class="form-control"
+                      <input type="text" formControlName="authorityHandling" class="form-control" autocomplete="off"
                         [ngClass]="{'is-invalid' : form.get('authorityHandling').status == 'INVALID'}"
                         name="authorityHandling" placeholder="Enter Authority Handling">
                     </div>
 
                     <div class="col-sm-3">
                       <label class="form-label">Website</label>
-                      <input type="text" formControlName="website" class="form-control"
-                        [ngClass]="{'is-invalid' : form.get('website').status == 'INVALID'}" name="website"
-                        placeholder="Enter Website Name">
+                      <input type="text" formControlName="website" class="form-control" autocomplete="off"
+                        (focusout)="onChangeWebsiteName($event.target.value)"
+                        [ngClass]="{'is-invalid' : form.get('website').status == 'INVALID' || invalidWebsite == true}"
+                        name="website" placeholder="Enter Website Name">
+                    </div>
+
+                    <div class="col-md-3 mt-20">
+                      <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                        <input formControlName="complianceActive" autocomplete="off" type="checkbox"
+                          class="custom-control-input" name="example-inline-checkbox1" value="option1" checked
+                          (change)="deactivateRemark()">
+                        <span class="custom-control-label">Active </span>
+                      </label>
+                    </div>
+
+
+                    <div class="col-md-3" *ngIf="hideRemark">
+                      <label class="form-label">Remark</label>
+                      <textarea formControlName="remark" autocomplete="off" class="form-control" rows="2"
+                        [ngClass]="{'is-invalid' : form.get('remark').status == 'INVALID'}"
+                        placeholder="Enter Remark"></textarea>
                     </div>
 
 
@@ -83,48 +102,43 @@
                   <!-- end of row -->
 
 
-
-
-
-
-
                   <div class="col-12 mt-20">
 
                     <div class="float-right mb-15">
                       <ng-container *ngIf="showButtonSaveAndReset">
 
+                        <ng-container *ngIf="isSaveAndReset; else newDeb">
 
-                        <!-- <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
-                          'btn-bg-green': !form.invalid}" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                            tooltip="Save" (click)="save()"><b><i class="fa fa-floppy-o"></i></b>
-                            Save</button>  old one save button code-->
+                          <button type="submit" [disabled]="form.invalid"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            (click)="save()"
+                            [ngClass]="{'disabled-btn-bg-green' : form.invalid,'btn-bg-green': !form.invalid}"><b><i
+                                class="fa fa-floppy-o"></i></b> Save</button>
 
+                          <button type="button" tooltip="Reset" (click)="cancelView()"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                class="fa  fa-refresh"></i></b> Reset</button>
 
+                        </ng-container>
 
-                        <button type="submit" [disabled]="form.invalid"
-                          class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)="save()"
-                          [ngClass]="{'disabled-btn-bg-green' : form.invalid,
-       'btn-bg-green': !form.invalid}"><b><i class="fa fa-floppy-o"></i></b> Save</button>
+                        <ng-template #newDeb>
 
-
-                        <button type="button" tooltip="Reset" (click)="cancelView()"
-                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                              class="fa  fa-refresh"></i></b> Reset</button>
-
-
-
-                        <!-- <button type="button"
-                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Reset"
-                            (click)="cancelView()"><b><i class="fa fa-refresh" aria-hidden="true"></i></b>
-                            Reset</button> -->
+                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
+                          'btn-bg-green': !form.invalid}"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                            (click)="save()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
+                            Update</button>
 
 
+                          <button type="button"
+                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                            Cancel</button>
+
+                        </ng-template>
 
                       </ng-container>
                       <ng-container *ngIf="!showButtonSaveAndReset">
-                        <!-- <button type="button" tooltip="Reset" (click)="cancelView()"
-                        class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                class="fa fa-times-circle"></i></b> Reset</button> -->
                         <button type="button"
                           class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                           tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
@@ -132,6 +146,11 @@
                       </ng-container>
                     </div>
                   </div> <!-- <end of div col-6 -->
+
+
+
+
+
 
 
                 </div> <!-- card body -->
@@ -156,18 +175,16 @@
                       <tr>
                         <th scope="col" class="wd-8">Sr. No.</th>
                         <th scope="col" class="wd-20">Head Name</th>
-                        <th scope="col" class="wd-17">Short Name</th>
+                        <th scope="col" class="wd-17">Type</th>
 
                         <th scope="col" class="wd-15">Country</th>
                         <th scope="col" class="wd-10">Applicability Level</th>
                         <th scope="col" class="wd-20">Authority Handling</th>
+                        <th scope="col" class="wd-10">Remark</th>
                         <th scope="col" class="wd-10">Action</th>
                       </tr>
                     </thead>
                     <tbody>
-
-
-
 
                       <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
                         <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
@@ -188,12 +205,21 @@
                         <td class="wd-10"><span
                             tooltip="{{summary.authorityHandling}}">{{summary.authorityHandling}}</span>
                         </td>
+                        <td class="wd-10"><span tooltip="{{summary.remark}}">{{summary.remark}}</span>
+                        </td>
+
 
 
                         <td class="wd-10">
 
+                          <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                            (click)="editMaster(i,summary.complianceHeadId)" tooltip="Edit"></i>
+
                           <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
                             tooltip="View"></i>
+
+                          <i class="fa fa-trash-o font-16 text-red cursor-pointer"
+                            (click)="ConfirmationDialog(confirmdialog, summary.complianceHeadId)" tooltip="Delete"></i>
                         </td>
                       </tr>
                       <tr *ngIf="!summaryHtmlDataList?.length">
@@ -207,6 +233,34 @@
               </div>
             </div>
           </div>
+
+
+
+          <ng-template #confirmdialog>
+            <div class="modal-header">
+              <h5 class="modal-title" id="UploadModalLabel">Confirmation Dialog</h5>
+              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="card mb-0">
+                <div class="card-body p-0 m-0">
+                  <div class="row clearfix">
+                    <div class="col-md-12">
+                      <i class="fa fa-question-circle font-18 font700" aria-hidden="true"></i> &nbsp; &nbsp; <label
+                        class="font-14 mb-0 font700">Are You Sure do you want to delete Record.</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-color-green" (click)="modalRef.hide()" (click)="clickedOnYes()"> <i
+                  class="fa fa-check" aria-hidden="true"></i> &nbsp; Yes</button>
+              <button type="button" class="btn bg-btn-red" (click)="modalRef.hide()"> <i class="fa fa-times"
+                  aria-hidden="true"></i> &nbsp; No</button>
+            </div>
+          </ng-template>
 
 
 

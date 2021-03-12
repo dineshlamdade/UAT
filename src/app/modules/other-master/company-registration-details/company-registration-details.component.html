@@ -13,8 +13,10 @@
                     <div class="col-sm-3" *ngIf="!isEditMode">
                       <label class="form-label">Company Code</label>
                       <select name="companyRegistrationId" id="companyRegistrationId" class="form-control"
+                        formControlName="companyRegistrationId"
                         [ngClass]="{'is-invalid' : form.get('companyRegistrationId').status == 'INVALID'}"
-                        formControlName="companyRegistrationId" (change)='onSelectCompanyRegistrationId($event)'>
+                        (change)='onSelectCompanyRegistrationId($event.target.value)'>
+                        <option selected value=''>Select </option>
                         <option *ngFor="let reason of companyRegistrationIdList" [value]="reason.code">
                           {{reason.code}}
                         </option>
@@ -24,25 +26,26 @@
                     <div class="col-sm-3" *ngIf="isEditMode">
                       <label class="form-label">Company Code</label>
                       <input type="text" formControlName="companyRegistrationId1" class="form-control"
-                        name="companyRegistrationId1">
+                        name="companyRegistrationId1" autocomplete="off">
                     </div>
 
 
                     <div class="col-sm-3">
                       <label class="form-label">Company Name</label>
-                      <input type="text" formControlName="companyName" class="form-control" name="companyName">
+                      <input type="text" formControlName="companyName" class="form-control" name="companyName"
+                        autocomplete="off">
                     </div>
 
                     <div class="col-sm-3">
                       <label class="form-label">Company Group Name</label>
-                      <input type="text" formControlName="companyGroupName" class="form-control"
+                      <input type="text" formControlName="companyGroupName" class="form-control" autocomplete="off"
                         name="companyGroupName">
                     </div>
 
                     <div class="col-sm-3">
                       <label class="form-label"> Registration No.</label>
-                      <input type="text" formControlName="registrationNumber" class="form-control" minlength="21"
-                        maxlength="21" name="registrationNumber" placeholder="Enter Registration No."
+                      <input type="text" formControlName="registrationNumber" class="form-control" autocomplete="off"
+                        name="registrationNumber" placeholder="Enter Registration No." minlength="1" maxlength="21"
                         [ngClass]="{'is-invalid' : form.get('registrationNumber').status == 'INVALID'}">
                     </div>
 
@@ -58,7 +61,7 @@
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfIncorporation"
                           (bsValueChange)="onBsValueChangeDateOfIncorporation()" data-provide="datepicker"
-                          data-date-autoclose="true" class="form-control"
+                          data-date-autoclose="true" class="form-control" [maxDate]="today"
                           [ngClass]="{'is-invalid' : form.get('dateOfIncorporation').status == 'INVALID'}"
                           placeholder="Date of Incorporation" bsDatepicker>
                       </div>
@@ -67,8 +70,8 @@
                     <div class="col-sm-3">
                       <label class="form-label">Issued By</label>
                       <select name="issuedBy" id="issuedBy" class="form-control" formControlName="issuedBy"
-                        [ngClass]="{'is-invalid' : form.get('issuedBy').status == 'INVALID'}"
-                        (change)='onSelectIssuedBy($event.target.value)'>
+                        [ngClass]="{'is-invalid' : form.get('issuedBy').status == 'INVALID'}">
+                        <option selected value=''>Select </option>
                         <option *ngFor="let issuedBy of issuedByList" [value]="issuedBy">
                           {{issuedBy}}
                         </option>
@@ -78,19 +81,16 @@
                     <div class="col-sm-3">
                       <label class="form-label">PAN</label>
                       <input type="text" formControlName="pan" class="form-control " name="pan" minlength="10"
-                        maxlength="10" placeholder="Enter PAN"
-                        [ngClass]="{'is-invalid' : form.get('pan').status == 'INVALID'}">
+                        (focusout)="onChangePAN($event.target.value)"
+                        [ngClass]="{'is-invalid' : form.get('pan').status == 'INVALID'|| invalidPAN == true}"
+                        autocomplete="off" maxlength="10" placeholder="Enter PAN">
                     </div>
 
                     <div class="col-sm-3">
                       <label class="form-label">MSME No.</label>
                       <input type="text" formControlName="msmeNumber" class="form-control " name="msmeNumber"
-                        minlength="12" maxlength="12" placeholder="Enter MSME No."
-                        [ngClass]="{'is-invalid' : form.get('msmeNumber').status == 'INVALID'}">
+                        autocomplete="off" minlength="12" maxlength="12" placeholder="Enter MSME No.">
                     </div>
-
-
-
 
                   </div>
                   <!-- end of row -->
@@ -99,7 +99,7 @@
 
                     <div class="col-sm-3">
                       <label class="form-label">Udyog Aadhaar No.</label>
-                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control "
+                      <input type="text" formControlName="udyogAadhaarNumber" class="form-control" autocomplete="off"
                         name="udyogAadhaarNumber" minlength="12" maxlength="12" placeholder="Enter Udyog Aadhaar No."
                         [ngClass]="{'is-invalid' : form.get('udyogAadhaarNumber').status == 'INVALID'}">
                     </div>

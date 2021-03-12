@@ -1,10 +1,10 @@
+import { CompanyMasterService } from './../company-master/company-master.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { CompanyGroupMasterService } from '../company-group-master/company-group-master.service';
 import { CompanyRegistrationDetailsService } from './company-registration-details.service';
-import { CompanyMasterService } from '../company-master/company-master.service';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 
 @Component({
@@ -14,7 +14,8 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
 })
 export class CompanyRegistrationDetailsComponent implements OnInit {
   summaryHtmlDataList: Array<any> = [];
-  issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
+  // issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
+  issuedByList = [];
   showButtonSaveAndReset: boolean = true;
   //isEditMode  : boolean = false;
   registrationNumberList: Array<any> = [];
@@ -27,6 +28,8 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
   companyMasterId: number = 0;
   isSaveAndReset: boolean = true;
   isEditMode: boolean = false;
+  invalidPAN: boolean = false;
+  public today = new Date();
 
 
   constructor(private formBuilder: FormBuilder, private companyGroupMasterService: CompanyGroupMasterService, private companyMasterService: CompanyMasterService,
@@ -34,22 +37,22 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
     private alertService: AlertServiceService) {
     this.form = this.formBuilder.group({
       companyRegistrationId: new FormControl('', Validators.required),
-      registrationNumber: new FormControl(null, Validators.required),
+      registrationNumber: new FormControl(null),
       companyName: new FormControl({ value: null, disabled: true }),
       companyGroupName: new FormControl({ value: null, disabled: true }),
       dateOfIncorporation: new FormControl(null, Validators.required),
-      issuedBy: new FormControl(null, Validators.required),
-      msmeNumber: new FormControl(null, Validators.required),
-      pan: new FormControl(null, Validators.required),
-      udyogAadhaarNumber: new FormControl(null, Validators.required),
-      companyRegistrationId1: new FormControl(''),
+      issuedBy: new FormControl('', Validators.required),
+      msmeNumber: new FormControl(null),
+      pan: new FormControl('', [Validators.pattern("^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$")]),
+      udyogAadhaarNumber: new FormControl(null),
+      companyRegistrationId1: new FormControl(null),
     });
 
   }
 
   ngOnInit(): void {
     this.companyRegistrationDetailsService.getAllActiveCompanyForRegistration().subscribe(res => {
-      console.log(res);
+      console.log('getAllActiveCompanyForRegistration', res);
       this.tempObjForCompanyRegistration = res.data.results;
       res.data.results.forEach(element => {
 
@@ -64,14 +67,18 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
       });
 
     });
-
+    this.companyRegistrationDetailsService.getCompanyRegistrationIssuedBy().subscribe(res => {
+      this.issuedByList = [];
+      res.data.results.forEach(element => {
+        this.issuedByList.push(element.dropdownValue);
+      });
+    });
     this.refreshHtmlTableData();
-
-
   }
   refreshHtmlTableData() {
 
     this.companyRegistrationDetailsService.getCompanyRegistrationMaster().subscribe(res => {
+
       this.summaryHtmlDataList = [];
       this.companyRegistrationMasterList = res.data.results;
       let i = 1;
@@ -118,10 +125,7 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
     }, (error: any) => {
       this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
-    }, () => {
-
-
-    });
+    }, () => { });
 
 
     //  this.companyRegistrationIdList.filter((v,i,a)=>a.findIndex(t=>t.companyMasterId === v.companyMasterId) == i);
@@ -155,8 +159,13 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
           this.form.reset();
+
           this.isEditMode = false;
           this.refreshHtmlTableData();
+          this.form.patchValue({
+            companyRegistrationId: '',
+            issuedBy: '',
+          });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -179,16 +188,20 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
         pan: this.form.get('pan').value,
         udyogAadhaarNumber: this.form.get('udyogAadhaarNumber').value
       };
+      console.log(JSON.stringify(data));
       this.companyRegistrationDetailsService.postCompanyRegistrationDetails(data).subscribe(res => {
         console.log(res);
         if (res.data.results.length > 0) {
           this.alertService.sweetalertMasterSuccess('Company Registration Details Saved Successfully.', '');
           this.form.reset();
           this.refreshHtmlTableData();
+          this.form.patchValue({
+            companyRegistrationId: '',
+            issuedBy: '',
+          });
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
-
       }, (error: any) => {
         this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
@@ -198,19 +211,36 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
 
   onBsValueChangeDateOfIncorporation() { }
   onSelectCompanyRegistrationId(evt: any) {
-    let temp = this.tempObjForCompanyRegistration.find(o => o.code == this.form.get('companyRegistrationId').value);
-    this.companyMasterId = temp.companyMasterId;
-    console.log(temp.companyMasterId);
-    this.companyMasterId = temp.companyMasterId;
-    this.form.patchValue({
-      companyName: temp.companyName,
-      companyGroupName: temp.companyGroupName,
-    });
+    console.log(evt);
+    if (evt == '') {
+
+
+      this.form.patchValue({
+        companyName: '',
+        companyGroupName: '',
+        pan: ''
+      });
+
+
+    } else {
+      let temp = this.tempObjForCompanyRegistration.find(o => o.code == this.form.get('companyRegistrationId').value);
+      this.companyMasterId = temp.companyMasterId;
+      console.log(temp.companyMasterId);
+      this.companyMasterId = temp.companyMasterId;
+      this.form.patchValue({
+        companyName: temp.companyName,
+        companyGroupName: temp.companyGroupName,
+        pan: ''
+      });
+
+    }
+
 
   }
-  onSelectIssuedBy() { }
+
 
   editMaster(i: number) {
+    window.scrollTo(0, 0);
     this.isEditMode = true;
 
 
@@ -238,8 +268,10 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
     //this.form.get('companyGroupName1').disable();
     this.form.get('companyRegistrationId1').disable();
 
+
   }
   viewMaster(i: number) {
+    window.scrollTo(0, 0);
 
     this.isSaveAndReset = false;
     this.isEditMode = true;
@@ -266,6 +298,31 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
     this.form.get('companyGroupName').disable();
     this.showButtonSaveAndReset = true;
     this.companyRegistrationId = 0;  // for save it should be 0 and update it should have any integer value
+    this.form.patchValue({
+      companyRegistrationId: '',
+      issuedBy: '',
+    });
+
+
+  }
+  onChangePAN(evt: any) {
+    console.log(evt);
+    if (evt.length == 10) {
+      debugger;
+      console.log(this.form.get('companyRegistrationId').value);
+      console.log(this.tempObjForCompanyRegistration);
+      let index1 = this.tempObjForCompanyRegistration.findIndex(o => o.code == this.form.get('companyRegistrationId').value);
+      console.log(evt[3].toUpperCase());
+      console.log(this.tempObjForCompanyRegistration[index1].fourthCharacterOfPan);
+
+
+      if (evt[3] == this.tempObjForCompanyRegistration[index1].fourthCharacterOfPan) {
+        this.invalidPAN = false;
+      } else {
+        this.invalidPAN = true;
+      }
+      // invalidPAN
+    }
 
   }
 }

@@ -674,7 +674,7 @@ export class OrganizationDetailComponent implements OnInit {
       this.employeeOrganizationDetailId = this.organizationDetailsModel.employeeOrganizationDetailId;
 
       localStorage.setItem('establishmentMasterId', res.data.results[0].establishmentMasterId);
-
+      this.EventEmitterService.getJobSummaryInitiate('organization');
       // this.getOrganizationForm();
       //redirecting page to summary page
       this.router.navigate(['/employee-master/job-information/job-summary']);
