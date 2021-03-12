@@ -21,10 +21,11 @@ const routes: Routes = [
   { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
   { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
- { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
+  { path: 'query', loadChildren: './modules/query/query.module#QueryModule' },
+  { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
- 
+
   {
     path: 'investment',
     loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
@@ -68,8 +69,8 @@ const routes: Routes = [
     //   component: PayrollheadgroupcreationComponent,
     //   data: { title: ':: Epic :: Company Settings' }
     // },
-  
-  
+
+
     ///////////////////////////////////////////////////
 ];
 

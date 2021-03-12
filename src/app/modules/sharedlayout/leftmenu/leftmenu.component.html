@@ -16,6 +16,11 @@
                 <a href="javascript:void(0)" class="nav-link icon settingbar" (click)="toggleSettingMenu()"><i
                         class="fa fa-gear fa-spin" data-toggle="tooltip" data-placement="right"
                         title="Settings"></i></a>
+
+                        <a href="javascript:void(0)" class="nav-link icon settingbar" [routerLink]="['/query']"><i
+                          class="fa fa-question-circle" data-toggle="tooltip" data-placement="right"
+                          title="Query Setting"></i></a>
+
                 <a href="javascript:void(0)" class="nav-link user_btn" (click)="toggleUserMenu()"><img class="avatar"
                         src="../assets/images/abbott_logo.png" alt="" data-toggle="tooltip" data-placement="right"
                         title="Company Info" /></a>
@@ -250,6 +255,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div class="theme_div">
     <div class="card">
