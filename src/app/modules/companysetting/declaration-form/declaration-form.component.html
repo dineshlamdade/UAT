@@ -3,167 +3,323 @@
 
 <div class="page">
     <app-header></app-header>
-    <form [formGroup]="summaryForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="declarationForm" (ngSubmit)="submitClaimMaster()">
         <div class="section-body mt-3">
             <div class="container-fluid" style="border: 1px solid #ccc; background-color: #fff;">
                 <div class="tabview-contents">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
+
                                 <div class="card-body p-0">
-                                    <div class="col-12">
-                                        <fieldset>
-                                            <legend>Declaration Message</legend>
-                                            <div class="row">
-                                                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Template Name</label>
-                                                        <input type="text" class="form-control"
-                                                            formControlName="regTemplateName"
-                                                            placeholder="Template name"
-                                                            [ngClass]="{'is-invalid': submitted && f.regTemplateName.errors}">
+                                    <div class="register-part">
+                                        <div class="col-12">
+                                            <fieldset>
+                                                <legend>Declaration Message</legend>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Template Name</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="declarationMessageName"
+                                                                placeholder="Template name"
+                                                                [ngClass]="{'is-invalid': submitted && f.declarationMessageName.errors}">
+                                                            <div *ngIf="submitted && f.declarationMessageName.errors"
+                                                                class="invalid-feedback">
+                                                                <div *ngIf="f.declarationMessageName.errors.required">
+                                                                    Template name is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Module</label>
+                                                            <select name="" class="form-control custom-select"
+                                                                [ngClass]="{'is-invalid' : submitted && f.module.errors}"
+                                                                formControlName="module"
+                                                                (change)="moduleChange($event.target.value)">
+                                                                <option value="">Select
+                                                                </option>
+                                                                <option value="Abc">Abc
+                                                                </option>
+                                                                <option value="Abc">Abc
+                                                                </option>
+
+                                                            </select>
+
+                                                            <div *ngIf="submitted && f.module.errors"
+                                                                class="invalid-feedback">
+                                                                <div *ngIf="f.module.errors.required">
+                                                                    Module select is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Company</label>
+                                                            <select name="" class="form-control custom-select"
+                                                                [ngClass]="{'is-invalid' : submitted && f.payRollArea.errors}"
+                                                                formControlName="payRollArea"
+                                                                (change)="companyChange($event.target.value)">
+                                                                <option value="">Select
+                                                                </option>
+                                                                <option value="Abc">Abc
+                                                                </option>
+                                                                <option value="Abc">Abc
+                                                                </option>
+                                                            </select>
+
+                                                            <div *ngIf="submitted && f.payRollArea.errors"
+                                                                class="invalid-feedback">
+                                                                <div *ngIf="f.payRollArea.errors.required">
+                                                                    Company select is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Declaration Message</label>
+                                                            <textarea class="form-control" rows="3"
+                                                                formControlName="rembDeclarationMessage"
+                                                                placeholder="Declaration Message"
+                                                                [ngClass]="{'is-invalid' : submitted && f.rembDeclarationMessage.errors}"></textarea>
+
+                                                            <div *ngIf="submitted && f.rembDeclarationMessage.errors"
+                                                                class="invalid-feedback">
+                                                                <div *ngIf="f.rembDeclarationMessage.errors.required">
+                                                                    Message is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Module</label>
-                                                        <select class="form-control">
-                                                            <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                        </select>
+                                            </fieldset>
+
+
+                                            <div class="row ">
+
+
+
+                                                <div class="col-12">
+
+                                                    <h3 class="font-14 text-purple font-bold mt-3">Declaration Field
+                                                        List </h3>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                            <div class="form-group">
+                                                                <div
+                                                                    class="table-responsive Custom_Table my-registertable">
+                                                                    <table
+                                                                        class="table table-striped table-hover table-bordered m-b-0">
+                                                                        <thead class="thead-dark">
+
+                                                                            <tr>
+                                                                                <th>Sr.no</th>
+                                                                                <th>Template Name</th>
+                                                                                <th>Module</th>
+                                                                                <th>Company Name</th>
+                                                                                <!-- <th  scope="col" class="wd-14">Description</th> -->
+                                                                                <th>Action</th>
+
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr *ngFor="let dataList of templateUserIdList; index as i">
+                                                                                <td>{{i+1}}</td>
+                                                                                <td>{{dataList.declarationMessageName}}</td>
+                                                                                <td>{{dataList.module}}</td>
+                                                                                <td>{{dataList.payRollArea}}</td>
+                                                                                <!-- <td>{{dataList.rembDeclarationMessage}}</td> -->
+                                                                                <td>
+                                                                                    <i class="fa fa-eye btn font-16 text-blue cursor-pointer"
+                                                                                        tooltip="View" (click)="getClaimTemplateViewById(dataList.declarationMessageId, dataList.groupCompanyId)"></i>
+                                                                                    <i class="fa fa-edit btn font-16 text-dark-green cursor-pointer"
+                                                                                        tooltip="Edit" (click)="getClaimTemplateEditById(dataList.declarationMessageId, dataList.groupCompanyId)"></i>
+                                                                                    <i class="fa fa-trash btn font-16 text-red cursor-pointer"
+                                                                                        tooltip="Delete"></i>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
-                                                </div>
-                                                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Company</label>
-                                                        <select class="form-control">
-                                                            <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Declaration Message</label>
-                                                        <textarea class="form-control" rows="3"
-                                                            placeholder="Declaration Message"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        <div class="row">
-                                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2">
-                                                <div class="table-responsive Custom_Table">
-                                                    <table class="table table-striped table-hover table-bordered m-b-0">
-                                                        <thead class="thead-dark">
 
-                                                            <tr>
-                                                                <th>Sr.no</th>
-                                                                <th>Template Name</th>
-                                                                <th>Module</th>
-                                                                <th>Company name</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Abc</td>
-                                                                <td>Abc</td>
-                                                                <td>Abc</td>
-                                                                <td>
-                                                                    <i class="fa fa-eye btn font-16 text-blue cursor-pointer"
-                                                                        tooltip="View"></i>
-                                                                    <i class="fa fa-edit btn font-16 text-dark-green cursor-pointer"
-                                                                        tooltip="Edit"></i>
-                                                                    <i class="fa fa-trash btn font-16 text-red cursor-pointer"
-                                                                        tooltip="Delete"></i>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td>Abc</td>
-                                                                <td>Abc</td>
-                                                                <td>Abc</td>
-                                                                <td>
-                                                                    <i class="fa fa-eye btn font-16 text-blue cursor-pointer"
-                                                                        tooltip="View"></i>
-                                                                    <i class="fa fa-edit btn font-16 text-dark-green cursor-pointer"
-                                                                        tooltip="Edit"></i>
-                                                                    <i class="fa fa-trash btn font-16 text-red cursor-pointer"
-                                                                        tooltip="Delete"></i>
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td>3</td>
-                                                                <td>Abc</td>
-                                                                <td>Abc</td>
-                                                                <td>Abc</td>
-                                                                <td>
-                                                                    <i class="fa fa-eye btn font-16 text-blue cursor-pointer"
-                                                                        tooltip="View"></i>
-                                                                    <i class="fa fa-edit btn font-16 text-dark-green cursor-pointer"
-                                                                        tooltip="Edit"></i>
-                                                                    <i class="fa fa-trash btn font-16 text-red cursor-pointer"
-                                                                        tooltip="Delete"></i>
-                                                                </td>
-                                                            </tr>
-
-                                                        </tbody>
-                                                    </table>
                                                 </div>
 
+                                                <div class="col-12">
+                                                    <div class="col-12 mt-20">
+                                                        <div class="float-right mb-15">
+
+                                                            <button type="submit"
+                                                                class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
+                                                                tooltip="Save" [disabled]="loading">
+                                                                <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
+                                                            <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                        class="fa  fa-refresh"></i></b> Reset</button>
 
 
-
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="col-12 mt-20">
-                                                    <div class="float-right mb-15">
-
-                                                        <button type="submit"
-                                                            class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
-                                                            tooltip="Save" [disabled]="loading">
-                                                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
-
-                                                        <button type="button" tooltip="Reset"
-                                                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                    class="fa  fa-refresh"></i></b> Reset</button>
-
-
-                                                        <button type="button"
+                                                            <!-- <button type="button"
                                                             class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                                             tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
-                                                            Cancel</button>
+                                                            Cancel</button> -->
 
 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div> <!-- <end of div col-6 -->
+                                                </div> <!-- <end of div col-6 -->
+                                                <div class="col-12" *ngIf="isView == true">
+                                                    <div class="col-12 mt-20">
+                                                        <div class="float-right mb-15">
+
+                                                            <button type="button"
+                                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                                tooltip="Cancel"><b><i
+                                                                        class="fa fa-times-circle"></i></b>
+                                                                Cancel</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- <end of div col-6 -->
+                                            </div>
                                         </div>
                                     </div>
 
+
+
                                 </div>
-
-
                             </div>
-                        </div>
-                        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-                            <button type="button" class="btn active" data-toggle="button" aria-pressed="true"
-                                tooltip="Top" (click)="scrollToTop()">
-                                <i class="fa fa-angle-double-up text-white font-18"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <ng-template #template2>
+
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="UploadModalLabel">Add Dropdown Values</h5>
+                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="cards">
+                    <div class="card-bodys">
+                        <div class="row clearfix">
+                            <div class="col-12">
+
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th colspan="2"><input type="text" class="form-control"
+                                                        [(ngModel)]="dropListModel" placeholder="Write dropdown list.."
+                                                        #dropList [ngModelOptions]="{standalone: true}"></th>
+                                                <th width="150px"><button type="button" [disabled]="dropList.value == 0"
+                                                        (click)="getDropdownListvalue(dropList.value, dropdownListid)"
+                                                        class="btn btn-primary">Add New</button>
+                                                </th>
+                                            </tr>
+                                            <tr *ngFor="let dropList of dropdownListData; index as i">
+                                                <td colspan="2">
+                                                    {{dropList}}
+                                                </td>
+                                                <td>
+                                                    <button (click)="getDropdownListRemove(i, dropno)"
+                                                        class="btn btn-danger">Remove</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- {{this.productForm.value | json}} -->
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Submit</button>
+
+                <!-- <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Cancel</button> -->
+            </div>
+
+        </ng-template>
+        <ng-template #template2>
+
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="UploadModalLabel">Add Dropdown Values</h5>
+                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="cards">
+                    <div class="card-bodys">
+                        <div class="row clearfix">
+                            <div class="col-12">
+
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th colspan="2"><input type="text" class="form-control"
+                                                        [(ngModel)]="dropListModel" placeholder="Write dropdown list.."
+                                                        #dropList [ngModelOptions]="{standalone: true}"></th>
+                                                <th width="150px"><button type="button" [disabled]="dropList.value == 0"
+                                                        (click)="getDropdownListvalue(dropList.value, dropdownListid)"
+                                                        class="btn btn-primary">Add New</button>
+                                                </th>
+                                            </tr>
+                                            <tr *ngFor="let dropList of dropdownListData; index as i">
+                                                <td colspan="2">
+                                                    {{dropList}}
+                                                </td>
+                                                <td>
+                                                    <button (click)="getDropdownListRemove(i, dropno)"
+                                                        class="btn btn-danger">Remove</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- {{this.productForm.value | json}} -->
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Submit</button>
+
+                <!-- <button type="button" class="btn btn-danger" (click)="modalRef.hide()">Cancel</button> -->
+            </div>
+
+        </ng-template>
     </form>
     <app-footer></app-footer>
 </div>

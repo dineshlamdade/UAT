@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class RegistrationMasterService {
 
-  apiUrl = environment.baseUrl8084;
+  apiUrl = environment.baseUrl8089;
 
   constructor(private http: HttpClient) { }
 

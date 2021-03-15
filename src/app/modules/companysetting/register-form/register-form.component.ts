@@ -115,13 +115,18 @@ export class RegisterFormComponent implements OnInit {
         // data.registrationTemplateDetailsRequestDTO = saveArray;
         // data.registrationTemplateDetailsRequestDTO.dropDownValues =  this.getDroplist ;
         // const postdata = this.selectedCheckBox;
+        this.selectedCheckBox.forEach(element=>{
+          if(element.dropDownValues === null){
+            element.dropDownValues = [];
+          }
+        })
         data.registrationTemplateDetailsRequestDTO = this.selectedCheckBox;
         console.log("data", data);
         this.registrationService.editRegisterData(data).subscribe((res) => {
           console.log("register value", res);
           // this.templateUser = res.data.results[0];
           // this.templateData.push(this.templateUser);
-          this.alertService.sweetalertMasterSuccess("Register form submited successfully.", "")
+          this.alertService.sweetalertMasterSuccess("Register form updated successfully.", "")
         })
       }
       this.registerForm.reset({
@@ -129,7 +134,7 @@ export class RegisterFormComponent implements OnInit {
       });
       this.registerForm.controls.remark.disable();
       this.selectedCheckBox = [];
-      
+      this.cancelForm2();
     } else {
       let saveArray = [];
       // for (let i = 0; i < this.selectedCheckBox.length; i++) {
@@ -177,11 +182,16 @@ export class RegisterFormComponent implements OnInit {
       });
       this.registerForm.controls.remark.disable();
       this.selectedCheckBox = [];
-      
+      this.cancelForm2();
     }
    
   }
-
+  resetForm(){
+    window.scrollTo(0, 0);
+    this.selectedCheckBox = [];
+    this.registerForm.reset();
+    this.getAllFields();
+  }
   checkModel(i: string, isChecked: boolean,fieldName:string) {
     console.log("checkvalue  ", i, isChecked);
     console.log(this.registersList[i]);
@@ -193,6 +203,7 @@ export class RegisterFormComponent implements OnInit {
       let a = this.registersList[i];
       a.mandatory = false;
       a.claimForm = false;
+      a.dropDownValues = [];
       this.selectedCheckBox.push(a);
       
     } else {
@@ -212,6 +223,8 @@ export class RegisterFormComponent implements OnInit {
     })
   }
   getAllFields() {
+    this.forManipulation= [];
+    this.registersList =[];
     // this.registersLists={};
     this.registrationService.getRegistrationFields().subscribe((response) => {
     this.registersLists = response.data.results;
@@ -275,7 +288,8 @@ export class RegisterFormComponent implements OnInit {
           mandatory: response.data.results[0].registrationTemplateDetailsResponseDTO[i].mandatory,
           nature: response.data.results[0].registrationTemplateDetailsResponseDTO[i].nature,
           remark: response.data.results[0].registrationTemplateDetailsResponseDTO[i].remark,
-          isActive: response.data.results[0].registrationTemplateDetailsResponseDTO[i].isActive,
+          // isActive: response.data.results[0].registrationTemplateDetailsResponseDTO[i].isActive,
+          isActive: 1,
         };
         let s = this.registersList.findIndex(o=>o.fieldName == response.data.results[0].registrationTemplateDetailsResponseDTO[i].fieldName);
        this.registersList[s]=myobj;
@@ -307,6 +321,9 @@ export class RegisterFormComponent implements OnInit {
   cancelForm2() {
     this.registerPost = true;
     this.registerUpdate = false;
+    this.registerForm.reset();
+    this.selectedCheckBox = [];
+    this.getAllFields();
   }
   activeRemark(remarkEvent) {
     console.log(remarkEvent);
@@ -318,24 +335,27 @@ export class RegisterFormComponent implements OnInit {
 
   }
   displayChange(i, evt,fieldName) {
-    console.log(i, evt, this.forManipulation);
-    let index = this.forManipulation.findIndex(o => o.fieldName == fieldName);
+    console.log(i, evt, this.selectedCheckBox);
+    let index = this.selectedCheckBox.findIndex(o => o.fieldName == fieldName);
     console.log('index is',index);
-    this.forManipulation[index].displayName = evt;
+    this.selectedCheckBox[index].displayName = evt;
 
-    console.log(this.forManipulation);
+    console.log(this.selectedCheckBox);
 
   }
   mindatoryChange(i, evt,fieldName) {
     console.log(i, evt);
-    let index = this.forManipulation.findIndex(o => fieldName == fieldName);
-    this.forManipulation[index].mandatory = evt;
-    console.log(this.selectedCheckBox);
+    let index = this.selectedCheckBox.findIndex(o => o.fieldName == fieldName);
+    console.log("index minf", index);
+    this.selectedCheckBox[index].mandatory = evt;
+    console.log("index mind", this.selectedCheckBox);
   }
   claimChange(i, evt,fieldName) {
     console.log(i, evt);
-    let index = this.forManipulation.findIndex(o => fieldName == fieldName);
-    this.forManipulation[index].claimForm = evt;
+    let index = this.selectedCheckBox.findIndex(o => o.fieldName == fieldName);
+    console.log("index clim", index);
+    this.selectedCheckBox[index].claimForm = evt;
+    console.log("index clim", this.selectedCheckBox);
   }
 
   //add table code

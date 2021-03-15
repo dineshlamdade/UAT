@@ -7,30 +7,29 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SummaryService {
-
+export class DeclarationService {
   apiUrl = environment.baseUrl8089;
 
   constructor(private http: HttpClient) { }
 
-  getClaimFields() {
-    return this.http.get(this.apiUrl + 'reim-list-summary-head-template-standard-field-master-company/get-all-fields')
-      .pipe(map((response: any) => {
-        return response;
-      }));
+  // getClaimFields() {
+  //   return this.http.get(this.apiUrl + 'reim-list-summary-head-template-standard-field-master-company/get-all-fields')
+  //     .pipe(map((response: any) => {
+  //       return response;
+  //     }));
 
-  }
+  // }
 
   getClaimTemplateList(){
-    return this.http.get(this.apiUrl + 'summary-template/get-all-Templates')
+    return this.http.get(this.apiUrl + 'declaration-message-company/get-all_declaration_template')
     .pipe(map((response: any) => {
       return response
     }));
   }
 
 
-getClaimTemplateViewById(regClaimTemplateId){
-  return this.http.get(this.apiUrl + 'summary-template/summarytemplateid/' + regClaimTemplateId)
+getClaimTemplateViewById(regClaimTemplateId, companyId){
+  return this.http.get(this.apiUrl + 'declaration-message-company/get-remb-declaration-message/' + regClaimTemplateId + "/" + companyId)
   .pipe(map((response:any)=>{
     return response
   }));
@@ -42,7 +41,7 @@ getClaimTemplateViewById(regClaimTemplateId){
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this.http.post(this.apiUrl + 'summary-template/create-template', data, {headers:{'X-TenantId': 'PaysquareDefault'}}) 
+    return this.http.post(this.apiUrl + 'declaration-message-company/save-decalaration-msg', data, {headers:{'X-TenantId': 'PaysquareDefault'}}) 
     .pipe(map((response: any)=>{
       return response
     }))
