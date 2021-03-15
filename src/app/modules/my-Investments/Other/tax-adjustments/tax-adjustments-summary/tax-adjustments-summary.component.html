@@ -32,16 +32,25 @@
                </tr>
             </thead>
             <tbody>
-               <tr>
-                  <td class="align-right-center">Tax in Advance On Salary Incomes</td>
+               <tr *ngFor="let summary of summaryGridData; let i = index">
+                  <!-- <td class="align-right-center">Tax in Advance On Salary Incomes</td>
                   <td></td>
-                  <td></td>
+                  <td></td> -->
+                  <td scope="row">
+                     <span tooltip="1">{{summary.taxAdjustmentType}}</span>
+                   </td>
+                   <td class="align-left-center">
+                     <span tooltip="{{summary.declaredAmount}}">{{summary.declaredAmount}}</span>
+                   </td>
+                   <td class="align-left-center">
+                     <span tooltip="{{summary.actualAmount}}">{{summary.actualAmount}}</span>
+                   </td>
                   <td><i class="fa fa-edit font-16 text-dark-blue cursor-pointer" (click)="editMaster(i)"
                      tooltip="Edit"></i>&nbsp;&nbsp;
                      <i class="fa fa-eye font-16 text-dark-blue cursor-pointer" (click)="viewMaster(i)" tooltip="view"></i>
                   </td>
               </tr>
-              <tr>
+              <!-- <tr>
                <td class="wd-5 align-right-center">Tax On Incomes Other Than Salary</td>
                <td></td>
                <td></td>
@@ -49,7 +58,7 @@
                   tooltip="Edit"></i>&nbsp;&nbsp;
                   <i class="fa fa-eye font-16 text-dark-blue cursor-pointer" (click)="viewMaster(i)" tooltip="view"></i>
                </td>
-           </tr>
+           </tr> -->
             </tbody>
             </table>
             </div>

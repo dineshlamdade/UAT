@@ -13,7 +13,16 @@ export class TaxAdjustmentsService {
 
   constructor(private _HTTP: HttpClient) { }
 
-   //Addition Tax services
+    //Summary services
+    TaxAdjustmentsSummary() {
+      return this._HTTP.get(this.apiUrl + 'additionalTaxAdjustment/summary')
+      .pipe(map((res: any) => {
+        return res;
+      }));
+    }
+  
+  
+//Addition Tax services
    getAdditionalTax() {
     return this._HTTP.get(this.apiUrl + 'additionalTaxAdjustment')
     .pipe(map((res: any) => {
@@ -23,6 +32,16 @@ export class TaxAdjustmentsService {
 
   postAdditionalTax(data){
     return this._HTTP.post(this.apiUrl + 'additionalTaxAdjustment', data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
+
+ 
+
+  getAdditionalTaxList() {
+
+    return this._HTTP.get(this.apiUrl + 'additionalTaxAdjustment/payrollCycles')
     .pipe(map((res: any) => {
       return res;
     }));
