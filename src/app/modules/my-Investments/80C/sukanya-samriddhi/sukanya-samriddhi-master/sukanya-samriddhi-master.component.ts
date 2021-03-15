@@ -112,6 +112,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public proofSubmissionId;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -130,10 +132,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(null, Validators.required),
-      relationship: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
+      relationship: new FormControl({ value: null, disabled: true },Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
@@ -141,16 +140,16 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl(
-        { value: null, disabled: true },
-        Validators.required
-      ),
+      annualAmount: new FormControl({ value: null, disabled: true },Validators.required),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
+      investmentGroup1MasterPaymentDetailId: new FormControl(0),
+
       depositType: new FormControl('recurring'),
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -349,7 +348,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    console.log("urlArray.length",this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ){
       this.alertService.sweetalertWarning(
         'Sukanya Samriddhi Document needed to Create Master.'
       );
@@ -363,7 +363,10 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      // const data = this.form.getRawValue();
+      console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
+            data.proofSubmissionId = this.proofSubmissionId;
 
       data.fromDate = from;
       data.toDate = to;
@@ -407,6 +410,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
     }
   }
@@ -446,7 +450,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     this.form.get('annualAmount').setValue(installment);
   }
 
-  // Family relationship shown on Policyholder selection
+  // Family relationship shown on accountHolderName selection
   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
@@ -488,14 +492,13 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       console.log("Edit Master",obj);
       if (obj!= 'undefined'){
 
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      // console.log(this.form.getRawValue());
-      this.Index = obj.accountNumber;
-      this.showUpdateButton = true;
-      // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-      this.isClear = true;
-      this.masterfilesArray = obj.documentInformationList;
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
       }
     });
     }
@@ -512,11 +515,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     // console.log(this.form.getRawValue());
     this.Index = i;
     this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
+
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+    // this.form.get('premiumAmount').setValue();
     this.isClear = true;
   }
 
@@ -561,4 +562,44 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+
+    //---------- For Doc Viewer -----------------------
+    nextDocViewer() {
+
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      //   this.urlArray[this.urlIndex]
+      // );
+    }
+
+    previousDocViewer() {
+
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      //   this.urlArray[this.urlIndex]
+      // );
+    }
+
+    docViewer(template3: TemplateRef<any>,index:any) {
+      console.log("---in doc viewer--");
+      this.urlIndex = index;
+
+      console.log("urlArray::", this.urlArray);
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+      //this.urlSafe
+      console.log("urlSafe::",  this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
 }

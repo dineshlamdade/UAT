@@ -1,10 +1,11 @@
-//import { error } from '@angular/compiler/src/util';
-import { Component, OnInit, } from '@angular/core';
+import { error } from '@angular/compiler/src/util';
+import { Component, OnInit, TemplateRef, } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { id } from 'date-fns/locale';
 import { combineLatest } from 'rxjs';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { BankMasterAtGroupService } from './bank-master-at-group.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-bank-master-at-group',
@@ -13,6 +14,7 @@ import { BankMasterAtGroupService } from './bank-master-at-group.service';
 })
 export class BankMasterAtGroupComponent implements OnInit {
   public summaryHtmlDataList = [];
+  public modalRef: BsModalRef;
   public showButtonSaveAndReset = true;
   public isActivateButton: number;
   public isEditMode = false;
@@ -25,36 +27,49 @@ export class BankMasterAtGroupComponent implements OnInit {
   public bankMasterDetailsResponse: any;
   public selectedState: string;
   public selectedBankName: string;
-  public editedRecordIndex:number =0;
-  public viewMode:boolean = false;
-  public bankIFSC:any;
-  public  TotalIFSCcodeList: Array<any> = [];
+  public editedRecordIndex: number = 0;
+  public viewMode: boolean = false;
+  public bankIFSC: any;
+  public TotalIFSCcodeList: Array<any> = [];
+  countries: Array<any> = [];
+  public BankInformationModel: string = '';
+  maxAccNumber: number;
+  companyBankMasterId: number;
+  isIfscCodeValid: boolean = false;
 
 
 
-  constructor(private formBuilder: FormBuilder, private bankMasterAtGroupService: BankMasterAtGroupService, private alertService: AlertServiceService) {
+  constructor(private modalService: BsModalService, private formBuilder: FormBuilder, private bankMasterAtGroupService: BankMasterAtGroupService, private alertService: AlertServiceService) {
     this.form = this.formBuilder.group({
-      ifscCode: new FormControl(''),
-      bankName: new FormControl('', Validators.required),
-      branchName: new FormControl({ value: '', disabled: true },Validators.required),
+      ifscCode: new FormControl('', Validators.required),
+      bankName: new FormControl({ value: '', disabled: true }),
+      branchName: new FormControl({ value: '', disabled: true }),
       branchAddress: new FormControl({ value: '', disabled: true }),
-      state: new FormControl(''),
+      // state: new FormControl(''),
+      country: new FormControl({ value: '', disabled: true }),
     });
 
   }
 
   public ngOnInit(): void {
-    this.bankMasterAtGroupService.getStates().subscribe((res) => {
-      this.stateList = res.data.results;
+    this.bankMasterAtGroupService.getLocationInformationOrCountryList().subscribe(res => {
+      this.countries = res.data.results;
+    }, (error) => {
+
+    }, () => {
+      this.form.get('country').setValue('India');
     });
+    // this.bankMasterAtGroupService.getStates().subscribe((res) => {
+    //   this.stateList = res.data.results;
+    // });
     this.refreshHtmlTable();
 
   }
-  refreshHtmlTable(){
+  refreshHtmlTable() {
     this.summaryHtmlDataList = [];
-    this.bankMasterDetailsResponse={};
+    this.bankMasterDetailsResponse = {};
     this.bankMasterAtGroupService.getBankMasterDetails().subscribe((res) => {
-      console.log('getBankMasterDetails',res);
+      console.log('getBankMasterDetails', res);
       this.bankMasterDetailsResponse = res.data.results;
 
       let i = 1;
@@ -68,11 +83,12 @@ export class BankMasterAtGroupComponent implements OnInit {
           isActive: element.isActive,
         };
         this.summaryHtmlDataList.push(obj);
-        console.log( this.summaryHtmlDataList);
+        console.log(this.summaryHtmlDataList);
       });
     });
   }
   getDataFromIFSC(bankIFSC) {
+    this.isIfscCodeValid = false;
     if (bankIFSC.length < 11) {
       // this.BankInformationModel.bankName = '';
       // this.BankInformationModel.branchName = '';
@@ -80,8 +96,16 @@ export class BankMasterAtGroupComponent implements OnInit {
       // this.confirmAccountNumber = '';
       // this.BankInformationModel.accountNo = '';
       // this.BankInformationModel.nameAsPerBank = '';
+      this.form.patchValue({
+        bankName: '',
+        branchName: '',
+        branchAddress: '',
+
+      })
+
     }
     if (bankIFSC.length == 11) {
+
       this.IFSCDetails(bankIFSC);
     }
     if (bankIFSC) {
@@ -90,43 +114,89 @@ export class BankMasterAtGroupComponent implements OnInit {
     }
   }
   IFSCDetails(bankIFSC) {
-    if(bankIFSC.length == 11) {
-    this.bankMasterAtGroupService.getDataFromIFSC(bankIFSC).subscribe(res => {
+    if (bankIFSC.length == 11) {
+      this.bankMasterAtGroupService.getDataFromIFSC(bankIFSC).subscribe(res => {
 
-      console.log(res);
-      this.form.patchValue({
-        branchName: res.data.results[0].branchName,
-        branchAddress: res.data.results[0].address,
-        bankName: res.data.results[0].bankName,
+        console.log(res);
+        this.form.patchValue({
+          branchName: res.data.results[0].branchName,
+          branchAddress: res.data.results[0].address,
+          bankName: res.data.results[0].bankName,
+        });
+        if (this.form.get('bankName').value.length > 0) {
+          this.isIfscCodeValid = true;
+        }
+
+
       });
-
-    });
-  }
+    }
   }
   onSelectIFSCCode(evt: any) {
     if (evt.length == 11) {
 
-    console.log('evt::==', evt);
-    this.bankMasterAtGroupService.getDataFromIFSC(evt).subscribe((res) => {
-      console.log(res);
-      this.form.patchValue({
-        branchName: res.data.results[0].branchName,
-        branchAddress: res.data.results[0].address,
-        bankName: res.data.results[0].bankName,
+      console.log('evt::==', evt);
+      this.bankMasterAtGroupService.getDataFromIFSC(evt).subscribe((res) => {
+        console.log(res);
+        this.form.patchValue({
+          branchName: res.data.results[0].branchName,
+          branchAddress: res.data.results[0].address,
+          bankName: res.data.results[0].bankName,
+        });
       });
-    });
-  }
+    }
   }
 
-  DeleteBankMaster(i: number,companyBankMasterId:number) {
+
+
+
+
+  getDataFromIFSC1(bankIFSC) {
+
+    if (bankIFSC.length < 11) {
+      this.form.patchValue({
+        bankName: '',
+        branchName: '',
+        branchAddress: '',
+
+      })
+
+    }
+    if (bankIFSC.length == 11) {
+      this.IFSCDetails(bankIFSC);
+    }
+  }
+  IFSCDetails1(bankIFSC) {
+
+    this.bankMasterAtGroupService.getDataFromIFSC(bankIFSC).subscribe(res => {
+
+      this.maxAccNumber = res.data.results[0].limit
+      if (this.maxAccNumber == 0) {
+        this.maxAccNumber = null;
+      }
+
+      this.form.patchValue({
+        bankName: res.data.results[0].bankName,
+        branchName: res.data.results[0].branchName,
+        branchAddress: res.data.results[0].address,
+
+      })
+
+
+    });
+  }
+
+
+
+
+  DeleteBankMaster(companyBankMasterId: number) {
     console.log(this.editedRecordIndex);
     this.bankMasterAtGroupService.deleteCompanyBankMaster(companyBankMasterId).subscribe((res) => {
       console.log(res);
 
-        this.alertService.sweetalertMasterSuccess('Bank Master  Deleted Successfully.', '');
-        this.isSaveAndReset = true;
-        this.showButtonSaveAndReset = true;
-        this.refreshHtmlTable();
+      this.alertService.sweetalertMasterSuccess('Bank Master  Deleted Successfully.', '');
+      this.isSaveAndReset = true;
+      this.showButtonSaveAndReset = true;
+      this.refreshHtmlTable();
 
 
       //  else {
@@ -158,20 +228,25 @@ export class BankMasterAtGroupComponent implements OnInit {
         this.showButtonSaveAndReset = true;
         this.refreshHtmlTable();
       } else {
-      //  this.alertService.sweetalertError(error.error['status'].messsage);
-     // this.alertService.sweetalertError(error.error['status'].messsage);
-    // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+
+        this.alertService.sweetalertWarning(res.status.messsage);
+
+        //  this.alertService.sweetalertError(error.error['status'].messsage);
+        // this.alertService.sweetalertError(error.error['status'].messsage);
+        // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
       }
     }, (error: any) => {
-      //this.alertService.sweetalertError(error.error['status'].messsage);
-      this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+      console.log(error);
+      // this.alertService.sweetalertMasterSuccess('[error']['status']['messsage']);
+      this.alertService.sweetalertError(error.error['status'].messsage);
+      // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
     });
 
   }
   onSelectState(evt: any) {
     this.selectedState = evt;
-   this.bankIFSC ='';
+    this.bankIFSC = '';
     // this.ifscCodeList = [];
     // this.bankMasterAtGroupService.getIfscCodeStateWise(evt).subscribe((res) => {
     //  this.ifscCodeList = res.data.results;
@@ -181,31 +256,37 @@ export class BankMasterAtGroupComponent implements OnInit {
     // });
 
   }
-  editMaster(i: number,companyBankMasterId:number) {
+  editMaster(i: number, companyBankMasterId: number) {
+    window.scrollTo(0, 0);
     this.isEditMode = true;
     this.viewMode = false;
     this.editedRecordIndex = companyBankMasterId;
     this.form.patchValue(this.bankMasterDetailsResponse[i]);
     this.ifscCodeList.push(this.bankMasterDetailsResponse[i].ifscCode);
-      this.form.patchValue({
-        branchName: this.summaryHtmlDataList[i].branchName,
-        branchAddress: this.summaryHtmlDataList[i].branchAddress,
-        bankName: this.summaryHtmlDataList[i].bankName,
-      });
-    }
+    this.form.patchValue({
+      branchName: this.summaryHtmlDataList[i].branchName,
+      branchAddress: this.summaryHtmlDataList[i].branchAddress,
+      bankName: this.summaryHtmlDataList[i].bankName,
+    });
+    this.form.get('branchName').disable();
+    this.form.get('branchAddress').disable();
+    this.form.get('country').disable();
+
+  }
   viewMaster(i: number) {
+    window.scrollTo(0, 0);
     this.viewMode = true;
-    this.isEditMode =true;
+    this.isEditMode = true;
     console.log(this.bankMasterDetailsResponse[i]);
     this.form.patchValue(this.bankMasterDetailsResponse[i]);
     this.ifscCodeList.push(this.bankMasterDetailsResponse[i].ifscCode);
-      this.form.patchValue({
-        branchName: this.summaryHtmlDataList[i].branchName,
-        branchAddress: this.summaryHtmlDataList[i].branchAddress,
-        bankName: this.summaryHtmlDataList[i].bankName,
-      });
-      this.form.disable();
-   }
+    this.form.patchValue({
+      branchName: this.summaryHtmlDataList[i].branchName,
+      branchAddress: this.summaryHtmlDataList[i].branchAddress,
+      bankName: this.summaryHtmlDataList[i].bankName,
+    });
+    this.form.disable();
+  }
   cancelView() {
     this.form.reset();
     this.ifscCodeList = [];
@@ -216,14 +297,18 @@ export class BankMasterAtGroupComponent implements OnInit {
     this.form.enable();
     this.form.get('branchName').disable();
     this.form.get('branchAddress').disable();
-   }
+    this.form.get('country').disable();
+    this.form.get('country').setValue('India');
+    this.form.get('bankName').disable();
+
+  }
 
   activateBankMaster() { }
   searchIFSC(searchTerm, bankIFSC) {
     this.form.patchValue({
-      branchName:'',
+      branchName: '',
       branchAddress: '',
-      bankName:'',
+      bankName: '',
     });
 
     if (searchTerm.query.length < 11) {
@@ -247,7 +332,7 @@ export class BankMasterAtGroupComponent implements OnInit {
         if (this.ifscCodeList.length > 0) {
           this.filterIFSCCodes(searchTerm.query);
         } else {
-         // this.alertService.sweetalertError('Record Not Found');
+          // this.alertService.sweetalertError('Record Not Found');
           // this.notifyService.showError ('Recordnot found', "Error..!!")
         }
       });
@@ -260,7 +345,7 @@ export class BankMasterAtGroupComponent implements OnInit {
         return item == searchTerm.query;
       });
       if (ifsc == searchTerm.query) {
-         this.IFSCDetails(searchTerm.query);
+        this.IFSCDetails(searchTerm.query);
       }
     }
   }
@@ -276,5 +361,16 @@ export class BankMasterAtGroupComponent implements OnInit {
       // this.GridIFSCcodeList = ifsc;
       // this.showOptios = true;
     }
+  }
+  ConfirmationDialog(confirmdialog: TemplateRef<any>, companyBankMasterId: number) {
+    this.companyBankMasterId = companyBankMasterId;
+
+    this.modalRef = this.modalService.show(
+      confirmdialog,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+  clickedOnYes() {
+    this.DeleteBankMaster(this.companyBankMasterId);
   }
 }

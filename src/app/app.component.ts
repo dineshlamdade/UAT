@@ -28,27 +28,28 @@ export class AppComponent implements OnInit {
   public locale = this.locales[0].value;
 
   constructor(private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private titleService: Title,
-              private authService: AuthService,
-              private translocoService: TranslocoService,
-              private bnIdle: BnNgIdleService
-              ) {
-      this.selectedLanguage = localStorage.getItem('selectedLanguage');
-      // generate a regex from the locales we support
-      if (this.selectedLanguage) {
-        const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
-        // check if the user's preferred language is supported and if so, use it.
-        if (this.selectedLanguage.match(supportedRegex)) {
-          this.updateLocale(this.selectedLanguage);
-        }
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private authService: AuthService,
+    private translocoService: TranslocoService,
+    private bnIdle: BnNgIdleService
+  ) {
+    this.selectedLanguage = localStorage.getItem('selectedLanguage');
+    // generate a regex from the locales we support
+    if (this.selectedLanguage) {
+
+      const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
+      // check if the user's preferred language is supported and if so, use it.
+      if (this.selectedLanguage.match(supportedRegex)) {
+        this.updateLocale(this.selectedLanguage);
       }
-      this.bnIdle.startWatching(2).subscribe((res) => {
-        if(res) {
-           // console.log("session expired"); commented by Anant
-        }
-      })
-     }
+    }
+    this.bnIdle.startWatching(2).subscribe((res) => {
+      if (res) {
+        // console.log("session expired"); commented by Anant
+      }
+    })
+  }
   public ngOnInit(): void {
     // if (this.router.getCurrentNavigation() === null) {
     //   if (!this.authService.isLoggedIn()) {

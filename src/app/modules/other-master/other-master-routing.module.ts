@@ -1,3 +1,4 @@
+import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
 
 
 import { NgModule } from '@angular/core';
@@ -52,11 +53,11 @@ const routes: Routes = [
     component: ComplianceMasterComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
-  // {
-  //   path: 'bankMasterAtGroup',
-  //   component: BankMasterAtGroupComponent,
-  //   data: { title: ':: Delizia-HR :: Home' },
-  // },
+  {
+    path: 'bankMasterAtGroup',
+    component: BankMasterAtGroupComponent,
+    data: { title: ':: Delizia-HR :: Home' },
+  },
   {
     path: 'bankMasterAtCompany',
     component: BankMasterAtCompanyComponent,
@@ -65,6 +66,11 @@ const routes: Routes = [
   {
     path: 'jobMaster',
     component: JobMasterComponent,
+    data: { title: ':: Delizia-HR :: Home' },
+  },
+  {
+    path: 'complianceMapping',
+    component: ComplianceMappingComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
 ];

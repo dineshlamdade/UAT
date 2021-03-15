@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, Input, Optional, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReJoiningInformationModel } from './../employment-forms-models/re-Joining-information.model';
-import { EmploymentInformationService } from './../employment-information.service';
+import { ReJoiningInformationModel } from './../../../dto-models/employment-forms-models/re-Joining-information.model';
+import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
@@ -100,9 +100,6 @@ export class ReJoiningInformationComponent implements OnInit {
       });
       if (this.companyListForJoining.length == 1) {
         this.ReJoiningInformationModel.companyName = this.companyListForJoining[0];
-        this.ReJoiningForm.patchValue({
-          companyName: this.ReJoiningInformationModel.companyName,
-        })
       }
     })
 
@@ -243,10 +240,6 @@ export class ReJoiningInformationComponent implements OnInit {
       if (res.data.results.length > 0) {
         this.ReJoiningInformationModel = res.data.results[0];
 
-        this.ReJoiningForm.patchValue({
-          rejoiningDate: this.ReJoiningInformationModel.rejoiningDate,
-          companyName: this.ReJoiningInformationModel.companyName,
-        })
         localStorage.setItem('RejoiningEmployementInfoId', this.ReJoiningInformationModel.employementInfoId)
         if (this.ReJoiningInformationModel.isNoticePeriodInMonth == 1) {
           this.noticeMonthsDays = 'false';

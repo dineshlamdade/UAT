@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ProjectDetailsModel } from './../job-information-models/project-details.model';
+import { ProjectDetailsModel } from './../../../dto-models/project-details.model';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { JobInformationService } from '../job-information.service';
+import { JobInformationService } from '../../../employee-master-services/job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
+import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -83,7 +83,7 @@ export class ProjectDetailComponent implements OnInit {
         this.employeeProjectDetailId = res.data.results[0].employeeProjectDetailId;
         this.projectDetailsModel = res.data.results[0];
 
-        //dates conversion
+        //dates conversion  
         if (res.data.results[0].projectFromDate != null) {
           this.projectDetailsModel.projectFromDate = new Date(res.data.results[0].projectFromDate);
         }
@@ -102,7 +102,8 @@ export class ProjectDetailComponent implements OnInit {
         if (res.data.results[0].benchToDate != null) {
           this.projectDetailsModel.benchToDate = new Date(res.data.results[0].benchToDate);
         }
-        //bench
+
+        //bench 
         if (this.projectDetailsModel.isOnBench == 1) {
           // this.projectDetailsModel.isOnBench = 'yes';
           this.isOnBenchBoolean = 'yes';
@@ -423,6 +424,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   resetProjectForm() {
+
     this.projectForm.reset();
     this.employeeProjectDetailId = 0;
     this.isOnBenchBoolean = 'no';

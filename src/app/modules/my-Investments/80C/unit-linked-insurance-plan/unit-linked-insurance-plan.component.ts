@@ -24,16 +24,17 @@ export class UnitLinkedInsurancePlanComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  redirectToMaster(event: any) {
-    this.tabIndex = event.tabIndex;
-    this.accountNo = event;
-  }
-
   changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
     console.log('data::',this.data);
   }
+
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.accountNo = event;
+  }
+
 
   changeTabIndex(index: number)
   {
@@ -46,6 +47,7 @@ export class UnitLinkedInsurancePlanComponent implements OnInit {
     }
     this.tabIndex = index;
   }
+
 
   public modalRef: BsModalRef;
 

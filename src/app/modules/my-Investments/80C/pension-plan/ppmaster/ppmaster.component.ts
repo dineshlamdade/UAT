@@ -69,6 +69,7 @@ export class PpmasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
 
+
   public documentRemark: any;
   public isECS = true;
 
@@ -111,6 +112,8 @@ export class PpmasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public proofSubmissionId ;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -125,6 +128,7 @@ export class PpmasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
+
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
@@ -142,14 +146,14 @@ export class PpmasterComponent implements OnInit {
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
         { value: null, disabled: true },
-        Validators.required
-      ),
+        Validators.required ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
-      ecs: new FormControl(0),
+      ecs: new FormControl('0'),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -158,6 +162,7 @@ export class PpmasterComponent implements OnInit {
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
     ];
+
 
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -168,19 +173,27 @@ export class PpmasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-
+  ngOnChanges()	{
+    console.log('accountNo',this.accountNo);
+    // this.editMaster(this.accountNo.accountNumber);
+  }
   public ngOnInit(): void {
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+
 
     this.masterPage();
-    // Business Financial Year API Call
+    console.log('masterPage::', this.accountNo);
+
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+
+    //-------------- Business Financial Year API Call -------------------------------
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
 
-    // Family Member List API call
+    //-------------- Family Member List API call ---------------------------
     this.Service.getFamilyInfo().subscribe((res) => {
       this.familyMemberGroup = res.data.results;
+      console.log('familyMemberName::', res);
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
@@ -192,24 +205,24 @@ export class PpmasterComponent implements OnInit {
 
     this.deactivateRemark();
 
-    // Get All Institutes From Global Table
-    this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
-      // console.log(res);
-      res.data.results.forEach((element: { insurerName: any }) => {
-        const obj = {
-          label: element.insurerName,
-          value: element.insurerName,
-        };
-        this.institutionNameList.push(obj);
-      });
-    });
+    // //-------------------- Get All Institutes From Global Table -------------------------
+    // this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
+    //   res.data.results.forEach((element: { insurerName: any }) => {
+    //     console.log('institutionNameList::', res);
+    //     const obj = {
+    //       label: element.insurerName,
+    //       value: element.insurerName,
+    //     };
+    //     this.institutionNameList.push(obj);
+    //   });
 
-    // Get All Previous Employer
+
+    // });
+
+    //------------------ Get All Previous Employer -----------------------------
     this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
       if (res.data.results.length > 0) {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
     });
 
@@ -226,22 +239,25 @@ export class PpmasterComponent implements OnInit {
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
 
-    if (this.accountNo !== undefined || this.accountNo !== null) {
+    if (this.accountNo != undefined || this.accountNo != null) {
       const input = this.accountNo;
       // console.log("edit", input)
       // this.editMaster(input);
-      // console.log('editMaster policyNo', input);
+      // console.log('editMaster accountNumber', input);
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
+
   }
 
-  // convenience getter for easy access to form fields
+  // ------------------------------------Master----------------------------
+
+  //------------------- convenience getter for easy access to form fields -----------------
   get masterForm() {
     return this.form.controls;
   }
 
-  // Policy End Date Validations with Policy Start Date
+  //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
@@ -263,7 +279,7 @@ export class PpmasterComponent implements OnInit {
     this.setPaymentDetailToDate();
   }
 
-  // Policy End Date Validations with Current Finanacial Year
+  //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
@@ -275,8 +291,7 @@ export class PpmasterComponent implements OnInit {
     );
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
-        'Policy End Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.policyEndDate.reset();
     } else {
@@ -287,7 +302,7 @@ export class PpmasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Payment Detail From Date
+  //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
     this.paymentDetailMinDate = this.form.value.fromDate;
     const from = this.datePipe.transform(
@@ -303,7 +318,7 @@ export class PpmasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Current Finanacial Year
+  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
@@ -314,15 +329,15 @@ export class PpmasterComponent implements OnInit {
       'yyyy-MM-dd'
     );
     if (to < financialYearStartDate) {
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
       this.alertService.sweetalertWarning(
-        'To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.toDate.reset();
     }
   }
 
-  // Get Master Page Data API call
+  //---------------- Get Master Page Data API call -----------------------
   masterPage() {
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -336,15 +351,16 @@ export class PpmasterComponent implements OnInit {
     });
   }
 
-  // Post Master Page Data API call
+  //-------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
+
     this.submitted = true;
 
     if (this.form.invalid) {
       return;
     }
-
-    if (this.masterfilesArray.length === 0) {
+    console.log("urlArray.length",this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Pension Plan Document needed to Create Master.'
       );
@@ -358,13 +374,19 @@ export class PpmasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+
+      // const data = {
+
+      // }
+      console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
+            data.proofSubmissionId = this.proofSubmissionId;
 
-      data.fromDate = from;
-      data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+            data.fromDate = from;
+            data.toDate = to;
+            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-      console.log('PensionPlandata::', data);
+      console.log('Pension Plan::', data);
 
       this.pensionPlanService
         .uploadMultiplePensionPlanMasterFiles(this.masterfilesArray, data)
@@ -381,7 +403,7 @@ export class PpmasterComponent implements OnInit {
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
-                'Go to "Declaration & Actual" Page to see Schedule.'
+                'Go to "Transaction" Page to see Schedule.'
               );
             } else {
               this.alertService.sweetalertWarning(res.status.messsage);
@@ -401,60 +423,48 @@ export class PpmasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
+
     }
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
-    console.log('event::', event);
+    //console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.masterfilesArray.push(file);
       }
     }
-    // console.log('this.masterfilesArray::', this.masterfilesArray);
+    //console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
-  // Remove LicMaster Document
-  removeSelectedPensionPlanMasterDocument(index: number) {
+  //----------------- Remove LicMaster Document -----------------------------
+  removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
-    console.log('this.filesArray::', this.masterfilesArray);
-    console.log('this.filesArray.size::', this.masterfilesArray.length);
+    //console.log('this.filesArray::', this.masterfilesArray);
+    //console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-  // Calculate annual amount on basis of premium and frquency
+  //---------------- Calculate annual amount on basis of premium and frquency -----------
   calculateAnnualAmount() {
-    if (
-      this.form.value.premiumAmount != null &&
-      this.form.value.frequencyOfPayment != null
-    ) {
-      let installment = this.form.value.premiumAmount;
-
-      // installment = installment.toString().replace(',', '');
-
-      // console.log(installment);
-      if (!this.form.value.frequencyOfPayment) {
-        installment = 0;
-      }
-      if (this.form.value.frequencyOfPayment === 'Monthly') {
-        installment = installment * 12;
-      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-        installment = installment * 4;
-      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-        installment = installment * 2;
-      } else {
-        installment = installment * 1;
-      }
-      const formatedPremiumAmount =
-        this.form.value.premiumAmount;
-
-      // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-      this.form.get('annualAmount').setValue(installment);
+    let installment = this.form.value.premiumAmount;
+    if (!this.form.value.frequencyOfPayment) {
+      installment = 0;
     }
+    if (this.form.value.frequencyOfPayment === 'Monthly') {
+      installment = installment * 12;
+    } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+      installment = installment * 4;
+    } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+      installment = installment * 2;
+    } else {
+      installment = installment * 1;
+    }
+    this.form.get('annualAmount').setValue(installment);
   }
 
-  // Family relationship shown on Policyholder selection
+  //----------- Family relationship shown on Policyholder selection ---------------
   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
@@ -463,7 +473,7 @@ export class PpmasterComponent implements OnInit {
     this.form.get('relationship').setValue(toSelect.relation);
   }
 
-  // Deactivate the Remark
+  //--------------- Deactivate the Remark -------------------
   deactivateRemark() {
     if (this.form.value.active === false) {
       // this.form.get('remark').enable();
@@ -477,22 +487,9 @@ export class PpmasterComponent implements OnInit {
     }
   }
 
-  // On Master Edit functionality
-  // editMaster(i: number) {
-  //   //this.scrollToTop();
-  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-  //   this.form.patchValue(this.masterGridData[i]);
-  //   // console.log(this.form.getRawValue());
-  //   this.Index = i;
-  //   this.showUpdateButton = true;
-  //   const formatedPremiumAmount = this.masterGridData[i].premiumAmount;
-  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-  //   this.isClear = true;
-  // }
-
-  editMaster(accountNumber){
-
+  //------------- On Master Edit functionality --------------------
+  editMaster(accountNumber) {
+    //this.scrollToTop();
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -503,9 +500,9 @@ export class PpmasterComponent implements OnInit {
         element.toDate = new Date(element.toDate);
       });
       console.log(accountNumber)
+      const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
 
-      const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
-
+      // Object.assign({}, { class: 'gray modal-md' }),
       console.log("Edit Master",obj);
       if (obj!= 'undefined'){
 
@@ -514,22 +511,22 @@ export class PpmasterComponent implements OnInit {
       this.Index = obj.accountNumber;
       this.showUpdateButton = true;
       this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
 
-      // this.masterfilesArray = this.masterGridData[institude.policyNo].documentInformationList;
-      // this.masterfilesArray = institude.masterGridData[institude.policyNo].documentInformationList
-      this.masterfilesArray = obj.documentInformationList;
       }
-
     });
+
   }
 
-  findByPolicyNo(accountNumber,masterGridData){
+  findByaccountNumber(accountNumber,masterGridData){
     return masterGridData.find(x => x.accountNumber === accountNumber)
   }
 
-
-  // On Edit Cancel
-  resetView() {
+      // this.masterfilesArray = this.masterGridData[institude.accountNumber].documentInformationList;
+      // this.masterfilesArray = institude.masterGridData[institude.accountNumber].documentInformationList
+  //------------ On Edit Cancel ----------------
+  cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
@@ -538,29 +535,33 @@ export class PpmasterComponent implements OnInit {
     this.isClear = false;
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.masterGridData[i].premiumAmount
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
+  //------------------- On Master View functionality -----------------------
+  // viewMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.numberFormat.transform(
+  //     this.masterGridData[i].premiumAmount
+  //   );
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isCancel = true;
+  // }
 
-  // On View Cancel
-  cancelView() {
+  //---------- On View Cancel -------------------
+  resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
     this.isCancel = false;
   }
+
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
@@ -568,7 +569,50 @@ export class PpmasterComponent implements OnInit {
     );
   }
 
+  getInstituteDetails(accountNumber) {
+    const institude = this.masterGridData.find(
+      (element) => element.accountNumber === accountNumber.number
+    );
+    this.form.patchValue(institude);
+  }
+  //---------- For Doc Viewer -----------------------
+  nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  docViewer(template3: TemplateRef<any>,index:any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+    //this.urlSafe
+    console.log("urlSafe::",  this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
 
 }
-
-

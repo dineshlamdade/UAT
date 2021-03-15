@@ -1,13 +1,16 @@
-import { NgModule } from '@angular/core';
+
+import { NgModule, Pipe } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { OtherMasterRoutingModule } from './other-master-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
+import { ShortenStringPipe } from '../../core/utility/pipes/shorten-string.pipe';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
@@ -32,6 +35,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PrimeNGModule } from 'src/app/app.primeNG.module';
 import { JobMasterComponent } from './job-master/job-master.component';
+import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
+
+
+
+
 
 
 @NgModule({
@@ -43,17 +51,22 @@ import { JobMasterComponent } from './job-master/job-master.component';
     StatutoryComplianceComponent,
     EstablishmentMasterComponent,
     ComplianceMasterComponent,
-   // BankMasterAtGroupComponent,
+    BankMasterAtGroupComponent,
     BankMasterAtCompanyComponent,
     JobMasterComponent,
+    ComplianceMappingComponent,
+
   ],
   imports: [
+
+
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
+    BsDatepickerModule,
 
     CommonModule,
-    OtherMasterRoutingModule,
+
     ReactiveFormsModule,
     FormsModule,
     NgMultiSelectDropDownModule,
@@ -69,7 +82,7 @@ import { JobMasterComponent } from './job-master/job-master.component';
     ModalModule.forRoot(),
     ProgressbarModule.forRoot(),
     CarouselModule.forRoot(),
-    BsDatepickerModule.forRoot(),
+
     CarouselModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-top-center',
@@ -82,6 +95,6 @@ import { JobMasterComponent } from './job-master/job-master.component';
   ],
 
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [DatePipe, NumberFormatPipe],
 })
 export class OtherMasterModule { }

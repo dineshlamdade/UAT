@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FamilyInformationService } from './family-information.service';
+import { FamilyInformationService } from './../../employee-master-services/family-information.service';
 
 
 
@@ -20,7 +20,7 @@ export class FamilyInformationComponent implements OnInit {
 
   constructor(private FamilyInformationService: FamilyInformationService,
     private route: Router) {
-
+    
     if (route.url == '/employee-master/family-information/family-details') {
       this.tabIndex = 0;
       this.familyTabValidation();
@@ -47,6 +47,7 @@ export class FamilyInformationComponent implements OnInit {
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe(res => {
 
       this.FamilySummaryGridData = res.data.results[0].familyDetailsSummaryBeans;
+      console.log(this.FamilySummaryGridData);
 
       this.FamilySummaryGridData.forEach(res => {
         if (res.status == 1) {

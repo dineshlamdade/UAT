@@ -33,7 +33,6 @@ import { HouserentsummaryComponent } from './housingrent/houserentsummary/houser
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-
     HousingloanComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,

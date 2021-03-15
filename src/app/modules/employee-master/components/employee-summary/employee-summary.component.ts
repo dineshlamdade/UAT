@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PayrollAreaInformationService } from '../payroll-area-information/payroll-area-information.service';
-import { EmployeeSummaryBean } from './employee-summary.model';
-import { EmployeeSummaryService } from './employee-summary.service';
+import { PayrollAreaInformationService } from '../../employee-master-services/payroll-area-information.service';
+import { EmployeeSummaryBean } from './../../dto-models/employee-summary.model';
+import { EmployeeSummaryService } from './../../employee-master-services/employee-summary.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { AuthService } from './../../../auth/auth.service';
 
@@ -48,7 +48,7 @@ export class EmployeeSummaryComponent implements OnInit {
 
     //get payroll area's
     this.getPayrollAreaInformation();
-
+    
     if (this.employeeMasterId) {
       this.getSummaryForm();
     }
@@ -58,7 +58,7 @@ export class EmployeeSummaryComponent implements OnInit {
   getPayrollAreaInformation() {
 
     this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-
+      
       res.data.results[0].forEach(item => {
         // this.payrollAreaList.push(item.payrollAreaCode);
         // this.filteredPayrollAreaList.push(item.payrollAreaCode);
@@ -95,11 +95,11 @@ export class EmployeeSummaryComponent implements OnInit {
   }
 
   getSummaryForm() {
-
+    
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
     this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
-
+      
       if (res.data.results[0]) {
 
         this.EmployeeSummary.identitySummaryBean = res.data.results[0].employeeSummaryBean.identitySummaryBean;

@@ -16,6 +16,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __spreadArrays = (this && this.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -111,9 +147,9 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         });
     }
     UploadexcelhomeComponent.prototype.ngOnInit = function () {
-        this.form.patchValue({
-            templateName: 'a'
-        });
+        // this.form.patchValue({
+        //   templateName: 'a',
+        // });
         this.dropdownList = [
             { id: 1, label: 'PA_01_Staff' },
             { id: 2, label: 'PA_02_Worker' },
@@ -248,61 +284,101 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         this.tempMergeSelectedArrayList = [];
         console.log('in   onChangeCheckBoxLeftMenu checked function is dynamic to all', checked, 'tabName', tabName);
         var index1 = this.employeeMasterModuleList.findIndex(function (o) { return o.assignValue == tabName; });
-        for (var i = 0; i < this.employeeMasterModuleList.length; i++) {
-            if (this.employeeMasterModuleList[i].assignValue == tabName) {
-                this.tempMergeSelectedArrayList.push(this.employeeMasterModuleList[i]);
-            }
-        }
+        // Series loop
+        (function (items) { return __awaiter(_this, void 0, void 0, function () {
+            var i, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        i = 0;
+                        _a.label = 1;
+                    case 1:
+                        if (!(i < this.employeeMasterModuleList.length)) return [3 /*break*/, 4];
+                        if (!(this.employeeMasterModuleList[i].assignValue == tabName)) return [3 /*break*/, 3];
+                        this.tempMergeSelectedArrayList.push(this.employeeMasterModuleList[i]);
+                        return [4 /*yield*/, this.employeeMasterModuleList[i]];
+                    case 2:
+                        result = _a.sent();
+                        console.log('await', result);
+                        _a.label = 3;
+                    case 3:
+                        i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
         var findGroupValue = this.employeeMasterModuleList.findIndex(function (o) { return o.assignValue == tabName; });
         console.log('findGroupValue ', findGroupValue);
         if (findGroupValue == -1) {
-            for (var i = 0; i < this.employeeMasterModuleList.length; i++) {
-                if (this.employeeMasterModuleList[i].group > 0) {
-                    this.employeeMasterModuleList[i].disabled = true;
-                }
-                else if (this.employeeMasterModuleList[i].assignValue === '' && this.employeeMasterModuleList[i].group == 0) {
-                    this.employeeMasterModuleList[i].disabled = false;
-                    this.employeeMasterModuleList[i].checked = false;
-                }
-                else { }
-            }
+            // Series loop
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var i;
+                return __generator(this, function (_a) {
+                    for (i = 0; i < this.employeeMasterModuleList.length; i++) {
+                        if (this.employeeMasterModuleList[i].group > 0) {
+                            this.employeeMasterModuleList[i].disabled = true;
+                        }
+                        else if (this.employeeMasterModuleList[i].assignValue === '' && this.employeeMasterModuleList[i].group == 0) {
+                            this.employeeMasterModuleList[i].disabled = false;
+                            this.employeeMasterModuleList[i].checked = false;
+                        }
+                        else { }
+                    }
+                    return [2 /*return*/];
+                });
+            }); });
         }
         else {
-            for (var i = 0; i < this.employeeMasterModuleList.length; i++) {
-                if (this.employeeMasterModuleList[i].group === this.employeeMasterModuleList[findGroupValue].group || this.employeeMasterModuleList[i].group == 0) {
-                    this.employeeMasterModuleList[i].disabled = false;
-                    if (this.employeeMasterModuleList[i].group == 0) {
-                        this.employeeMasterModuleList[i].checked = false;
+            // Series loop
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var i;
+                return __generator(this, function (_a) {
+                    for (i = 0; i < this.employeeMasterModuleList.length; i++) {
+                        if (this.employeeMasterModuleList[i].group === this.employeeMasterModuleList[findGroupValue].group || this.employeeMasterModuleList[i].group == 0) {
+                            this.employeeMasterModuleList[i].disabled = false;
+                            if (this.employeeMasterModuleList[i].group == 0) {
+                                this.employeeMasterModuleList[i].checked = false;
+                            }
+                        }
+                        else {
+                            this.employeeMasterModuleList[i].disabled = true;
+                        }
                     }
-                }
-                else {
-                    this.employeeMasterModuleList[i].disabled = true;
-                }
-            }
+                    return [2 /*return*/];
+                });
+            }); });
         }
         if (checked == true) {
             // hide merge/unmerge button
             console.log('check this one', this.employeeMasterModuleList);
-            var _loop_1 = function (j) {
-                if (this_1.employeeMasterModuleList[j].group > 0) {
-                    if (this_1.employeeMasterModuleList[j].assignValue !== this_1.employeeMasterModuleList[j].title) {
-                        var findIndexOfOrdersData = this_1.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
-                        if (findIndexOfOrdersData !== -1) {
-                            this_1.ordersData[findIndexOfOrdersData].hide = true;
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var _loop_1, this_1, j;
+                var _this = this;
+                return __generator(this, function (_a) {
+                    _loop_1 = function (j) {
+                        if (this_1.employeeMasterModuleList[j].group > 0) {
+                            if (this_1.employeeMasterModuleList[j].assignValue !== this_1.employeeMasterModuleList[j].title) {
+                                var findIndexOfOrdersData = this_1.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
+                                if (findIndexOfOrdersData !== -1) {
+                                    this_1.ordersData[findIndexOfOrdersData].hide = true;
+                                }
+                            }
                         }
+                        else {
+                            var findIndexOfOrdersData = this_1.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
+                            if (findIndexOfOrdersData !== -1) {
+                                this_1.ordersData[findIndexOfOrdersData].hide = false;
+                            }
+                        }
+                    };
+                    this_1 = this;
+                    for (j = 0; j < this.employeeMasterModuleList.length; j++) {
+                        _loop_1(j);
                     }
-                }
-                else {
-                    var findIndexOfOrdersData = this_1.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
-                    if (findIndexOfOrdersData !== -1) {
-                        this_1.ordersData[findIndexOfOrdersData].hide = false;
-                    }
-                }
-            };
-            var this_1 = this;
-            for (var j = 0; j < this.employeeMasterModuleList.length; j++) {
-                _loop_1(j);
-            }
+                    return [2 /*return*/];
+                });
+            }); });
             console.log('ordersData in true stmt ', this.ordersData);
             var indx = this.filterDropDownList.findIndex(function (o) { return o == tabName; });
             if (indx == -1) {
@@ -310,35 +386,24 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                 //  this.logicForHideNextButtonAndPreviousButton(tabName);
                 ///  this.buttonIndex = this.filterDropDownList.length;
             }
-            var counter = 1;
-            for (var i = 0; i < this.fieldNameArrayList.length; i++) {
-                if (this.fieldNameArrayList[i].tab === tabName) {
-                    this.sequenceArray.push({ disable: false, value: counter++ });
-                }
-            }
+            var counter_1 = 1;
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var i;
+                return __generator(this, function (_a) {
+                    for (i = 0; i < this.fieldNameArrayList.length; i++) {
+                        if (this.fieldNameArrayList[i].tab === tabName) {
+                            this.sequenceArray.push({ disable: false, value: counter_1++ });
+                        }
+                    }
+                    return [2 /*return*/];
+                });
+            }); });
             this.onChangFilterDropDown(tabName);
             this.form.patchValue({
                 filterTemplateDropDown: tabName
             });
         }
         else {
-            var _loop_2 = function (j) {
-                if (this_2.employeeMasterModuleList[j].group > 0) {
-                    if (this_2.employeeMasterModuleList[j].assignValue !== this_2.employeeMasterModuleList[j].title) {
-                        var findIndexOfOrdersData = this_2.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
-                        if (findIndexOfOrdersData !== -1) {
-                            this_2.ordersData[findIndexOfOrdersData].hide = true;
-                        }
-                    }
-                }
-                else {
-                    var findIndexOfOrdersData = this_2.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
-                    if (findIndexOfOrdersData !== -1) {
-                        this_2.ordersData[findIndexOfOrdersData].hide = false;
-                    }
-                }
-            };
-            var this_2 = this;
             // hide merge/unmerge button
             // for(let j=0; j<this.employeeMasterModuleList.length;j++){
             //   if(this.employeeMasterModuleList[j].group> 0){
@@ -350,31 +415,73 @@ var UploadexcelhomeComponent = /** @class */ (function () {
             //     }
             //   }
             // }
-            for (var j = 0; j < this.employeeMasterModuleList.length; j++) {
-                _loop_2(j);
-            }
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var _loop_2, this_2, j;
+                var _this = this;
+                return __generator(this, function (_a) {
+                    _loop_2 = function (j) {
+                        if (this_2.employeeMasterModuleList[j].group > 0) {
+                            if (this_2.employeeMasterModuleList[j].assignValue !== this_2.employeeMasterModuleList[j].title) {
+                                var findIndexOfOrdersData = this_2.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
+                                if (findIndexOfOrdersData !== -1) {
+                                    this_2.ordersData[findIndexOfOrdersData].hide = true;
+                                }
+                            }
+                        }
+                        else {
+                            var findIndexOfOrdersData = this_2.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
+                            if (findIndexOfOrdersData !== -1) {
+                                this_2.ordersData[findIndexOfOrdersData].hide = false;
+                            }
+                        }
+                    };
+                    this_2 = this;
+                    for (j = 0; j < this.employeeMasterModuleList.length; j++) {
+                        _loop_2(j);
+                    }
+                    return [2 /*return*/];
+                });
+            }); });
             console.log('ordersData  in false stmt ', this.ordersData);
             console.log('before delete ', this.fieldNameArrayList);
-            for (var i = this.checkBoxHtmlDataList.length - 1; i >= 0; --i) {
-                if (this.checkBoxHtmlDataList[i].tab == tabName) {
-                    this.checkBoxHtmlDataList[i].isChecked = false;
-                    this.checkBoxHtmlDataList.splice(i, 1);
-                }
-            }
-            for (var b = 0; b < this.fieldNameArrayList.length; b++) {
-                if (this.fieldNameArrayList[b].tab == tabName) {
-                    this.fieldNameArrayList[b].isChecked = false;
-                    this.fieldNameArrayList[b].Sequence = 0;
-                    this.fieldNameArrayList.splice(b, 1);
-                }
-            }
-            for (var k = this.selectedSummaryCheckBoxHtmlDataList.length - 1; k >= 0; --k) {
-                if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
-                    this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = false;
-                    this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = 0;
-                    this.selectedSummaryCheckBoxHtmlDataList.splice(k, 1);
-                }
-            }
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var i;
+                return __generator(this, function (_a) {
+                    for (i = this.checkBoxHtmlDataList.length - 1; i >= 0; --i) {
+                        if (this.checkBoxHtmlDataList[i].tab == tabName) {
+                            this.checkBoxHtmlDataList[i].isChecked = false;
+                            this.checkBoxHtmlDataList.splice(i, 1);
+                        }
+                    }
+                    return [2 /*return*/];
+                });
+            }); });
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var b;
+                return __generator(this, function (_a) {
+                    for (b = 0; b < this.fieldNameArrayList.length; b++) {
+                        if (this.fieldNameArrayList[b].tab == tabName) {
+                            this.fieldNameArrayList[b].isChecked = false;
+                            this.fieldNameArrayList[b].Sequence = 0;
+                            this.fieldNameArrayList.splice(b, 1);
+                        }
+                    }
+                    return [2 /*return*/];
+                });
+            }); });
+            (function (items) { return __awaiter(_this, void 0, void 0, function () {
+                var k;
+                return __generator(this, function (_a) {
+                    for (k = this.selectedSummaryCheckBoxHtmlDataList.length - 1; k >= 0; --k) {
+                        if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+                            this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = false;
+                            this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = 0;
+                            this.selectedSummaryCheckBoxHtmlDataList.splice(k, 1);
+                        }
+                    }
+                    return [2 /*return*/];
+                });
+            }); });
             var index = this.filterDropDownList.findIndex(function (o) { return o == tabName; });
             console.log('index to be splice is ', index, 'tabname is', tabName);
             this.filterDropDownList.splice(index, 1);
@@ -467,14 +574,14 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         for (var k = tableName.length; k > mInd; --k) {
             for (var j = 0; j < this.selectedSummaryCheckBoxHtmlDataList.length; j++) {
                 if (this.selectedSummaryCheckBoxHtmlDataList[j].tab == row.tab && this.selectedSummaryCheckBoxHtmlDataList[j].tableName == tableName[k]) {
-                    var s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) + -1;
+                    var s = Number(this.selectedSummaryCheckBoxHtmlDataList[j].Sequence) - +1;
                     this.selectedSummaryCheckBoxHtmlDataList[j].Sequence = s.toString();
                 }
             }
         }
         this.leftSideMenuCounter(row.tab);
     };
-    UploadexcelhomeComponent.prototype.notMoreThanOneMandatoryFieldDecrementCounter = function (row, evt, tabName) {
+    UploadexcelhomeComponent.prototype.notMoreThanOneMandatoryFieldDecrementCounter = function (row, tabName) {
         var _this = this;
         var index = this.selectedSummaryCheckBoxHtmlDataList.findIndex(function (o) { return o === row; });
         row.Sequence = 0;
@@ -488,8 +595,37 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         });
         this.leftSideMenuCounter(row.tab);
     };
+    UploadexcelhomeComponent.prototype.abc1 = function () {
+        var _this = this;
+        this.leftSideMenuCheckBoxChnanged(true, 'Compliance Information');
+        setTimeout(function () {
+        }, 1000);
+        setTimeout(function () {
+            for (var q = 0; q < _this.selectedSummaryCheckBoxHtmlDataList.length; q++) {
+                if ((_this.selectedSummaryCheckBoxHtmlDataList[q].tab == _this.form.get('filterTemplateDropDown').value) && (_this.selectedSummaryCheckBoxHtmlDataList[q].isMandatory == 0)) {
+                    _this.selectedSummaryCheckBoxHtmlDataList[q].isChecked = false;
+                    _this.selectedSummaryCheckBoxHtmlDataList[q].Sequence = '0';
+                    _this.selectedSummaryCheckBoxHtmlDataList.splice(q, 1);
+                }
+            }
+            for (var i = 0; i < _this.fieldNameArrayList.length; i++) {
+                if (_this.fieldNameArrayList[i].tab == _this.form.get('filterTemplateDropDown').value && _this.fieldNameArrayList[i].isMandatory == 0) {
+                    _this.fieldNameArrayList[i].isChecked = true;
+                    _this.selectedSummaryCheckBoxHtmlDataList.push(_this.fieldNameArrayList[i]);
+                    // this.incrementCounter(this.fieldNameArrayList[i],true,this.fieldNameArrayList[i].tabName, this.fieldNameArrayList[i].tableName);
+                    // this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[i]);
+                    _this.getLargestNumberByTabWiseAndTableNameWise(_this.fieldNameArrayList[i].tab, _this.fieldNameArrayList[i].tableName, _this.fieldNameArrayList[i]);
+                }
+            }
+        }, 1000);
+    };
     UploadexcelhomeComponent.prototype.abc = function () {
-        this.selectAllForMoreThanOneMandatoryfield('Compliance Information');
+        var _this = this;
+        this.leftSideMenuCheckBoxChnanged(false, 'Compliance Information');
+        setTimeout(function () {
+            _this.abc1();
+        }, 1000);
+        //this.selectAllForMoreThanOneMandatoryfield('Compliance Information');
         // this.isSequenceAreProperlyAllocatedTableNameWise();
         //
         // console.log(index);
@@ -564,57 +700,57 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         var _this = this;
         this.onChangePreviewDropDown(this.form.get('filterTemplateDropDown').value);
         if (evt == true) {
-            for (var q = 0; q < this.selectedSummaryCheckBoxHtmlDataList.length; q++) {
-                if ((this.selectedSummaryCheckBoxHtmlDataList[q].tab == this.form.get('filterTemplateDropDown').value) && (this.selectedSummaryCheckBoxHtmlDataList[q].isMandatory == 0)) {
-                    this.selectedSummaryCheckBoxHtmlDataList[q].isChecked = false;
-                    this.selectedSummaryCheckBoxHtmlDataList[q].Sequence = '0';
-                    this.selectedSummaryCheckBoxHtmlDataList.splice(q, 1);
-                }
-            }
+            setTimeout(function () {
+                _this.abc();
+            }, 3000);
+            setTimeout(function () {
+            }, 3000);
+            // for (let q = 0; q < this.selectedSummaryCheckBoxHtmlDataList.length; q++) {
+            //   if ((this.selectedSummaryCheckBoxHtmlDataList[q].tab == this.form.get('filterTemplateDropDown').value) && (this.selectedSummaryCheckBoxHtmlDataList[q].isMandatory == 0)) {
+            //     this.selectedSummaryCheckBoxHtmlDataList[q].isChecked = false;
+            //     this.selectedSummaryCheckBoxHtmlDataList[q].Sequence = '0';
+            //     this.selectedSummaryCheckBoxHtmlDataList.splice(q, 1);
+            //   }
+            // }
+            // for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+            //   if (this.fieldNameArrayList[i].tab == this.form.get('filterTemplateDropDown').value && this.fieldNameArrayList[i].isMandatory == 0) {
+            //     this.fieldNameArrayList[i].isChecked = true;
+            //     this.selectedSummaryCheckBoxHtmlDataList.push(this.fieldNameArrayList[i]);
+            //     const m1 = this.selectedSummaryCheckBoxHtmlDataList.filter((o) => o.isMandatory == 1 && o.tab == this.fieldNameArrayList[i].tab);
+            //     const tableName = [...new Set(m1.map((item) => item.tableName))];
+            //     console.log(tableName);
+            //     if (tableName.length > 1) {
+            //       this.selectAllLogicForMoreThanOneMandatoryFieldInDifferntTables(this.fieldNameArrayList[i]);
+            //     } else {
+            //       // this.incrementCounter(this.fieldNameArrayList[i],true,this.fieldNameArrayList[i].tabName, this.fieldNameArrayList[i].tableName);
+            //       // this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[i]);
+            //       this.getLargestNumberByTabWiseAndTableNameWise(this.fieldNameArrayList[i].tab, this.fieldNameArrayList[i].tableName, this.fieldNameArrayList[i]);
+            //     }
+            //   }
+            // }
+        }
+        else {
+            console.log('add uncheck logic here tab is', this.form.get('filterTemplateDropDown').value);
             var _loop_3 = function (i) {
-                if (this_3.fieldNameArrayList[i].tab == this_3.form.get('filterTemplateDropDown').value && this_3.fieldNameArrayList[i].isMandatory == 0) {
-                    this_3.fieldNameArrayList[i].isChecked = true;
-                    this_3.selectedSummaryCheckBoxHtmlDataList.push(this_3.fieldNameArrayList[i]);
+                if (this_3.selectedSummaryCheckBoxHtmlDataList[i].tab == this_3.form.get('filterTemplateDropDown').value && this_3.selectedSummaryCheckBoxHtmlDataList[i].isMandatory == 0) {
+                    this_3.selectedSummaryCheckBoxHtmlDataList[i].isChecked = false;
+                    this_3.selectedSummaryCheckBoxHtmlDataList[i].Sequence = '0';
                     var m1 = this_3.selectedSummaryCheckBoxHtmlDataList.filter(function (o) { return o.isMandatory == 1 && o.tab == _this.fieldNameArrayList[i].tab; });
                     var tableName = __spreadArrays(new Set(m1.map(function (item) { return item.tableName; })));
                     console.log(tableName);
                     if (tableName.length > 1) {
-                        this_3.selectAllLogicForMoreThanOneMandatoryFieldInDifferntTables(this_3.fieldNameArrayList[i]);
-                    }
-                    else {
-                        // this.incrementCounter(this.fieldNameArrayList[i],true,this.fieldNameArrayList[i].tabName, this.fieldNameArrayList[i].tableName);
-                        // this.summaryCheckBoxHtmlDataListChanged(true, this.fieldNameArrayList[i]);
-                        this_3.getLargestNumberByTabWiseAndTableNameWise(this_3.fieldNameArrayList[i].tab, this_3.fieldNameArrayList[i].tableName, this_3.fieldNameArrayList[i]);
-                    }
-                }
-            };
-            var this_3 = this;
-            for (var i = 0; i < this.fieldNameArrayList.length; i++) {
-                _loop_3(i);
-            }
-        }
-        else {
-            console.log('add uncheck logic here tab is', this.form.get('filterTemplateDropDown').value);
-            var _loop_4 = function (i) {
-                if (this_4.selectedSummaryCheckBoxHtmlDataList[i].tab == this_4.form.get('filterTemplateDropDown').value && this_4.selectedSummaryCheckBoxHtmlDataList[i].isMandatory == 0) {
-                    this_4.selectedSummaryCheckBoxHtmlDataList[i].isChecked = false;
-                    this_4.selectedSummaryCheckBoxHtmlDataList[i].Sequence = '0';
-                    var m1 = this_4.selectedSummaryCheckBoxHtmlDataList.filter(function (o) { return o.isMandatory == 1 && o.tab == _this.fieldNameArrayList[i].tab; });
-                    var tableName = __spreadArrays(new Set(m1.map(function (item) { return item.tableName; })));
-                    console.log(tableName);
-                    if (tableName.length > 1) {
-                        this_4.UnSelectAllLogicForMoreThanOneMandatoryFieldInDifferntTables(this_4.selectedSummaryCheckBoxHtmlDataList[i]);
+                        this_3.UnSelectAllLogicForMoreThanOneMandatoryFieldInDifferntTables(this_3.selectedSummaryCheckBoxHtmlDataList[i]);
                     }
                     else {
                         //  this.decrementCounter(this.selectedSummaryCheckBoxHtmlDataList[i],true,this.selectedSummaryCheckBoxHtmlDataList[i].tabName, this.selectedSummaryCheckBoxHtmlDataList[i].tableName);
-                        this_4.notMoreThanOneMandatoryFieldDecrementCounter(this_4.selectedSummaryCheckBoxHtmlDataList[i], false, this_4.selectedSummaryCheckBoxHtmlDataList[i].tabName);
+                        this_3.notMoreThanOneMandatoryFieldDecrementCounter(this_3.selectedSummaryCheckBoxHtmlDataList[i], this_3.selectedSummaryCheckBoxHtmlDataList[i].tabName);
                     }
                     // this.summaryCheckBoxHtmlDataListChanged(false, this.selectedSummaryCheckBoxHtmlDataList[i]);
                 }
             };
-            var this_4 = this;
+            var this_3 = this;
             for (var i = this.selectedSummaryCheckBoxHtmlDataList.length - 1; i >= 0; i--) {
-                _loop_4(i);
+                _loop_3(i);
             }
             var ind = this.filterDropDownList.findIndex(function (o) { return o == _this.form.get('filterTemplateDropDown').value; });
             this.filterDropDownList.splice(ind, 1);
@@ -623,55 +759,67 @@ var UploadexcelhomeComponent = /** @class */ (function () {
     };
     //08-02-2021
     UploadexcelhomeComponent.prototype.selectAllForMoreThanOneMandatoryfield = function (tabName) {
-        var _this = this;
         console.log('Seq Array', this.sequenceArray);
-        // the below code will remove all the mandatory fild as well as user checked fields..
-        for (var k = this.selectedSummaryCheckBoxHtmlDataList.length - 1; k >= 0; --k) {
-            if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
-                this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = false;
-                this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = 0;
-                this.selectedSummaryCheckBoxHtmlDataList.splice(k, 1);
-            }
-        }
-        console.log(this.selectedSummaryCheckBoxHtmlDataList);
-        this.sequenceArray = [];
-        this.checkBoxHtmlDataList1 = [];
-        this.global.filter(function (o) {
-            if (o.tab === tabName) {
-                _this.checkBoxHtmlDataList1.push(o);
-            }
-        });
-        console.log('after clear checkBoxHtmlDataList1', this.checkBoxHtmlDataList1);
-        this.fieldNameArrayList = [];
-        this.fieldNameArrayList = this.checkBoxHtmlDataList1;
-        console.log('after adding new fieldNameArrayList', this.fieldNameArrayList);
-        var counter = 1;
-        for (var i = 0; i < this.fieldNameArrayList.length; i++) {
-            if (this.fieldNameArrayList[i].tab === tabName) {
-                this.selectedSummaryCheckBoxHtmlDataList.push(this.fieldNameArrayList[i]);
-                this.sequenceArray.push({ disable: false, value: i });
-                //  this.getLargestNumberByTabWiseAndTableNameWise(row.tabName, row.tableName, row);
-                //  this.sequenceArray.push({ disable: false, value: counter++ });
-            }
-        }
-        var largestElement = 0;
-        for (var k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
-            if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
-                if (largestElement < Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence)) {
-                    largestElement = Number(this.selectedSummaryCheckBoxHtmlDataList[k].Sequence);
-                    this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = largestElement.toString();
-                }
-            }
-        }
+        // this.leftSideMenuCheckBoxChnanged(true, 'Personal Information');
+        //   // the below code will remove all the mandatory fild as well as user checked fields..
+        //   for (let k = this.selectedSummaryCheckBoxHtmlDataList.length - 1; k >= 0; --k) {
+        //     if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+        //       this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = false;
+        //       this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = 0;
+        //       this.selectedSummaryCheckBoxHtmlDataList.splice(k, 1);
+        //     }
+        //   }
+        //   console.log(this.fieldNameArrayList);
+        //   for (let k = this.fieldNameArrayList.length - 1; k >= 0; --k) {
+        //     if (this.fieldNameArrayList[k].tab == tabName) {
+        //       this.fieldNameArrayList.splice(k, 1);
+        //     }
+        //   }
+        //  // console.log(this.selectedSummaryCheckBoxHtmlDataList);
+        //  console.log(this.fieldNameArrayList);
+        // this.sequenceArray = [];
+        // this.checkBoxHtmlDataList1 = [];
+        // this.global.filter((o) => {
+        //   if (o.tab === tabName) {
+        //     this.checkBoxHtmlDataList1.push(o);
+        //   }
+        // });
+        // console.log('after clear checkBoxHtmlDataList1', this.checkBoxHtmlDataList1);
+        // this.fieldNameArrayList = [];
+        // this.fieldNameArrayList = this.checkBoxHtmlDataList1;
+        // console.log('after adding new fieldNameArrayList', this.fieldNameArrayList);
+        // const counter = 1;
+        // for (let i = 0; i < this.fieldNameArrayList.length; i++) {
+        //   if (this.fieldNameArrayList[i].tab === tabName) {
+        //    this.selectedSummaryCheckBoxHtmlDataList.push(this.fieldNameArrayList[i]);
+        //   // this.sequenceArray.push({ disable: false, value:i+1 });
+        //  //  this.getLargestNumberByTabWiseAndTableNameWise(row.tabName, row.tableName, row);
+        //   //  this.sequenceArray.push({ disable: false, value: counter++ });
+        //   }
+        // }
+        // let largestElement = 1;
+        // for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+        //   if (this.selectedSummaryCheckBoxHtmlDataList[k].tab == tabName) {
+        //     if(this.selectedSummaryCheckBoxHtmlDataList[k].isMandatory ==1){
+        //       this.sequenceArray.push({ disable: false, value:k });
+        //       this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = (k+1).toString();
+        //       largestElement = largestElement +1;
+        //     } else {
+        //       this.sequenceArray.push({ disable: true, value:k });
+        //       this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = (k+1).toString();
+        //       largestElement = largestElement +1;
+        //     }
+        //   }
+        // }
         // console.log(' this.selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
         // const index = this.selectedSummaryCheckBoxHtmlDataList.findIndex((o) => o == row);
         // console.log('index  ', index);
         // this.selectedSummaryCheckBoxHtmlDataList[index].Sequence = largestElement.toString();
-        for (var k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
-            this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = true;
-            this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = largestElement.toString();
-            largestElement = Number(largestElement) + 1;
-        }
+        // for (let k = 0; k < this.selectedSummaryCheckBoxHtmlDataList.length; k++) {
+        //   this.selectedSummaryCheckBoxHtmlDataList[k].isChecked = true;
+        //   this.selectedSummaryCheckBoxHtmlDataList[k].Sequence = largestElement.toString();
+        //   largestElement = Number(largestElement) + 1;
+        // }
         //   const m1 = this.selectedSummaryCheckBoxHtmlDataList.filter((o) => o.isMandatory == 1 && o.tab == tabName);
         //   const tableName = [...new Set(m1.map((item) => item.tableName))];
         //   console.log(tableName);
@@ -809,7 +957,7 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                 this.decrementCounter(row, evt, row.tab);
             }
             else {
-                this.notMoreThanOneMandatoryFieldDecrementCounter(row, evt, row.tab);
+                this.notMoreThanOneMandatoryFieldDecrementCounter(row, row.tab);
             }
         }
     };
@@ -955,18 +1103,18 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                 var temp_1 = [];
                 var sheet1 = [];
                 var oneAllowEmpCode = 0;
-                var _loop_5 = function (q) {
-                    if (this_5.employeeMasterModuleList[q].group > 0) {
-                        this_5.selectedSummaryCheckBoxHtmlDataList.forEach(function (element, index) {
+                var _loop_4 = function (q) {
+                    if (this_4.employeeMasterModuleList[q].group > 0) {
+                        this_4.selectedSummaryCheckBoxHtmlDataList.forEach(function (element, index) {
                             if (_this.employeeMasterModuleList[q].title == element.tab) {
                                 element.tab = _this.employeeMasterModuleList[q].assignValue;
                             }
                         });
                     }
                 };
-                var this_5 = this;
+                var this_4 = this;
                 for (var q = 0; q < this.employeeMasterModuleList.length; q++) {
-                    _loop_5(q);
+                    _loop_4(q);
                 }
                 console.log('After merge selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
                 var counter = 0;
@@ -993,8 +1141,8 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                 }
                 /// below code is used for removing employee code in one sheet multiple times....
                 var unique_1 = __spreadArrays(new Set(this.selectedSummaryCheckBoxHtmlDataList.map(function (item) { return item.tableName; })));
-                var _loop_6 = function (i) {
-                    var result = this_6.selectedSummaryCheckBoxHtmlDataList.filter(function (o) { return o.tableName == unique_1[i]; });
+                var _loop_5 = function (i) {
+                    var result = this_5.selectedSummaryCheckBoxHtmlDataList.filter(function (o) { return o.tableName == unique_1[i]; });
                     console.log('result is', result);
                     var fieldName = '';
                     var seq = '';
@@ -1025,10 +1173,10 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                         //temp[i] = ({ sheetName: 'Employee_' + a[0], tableName: unique[i], fields: fieldName });
                     });
                 };
-                var this_6 = this;
+                var this_5 = this;
                 // console.log('unique', unique); // 2 found  Employee Personal Info and EmployeeMaster Table
                 for (var i = 0; i < unique_1.length; i++) {
-                    _loop_6(i);
+                    _loop_5(i);
                 }
                 console.log('temp printed ', temp_1);
                 var sheetNameUnique = __spreadArrays(new Set(temp_1.map(function (item) { return item.sheetName; })));
@@ -1099,18 +1247,18 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                 var temp_2 = [];
                 var sheet1 = [];
                 var oneAllowEmpCode = 0;
-                var _loop_7 = function (q) {
-                    if (this_7.employeeMasterModuleList[q].group > 0) {
-                        this_7.selectedSummaryCheckBoxHtmlDataList.forEach(function (element, index) {
+                var _loop_6 = function (q) {
+                    if (this_6.employeeMasterModuleList[q].group > 0) {
+                        this_6.selectedSummaryCheckBoxHtmlDataList.forEach(function (element, index) {
                             if (_this.employeeMasterModuleList[q].title == element.tab) {
                                 element.tab = _this.employeeMasterModuleList[q].assignValue;
                             }
                         });
                     }
                 };
-                var this_7 = this;
+                var this_6 = this;
                 for (var q = 0; q < this.employeeMasterModuleList.length; q++) {
-                    _loop_7(q);
+                    _loop_6(q);
                 }
                 console.log('After merge selectedSummaryCheckBoxHtmlDataList', this.selectedSummaryCheckBoxHtmlDataList);
                 var counter = 0;
@@ -1137,8 +1285,8 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                 }
                 /// below code is used for removing employee code in one sheet multiple times....
                 var unique_2 = __spreadArrays(new Set(this.selectedSummaryCheckBoxHtmlDataList.map(function (item) { return item.tableName; })));
-                var _loop_8 = function (i) {
-                    var result = this_8.selectedSummaryCheckBoxHtmlDataList.filter(function (o) { return o.tableName == unique_2[i]; });
+                var _loop_7 = function (i) {
+                    var result = this_7.selectedSummaryCheckBoxHtmlDataList.filter(function (o) { return o.tableName == unique_2[i]; });
                     console.log('result is', result);
                     var fieldName = '';
                     var seq = '';
@@ -1169,10 +1317,10 @@ var UploadexcelhomeComponent = /** @class */ (function () {
                         //temp[i] = ({ sheetName: 'Employee_' + a[0], tableName: unique[i], fields: fieldName });
                     });
                 };
-                var this_8 = this;
+                var this_7 = this;
                 // console.log('unique', unique); // 2 found  Employee Personal Info and EmployeeMaster Table
                 for (var i = 0; i < unique_2.length; i++) {
-                    _loop_8(i);
+                    _loop_7(i);
                 }
                 console.log('temp printed ', temp_2);
                 var sheetNameUnique = __spreadArrays(new Set(temp_2.map(function (item) { return item.sheetName; })));
@@ -1551,38 +1699,38 @@ var UploadexcelhomeComponent = /** @class */ (function () {
             largestElement = this.employeeMasterModuleList[mergedIndex].group;
         }
         console.log('largest element in a group is ', largestElement);
-        var _loop_9 = function (j) {
-            if (this_9.employeeMasterModuleList[j].checked == false) {
-                if (this_9.employeeMasterModuleList[j].assignValue == this_9.checkboxNameToBeCheckedByDefault) {
-                    this_9.employeeMasterModuleList[j].group = 0;
-                    this_9.employeeMasterModuleList[j].assignValue = '';
-                    var idx = this_9.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
-                    this_9.ordersData[idx].disable = false;
-                    this_9.ordersData[idx].group = '';
-                    this_9.leftSideMenuCheckBoxChnanged(false, this_9.employeeMasterModuleList[j].title);
+        var _loop_8 = function (j) {
+            if (this_8.employeeMasterModuleList[j].checked == false) {
+                if (this_8.employeeMasterModuleList[j].assignValue == this_8.checkboxNameToBeCheckedByDefault) {
+                    this_8.employeeMasterModuleList[j].group = 0;
+                    this_8.employeeMasterModuleList[j].assignValue = '';
+                    var idx = this_8.ordersData.findIndex(function (o) { return o.name == _this.employeeMasterModuleList[j].title; });
+                    this_8.ordersData[idx].disable = false;
+                    this_8.ordersData[idx].group = '';
+                    this_8.leftSideMenuCheckBoxChnanged(false, this_8.employeeMasterModuleList[j].title);
                 }
             }
-            var _loop_10 = function (a) {
-                var ind = this_9.employeeMasterModuleList.findIndex(function (o) { return o.title == _this.tempMergeSelectedArrayList[a].title; });
+            var _loop_9 = function (a) {
+                var ind = this_8.employeeMasterModuleList.findIndex(function (o) { return o.title == _this.tempMergeSelectedArrayList[a].title; });
                 if (ind == -1) {
                     console.log('index not found');
                 }
                 else {
-                    if (this_9.tempMergeSelectedArrayList[a].group == 0) {
-                        this_9.employeeMasterModuleList[ind].group = largestElement;
-                        this_9.employeeMasterModuleList[ind].assignValue = this_9.checkboxNameToBeCheckedByDefault;
-                        var idx = this_9.ordersData.findIndex(function (o) { return o.name == _this.tempMergeSelectedArrayList[a].title; });
-                        this_9.ordersData[idx].disable = true;
+                    if (this_8.tempMergeSelectedArrayList[a].group == 0) {
+                        this_8.employeeMasterModuleList[ind].group = largestElement;
+                        this_8.employeeMasterModuleList[ind].assignValue = this_8.checkboxNameToBeCheckedByDefault;
+                        var idx = this_8.ordersData.findIndex(function (o) { return o.name == _this.tempMergeSelectedArrayList[a].title; });
+                        this_8.ordersData[idx].disable = true;
                     }
                 }
             };
-            for (var a = 0; a < this_9.tempMergeSelectedArrayList.length; a++) {
-                _loop_10(a);
+            for (var a = 0; a < this_8.tempMergeSelectedArrayList.length; a++) {
+                _loop_9(a);
             }
         };
-        var this_9 = this;
+        var this_8 = this;
         for (var j = 0; j < this.employeeMasterModuleList.length; j++) {
-            _loop_9(j);
+            _loop_8(j);
         }
         var group = 0;
         var countOfClose = 0;
@@ -1774,27 +1922,27 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         }
         var tableName = __spreadArrays(new Set(this.selectedSummaryCheckBoxHtmlDataList.map(function (item) { return item.tableName; })));
         var tabName = __spreadArrays(new Set(this.selectedSummaryCheckBoxHtmlDataList.map(function (item) { return item.tab; })));
-        var _loop_11 = function (tab) {
-            var _loop_12 = function (k) {
+        var _loop_10 = function (tab) {
+            var _loop_11 = function (k) {
                 if (k == 0) {
                     // minNo = this.findMinNumberByTabNameWiseAndTableNameWise(tabName[tab],tableName[k]);
                     //  //ab = this.selectedSummaryCheckBoxHtmlDataList.some((o)=> Number(o.Sequence) == minNo));
                     //  console.log('ab',ab);
                     //   minNo = minNo -1;
                 }
-                var index = this_10.selectedSummaryCheckBoxHtmlDataList.some(function (o) { return o.tab == tabName[tab] && o.tableName == tableName[k]; });
+                var index = this_9.selectedSummaryCheckBoxHtmlDataList.some(function (o) { return o.tab == tabName[tab] && o.tableName == tableName[k]; });
                 console.log(index);
                 if (index == true) {
-                    this_10.checkTabWiseAndTableNameWiseObjectisExist(tabName[tab], tableName[k]);
+                    this_9.checkTabWiseAndTableNameWiseObjectisExist(tabName[tab], tableName[k]);
                 }
             };
             for (var k = 0; k < tableName.length; k++) {
-                _loop_12(k);
+                _loop_11(k);
             }
         };
-        var this_10 = this;
+        var this_9 = this;
         for (var tab = 0; tab < tabName.length; tab++) {
-            _loop_11(tab);
+            _loop_10(tab);
         }
         // let a: boolean;
         // for (let k = 0; k < tableName.length; k++) {
@@ -1834,35 +1982,35 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         var tableName = __spreadArrays(new Set(this.selectedSummaryCheckBoxHtmlDataList.map(function (item) { return item.tableName; })));
         console.log(tableName);
         var a;
-        var _loop_13 = function (k) {
+        var _loop_12 = function (k) {
             var minNo = 0;
             var flag = false;
-            for (var b = 0; b < this_11.selectedSummaryCheckBoxHtmlDataList.length; b++) {
-                if (minNo > Number(this_11.selectedSummaryCheckBoxHtmlDataList[b].Sequence && this_11.selectedSummaryCheckBoxHtmlDataList[b].tableName == tableName[k])) {
-                    minNo = Number(this_11.selectedSummaryCheckBoxHtmlDataList[b].Sequence);
+            for (var b = 0; b < this_10.selectedSummaryCheckBoxHtmlDataList.length; b++) {
+                if (minNo > Number(this_10.selectedSummaryCheckBoxHtmlDataList[b].Sequence && this_10.selectedSummaryCheckBoxHtmlDataList[b].tableName == tableName[k])) {
+                    minNo = Number(this_10.selectedSummaryCheckBoxHtmlDataList[b].Sequence);
                 }
-                if (b == this_11.selectedSummaryCheckBoxHtmlDataList.length - 1) {
-                    for (var i = 0; i < this_11.selectedSummaryCheckBoxHtmlDataList.length; i++) {
+                if (b == this_10.selectedSummaryCheckBoxHtmlDataList.length - 1) {
+                    for (var i = 0; i < this_10.selectedSummaryCheckBoxHtmlDataList.length; i++) {
                         if (i == 0) {
                             // minNo-=1;
                         }
-                        if (this_11.selectedSummaryCheckBoxHtmlDataList[i].tableName == tableName[k]) {
+                        if (this_10.selectedSummaryCheckBoxHtmlDataList[i].tableName == tableName[k]) {
                             minNo += 1;
-                            var ab = this_11.selectedSummaryCheckBoxHtmlDataList.some(function (o) { return Number(o.Sequence) == minNo && o.tableName == tableName[k]; });
-                            console.log('check this ..', ' ', minNo, '  ', ab, ' this.selectedSummaryCheckBoxHtmlDataList', this_11.selectedSummaryCheckBoxHtmlDataList[i].Sequence);
+                            var ab = this_10.selectedSummaryCheckBoxHtmlDataList.some(function (o) { return Number(o.Sequence) == minNo && o.tableName == tableName[k]; });
+                            console.log('check this ..', ' ', minNo, '  ', ab, ' this.selectedSummaryCheckBoxHtmlDataList', this_10.selectedSummaryCheckBoxHtmlDataList[i].Sequence);
                             // if some condition will be false it will return false; means Sequence does not found
                             if (ab == false) {
-                                this_11.errorInSequence = true;
-                                this_11.alertService.sweetalertError('You have added wrong sequence at table ' + tableName[k] + 'Sequence is ' + 'wrong ' + this_11.selectedSummaryCheckBoxHtmlDataList[i].Sequence + 'tabName is ' + this_11.selectedSummaryCheckBoxHtmlDataList[i].tab + 'minNo ' + minNo);
+                                this_10.errorInSequence = true;
+                                this_10.alertService.sweetalertError('You have added wrong sequence at table ' + tableName[k] + 'Sequence is ' + 'wrong ' + this_10.selectedSummaryCheckBoxHtmlDataList[i].Sequence + 'tabName is ' + this_10.selectedSummaryCheckBoxHtmlDataList[i].tab + 'minNo ' + minNo);
                             }
                         }
                     }
                 }
             }
         };
-        var this_11 = this;
+        var this_10 = this;
         for (var k = 0; k < tableName.length; k++) {
-            _loop_13(k);
+            _loop_12(k);
         }
         console.log(this.selectedSummaryCheckBoxHtmlDataList);
         return this.errorInSequence;
@@ -1929,7 +2077,7 @@ var UploadexcelhomeComponent = /** @class */ (function () {
         }, function (error) {
             console.log(error);
         }, function () {
-            var _loop_14 = function (i) {
+            var _loop_13 = function (i) {
                 //if(i ==0){
                 // don't do anything
                 // } else {
@@ -1954,7 +2102,7 @@ var UploadexcelhomeComponent = /** @class */ (function () {
             };
             var nameArr;
             for (var i = 0; i < _this.sheetDataArray.length; i++) {
-                _loop_14(i);
+                _loop_13(i);
             }
             // assign below templatemasterid
             console.log('sheetDataArray', _this.sheetDataArray);

@@ -11,7 +11,7 @@ import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
 })
 export class SukanyaSamriddhiSummaryComponent implements OnInit {
   @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() accountNo = new EventEmitter<any>();
 
@@ -41,15 +41,15 @@ export class SukanyaSamriddhiSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
-  redirectToDeclarationActual(institution: string, policyNo: string, mode: string) {
+  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
     this.tabIndex = 2;
     const data = {
       institution : institution,
-      policyNo : policyNo,
+      accountNumber : accountNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)};
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
     this.myEvent.emit(data);
   }
 

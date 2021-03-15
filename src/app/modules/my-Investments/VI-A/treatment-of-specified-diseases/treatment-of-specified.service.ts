@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class TreatmentOfSpecifiedService {
 
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 

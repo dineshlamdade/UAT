@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '../../shared modals/confirmation-modal/confirmation-modal.component';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-import { PersonalInformationService } from './../personal-information/personal-information.service';
+import { PersonalInformationService } from './../../employee-master-services/personal-information/personal-information.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
@@ -27,7 +27,7 @@ export class ReJoineeModel {
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss'],
   encapsulation: ViewEncapsulation.None
-
+  
 })
 export class LandingPageComponent implements OnInit {
   rejoinee: boolean;
@@ -51,8 +51,10 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
 
     this.PersonalInformationService.getEmployeeList().subscribe(res => {
-
+      
       this.employeeList = res.data.results[0];
+      console.log( this.employeeList );
+      
     })
   }
 
@@ -127,8 +129,10 @@ export class LandingPageComponent implements OnInit {
   }
 
   getSelectedEmployees(employee){
-
+    
     this.employee = employee
     this.employeeSelection(employee.employeeMasterId);
+    console.log(this.selectedEmployees);
+    
   }
 }

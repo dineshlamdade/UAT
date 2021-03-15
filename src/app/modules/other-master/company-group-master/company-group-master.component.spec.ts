@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompanyGroupMasterComponent } from './company-group-master.component';
 
@@ -6,7 +6,7 @@ describe('CompanyGroupMasterComponent', () => {
   let component: CompanyGroupMasterComponent;
   let fixture: ComponentFixture<CompanyGroupMasterComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CompanyGroupMasterComponent ]
     })

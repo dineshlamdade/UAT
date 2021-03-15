@@ -6,9 +6,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { guardianDetailRequestDTO, familyAddressDetailRequestDTO, familyMemberInfoRequestDTO, FamilyInformation } from './../family-information.model';
-import { ContactInformationService } from './../../contact-information/contact-information.service';
-import { FamilyInformationService } from './../family-information.service';
+import { guardianDetailRequestDTO, familyAddressDetailRequestDTO, familyMemberInfoRequestDTO, FamilyInformation } from './../../../dto-models/family-information.model';
+import { ContactInformationService } from './../../../employee-master-services/contact-information/contact-information.service';
+import { FamilyInformationService } from './../../../employee-master-services/family-information.service';
 import { ConfirmationModalComponent } from './../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
@@ -190,8 +190,8 @@ export class FamilyDetailsComponent implements OnInit {
       reader.onload = () => {
         this.imageUrl = reader.result;
 
-        // this.selectedImageFile = this.imageUrl;
-        // this.BasicInfoForm.get("image").patchValue({file: this.selectedImageFile});
+        // this.selectedImageFile = this.imageUrl; 
+        // this.BasicInfoForm.get("image").patchValue({file: this.selectedImageFile}); 
         // this.BasicInfoForm.patchValue({
         //   file: reader.result
         // });
@@ -584,6 +584,7 @@ export class FamilyDetailsComponent implements OnInit {
     this.FamilyInformationService.getFamilyDetailsInfo(familyMemberInfoId).subscribe(res => {
 
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
+      console.log(this.FamilyDetailsInfoList);
     })
   }
 
@@ -591,12 +592,12 @@ export class FamilyDetailsComponent implements OnInit {
 
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
-
+      debugger
       let num: string
       if (copyAddress.value == 'Employee Local Address') {
         if (element.local) {
           return this.familyAddressDetailRequestDTO = element.local,
-            this.familyAddressDetailRequestDTO.pinCode = element.local.pinCode,
+            this.familyAddressDetailRequestDTO.pinCode = element.local.postalCode,
             this.addressPhoneNo = element.local.phoneNumber.slice(element.local.phoneNumber.length - 10),
             num = element.local.phoneNumber,
             this.addressCountryCode = num.slice(0, num.length - 10);
@@ -605,7 +606,7 @@ export class FamilyDetailsComponent implements OnInit {
       if (copyAddress.value == 'Employee Permanent Address') {
         if (element.permanent) {
           return this.familyAddressDetailRequestDTO = element.permanent,
-            this.familyAddressDetailRequestDTO.pinCode = element.permanent.pinCode,
+            this.familyAddressDetailRequestDTO.pinCode = element.permanent.postalCode,
             this.addressPhoneNo = element.permanent.phoneNumber.slice(element.permanent.phoneNumber.length - 10),
             num = element.permanent.phoneNumber,
             this.addressCountryCode = num.slice(0, num.length - 10);
@@ -1055,7 +1056,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   validGuardianMobNo() {
-
+    debugger
     if (this.guardianCountryCode && !this.guardianPhoneNo) {
       this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
       this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();

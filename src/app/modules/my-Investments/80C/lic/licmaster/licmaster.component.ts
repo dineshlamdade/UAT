@@ -238,7 +238,7 @@ export class LicmasterComponent implements OnInit {
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
 
-    if (this.policyNumber !== undefined || this.policyNumber !== null) {
+    if (this.policyNumber != undefined || this.policyNumber != null) {
       const input = this.policyNumber;
       // console.log("edit", input)
       // this.editMaster(input);
@@ -361,8 +361,10 @@ export class LicmasterComponent implements OnInit {
     console.log("urlArray.length",this.urlArray.length)
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
-        'LIC Document needed to Create Master.'
+        'LIC Document needed to Create Master.',
+
       );
+      console.log("urlArray.length",this.urlArray.length)
       return;
     } else {
       const from = this.datePipe.transform(
@@ -510,10 +512,6 @@ export class LicmasterComponent implements OnInit {
       this.Index = obj.policyNo;
       this.showUpdateButton = true;
       this.isClear = true;
-
-      // this.masterfilesArray = this.masterGridData[institude.policyNo].documentInformationList;
-      // this.masterfilesArray = institude.masterGridData[institude.policyNo].documentInformationList
-      // this.masterfilesArray = obj.documentInformationList;
       this.urlArray = obj.documentInformationList;
       this.proofSubmissionId = obj.proofSubmissionId;
 
@@ -526,8 +524,7 @@ export class LicmasterComponent implements OnInit {
     return masterGridData.find(x => x.policyNo === policyNo)
   }
 
-      // this.masterfilesArray = this.masterGridData[institude.policyNo].documentInformationList;
-      // this.masterfilesArray = institude.masterGridData[institude.policyNo].documentInformationList
+
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.form.reset();
@@ -562,6 +559,7 @@ export class LicmasterComponent implements OnInit {
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
+    this.urlArray = [];
     this.isCancel = false;
   }
 

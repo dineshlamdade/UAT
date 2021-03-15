@@ -549,7 +549,6 @@
       </div>
     </div>
   </div>
-
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -892,7 +891,6 @@
                     <i
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
-                      (click) = "downloadFiles(documentSummary.documentDetailList)"
                     ></i>
                     <!-- <div *ngFor="let doc of urlArray" hidden>
                       <iframe
@@ -1555,11 +1553,11 @@
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
       </div>
-      <div class="col-md-10 ">
+      <div class="col-md-10">
         <iframe class="imagecover"
-          id="iframeid"
-          [src]="urlSafe"
 
+          [src]="urlSafe"
+          provider="google"
         ></iframe>
       </div>
       <div class="col-md-1">

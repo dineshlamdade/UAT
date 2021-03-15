@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 // import { CoreService } from './core.service';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
-import { BankInformationService } from './../../bank-information/bank-information.service';
+import { BankInformationService } from './../../../employee-master-services/bank-information.service';
 // import { NotificationsService } from '@src/app/core/services/notifications.service';
-import { FamilyInformationService } from './../family-information.service';
+import { FamilyInformationService } from './../../../employee-master-services/family-information.service';
 // import { NominationElement } from './periodic';
-import { NominationElementDTO, NominationInformation, TotalPercentageDTO } from './../family-information.model';
+import { NominationElementDTO, NominationInformation, TotalPercentageDTO } from './../../../dto-models/family-information.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
@@ -140,7 +140,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
     // this.NavigateToNominationSubscription = this.EventEmitterService.setInActiveNominationRecord().subscribe(res => {
-    //
+    //   
     //   res.isMemberActive == 'isMemberActive';
     //   this.dataSource.data.forEach(element => {
 
@@ -162,7 +162,7 @@ export class NominationDetailsComponent implements OnInit {
 
   getNomination() {
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
-
+      
       // if (!this.dataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
         if (element.status == 1) {
@@ -188,10 +188,10 @@ export class NominationDetailsComponent implements OnInit {
       })
       // }
       this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
-
+        
         this.AllNominationList = res.data.results[0].familyNominationResponseDTO;
         this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
-
+    
         this.FamilyMemberList.forEach((element1) => {
           this.AllNominationList.some(res => {
             if (element1.familyMemberInfoId == res.familyMemberInfoId) {
@@ -199,14 +199,14 @@ export class NominationDetailsComponent implements OnInit {
             }
           })
         })
-
+        
         this.nominationDataSource = res.data.results[0].familyNominationResponseDTO;
         this.lastUpdatedDate = new Date(Math.max.apply(null, this.AllNominationList.map(function (e) {
           return new Date(e.lastModifiedDateTime);
         })));
         this.lastUpdatedDate = this.datepipe.transform(this.lastUpdatedDate, "dd-MMM-yyyy");
         if(this.lastUpdatedDate == '01-Jan-1970'){
-          this.lastUpdatedDate = '';
+          this.lastUpdatedDate = ''; 
         }
         const newNomination = [];
         this.FamilyMemberList.filter(element => {
@@ -318,7 +318,7 @@ export class NominationDetailsComponent implements OnInit {
       }
       // if (!this.ESICDataSource) {
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
-
+        
         if (element.status == 1) {
           const obj1 = {
             'familyMemberInfoId': element.familyMemberInfoId,
@@ -341,7 +341,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
         this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
-
+          
           this.AllESICList = res.data.results[0];
           this.getStates();
 
@@ -410,7 +410,7 @@ export class NominationDetailsComponent implements OnInit {
 
 
   filterCity(state, ESIC) {
-
+    
     let cities = [];
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {
@@ -561,7 +561,7 @@ export class NominationDetailsComponent implements OnInit {
     return 100 - this.getTotalpersonalAccidentInsurance();
   }
   saveNominationsDetails(nominationDataSource, esicDataSource) {
-
+    debugger
     // nominationDataSource.forEach(element => {
     //   this.PFcount = this.PFcount + element.pfPercentage;
     // });
@@ -689,6 +689,7 @@ export class NominationDetailsComponent implements OnInit {
 
     this.FamilyInformationService.getESICGridInfo(this.employeeMasterId).subscribe((res: any) => {
 
+      console.log(res.data.results[0]);
       // const TABLE_DATA1: ESICElement[] = res.data.results[0];
       // this.ESICDataSource = new MatTableDataSource(TABLE_DATA1);
       this.esicDataSource = res.data.results[0];
@@ -698,6 +699,8 @@ export class NominationDetailsComponent implements OnInit {
   getAllNominations() {
 
     this.FamilyInformationService.getAllNominations(this.employeeMasterId).subscribe((res: any) => {
+
+      console.log(res.data.results[0].totalPercentageResponseDTO);
 
       this.TotalPercentageDTO = res.data.results[0].totalPercentageResponseDTO;
       // const TABLE_DATA: NominationElement[] = res.data.results[0].familyNominationResponseDTO;
@@ -753,7 +756,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   esicPercentageValidation(esicPercentage) {
-
+    
     if (esicPercentage == 0) {
       return
     }

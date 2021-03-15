@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubComplianceTypeInformationComponent } from './sub-compliance-type-information.component';
 
@@ -6,7 +6,7 @@ describe('SubComplianceTypeInformationComponent', () => {
   let component: SubComplianceTypeInformationComponent;
   let fixture: ComponentFixture<SubComplianceTypeInformationComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SubComplianceTypeInformationComponent ]
     })

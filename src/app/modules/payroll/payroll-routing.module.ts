@@ -1,39 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../auth/auth.guard';
-import { FinancialMasterComponent } from './financial-master/financial-master.component';
-import { PayrollInputsComponent } from './payroll-Inputs/payroll-Inputs.component';
+import { Routes, RouterModule } from '@angular/router';
 import { PayrollComponent } from './payroll.component';
-import { PayrollAreaMasterComponent } from './payrollAreaMaster/payrollAreaMaster.component';
+
 
 const routes: Routes = [
 
   {
     path: 'payroll',
-    children: [
-      {
-        component:  PayrollAreaMasterComponent,
-        data: { title: ':: DelziaHR :: Area Master' },
-        path:   'area-master',
-        },
-        {
-          component:  PayrollInputsComponent,
-          data: { title: ':: DelziaHR :: Area Master' },
-          path:   'payroll-inputs',
-          },
-        {
-          component:  FinancialMasterComponent,
-          data: { title: ':: DelziaHR :: Area Master' },
-          path:   'financial-master',
-          },
-      ],
-      canActivate: [AuthGuard],
+    component: PayrollComponent,
+    data: { title: ':: Delizia-HR :: Payroll' },
   },
 
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class PayrollRoutingModule { }

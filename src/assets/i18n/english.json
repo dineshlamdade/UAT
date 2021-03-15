@@ -102,7 +102,7 @@
     "personal": "Personal",
     "officialMobileNumber": "Mobile Number",
     "officialemail": "Email Address",
-    "personalmobileNumber": "Mobile Number1",
+    "personalmobileNumber": "Mobile Number",
     "personalEmail": "Email Address",
     "emergencyContactName": "Name",
     "emergencyContactNumber": "Mobile Number",
@@ -242,7 +242,7 @@
     "accountNoMatchError": "Account Number Must Match",
     "accountNoMatchSuccessMsg": "Account Number Matched"
   },
-
+ 
   "EducationSkillsInfoForm": {
     "EducationSkillsTitle": "Education & Skills Information",
     "educationInformation": "Education Information",
@@ -550,7 +550,7 @@
 
     "countrydeputed":"Country To Be Deputed",
     "businessActivity":"Business Activity",
-
+   
     "salaryProcessing":"Salary Processing",
     "leaveProcessing":"Leave Processing",
     "deputedTo":"Deputed To",
@@ -566,7 +566,7 @@
 
     "months": "Months",
     "days": "Days",
-
+ 
 
     "providentFundDetails": "Provident Fund (PF) Details",
     "employerCode": "Employer Code",
@@ -581,7 +581,7 @@
     "GratuityDetails": "Gratuity Details",
     "SuperAnnuation": "Super Annuation Details",
     "TaxDeductionAtSource": "Tax Deduction At Source (TDS)"
-
+    
   },
 
   "EmployoymentSummary": {

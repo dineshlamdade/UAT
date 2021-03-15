@@ -27,6 +27,7 @@ export class LicsummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  public tempFlag: boolean;
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -98,8 +99,11 @@ export class LicsummaryComponent implements OnInit {
             this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
 
-          this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+            // if(this.tempFlag === false) {
+            //   this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+            // }
         });
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
       }
 
   // On Change Future New Policy Declared Amount with formate
@@ -108,17 +112,31 @@ export class LicsummaryComponent implements OnInit {
       console.log(this.addFuturePolicy)
     }
 
-    keyPressedSpaceNotAllow(event: any) {
-      // ('[^a-zA-Z0-9]+', '', _)
-        // const pattern =  /[(^a-zA-Z0-9]+-*&)]/;
-        // const pattern =  '[^a-zA-Z0-9]+-*&';
-      const pattern =  /[ ]/;
-      let inputChar = String.fromCharCode(event.charCode);
-      if (pattern.test(inputChar)) {
-        event.preventDefault();
-      }
-    }
+    // keyPressedSpaceNotAllow(event: any) {
+    //   // ('[^a-zA-Z0-9]+', '', _)
+    //     // const pattern =  /[(^a-zA-Z0-9]+-*&)]/;
+    //     // const pattern =  '[^a-zA-Z0-9]+-*&';
+    //   const pattern =  /[ ]/;
+    //   let inputChar = String.fromCharCode(event.charCode);
+    //   if (pattern.test(inputChar)) {
+    //     event.preventDefault();
+    //   }
+    // }
 
+  //   keyPressedSpaceNotAllow(event: any) {
+  //     console.log("HI ");
+  //     const pattern = /[0-9\+\-\ ]/;
+  //     let inputChar = String.fromCharCode(event.key);
+
+  //     if (!pattern.test(inputChar)) {
+  //       this.futureNewPolicyDeclaredAmount = 0;
+  //       this.tempFlag = true;
+  //       // invalid character, prevent input
+  //       event.preventDefault();
+  //     } else {
+  //       this.tempFlag = false;
+  //     }
+  // }
 
 
   }

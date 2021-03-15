@@ -61,9 +61,6 @@
                                                                 *ngIf="ContactInfoForm.get('officialMobileNumber').status == 'INVALID'">
                                                                 Mobile Number must be 10 digit & Should not start with 0
                                                             </div>
-                                                            <mat-error class="mobile-number-error"
-                                                                *ngIf="ContactInfoForm.get('officialMobileNumber').status == 'INVALID'">
-                                                                Mobile Number must be 10 digit & Should not start with 0</mat-error>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 col-md-4"
@@ -210,9 +207,6 @@
                                                         *ngIf="ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'">
                                                         Mobile Number must be 10 digit & Should not start with 0
                                                     </div>
-                                                    <mat-error class="mobile-number-error"
-                                                    *ngIf="ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'">
-                                                    Mobile Number must be 10 digit & Should not start with 0</mat-error>
                                                 </div>
                                             </div>
                                         </div>
@@ -506,7 +500,7 @@
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input"
-                                                    name="communicationAddress" value="local"
+                                                    name="example-inline-radios" value="local"
                                                     (change)="selectionChallenged($event)"
                                                     formControlName="communicationAddress"
                                                     [(ngModel)]="communicationAddress">
@@ -515,7 +509,7 @@
                                             </label>
                                             <label class="custom-control custom-radio custom-control-inline">
                                                 <input type="radio" class="custom-control-input"
-                                                    name="communicationAddress" value="permanent"
+                                                    name="example-inline-radios" value="permanent"
                                                     (change)="selectionChallenged($event)"
                                                     formControlName="communicationAddress"
                                                     [(ngModel)]="communicationAddress">
@@ -576,11 +570,6 @@
                                                 tooltip="Save"><b><i class="fa fa-floppy-o"></i></b> {{
                                                 'ContactInformationForm.save' | transloco }}</button>
 
-                                            <button type="button" tooltip="Next"
-                                                [routerLink]="['/employee-master/bank-information']"
-                                                class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
-                                                        class="fa fa-chevron-circle-right"
-                                                        aria-hidden="true"></i></b>Next</button>
 
                                             <button type="button" tooltip="Reset" (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i

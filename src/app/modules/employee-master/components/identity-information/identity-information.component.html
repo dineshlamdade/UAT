@@ -315,12 +315,12 @@
 
                                             <i class="icon-plus add-icon" [class.disabled]="VisaInformation.countryName=='' || VisaInformation.visaType==''
                                             || !VisaInformation.validTill" [ngClass]="{'invalid-add-button':VisaInformation.countryName ==''
-                                            || VisaInformation.visaType=='' || VisaInformation.validTill=='','valid-add-button':VisaInformation.countryName
+                                            || VisaInformation.visaType=='' || VisaInformation.validTill=='','valid-add-button':VisaInformation.countryName 
                                             || VisaInformation.visaType || VisaInformation.validTill}"
                                                 (click)="pushToGrid()"></i>
                                             <!-- <mat-icon [ngClass]="{'disable':!VisaInformation.countryName || !VisaInformation.visaType
-                                            || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName
-                                            || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName
+                                            || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName 
+                                            || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName 
                                             || VisaInformation.visaType || VisaInformation.validTill}" (click)="pushToGrid()">
                                                     add_circle_outline</mat-icon> -->
                                         </div>

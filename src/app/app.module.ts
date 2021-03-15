@@ -1,4 +1,5 @@
 
+import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
 
@@ -11,6 +12,7 @@ import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
@@ -43,11 +45,12 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
   //accordion and accordion tab
+//accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
-
+import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-
+import { investmentOthersModule } from './modules/my-Investments/others/others.module';
 import { PayrollModule } from './modules/payroll/payroll.module';
 
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
@@ -57,12 +60,15 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 //////////////////////addaed by bharati////
 //import { payrollModule } from './modules/companysetting/payroll/payroll.module';
 
-import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 //import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
-import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
-import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
+
+import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
+
+
+
 
 ////////////////////////////////////
 
@@ -76,15 +82,19 @@ import { AccordionModule } from 'primeng/accordion';
   declarations: [
     AppComponent,
     ProfileComponent,
+    ShortenStringPipe,
+
     SettingsComponent,
+
     //////////////////////////
-   // payrollComponent,
+    // payrollComponent,
     // HeadcreationComponent,
     // AttributecreationComponent,
     // AttributeselectionComponent,
     // PayrollheadgroupcreationComponent,
-///////////////////////////////////////
+    ///////////////////////////////////////
   ],
+  exports: [],
   imports: [
     BrowserModule,
     AuthModule,
@@ -92,18 +102,20 @@ import { AccordionModule } from 'primeng/accordion';
     AccordionModule,
     DashboardModule,
     PayrollModule,
-/////////////////
-  //  payrollModule,
+    /////////////////
+    //  payrollModule,
     CompanySettingModule,
-////////////////////////////////
+    ////////////////////////////////
     MyInvestmentsModule,
-
+    investmentChapterVIAModule,
+    EightyCModule,
     ProfileModule,
     SettingsModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
     DragDropModule,
+    MatSliderModule,
     NgApexchartsModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
@@ -122,7 +134,7 @@ import { AccordionModule } from 'primeng/accordion';
     MyInvestmentsModule,
     PayrollModule,
 
-    //EmployeeMasterModule,
+    EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
@@ -131,7 +143,9 @@ import { AccordionModule } from 'primeng/accordion';
     EmployeemasterlistpageModule,
 
 
+
   ],
+
   providers: [BsDatepickerModule,
     BnNgIdleService,
     AuthGuard,
@@ -152,7 +166,9 @@ import { AccordionModule } from 'primeng/accordion';
       useClass: TokenInterceptorService,
       multi: true,
     },
+    ShortenStringPipe,
   ],
+
 
   bootstrap: [AppComponent]
 })

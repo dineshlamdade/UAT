@@ -9,22 +9,30 @@ exports.__esModule = true;
 exports.AppRoutingModule = void 0;
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+//////////////////
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+////////////////////
 var routes = [
     { path: 'auth', loadChildren: './modules/auth/auth.module#AuthModule' },
     { path: '', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
     { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
     { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
     { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
+    { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
+    { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
+    { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
     {
         path: 'investment',
         loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
     },
+    { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
+    { path: 'workflow', loadChildren: './modules/workflow/workflow.module#workflowModule' },
     {
         path: 'employee-master',
         loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
     },
-    { path: 'investment', loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule' },
     { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
+    { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
     { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
     { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 ];

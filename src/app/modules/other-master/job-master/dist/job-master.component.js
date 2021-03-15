@@ -26,6 +26,7 @@ var JobMasterComponent = /** @class */ (function () {
         this.masterGridDataList = [];
         this.editedRecordIndex = 0;
         this.summaryAllOtherMappingDetailsList = [];
+        this.uncheckSelectAll = false;
         this.checks = false;
         this.checksCompany = false;
         this.enableCheckAll = false;
@@ -39,22 +40,22 @@ var JobMasterComponent = /** @class */ (function () {
         this.groupCompanyDetailsList = [];
         this.jobMasterList = [
             { value: 'All', postUrl: '', putUrl: '', deleteUrl: '' },
-            { value: 'Business Area', postUrl: '/business-area-master/add-businessarea', putUrl: '/business-area-master/update', deleteUrl: '/business-area-master/', postMappingToCompany: '/business-area-master-mapping/map-all', deleteMapping: '/business-area-master-mapping/' },
-            { value: 'Cost Centre', postUrl: '/costcentre-master/add-costcentre', putUrl: '/costcentre-master/update', deleteUrl: '/costcentre-master/', postMappingToCompany: '/costcentre-mapping/map-all', deleteMapping: '/costcentre-mapping/' },
-            { value: 'Department', postUrl: '/department-master/add-department', putUrl: '/department-master/update', deleteUrl: '/department-master/', postMappingToCompany: '/department-master-mapping/map-all', deleteMapping: '/department-master-mapping/' },
-            { value: 'Division', postUrl: '/division-master/add-division', putUrl: '/division-master/update', deleteUrl: '/division-master/', postMappingToCompany: '/division-master-mapping/map-all', deleteMapping: '/division-master-mapping/' },
-            { value: 'Sub Cost Centre', postUrl: '/subcostcentre-master/add-costcentre', putUrl: '/subcostcentre-master/update', deleteUrl: '/subcostcentre-master/', postMappingToCompany: '/subcostcentre-master-mapping/map-all', deleteMapping: '/subcostcentre-master-mapping/' },
-            { value: 'Sub Department', postUrl: '/subdepartment-master/add-department', putUrl: '/subdepartment-master/update', deleteUrl: '/subdepartment-master/', postMappingToCompany: '/subdepartment-master-mapping/map-all', deleteMapping: '/subdepartment-master-mapping/' },
-            { value: 'Sub Location', postUrl: '/sublocation-master/add-location', putUrl: '/sublocation-master/update', deleteUrl: '/sublocation-master/', postMappingToCompany: '/sublocation-master-mapping/map-all', deleteMapping: '/sublocation-master-mapping/' },
-            { value: 'GL Code', postUrl: '/GLcode-master/add-Glcode', putUrl: '/GLcode-master/update', deleteUrl: '/GLcode-master/', postMappingToCompany: '/GLcodemaster-mapping/map-all', deleteMapping: '/GLcodemaster-mapping/' },
-            { value: 'Grade', postUrl: '/grade-master/add-grade', putUrl: '/grade-master/update', deleteUrl: '/grade-master/', postMappingToCompany: '/grade-master-mapping/map-all', deleteMapping: '/grade-master-mapping/' },
-            { value: 'Plant', postUrl: '/plant-master/add-plant', putUrl: '/plant-master/update', deleteUrl: '/plant-master/', postMappingToCompany: '/plantmaster-mapping/map-all', deleteMapping: '/plantmaster-mapping/' },
-            { value: 'Profit Centre', postUrl: '/profitcentre-master/add-profit', putUrl: '/profitcentre-master/update', deleteUrl: '/profitcentre-master/', postMappingToCompany: '/profitcentre-mapping/map-all', deleteMapping: '/profitcentre-mapping/' },
-            { value: 'Project', postUrl: '/project-master/add-project', putUrl: '/project-master/update', deleteUrl: '/project-master/', postMappingToCompany: '/projectmaster-mapping/map-all', deleteMapping: '/projectmaster-mapping/' },
-            { value: 'Region', postUrl: '/region-master/add-region', putUrl: '/region-master/update', deleteUrl: '/region-master/', postMappingToCompany: '/regionmaster-mapping/map-all', deleteMapping: '/regionmaster-mapping/' },
-            { value: 'Sub Area', postUrl: '/subarea-master/add-area', putUrl: 'subarea-master/update', deleteUrl: '/subarea-master/', postMappingToCompany: '/subarea-master-mapping/map-all', deleteMapping: '/subarea-master-mapping/' },
-            { value: 'Strategic Business Unit', postUrl: '/strategicbusinessunit-master/add-unit', putUrl: '/strategicbusinessunit-master/update', deleteUrl: '/strategicbusinessunit-master/', postMappingToCompany: '/strategic-businessunit-mapping/map-all', deleteMapping: '/strategic-businessunit-mapping/' },
-            { value: 'Work Location', postUrl: '/worklocation-master/add-location', putUrl: '/worklocation-master/update', deleteUrl: '/worklocation-master/', postMappingToCompany: '/worklocationmaster-mapping/map-all', deleteMapping: '/worklocationmaster-mapping/' },
+            { value: 'Business Area', postUrl: 'business-area-master/add-businessarea', putUrl: 'business-area-master/update', deleteUrl: 'business-area-master/', postMappingToCompany: 'business-area-master-mapping/map-all', deleteMapping: 'business-area-master-mapping/' },
+            { value: 'Sub Area', postUrl: 'subarea-master/add-area', putUrl: 'subarea-master/update', deleteUrl: 'subarea-master/', postMappingToCompany: 'subarea-master-mapping/map-all', deleteMapping: 'subarea-master-mapping/' },
+            { value: 'Strategic Business Unit', postUrl: 'strategicbusinessunit-master/add-unit', putUrl: 'strategicbusinessunit-master/update', deleteUrl: 'strategicbusinessunit-master/', postMappingToCompany: 'strategic-businessunit-mapping/map-all', deleteMapping: 'strategic-businessunit-mapping/' },
+            { value: 'Division', postUrl: 'division-master/add-division', putUrl: 'division-master/update', deleteUrl: 'division-master/', postMappingToCompany: 'division-master-mapping/map-all', deleteMapping: 'division-master-mapping/' },
+            { value: 'Profit Centre', postUrl: 'profitcentre-master/add-profit', putUrl: 'profitcentre-master/update', deleteUrl: 'profitcentre-master/', postMappingToCompany: 'profitcentre-mapping/map-all', deleteMapping: 'profitcentre-mapping/' },
+            { value: 'Sub Location', postUrl: 'sublocation-master/add-location', putUrl: 'sublocation-master/update', deleteUrl: 'sublocation-master/', postMappingToCompany: 'sublocation-master-mapping/map-all', deleteMapping: 'sublocation-master-mapping/' },
+            { value: 'Work Location', postUrl: 'worklocation-master/add-location', putUrl: 'worklocation-master/update', deleteUrl: 'worklocation-master/', postMappingToCompany: 'worklocationmaster-mapping/map-all', deleteMapping: 'worklocationmaster-mapping/' },
+            { value: 'Cost Centre', postUrl: 'costcentre-master/add-costcentre', putUrl: 'costcentre-master/update', deleteUrl: 'costcentre-master/', postMappingToCompany: 'costcentre-mapping/map-all', deleteMapping: 'costcentre-mapping/' },
+            { value: 'Sub Cost Centre', postUrl: 'subcostcentre-master/add-costcentre', putUrl: 'subcostcentre-master/update', deleteUrl: 'subcostcentre-master/', postMappingToCompany: 'subcostcentre-master-mapping/map-all', deleteMapping: 'subcostcentre-master-mapping/' },
+            { value: 'Department', postUrl: 'department-master/add-department', putUrl: 'department-master/update', deleteUrl: 'department-master/', postMappingToCompany: 'department-master-mapping/map-all', deleteMapping: 'department-master-mapping/' },
+            { value: 'Sub Department', postUrl: 'subdepartment-master/add-department', putUrl: 'subdepartment-master/update', deleteUrl: 'subdepartment-master/', postMappingToCompany: 'subdepartment-master-mapping/map-all', deleteMapping: 'subdepartment-master-mapping/' },
+            { value: 'Grade', postUrl: 'grade-master/add-grade', putUrl: 'grade-master/update', deleteUrl: 'grade-master/', postMappingToCompany: 'grade-master-mapping/map-all', deleteMapping: 'grade-master-mapping/' },
+            { value: 'Project', postUrl: 'project-master/add-project', putUrl: 'project-master/update', deleteUrl: 'project-master/', postMappingToCompany: 'projectmaster-mapping/map-all', deleteMapping: 'projectmaster-mapping/' },
+            { value: 'Plant', postUrl: 'plant-master/add-plant', putUrl: 'plant-master/update', deleteUrl: 'plant-master/', postMappingToCompany: 'plantmaster-mapping/map-all', deleteMapping: 'plantmaster-mapping/' },
+            { value: 'Region', postUrl: 'region-master/add-region', putUrl: 'region-master/update', deleteUrl: 'region-master/', postMappingToCompany: 'regionmaster-mapping/map-all', deleteMapping: 'regionmaster-mapping/' },
+            { value: 'GL Code', postUrl: 'GLcode-master/add-Glcode', putUrl: 'GLcode-master/update', deleteUrl: 'GLcode-master/', postMappingToCompany: 'GLcodemaster-mapping/map-all', deleteMapping: 'GLcodemaster-mapping/' },
         ];
         this.viewMode = false;
         this.form = this.formBuilder.group({
@@ -105,12 +106,10 @@ var JobMasterComponent = /** @class */ (function () {
         this.masterGridDataList = [];
         this.jobMasterService.getAllOtherMasterDetails().subscribe(function (res) {
             _this.masterGridDataList = res.data.results;
-            console.log('getAllOtherMasterDetails', res);
+            console.log('getAllOtherMasterDetails xx', res);
             var i = 1;
-            var j = 0;
             res.data.results.forEach(function (element) {
                 var obj = {
-                    id: j++,
                     SrNo: i++,
                     masterId: element.masterId,
                     masterCode: element.masterCode,
@@ -126,27 +125,29 @@ var JobMasterComponent = /** @class */ (function () {
             });
         });
     };
-    JobMasterComponent.prototype.saveBusinessAreaMasterMapping = function () {
-        var _this = this;
-        var saveData = ({
-            masterCode: 'SampleCode',
-            masterDescription: 'Description',
-            createdBy: 'AnantT'
-        });
-        this.jobMasterService.post(saveData, 'business-area-master-mapping/map-all').subscribe(function (res) {
-            console.log('business-area-master-mapping/map-all', res);
-            if (res.data.results.length !== 0) {
-                _this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
-            }
-            else {
-                _this.alertService.sweetalertWarning(res.status.messsage);
-            }
-        }, function (error) {
-            _this.alertService.sweetalertError(error['error']['status']['messsage']);
-        });
-    };
+    // saveBusinessAreaMasterMapping() {
+    //   const saveData = ({
+    //     masterCode: 'SampleCode',
+    //     masterDescription: 'Description',
+    //     createdBy: 'AnantT',
+    //   });
+    //   this.jobMasterService.post(saveData, 'business-area-master-mapping/map-all').subscribe((res) => {
+    //     console.log('business-area-master-mapping/map-all', res);
+    //     if (res.data.results.length !== 0) {
+    //       this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
+    //     } else {
+    //       this.alertService.sweetalertWarning(res.status.messsage);
+    //     }
+    //   }, (error: any) => {
+    //     this.alertService.sweetalertError(error['error']['status']['messsage']);
+    //   });
+    // }
     JobMasterComponent.prototype.saveMaster = function () {
+        //  let lastIndex = this.tableDataList.findIndex(o=>o.masterType =='Business Area')
         var _this = this;
+        var len = this.tableDataList.filter(function (item) {
+            return item.masterType == 'Business Area';
+        }).length;
         this.checks = false;
         this.enableCheckAll = false;
         this.selectedCheckBox = [];
@@ -174,17 +175,31 @@ var JobMasterComponent = /** @class */ (function () {
                 console.log(res);
                 if (res.data.results.length !== 0) {
                     _this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
-                    _this.form.reset();
+                    //this.form.reset();
+                    // this.form.get('masterCode').setValue = '';
+                    // this.form.get('masterDescription').setValue = '';
+                    _this.form.get('masterCode').setValue(null);
+                    _this.form.get('masterDescription').setValue(null);
                     _this.form.get('isActive').setValue(true);
                     _this.isEditMode = false;
                     _this.refreshHtmlTable();
                     _this.getAllOtheMappingDetails();
+                    _this.onSelectJobMaster('All');
+                    _this.tableDataList = _this.tableDataList.filter(function (o) { return o.masterType === 'All'; });
+                    _this.onSelectJobMaster('Plant');
+                    _this.form.patchValue({
+                        masterType: 'Plant',
+                        masterCode: '',
+                        masterDescription: ''
+                    });
+                    _this.tableDataList = _this.tableDataList.filter(function (o) { return o.masterType === 'Plant'; });
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
                 _this.alertService.sweetalertError(error['error']['status']['messsage']);
+            }, function () {
             });
         }
         else {
@@ -198,16 +213,45 @@ var JobMasterComponent = /** @class */ (function () {
                 console.log(res);
                 if (res.data.results.length !== 0) {
                     _this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
-                    _this.form.reset();
+                    //this.form.reset();
+                    _this.form.get('masterCode').setValue(null);
+                    _this.form.get('masterDescription').setValue(null);
                     _this.form.get('isActive').setValue(true);
-                    _this.refreshHtmlTable();
-                    _this.getAllOtheMappingDetails();
+                    var obj = {
+                        masterType: 'Business Area',
+                        masterId: res.data.results[0].masterId,
+                        masterDescription: res.data.results[0].masterDescription,
+                        masterCode: res.data.results[0].masterCode,
+                        isActive: res.data.results[0].isActive,
+                        SrNo: len + 1
+                    };
+                    //  this.refreshHtmlTable();
+                    // this.getAllOtheMappingDetails();
+                    // this.onSelectJobMaster('All');
+                    // this.onSelectJobMaster(this.form.get('masterType').value);
+                    // this.form.patchValue({
+                    //   masterType: this.form.get('masterType').value,
+                    //   masterCode: '',
+                    //   masterDescription: '',
+                    // })
+                    //this.onSelectJobMaster('Plant');
+                    // this.form.patchValue({
+                    //   masterType: 'Plant',
+                    //   masterCode: '',
+                    //   masterDescription: '',
+                    // });
+                    // this.tableDataList = this.tableDataList.filter((o) => o.masterType === 'Plant');
+                    //this.summaryHtmlDataList.push(obj);
+                    // this.allhtmlTableDataList.push(obj);
+                    _this.tableDataList.push(obj);
+                    //this.tableDataList1.push(obj);
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
                 _this.alertService.sweetalertError(error['error']['status']['messsage']);
+            }, function () {
             });
         }
     };
@@ -250,6 +294,7 @@ var JobMasterComponent = /** @class */ (function () {
         this.form.patchValue(this.masterGridDataList[findIndex]);
     };
     JobMasterComponent.prototype.onSelectJobMaster = function (evt) {
+        this.selectedMasterTypeDropDownValue = this.form.get('masterType').value;
         this.enableCheckAll = false;
         this.selectedCheckBox = [];
         this.tableDataList = this.summaryHtmlDataList;
@@ -272,6 +317,12 @@ var JobMasterComponent = /** @class */ (function () {
         this.isEditMode = false;
         this.form.reset();
         this.form.get('isActive').setValue(true);
+        this.onSelectJobMaster('All');
+        this.form.patchValue({
+            masterType: 'All',
+            masterCode: '',
+            masterDescription: ''
+        });
     };
     JobMasterComponent.prototype.onCheckboxChange = function (evt, id) {
         // this.enableCheckAll = false;
@@ -384,8 +435,6 @@ var JobMasterComponent = /** @class */ (function () {
     JobMasterComponent.prototype.saveMapToCompany = function () {
         var _this = this;
         this.modalRef.hide();
-        console.log('saveMapToCompany');
-        // get job master selected data
         var Business_Area = [];
         var Cost_Centre = [];
         var Department = [];
@@ -759,6 +808,9 @@ var JobMasterComponent = /** @class */ (function () {
                 _this.alertService.sweetalertError(error['error']['status']['messsage']);
             });
         }
+        this.enableCheckAll = false;
+        this.uncheckSelectAll = false;
+        this.selectedCheckBox = [];
     };
     JobMasterComponent.prototype.isAllSelected = function (evt) {
         if (evt.target.value == false) {
@@ -798,8 +850,8 @@ var JobMasterComponent = /** @class */ (function () {
         this.summaryAllOtherMappingDetailsList = [];
         this.getAllOtherMappingDetailsResponse = {};
         this.jobMasterService.getAllOtheMappingDetails().subscribe(function (res) {
+            console.log('check mi');
             _this.getAllOtherMappingDetailsResponse = res.data.results;
-            console.log('getAllOtherMappingResponse', res);
             var i = 1;
             res.data.results.forEach(function (element) {
                 if (element.isActive == 1) {
@@ -831,6 +883,21 @@ var JobMasterComponent = /** @class */ (function () {
     };
     JobMasterComponent.prototype.onClickAssignmentSummary = function () {
         this.getAllOtheMappingDetails();
+    };
+    JobMasterComponent.prototype.ConfirmationDialog = function (confirmdialog, id, type, summaryType) {
+        this.id = id;
+        this.type = type;
+        this.summaryType = summaryType;
+        this.modalRef = this.modalService.show(confirmdialog, Object.assign({}, { "class": 'gray modal-md' }));
+    };
+    JobMasterComponent.prototype.clickedOnYes = function () {
+        console.log('yes');
+        if (this.summaryType == 'master-summary') {
+            this.DeleteMaster(this.id, this.type);
+        }
+        if (this.summaryType == 'assignment-summary') {
+            this.DeleteMasterMapping(this.id, this.type);
+        }
     };
     JobMasterComponent = __decorate([
         core_1.Component({

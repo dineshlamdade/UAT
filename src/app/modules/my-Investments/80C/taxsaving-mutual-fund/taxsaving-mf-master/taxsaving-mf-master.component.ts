@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -32,6 +33,7 @@ import { PostOfficeService } from '../../post-office/post-office.service';
   styleUrls: ['./taxsaving-mf-master.component.scss'],
 })
 export class TaxsavingMfMasterComponent implements OnInit {
+  @Input() public accountNo: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -107,6 +109,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -147,6 +150,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
       masterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -233,6 +237,15 @@ export class TaxsavingMfMasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo != undefined || this.accountNo != null) {
+      const input = this.accountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this. editMaster(input.accountNumber)
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -359,7 +372,9 @@ export class TaxsavingMfMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd',
       );
+      console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
+            data.proofSubmissionId = this.proofSubmissionId;
 
       data.fromDate = from;
       data.toDate = to;
@@ -466,21 +481,57 @@ export class TaxsavingMfMasterComponent implements OnInit {
     }
   }
 
-  // On Master Edit functionality
-  editMaster(i: number) {
-    // this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount,
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isClear = true;
+  //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
+  editMaster(accountNumber) {
+    //this.scrollToTop();
+    this.Service.getELSSMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(accountNumber)
+      const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.accountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
+
+      }
+    });
+
   }
+
+  findByPolicyNo(accountNumber,masterGridData){
+    return masterGridData.find(x => x.accountNumber === accountNumber)
+  }
+
+  // // On Master Edit functionality
+  // editMaster(i: number) {
+  //   // this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.numberFormat.transform(
+  //     this.masterGridData[i].premiumAmount,
+  //   );
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isClear = true;
+  // }
 
   // On Edit Cancel
   cancelEdit() {

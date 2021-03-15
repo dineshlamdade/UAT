@@ -179,10 +179,10 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
-                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="Select Birth Date" bsDatepicker
-                                                    [maxDate]="today" formControlName="birthDate" placement="center"
+                                                    [maxDate]="today" formControlName="birthDate"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     (click)="birthDateClickEvent($event);"
                                                     (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth,confirmation);"
@@ -279,7 +279,7 @@
                                     <div class="col-sm-6 col-md-3 mt-20" *ngIf="Physically == 'Yes'">
                                         <label class="form-label">{{ 'PersonalInformationForm.securityLevel' | transloco
                                             }}</label>
-                                        <input type="number"  class="form-control" placeholder="Enter Severity Level"
+                                        <input type="number" class="form-control" placeholder="Enter Severity Level"
                                             formControlName="severityLevel" maxlength="3" max="100"
                                             (keyup)="formTouch()"
                                             (change)="validateSaverityLevel(personalInformationModel.severityLevel)"
@@ -424,18 +424,18 @@
                                 </div>
                                 <!-- <br>
                                 <div class="row">
-
-
+                                   
+                                   
                                 </div>
 
                                 <br>
                                 <div class="row">
-
+                                  
                                 </div>
 
                                 <br>
                                 <div class="row">
-
+                              
                                 </div> -->
                             </form>
                             <!-- </div> -->

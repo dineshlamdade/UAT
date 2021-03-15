@@ -2,9 +2,9 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest } from './../educatio-skills.model';
+import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest } from '../../../dto-models/educatio-skills.model';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from './../education-skills-information.service';
+import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -471,9 +471,4 @@ export class EducationDetailComponent implements OnInit {
 
     this.employeeEducationRequestModel.durationOfCourse = '';
   }
-
-  // clearDuration() {
-
-  //   this.employeeEducationRequestModel.durationOfCourse = '';
-  // }
 }
