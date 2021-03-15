@@ -329,8 +329,9 @@
                     type="text"
                     [ngModel]="summary.amountApproved | number: '1.2-2'"
                     class="form-control align-right"
-                    disabled
+                    disabled tooltip="{{summary.amountApproved | number: '1.2-2'}}"
                   />
+
                 </td>
                 <td>
                   <span tooltip="{{ summary.remark }}">
@@ -606,12 +607,9 @@
                     </td>
                     <td>
                       <span>
-                        <input
-                          type="text"
-                          class="form-control align-right"
-                          (change)="changeReceiptAmountFormat()"
-                          [(ngModel)]="receiptAmount"
-                        />
+                          <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+
                       </span>
                     </td>
                     <td>
@@ -818,9 +816,7 @@
                     </span>
                   </td>
                   <td>
-                    <span tooltip="{{documentSummary.licMasterList[0].institution}}">
                     {{ documentSummary.licMasterList[0].institution }}
-                  </span>
                   </td>
                   <td>
                     <span
@@ -876,9 +872,8 @@
                     <div class="custom_Label_badge">
                       <button
                         class="btn bg-color-lightgray text-000"
-                        (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        "
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
                       >
                         Documents
                       </button>
@@ -897,13 +892,13 @@
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
                     ></i>
-                    <div *ngFor="let doc of urlArray" hidden>
+                    <!-- <div *ngFor="let doc of urlArray" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
                         [src]="doc.blobURI"
                         provider="google"
-                      ></iframe>
-                    </div>
+                      ></iframe>n
+                    </div> -->
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
@@ -998,7 +993,7 @@
     <div *ngFor="let item of editTransactionUpload; let j = index">
       <div class="row mt-25 d-flex">
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Institution & Policy No:</label>
+          <label class="form-label mt-1">Institution & Policy No.</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1009,7 +1004,7 @@
           >
         </div>
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1 pl-10">Policy Holder Name:</label>
+          <label class="form-label mt-1 pl-10">Policy Holder Name</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1020,7 +1015,7 @@
           >
         </div>
         <div class="ml-2 pl-1 pr-0">
-          <label class="form-label mt-1">Frequency:</label>
+          <label class="form-label mt-1">Frequency</label>
         </div>
         <div class="ml-2 pl-1 pr-0">
           <label
@@ -1511,7 +1506,7 @@
     <button
       type="button"
       tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3)"
+      (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
@@ -1528,6 +1523,8 @@
     </button>
   </div>
 </ng-template>
+
+<!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
@@ -1557,8 +1554,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe
-          style="height: 100vh; width: 100%; display: block"
+        <iframe class="imagecover"
+
           [src]="urlSafe"
           provider="google"
         ></iframe>

@@ -7,7 +7,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
-
 @Component({
   selector: 'app-lic',
   templateUrl: './lic.component.html',
@@ -39,8 +38,12 @@ export class LicComponent implements OnInit {
 
   changeTabIndex(index: number)
   {
+    console.log(this.policyNumber)
     if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.policyNumber = undefined;
     }
     this.tabIndex = index;
   }

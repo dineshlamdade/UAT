@@ -50,7 +50,7 @@ export class BankDetailsComponent implements OnInit {
   BankDataSource: MatTableDataSource<any>;
   BankAccountDataSource: Array<any> = [];
   filteredStates: Array<any> = [];
-
+  accountNo: boolean;
 
 
   constructor(private FamilyInformationService: FamilyInformationService,
@@ -78,13 +78,13 @@ export class BankDetailsComponent implements OnInit {
     // this.controls = new FormArray(this.toGroups);
     if (this.BankAccountDataSource.length == 0) {
       this.FamilyInformationService.getFamilyMemberInfo(this.employeeMasterId).subscribe(res => {
-        
+
         this.familyMemberList = res.data.results[0];
         // const TABLE_DATA1: BankElement[] = this.familyMemberList;
         // this.BankDataSource = new MatTableDataSource(TABLE_DATA1);
 
         this.FamilyInformationService.getBankDetailsInfo(this.employeeMasterId).subscribe(res => {
-          
+
 
           this.BankDetailsList = res.data.results[0];
           // const TABLE_DATA1: BankElement[] = this.familyMemberList;
@@ -102,11 +102,13 @@ export class BankDetailsComponent implements OnInit {
           this.extractedInfoID = this.differenceOf2Arrays(newNomination, newNomination1);
 
           if (this.extractedInfoID.length > 0) {
-            this.extractedInfoID.filter(element => {
+            this.BankDetailsList.filter(element => {
               this.familyMemberList.find((element1) => {
-                if (element == element1.familyMemberInfoId) {
-                  this.BankDetailsList.push(element1);
-                  this.BankAccountDataSource = this.BankDetailsList
+                if (element.familyMemberInfoId == element1.familyMemberInfoId) {
+                  const index = this.familyMemberList.findIndex(x => x.familyMemberInfoId == element.familyMemberInfoId);
+                  // this.familyMemberList.push(element1);
+                  this.familyMemberList[index] = element;
+                  this.BankAccountDataSource = this.familyMemberList
                   // const TABLE_DATA: BankElement[] = this.BankDetailsList;
                   // return this.BankDataSource = new MatTableDataSource(TABLE_DATA);
                 }
@@ -130,6 +132,12 @@ export class BankDetailsComponent implements OnInit {
   }
   saveBankDetails(BankAccountDataSource) {
 
+    BankAccountDataSource.forEach(element => {
+      delete element.accountNumberCountError;
+      delete element.maxAccNumber;
+      delete element.accountNo;
+    });
+
     this.FamilyInformationService.postBankDetailsInfoForm(BankAccountDataSource).subscribe(res => {
 
       this.BankAccountDataSource = res.data.results[0];
@@ -142,7 +150,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   searchIFSC(searchTerm, bankIFSC, stateModel, bank: any) {
-    
+
     this.currenBank = bank;
     if (searchTerm.query.length < 2) {
       this.AllIFSCcodeList = []
@@ -194,24 +202,25 @@ export class BankDetailsComponent implements OnInit {
     }
     return temp.sort((a, b) => a - b);
   }
-  // getDataFromIFSC(bankIFSC, bank) {
-  //   // if (this.BankInformationModel.bankIFSC) {
-  //   //   this.BankInformationModel.bankName = '';
-  //   //   this.BankInformationModel.branchName = '';
-  //   //   this.BankInformationModel.branchAddress = '';
-  //   //   this.confirmAccountNumber = '';
-  //   //   this.BankInformationModel.accountNo = '';
-  //   //   this.BankInformationModel.nameAsPerBank = '';
-  //     this.IFSCDetails(bankIFSC, bank);
-  //   // }
-  //   // if (bankIFSC) {
-  //   //   this.gridEditIFSC1 = bankIFSC
-  //   //   this.IFSCGridDetails(bankIFSC);
-  //   // }
-  // }
+
+  getDataFromIFSC(bankIFSC, bank) {
+
+    if (bankIFSC.length < 11) {
+      bank.bankName = '';
+      bank.branchName = '';
+      bank.branchAddress = '';
+      bank = '';
+      bank.accountNo = '';
+      bank.nameAsPerBank = '';
+    }
+    if (bankIFSC.length == 11) {
+      this.IFSCDetails(bankIFSC, bank);
+    }
+  }
+
 
   IFSCDetails(bankIFSC, bank: any) {
-    
+
     this.currenBank = bank;
     if (bankIFSC) {
       bank.bankName = '';
@@ -222,8 +231,11 @@ export class BankDetailsComponent implements OnInit {
     }
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
-      
-      this.maxAccNumber = res.data.results[0].limit
+
+      bank.maxAccNumber = res.data.results[0].limit
+      if (bank.maxAccNumber == 0) {
+        bank.maxAccNumber = null;
+      }
       bank.bankName = res.data.results[0].bankName;
       bank.branchName = res.data.results[0].branchName;
       bank.branchAddress = res.data.results[0].address;
@@ -250,13 +262,15 @@ export class BankDetailsComponent implements OnInit {
     })
   }
 
-  validateAccountNo(accountNumber) {
+  validateAccountNo(accountNumber, bank) {
 
-    if (this.maxAccNumber) {
-      if (accountNumber.length < this.maxAccNumber) {
-        this.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
+    if (bank.maxAccNumber) {
+      if (accountNumber.length < bank.maxAccNumber) {
+        bank.accountNumberCountError = 'Account Number Should be ' + bank.maxAccNumber + ' digits';
+        this.accountNumberCountError = 'Account Number Should be ' + bank.maxAccNumber + ' digits';
       } else {
         this.accountNumberCountError = '';
+        bank.accountNumberCountError = null;
       }
     }
   }
@@ -277,7 +291,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   filterIFSCCode(event) {
-    
+
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: any[] = [];
     let query = event.query;
@@ -288,5 +302,34 @@ export class BankDetailsComponent implements OnInit {
       }
     }
     this.AllIFSCcodeList = filtered;
+  }
+
+  keyPress(event: any) {
+
+    const pattern = /[0-9]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  hideAccountNo(bank) {
+    
+    if (bank.accountNo == true) {
+      setTimeout(() => {
+        bank.accountNo = false;
+      }, 3000)
+    }
+  }
+
+  getHideAccountNo(bank) {
+
+    if (bank.accountNumber.length > 0) {
+      bank.accountNo = true
+      setTimeout(() => {
+        bank.accountNo = false;
+      }, 1000)
+    }
   }
 }

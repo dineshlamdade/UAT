@@ -36,8 +36,8 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
 })
 export class ElectricVehicleDeclarationComponent implements OnInit {
 
-  @Input() lender: string;
-  @Input() data: any;
+  @Input() private lender: string;
+  @Input() private data: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -118,7 +118,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public viewDocumentDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
-  public actualAmountGlobal: Number;
+  public actualAmountGlobal: number;
   public dueDate: Date;
   public dateOfPayment: Date;
   public date3: Date;
@@ -157,9 +157,9 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public transactionStatustList: any;
-  public globalInstitution: String = 'ALL';
-  public globalPolicy: String = 'ALL';
-  public globalTransactionStatus: String = 'ALL';
+  public globalInstitution = 'ALL';
+  public globalPolicy = 'ALL';
+  public globalTransactionStatus = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
@@ -295,6 +295,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
 
   }
 
+  // tslint:disable-next-line: typedef
   public getLenderNameList() {
     this.electricVehicleService
       // .getElectricVehicleDeclarationLenderName()
@@ -302,28 +303,21 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       .subscribe((res) => {
         console.log('getLenderNameList', res);
         this.transactionWithLenderName = res.data.results;
-
-        res.data.results[0].forEach((element) => {
-          console.log("element",element)
+          res.data.results[0].forEach((element) => {
+          console.log('element', element)
           const obj = {
             label: element,
             value: element,
           };
           this.lenderNameList.push(obj);
 
-          // element.policies.forEach((policy) => {
-          //   const policyObj = {
-          //     label: policy,
-          //     value: policy,
-          //   };
-          //   this.transactionPolicyList.push(policyObj);
-          // });
         });
       });
-      console.log("lender Name List ", this.lenderNameList)
+    console.log('lender Name List ', this.lenderNameList);
   }
+
   // --------- On institution selection show all transactions list accordingly all policies--------
-  selectedTransactionLenderName(lenderName: any) {
+  public selectedTransactionLenderName(lenderName: any): void {
     this.globalInstitution = lenderName;
     this.getTransactionFilterData(this.globalInstitution);
     this.globalSelectedAmount = this.numberFormat.transform(0);
@@ -344,8 +338,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
           };
           this.transactionPolicyList.push(policyObj);
         });
-      }
-      else if (lenderName === 'All') {
+      } else if (lenderName === 'All') {
         element.policies.forEach((policy) => {
           const policyObj = {
             label: policy,
@@ -356,7 +349,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       }
     });
 
-    if (lenderName == 'All') {
+    if (lenderName === 'All') {
       this.grandTabStatus = true;
       this.isDisabled = true;
     } else {
@@ -388,7 +381,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     data: any,
     event: { target: { checked: any } },
     i: number,
-    j: number
+    j: number,
   ) {
     const checked = event.target.checked;
 
@@ -398,7 +391,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
         : this.globalSelectedAmount.toString().replace(',', '')
     );
 
-    let formatedActualAmount: number = 0;
+    let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
     console.log(
       'in IS ECS::',
@@ -460,7 +453,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
+      // console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
@@ -533,13 +526,13 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Ondeclaration Amount change" + summary.declaredAmount);
+    // console.log('Ondeclaration Amount change' + summary.declaredAmount);
 
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].declaredAmount
+      this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].declaredAmount,
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[
@@ -550,16 +543,16 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     // this.declaredAmount=0;
 
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ""));
+      // console.log(element.declaredAmount.toString().replace(',', ''));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
       );
       // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
   }
 
   // --------------- ON change of declared Amount in line-------------
@@ -575,7 +568,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Ondeclaration Amount change" + summary.declaredAmount);
+    // console.log('Ondeclaration Amount change' + summary.declaredAmount);
 
     this.transactionDetail[j].electricVehicleLoanTransactionList[
       i
@@ -592,16 +585,16 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     // this.declaredAmount=0;
 
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ""));
+      // console.log(element.declaredAmount.toString().replace(',', ''));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
       );
       // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
   }
 
 
@@ -630,17 +623,16 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       dueDate: Date;
     },
     i: number,
-    j: number
+    j: number,
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Actual Amount change::" , summary);
+    // console.log('Actual Amount change::' , summary);
 
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
+      this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount,
     );
     // console.log(`formatedActualAmount::`,formatedActualAmount);
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[
@@ -662,12 +654,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     this.actualTotal = null;
     this.actualAmount = null;
     this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
+      // console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -689,12 +681,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Actual Amount change::" , summary);
+    // console.log('Actual Amount change::' , summary);
 
     this.transactionDetail[j].electricVehicleLoanTransactionList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
+    // console.log('Actual Amount changed::' , this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
     const formatedActualAmount = this.numberFormat.transform(
       this.transactionDetail[j].electricVehicleLoanTransactionList[i].actualAmount
     );
@@ -718,12 +710,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     this.actualTotal = null;
     this.actualAmount = null;
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
+      // console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -937,15 +929,18 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
       });
 
       //previous emp table number format
+      if (element.electricVehicleLoanTransactionPreviousEmployerList !== null) {
+
       element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
-        if (innerElement.actualAmount !== null) {
+
+        if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
             .replace(',', '');
         } else {
           innerElement.actualAmount = 0.0;
         }
-        if (innerElement.declaredAmount !== null) {
+        if (innerElement.declaredAmount !== undefined || innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
             .replace(',', '');
@@ -953,6 +948,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
           innerElement.declaredAmount = 0.0;
         }
       });
+    }
     });
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
@@ -1074,7 +1070,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    console.log("onDeclaredAmountChangeInEditCase Amount change::" + summary.declaredAmount);
+    console.log('onDeclaredAmountChangeInEditCase Amount change::' + summary.declaredAmount);
 
     this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList[i].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
@@ -1087,7 +1083,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     this.declarationTotal = 0;
 
     this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
+      console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ''));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
       );
@@ -1095,7 +1091,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     });
 
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
-    console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
+    console.log( 'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
   // setDateOfPaymentInEditCase(
@@ -1127,12 +1123,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    console.log("onActualAmountChangeInEditCaseActual Amount change::" , summary);
+    console.log('onActualAmountChangeInEditCaseActual Amount change::' , summary);
 
     this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList[
       i
     ].actualAmount = this.declarationService.actualAmount;
-    console.log("Actual Amount changed::" , this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
+    console.log('Actual Amount changed::' , this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount);
 
     const formatedActualAmount = this.numberFormat.transform(
       this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
@@ -1158,12 +1154,12 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ""));
+      console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1238,8 +1234,8 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
           res.data.results[0].electricVehicleLoanTransactionDocumentDetailList[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].electricVehicleLoanTransactionDetailList;
-          this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
-          this.editReceiptAmount = res.data.results[0].receiptAmount;
+        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
         this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
@@ -1306,7 +1302,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
         this.initialArrayIndex.push(element.electricVehicleLoanTransactionPreviousEmployerList.length);
 
           // format the amount from current emp list
-          element.electricVehicleLoanTransactionList.forEach((item) => {
+        element.electricVehicleLoanTransactionList.forEach((item) => {
 
             item.declaredAmount = this.numberFormat.transform(
               item.declaredAmount
@@ -1317,7 +1313,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
           });
 
            // format the amount from previous emp list
-           element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
+        element.electricVehicleLoanTransactionPreviousEmployerList.forEach((innerElement) => {
 
             innerElement.declaredAmount = this.numberFormat.transform(
               innerElement.declaredAmount

@@ -11,25 +11,27 @@
                 <div class="card-body p-0">
                   <div class="row">
 
+
                     <div class="col-sm-3">
                       <label class="form-label"> Code</label>
                       <input type="text" formControlName="companyGroupCode" class="form-control" name="companyGroupCode"
-                        placeholder="Enter Group Code"
-                        [ngClass]="{'is-invalid' : form.get('companyGroupCode').status == 'INVALID'}">
+                        [disabled]="companyGroupId !==0">
                     </div>
 
                     <div class="col-sm-3">
                       <label class="form-label">Name</label>
                       <input type="text" formControlName="companyGroupName" class="form-control "
                         name="companyGroupName" placeholder="Enter Group Name"
-                        [ngClass]="{'is-invalid' : form.get('companyGroupName').status == 'INVALID'}">
+                        (change)="isContainsOnlySpecialCharacter()"
+                        [ngClass]="{'is-invalid' : form.get('companyGroupName').status == 'INVALID'|| companyGroupNameInvalid == true} ">
                     </div>
 
                     <div class="col-sm-3">
                       <label class="form-label">Short Name</label>
                       <input type="text" formControlName="shortName" class="form-control " name="shortName"
-                        placeholder="Enter Short Name"
-                        [ngClass]="{'is-invalid' : form.get('shortName').status == 'INVALID'}">
+                        (keypress)="keyPressedSpaceNotAllow($event)" placeholder="Enter Short Name" maxlength="20"
+                        (change)="isContainsOnlySpecialCharacter()" (change)="isShortNameContainsOnlySpecialCharacter()"
+                        [ngClass]="{'is-invalid' : form.get('shortName').status == 'INVALID'  || shortNameInvalid== true}">
                     </div>
 
                     <div class="col-sm-3">
@@ -37,6 +39,7 @@
                       <select name="scale" id="scale" class="form-control" formControlName="scale"
                         [ngClass]="{'is-invalid' : form.get('scale').status == 'INVALID'}"
                         (change)='onSelectScale($event.target.value)'>
+                        <option selected value=''>Select </option>
                         <option *ngFor="let scales of scaleList" [value]="scales.label">
                           {{scales.label}}
                         </option>
@@ -48,25 +51,45 @@
                   <div class="row mt-20">
 
                     <div class="col-sm-3">
-                      <label class="form-label">Start Date</label>
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="startDate"
-                          data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                          placeholder="Start Date" bsDatepicker
-                          [ngClass]="{'is-invalid' : form.get('startDate').status == 'INVALID'}">
+                      <label class="form-label">Engagement Start Date</label>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                          </div>
+                          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
+                            data-provide="datepicker" class="form-control" placeholder="Select End Date" bsDatepicker
+                            [maxDate]="today" formControlName="startDate" placement="center">
+                        </div>
                       </div>
+
                     </div>
 
                     <div class="col-sm-3">
-                      <label class="form-label">End Date</label>
+                      <label class="form-label">Engagement End Date</label>
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="endDate"
-                          (bsValueChange)="setPaymentDetailToDate()" data-provide="datepicker"
-                          data-date-autoclose="true" class="form-control" placeholder="End Date" bsDatepicker
-                          (focusout)="onChangeEndDate($event)">
+                        <!-- <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" #endDate1 formControlName="endDate"
+                          (bsValueChange)="setPaymentDetailToDate($event)" data-provide="datepicker"
+                          [(ngModel)]="endDateModel" data-date-autoclose="true" class="form-control"
+                          placeholder="End Date" bsDatepicker (focusout)="onChangeEndDate($event)"
+                          (click)="onChangeEndDate($event)"> -->
+                        <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY', 'customTodayClass': 'today'  }"
+                          formControlName="endDate" placement="center"
+                          [ngClass]="{'is-invalid' : form.get('endDate').status == 'INVALID'}" data-provide="datepicker"
+                          (bsValueChange)="onChangeEngagementEndDate($event)" data-date-autoclose="true"
+                          (focusout)="onChangeEndDate($event)" class="form-control" placeholder="Enter End Date"
+                          bsDatepicker>
                       </div>
+
+
+
+
+
+
+
+
+
                     </div>
 
                     <div class="col-sm-3">
@@ -75,6 +98,7 @@
                         [ngClass]="{'is-invalid' : form.get('reasonForExit').status == 'INVALID'}"
                         formControlName="reasonForExit" (change)='onSelectReasonForExit()'>
                         <!-- <option selected [ngValue] = null>Choose... </option> -->
+                        <option selected value=''>Select </option>
                         <option *ngFor="let reason of reasonForExitList" [value]="reason.label">
                           {{reason.label}}
                         </option>
@@ -101,7 +125,7 @@
                     </div>
 
 
-                    <div class="col-md-3"><br>
+                    <div class="col-md-3 mt-20">
                       <label class="custom-control custom-checkbox custom-control-inline pl-45">
                         <input formControlName="companyGroupActive" type="checkbox" class="custom-control-input"
                           name="example-inline-checkbox1" value="option1" checked (change)="deactiveActiveCheckBox()"
@@ -137,10 +161,12 @@
                         <ng-template #newDeb>
 
                           <button type="submit"
-                            [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid, 'btn-bg-green': !form.invalid}"
+                            [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                             (click)="save()" [disabled]="form.invalid">
                             <b><i class="fa fa-floppy-o"></i></b>Update</button>
+
+
 
 
                           <button type="button"
@@ -179,13 +205,15 @@
                     <thead class="thead-dark">
                       <tr>
                         <th scope="col" class="wd-8">Sr. No.</th>
-                        <th scope="col" class="wd-8">Group Id</th>
+                        <!-- <th scope="col" class="wd-8">Group Id</th>  -->
                         <th scope="col" class="wd-10">Code</th>
                         <th scope="col" class="wd-14">Name</th>
                         <th scope="col" class="wd-10">Short Name</th>
                         <th scope="col" class="wd-10">Scale</th>
-                        <th scope="col" class="wd-10">Start Date</th>
-                        <th scope="col" class="wd-10">End Date</th>
+                        <th scope="col" class="wd-10">Engagement Start Date</th>
+                        <th scope="col" class="wd-10">Engagement End Date</th>
+                        <th scope="col" class="wd-10">Service Age</th>
+
                         <th scope="col" class="wd-10">Reason for Exit</th>
                         <th scope="col" class="wd-10">Action</th>
                       </tr>
@@ -195,25 +223,30 @@
                       <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
                         <td class="wd-8"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
                         </td>
-                        <td class="wd-8"><span tooltip="{{summary.companyGroupId}}">{{summary.companyGroupId}}</span>
-                        </td>
+                        <!-- <td class="wd-8"><span tooltip="{{summary.companyGroupId}}">{{summary.companyGroupId}}</span>
+                        </td> -->
                         <td class="wd-10"><span
                             tooltip="{{summary.companyGroupCode}}">{{summary.companyGroupCode}}</span>
                         </td>
 
-                        <td class="wd-14"><span
-                            tooltip="{{summary.companyGroupName}}">{{summary.companyGroupName}}</span>
+                        <td class="wd-14"><span tooltip="{{summary.companyGroupName}}">{{summary.shortenCompanyGroupName
+                            }}</span>
                         </td>
-                        <td class="wd-10"><span tooltip="{{summary.shortName}}">{{summary.shortName}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.shortName}}">{{summary.shortenShortName}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.Scale}}">{{summary.Scale}}</span>
                         </td>
-                        <td class="wd-10"><span
-                            tooltip="{{summary.StartDate}}">{{summary.StartDate | date :"dd-MMM-yyyy"}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.StartDate}}">{{summary.StartDate | date
+                            :"dd-MMM-yyyy"}}</span>
                         </td>
-                        <td class="wd-10"><span
-                            tooltip="{{summary.EndDate}}">{{summary.EndDate | date :"dd-MMM-yyyy"}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.EndDate}}">{{summary.EndDate | date
+                            :"dd-MMM-yyyy"}}</span>
                         </td>
+
+                        <td class="wd-10"><span
+                            tooltip="{{summary.servicePeriod}}">{{summary.servicePeriodShort}}</span>
+                        </td>
+
                         <td class="wd-10"><span tooltip="{{summary.ReasonforExit}}">{{summary.ReasonforExit}}</span>
                         </td>
 

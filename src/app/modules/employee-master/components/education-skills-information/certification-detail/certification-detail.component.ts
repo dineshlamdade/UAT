@@ -114,7 +114,7 @@ export class CertificationDetailComponent implements OnInit {
 
     this.getCertificateMapping();
     this.getAllCertificateSummary();
-    this.getCertificateMapping()
+    // this.getCertificateMapping()
     this.PreviousEmpInformationService.getCurrencyList().subscribe(res => {
 
       this.currencyArray = res.data.results;
@@ -127,7 +127,6 @@ export class CertificationDetailComponent implements OnInit {
 
     this.EducationSkillsInformationService.getAllCertificates().subscribe(res => {
       
-
       this.CertificateMappingList.forEach(element1 => {
         res.data.results.forEach(element2 => {
           if (element1.certificateMasterId == element2.certificateMasterId) {
@@ -135,8 +134,6 @@ export class CertificationDetailComponent implements OnInit {
           }
         })
       })
-      console.log(this.ToFilteredCertificateAllList);
-
     })
   }
 
@@ -145,6 +142,8 @@ export class CertificationDetailComponent implements OnInit {
     this.EducationSkillsInformationService.getAllCertificateMapping().subscribe(res => {
       
       this.ToFilteredCertificateAllList = res.data.results;
+      this.certificateModel = '';
+      this.CertificateInfoForm.get('cerificateName').setValue('');
       // this.getCertificateList();
     })
   }
@@ -230,18 +229,27 @@ export class CertificationDetailComponent implements OnInit {
 
   onSelectionName(certificate) {
     
+    let renewable;
+    const certificateNew = this.ToFilteredCertificateAllList.filter(element =>{
+      if(element.certificateMasterMappingId == certificate){
+        this.employeeCertificateRequestModel.certificateMasterMappingId = element.certificateMasterMappingId;
+        renewable = element.certificateMasterDetails.renewable
+        return element;
+      }
+    })
+    
     this.employeeCertificateRequestModel.cerificateNumber = '';
-    if (certificate.certificateMasterDetails.renewable == false) {
+    if (renewable == false) {
       this.renewableModel = 'no';
       // this.employeeCertificateRequestModel.renewable = 0;
     }
-    if (certificate.certificateMasterDetails.renewable == true) {
+    if (renewable == true) {
       this.renewableModel = 'yes';
       // this.employeeCertificateRequestModel.renewable = 1;
     }
     // this.employeeCertificateRequestModel.renewalFeesCurrency = certificate.certificateMasterDetails.renewalFeesCurrency;
     // this.employeeCertificateRequestModel.renewalFees = certificate.certificateMasterDetails.amount;
-    this.employeeCertificateRequestModel.certificateMasterMappingId = certificate.certificateMasterMappingId;
+    // this.employeeCertificateRequestModel.certificateMasterMappingId = certificate.certificateMasterMappingId;
 
     // setTimeout(() => {
     //   this.certificateModel = certificate.certificateMasterDetails.certificateName;
@@ -268,7 +276,7 @@ export class CertificationDetailComponent implements OnInit {
       this.employeeCertificateRequestModel.cerificateNumber = res.data.results[0].cerificateNumber;
       this.employeeCertificateRequestModel.certificateMasterMappingId = res.data.results[0].certificateMasterMappingId;
       this.employeeCertificateRequestModel.employeeCertificateId = res.data.results[0].employeeCertificateId;
-      this.certificateModel = res.data.results[0].certificateMasterMapping;
+      this.certificateModel = res.data.results[0].certificateMasterMapping.certificateMaster.certificateName;
 
       if (res.data.results[0].renewable == 0) {
         this.renewableModel = 'no';

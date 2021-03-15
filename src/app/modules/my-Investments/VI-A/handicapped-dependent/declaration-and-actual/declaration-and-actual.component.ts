@@ -282,7 +282,8 @@ export class DeclarationAndActualComponent implements OnInit {
       this.formBuilder.group({
         checkboxx: [false],
         familyMemberName: [null],
-        familyMemberInfoId: [null, Validators.required],
+        // familyMemberInfoId: [null, Validators.required],
+        familyMemberInfoId: [null],
         severity: [null],
         disabilityType: [null],
         // actualAmount: [{value:null, disabled: true}],
@@ -300,13 +301,19 @@ export class DeclarationAndActualComponent implements OnInit {
     );
   }
 
+  deleteCurrentEmployerRow(index) {
+    this.currEmpFormArray.removeAt(index);
+  }
+
   addPreviousEmployerRow() {
     this.priviousEmpFormArray.push(
       this.formBuilder.group({
         checkbox1: [false],
-        previousEmployerId:  [null, Validators.required],
+        previousEmployerId:  [null],
+        // previousEmployerId:  [null, Validators.required],
         familyMemberName: [null],
-        familyMemberInfoId: [null, Validators.required],
+        familyMemberInfoId: [null],
+        // familyMemberInfoId: [null, Validators.required],
         severity: [null],
         disabilityType: [null],
         actualAmount: [null],
@@ -322,6 +329,10 @@ export class DeclarationAndActualComponent implements OnInit {
         employeeMasterId: [null]
       })
     );
+  }
+
+  deletePreviousEmployerRow(index) {
+    this.priviousEmpFormArray.removeAt(index);
   }
 
   //--------- Setting Actual amount ---------------
@@ -419,17 +430,18 @@ export class DeclarationAndActualComponent implements OnInit {
         console.log('saveTransaction res::', res);
         if (res) {
           if (res.data.results.length > 0) {
-
+            this.currentEmployerHandicappedDependentResponseList =
+            res.data.results[0].currentEmployerHandicappedDependentResponseList;
             this.previousEmployerHandicappedDependentResponseList =
               res.data.results[0].previousEmployerHandicappedDependentResponseList;
             // this.documentDetailList = res.data.results[0].documentInformation;
-            this.documentDetailList = res.data.results[0].documentInformationResponseList;
+            this.documentDetailList = res.data.results[0].documentInformationList;
             this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-            this.transactionDetail.forEach((element) => {
+            this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
               element.declaredAmount = this.numberFormat.transform(
                 element.declaredAmount
               );
@@ -437,6 +449,16 @@ export class DeclarationAndActualComponent implements OnInit {
                 element.actualAmount
               );
             });
+
+            this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
+              element.declaredAmount = this.numberFormat.transform(
+                element.declaredAmount
+              );
+              element.actualAmount = this.numberFormat.transform(
+                element.actualAmount
+              );
+            });
+
 
             this.alertService.sweetalertMasterSuccess(
               'Record saved Successfully.',
@@ -607,7 +629,7 @@ export class DeclarationAndActualComponent implements OnInit {
       .subscribe((res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
-          res.data.results[0].documentInformationResponseList[0].documentDetailList;
+          res.data.results[0].documentInformationList[0].documentDetailList;
         this.editTransactionUpload =
           res.data.results[0].previousEmployerHandicappedDependentResponseList;
           this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
@@ -671,41 +693,37 @@ export class DeclarationAndActualComponent implements OnInit {
             'Transaction Saved Successfully.',
             '',
           );
-
-          this.transactionDetail =
+          this.currentEmployerHandicappedDependentResponseList =
+          res.data.results[0].currentEmployerHandicappedDependentResponseList;
+          this.previousEmployerHandicappedDependentResponseList =
               res.data.results[0].previousEmployerHandicappedDependentResponseList;
-            // this.documentDetailList = res.data.results[0].documentInformation;
-            this.documentDetailList = res.data.results[0].documentInformationResponseList;
+            this.documentDetailList = res.data.results[0].documentInformationList;
             this.grandDeclarationTotal =
               res.data.results[0].grandDeclarationTotal;
             this.grandActualTotal = res.data.results[0].grandActualTotal;
             this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
             this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
 
-            this.initialArrayIndex = [];
+            this.initialArrayIndex = []
+              this.initialArrayIndex.push(this.previousEmployerHandicappedDependentResponseList.length);
 
-            this.transactionDetail.forEach((element) => {
+              this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+                  element.declaredAmount = this.numberFormat.transform(
+                    element.declaredAmount
+                  );
+                  element.actualAmount = this.numberFormat.transform(
+                    element.actualAmount
+                  );
+              });
 
-              this.initialArrayIndex.push(element.previousEmployerHandicappedDependentResponseList.length);
-
-              this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
-              element.declaredAmount = this.numberFormat.transform(
-                element.declaredAmount
-              );
-              element.actualAmount = this.numberFormat.transform(
-                element.actualAmount
-              );
-            });
-            // this.transactionDetail.forEach((element) => {
-            //   element.declaredAmount = this.numberFormat.transform(
-            //     element.declaredAmount
-            //   );
-            //   element.actualAmount = this.numberFormat.transform(
-            //     element.actualAmount
-            //   );
-            // });
-          });
-
+              this.previousEmployerHandicappedDependentResponseList.forEach((item) => {
+                  item.declaredAmount = this.numberFormat.transform(
+                    item.declaredAmount
+                  );
+                  item.actualAmount = this.numberFormat.transform(
+                    item.actualAmount
+                  );
+              });
 
           // this.alertService.sweetalertMasterSuccess(
           //   'Transaction Saved Successfully.',
@@ -993,21 +1011,21 @@ export class DeclarationAndActualComponent implements OnInit {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].currentEmployerHandicappedDependentResponseList[
+    this.currentEmployerHandicappedDependentResponseList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].currentEmployerHandicappedDependentResponseList[i].declaredAmount
+      this.currentEmployerHandicappedDependentResponseList[i].declaredAmount
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].currentEmployerHandicappedDependentResponseList[
+    this.currentEmployerHandicappedDependentResponseList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.transactionDetail[j].currentEmployerHandicappedDependentResponseList.forEach((element) => {
+    this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -1016,7 +1034,7 @@ export class DeclarationAndActualComponent implements OnInit {
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    this.declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
@@ -1179,10 +1197,13 @@ export class DeclarationAndActualComponent implements OnInit {
     this.alertService.sweetalertError(msg);
   }
 
-  // deleteRow(i){
-  //   const index = this.currentEmployerHandicappedDependentResponseList.indexOf(i);
-  //   this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
-  // }
+  deleteRows(index){
+    // const index = this.currentEmployerHandicappedDependentResponseList.indexOf(i);
+    // this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
+    console.log(this.currentEmployerHandicappedDependentResponseList);
+    this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
+    console.log(this.currentEmployerHandicappedDependentResponseList);
+  }
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
@@ -1244,19 +1265,22 @@ export class DeclarationAndActualComponent implements OnInit {
     // this.tabIndex = 0;
     console.log(this.transactionDetail);
     this.tabIndex = 0;
-    this.transactionDetail.forEach((element) => {
-      element.group2TransactionList.forEach((element) => {
-        element.dateOfPayment = this.datePipe.transform(
-          element.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-      });
-    });
+    // this.transactionDetail.forEach((element) => {
+    //   element.group2TransactionList.forEach((element) => {
+    //     element.dateOfPayment = this.datePipe.transform(
+    //       element.dateOfPayment,
+    //       'yyyy-MM-dd'
+    //     );
+    //   });
+    // });
     const data = this.transactionDetail;
     this.handicappedDependentService.postHandicappedTransaction(data).subscribe((res) => {
       console.log(res);
-      this.transactionDetail =
-        res.data.results[0].currentEmployerHandicappedDependentList;
+      // this.transactionDetail =
+      //   res.data.results[0].currentEmployerHandicappedDependentList;
+      this.currentEmployerHandicappedDependentResponseList = res.data.results[0].currentEmployerHandicappedDependentResponseList;
+      this.previousEmployerHandicappedDependentResponseList = res.data.results[0].previousEmployerHandicappedDependentResponseList;
+        this.documentDetailList = res.data.results[0].documentInformationList;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1350,7 +1374,7 @@ export class DeclarationAndActualComponent implements OnInit {
         // this.declarationService.handicappedDependentDetailMaster.amountRejected = 0.0;
         // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
-        this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
+        // this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.relationship;
         this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
@@ -1405,9 +1429,11 @@ export class DeclarationAndActualComponent implements OnInit {
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail = res.data.results[0].currentEmployerHandicappedDependentList;
-          this.previousEmployerHandicappedDependentResponseList = res.data.results[0].previousEmployerHandicappedDependentResponseList;
-          this.documentDetailList = res.data.results[0].documentInformationResponseList;
+          this.currentEmployerHandicappedDependentResponseList =
+          res.data.results[0].currentEmployerHandicappedDependentResponseList;
+          this.previousEmployerHandicappedDependentResponseList =
+              res.data.results[0].previousEmployerHandicappedDependentResponseList;
+            this.documentDetailList = res.data.results[0].documentInformationList;
           // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
           // this.grandActualTotal = res.data.results[0].grandActualTotal;
           // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1694,11 +1720,9 @@ export class DeclarationAndActualComponent implements OnInit {
       console.log('getTransactionFilterData', res);
       if (res.data.results.length > 0) {
         this.currentEmployerHandicappedDependentResponseList = res.data.results[0].currentEmployerHandicappedDependentResponseList;
-        console.log('currentEmployerHandicappedDependentList', this.currentEmployerHandicappedDependentList);
         this.previousEmployerHandicappedDependentResponseList = res.data.results[0].previousEmployerHandicappedDependentResponseList;
-        console.log('transactionDetail', this.transactionDetail);
         // this.documentDetailList = res.data.results[0].documentInformation;
-        this.documentDetailList = res.data.results[0].documentInformationResponseList;
+        this.documentDetailList = res.data.results[0].documentInformationList;
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         // this.grandActualTotal = res.data.results[0].grandActualTotal;
         // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
@@ -1737,7 +1761,7 @@ export class DeclarationAndActualComponent implements OnInit {
         console.log('edit Data:: ', res);
         this.urlArray =
           // res.data.results[0].documentInformation[0].documentDetailList;
-          res.data.results[0].documentInformationResponseList[0].documentDetailList;
+          res.data.results[0].documentInformationList[0].documentDetailList;
         this.urlArray.forEach((element) => {
           element.blobURI = this.sanitizer.bypassSecurityTrustResourceUrl(
             element.blobURI
@@ -1747,23 +1771,23 @@ export class DeclarationAndActualComponent implements OnInit {
       });
   }
 
-  setDateOfPayment(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    // i: number,
-    j: number
-  ) {
-    this.transactionDetail[j].dateOfPayment =
-      summary.dateOfPayment;
-    console.log(
-      this.transactionDetail[j].dateOfPayment
-    );
-  }
+  // setDateOfPayment(
+  //   summary: {
+  //     previousEmployerName: any;
+  //     declaredAmount: number;
+  //     dateOfPayment: Date;
+  //     actualAmount: number;
+  //     dueDate: any;
+  //   },
+  //   // i: number,
+  //   j: number
+  // ) {
+  //   this.transactionDetail[j].dateOfPayment =
+  //     summary.dateOfPayment;
+  //   console.log(
+  //     this.transactionDetail[j].dateOfPayment
+  //   );
+  // }
 }
 
 // class DeclarationService {

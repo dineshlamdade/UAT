@@ -1,104 +1,95 @@
 <div class="container-fluid">
-    <!-- <div class="row">
-        <div class="col-12"> -->
     <div class="card">
-        <div class="card-body">
-            <div class="row mt-20">
+        <div class="card-body p-0">
+            <div class="row mt-0">
                 <div class="col-md-12">
+                    <h3 class="font-14 text-purple font-bold">Bank Account Details</h3>
+
                     <p-table [value]="BankAccountDataSource" [scrollable]="true" [style]="{width:'600px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
-                                <col style="width:250px">
+                                <col class="wd-10" />
+                                <col class="wd-15" />
+                                <col class="wd-12" />
+                                <col class="wd-12" />
+                                <col class="wd-12" />
+                                <col class="wd-15" />
+                                <col class="wd-12" />
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Name</th>
-                                <th class="primeng-table-header-center">State</th>
-                                <th class="primeng-table-header-center">Bank IFSC</th>
-                                <th class="primeng-table-header-center">Bank Name</th>
-                                <th class="primeng-table-header-center">Branch Name</th>
-                                <th class="primeng-table-header-center">Branch Address</th>
-                                <th class="primeng-table-header-center">Account No.</th>
-                                <th class="primeng-table-header-center">Name As Per Bank Account</th>
+                                <th class="primeng-table-header-center wd-10">Name</th>
+                                <th class="primeng-table-header-center wd-15">Bank IFSC</th>
+                                <th class="primeng-table-header-center wd-12">Bank Name</th>
+                                <th class="primeng-table-header-center wd-12">Branch Name</th>
+                                <th class="primeng-table-header-center wd-12">
+                                    Branch Address
+                                </th>
+                                <th class="primeng-table-header-center wd-15">Account No.</th>
+                                <th class="primeng-table-header-center wd-12">
+                                    Name As Per Bank Account
+                                </th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-bank>
                             <tr>
-                                <td><span>
-                                        <input type="text" class="form-control" [(ngModel)]="bank.familyMemberName"
-                                            [ngModelOptions]="{standalone: true}" style="text-align: center;">
+                                <td tooltip="{{bank.familyMemberName}}"><span>
+                                        <input type="text" class="form-control text-center"
+                                            [(ngModel)]="bank.familyMemberName" [ngModelOptions]="{standalone: true}"
+                                            disabled>
                                     </span></td>
-
                                 <td><span>
-                                        <select class="form-control custom-select" placeholder="Select"
-                                            [(ngModel)]="bank.state" (completeMethod)="filterStates($event)">
-                                            <option value="" selected disabled>Select</option>
-                                            <option *ngFor="let state of states" [value]="state">
-                                                {{state}}
-                                            </option>
-                                        </select>
-
-                                        <!-- <p-autoComplete [(ngModel)]="bank.state" [suggestions]="filteredStates"
-                                            placeholder="Select" (completeMethod)="filterStates($event)"
-                                            [dropdown]="true">
-                                        </p-autoComplete> -->
-                                    </span></td>
-
-                                <td><span>
-                                        <p-autoComplete
-                                            (completeMethod)="searchIFSC($event, bank.bankIFSC, bank.state, bank)"
-                                            [suggestions]="AllIFSCcodeList" [dropdown]="true"
-                                            (onSelect)="IFSCDetails(bank.bankIFSC, bank)" [(ngModel)]="bank.bankIFSC"
-                                            placeholder="Search IFSC"
-                                            (ngModelChange)="bank.bankIFSC = $event?.toUpperCase()"
-                                            [ngModelOptions]="{standalone: true}">
-                                            <ng-template let-ifsc pTemplate="item">
-                                                <div class="country-item">
-                                                    <div>
-                                                        {{ifsc}}</div>
-                                                </div>
-                                            </ng-template>
-                                        </p-autoComplete>
+                                        <input type="text" class="form-control" [(ngModel)]="bank.bankIFSC"
+                                            placeholder="Enter IFSC" (keyup)="getDataFromIFSC(bank.bankIFSC, bank)"
+                                            [ngModelOptions]="{standalone: true}" maxlength="11"
+                                            tooltip="{{bank.bankIFSC}}"
+                                            (ngModelChange)="bank.bankIFSC = $event?.toUpperCase()">
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.bankName"
-                                            #bankName="ngModel" [ngModelOptions]="{standalone: true}">
+                                            #bankName="ngModel" [ngModelOptions]="{standalone: true}"
+                                            tooltip="{{bank.bankName}}">
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.branchName"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{bank.branchName}}">
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.branchAddress"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{bank.branchAddress}}">
                                     </span></td>
 
                                 <td><span>
                                         <input #accNo [(ngModel)]="bank.accountNumber" class="form-control"
                                             [ngModelOptions]="{standalone: true}" minlength="1"
-                                            maxlength="{{maxAccNumber}}" [type]="bank.accountNo ? 'number' : 'password'"
-                                            (keyup)="validateAccountNo(bank.accountNumber)"
-                                            placeholder="Enter Account No.">
-                                        <mat-icon matSuffix (click)="accountNo = !accountNo" class="eye-icon-payroll">
-                                            {{accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
+                                            maxlength="{{bank.maxAccNumber}}"
+                                            [type]="bank.accountNo ? 'text' : 'password'"
+                                            (keyup)="validateAccountNo(bank.accountNumber, bank);" appBlockCopyPaste
+                                            placeholder="Enter Account No." (keypress)="keyPress($event)">
+                                        <mat-icon matSuffix
+                                            (click)="bank.accountNo = !bank.accountNo; hideAccountNo(bank)"
+                                            class="eye-icon-payroll">
+                                            {{bank.accountNo ? 'visibility' : 'visibility_off'}}</mat-icon>
+
+                                        <div class="invalid-acc-error-message" *ngIf="bank.accountNumber?.length>0">
+                                            {{bank.accountNumberCountError}}</div>
                                     </span></td>
 
                                 <td><span>
                                         <input type="text" class="form-control" [(ngModel)]="bank.accountHolderName"
-                                            [ngModelOptions]="{standalone: true}">
+                                            [ngModelOptions]="{standalone: true}" tooltip="{{bank.accountHolderName}}">
                                     </span></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr *ngIf="BankAccountDataSource.length == 0">
+                                <td colspan="8" class="text-center"><span class="font-14 font500 text-red">No Data
+                                        Available</span></td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -108,6 +99,8 @@
                             <div class="float-right mb-25">
 
                                 <button type="submit" (click)="saveBankDetails(BankAccountDataSource)"
+                                    [disabled]="BankAccountDataSource.length==0" [ngClass]="{'disabled-btn-bg-green' : BankAccountDataSource.length==0,
+                                'btn-bg-green': BankAccountDataSource.length>0}"
                                     class="custom_button custom_btn btn-labeled btn-labeled-left btn-bg-green"
                                     tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>Save</button>
                             </div>
@@ -115,8 +108,6 @@
                     </div>
                 </div>
             </div>
-            <!-- </div>
-            </div> -->
         </div>
     </div>
 </div>

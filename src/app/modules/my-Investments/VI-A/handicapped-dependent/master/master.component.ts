@@ -109,7 +109,7 @@ export class MasterComponent implements OnInit {
   public disability : string;
   public severity : string;
   public isClaiming80U: boolean = true;
-
+  public isSaveVisible: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -138,8 +138,9 @@ export class MasterComponent implements OnInit {
       { label: 'Laco motor disability', value: 'Laco motor disability' },
     ];
     this.severityLevelList = [
-      { label: '40 to 79%', value: '40to79%' },
-      { label: '80% and above', value: '80% and above' },
+      { label: '40.01% to 80%', value: '40.01% to 80%' },
+      { label: '80.01% to 100%', value: '80.01% to 100%' },
+
     ];
     this.masterPage();
     this.addNewRowId = 0;
@@ -406,5 +407,13 @@ export class MasterComponent implements OnInit {
 
   resetForm() {
     this.form.reset();
+  }
+
+
+  onRadioChange(checked) {
+    this.isSaveVisible = true;
+    if(checked) {
+      this.isSaveVisible = false;
+    }
   }
 }

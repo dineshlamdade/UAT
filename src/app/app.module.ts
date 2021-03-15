@@ -1,3 +1,4 @@
+
 import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
@@ -43,8 +44,8 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-import { PrimeNGModule } from './app.primeNG.module';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+  //accordion and accordion tab
+//accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
@@ -59,14 +60,21 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 //////////////////////addaed by bharati////
 //import { payrollModule } from './modules/companysetting/payroll/payroll.module';
 
-import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 //import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-import { HeadcreationComponent } from './modules/companysetting/headcreation/headcreation.component';
-import { AttributecreationComponent } from './modules/companysetting/attributecreation/attributecreation.component';
-import { AttributeselectionComponent } from './modules/companysetting/attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './modules/companysetting/payrollheadgroupcreation/payrollheadgroupcreation.component';
+
+import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
+
+
+
 
 ////////////////////////////////////
+
+
+import { PrimeNGModule } from './app.primeNG.module';
+import { AccordionModule } from 'primeng/accordion';
 
 
 
@@ -74,25 +82,32 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
   declarations: [
     AppComponent,
     ProfileComponent,
+    ShortenStringPipe,
+
     SettingsComponent,
+
     //////////////////////////
-   // payrollComponent,
+    // payrollComponent,
     // HeadcreationComponent,
     // AttributecreationComponent,
     // AttributeselectionComponent,
     // PayrollheadgroupcreationComponent,
-///////////////////////////////////////
+    ///////////////////////////////////////
   ],
+  exports: [],
   imports: [
     BrowserModule,
     AuthModule,
+    PrimeNGModule,
+    AccordionModule,
     DashboardModule,
     PayrollModule,
-/////////////////
-  //  payrollModule,
+    /////////////////
+    //  payrollModule,
     CompanySettingModule,
-////////////////////////////////
+    ////////////////////////////////
     MyInvestmentsModule,
+    investmentChapterVIAModule,
     EightyCModule,
     ProfileModule,
     SettingsModule,
@@ -123,19 +138,21 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	 AdminApprovalModule,
+    AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
 
+
   ],
+
   providers: [BsDatepickerModule,
     BnNgIdleService,
     AuthGuard,
     translocoLoader, {
       provide: TRANSLOCO_CONFIG,
       useValue: {
-        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
         listenToLangChange: true,
         reRenderOnLangChange: true,
         defaultLang: 'en',
@@ -149,7 +166,9 @@ import { PayrollheadgroupcreationComponent } from './modules/companysetting/payr
       useClass: TokenInterceptorService,
       multi: true,
     },
+    ShortenStringPipe,
   ],
+
 
   bootstrap: [AppComponent]
 })

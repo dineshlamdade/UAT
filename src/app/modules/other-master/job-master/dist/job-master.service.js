@@ -28,7 +28,17 @@ var JobMasterService = /** @class */ (function () {
         var headers = new http_1.HttpHeaders()
             .set('content-type', 'application/json')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/all-other-masters/details', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'all-other-masters/details', { 'headers': headers })
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    // get all company name like infy
+    JobMasterService.prototype.getAllAtGroup = function () {
+        var headers = new http_1.HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('X-TenantId', 'PaysquareDefault');
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companymaster/getAllAtGroup', { 'headers': headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -37,7 +47,7 @@ var JobMasterService = /** @class */ (function () {
         var headers = new http_1.HttpHeaders()
             .set('content-type', 'application/json')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/all-othermasters-mapping/details', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'all-othermasters-mapping/details', { 'headers': headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

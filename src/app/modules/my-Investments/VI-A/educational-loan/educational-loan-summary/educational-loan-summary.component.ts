@@ -13,6 +13,7 @@ export class EducationalLoanSummaryComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
+  @Output() loanAccountNumber = new EventEmitter<any>();
 
   onEditSummary(institution: string, policyNo: string) {
     this.tabIndex = 2;
@@ -115,10 +116,13 @@ export class EducationalLoanSummaryComponent implements OnInit {
     this.addFuturePolicy();
   }
 
-  jumpToMasterPage(n: number) {
-    //console.log(n);
+  jumpToMasterPage(policyNo: string) {
     this.tabIndex = 1;
-    //this.editMaster(3);
+    const data = {
+      number : policyNo,
+      tabIndex : this.tabIndex
+    };;
+    this.loanAccountNumber.emit(data);
   }
 
   // On onEditSummary

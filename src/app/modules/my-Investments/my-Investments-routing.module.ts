@@ -1,4 +1,3 @@
-import { InterestDepositSavingAccountComponent } from './VI-A/interest-deposit-savingAccount/interest-deposit-savingAccount.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LicComponent } from './80C/lic/lic.component';
@@ -23,7 +22,12 @@ import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.c
 import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
 import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
 import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
-import { IDSATTBComponent } from './VI-A/IDSA-TTB/IDSA-TTB.component';
+import { DonationsForScientificResearchComponent } from './VI-A/donations-for-scientific-research/donations-for-scientific-research.component';
+import { GGCComponent } from './VI-A/ggc/ggc.component';
+import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.component';
+import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingrentComponent } from './housingrent/housingrent.component';
+import { TreatmentOfSpecifiedDiseasesComponent } from './VI-A/treatment-of-specified-diseases/treatment-of-specified-diseases.component';
 
 const routes: Routes = [
 
@@ -71,9 +75,9 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Chapter-VI-A-NPS' },
       },
       {
-        path:   '80C-NationalSevingCertificate',
+        path:   '80C-NationalSavingCertificate',
         component:  NationalSevingCertificateComponent,
-        data: { title: ':: DelziaHR :: NationalSevingCertificate' },
+        data: { title: ':: DelziaHR :: NationalSavingCertificate' },
       },
       {
         path:   '80C-FixedDepositsMoreThan5Years',
@@ -128,7 +132,7 @@ const routes: Routes = [
       {
         path:   'Chapter-VI-A-InterestOn80TTB',
         component:  InterestOnDepositTtbComponent,
-        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTA{Sec.80TTB}' },
+        data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTB{Sec.80TTB}' },
       },
       {
         path:   'childHostelAllowance',
@@ -136,19 +140,39 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'childEducationAllowance',
+        path:   'Chapter-VI-A-childEducationAllowance',
         component:  ChildEducationAllowanceComponent,
         data: { title: ':: DelziaHR :: Child Hostel Allowance' },
       },
       {
-        path:   'interestDepositSavingAccountTTA',
-        component:  InterestDepositSavingAccountComponent,
-        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+        path:   'Chapter-VI-A-DonationsForScientificResearchRuralDevelopmentScreenGGA',
+        component:  DonationsForScientificResearchComponent,
+        data: { title:  ':: DelziaHR :: DonationsForScientificResearchRuralDevelopmentScreenGGA' },
       },
       {
-        path:   'interestDepositSavingAccountTTB',
-        component:  IDSATTBComponent,
-        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+        path:   'Chapter-VI-A-DonationsForScientificResearchGGC',
+        component:  GGCComponent,
+        data: { title:  ':: DelziaHR :: DonationsForScientificResearchGGC' },
+      },
+      {
+        path:   'Chapter-VI-A-Mediclaim80D',
+        component:  Mediclaim80DComponent,
+        data: { title:  ':: DelziaHR :: Mediclaim80D' },
+      },
+      {
+        path:   'HousingLoan',
+        component:  HousingloanComponent,
+        data: { title: ':: DelziaHR :: HousingLoan' },
+      },
+      {
+        path:   'HouseRent',
+        component:  HousingrentComponent,
+        data: { title: ':: DelziaHR :: HouseRent' },
+      },
+      {
+        path:   'Chapter-VI-A-TreatmentOfSpecifiedDiseasesComponent',
+        component:  TreatmentOfSpecifiedDiseasesComponent,
+        data: { title:  ':: DelziaHR :: TreatmentOfSpecifiedDiseasesComponent' },
       },
     ],
    },

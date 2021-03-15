@@ -167,7 +167,7 @@ export class NpsMasterComponent implements OnInit {
         Validators.required
       ),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl(null, Validators.required),
+      accountHolderName: new FormControl({value: null, disabled: true},Validators.required),
       relationship: new FormControl(
         { value: null, disabled: true },
         Validators.required
@@ -212,6 +212,11 @@ export class NpsMasterComponent implements OnInit {
         if (element.relation === 'Self') {
           this.familyMemberName.push(obj);
         }
+        this.form.patchValue({
+          familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
+          accountHolderName: this.familyMemberGroup[0].familyMemberName,
+          relationship: this.familyMemberGroup[0].relation,
+        });
       });
     });
   }

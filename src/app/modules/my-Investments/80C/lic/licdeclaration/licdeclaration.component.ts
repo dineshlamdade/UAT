@@ -210,13 +210,13 @@ export class LicdeclarationComponent implements OnInit {
       this.declarationPage();
       this.canEdit = true;
     } else {
-      const dataValues = this.data;
-      this.globalInstitution = dataValues.institution;
-      this.globalPolicy = dataValues.policyNo;
+      const input = this.data;
+      this.globalInstitution = input.institution;
+      this.globalPolicy = input.policyNo;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(dataValues.institution, dataValues.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
       this.isDisabled = false;
-      this.canEdit = dataValues.canEdit;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -825,6 +825,7 @@ export class LicdeclarationComponent implements OnInit {
   deleteRow(j: number) {
     const rowCount = this.transactionDetail[j].lictransactionList.length - 1;
     // console.log('rowcount::', rowCount);
+    // console.log('initialArrayIndex::', this.initialArrayIndex);
     if (this.transactionDetail[j].lictransactionList.length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
@@ -1155,11 +1156,11 @@ export class LicdeclarationComponent implements OnInit {
         this.grandApprovedTotalEditModal =
           res.data.results[0].grandApprovedTotal;
         // console.log(this.urlArray);
-        this.urlArray.forEach((element) => {
-          // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
-          element.blobURI = 'data:image/image;base64,' + element.blobURI;
-          // new Blob([element.blobURI], { type: 'application/octet-stream' });
-        });
+        // this.urlArray.forEach((element) => {
+        //   // element.blobURI = 'data:' + element.documentType + ';base64,' + element.blobURI;
+        //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+        //   // new Blob([element.blobURI], { type: 'application/octet-stream' });
+        // });
         this.editTransactionUpload.forEach((element) => {
           element.lictransactionList.forEach((innerElement) => {
             innerElement.declaredAmount = this.numberFormat.transform(
@@ -1175,31 +1176,7 @@ export class LicdeclarationComponent implements OnInit {
     );
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
 
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
-    );
-  }
 
   // -----------Common Function for filter to call API---------------
   getTransactionFilterData(
@@ -1368,8 +1345,7 @@ export class LicdeclarationComponent implements OnInit {
 
   downloadTransaction(proofSubmissionId) {
     console.log(proofSubmissionId);
-    this.Service.getTransactionByProofSubmissionId
-    (proofSubmissionId).subscribe(
+    this.Service.getTransactionByProofSubmissionId(proofSubmissionId).subscribe(
       (res) => {
         console.log('edit Data:: ', res);
         this.urlArray =
@@ -1419,6 +1395,36 @@ export class LicdeclarationComponent implements OnInit {
       this.editTransactionUpload[j].lictransactionList[i].dateOfPayment,
     );
   }
+
+  // ---------------- Doc Viewr Code ----------------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
 }
 
 class DeclarationService {

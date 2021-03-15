@@ -21,42 +21,43 @@ export class AppComponent implements OnInit {
   public amethystClass: boolean;
   public selectedLanguage: any;
   public locales = [
-    { label: '🇺🇸 English (US)', value: 'en-US' },
-    // { label: '🇬🇧 English (UK)', value: 'en-GB' },
-    { label: '🇫🇷 Français', value: 'fr' },
+    { label: 'English', value: 'en' },
+    { label: 'French', value: 'fr' },
+    { label: 'Hindi', value: 'hi' },
   ];
   public locale = this.locales[0].value;
 
   constructor(private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private titleService: Title,
-              private authService: AuthService,
-              private translocoService: TranslocoService,
-              private bnIdle: BnNgIdleService
-              ) {
-      this.selectedLanguage = localStorage.getItem('selectedLanguage');
-      // generate a regex from the locales we support
-      if (this.selectedLanguage) {
-        const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
-        // check if the user's preferred language is supported and if so, use it.
-        if (this.selectedLanguage.match(supportedRegex)) {
-          this.updateLocale(this.selectedLanguage);
-        }
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private authService: AuthService,
+    private translocoService: TranslocoService,
+    private bnIdle: BnNgIdleService
+  ) {
+    this.selectedLanguage = localStorage.getItem('selectedLanguage');
+    // generate a regex from the locales we support
+    if (this.selectedLanguage) {
+
+      const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
+      // check if the user's preferred language is supported and if so, use it.
+      if (this.selectedLanguage.match(supportedRegex)) {
+        this.updateLocale(this.selectedLanguage);
       }
-      this.bnIdle.startWatching(2).subscribe((res) => {
-        if(res) {
-            console.log("session expired");
-        }
-      })
-     }
+    }
+    this.bnIdle.startWatching(2).subscribe((res) => {
+      if (res) {
+        // console.log("session expired"); commented by Anant
+      }
+    })
+  }
   public ngOnInit(): void {
-    if (this.router.getCurrentNavigation() === null) {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
-    }
+    // if (this.router.getCurrentNavigation() === null) {
+    //   if (!this.authService.isLoggedIn()) {
+    //     this.router.navigate(['/login']);
+    //   } else {
+    //     this.router.navigate(['/dashboard']);
+    //   }
+    // }
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('offcanvas-active');
     body.classList.add('font-montserrat');
@@ -113,14 +114,14 @@ export class AppComponent implements OnInit {
     document.getElementsByClassName('overlay')[0].classList.remove('open');
   }
 
-    // change locale/language at runtime
-    updateLocale(locale) {
-      localStorage.setItem("selectedLanguage", locale);
+  // change locale/language at runtime
+  updateLocale(locale) {
+    localStorage.setItem("selectedLanguage", locale);
 
-      if (this.locales.some(l => l.value === locale)) {
-        this.locale = locale;
-      }
-      const lang = locale.substring(0, 2);
-      this.translocoService.setActiveLang(lang);
+    if (this.locales.some(l => l.value === locale)) {
+      this.locale = locale;
     }
+    const lang = locale.substring(0, 2);
+    this.translocoService.setActiveLang(lang);
+  }
 }

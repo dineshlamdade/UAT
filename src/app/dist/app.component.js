@@ -21,9 +21,9 @@ var AppComponent = /** @class */ (function () {
         this.title = 'Delizia-HR';
         this.cyanClass = true;
         this.locales = [
-            { label: '🇺🇸 English (US)', value: 'en-US' },
-            // { label: '🇬🇧 English (UK)', value: 'en-GB' },
-            { label: '🇫🇷 Français', value: 'fr' },
+            { label: 'English', value: 'en' },
+            { label: 'French', value: 'fr' },
+            { label: 'Hindi', value: 'hi' },
         ];
         this.locale = this.locales[0].value;
         this.selectedLanguage = localStorage.getItem('selectedLanguage');
@@ -37,19 +37,20 @@ var AppComponent = /** @class */ (function () {
         }
         this.bnIdle.startWatching(2).subscribe(function (res) {
             if (res) {
-                console.log("session expired");
+                // console.log("session expired"); commented by Anant
             }
         });
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
-        // if (this.router.getCurrentNavigation() === null) {
-        // if (!this.authService.isLoggedIn()) {
-        //   this.router.navigate(['/login']);
-        // } else {
-        //   this.router.navigate(['/dashboard']);
-        // }
-        // }
+        if (this.router.getCurrentNavigation() === null) {
+            if (!this.authService.isLoggedIn()) {
+                this.router.navigate(['/login']);
+            }
+            else {
+                this.router.navigate(['/dashboard']);
+            }
+        }
         var body = document.getElementsByTagName('body')[0];
         body.classList.add('offcanvas-active');
         body.classList.add('font-montserrat');

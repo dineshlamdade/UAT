@@ -15,7 +15,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(i)">
+              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.accountNumber)">
                 <span tooltip="{{summary.institution}}">{{summary.institution}}</span>
               </td>
               <td class="wd-20"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
@@ -36,7 +36,7 @@
                 </span>
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                  (click)="onEditSummary(summary.institution, summary.policyNo)" tooltip="Edit"></i>&nbsp;&nbsp;
+                  (click)="redirectToDeclarationActual(summary.institution, summary.policyNo)" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
@@ -60,17 +60,18 @@
               <td></td>
             </tr>
             <tr class="table-light-color">
-              <td colspan="3" class="align-right font700">Future New Policy &nbsp;
-                <span class="Letterbadge">B</span>
+              <td colspan="3" class="align-right font700">Future New Policies &nbsp;
+                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                  (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder="0.00"
-                  class="form-control width120 inline_center align-right">
+                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  min="0"  mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                ></p-inputNumber>
               </td>
               <td></td>
               <td></td>
-            </tr>
+           </tr>
+
             <tr class="table-light-color">
               <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
                 <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B

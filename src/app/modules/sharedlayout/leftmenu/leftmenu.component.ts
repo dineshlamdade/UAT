@@ -17,7 +17,11 @@ export class LeftmenuComponent implements OnInit {
   public isJobportalCollapsed = true;
 
   public isInvestmentCollapsed = true;
+  public isEightyCCollapsed = true;
+  public isChapetr6ACollapsed = true;
+
   public isOtherMaster = true;
+  isUploadExcel = true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
@@ -52,13 +56,25 @@ export class LeftmenuComponent implements OnInit {
     if ((this.router.url).includes('investment')) {
       this.isInvestmentCollapsed = false;
     }
+    if ((this.router.url).includes('80C')) {
+      this.isEightyCCollapsed = false;
+    }
+    if ((this.router.url).includes('Chapter-VI-A')) {
+      this.isChapetr6ACollapsed = false;
+    }
     if ((this.router.url).includes('otherMaster')) {
       this.isOtherMaster = false;
     }
     if ((this.router.url).includes('auth')) {
       this.isAuthCollapsed = false;
     }
-    if ((this.router.url).includes('companysetting')) {
+    if ((this.router.url).includes('uploadexcel')) {
+      this.isUploadExcel = false;
+    }
+    if ((this.router.url).includes('co')) {
+      this.ischaptersettingCollapsed = false;
+    }
+    if ((this.router.url).includes('co')) {
       this.ischaptersettingCollapsed = false;
     }
     if ((this.router.url).includes('employee-master')) {
@@ -80,7 +96,7 @@ export class LeftmenuComponent implements OnInit {
       name: 'Company Settings',
       subDetails: [{
         name: 'payroll',
-        routerlink: '/companysetting/payroll',
+        routerlink: '/co/cycle',
       },
         // {
         //   name: '80C-PPF',

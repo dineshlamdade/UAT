@@ -707,16 +707,16 @@
                     </span>
                   </td>
                   <td>
-                    {{ documentSummary.group1MasterList[0].institution }}
+                    {{ documentSummary.institutionName }}
                   </td>
                   <td>
                     <span
                       tooltip="{{
-                        documentSummary.dateOfSubmission | date: 'dd-MMM-yyyy'
+                        documentSummary.dueDate | date: 'dd-MMM-yyyy'
                       }}"
                     >
                       {{
-                        documentSummary.dateOfSubmission | date: "dd-MMM-yyyy"
+                        documentSummary.dueDate | date: "dd-MMM-yyyy"
                       }}</span
                     >
                   </td>
@@ -727,7 +727,7 @@
                       tooltip="{{ policyNo.policyNo }}"
                     >
                       <div colspan="1">
-                        {{ policyNo.accountNumber }}
+                        {{ policyNo.policyNo }}
                       </div>
                     </div>
                   </td>

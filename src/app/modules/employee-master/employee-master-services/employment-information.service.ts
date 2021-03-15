@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
-import { View } from '@ngneat/transloco';
-import { ViewFlags } from '@angular/compiler/src/core';
+
 
 @Injectable({
   providedIn: 'root'

@@ -16,70 +16,32 @@ import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 
 import { MatSliderModule } from '@angular/material/slider';
-import { EightyCComponent } from './eighty-c/eighty-c.component';
+import { HousingloanComponent } from './housingloan/housingloan.component';
+import { HousingloandeclarationComponent } from './housingloan/housingloandeclaration/housingloandeclaration.component';
+import { HousingloanmasterComponent } from './housingloan/housingloanmaster/housingloanmaster.component';
+import { HousingloansummaryComponent } from './housingloan/housingloansummary/housingloansummary.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { NPSComponent } from './VI-A/nps/nps.component';
-import { NpsSummaryComponent } from './VI-A/nps/nps-summary/nps-summary.component';
-import { NpsMasterComponent } from './VI-A/nps/nps-master/nps-master.component';
-import { NpsDeclarationComponent } from './VI-A/nps/nps-declaration/nps-declaration.component';
-import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
-import { PhysicallyHandicappedSummaryComponent } from './VI-A/physically-handicapped/physically-handicapped-summary/physically-handicapped-summary.component';
-import { PhysicallyHandicappedDeclarationAndActualComponent } from './VI-A/physically-handicapped/physically-handicapped-declaration-and-actual/physically-handicapped-declaration-and-actual.component';
-import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
-import { SummaryComponent } from './VI-A/handicapped-dependent/summary/summary.component';
-import { MasterComponent } from './VI-A/handicapped-dependent/master/master.component';
-import { DeclarationAndActualComponent } from './VI-A/handicapped-dependent/declaration-and-actual/declaration-and-actual.component';
-import { ElectricVehicleComponent } from './VI-A/electric-vehicle/electric-vehicle.component';
-import { ElectricVehicleSummaryComponent } from './VI-A/electric-vehicle/electric-vehicle-summary/electric-vehicle-summary.component';
-import { ElectricVehicleMasterComponent } from './VI-A/electric-vehicle/electric-vehicle-master/electric-vehicle-master.component';
-import { ElectricVehicleDeclarationComponent } from './VI-A/electric-vehicle/electric-vehicle-declaration/electric-vehicle-declaration.component';
-import { EducationalLoanComponent } from './VI-A/educational-loan/educational-loan.component';
-import { EducationalLoanSummaryComponent } from './VI-A/educational-loan/educational-loan-summary/educational-loan-summary.component';
-import { EducationalLoanMasterComponent } from './VI-A/educational-loan/educational-loan-master/educational-loan-master.component';
-import { EducationalLoanDeclarationComponent } from './VI-A/educational-loan/educational-loan-declaration/educational-loan-declaration.component';
-import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.component';
-import { InterestOnTtaSummaryComponent } from './VI-A/interest-on-tta/interest-on-tta-summary/interest-on-tta-summary.component';
-import { InterestOnTtaMasterComponent } from './VI-A/interest-on-tta/interest-on-tta-master/interest-on-tta-master.component';
-import { InterestOnTtaDeclarationComponent } from './VI-A/interest-on-tta/interest-on-tta-declaration/interest-on-tta-declaration.component';
-import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
-import { InterestOnTtbSummaryComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-summary/interest-on-ttb-summary.component';
-import { InterestOnTtbMasterComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-master/interest-on-ttb-master.component';
-import { InterestOnTtbDeclarationComponent } from './VI-A/interest-on-deposit-ttb/interest-on-ttb-declaration/interest-on-ttb-declaration.component';
-import { PrimeNGModule } from 'src/app/app.primeNG.module';
-
+import { PrimeNGModule } from '../../app.primeNG.module';
+// import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { HousingrentComponent } from './housingrent/housingrent.component';
+import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
+import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
+import { HouserentsummaryComponent } from './housingrent/houserentsummary/houserentsummary.component';
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-    EightyCComponent,
-    NPSComponent,
-    NpsSummaryComponent,
-    NpsMasterComponent,
-    NpsDeclarationComponent,
-    PhysicallyHandicappedComponent,
-    PhysicallyHandicappedSummaryComponent,
-    PhysicallyHandicappedDeclarationAndActualComponent,
-    HandicappedDependentComponent,
-    SummaryComponent,
-    MasterComponent,
-    DeclarationAndActualComponent,
-    ElectricVehicleComponent,
-    ElectricVehicleSummaryComponent,
-    ElectricVehicleMasterComponent,
-    ElectricVehicleDeclarationComponent,
-    EducationalLoanComponent,
-    EducationalLoanSummaryComponent,
-    EducationalLoanMasterComponent,
-    EducationalLoanDeclarationComponent,
-    InterestOnTtaComponent,
-    InterestOnTtaSummaryComponent,
-    InterestOnTtaMasterComponent,
-    InterestOnTtaDeclarationComponent,
-    InterestOnDepositTtbComponent,
-    InterestOnTtbSummaryComponent,
-    InterestOnTtbMasterComponent,
-    InterestOnTtbDeclarationComponent,
-   ],
+    HousingloanComponent,
+    HousingloanmasterComponent,
+    HousingloansummaryComponent,
+    HousingloandeclarationComponent,
+    HousingrentComponent,
+    HouserentdeclarationComponent,
+    HouserentmasterComponent,
+    HouserentsummaryComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -104,9 +66,14 @@ import { PrimeNGModule } from 'src/app/app.primeNG.module';
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
     PrimeNGModule,
+    // BrowserModule,
+    // BrowserAnimationsModule,
+    InputNumberModule,
+    FormsModule
+
   ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [ DatePipe, NumberFormatPipe ],
 
 })
 export class MyInvestmentsModule { }

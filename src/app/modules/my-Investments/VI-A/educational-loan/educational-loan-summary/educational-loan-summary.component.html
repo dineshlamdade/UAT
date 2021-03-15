@@ -18,10 +18,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td
-                class="text-link wd-20 align-left"
-                (click)="jumpToMasterPage(i)"
-              >
+              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.loanAccountNumber)">
                 <span tooltip="{{ summary.lenderName }}">{{
                   summary.lenderName
                 }}</span>
@@ -65,7 +62,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="6">
+              <td colspan="5">
                   <h3 class="align-left font-14 text-purple font-bold">Computation</h3>
               </td>
             </tr>
