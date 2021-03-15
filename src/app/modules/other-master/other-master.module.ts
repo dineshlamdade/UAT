@@ -43,7 +43,7 @@ import { JobMasterComponent } from './job-master/job-master.component';
     StatutoryComplianceComponent,
     EstablishmentMasterComponent,
     ComplianceMasterComponent,
-    BankMasterAtGroupComponent,
+   // BankMasterAtGroupComponent,
     BankMasterAtCompanyComponent,
     JobMasterComponent,
   ],

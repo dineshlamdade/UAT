@@ -78,10 +78,17 @@
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Reason For Leaving</label>
+<<<<<<< HEAD
                                     <select class="form-control" placeholder="Select Reason"
                                         formControlName="reasonForLeaving"
                                         [(ngModel)]="ExitInformation.reasonForLeaving">
                                         <option value="" selected disabled>Select Reason</option>
+=======
+                                    <select class="form-control" placeholder="Select"
+                                        formControlName="reasonForLeaving"
+                                        [(ngModel)]="ExitInformation.reasonForLeaving">
+                                        <option value="" selected>Select</option>
+>>>>>>> cd55004c41aced666012190b6d2321e5c31082c1
                                         <option *ngFor="let option of reasonForLeavingList" [value]="option">
                                             {{option}}
                                         </option>
@@ -92,7 +99,12 @@
                                     <label class="form-label">
                                         Remark</label>
                                     <input type="text" class="form-control" formControlName="Exitremark"
+<<<<<<< HEAD
                                         [isRequired]="false" [(ngModel)]="ExitInformation.remark">
+=======
+                                        [isRequired]="false" [(ngModel)]="ExitInformation.remark"
+                                        placeholder="Enter Remark">
+>>>>>>> cd55004c41aced666012190b6d2321e5c31082c1
                                 </div>
 
                                 <!-- <div class="col-sm-6 col-md-5">

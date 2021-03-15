@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { PositionDetailsModel } from './../../../dto-models/position-details.model';
+import { PositionDetailsModel } from './../job-information-models/position-details.model';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { JobInformationService } from '../../../employee-master-services/job-information.service';
+import { JobInformationService } from '../job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PayrollAreaInformationService } from './../../../employee-master-services/payroll-area-information.service';
+import { PayrollAreaInformationService } from './../../payroll-area-information/payroll-area-information.service';
 import { Router } from '@angular/router';
 
 
@@ -165,9 +165,7 @@ export class PositionDetailComponent implements OnInit {
           this.filteredEmployeeTypeList.push(item)
         }
         if (item.category == 'Employee Status') {
-          console.log(' item' + item.category);
           this.employeeStatusList.push(item);
-          console.log(' item1' + item.category);
           this.filteredEmployeeStatusList.push(item)
         }
         if (item.category == 'Employee Tax Category') {
@@ -212,7 +210,7 @@ export class PositionDetailComponent implements OnInit {
         this.reportingToDesc = res.data.results[0].reportingToDescription;
         this.reportingToCode = res.data.results[0].reportingValue;
 
-        //dates conversion   
+        //dates conversion
         if (res.data.results[0].employeeTypeFromDate != null) {
           this.positionDetailsModel.employeeTypeFromDate = new Date(res.data.results[0].employeeTypeFromDate);
         }
@@ -451,6 +449,7 @@ export class PositionDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.positionDetailsModel = res.data.results[0];
       this.employeePositionDetailId = this.positionDetailsModel.employeePositionDetailId;
+      this.EventEmitterService.getJobSummaryInitiate('position');
 
       // this.getPositionForm()
       //redirecting page to summary page

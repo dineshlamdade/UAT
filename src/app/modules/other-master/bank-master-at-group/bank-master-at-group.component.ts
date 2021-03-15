@@ -1,4 +1,4 @@
-import { error } from '@angular/compiler/src/util';
+//import { error } from '@angular/compiler/src/util';
 import { Component, OnInit, } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { id } from 'date-fns/locale';
@@ -160,7 +160,7 @@ export class BankMasterAtGroupComponent implements OnInit {
       } else {
       //  this.alertService.sweetalertError(error.error['status'].messsage);
      // this.alertService.sweetalertError(error.error['status'].messsage);
-     this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+    // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
       }
     }, (error: any) => {
       //this.alertService.sweetalertError(error.error['status'].messsage);

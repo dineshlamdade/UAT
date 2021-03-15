@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Input, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormArray, FormGroup, Validators } from '@angular/forms';
-import { BankInformationService } from './../../../employee-master-services/bank-information.service';
+import { BankInformationService } from './../../bank-information/bank-information.service';
 // import { NotificationsService } from '@src/app/core/services/notifications.service';
-import { FamilyInformationService } from './../../../employee-master-services/family-information.service';
+import { FamilyInformationService } from './../family-information.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 
@@ -62,33 +62,15 @@ export class BankDetailsComponent implements OnInit {
   ngOnInit() {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-    this.getStates()
-    // this.toGroups = this.core.list$.value.map(entity => {
-    //   return new FormGroup({
-    //     familyMemberName: new FormControl(entity.familyMemberName, Validators.required),
-    //     state: new FormControl(entity.state, Validators.required),
-    //     bankIFSC: new FormControl(entity.bankIFSC, Validators.required),
-    //     bankName: new FormControl(entity.bankName, Validators.required),
-    //     branchName: new FormControl(entity.branchName, Validators.required),
-    //     branchAddress: new FormControl(entity.branchAddress, Validators.required),
-    //     accountNumber: new FormControl(entity.accountNumber, Validators.required),
-    //     accountHolderName: new FormControl(entity.accountHolderName, Validators.required)
-    //   }, { updateOn: "blur" });
-    // });
-    // this.controls = new FormArray(this.toGroups);
+
     if (this.BankAccountDataSource.length == 0) {
       this.FamilyInformationService.getFamilyMemberInfo(this.employeeMasterId).subscribe(res => {
 
         this.familyMemberList = res.data.results[0];
-        // const TABLE_DATA1: BankElement[] = this.familyMemberList;
-        // this.BankDataSource = new MatTableDataSource(TABLE_DATA1);
 
         this.FamilyInformationService.getBankDetailsInfo(this.employeeMasterId).subscribe(res => {
 
-
           this.BankDetailsList = res.data.results[0];
-          // const TABLE_DATA1: BankElement[] = this.familyMemberList;
-          // this.BankDataSource = new MatTableDataSource(TABLE_DATA1);
 
           const newNomination = [];
           this.familyMemberList.filter(element => {
@@ -106,24 +88,18 @@ export class BankDetailsComponent implements OnInit {
               this.familyMemberList.find((element1) => {
                 if (element.familyMemberInfoId == element1.familyMemberInfoId) {
                   const index = this.familyMemberList.findIndex(x => x.familyMemberInfoId == element.familyMemberInfoId);
-                  // this.familyMemberList.push(element1);
+
                   this.familyMemberList[index] = element;
-                  this.BankAccountDataSource = this.familyMemberList
-                  // const TABLE_DATA: BankElement[] = this.BankDetailsList;
-                  // return this.BankDataSource = new MatTableDataSource(TABLE_DATA);
+                  this.BankAccountDataSource = this.familyMemberList;
                 }
               });
             })
           } else {
             this.BankAccountDataSource = this.BankDetailsList
-            // const TABLE_DATA: BankElement[] = this.BankDetailsList;
-            // return this.BankDataSource = new MatTableDataSource(TABLE_DATA);
           }
         })
         if (this.extractedInfoID.length == 0 && this.BankDetailsList.length == 0) {
-          this.BankAccountDataSource = this.familyMemberList
-          // const TABLE_DATA: BankElement[] = this.familyMemberList;
-          // this.BankDataSource = new MatTableDataSource(TABLE_DATA);
+          this.BankAccountDataSource = this.familyMemberList;
         }
       })
     }
@@ -141,8 +117,6 @@ export class BankDetailsComponent implements OnInit {
     this.FamilyInformationService.postBankDetailsInfoForm(BankAccountDataSource).subscribe(res => {
 
       this.BankAccountDataSource = res.data.results[0];
-      // const TABLE_DATA1: BankElement[] = res.data.results[0];
-      // this.BankDataSource = new MatTableDataSource(TABLE_DATA1);
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
@@ -191,7 +165,7 @@ export class BankDetailsComponent implements OnInit {
   }
 
   differenceOf2Arrays(array1, array2) {
-    // 
+    //
     var temp = [];
 
     for (var i in array1) {
@@ -254,13 +228,7 @@ export class BankDetailsComponent implements OnInit {
       // this.showOptios = true;
     }
   }
-  getStates() {
-    this.BankInformationService.getStates().subscribe(res => {
-      this.states = res.data.results;
-      this.Totalstates = res.data.results;
-      this.editstates = res.data.results;
-    })
-  }
+
 
   validateAccountNo(accountNumber, bank) {
 
@@ -315,7 +283,6 @@ export class BankDetailsComponent implements OnInit {
   }
 
   hideAccountNo(bank) {
-    
     if (bank.accountNo == true) {
       setTimeout(() => {
         bank.accountNo = false;

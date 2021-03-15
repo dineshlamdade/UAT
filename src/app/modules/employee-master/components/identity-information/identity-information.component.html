@@ -24,9 +24,9 @@
                                                     minlength="1" maxlength="12" (keypress)="keyPress($event)"
                                                     [ngClass]="{'is-invalid' : IdentityInfoForm.get('aadhaarNo').status == 'INVALID'}"
                                                     (keyup)="updateAadhaarName(IdentityInformation.employeeMasterRequestDTO.aadhaar)">
-                                                <mat-error style="font-size: 11px;"
+                                                <div class="invalid-error-message"
                                                     *ngIf="IdentityInfoForm.get('aadhaarNo').status == 'INVALID'">
-                                                    Aadhar No. should be 12 digits.</mat-error>
+                                                    Aadhar No. should be 12 digits.</div>
                                             </div>
 
 
@@ -49,9 +49,9 @@
                                                     minlength="1" maxlength="10"
                                                     (ngModelChange)="IdentityInformation.employeeMasterRequestDTO.pan = $event?.toUpperCase()"
                                                     (keyup)="updatePANName(IdentityInformation.employeeMasterRequestDTO.pan)">
-                                                    <mat-error style="font-size: 11px;"
+                                                <div class="invalid-error-message"
                                                     *ngIf="IdentityInfoForm.get('pan').status == 'INVALID'">
-                                                    5 Character, 4 Numbers, 1 Character</mat-error>
+                                                    5 Character, 4 Numbers, 1 Character</div>
                                             </div>
 
                                             <div class="col-sm-6 col-md-3">
@@ -71,9 +71,9 @@
                                                     [ngClass]="{'is-invalid' : IdentityInfoForm.get('uan').status == 'INVALID'}"
                                                     [(ngModel)]="IdentityInformation.employeeMasterRequestDTO.uan"
                                                     (keyup)="updateUANName(IdentityInformation.employeeMasterRequestDTO.uan)">
-                                                    <mat-error style="font-size: 11px;"
+                                                <div class="invalid-error-message"
                                                     *ngIf="IdentityInfoForm.get('uan').status == 'INVALID'">
-                                                    Aadhar No. should be 12 digits.</mat-error>
+                                                    Aadhar No. should be 12 digits.</div>
 
                                             </div>
 
@@ -315,12 +315,12 @@
 
                                             <i class="icon-plus add-icon" [class.disabled]="VisaInformation.countryName=='' || VisaInformation.visaType==''
                                             || !VisaInformation.validTill" [ngClass]="{'invalid-add-button':VisaInformation.countryName ==''
-                                            || VisaInformation.visaType=='' || VisaInformation.validTill=='','valid-add-button':VisaInformation.countryName 
+                                            || VisaInformation.visaType=='' || VisaInformation.validTill=='','valid-add-button':VisaInformation.countryName
                                             || VisaInformation.visaType || VisaInformation.validTill}"
                                                 (click)="pushToGrid()"></i>
                                             <!-- <mat-icon [ngClass]="{'disable':!VisaInformation.countryName || !VisaInformation.visaType
-                                            || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName 
-                                            || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName 
+                                            || !VisaInformation.validTill, 'invalid-add-button':!VisaInformation.countryName
+                                            || !VisaInformation.visaType || !VisaInformation.validTill,'valid-add-button':VisaInformation.countryName
                                             || VisaInformation.visaType || VisaInformation.validTill}" (click)="pushToGrid()">
                                                     add_circle_outline</mat-icon> -->
                                         </div>
@@ -346,10 +346,15 @@
                                                                 <td><i class="fa fa-pencil font-16 text-blue cursor-pointer"
                                                                         tooltip="Edit"
                                                                         (click)="editVisaInfo(visa)"></i>&nbsp;&nbsp;
-                                                                    <i class="fa fa-times font-16 text-red cursor-pointer"
+                                                                    <i class="fa fa-trash-o font-16 text-red cursor-pointer"
                                                                         tooltip="Delete"
-                                                                        (click)="removeVisaItem(visa)"></i>
+                                                                        (click)="removeVisaItem(visa, confirmation)"></i>
                                                                 </td>
+                                                            </tr>
+                                                            <tr *ngIf="data.length == 0">
+                                                                <td colspan="4" class="text-center"><span
+                                                                        class="font-14 font500 text-red">No Data
+                                                                        Available</span></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -365,13 +370,13 @@
                                             <button type="button" tooltip="Previous"
                                                 [routerLink]="['/employee-master/job-information/job-summary']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-10 bg-teal-400"><b><i
-                                                        class="fa fa-chevron-circle-left"
+                                                        class="fa fa-angle-double-left"
                                                         aria-hidden="true"></i></b>Previous</button>
 
                                             <button type="button" tooltip="Next"
                                                 [routerLink]="['/employee-master/compliance-information/compliance-summary']"
                                                 class="custom_button custom_btn btn-labeled btn-labeled-left ml-15 mr-15 bg-teal-400"><b><i
-                                                        class="fa fa-chevron-circle-right"
+                                                        class="fa fa-angle-double-right"
                                                         aria-hidden="true"></i></b>Next</button>
 
                                             <button type="button" (click)="IdentitySaveNextSubmit(IdentityInformation)"
@@ -408,3 +413,26 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #confirmation>
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Confirmation</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <label class="form-label">{{confirmationMsg}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">No</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteRecord()">Yes</button>
+
+    </div>
+</ng-template>

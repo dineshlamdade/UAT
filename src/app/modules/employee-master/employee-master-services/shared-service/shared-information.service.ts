@@ -37,21 +37,21 @@ export class SharedInformationService {
       }))
   }
 
-  // getGlobalLabels() {
+  getGlobalLabels(selectedLanguage) {
+    
+    return this.httpClient.get(environment.baseUrl8083 + '/custom-labelsettings/1/'+ selectedLanguage, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
 
-  //   return this.httpClient.get(environment.baseUrl8083 + '/custom-labelsettings/1', { headers: { 'X-TenantId': 'PaysquareDefault' } })
-  //     .pipe(map((res: any) => {
-  //       return res;
-  //     }))
-  // }
+  getAdditionalFields() {
 
-  // getAdditionalFields() {
-
-  //   return this.httpClient.get(environment.baseUrl8083 + '/additional-fieldsettings/PersonalInfo/2', { headers: { 'X-TenantId': 'PaysquareDefault' } })
-  //     .pipe(map((res: any) => {
-  //       return res;
-  //     }))
-  // }
+    return this.httpClient.get(environment.baseUrl8083 + '/additional-fieldsettings/PersonalInfo/2', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
 
   sweetalertMasterSuccess(message: any, text: any) {
     Swal.fire({

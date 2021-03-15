@@ -21,9 +21,9 @@ export class AppComponent implements OnInit {
   public amethystClass: boolean;
   public selectedLanguage: any;
   public locales = [
-    { label: '🇺🇸 English (US)', value: 'en-US' },
-    // { label: '🇬🇧 English (UK)', value: 'en-GB' },
-    { label: '🇫🇷 Français', value: 'fr' },
+    { label: 'English', value: 'en' },
+    { label: 'French', value: 'fr' },
+    { label: 'Hindi', value: 'hi' },
   ];
   public locale = this.locales[0].value;
 
@@ -51,11 +51,11 @@ export class AppComponent implements OnInit {
      }
   public ngOnInit(): void {
     // if (this.router.getCurrentNavigation() === null) {
-    // if (!this.authService.isLoggedIn()) {
-    //   this.router.navigate(['/login']);
-    // } else {
-    //   this.router.navigate(['/dashboard']);
-    // }
+    //   if (!this.authService.isLoggedIn()) {
+    //     this.router.navigate(['/login']);
+    //   } else {
+    //     this.router.navigate(['/dashboard']);
+    //   }
     // }
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('offcanvas-active');
@@ -113,14 +113,14 @@ export class AppComponent implements OnInit {
     document.getElementsByClassName('overlay')[0].classList.remove('open');
   }
 
-    // change locale/language at runtime
-    updateLocale(locale) {
-      localStorage.setItem("selectedLanguage", locale);
+  // change locale/language at runtime
+  updateLocale(locale) {
+    localStorage.setItem("selectedLanguage", locale);
 
-      if (this.locales.some(l => l.value === locale)) {
-        this.locale = locale;
-      }
-      const lang = locale.substring(0, 2);
-      this.translocoService.setActiveLang(lang);
+    if (this.locales.some(l => l.value === locale)) {
+      this.locale = locale;
     }
+    const lang = locale.substring(0, 2);
+    this.translocoService.setActiveLang(lang);
+  }
 }

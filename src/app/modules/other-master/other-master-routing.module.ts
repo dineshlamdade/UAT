@@ -52,11 +52,11 @@ const routes: Routes = [
     component: ComplianceMasterComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
-  {
-    path: 'bankMasterAtGroup',
-    component: BankMasterAtGroupComponent,
-    data: { title: ':: Delizia-HR :: Home' },
-  },
+  // {
+  //   path: 'bankMasterAtGroup',
+  //   component: BankMasterAtGroupComponent,
+  //   data: { title: ':: Delizia-HR :: Home' },
+  // },
   {
     path: 'bankMasterAtCompany',
     component: BankMasterAtCompanyComponent,

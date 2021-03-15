@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PayrollAreaInformationService } from '../../employee-master-services/payroll-area-information.service';
-import { EmployeeSummaryBean } from './../../dto-models/employee-summary.model';
-import { EmployeeSummaryService } from './../../employee-master-services/employee-summary.service';
+import { PayrollAreaInformationService } from '../payroll-area-information/payroll-area-information.service';
+import { EmployeeSummaryBean } from './employee-summary.model';
+import { EmployeeSummaryService } from './employee-summary.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { AuthService } from './../../../auth/auth.service';
 
@@ -13,35 +13,35 @@ import { AuthService } from './../../../auth/auth.service';
 })
 export class EmployeeSummaryComponent implements OnInit {
 
-  imageUrl: any = "./assets/images/empIcon.png";
+  imageUrl: any = "./assets/images/profile_Img.png";
   employeeMasterId: number;
   EmployeeSummary = new EmployeeSummaryBean();
   Subscription: Subscription;
   payrollAreaList: Array<any> = [];
   filteredPayrollAreaList: Array<any> = [];
   payrollAreaCode: any;
-  companyName:any;
+  companyName: any;
 
 
   constructor(private EmployeeSummaryService: EmployeeSummaryService,
-    private PayrollAreaService: PayrollAreaInformationService, 
+    private PayrollAreaService: PayrollAreaInformationService,
     private EventEmitterService: EventEmitterService,
     private AuthService: AuthService) { }
 
   ngOnInit(): void {
 
     this.payrollAreaCode = '';
-    this.companyName='';
+    this.companyName = '';
 
     //get payroll area code from local storage
     const payrollAreaCode = localStorage.getItem('jobInformationPayrollAreaCode')
     this.payrollAreaCode = new String(payrollAreaCode);
 
-   //get company name from local storage
-   const companyName = localStorage.getItem('jobInformationCompanyName')
-   if(companyName!=null){
-    this.companyName = new String(companyName);
-   }
+    //get company name from local storage
+    const companyName = localStorage.getItem('jobInformationCompanyName')
+    if (companyName != null) {
+      this.companyName = new String(companyName);
+    }
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
@@ -70,13 +70,13 @@ export class EmployeeSummaryComponent implements OnInit {
       if (this.payrollAreaList.length == 1) {
         //set default payroll area
         this.payrollAreaCode = this.payrollAreaList[0].payrollAreaCode;
-        localStorage.setItem('jobInformationPayrollAreaCode',  this.payrollAreaCode);
+        localStorage.setItem('jobInformationPayrollAreaCode', this.payrollAreaCode);
 
         //set default company
-        let result=res.data.results[0];
-        this.companyName = result[0].payrollAreaAndCompany; 
+        let result = res.data.results[0];
+        this.companyName = result[0].payrollAreaAndCompany;
         //this.companyName = result[0].payrollAreaId.companyId.companyName;
-        localStorage.setItem('jobInformationCompanyName',  this.companyName);
+        localStorage.setItem('jobInformationCompanyName', this.companyName);
       }
       else {
         //get payroll area code from local storage
@@ -85,16 +85,17 @@ export class EmployeeSummaryComponent implements OnInit {
 
         //get company from local storage
         const companyName = localStorage.getItem('jobInformationCompanyName')
-        if(companyName!=null){
+        if (companyName != null) {
           this.companyName = new String(companyName);
         }
-    
+
       }
     })
- 
+
   }
 
   getSummaryForm() {
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
     this.EmployeeSummaryService.getEmployeeSummaryInfo(this.employeeMasterId, this.payrollAreaCode).subscribe(res => {
@@ -132,11 +133,11 @@ export class EmployeeSummaryComponent implements OnInit {
     this.payrollAreaCode = event;
 
     const toSelect = this.filteredPayrollAreaList.find(
-      (c) => c.payrollAreaCode ===  this.payrollAreaCode
+      (c) => c.payrollAreaCode === this.payrollAreaCode
     );
     //this.companyName = toSelect.payrollAreaId.companyId.companyName;
     this.companyName = toSelect.payrollAreaAndCompany;
-    localStorage.setItem('jobInformationCompanyName',  this.companyName);
+    localStorage.setItem('jobInformationCompanyName', this.companyName);
 
     this.getSummaryForm();
   }

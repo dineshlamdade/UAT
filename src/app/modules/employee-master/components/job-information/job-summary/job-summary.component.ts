@@ -4,8 +4,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JobInformationService } from '../../../employee-master-services/job-information.service';
-import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
+import { JobInformationService } from '../job-information.service';
+import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
 
 @Component({
   selector: 'app-job-summary',
@@ -91,7 +91,7 @@ export class JobSummaryComponent implements OnInit {
   getPayrollAreaInformation() {
 
     this.PayrollAreaService.getDistinctPayrollAreaInformation(this.employeeMasterId).subscribe(res => {
-      
+
       res.data.results[0].forEach(item => {
 
         // this.payrollAreaList.push(item.payrollAreaCode);

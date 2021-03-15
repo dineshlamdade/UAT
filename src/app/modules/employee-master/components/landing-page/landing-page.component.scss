@@ -1,3 +1,18 @@
 .landing-card {
     width: 275px;
 }
+
+.p-checkbox .p-checkbox-box.p-highlight {
+    border-color: #4CAF50;
+    background: #4CAF50;
+    display: none !important;
+}
+
+.p-checkbox .p-checkbox-box {
+    display: none !important;
+}
+
+.title-label{
+    font-size: 14px;
+    font-weight: 600;
+}

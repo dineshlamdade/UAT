@@ -11,9 +11,15 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Transfer To</label>
+<<<<<<< HEAD
                                     <select class="form-control" placeholder="Select Company"
                                         formControlName="transferTo" [(ngModel)]="TransferToInformation.transferTo">
                                         <option value="" selected disabled>Select Company</option>
+=======
+                                    <select class="form-control" placeholder="Select"
+                                        formControlName="transferTo" [(ngModel)]="TransferToInformation.transferTo">
+                                        <option value="" selected>Select</option>
+>>>>>>> cd55004c41aced666012190b6d2321e5c31082c1
                                         <option *ngFor="let option of companyListForJoining" [value]="option">
                                             {{option}}
                                         </option>
@@ -40,7 +46,11 @@
                                     <label class="form-label">
                                         Remark</label>
                                     <input type="text" class="form-control" [(ngModel)]="TransferToInformation.remark"
+<<<<<<< HEAD
                                         formControlName="transferRemark">
+=======
+                                        formControlName="transferRemark"  placeholder="Enter Remark">
+>>>>>>> cd55004c41aced666012190b6d2321e5c31082c1
                                 </div>
                             </div>
                         </fieldset>

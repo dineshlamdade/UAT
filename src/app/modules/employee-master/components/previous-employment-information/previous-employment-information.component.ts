@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, Pipe, PipeTransform } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { PreviousEmploymentInformation } from './../../dto-models/previous-employment-information.model';
+import { PreviousEmploymentInformation } from './previous-employment-information.model';
 // import * as wjcGrid from '@grapecity/wijmo.grid';
 // import * as wjcCore from '@grapecity/wijmo';
 // import * as wjcInput from '@grapecity/wijmo.input';
 import { DatePipe } from '@angular/common';
 import { Subscribable, Subscription } from 'rxjs';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-import { PreviousEmploymentInformationService } from './../../employee-master-services/previous-employment-information/previous-employment-information.service';
+import { PreviousEmploymentInformationService } from './previous-employment-information.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
@@ -136,43 +136,6 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     });
   }
 
-  // previousEmploymentInfoSubmit() {
-
-  //   this.summaryGridData.forEach(data => {
-  //     data.employeeMasterId = this.employeeMasterId;
-
-  //     if (data.employeePreviousEmploymentId) {
-  //       this.PreviousEmpInformationService.putPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-
-  //         // this.previousSmmaryGridData = res.data.results[0];
-  //         this.getPreviousEmployees();
-
-  //         // if (this.summaryGridData.length > 0) {
-  //         //   this.EmptyGridTrue = true;
-  //         // }
-  //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-
-  //       }, (error: any) => {
-  //         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-  //         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
-  //       })
-  //     } else {
-  //       this.PreviousEmpInformationService.postPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-
-  //         // this.previousSmmaryGridData = res.data.results[0];
-  //         this.getPreviousEmployees();
-  //         this.summaryGridData = [];
-  //         if (this.previousSmmaryGridData.length > 0) {
-  //           this.EmptyGridTrue = true;
-  //         }
-  //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-
-  //       }, (error: any) => {
-  //         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-  //       })
-  //     }
-  //   })
-  // }
   PreviousEmpSaveNextSubmit(previousEmploymentInformation) {
     this.saveNextBoolean = true;
 
@@ -182,7 +145,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
 
 
   postEmploymentInfoForm(previousEmploymentInformation) {
-    
+
     previousEmploymentInformation.employeeMasterId = this.employeeMasterId;
     previousEmploymentInformation.dateOfJoining = this.datepipe.transform(previousEmploymentInformation.dateOfJoining, 'dd-MMM-yyyy');
     previousEmploymentInformation.dateOfRelieving = this.datepipe.transform(previousEmploymentInformation.dateOfRelieving, 'dd-MMM-yyyy');
