@@ -9,7 +9,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class Mediclaim80DService {
 
-  apiUrl = environment.baseUrl8085;
+  apiUrl = environment.apiBaseUrl;
 
   constructor(private _HTTP: HttpClient) { }
 

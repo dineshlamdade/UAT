@@ -9,7 +9,7 @@ import { Observable, of, throwError } from 'rxjs';
 })
 export class FixedDepositsService {
 
-  apiUrl = environment.baseUrl8085;
+  apiUrl = environment.apiBaseUrl;
 
   constructor(private _HTTP: HttpClient) { }
 

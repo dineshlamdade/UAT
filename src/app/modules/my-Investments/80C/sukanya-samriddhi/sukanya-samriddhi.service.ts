@@ -8,7 +8,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class SukanyaSamriddhiService {
-  apiUrl = environment.baseUrl8085;
+  apiUrl = environment.apiBaseUrl;
 
   constructor(private _HTTP: HttpClient) { }
 

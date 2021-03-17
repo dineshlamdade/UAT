@@ -9,7 +9,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class NpsService {
 
-  apiUrl = environment.baseUrl8085;
+  apiUrl = environment.apiBaseUrl;
   apiUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }

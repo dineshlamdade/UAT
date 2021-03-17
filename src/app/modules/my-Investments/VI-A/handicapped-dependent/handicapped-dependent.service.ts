@@ -8,7 +8,7 @@ import { Observable, of, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class HandicappedDependentService {
-  apiUrl = environment.baseUrl8085;
+  apiUrl = environment.apiBaseUrl;
   apiUrlEmployee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }

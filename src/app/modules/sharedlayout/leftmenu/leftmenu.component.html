@@ -339,12 +339,10 @@
             </li> -->
 
 
-<<<<<<< HEAD
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a [routerLink]="['/dashboard']" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
           aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
             class="icon-rocket"></i><span>Dashboard</span></a>
-=======
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
                 <a [routerLink]="['/dashboard']" (click)="isCollapsed = !isCollapsed"
                     [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
@@ -424,10 +422,9 @@
                             [routerLink]="['/employee-master/identity-information']"><span>{{
                                 'EmployeeMaster.identityInformation' | transloco }}</span></a>
                     </li>
->>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
 
 
-      </li>
+
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
 
         <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
@@ -523,63 +520,6 @@
           [attr.aria-expanded]="!isCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
           aria-expanded="true"><i class="icon-credit-card"></i><span>Investment</span></a>
         <ul class="collapse" id="investmentCollapsed" [collapse]="isInvestmentCollapsed" [isAnimated]="true">
-<<<<<<< HEAD
-
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-            <a href="javascript:void(0)" (click)="isEightyCCollapsed = !isEightyCCollapsed"
-              [attr.aria-expanded]="!isEightyCCollapsed" aria-controls="collapseBasic" class="has-arrow arrow-c"
-              aria-expanded="true"><i class="icon-credit-card"></i><span>Eighty-C</span></a>
-            <ul class="collapse" id="eightyCCollapsed" [collapse]="isEightyCCollapsed" [isAnimated]="true">
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis " [routerLink]="['/investment/80C-LIC']"><span>LIC</span></a></li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis" [routerLink]="['/investment/80C-PPF']"><span>PPF</span></a></li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-PensionPlan']"><span>PensionPlan</span></a></li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-SukanyaSamriddhiScheme']"><span>SukanyaSamriddhiScheme</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-PostOfficeTimeDepositScheme']"><span>PostOfficeTimeDepositScheme</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-NationalSavingCertificate']"><span>NationalSavingCertificate</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-UnitLinkedInsurancePlan']"><span>UnitLinkedInsurancePlan</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-TaxsavingMutualFund']"><span>TaxsavingMutualFund</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-FixedDepositsMoreThan5Years']"><span>FixedDepositsMoreThan5Years</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-TaxSavingSharesNabardandOtherBonds']"><span>TaxSavingSharesNabardandOtherBonds</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-PostOfficeTermDeposit']"><span>PostOfficeTermDeposit</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-SeniorCitizenSavingScheme']"><span>SeniorCitizenSavingScheme</span></a>
-              </li>
-              <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a
-                  class="submenu text-ellipsis"
-                  [routerLink]="['/investment/80C-TuitionFees']"><span>TuitionFees</span></a>
-              </li>
-
-            </ul>
-=======
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/investment/80C-LIC']"><span>80C-LIC</span></a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
@@ -591,7 +531,6 @@
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
               [routerLink]="['/investment/80C-PostOfficeTimeDepositScheme']"><span>80C-PostOfficeTimeDepositScheme</span></a>
->>>>>>> e418694430886fc1416a40c4267767b3665063c1
           </li>
 
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
@@ -601,18 +540,10 @@
               [routerLink]="['/investment/80C-UnitLinkedInsurancePlan']"><span>80C-UnitLinkedInsurancePlan</span></a>
           </li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-<<<<<<< HEAD
             [routerLink]="['/investment/HousingLoan']" ><span>Housing Loan</span></a></li>
 
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/investment/HouseRent']" ><span>House Rent</span></a></li>
-=======
-              [routerLink]="['/investment/80C-TaxsavingMutualFund']"><span>80C-TaxsavingMutualFund</span></a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/investment/Chapter-VI-A-NPS']"><span>Chapter-VI-A-NPS</span></a></li>
-
->>>>>>> e418694430886fc1416a40c4267767b3665063c1
 
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a href="javascript:void(0)" (click)="isCollapsedLMS = !isCollapsedLMS"
@@ -640,48 +571,6 @@
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                   [routerLink]="['/workflow/workflowMastere']"><span>Master 3</span></a></li>
 
-<<<<<<< HEAD
-            </ul>
-          </li>
-        </ul>
-      </li>
-
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a href="javascript:void(0)" (click)="isOtherMaster = !isOtherMaster" [attr.aria-expanded]="!isOtherMaster"
-          aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
-            class="icon-credit-card"></i><span>Other Master</span></a>
-        <ul class="collapse" id="collapseBasic" [collapse]="isOtherMaster" [isAnimated]="true">
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/companyGroupMaster']"><span>Company Group Master</span></a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/companyMaster']"><span>Company Master</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/companyRegistrationDetails']"><span>Company Registration
-                Details</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/complianceHead']"><span>Compliance Head</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/statutoryCompliance']"><span>Statutory Institution Master</span></a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/establishmentMaster']"><span>Establishment Master</span></a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/complianceMaster']"><span>Compliance Master</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/complianceMapping']"><span>Compliance Mapping</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/bankMasterAtCompany']"><span>Bank Master At Company</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/bankMasterAtGroup']"><span>Bank Master At Group</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/otherMaster/jobMaster']"><span>Job Master</span></a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/uploadexcel/uploadexcelhome']"><span>Upload Excel</span></a></li>
-
-
-=======
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/investment/80C-NationalSevingCertificate']"><span>80C-NationalSevingCertificate</span></a>
                     </li>
@@ -767,20 +656,11 @@
                             [routerLink]="['/otherMaster/bankMasterAtGroup']"><span>Bank Master At Group</span></a></li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/otherMaster/jobMaster']"><span>Job Master</span></a></li>
->>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
 
 
         </ul>
       </li>
 
-<<<<<<< HEAD
-      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-        <a href="javascript:void(0)" (click)="ischaptersettingCollapsed = !ischaptersettingCollapsed"
-          [attr.aria-expanded]="!ischaptersettingCollapsed" aria-controls="investmentsCollapsed"
-          class="has-arrow arrow-c"><i class="fa fa-cogs" aria-hidden="true"></i><span>Company Settings</span></a>
-        <ul class="collapse" id="ischaptersettingCollapsed" [collapse]="ischaptersettingCollapsed" [isAnimated]="true">
-          <!--  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-=======
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
                 <a href="javascript:void(0)" (click)="ischaptersettingCollapsed = !ischaptersettingCollapsed"
                     [attr.aria-expanded]="!ischaptersettingCollapsed" aria-controls="investmentsCollapsed"
@@ -789,35 +669,10 @@
                 <ul class="collapse" id="ischaptersettingCollapsed" [collapse]="ischaptersettingCollapsed"
                     [isAnimated]="true">
                     <!--  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
->>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd
                         <a class="submenu" [routerLink]="['/investments-houseRent']" href="javascript:void(0)">House Rent</a>
                     </li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-houseLoan']" href="javascript:void(0)">House Loan</a></li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-chapterSixA']" href="javascript:void(0)">Chapter VI-A</a></li> -->
-<<<<<<< HEAD
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/companysetting/business-cycle']" href="javascript:void(0)">Business Cycle</a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/companysetting/head-creation']" href="javascript:void(0)">Head Creation</a></li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/companysetting/attribute-creation']" href="javascript:void(0)">Attribute Creation</a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/companysetting/attribute-selection']" href="javascript:void(0)">Attribute Selection</a>
-          </li>
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/companysetting/payroll-head-group-creation']" href="javascript:void(0)">Payroll Head
-              Group
-              Creation</a>
-          </li>
-        </ul>
-      </li>
-
-
-    </ul>
-  </nav>
-</div>
-=======
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                             [routerLink]="['/bc']" href="javascript:void(0)">Business Cycle</a></li>
                     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
@@ -835,6 +690,3 @@
 
 
         </ul>
-    </nav>
-</div>
->>>>>>> 3e97da6c4527018bec137c095d4a50346a99bbdd

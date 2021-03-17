@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class HouseRentService {
-  public apiUrl = environment.baseUrl8085;
+  public apiUrl = environment.apiBaseUrl;
   constructor(private _HTTP: HttpClient) { }
 
   public submitHousingLoanMasterData(houseRentalMasterDocument: File[],
@@ -67,6 +67,7 @@ export class HouseRentService {
     },
     ));
   }
+
 
   public getHousePropertyFilterData(propertyName: String): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'housePropertyTransaction/' + propertyName)
