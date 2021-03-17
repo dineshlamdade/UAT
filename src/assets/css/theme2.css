@@ -2500,3 +2500,19 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+
+iframe html body img
+{
+height: 100%!important;
+width: 100%!important;
+object-fit: cover!important;
+}
+iframe.imagecover {
+  height: 100vh!important;
+  width: 100%!important;
+}
+iframe.imagecover body img {
+  width: 100%!important;
+  height: 100%!important;
+}

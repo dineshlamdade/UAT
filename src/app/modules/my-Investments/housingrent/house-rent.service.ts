@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class HouseRentService {
-  public apiUrl = environment.apiBaseUrl;
+  public apiUrl = environment.baseUrl8085;
   constructor(private _HTTP: HttpClient) { }
 
   public submitHousingLoanMasterData(houseRentalMasterDocument: File[],
