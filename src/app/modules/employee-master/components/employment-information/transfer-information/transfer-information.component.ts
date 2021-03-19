@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { TransferToModel } from './../../../dto-models/employment-forms-models/transfer-to.model';
-import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service'
+import { TransferToModel } from './../employment-forms-models/transfer-to.model';
+import { EmploymentInformationService } from './../employment-information.service'
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -30,7 +30,7 @@ export class TransferInformationComponent implements OnInit {
   companyListForJoining: Array<any> = [];
   viewTransfer: boolean = false;
   editTransfer: boolean = false;
-
+  public currentCompany:any;
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
     private EventEmitterService: EventEmitterService,
@@ -49,15 +49,24 @@ export class TransferInformationComponent implements OnInit {
     const JoiningDate = localStorage.getItem('joiningDate');
     this.JoiningDate = new Date(JoiningDate)
     //get group companies infomartion
+    this.EmploymentInformationService.getJoiningInformation(this.employeeMasterId).subscribe(res =>{
+      this.currentCompany=res.data.results[0]["companyName"];
+     
+    })
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
 
       let list = res.data.results;
+
       list.forEach(element => {
-
+      
         this.companyListForJoining.push(element.companyName);
-      });
-
+        
+      }); 
+      this.companyListForJoining.forEach((element,index)=>{
+        if(element==this.currentCompany) this.companyListForJoining.splice(index,1);
+     });
     })
+    
     this.EmploymentInformationService.getNumber().subscribe(number => {
 
       this.employeeTransferId = number.text;
@@ -136,7 +145,9 @@ export class TransferInformationComponent implements OnInit {
     //get transfer info service 1
     this.EmploymentInformationService.getTransferToInformation(employeeTransferId).subscribe(res => {
       this.TransferToInformation = res.data.results[0];
+    
     })
+   
     this.TransferForm.markAsUntouched();
   }
 

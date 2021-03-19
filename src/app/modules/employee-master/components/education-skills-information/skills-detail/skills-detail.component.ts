@@ -2,9 +2,9 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeSkillDetailsRequest } from '../../../dto-models/educatio-skills.model';
+import { employeeSkillDetailsRequest } from '../educatio-skills.model';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
+import { EducationSkillsInformationService } from '../education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -42,6 +42,7 @@ export class SkillsDetailComponent implements OnInit {
   skillEditFlag: boolean = false;
   skillviewFlag: boolean = false;
   confirmationMsg: string;
+  descriptionInvalid:boolean;
 
 
 
@@ -56,7 +57,7 @@ export class SkillsDetailComponent implements OnInit {
     this.SkillInfoForm = this.formBuilder.group({
       skillName: ['', Validators.required],
       skillDescription: ['', Validators.required],
-      proficiency: ['', Validators.required],
+      proficiency: [''],
     });
 
     const empId = localStorage.getItem('employeeMasterId')
@@ -136,7 +137,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   editSkillRow(skill) {
-
+    window.scrollTo(0, 0);
     this.skillEditFlag = true;
     this.skillviewFlag = false;
     this.employeeSkillDetailsRequestModel.employeeSkillInfoId = skill.employeeSkillInfoId;
@@ -146,10 +147,13 @@ export class SkillsDetailComponent implements OnInit {
 
     const temp1 = this.SkillInfoForm.get('skillName');
     temp1.enable();
+    temp1.setValue(skill.skillName)
     const temp2 = this.SkillInfoForm.get('skillDescription');
     temp2.enable();
+    temp2.setValue(skill.skillDescription)
     const temp3 = this.SkillInfoForm.get('proficiency');
     temp3.enable();
+    temp3.setValue(skill.proficiency)
   }
 
   viewSkillRow(skill) {
@@ -265,4 +269,23 @@ export class SkillsDetailComponent implements OnInit {
     this.employeeSkillDetailsRequestModel.skillName = '';
     this.SkillInfoForm.get('skillName').setValue('');
   }
+
+  isDescriptionContainsOnlySpecialCharacter(){ 
+     
+    this.descriptionInvalid = false
+    var splChars = "*|,\":<>[]{}`\!';()@&^$#%1234567890 ";
+    for ( var i = 0; i < this.SkillInfoForm.get( 'skillDescription' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.SkillInfoForm.get( 'skillDescription' ).value.charAt( i ) ) != -1 ) {
+        this.descriptionInvalid = true;
+      } else {
+        this.descriptionInvalid = false;
+        break;
+      }
+    }
+    if ( this.descriptionInvalid == true ) {
+      this.SkillInfoForm.get('skillDescription').invalid;
+    }
+  }
+
+
 }

@@ -17,6 +17,7 @@
         <label class="form-label">Issue Type</label>
         <select name="Issue_Type" id="IssueType" formControlName="issueType" class="form-control custom-select"
           [ngClass]="{ 'is-invalid': submitted && masterForm.issueType.errors }" (change)="changeStartMaxDate($event)">
+          <option [ngValue]="null">Select</option>
           <option *ngFor="let issueTypeList of issueTypeOfList" [value]="issueTypeList.value">
             {{ issueTypeList.label }}
           </option>
@@ -124,6 +125,7 @@
                   'is-invalid':
                     submitted && masterForm.frequencyOfPayment.errors
                 }">
+                <option [ngValue]="null">Select</option>
                 <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
                   {{ frequencyOfPayment.label }}
                 </option>
@@ -279,11 +281,11 @@
                           {{ summary.annualAmount | number: "1.2-2" }}
                         </span>
                       </td>
-                      <td class="wd-10">
+                      <!-- <td class="wd-10">
                                    <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
                                    {{summary.ecs==1?'Yes':'No'}}
                                    </span>
-                                </td>
+                                </td> -->
                     </tr>
                     <tr *ngIf="!paymentDetailGridData?.length">
                       <td colspan="7">
@@ -449,7 +451,7 @@
                       <span tooltip="Submitted">Submitted</span>
                     </td>
                     <td class="wd-5">
-                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)"
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)"
                         tooltip="Edit"></i>
                       &nbsp;&nbsp;
                     </td>

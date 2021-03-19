@@ -17,7 +17,7 @@
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                data-provide="datepicker" data-date-autoclose="true"
+                                                data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                 class="form-control" formControlName="projectedRetirementDate"
                                                 [(ngModel)]="ExitInformation.retirementDate" placeholder="  /   /"
                                                 bsDatepicker>
@@ -35,7 +35,7 @@
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="resignationDate" [minDate]="JoiningDate"
-                                                [maxDate]="today"
+                                                [maxDate]="today" placement="center"
                                                 (bsValueChange)="calculateExpectedLeavingDateFromMonths(ExitInformation.resignationDate)"
                                                 [(ngModel)]="ExitInformation.resignationDate" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
@@ -52,10 +52,16 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="expectedLeavingDate"
+                                                 [minDate]="resigndate"
+                                                    [maxDate]="lastWorkDate" 
+                                                    (click)="lastWorkingDateChanged()"
+                                                
+                                                formControlName="expectedLeavingDate" placement="center"
                                                 [(ngModel)]="ExitInformation.expectedLeavingDate" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
+                                        <!-- [minDate]="ExitInformation.resignationDate"
+                                        [maxDate]="ExitInformation.lastWorkingDate" -->
                                     </div>
                                 </div>
 
@@ -68,11 +74,13 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="lastWorkingDate"
-                                                [minDate]="ExitInformation.resignationDate"
+                                                formControlName="lastWorkingDate" placement="center"
+                                                [minDate]="resigndate"
+                                                
                                                 [(ngModel)]="ExitInformation.lastWorkingDate" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
+                                        <!-- [minDate]="ExitInformation.resignationDate" -->
                                     </div>
                                 </div>
 

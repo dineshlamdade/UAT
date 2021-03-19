@@ -970,6 +970,19 @@ strong {
 {
   text-align: center!important;
 }
+.justify-content-spacearound {
+    justify-content: space-around!important;
+}
+
+.justify-content-spacebetween {
+    justify-content: space-between!important;
+}
+
+.align-items-center {
+    align-items: center!important;
+}
+
+
 /* custom text color css end */
 
 
@@ -1426,6 +1439,12 @@ padding: 0.5rem 0!important;
 .card-border {
   border: 2px solid #ddd!important;
   border-radius: 4px!important;
+}
+
+.card-box-border {
+    border: 1px solid #ccc!important;
+    border-radius: 2px!important;
+    background-color: #fff!important;
 }
 
 .disabled_label {
@@ -2243,6 +2262,14 @@ input {
   grid-template-rows: 40px 1fr;
   grid-template-columns: 2fr 2fr!important;
   font-family: Montserrat, sans-serif!important;
+}
+
+.flex-directioncol {
+    flex-direction: column!important;
+}
+
+.mb_5 {
+    margin-bottom: 5px!important;
 }
 
 

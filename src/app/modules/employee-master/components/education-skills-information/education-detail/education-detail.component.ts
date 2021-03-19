@@ -2,12 +2,13 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest } from '../../../dto-models/educatio-skills.model';
+import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest } from './../educatio-skills.model';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
+import { EducationSkillsInformationService } from './../education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { exists } from 'fs';
 
 
 @Component({
@@ -33,8 +34,8 @@ export class EducationDetailComponent implements OnInit {
   standardDurationList = 'Days,Weeks,Months,Years'.split(',');
   highestEducationList = 'Doctorate,Post Graduate,Graduate,Technical(Professional),Higher Secondary,Senior Secondary,Non Matric,Illiterate'.split(',');
   filteredHighestEducationList = 'Illiterate,Non Matric,Senior Secondary,Higher Secondary,Graduate,Post Graduate,Doctorate,Technical(Professional)'.split(',');
-  courseTypeList = 'Full-Time, Part-Time, Correspondance'.split(',');
-  filteredcourseTypeList = 'Full-Time, Part-Time, Correspondance'.split(',');
+  courseTypeList = 'Full-Time, Part-Time, Correspondence'.split(',');
+  filteredcourseTypeList = 'Full-Time, Part-Time, Correspondence'.split(',');
   EducationSummaryGridData: Array<any> = [];
   EducationSummaryData: Array<any> = [];
   SkillSummaryGridData: Array<any> = [];
@@ -72,7 +73,7 @@ export class EducationDetailComponent implements OnInit {
 
     this.getAllEducationSummary();
     // this.getAllSkillsSummary();
-    this.getEducationList();
+    // this.getEducationList();
     // this.getSkillsList();
   }
 
@@ -86,7 +87,7 @@ export class EducationDetailComponent implements OnInit {
       location: [''],
       instituteUniversityName: [''],
       startDate: [''],
-      endDate: [''],
+      endDate: [{ value: '', disabled: true }],
       percentageOrCGPAOrGrade: [''],
       specialization1: [''],
       specialization2: [''],
@@ -121,6 +122,9 @@ export class EducationDetailComponent implements OnInit {
         })
       }
     })
+    this.EducationInfoForm.get('startDate').valueChanges.subscribe(() => {
+      this.checkStartDate();
+    })
   }
 
 
@@ -131,17 +135,40 @@ export class EducationDetailComponent implements OnInit {
       // this.EducationSummaryGridData = res.data.results[0];
       this.EducationSummaryData = res.data.results[0];
       this.validatingHigherQualification();
+      // console.log(this.EducationSummaryData)
+      this.setEducationList();
     }, (error: any) => {
       if (error["error"]["status"]["messsage"] == 'EmployeeSkillDetails details list is empty') {
         this.EducationSummaryData = [];
       }
     })
   }
+  setEducationList() {
+    // to check the value is present or not in the grid for senior secondary and higher secondary
+    var target = this.EducationSummaryData.find(temp => temp.education == 'Higher Secondary' || 'Senior Secondary')
+
+    let len = this.EducationSummaryData.length - 1;
+    for (let i = len; i > 0; i--) {
+      if ((this.EducationSummaryData[i].education == 'Senior Secondary') || (this.EducationSummaryData[i].education == 'Higher Secondary'))  //("Higher Secondary")) //|| 
+      {
+        let value = this.EducationSummaryData[i].education;
+        for (let j = this.highestEducationList.length - 1; j > 0; j--) {
+          if (this.highestEducationList[j] === value) {
+            this.highestEducationList.splice(j, 1);
+            break;
+          }
+        }
+      }
+    }
+   // let now = this.EducationSummaryData[0]['education'];    
+  }
+
 
   getEducationList() {
 
     this.EducationSkillsInformationService.getEducationList().subscribe(res => {
       this.educationList = res.data.results;
+
       setTimeout(() => {
         this.employeeEducationRequestModel.education = '';
         this.employeeEducationRequestModel.specialisation1 = '';
@@ -202,7 +229,7 @@ export class EducationDetailComponent implements OnInit {
   }
 
   editEducationRow(education) {
-
+    window.scrollTo(0, 0);
     this.educationEditFlag = true;
     this.educationviewFlag = false;
     this.validateQualification = false;
@@ -318,6 +345,7 @@ export class EducationDetailComponent implements OnInit {
       confirmation,
       Object.assign({}, { class: 'gray modal-md' })
     );
+    
   }
 
   cancelEducationEditView() {
@@ -454,6 +482,39 @@ export class EducationDetailComponent implements OnInit {
       }
     }
   }
+  //   onChangeStartDate(evt: any) {
+  //        console.log(this.EducationInfoForm.get('startDate').value)
+  //       if(this.EducationInfoForm.get('startDate').value==null)
+  //       {
+  //        this.EducationInfoForm.controls["startDate"].setValidators([Validators.required]);
+
+  //       }else{
+  //    this.EducationInfoForm.controls["startDate"].clearValidators();
+
+  // }
+
+
+  //   }
+
+  // checkStartDate(evt: any){
+  //   if(this.EducationInfoForm.get('startDate').value===""){
+  //     console.log(this.EducationInfoForm.get('startDate').value);
+  //     this.EducationInfoForm.clearValidators();
+  //     this.EducationInfoForm.controls["startDate"].setValidators(Validators.required);
+
+  //   } 
+  //   else{
+  //     this.EducationInfoForm.clearValidators();
+  //     this.EducationInfoForm.controls["startDate"].clearValidators();
+  //   }
+  // this.EducationInfoForm.get('startDate').updateValueAndValidity();
+  // }
+
+
+  checkStartDate() {
+    this.EducationInfoForm.controls["endDate"].enable();
+  }
+
 
   deleteRecord() {
     this.EducationSkillsInformationService.deleteEducationGridItem(this.educationId).subscribe(res => {
@@ -464,6 +525,7 @@ export class EducationDetailComponent implements OnInit {
       this.educationviewFlag = false;
       this.modalRef.hide();
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.setEducationList();
     })
   }
 
@@ -471,4 +533,14 @@ export class EducationDetailComponent implements OnInit {
 
     this.employeeEducationRequestModel.durationOfCourse = '';
   }
+  keyPressedOnlyNumbersAllow(event) {
+    const pattern = /[^0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (pattern.test(inputChar)) {
+      event.preventDefault();
+
+    }
+
+  }
+
 }

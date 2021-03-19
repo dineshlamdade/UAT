@@ -31,8 +31,9 @@
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Description</label>
                                     <input type="text" class="form-control" placeholder="Enter Description"
-                                        formControlName="skillDescription"
-                                        [ngClass]="{'is-invalid' : SkillInfoForm.get('skillDescription').status == 'INVALID'}"
+                                        formControlName="skillDescription"                                        
+                                        (change)="isDescriptionContainsOnlySpecialCharacter()"
+                                        [ngClass]="{'is-invalid' : SkillInfoForm.get('skillDescription').status == 'INVALID' || descriptionInvalid==true }"
                                         [(ngModel)]="employeeSkillDetailsRequestModel.skillDescription">
                                 </div>
 
@@ -41,7 +42,8 @@
                                         <div class="form-label">Proficiency Level</div>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio custom-control-inline">
-                                                <input type="radio" class="custom-control-input" value="Basic" checked
+                                                <input type="radio" class="custom-control-input" value="Basic" checked 
+                                                
                                                     formControlName="proficiency"
                                                     [(ngModel)]="employeeSkillDetailsRequestModel.proficiency">
                                                 <span class="custom-control-label">Basic</span>
@@ -76,15 +78,17 @@
                                             tooltip="Save"></i></b>Save</button>
 
                                 <button type="submit"
-                                    [ngClass]="{'disabled-btn-bg-green':!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency,
-                                'btn-bg-green':employeeSkillDetailsRequestModel.skillDescription||employeeSkillDetailsRequestModel.proficiency}"
-                                    [disabled]="!employeeSkillDetailsRequestModel.skillDescription||!employeeSkillDetailsRequestModel.proficiency"
+                                    [ngClass]="{'disabled-btn-bg-green':!employeeSkillDetailsRequestModel.skillDescription ||!employeeSkillDetailsRequestModel.proficiency,
+                                'btn-bg-green':employeeSkillDetailsRequestModel.skillDescription||employeeSkillDetailsRequestModel.proficiency  ||!employeeSkillDetailsRequestModel.proficiency }"
+                                    [disabled]="!employeeSkillDetailsRequestModel.skillDescription"
                                     (click)="updateSkillsForm(employeeSkillDetailsRequestModel)"
                                     class="custom_button custom_btn btn-labeled btn-labeled-left"
                                     *ngIf="skillEditFlag"><b><i tooltip="Update"
                                             class="fa fa-floppy-o"></i></b>Update</button>
 
-                                <button type="button" tooltip="Reset" [hidden]="skillviewFlag"
+                                       
+
+                                <button type="button" tooltip="Reset" [hidden]="skillviewFlag" *ngIf="!skillEditFlag "
                                     (click)="resetSkillForm()"
                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                             class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button>
@@ -102,8 +106,8 @@
                             <h3 class="font-14 text-purple font-bold">Summary</h3>
                         </div>
                     </div>
-                    <p-table [value]="SkillSummaryData" [scrollable]="true" [style]="{width:'1000px'}"
-                        scrollHeight="200px">
+                    <p-table [value]="SkillSummaryData" [style]="{width:'1000px'}"
+                       >
                         <ng-template pTemplate="colgroup" let-skill>
                             <colgroup>
                                 <col class="wd-30">

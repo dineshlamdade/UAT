@@ -22,12 +22,10 @@ export class FixedDepositsComponent implements OnInit {
     console.log('data::', this.data);
   }
 
-  changeTabIndex(index: number)
-    {
-      // console.log(this.)
-      if(index !== 1) {
-        this.data = undefined;
-      }
+  changeTabIndex(index: number) {
+    if (index !== 2) {
+      this.data = undefined;
+    }
     this.tabIndex = index;
   }
 

@@ -90,8 +90,6 @@ export class LicsummaryComponent implements OnInit {
 
         console.log('addFuturePolicy Data..', data);
         this.service.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
-            // console.log('addFuturePolicy Res..', res);
-
             this.summaryGridData = res.data.results[0].licMasterList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -108,6 +106,7 @@ export class LicsummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
+      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
       this.addFuturePolicy();
       console.log(this.addFuturePolicy)
     }
@@ -123,6 +122,20 @@ export class LicsummaryComponent implements OnInit {
     //   }
     // }
 
+  //   keyPressedSpaceNotAllow(event: any) {
+  //     console.log("HI ");
+  //     const pattern = /[0-9\+\-\ ]/;
+  //     let inputChar = String.fromCharCode(event.key);
+
+  //     if (!pattern.test(inputChar)) {
+  //       this.futureNewPolicyDeclaredAmount = 0;
+  //       this.tempFlag = true;
+  //       // invalid character, prevent input
+  //       event.preventDefault();
+  //     } else {
+  //       this.tempFlag = false;
+  //     }
+  // }
     keyPressedSpaceNotAllow(event: any) {
       console.log("HI ");
       const pattern = /[0-9\+\-\ ]/;
