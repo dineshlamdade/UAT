@@ -466,7 +466,7 @@ export class HouserentmasterComponent implements OnInit {
   public rentDetails() {
       let abc: any;
       abc = this.houseRentform.get('rentDetailList').value.fromDate
-
+     
       let month = this.houseRentform.get('rentDetailList').value.fromDate.getMonth()
       abc.setMonth(parseInt(month) + 1);
       

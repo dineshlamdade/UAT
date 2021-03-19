@@ -327,15 +327,23 @@ export class PreviousemployermasterComponent implements OnInit {
   editMaster(i: number) {
     //this.scrollToTop();
     /*     this.paymentDetailGridData = this.masterSummaryGridData[i].paymentDetails; */
+
     this.masterSummaryGridData[i].dateOfJoining = this.datePipe.transform(
       this.masterSummaryGridData[i].dateOfJoining,
-      'yyyy-MM-dd'
-    );
+      'dd-mmm-yyyy'
+    ); 
 
+    let abc;
+    abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+    console.log('abc::', abc);
+
+    console.log("dateOfJoining::",this.masterSummaryGridData[i].dateOfJoining)
+ 
     this.masterSummaryGridData[i].dateOfLeaving = this.datePipe.transform(
       this.masterSummaryGridData[i].dateOfLeaving,
-      'yyyy-MM-dd'
-    );
+      'dd-mmm-yyyy'
+    ); 
+
     this.previousEmployerDetailsform.patchValue(this.masterSummaryGridData[i]);
     console.log(this.previousEmployerDetailsform.getRawValue());
     this.Index = i;
@@ -344,9 +352,7 @@ export class PreviousemployermasterComponent implements OnInit {
       .get('proofSubmissionId')
       .setValue(this.masterSummaryGridData[i].proofSubmissionId);
     this.isClear = true;
-    this.masterfilesArray = this.masterSummaryGridData[
-      i
-    ].documentInformationList;
+    this.masterfilesArray = this.masterSummaryGridData[i].documentInformationList;
   }
   //------------------- On Master View functionality -----------------------
   viewMaster(i: number) {
@@ -362,9 +368,9 @@ export class PreviousemployermasterComponent implements OnInit {
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.previousEmployerDetailsform.reset();
-    this.previousEmployerDetailsform.get('active').setValue(true);
+ /*    this.previousEmployerDetailsform.get('active').setValue(true);
     this.showUpdateButton = false;
-    this.isCancel = false;
+    this.isCancel = false; */
   }
   //------------ On Form 12B Cancel Edit Cancel ----------------
   cancelFormEdit() {}
