@@ -707,7 +707,7 @@
                     </span>
                   </td>
                   <td>
-                    {{ documentSummary.institutionName }}
+                    {{ documentSummary.group1MasterList[0].institutionName }}
                   </td>
                   <td>
                     <span
@@ -744,9 +744,8 @@
                     <div class="custom_Label_badge">
                       <button
                         class="btn bg-color-lightgray text-000"
-                        (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        "
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
                       >
                         Documents
                       </button>
@@ -756,6 +755,29 @@
                     </div>
                   </td>
                   <td>
+                    <i
+                      class="fa fa-eye font-16 text-blue cursor-pointer"
+                      tooltip="View"
+                    ></i
+                    >&nbsp;&nbsp;
+                    <i
+                      class="fa fa-download font-16 text-blue cursor-pointer"
+                      tooltip="Download"
+                    ></i>
+                    &nbsp;&nbsp;
+                    <i *ngIf="canEdit"
+                      class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                      (click)="
+                        declarationEditUpload(
+                          template2,
+                          documentSummary.proofSubmissionId
+                        );
+                        viewDocumentDetail = true
+                      "
+                      tooltip="Edit"
+                    ></i>
+                  </td>
+                  <!-- <td>
                     <i
                       class="fa fa-eye font-16 text-blue cursor-pointer"
                       tooltip="View"
@@ -784,7 +806,7 @@
                       "
                       tooltip="Edit"
                     ></i>
-                  </td>
+                  </td> -->
                 </tr>
                 <!-- <tr *ngFor="let policyNo of documentSummary.licMasterList">
               <td>{{ policyNo.policyNo }}</td>

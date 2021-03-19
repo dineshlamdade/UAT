@@ -533,7 +533,7 @@
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td>
+                  <!-- <td>
                     <div class="custom_Label_badge">
                       <button
                         class="btn bg-color-lightgray text-000"
@@ -547,8 +547,22 @@
                         documentSummary.documentDetailList.length
                       }}</span>
                     </div>
-                  </td>
+                  </td> -->
                   <td>
+                    <div class="custom_Label_badge">
+                      <button
+                        class="btn bg-color-lightgray text-000"
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
+                      >
+                        Documents
+                      </button>
+                      <span class="Label_badge">{{
+                        documentSummary.documentDetailList.length
+                      }}</span>
+                    </div>
+                  </td>
+                  <!-- <td>
                     <i
                       class="fa fa-eye font-16 text-blue cursor-pointer"
                       tooltip="View"
@@ -577,8 +591,31 @@
                       "
                       tooltip="Edit"
                     ></i>
+                  </td> -->
+                  <td>
+                    <i
+                      class="fa fa-eye font-16 text-blue cursor-pointer"
+                      tooltip="View"
+                    ></i
+                    >&nbsp;&nbsp;
+                    <i
+                      class="fa fa-download font-16 text-blue cursor-pointer"
+                      tooltip="Download"
+                    ></i>
+                    &nbsp;&nbsp;
+                    <!-- <i *ngIf="canEdit"
+                      class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                      (click)="
+                        declarationEditUpload(
+                          template2,
+                          documentSummary.proofSubmissionId
+                        );
+                        viewDocumentDetail = true
+                      "
+                      tooltip="Edit"
+                    ></i> -->
                   </td>
-                </tr>
+                 </tr>
                 <!-- <tr *ngFor="let policyNo of documentSummary.group1MasterList">
               <td>{{ policyNo.policyNo }}</td>
               <td>{{ documentSummary.receiptAmount | number: "1.2-2" }}</td>

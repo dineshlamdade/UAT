@@ -36,6 +36,8 @@ import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.c
 import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
 // import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
 // import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
+// import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
+// import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
 import { DonationsForScientificResearchComponent } from './VI-A/donations-for-scientific-research/donations-for-scientific-research.component';
 import { GGCComponent } from './VI-A/ggc/ggc.component';
 import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.component';
@@ -43,11 +45,11 @@ import { HousingloanComponent } from './housingloan/housingloan.component';
 import { HousingrentComponent } from './housingrent/housingrent.component';
 import { TreatmentOfSpecifiedDiseasesComponent } from './VI-A/treatment-of-specified-diseases/treatment-of-specified-diseases.component';
 import { ChaComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/cha/cha.component';
-// import { ChildhostelallowanceComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/childhostelallowance.component';
+import { ChildhostelallowanceComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/childhostelallowance.component';
 import { CeaComponent } from './Other/Child Education Allowance/cea/cea.component';
-// import { ChildeducationallowanceComponent } from './Other/Child Education Allowance/childeducationallowance/childeducationallowance.component';
-// import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
-// import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
+import { ChildeducationallowanceComponent } from './Other/Child Education Allowance/childeducationallowance/childeducationallowance.component';
+import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
+import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
 
 
 const routes: Routes = [
@@ -220,6 +222,16 @@ const routes: Routes = [
         component:  InterestOnDepositTtbComponent,
         data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTB{Sec.80TTB}' },
       },
+      // {
+      //   path:   'childHostelAllowance',
+      //   component:  ChildHostelAllowanceComponent,
+      //   data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      // },
+      // {
+      //   path:   'Chapter-VI-A-childEducationAllowance',
+      //   component:  ChildEducationAllowanceComponent,
+      //   data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      // },
       // {
       //   path:   'childHostelAllowance',
       //   component:  ChildHostelAllowanceComponent,

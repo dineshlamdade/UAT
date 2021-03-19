@@ -70,6 +70,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SummaryComponent } from './summary/summary.component';
 import { EmployeeContributionToProvidentFundPFComponent } from './employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
 import { EmployeeContributionToVPFComponent } from './employee-contribution-to-vpf/employee-contribution-to-vpf.component';
+
 @NgModule({
   declarations: [
     PPFComponent,

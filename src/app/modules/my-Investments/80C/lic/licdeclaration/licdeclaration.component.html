@@ -549,6 +549,7 @@
       </div>
     </div>
   </div>
+
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -859,15 +860,20 @@
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
                   </td>
-                  <!-- <td>
-                    <span
-                      tooltip="{{
-                        documentSummary.receiptAmount | number: '1.2-2'
-                      }}"
-                    >
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
-                    </span>
-                  </td> -->
+                  <td>
+                    <div class="custom_Label_badge">
+                      <button
+                        class="btn bg-color-lightgray text-000"
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
+                      >
+                        Documents
+                      </button>
+                      <span class="Label_badge">{{
+                        documentSummary.documentDetailList.length
+                      }}</span>
+                    </div>
+                  </td>
                   <td>
                     <div class="custom_Label_badge">
                       <button
@@ -892,6 +898,7 @@
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
                     ></i>
+<<<<<<< HEAD
                     <!-- <div *ngFor="let doc of urlArray" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
@@ -899,6 +906,8 @@
                         provider="google"
                       ></iframe>n
                     </div> -->
+=======
+>>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"

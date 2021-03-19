@@ -47,6 +47,10 @@ import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
+// @NgModule({
+//   declarations: [
+//     MyInvestmentsComponent,
+
     HousingloanComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,

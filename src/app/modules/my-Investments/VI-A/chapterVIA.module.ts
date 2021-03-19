@@ -66,6 +66,7 @@ import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-d
 import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
 import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
 // import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
+
 @NgModule({
   declarations: [
       InterestDepositSavingAccountComponent,
@@ -113,7 +114,6 @@ import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specifi
       TreatmentOfSpecifiedSummaryComponent,
       TreatmentOfSpecifiedMasterComponent,
       TreatmentOfSpecifiedDeclarationComponent,
-      // ChapterVIASummaryComponent,
      ],
   imports: [
     MatSelectModule,
