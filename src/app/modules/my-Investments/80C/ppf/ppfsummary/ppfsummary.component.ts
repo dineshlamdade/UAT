@@ -41,7 +41,6 @@ export class PPFSummaryComponent implements OnInit {
 
   }
 
-
   redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
     this.tabIndex = 2;
     const data = {
@@ -52,9 +51,6 @@ export class PPFSummaryComponent implements OnInit {
     };
     this.institution = institution;
     this.accountNumber = accountNumber;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
-    // console.log('View redirect to declaration',data)
     this.myEvent.emit(data);
   }
 
@@ -90,7 +86,6 @@ export class PPFSummaryComponent implements OnInit {
 
         //console.log('addFuturePolicy Data..', data);
         this.service.submitPPFSummaryFuturePolicy(data).subscribe((res) => {
-            //console.log('addFuturePolicy Res..', res);
             this.summaryGridData = res.data.results[0].transactionDetailList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -107,22 +102,5 @@ export class PPFSummaryComponent implements OnInit {
       this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
       this.addFuturePolicy();
     }
-
-    // jumpToMasterPage(n: number) {
-    //     //console.log(n);
-    //     this.tabIndex = 1;
-    //     //this.editMaster(3);
-    // }
-
-
-
-  // On onEditSummary
-    // onEditSummary1(institution: string, policyNo: string) {
-    //   this.tabIndex = 2;
-    //   this.institution = institution;
-    //   this.policyNo = policyNo;
-    //   console.log('institution::', institution);
-    //   console.log('policyNo::', policyNo);
-    // }
 
 }

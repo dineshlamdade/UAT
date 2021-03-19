@@ -87,6 +87,7 @@
                     <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                        <option [ngValue]="null">Select</option>
                       <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}

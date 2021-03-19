@@ -17,6 +17,7 @@
         <label class="form-label">Issue Type</label>
         <select name="Issue_Type" id="IssueType" formControlName="issueType" class="form-control custom-select"
           [ngClass]="{ 'is-invalid': submitted && masterForm.issueType.errors }" (change)="changeStartMaxDate($event)">
+          <option [ngValue]="null">Select</option>
           <option *ngFor="let issueTypeList of issueTypeOfList" [value]="issueTypeList.value">
             {{ issueTypeList.label }}
           </option>
@@ -124,6 +125,7 @@
                   'is-invalid':
                     submitted && masterForm.frequencyOfPayment.errors
                 }">
+                <option [ngValue]="null">Select</option>
                 <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
                   {{ frequencyOfPayment.label }}
                 </option>

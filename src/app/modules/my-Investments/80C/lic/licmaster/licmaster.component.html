@@ -6,6 +6,7 @@
            <select name="beast" id="Institution" class="form-control custom-select"
                 formControlName="institutionName"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.institutionName.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let institutionName of institutionNameList"
                 [value]="institutionName.value">
                 {{institutionName.label}}
@@ -29,6 +30,7 @@
            <select name="Policy_Holder_Name" id="PolicyHolderName" class="form-control custom-select"
                 formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'
                 [ngClass]="{ 'is-invalid': submitted && masterForm.policyholdername.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let familyMember of familyMemberName"
                 [value]="familyMember.value">
                 {{familyMember.label}}
@@ -92,6 +94,7 @@
                     <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                        <option [ngValue]="null">Select</option>
                       <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}
