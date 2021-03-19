@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EmploymentInformationService } from './../employment-information.service';
+import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 
 

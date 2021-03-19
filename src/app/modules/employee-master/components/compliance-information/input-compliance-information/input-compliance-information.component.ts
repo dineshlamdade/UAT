@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { InputDetailsModel } from './input.model';
-import { complianceInformationService } from './../compliance-information.service';
-import { PreviousEmploymentInformationService } from './../../previous-employment-information/previous-employment-information.service';
+import { InputDetailsModel } from './../../../dto-models/input.model';
+import { complianceInformationService } from './../../../employee-master-services/compliance-information.service';
+import { PreviousEmploymentInformationService } from './../../../employee-master-services/previous-employment-information/previous-employment-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 
 
@@ -106,6 +106,7 @@ export class InputComplianceInformationComponent implements OnInit {
       if (res.data.results[0]) {
         this.employeeAge = res.data.results[0].split(" ");
         this.employeeAge = this.employeeAge[0];
+        console.log("this.employeeAge: "+this.employeeAge)
       }
     })
 
@@ -132,6 +133,7 @@ export class InputComplianceInformationComponent implements OnInit {
     this.complianceInformationService.getComplianceAssignmentDetails(this.employeeMasterId, 'PF').subscribe(res => {
       if (res.data.results[0]) {
         this.saPresent = true;
+        console.log("PF present");
         //calling compliance master for PF
         this.getPFComplainceDetails(res.data.results[0].complianceMasterId);
       }
@@ -186,7 +188,7 @@ export class InputComplianceInformationComponent implements OnInit {
         }
 
         if (res.data.results[0].complianceDetail.contributionMethodChoice == "NO") {
-          
+          debugger
           this.contributionMethodChoice = false;
           //set default contribution method values 
           this.employeeContributionList.length = 0;
@@ -386,7 +388,7 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   getAllBooleanFlags(InputDetailsModel) {
-
+debugger
     if (InputDetailsModel.previousEPFEPSRequestDTO.isFirstEmployment == 1) {
       InputDetailsModel.previousEPFEPSRequestDTO.isFirstEmployment = 'yes';
       this.isFirstEmployment = 'yes';
@@ -548,7 +550,7 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   enableContributionDate() {
-    
+    debugger
     const contributionFromDate = this.InputInfoForm.get('contributionFromDateControl');
     contributionFromDate.enable();
     const contributionToDate = this.InputInfoForm.get('contributionToDateControl');
@@ -581,7 +583,7 @@ export class InputComplianceInformationComponent implements OnInit {
         //   employerContributionMethod.disable();
         // }
       //  else {
-        
+        debugger
           if (this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod == "RESTRICTED") {
             //set employer contribution to RESTRICTED
             this.InputDetailsModel.presentEPFEPSRequestDTO.employerContributionMethod = this.InputDetailsModel.presentEPFEPSRequestDTO.employeeContributionMethod;
@@ -724,7 +726,7 @@ export class InputComplianceInformationComponent implements OnInit {
   }
 
   validateSAContributionToDate() {
-    
+    debugger
     if (this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate == '' || this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate == null) {
       this.InputDetailsModel.superAnnuationRequestDTO.saContributionToDate = '31-Dec-9999';
       const saContributionToDate = this.InputInfoForm.get('saContributionToDateControl');
@@ -924,7 +926,7 @@ export class InputComplianceInformationComponent implements OnInit {
         }
       }
       if (this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSContributionTill60 == "no") {
-        
+        debugger
         this.InputDetailsModel.presentEPFEPSRequestDTO.isEPSApplicable = "No";
         //this.InputInfoForm.get('isEPSApplicableControl').setValue('no');  
       }

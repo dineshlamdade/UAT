@@ -8,9 +8,8 @@ describe('EmployeeContributionToVPFComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmployeeContributionToVPFComponent ]
-    })
-    .compileComponents();
+      declarations: [EmployeeContributionToVPFComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

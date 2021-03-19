@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ProjectDetailsModel } from './../job-information-models/project-details.model';
+import { ProjectDetailsModel } from './../../../dto-models/project-details.model';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { JobInformationService } from '../job-information.service';
+import { JobInformationService } from '../../../employee-master-services/job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
+import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
 import { Router } from '@angular/router';
 
 @Component({

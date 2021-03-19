@@ -12,7 +12,7 @@
                   <fieldset>
                     <legend>Bank Details</legend>
                     <div class="row">
-                      <div class="col-sm-3">
+                      <!-- <div class="col-sm-3">
                         <label class="form-label">State</label>
                         <select name="state" id="state" class="form-control" formControlName="state"
                           [ngClass]="{'is-invalid' : form.get('state').status == 'INVALID'}"
@@ -21,9 +21,9 @@
                             {{state}}
                           </option>
                         </select>
-                      </div>
+                      </div> -->
 
-                     <!-- <div class="col-sm-3">
+                      <!-- <div class="col-sm-3">
                         <label class="form-label">IFSC Code</label>
                         <select name="ifscCode" id="ifscCode" class="form-control" formControlName="ifscCode"
                           (change)='onSelectIFSCCode($event.target.value)'>
@@ -34,21 +34,41 @@
                       </div> -->
 
                       <div class="col-sm-3">
+                        <label class="form-label">Country</label>
+                        <select name="country" id="country" class="form-control" autocomplete="off"
+                          [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}"
+                          formControlName="country">
+                          <option selected value=''>Select </option>
+                          <option *ngFor="let country of countries" [value]="country">
+                            {{country}}
+                          </option>
+                        </select>
+                      </div>
+
+
+                      <div class="col-sm-3">
                         <label class="form-label">IFSC Code</label>
-                        <p-autoComplete [(ngModel)]="bankIFSC"
-                            [suggestions]="ifscCodeList" placeholder="Search IFSC"
-                            (completeMethod)="searchIFSC($event, bankIFSC)"
-                            formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
+                        <input type="text" class="form-control" placeholder="Enter IFSC" maxlength="11"
+                          formControlName="ifscCode" [(ngModel)]="BankInformationModel"
+                          (ngModelChange)="BankInformationModel = $event.toUpperCase()"
+                          (keyup)="getDataFromIFSC(BankInformationModel);"
+                          [ngClass]="{'is-invalid' : form.get('ifscCode').status == 'INVALID'|| isIfscCodeValid==false}">
+                      </div>
+
+                      <!-- <div class="col-sm-3">
+                        <label class="form-label">IFSC Code</label>
+                        <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Search IFSC"
+                          (completeMethod)="searchIFSC($event, bankIFSC)" formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
                             onSelectIFSCCode(bankIFSC)">
-                            <ng-template let-ifsc pTemplate="item">
-                                <div class="country-item">
-                                    <div>
-                                        {{ifsc}}</div>
-                                </div>
-                            </ng-template>
+                          <ng-template let-ifsc pTemplate="item">
+                            <div class="country-item">
+                              <div>
+                                {{ifsc}}</div>
+                            </div>
+                          </ng-template>
                         </p-autoComplete>
                         <i class="fa fa-chevron-down down-arrow-icon"></i>
-                    </div>
+                      </div> -->
 
                       <!-- <div class="col-sm-6 col-md-3">
                         <label class="form-label">IFSC CODE</label>
@@ -71,7 +91,8 @@
 
                       <div class="col-sm-3">
                         <label class="form-label">Bank Name</label>
-                        <input type="text" formControlName="bankName" class="form-control" name="bankName" disable>
+                        <input type="text" formControlName="bankName" class="form-control" name="bankName"
+                          disable="true">
                       </div>
 
                       <div class="col-sm-3">
@@ -90,27 +111,27 @@
                         <div *ngIf="isEditMode ==false">
 
                           <button type="submit" [disabled]="form.invalid"
-                          class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                          (click)="saveBankMaster()"
-                          [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
-                          <b><i class="fa fa-floppy-o"></i></b> Save</button>
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            (click)="saveBankMaster()"
+                            [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
+                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
                           <button type="button" tooltip="Reset" (click)="cancelView()"
-                          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
-                          <b><i class="fa  fa-refresh"></i></b> Reset</button>
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                            <b><i class="fa  fa-refresh"></i></b> Reset</button>
 
                         </div>
 
                         <div *ngIf="isEditMode == true">
-                            <!-- <button type="button" *ngIf="viewMode== false"
+                          <!-- <button type="button" *ngIf="viewMode== false"
                           class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                           tooltip="Delete" (click)="DeleteBankMaster()"><b><i
                               class="fa fa-times-circle"></i></b> Delete</button> -->
 
                           <button type="button"
-                          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                          tooltip="Cancel" (click)="cancelView()"><b><i
-                              class="fa fa-times-circle"></i></b>Cancel</button>
+                            class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="cancelView()"><b><i
+                                class="fa fa-times-circle"></i></b>Cancel</button>
 
 
                         </div>
@@ -118,7 +139,7 @@
                     </div>
                     <!-- end of row -->
                   </fieldset>
-                 </div> <!-- card body -->
+                </div> <!-- card body -->
               </div>
             </div>
           </div>
@@ -159,12 +180,14 @@
                         <td class="wd-10">
                           <span>
                             <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
-                            tooltip="View"></i> &nbsp;&nbsp;&nbsp;&nbsp;
-                            <i class="fa fa-trash-o font-16 text-red cursor-pointer" (click)="DeleteBankMaster(i,summary.companyBankMasterId)"
+                              tooltip="View"></i> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <i class="fa fa-trash-o font-16 text-red cursor-pointer"
+                              (click)="ConfirmationDialog(confirmdialog,summary.companyBankMasterId)"
                               tooltip="Delete"></i>
                           </span>
                         </td>
-                       </tr>
+                        <!-- (click)="DeleteBankMaster(i,summary.companyBankMasterId)" -->
+                      </tr>
                       <tr *ngIf="!summaryHtmlDataList?.length">
                         <td colspan="10">
                           <span class="font-14 font500 align-center text-red">No Data Available</span>
@@ -176,6 +199,38 @@
               </div>
             </div>
           </div>
+
+
+
+          <ng-template #confirmdialog>
+            <div class="modal-header">
+              <h5 class="modal-title" id="UploadModalLabel">Confirmation Dialog</h5>
+              <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <div class="card mb-0">
+                <div class="card-body p-0 m-0">
+                  <div class="row clearfix">
+                    <div class="col-md-12">
+                      <i class="fa fa-question-circle font-18 font700" aria-hidden="true"></i> &nbsp; &nbsp; <label
+                        class="font-14 mb-0 font700">Are You Sure do you want to delete Record.</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn bg-color-green" (click)="modalRef.hide()" (click)="clickedOnYes()"> <i
+                  class="fa fa-check" aria-hidden="true"></i> &nbsp; Yes</button>
+              <button type="button" class="btn bg-btn-red" (click)="modalRef.hide()"> <i class="fa fa-times"
+                  aria-hidden="true"></i> &nbsp; No</button>
+            </div>
+          </ng-template>
+
+
+
+
         </div>
       </div>
       <app-footer></app-footer>

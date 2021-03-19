@@ -16,7 +16,7 @@ export class EstablishmentMasterComponent implements OnInit {
   summaryHtmlDataList: Array<any> = [];
   issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
   primaryBusinessActivityList = ['Payroll', 'PayRoll', 'IT', 'HR1', '22'];
-  officePremisesOwnershipList = ['Owned', 'RENT', 'Lease'];
+  officePremisesOwnershipList = ['Owned', 'Rent', 'Lease'];
   showButtonSaveAndReset: boolean = true;
   registrationNumberList: Array<any> = [];
   companyRegistrationIdList: Array<any> = [];
@@ -31,9 +31,10 @@ export class EstablishmentMasterComponent implements OnInit {
   regionMasterDetails = [];
   selectedRegionMasterCode: number;
   public typeOfEstablishmentList = [];
+  public today = new Date();
   constructor(private formBuilder: FormBuilder, private statuatoryComplianceService: StatuatoryComplianceService,
-              private establishmentMasterService: EstablishmentMasterService, private companyMasterService: CompanyMasterService,
-              private alertService: AlertServiceService, private datePipe: DatePipe) {
+    private establishmentMasterService: EstablishmentMasterService, private companyMasterService: CompanyMasterService,
+    private alertService: AlertServiceService, private datePipe: DatePipe) {
     this.form = this.formBuilder.group({
       establishmentCode: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -41,7 +42,7 @@ export class EstablishmentMasterComponent implements OnInit {
       primaryBusinessActivity: new FormControl('', Validators.required),
       dateOfSetup: new FormControl(''),
       officePremisesOwnership: new FormControl(''),
-      regionMasterId: new FormControl('', Validators.required),
+      regionMasterId: new FormControl(''),
       gstNumber: new FormControl(''),
       gstIssueDate: new FormControl(''),
       linNumber: new FormControl(''),
@@ -49,8 +50,8 @@ export class EstablishmentMasterComponent implements OnInit {
       stpi: new FormControl(''),
       stpiIssueDate: new FormControl(''),
       address1: new FormControl('', Validators.required),
-      address2: new FormControl('', Validators.required),
-      address3: new FormControl('', Validators.required),
+      address2: new FormControl(''),
+      address3: new FormControl(''),
       country: new FormControl('', Validators.required),
       pinCode: new FormControl('', Validators.required),
       state: new FormControl(''),
@@ -73,7 +74,19 @@ export class EstablishmentMasterComponent implements OnInit {
     });
     // get Region dropdown data
     this.establishmentMasterService.getRegionMasterDetails().subscribe(res => {
-      this.regionMasterDetails = res.data.results;
+      res.data.results.forEach((element, index) => {
+        if (element.isActive == 1) {
+          this.regionMasterDetails.push({ masterCode: element.masterCode, masterId: element.masterId });
+
+          if (index == 0) {
+            this.form.controls["regionMasterId"].setValidators(Validators.required);
+            this.form.controls["regionMasterId"].updateValueAndValidity();
+            console.log('index is 0');
+
+          }
+
+        }
+      });
     });
     this.refreshHtmlTableData();
 
@@ -150,6 +163,7 @@ export class EstablishmentMasterComponent implements OnInit {
           this.showButtonSaveAndReset = true;
           this.establishmentMasterId = 0;
           this.refreshHtmlTableData();
+          this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -172,11 +186,7 @@ export class EstablishmentMasterComponent implements OnInit {
       data.linIssueDate = linIssueDate;
       data.stpiIssueDate = stpiIssueDate;
       data.dateOfSetup = dateOfSetup;
-
       data.regionMasterId = this.selectedRegionMasterCode;
-      console.log('---');
-      console.log(data.regionMasterId);
-      console.log('---');
 
 
       delete data.officialCountryCode;
@@ -186,6 +196,8 @@ export class EstablishmentMasterComponent implements OnInit {
           this.alertService.sweetalertMasterSuccess('Establishment Master Details Saved Successfully.', '');
           this.form.reset();
           this.refreshHtmlTableData();
+          this.saveFormValidation();
+
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -205,6 +217,7 @@ export class EstablishmentMasterComponent implements OnInit {
   }
   onSelectIssuedBy() { }
   editMaster(i: number, establishmentMasterId: number) {
+    window.scrollTo(0, 0);
     this.isSaveAndReset = false;
     this.showButtonSaveAndReset = true;
     this.form.enable();
@@ -215,24 +228,54 @@ export class EstablishmentMasterComponent implements OnInit {
     this.form.get('regionMasterId').disable();
   }
   viewMaster(i: number) {
-    this.establishmentMasterId = 0;
+    window.scrollTo(0, 0);
     this.isSaveAndReset = false;
-    this.showButtonSaveAndReset = false;
-    this.showButtonSaveAndReset = false;
+    this.showButtonSaveAndReset = true;
+    this.form.enable();
     this.form.reset();
     this.form.patchValue(this.masterGridDataList[i]);
     this.form.disable();
+
   }
   cancelView() {
+    this.form.reset();
     this.establishmentMasterId = 0;
     this.isSaveAndReset = true;
     this.showButtonSaveAndReset = true;
     this.form.enable();
-    this.form.reset();
-    this.form.get('companyName').disable();
-    this.form.get('companyGroupName').disable();
     this.showButtonSaveAndReset = true;
     this.companyRegistrationId = 0;  // for save it should be 0 and update it should have any integer value
+    this.saveFormValidation();
+  }
+  saveFormValidation() {
+    this.form.patchValue({
+      establishmentCode: '',
+      description: '',
+      typeOfEstablishment: '',
+      primaryBusinessActivity: '',
+      dateOfSetup: '',
+      officePremisesOwnership: '',
+      regionMasterId: '',
+      gstNumber: '',
+      gstIssueDate: '',
+      linNumber: '',
+      linIssueDate: '',
+      stpi: '',
+      stpiIssueDate: '',
+      address1: '',
+      address2: '',
+      address3: '',
+      country: '',
+      pinCode: '',
+      state: '',
+      city: '',
+      village: '',
+
+
+    });
+    this.form.get('state').disable();
+    this.form.get('city').disable();
+
   }
   checkLocalAddress() { }
   onSelectPrimaryBusinessActivity(evt: any) { }
@@ -253,7 +296,7 @@ export class EstablishmentMasterComponent implements OnInit {
     }
   }
   onSelectTypeOfEstablishment(evt: any) { }
-  onBsValueChangeDateOfSetup(evt: any) { }
+  onBsValueChangeDateOfSetup() { }
   onSelectOfficePremisesOwnership(evt: any) { }
   onBsValueChangeDateOfGstIssueDate() { }
   onBsValueChangeLinIssueDate() { }
@@ -263,5 +306,12 @@ export class EstablishmentMasterComponent implements OnInit {
     this.selectedRegionMasterCode = evt;
     let tempObj = this.regionMasterDetails.find(o => o.masterCode == this.form.get('regionMasterId').value.trim());
     console.log(tempObj);
+  }
+  keyPress(event: any) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }

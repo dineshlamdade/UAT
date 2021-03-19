@@ -96,7 +96,7 @@
                                 <div id="page">
 
                                   <div *ngIf="checkedEmployeeMaster == true">
-                                    <input class="toggle-box" id="identifier-4" type="checkbox"  value=true/>
+                                    <input class="toggle-box" id="identifier-4" type="checkbox" value=true />
                                     <label for="identifier-4">Employee Master</label>
                                     <div class="ml-30">
                                       <a class="p-0 d-flex" [ngClass]="order.hide?'btn-info1':''"
@@ -105,7 +105,7 @@
 
                                           <input type="checkbox" class="custom-control-input"
                                             (change)="leftSideMenuCheckBoxChnanged($event.target.checked,order.name)"
-                                            [disabled]="order.disable" [checked]="order.checked"/>
+                                            [disabled]="order.disable" [checked]="order.checked" />
                                           <span class="custom-control-label"> {{order.name}}
                                             <span class="notificationbadge ml-2"
                                               *ngIf="order.name !=='Select All'">{{order.counter}}</span>
@@ -124,8 +124,8 @@
 
 
 
-                                        <span *ngIf="order.hide == false && order.name!== 'Select All'"> <i class="fa fa-compress mergeicon"
-                                            tooltip="Merge Tab/Field"
+                                        <span *ngIf="order.hide == false && order.name!== 'Select All'"> <i
+                                            class="fa fa-compress mergeicon" tooltip="Merge Tab/Field"
                                             (click)="MergeTab(template3,order.name)"></i></span>
                                       </a>
 
@@ -197,7 +197,8 @@
                                   <div class="col-md-2">
                                     <h3 class="font-14 text-purple font-bold pt-2">Sheet Name:</h3>
 
-                                    <!-- <i class="fa fa-pencil" (click)="abc()"> All</i> -->
+                                    <!-- <i class="fa fa-pencil" (click)="abc()"> abc</i>
+                                    <i class="fa fa-pencil" (click)="abc1()"> abc1 true</i> -->
                                   </div>
                                   <div class="col-md-5">
                                     <select name="filterTemplateDropDown" class="form-control custom-select"
@@ -300,7 +301,8 @@
                                           class="fa fa-angle-double-left"></i></b> Previous</button>
                                   </span>
 
-                                  <span *ngIf="hideNextButton ==true && indexNextAndPrevious !== (filterDropDownList.length-1)">
+                                  <span
+                                    *ngIf="hideNextButton ==true && indexNextAndPrevious !== (filterDropDownList.length-1)">
                                     <button type="button" tooltip="Next" (click)="buttonNext()"
                                       class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left mr-10"><b><i
                                           class="fa fa-angle-double-right"></i></b> Next</button>
@@ -366,32 +368,32 @@
                     <div class="row pull-right mt-10">
                       <div class="col-sm-12 pull-right">
 
-                          <div *ngIf="isEditMode ==false">
+                        <div *ngIf="isEditMode ==false">
 
-                            <button type="submit" [disabled]="form.invalid"
-                              class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                              (click)="saveMaster()"
-                              [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
-                              <b><i class="fa fa-floppy-o"></i></b> Save</button>
+                          <button type="submit" [disabled]="form.invalid"
+                            class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                            (click)="saveMaster()"
+                            [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
+                            <b><i class="fa fa-floppy-o"></i></b> Save</button>
 
 
-                            <button type="button" tooltip="Reset" (click)="cancelView()"
-                              class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
-                              <b><i class="fa  fa-refresh"></i></b> Reset</button>
-                          </div>
-                          <div *ngIf="isEditMode == true && isViewFieldNameArrayList == false">
+                          <button type="button" tooltip="Reset" (click)="cancelView()"
+                            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                            <b><i class="fa  fa-refresh"></i></b> Reset</button>
+                        </div>
+                        <div *ngIf="isEditMode == true && isViewFieldNameArrayList == false">
 
-                            <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
+                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
                                 'btn-bg-green': !form.invalid}"
-                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
-                              (click)="saveMaster()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
-                              Update</button>
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                            (click)="saveMaster()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
+                            Update</button>
 
-                            <button type="button"
-                              class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                              tooltip="Cancel" (click)="cancelView()"><b><i
-                                  class="fa fa-times-circle"></i></b>Cancel</button>
-                          </div>
+                          <button type="button"
+                            class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                            tooltip="Cancel" (click)="cancelView()"><b><i
+                                class="fa fa-times-circle"></i></b>Cancel</button>
+                        </div>
 
 
 
@@ -431,7 +433,7 @@
                                     (click)="deleteTemplate(summary.templateMasterId)"></i>
                                   &nbsp;&nbsp;
                                   <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
-                                  (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
+                                    (click)="viewTemplate(summary.templateMasterId)"></i>&nbsp;&nbsp;
                                   <i class="fa fa-download font-16 text-blue cursor-pointer" tooltip="Download"
                                     (click)="downloadFile(i)"></i>
                                   &nbsp;&nbsp;

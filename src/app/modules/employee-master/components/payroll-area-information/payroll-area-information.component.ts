@@ -3,11 +3,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
-import { PayrollAreaRequestModel } from './payroll-area-information.model';
-import { PayrollAreaInformationService } from './payroll-area-information.service';
+import { PayrollAreaRequestModel } from './../../dto-models/payroll-area-information.model';
+import { PayrollAreaInformationService } from './../../employee-master-services/payroll-area-information.service';
 import { SharedInformationService } from '../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
-import { PreviousEmploymentInformationService } from '../previous-employment-information/previous-employment-information.service';
+import { PreviousEmploymentInformationService } from '../../employee-master-services/previous-employment-information/previous-employment-information.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
@@ -100,7 +100,7 @@ export class PayrollAreaInformationComponent implements OnInit {
       fromDate: [this.date.fromDate, Validators.required],
       toDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
       paymentMode: [this.PayrollAreaRequestModel.paymentMode, Validators.required],
-      bankName: ['', Validators.required],
+      bankName:  ['', Validators.required],
       bankAccount: [''],
       typeOfPayment: ['', Validators.required],
       percent: ['', Validators.required],
@@ -137,9 +137,6 @@ export class PayrollAreaInformationComponent implements OnInit {
     // this.PayrollAreaRequestModel.percentageOfNetPay = 100;
     if (!this.multipleBankBoolean) {
       this.PayrollAreaRequestModel.percentageOfNetPay = 100;
-      this.PayrollAreaInfoForm.patchValue({
-        percent: 100,
-      })
       const temp13 = this.PayrollAreaInfoForm.get('percent');
       temp13.disable();
     }
@@ -167,10 +164,6 @@ export class PayrollAreaInformationComponent implements OnInit {
 
     this.PayrollAreaRequestModel.typeOfPayment = 'Salary';
     this.PayrollAreaRequestModel.type = 'Primary';
-    this.PayrollAreaInfoForm.patchValue({
-      type: 'Primary',
-      typeOfPayment: 'Salary'
-    })
 
     this.PayrollAreaService.getBankAccountDetails(this.employeeMasterId).subscribe(res => {
 
@@ -185,6 +178,19 @@ export class PayrollAreaInformationComponent implements OnInit {
         }, 100)
       })
     })
+
+    // this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePayrollArea().subscribe(res => {
+
+    //   if (res.confirmMsg == 'payrollItemDelete') {
+    //     this.PayrollAreaService.deletePayrollAreaGridItem(res.payrollAreaInformationId).subscribe(res => {
+
+    //       this.getPayrollAreaInformation();
+    //       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+    //       this.payrollEditFlag = false;
+    //       this.payrollviewFlag = false;
+    //     })
+    //   }
+    // })
   }
 
   payrollAssignValues(payrollAreaCode) {
@@ -210,6 +216,13 @@ export class PayrollAreaInformationComponent implements OnInit {
 
   savePayrollArea(PayrollAreaRequestModel) {
 
+    // if (this.additionPayrollFlag == false) {
+    //   PayrollAreaRequestModel.additionalPayrollAllowed = 0;
+    // }
+    // if (this.additionPayrollFlag == true) {
+    //   PayrollAreaRequestModel.additionalPayrollAllowed = 1;
+    // }
+
     if (this.multipleBankBoolean == false) {
       PayrollAreaRequestModel.multibankingAllowed = 0;
     }
@@ -220,7 +233,6 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
-    PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
 
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
@@ -256,6 +268,13 @@ export class PayrollAreaInformationComponent implements OnInit {
 
   updatePayrollArea(PayrollAreaRequestModel) {
 
+    // if (this.additionPayrollFlag == false) {
+    //   PayrollAreaRequestModel.additionalPayrollAllowed = 0;
+    // }
+    // if (this.additionPayrollFlag == true) {
+    //   PayrollAreaRequestModel.additionalPayrollAllowed = 1;
+    // }
+
     if (this.multipleBankBoolean == false) {
       PayrollAreaRequestModel.multibankingAllowed = 0;
     }
@@ -266,7 +285,6 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.employeeMasterId = this.employeeMasterId;
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
-    PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
 
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
@@ -364,11 +382,6 @@ export class PayrollAreaInformationComponent implements OnInit {
     this.PayrollAreaRequestModel.payToDate = payroll.payToDate;
     this.PayrollAreaRequestModel.priority = payroll.priority;
     this.flterBankDetails();
-    this.PayrollAreaInfoForm.patchValue(this.PayrollAreaRequestModel)
-    this.PayrollAreaInfoForm.patchValue({
-      fromDate: this.PayrollAreaRequestModel.payrollAreaFromDate,
-      bankfromDate: this.PayrollAreaRequestModel.payFromDate
-    })
   }
 
   viewPayroll(payroll) {

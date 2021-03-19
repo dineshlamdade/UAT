@@ -14,34 +14,42 @@ import { TaxSavingSharesNabardComponent } from './80C/tax-saving-shares-nabard/t
 import { PostOfficeTermDepositComponent } from './80C/post-office-term-deposit/post-office-term-deposit.component';
 import { SeniorCitizenSavingSchemeComponent } from './80C/senior-citizen-saving-scheme/senior-citizen-saving-scheme.component';
 import { TuitionFeesComponent } from './80C/tuition-fees/tuition-fees.component';
+import { SummaryComponent } from './80C/summary/summary.component';
+import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
+// import { ChildhostelallowanceComponent } from './Child Hostel Allowance(CHA)/childhostelallowance/childhostelallowance.component';
+// import { ChaComponent } from './Child Hostel Allowance(CHA)/childhostelallowance/cha/cha.component';
+// import { ChildeducationallowanceComponent } from './Child Education Allowance/childeducationallowance/childeducationallowance.component';
+// import { CeaComponent } from './Child Education Allowance/cea/cea.component';
+import { NationalSavingCertificateNSCComponent } from './Other/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
+import { HousePropertyComponent } from './Other/house-property/house-property.component';
+import { PrincipalRepaymentOnHousingLoanComponent } from './Other/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
+import { EmployeeContributionToProvidentFundPFComponent } from './80C/employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
+import { EmployeeContributionToVPFComponent } from './80C/employee-contribution-to-vpf/employee-contribution-to-vpf.component';
+// import { TaxAdjustmentsSummaryComponent } from './Other/tax-adjustments/tax-adjustments-summary/tax-adjustments-summary.component';
+import { TaxAdjustmentsComponent } from './Other/tax-adjustments/tax-adjustments.component';
+// import { TaxAdjustmentsAmountComponent } from './Other/tax-adjustments/tax-adjustments-amount/tax-adjustments-amount.component';
 import { PhysicallyHandicappedComponent } from './VI-A/physically-handicapped/physically-handicapped.component';
 import { HandicappedDependentComponent } from './VI-A/handicapped-dependent/handicapped-dependent.component';
 import { ElectricVehicleComponent } from './VI-A/electric-vehicle/electric-vehicle.component';
 import { EducationalLoanComponent } from './VI-A/educational-loan/educational-loan.component';
 import { InterestOnTtaComponent } from './VI-A/interest-on-tta/interest-on-tta.component';
 import { InterestOnDepositTtbComponent } from './VI-A/interest-on-deposit-ttb/interest-on-deposit-ttb.component';
-import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
-import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
+// import { ChildHostelAllowanceComponent } from './others/child-hostel-allowance/child-hostel-allowance.component';
+// import { ChildEducationAllowanceComponent } from './others/childEducationAllowance/childEducationAllowance.component';
 import { DonationsForScientificResearchComponent } from './VI-A/donations-for-scientific-research/donations-for-scientific-research.component';
 import { GGCComponent } from './VI-A/ggc/ggc.component';
 import { Mediclaim80DComponent } from './VI-A/mediclaim80-d/mediclaim80-d.component';
-import { SummaryComponent } from './80C/summary/summary.component';
-import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
-import { ChildhostelallowanceComponent } from './Child Hostel Allowance(CHA)/childhostelallowance/childhostelallowance.component';
-import { ChaComponent } from './Child Hostel Allowance(CHA)/childhostelallowance/cha/cha.component';
-import { ChildeducationallowanceComponent } from './Child Education Allowance/childeducationallowance/childeducationallowance.component';
-import { CeaComponent } from './Child Education Allowance/cea/cea.component';
-import { NationalSavingCertificateNSCComponent } from './Other/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
-import { HousePropertyComponent } from './Other/house-property/house-property.component';
-import { PrincipalRepaymentOnHousingLoanComponent } from './Other/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
 import { HousingloanComponent } from './housingloan/housingloan.component';
 import { HousingrentComponent } from './housingrent/housingrent.component';
 import { TreatmentOfSpecifiedDiseasesComponent } from './VI-A/treatment-of-specified-diseases/treatment-of-specified-diseases.component';
-import { EmployeeContributionToProvidentFundPFComponent } from './80C/employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
-import { EmployeeContributionToVPFComponent } from './80C/employee-contribution-to-vpf/employee-contribution-to-vpf.component';
-import { TaxAdjustmentsSummaryComponent } from './Other/tax-adjustments/tax-adjustments-summary/tax-adjustments-summary.component';
-import { TaxAdjustmentsComponent } from './Other/tax-adjustments/tax-adjustments.component';
-import { TaxAdjustmentsAmountComponent } from './Other/tax-adjustments/tax-adjustments-amount/tax-adjustments-amount.component';
+import { ChaComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/cha/cha.component';
+// import { ChildhostelallowanceComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/childhostelallowance.component';
+import { CeaComponent } from './Other/Child Education Allowance/cea/cea.component';
+// import { ChildeducationallowanceComponent } from './Other/Child Education Allowance/childeducationallowance/childeducationallowance.component';
+// import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
+// import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
+
+
 const routes: Routes = [
 
   {
@@ -57,12 +65,11 @@ const routes: Routes = [
         component:  PPFComponent,
         data: { title: ':: DelziaHR :: PPF' },
         },
-          {
-            path:   '80C-Summary',
-            component:  SummaryComponent,
-             data: { title: ':: DelziaHR :: Summary' },
-            },
-
+        {
+          path:   '80C-Summary',
+          component:  SummaryComponent,
+           data: { title: ':: DelziaHR :: Summary' },
+          },
           {
             path:   '80C-EmployeeContributionToProvidentFund_PF',
             component:  EmployeeContributionToProvidentFundPFComponent,
@@ -76,25 +83,25 @@ const routes: Routes = [
           
         
           {
-            path:   'VI-A',
+            path:   'Chapter-VI-A-Summary',
             component:  ChapterVIASummaryComponent,
-             data: { title: ':: DelziaHR :: VI-A' },
+             data: { title: ':: DelziaHR :: Chapter-VI-A-Summary' },
             },
 
             {
-              path:   'Child-Hostel-Allowance',
+              path:   'Other-Child-Hostel-Allowance',
               component:  ChaComponent,
                data: { title: ':: DelziaHR :: Child-Hostel-Allowance' },
               },
         
               {
-                path:   'Child',
+                path:   'Other-Child',
                 component:  ChaComponent,
                  data: { title: ':: DelziaHR :: Child-Hostel-Allowance' },
                 },
 
                 {
-                  path:   'Child-Education-Allowance',
+                  path:   'Other-Child-Education-Allowance',
                   component:  CeaComponent,
                    data: { title: ':: DelziaHR :: Child-Education-Allowance' },
                   },
@@ -122,12 +129,7 @@ const routes: Routes = [
                           component:  TaxAdjustmentsComponent,
                            data: { title: ':: DelziaHR ::  TaxAdjustments' },
                           },
-                    // {
-                    //   path:   '80C-NSC',
-                    //   component:     NationalSavingCertificateNSCComponent,
-                    //   data: { title: ':: DelziaHR :: 80C-NSC' },
-                    // },
-      
+
         {
           path:   '80C-TaxsavingMutualFund',
           component:     TaxsavingMutualFundComponent,
@@ -159,9 +161,9 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Chapter-VI-A-NPS' },
       },
       {
-        path:   '80C-NationalSevingCertificate',
+        path:   '80C-NationalSavingCertificate',
         component:  NationalSevingCertificateComponent,
-        data: { title: ':: DelziaHR :: NationalSevingCertificate' },
+        data: { title: ':: DelziaHR :: NationalSavingCertificate' },
       },
       {
         path:   '80C-FixedDepositsMoreThan5Years',
@@ -218,16 +220,16 @@ const routes: Routes = [
         component:  InterestOnDepositTtbComponent,
         data: { title: ':: DelziaHR :: Chapter-VI-A-InterestOn80TTB{Sec.80TTB}' },
       },
-      {
-        path:   'childHostelAllowance',
-        component:  ChildHostelAllowanceComponent,
-        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
-      },
-      {
-        path:   'Chapter-VI-A-childEducationAllowance',
-        component:  ChildEducationAllowanceComponent,
-        data: { title: ':: DelziaHR :: Child Hostel Allowance' },
-      },
+      // {
+      //   path:   'childHostelAllowance',
+      //   component:  ChildHostelAllowanceComponent,
+      //   data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      // },
+      // {
+      //   path:   'Chapter-VI-A-childEducationAllowance',
+      //   component:  ChildEducationAllowanceComponent,
+      //   data: { title: ':: DelziaHR :: Child Hostel Allowance' },
+      // },
       {
         path:   'Chapter-VI-A-DonationsForScientificResearchRuralDevelopmentScreenGGA',
         component:  DonationsForScientificResearchComponent,
@@ -243,7 +245,6 @@ const routes: Routes = [
         component:  Mediclaim80DComponent,
         data: { title:  ':: DelziaHR :: Mediclaim80D' },
       },
-   
       {
         path:   'HousingLoan',
         component:  HousingloanComponent,

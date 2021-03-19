@@ -1,182 +1,113 @@
 <app-leftmenu></app-leftmenu>
 <div class="page">
-<app-header></app-header>
+   <app-header></app-header>
 </div>
 <div class="tabview-contents">
-    <div class="row mt-25">
-       <div class="col-12">
-          <div class="page">
-             <div class="row mt-" style="position: center;">
-                <div class="col-12">
-                   <div class="card">
-                      <div class="mb-12 row">
-                         <div class="col-md-10">
-                            <span class="font-bold text-link float-left"></span>
-                         </div>
-                      </div>
-                      <div class="row">
-                         <div class="col-md-12">
-<div class="table-responsive Custom_Table">
-  <table class="table table-striped table-hover table-bordered m-b-0">
-     <thead class="thead-dark">
-      <tr>
-        <th rowspan="2" scope="rowgroup" class="wd-20 font700">Certificate No.</th>
-        <th rowspan="2" scope="rowgroup" class="wd-20 font700">NSC Issue</th>
-        <th colspan="2" scope="colgroup" class="wd-45 font700">Purchase</th>
-        <th colspan="2" scope="colgroup">Accrual</th>
-        <th colspan="2" scope="colgroup">Accrued Interest</th>
-        </tr>
-        <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Amount</th>
-        <th scope="col">Year</th>
-        <th scope="col">Factor</th>
-        <th scope="col">Declared</th>
-        <th scope="col">Actual</th>
-        </tr>
-     </thead>
-     <tbody>
-        <tr *ngFor="let summary of summaryGridData; let i = index">
-           <td scope="row"><span tooltip="1{{summary.certificateNumber}}">{{summary.certificateNumber}}</span>
-           </td>
-           <!-- <td scope="row">
-            <span tooltip="1{{summary.certificateNumber}}">{{summary.certificateNumber}}</span>
-          </td> -->
-           <td class="align-left-center"><span tooltip="{{summary.issueType}}">{{summary.issueType}}</span>
-           </td>
-           <td class="wd-15 align-right">
-              <span tooltip="{{summary.dateOfPurchase}}">
-              {{summary.dateOfPurchase}}
-              </span>
-           </td>
-           <!-- <td class="wd-15 align-right">
-              <span class="padding-right-12" tooltip="{{summary.year | number:'1.2-2'}}">
-              {{summary.year | number:'1.2-2'}}
-              </span>
-           </td> -->
-           <td class="wd-15 align-right-center">
-            <span class="padding-right-12" tooltip="{{summary.annualAmount | number:'1.2-2'}}">
-              {{summary.annualAmount | number:'1.2-2'}}
-            </span>
-          </td>
-           <td class="wd-15 align-right-center">
-            <span tooltip="{{summary.year}}">
-            {{summary.year}}
-            </span>
-         </td>
-           <td class="wd-15 align-right-center">
-              <span  class="padding-right-12" tooltip="{{summary.accrualFactor | number:'1.2-2'}}">
-              {{summary.accrualFactor | number:'1.2-2'}}
-              </span>
-           </td>
-        <!-- <td class="wd-15 align-right">
-            <span class="padding-right-12" tooltip="{{summary.annualAmount | number:'1.2-2'}}">
-              {{summary.annualAmount | number:'1.2-2'}}
-            </span>
-          </td> -->
-          <td class="wd-15 align-right-center">
-            <span  class="padding-right-12" tooltip="{{summary.accrualAmount | number:'1.2-2'}}">
-            {{summary.accrualAmount | number:'1.2-2'}}
-            </span>
-         </td>
-          <td class="wd-15 align-right-center">
-            <span  class="padding-right-12" tooltip="{{summary.accrualAmount | number:'1.2-2'}}">
-            {{summary.accrualAmount | number:'1.2-2'}}
-            </span>
-         </td>
-          </tr>
-          <tr class="table-light-color">
-            <th  colspan="2" scope="colgroup" scope="row" class="align-right font700"><b>Total</b></th>
-           <td></td>
-           <td><span class="padding-right-12" tooltip="{{nscAmountTotal| number:'1.2-2'}}">
-            {{nscAmountTotal | number:'1.2-2'}}
-          </span></td>
-           <td></td>
-            <td></td>
-            <td><span class="padding-right-12" tooltip="{{accrualTotal| number:'1.2-2'}}">
-              {{accrualTotal | number:'1.2-2'}}
-            </span></td>
-          <td><span class="padding-right-12" tooltip="{{accrualTotal| number:'1.2-2'}}">
-              {{accrualTotal | number:'1.2-2'}}
-            </span></td>
-          </tr> 
-          <tr class="table-light-color">
-              <th colspan="2" scope="colgroup" scope="row" class="align-right font700"><b>Accrued Interest Considered As Other Income</b></th>
-              <td colspan="4" scope="colgroup"><b><span class="align-right-center font700 padding-right-12"  tooltip="{{accrualTotal| number:'1.2-2'}}">
-                {{accrualTotal | number:'1.2-2'}}
-              </span></b></td>
-              <!-- <td></td> -->
-              <td></td>
-              <td></td>
-              </tr>
-              <!-- <td> <span class="padding-right-12" tooltip="{{grandTotalDeclared | number:'1.2-2'}}">
-                {{grandTotalDeclared | number:'1.2-2'}}
-              </span>
-            </td>
-            <td>
-              <span class="padding-right-12" tooltip="{{grandTotalActual | number:'1.2-2'}}">
-                {{grandTotalActual | number:'1.2-2'}}
-              </span>
-            </td> 
-          </tr> -->
-          <!-- <tr class="table-light-color">
-              <th colspan="2" scope="colgroup" scope="row" class="align-right font700"><b>Accrued Interest Considered As Other Income</b></th>
-              <td colspan="4" scope="colgroup"></td>
-              <td></td>
-              <td></td>
-              </tr> -->
-        <!-- <tr *ngIf="!summaryGridData?.length">
-           <td colspan="6">
-              <span class="font-14 font500 align-center text-red">No Data
-              Available</span>
-           </td>
-        </tr> -->
-        <!-- <tr class="table-light-color">
-           <td colspan="3" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
-           <td class="align-right">
-              <span class="padding-right-12" tooltip="{{totalDeclaredAmount | number:'1.2-2'}}">
-              {{totalDeclaredAmount | number:'1.2-2'}}
-              </span>
-           </td>
-           <td class="align-right">
-              <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
-              {{totalActualAmount | number:'1.2-2'}}
-              </span>
-           </td>
-           <td></td>
-        </tr> -->
-        <!-- <tr class="table-light-color">
-           <td colspan="3" class="align-right font700">Future New Policies &nbsp;
-              <span class="Letterbadge">B</span>
-           </td>
-           <td>
-              <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-              (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
-              class="form-control width120 inline_center align-right">
-           </td>
-           <td></td>
-           <td></td>
-        </tr> -->
-        <!-- <tr class="table-light-color">
-          <th colspan="2" scope="colgroup" scope="row" class="align-right font700"><b>Total</b></th>
-          <td></td>
-          <td class="align-right">
-              <span class="padding-right-12" tooltip="{{summary.nscAmountTotal | number:'1.2-2'}}">
-                {{summary.nscAmountTotal | number:'1.2-2'}}
-              </span></td>
-          <td><span class="padding-right-12" tooltip="{{accrualTotal| number:'1.2-2'}}">
-              {{accrualTotal | number:'1.2-2'}}
-            </span></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          </tr> 
-          <tr class="table-light-color">
-              <th colspan="2" scope="colgroup" scope="row" class="align-right font700"><b>Accrued Interest Considered As Other Income</b></th>
-              <td colspan="4" scope="colgroup"></td>
-              <td></td>
-              <td></td>
-              </tr> -->
-     </tbody>
-  </table>
-</div>
+   <div class="row mt-25">
+      <div class="col-12">
+         <div class="page">
+            <div class="row mt-" style="position: center;">
+               <div class="col-12">
+                  <div class="card">
+                     <div class="mb-12 row">
+                        <div class="col-md-10">
+                           <span class="font-bold text-link float-left"></span>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <div class="table-responsive Custom_Table">
+                              <table class="table table-striped table-hover table-bordered m-b-0">
+                                 <thead class="thead-dark">
+                                    <tr>
+                                       <th rowspan="2" scope="rowgroup" class="wd-20 font700">Certificate No.</th>
+                                       <th rowspan="2" scope="rowgroup" class="wd-20 font700">NSC Issue</th>
+                                       <th colspan="2" scope="colgroup" class="wd-45 font700">Purchase</th>
+                                       <th colspan="2" scope="colgroup">Accrual</th>
+                                       <th colspan="2" scope="colgroup">Accrued Interest</th>
+                                    </tr>
+                                    <tr>
+                                       <th scope="col">Date</th>
+                                       <th scope="col">Amount</th>
+                                       <th scope="col">Year</th>
+                                       <th scope="col">Factor</th>
+                                       <th scope="col">Declared</th>
+                                       <th scope="col">Actual</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let summary of summaryGridData; let i = index">
+                                       <td scope="row"><span
+                                             tooltip="1{{summary.certificateNumber}}">{{summary.certificateNumber}}</span>
+                                       </td>
+                                       <td class="align-left-center"><span
+                                             tooltip="{{summary.issueType}}">{{summary.issueType}}</span>
+                                       </td>
+                                       <td class="wd-15 align-right">
+                                          <span tooltip="{{summary.dateOfPurchase}}">
+                                             {{summary.dateOfPurchase}}
+                                          </span>
+                                       </td>
+
+                                       <td class="wd-15 align-right-center">
+                                          <span class="padding-right-12"
+                                             tooltip="{{summary.annualAmount | number:'1.2-2'}}">
+                                             {{summary.annualAmount | number:'1.2-2'}}
+                                          </span>
+                                       </td>
+                                       <td class="wd-15 align-right-center">
+                                          <span tooltip="{{summary.year}}">
+                                             {{summary.year}}
+                                          </span>
+                                       </td>
+                                       <td class="wd-15 align-right-center">
+                                          <span class="padding-right-12"
+                                             tooltip="{{summary.accrualFactor | number:'1.2-2'}}">
+                                             {{summary.accrualFactor | number:'1.2-2'}}
+                                          </span>
+                                       </td>
+                                       <td class="wd-15 align-right-center">
+                                          <span class="padding-right-12"
+                                             tooltip="{{summary.accrualAmount | number:'1.2-2'}}">
+                                             {{summary.accrualAmount | number:'1.2-2'}}
+                                          </span>
+                                       </td>
+                                       <td class="wd-15 align-right-center">
+                                          <span class="padding-right-12"
+                                             tooltip="{{summary.accrualAmount | number:'1.2-2'}}">
+                                             {{summary.accrualAmount | number:'1.2-2'}}
+                                          </span>
+                                       </td>
+                                    </tr>
+                                    <tr class="table-light-color">
+                                       <th colspan="2" scope="colgroup" scope="row" class="align-right font700">
+                                          <b>Total</b>
+                                       </th>
+                                       <td></td>
+                                       <td><span class="padding-right-12" tooltip="{{nscAmountTotal| number:'1.2-2'}}">
+                                             {{nscAmountTotal | number:'1.2-2'}}
+                                          </span></td>
+                                       <td></td>
+                                       <td></td>
+                                       <td><span class="padding-right-12" tooltip="{{accrualTotal| number:'1.2-2'}}">
+                                             {{accrualTotal | number:'1.2-2'}}
+                                          </span></td>
+                                       <td><span class="padding-right-12" tooltip="{{accrualTotal| number:'1.2-2'}}">
+                                             {{accrualTotal | number:'1.2-2'}}
+                                          </span></td>
+                                    </tr>
+                                    <tr class="table-light-color">
+                                       <th colspan="2" scope="colgroup" scope="row" class="align-right font700">
+                                          <b>Accrued Interest Considered As Other Income</b>
+                                       </th>
+                                       <td colspan="4" scope="colgroup"><b><span
+                                                class="align-right-center font700 padding-right-12"
+                                                tooltip="{{accrualTotal| number:'1.2-2'}}">
+                                                {{accrualTotal | number:'1.2-2'}}
+                                             </span></b></td>
+                                       <td></td>
+                                       <td></td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>

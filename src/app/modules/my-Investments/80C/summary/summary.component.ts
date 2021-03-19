@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { NumberFormatPipe } from '../../../../core/utility/pipes/NumberFormatPipe';
 import { SummaryService } from './summary.service';
@@ -39,3 +40,4 @@ export class SummaryComponent implements OnInit {
   }
 
 }
+

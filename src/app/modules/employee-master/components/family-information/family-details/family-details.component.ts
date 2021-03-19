@@ -6,9 +6,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { guardianDetailRequestDTO, familyAddressDetailRequestDTO, familyMemberInfoRequestDTO, FamilyInformation } from './../family-information.model';
-import { ContactInformationService } from './../../contact-information/contact-information.service';
-import { FamilyInformationService } from './../family-information.service';
+import { guardianDetailRequestDTO, familyAddressDetailRequestDTO, familyMemberInfoRequestDTO, FamilyInformation } from './../../../dto-models/family-information.model';
+import { ContactInformationService } from './../../../employee-master-services/contact-information/contact-information.service';
+import { FamilyInformationService } from './../../../employee-master-services/family-information.service';
 import { ConfirmationModalComponent } from './../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
@@ -584,6 +584,7 @@ export class FamilyDetailsComponent implements OnInit {
     this.FamilyInformationService.getFamilyDetailsInfo(familyMemberInfoId).subscribe(res => {
 
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
+      console.log(this.FamilyDetailsInfoList);
     })
   }
 
@@ -591,7 +592,7 @@ export class FamilyDetailsComponent implements OnInit {
 
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
-      
+      debugger
       let num: string
       if (copyAddress.value == 'Employee Local Address') {
         if (element.local) {
@@ -1055,7 +1056,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   validGuardianMobNo() {
-    
+    debugger
     if (this.guardianCountryCode && !this.guardianPhoneNo) {
       this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
       this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();

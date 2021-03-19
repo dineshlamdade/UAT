@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JobInformationService } from './job-information.service';
-import { PayrollAreaInformationService } from '../payroll-area-information/payroll-area-information.service';
+import { JobInformationService } from '../../employee-master-services/job-information.service';
+import { PayrollAreaInformationService } from '../../employee-master-services/payroll-area-information.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 
 @Component({
@@ -188,7 +188,7 @@ export class JobInformationComponent implements OnInit {
     this.minimumWagesTab = false;
     this.projectTab = false;
     this.deputationTab = false;
-    this.tabIndex = 0;
+    // this.router.navigate(['/employee-master/education-skills-information/education-details']);
   }
 
   organizationTabValidation() {
@@ -198,7 +198,6 @@ export class JobInformationComponent implements OnInit {
     this.minimumWagesTab = false;
     this.projectTab = false;
     this.deputationTab = false;
-    this.tabIndex = 1;
   }
 
   positionTabValidation() {
@@ -209,7 +208,6 @@ export class JobInformationComponent implements OnInit {
     this.minimumWagesTab = false;
     this.projectTab = false;
     this.deputationTab = false;
-    this.tabIndex = 2;
   }
 
   minimumWagesTabValidation() {
@@ -219,7 +217,6 @@ export class JobInformationComponent implements OnInit {
     this.minimumWagesTab = true;
     this.projectTab = false;
     this.deputationTab = false;
-    this.tabIndex = 3;
   }
 
   projectTabValidation() {
@@ -229,7 +226,6 @@ export class JobInformationComponent implements OnInit {
     this.minimumWagesTab = false;
     this.projectTab = true;
     this.deputationTab = false;
-    this.tabIndex = 4;
   }
 
   deputationTabValidation() {
@@ -239,7 +235,6 @@ export class JobInformationComponent implements OnInit {
     this.minimumWagesTab = false;
     this.projectTab = false;
     this.deputationTab = true;
-    this.tabIndex = 5;
   }
 
 }

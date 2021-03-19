@@ -2,9 +2,9 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeSkillDetailsRequest } from '../educatio-skills.model';
+import { employeeSkillDetailsRequest } from '../../../dto-models/educatio-skills.model';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from '../education-skills-information.service';
+import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -146,13 +146,10 @@ export class SkillsDetailComponent implements OnInit {
 
     const temp1 = this.SkillInfoForm.get('skillName');
     temp1.enable();
-    temp1.setValue(skill.skillName)
     const temp2 = this.SkillInfoForm.get('skillDescription');
     temp2.enable();
-    temp2.setValue(skill.skillDescription)
     const temp3 = this.SkillInfoForm.get('proficiency');
     temp3.enable();
-    temp3.setValue(skill.proficiency)
   }
 
   viewSkillRow(skill) {

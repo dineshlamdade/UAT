@@ -20,31 +20,37 @@ var BankMasterAtGroupService = /** @class */ (function () {
         this._HTTP = _HTTP;
     }
     BankMasterAtGroupService.prototype.postBankMaster = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/company-bankmaster/add-bank', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'company-bankmaster/add-bank', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtGroupService.prototype.postBankMasterMapping = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/company-bankmaster-mapping/map-bankmaster', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'company-bankmaster-mapping/map-bankmaster', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtGroupService.prototype.getBankMasterDetails = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/company-bankmaster/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'company-bankmaster/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtGroupService.prototype.putBankMasterMapping = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8083 + '/company-bankmaster-mapping/update', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'company-bankmaster-mapping/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtGroupService.prototype.putBankMaster = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8083 + '/company-bankmaster/update', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'company-bankmaster/update', data)
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    BankMasterAtGroupService.prototype.getLocationInformationOrCountryList = function () {
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -84,7 +90,7 @@ var BankMasterAtGroupService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP["delete"](environment_1.environment.baseUrl8083 + '/company-bankmaster/' + Id, { headers: headers })
+        return this._HTTP["delete"](environment_1.environment.baseUrl8083 + 'company-bankmaster/' + Id, { headers: headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

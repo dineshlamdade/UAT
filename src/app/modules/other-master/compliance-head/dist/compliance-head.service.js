@@ -20,7 +20,13 @@ var ComplianceHeadService = /** @class */ (function () {
         this._HTTP = _HTTP;
     }
     ComplianceHeadService.prototype.postComplianceHead = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/compliance-head/add-head', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'compliance-head/add-head', data)
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    ComplianceHeadService.prototype.putComplianceHead = function (data) {
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'compliance-head/update-head', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -36,7 +42,16 @@ var ComplianceHeadService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/compliance-head/details', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'compliance-head/details', { 'headers': headers })
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    ComplianceHeadService.prototype.deleteComplianceHead = function (Id) {
+        var headers = new http_1.HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('X-TenantId', 'PaysquareDefault');
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'compliance-head/softdelete/' + Id, { headers: headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

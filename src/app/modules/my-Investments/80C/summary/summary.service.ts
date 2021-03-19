@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -10,7 +11,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class SummaryService {
 
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -23,4 +24,5 @@ export class SummaryService {
     }
 
 }
+
 

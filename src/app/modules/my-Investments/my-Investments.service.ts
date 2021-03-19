@@ -1,15 +1,15 @@
- import { HttpClient, HttpHeaders } from '@angular/common/http';
- import { Injectable } from '@angular/core';
- import { BehaviorSubject, Observable, of , throwError } from 'rxjs';
- import { map } from 'rxjs/operators';
- //import { environment } from 'src/environments/environment';
- import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of , throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+//import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
- @Injectable({
-   providedIn: 'root',
+@Injectable({
+  providedIn: 'root',
 })
- export class MyInvestmentsService {
- public apiUrl = environment.apiBaseUrl;
+export class MyInvestmentsService {
+public apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -28,13 +28,6 @@
       return res;
     }));
   }
-    //Summary services
-    get80CSummary() {
-      return this._HTTP.get(this.apiUrl + 'elssmaster-detail/80C')
-      .pipe(map((res: any) => {
-        return res;
-      }));
-    }
 
   getNPSMaster() {
     return this._HTTP.get(this.apiUrl + 'npsmaster-detail/3')

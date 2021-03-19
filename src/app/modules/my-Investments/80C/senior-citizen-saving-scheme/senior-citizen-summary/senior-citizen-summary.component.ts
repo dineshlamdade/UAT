@@ -7,7 +7,7 @@ import { SeniorCitizenService } from '../senior-citizen.service';
 @Component({
   selector: 'app-senior-citizen-summary',
   templateUrl: './senior-citizen-summary.component.html',
-  styleUrls: ['./senior-citizen-summary.component.scss']
+  styleUrls: ['./senior-citizen-summary.component.scss'],
 })
 export class SeniorCitizenSummaryComponent implements OnInit {
   @Input() institution: string;
@@ -44,7 +44,7 @@ export class SeniorCitizenSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private seniorCitizenService : SeniorCitizenService,
+    private seniorCitizenService: SeniorCitizenService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -61,9 +61,8 @@ export class SeniorCitizenSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-        res.data.results[0].futureNewPolicyDeclaredAmount
-      );
+      this.futureNewPolicyDeclaredAmount =
+        res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -73,10 +72,6 @@ export class SeniorCitizenSummaryComponent implements OnInit {
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
-      .toString()
-      .replace(',', '');
-
     const data = {
       futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
     };
@@ -89,9 +84,8 @@ export class SeniorCitizenSummaryComponent implements OnInit {
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].futureNewPolicyDeclaredAmount
-        );
+        this.futureNewPolicyDeclaredAmount =
+          res.data.results[0].futureNewPolicyDeclaredAmount;
         this.grandTotalDeclaredAmount =
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =
@@ -102,9 +96,6 @@ export class SeniorCitizenSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-      this.futureNewPolicyDeclaredAmount
-    );
     this.addFuturePolicy();
   }
 

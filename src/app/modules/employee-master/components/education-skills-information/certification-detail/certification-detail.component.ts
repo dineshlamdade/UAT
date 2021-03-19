@@ -2,13 +2,13 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, Optional, Inject } fro
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from '../../../employee-master-services/event-emitter/event-emitter.service';
-import { employeeCertificateRequest } from './../educatio-skills.model';
+import { employeeEducationRequest, employeeSkillDetailsRequest, employeeLanguageRequest, employeeCertificateRequest } from '../../../dto-models/educatio-skills.model';
 import { ConfirmationModalComponent } from '../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { EducationSkillsInformationService } from '../education-skills-information.service';
+import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PreviousEmploymentInformationService } from './../../previous-employment-information/previous-employment-information.service';
+import { PreviousEmploymentInformationService } from './../../../employee-master-services/previous-employment-information/previous-employment-information.service';
 
 
 var certificateNameArray = [
@@ -153,6 +153,7 @@ export class CertificationDetailComponent implements OnInit {
     this.EducationSkillsInformationService.getAllCertificateSummary(this.employeeMasterId).subscribe(res => {
       
       this.certificateSummaryGridData = res.data.results[0];
+      console.log((this.certificateSummaryGridData));
 
       this.certificateSummaryGridData.forEach(element => {
         if (element.renewable == 0) {

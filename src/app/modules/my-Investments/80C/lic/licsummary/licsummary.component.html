@@ -67,9 +67,10 @@
                        <span class="Letterbadge">B</span>
                     </td>
                     <td>
-                       <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                       (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
-                       class="form-control width120 inline_center align-right">
+                      <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                      (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()" mode="decimal"
+                      locale="en-IN" [minFractionDigits]="2" min="0"
+                     ></p-inputNumber>
                     </td>
                     <td></td>
                     <td></td>
@@ -99,3 +100,18 @@
 </div>
 
 
+
+
+  <!-- <input type="text" class="form-control" [(ngModel)]="futureNewPolicyDeclaredAmount"
+  (change)='onChangeFutureNewPolicyDeclaredAmount()' minlength="1"
+    maxlength="10" autocomplete="off"
+    [ngClass]="{'is-invalid' : companyMasterform.get('phoneNumber').status == 'INVALID'}"
+    (keypress)="keyPress($event)"
+    [(ngModel)]="employeeMasterRequestDTO.phoneNumber"> -->
+
+
+    <!-- <td>
+                      <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                      (change)='onChangeFutureNewPolicyDeclaredAmount()' placeholder ="0.00"
+                      class="form-control width120 inline_center align-right">
+                   </td> -->

@@ -2,10 +2,10 @@ import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef, Vie
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // import { AuthenticationService } from '@src/app/core/services/authentication/authentication.service';
 'use strict';
-import { ContactInformation, LocalAddressInformation, PermanentAddressInformation, CountryCode } from './contact-information.model';
+import { ContactInformation, LocalAddressInformation, PermanentAddressInformation, CountryCode } from './../../dto-models/contact-information.model';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-import { ContactInformationService } from './../contact-information/contact-information.service';
+import { ContactInformationService } from './../../employee-master-services/contact-information/contact-information.service';
 // import * as CountryCodes from './../../../assets/JSON files/CountryCodes.json';
 // import * as city from './../../../assets/JSON files/city.json';
 import { Subscription } from 'rxjs';
@@ -28,6 +28,7 @@ import { ContactInfoLabels } from '../../dto-models/language-info-labels/contact
 export class ContactInformationComponent implements OnInit {
 
   ContactInfoForm: FormGroup;
+  // contactInformation: ContactInformation[];
   contactInformation = new ContactInformation();
   localAddressInformation = new LocalAddressInformation('', '', '', '', '', '', '', '', '', '', '', '', '');
   permanentAddressInformation = new PermanentAddressInformation('', '', '', '', '', '', '', '', '', '', '', '', '');
@@ -42,6 +43,7 @@ export class ContactInformationComponent implements OnInit {
   permanentAddress1: any;
   localAddress1: any;
   selectedISD: any;
+  // cityList: Array<any> = (city as any).default;
   communicationAddress: any;
   mask: any;
   staticLabels: boolean = true;
@@ -126,7 +128,6 @@ export class ContactInformationComponent implements OnInit {
       }
     })
 
-    // Validation for Communication boolean selection
     if (this.localAddressInformation.address1 == '' && this.permanentAddressInformation.address1 == '') {
       const communicationAddress = this.ContactInfoForm.get('communicationAddress');
       communicationAddress.disable();
@@ -136,9 +137,6 @@ export class ContactInformationComponent implements OnInit {
       communicationAddress.enable();
     }
 
-
-    // Global label API for Label change as per Company based
-    // We Are Filtering Labels as per the Language which selected in Web app
     this.SharedInformationService.getGlobalLabels(this.selectedLanguage).subscribe(res => {
 
       this.changesLabelArray = res.data.results.filter(item => {
@@ -339,7 +337,7 @@ export class ContactInformationComponent implements OnInit {
           }
           if (item.isDisplay == true && item.defaultLabelName == 'संचार पता') {
             this.ContactInfoLabels.CommunicationAddress = item.customLabelName;
-          }
+          } 
 
 
 
@@ -383,9 +381,8 @@ export class ContactInformationComponent implements OnInit {
         }
       })
     })
-  }
 
-  // Country and country codes get API Method
+  }
   getCountryInfo() {
     this.SharedInformationService.getLocationInformation().subscribe(res => {
       this.countries = res.data.results;
@@ -496,7 +493,7 @@ export class ContactInformationComponent implements OnInit {
         this.router.navigate(['/employee-master/bank-information']);
       }
     }, (error: any) => {
-
+      
       // Personal mobile number countryCode extraction
       if (this.ContactInfoForm.value.personalmobileNumber) {
         this.contactInformation.employeeMasterRequestDTO.personalMobileNumber = this.ContactInfoForm.value.personalmobileNumber.slice(this.ContactInfoForm.value.personalmobileNumber.length - 10)
@@ -531,8 +528,6 @@ export class ContactInformationComponent implements OnInit {
       this.dataBinding(res);
     })
   }
-
-  // Contact info get API data binding method
   dataBinding(res) {
 
     if (res.data.results[0].employeeAddressResponseDTOList.length > 0) {
@@ -602,16 +597,14 @@ export class ContactInformationComponent implements OnInit {
       this.permanentAddressInformation.country = '';
       this.ContactInfoForm.get('permanentCountry').setValue('');
     }
-    this.ContactInfoForm.patchValue({
-      personalCountryCode: this.ngPersonalCountryCode,
-      personalmobileNumber: this.contactInformation.employeeMasterRequestDTO.personalMobileNumber,
-      localAddress1: this.localAddressInformation.address1,
-      permanentAddress1: this.permanentAddressInformation.address1,
-
-    })
   }
+  myItemsSourceFunction = (query, max, callback) => {
+    query = this.ngPersonalCountryCode;
 
-  // Get data from Local address PIN number API method
+    let normquery = query.toLowerCase();
+    console.log(normquery);
+
+  }
   getLocalAddressFromPIN() {
     if (this.localAddressInformation.postalCode.length < 6) {
       this.localAddressInformation.state = '';
@@ -631,8 +624,6 @@ export class ContactInformationComponent implements OnInit {
       })
     }
   }
-
-  // Get data from Permanent address PIN number API method
   getPermanentAddressFromPIN() {
     if (this.permanentAddressInformation.postalCode.length < 6) {
       this.permanentAddressInformation.state = '';
@@ -652,7 +643,6 @@ export class ContactInformationComponent implements OnInit {
       })
     }
   }
-
   // Copy addres from Local to Permanent
   copyFromLocalToPermanent() {
     this.permanentAddressInformation.address1 = this.localAddressInformation.address1;
@@ -669,7 +659,6 @@ export class ContactInformationComponent implements OnInit {
 
     this.ContactInfoForm.markAsTouched();
   }
-
   // Copy addres from Permanent to Local
   copyFromPermanentToLocal() {
     this.localAddressInformation.address1 = this.permanentAddressInformation.address1;
@@ -687,7 +676,6 @@ export class ContactInformationComponent implements OnInit {
     this.checkLocalAddress()
   }
 
-  // Confirmation Dialog before copy from local to permanent
   ConfirmationFromLocalToPermanent(): void {
     if (this.permanentAddressInformation.address1 != '' || this.permanentAddressInformation.address2 != ''
       || this.permanentAddressInformation.address3 != '' || this.permanentAddressInformation.country != ''
@@ -702,8 +690,6 @@ export class ContactInformationComponent implements OnInit {
       this.copyFromLocalToPermanent();
     }
   }
-
-  // Confirmation Dialog before copy from permanent to local
   ConfirmationFromPermanentToLocal(): void {
     if (this.localAddressInformation.address1 != '' || this.localAddressInformation.address2 != ''
       || this.localAddressInformation.address3 != '' || this.localAddressInformation.country != ''
@@ -718,8 +704,6 @@ export class ContactInformationComponent implements OnInit {
       this.copyFromPermanentToLocal();
     }
   }
-
-  // Validation method for getting enable communication address field
   checkLocalAddress() {
 
     let local;
@@ -771,8 +755,6 @@ export class ContactInformationComponent implements OnInit {
       this.communicationAddress = '';
     }
   }
-
-  // Validation method for getting enable communication address field
   checkPermanentAddress() {
     if (this.permanentAddressInformation.address1 != '' || this.permanentAddressInformation.address2 != ''
       || this.permanentAddressInformation.address3 != '' || this.permanentAddressInformation.country != ''
@@ -784,8 +766,6 @@ export class ContactInformationComponent implements OnInit {
       // this.enableCommunicationAddress = true;
     }
   }
-
-  // Reset Form method
   resetForm() {
 
     this.ContactInfoForm.reset();
@@ -813,8 +793,6 @@ export class ContactInformationComponent implements OnInit {
     this.ContactInfoForm.get('emergencyCountryCode').clearValidators();
     this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
   }
-
-  // Official Email verification API call
   validateOfficialEmail(officialEmail) {
     const officialEmailId = this.ContactInfoForm.get('officialEmail');
     if (officialEmailId.status == "VALID" && officialEmail.length > 0) {
@@ -828,8 +806,6 @@ export class ContactInformationComponent implements OnInit {
       });
     }
   }
-
-  // Personal mobile number verification API call
   validatePersonalMobile(ngPersonalCountryCode) {
 
     const personalmobileNumber = this.ContactInfoForm.get('personalmobileNumber');
@@ -847,7 +823,6 @@ export class ContactInformationComponent implements OnInit {
     }
   }
 
-  // Personal Email verification API call
   validatePersonalEmailId(personalEmailID) {
 
     const personalEmail = this.ContactInfoForm.get('personalEmail');
@@ -885,8 +860,6 @@ export class ContactInformationComponent implements OnInit {
       this.ContactInfoForm.get('localPin').updateValueAndValidity();
     }
   }
-
-
   clearPermanentAddressFields() {
     if (this.permanentAddressInformation.country != 'India') {
       this.permanentAddressInformation.postalCode = '';
@@ -908,7 +881,34 @@ export class ContactInformationComponent implements OnInit {
     }
   }
 
-  // Method for preventing String characters in number fields
+  // sweetalertMasterSuccess(message: any, text: any) {
+  //   Swal.fire({
+  //     Mobile Number: message,
+  //     text: text,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'success',
+  //     timer: 3000,
+  //     timerProgressBar: true,
+  //   })
+  // }
+
+  // sweetalertError(message: any) {
+  //   Swal.fire({
+  //     Mobile Number: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'error',
+  //     timer: 3000,
+  //     timerProgressBar: true,
+  //   })
+  // }
   keyPress(event: any) {
 
     const pattern = /[0-9]/;
@@ -933,7 +933,6 @@ export class ContactInformationComponent implements OnInit {
     });
   }
 
-  // methods for mobile number and country code selection required validation
   validOfficialMobNo() {
 
     if (this.ngOfficialCountryCode && (this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length == 0 && this.contactInformation.employeePersonalInfoRequestDTO.officialMobileNumber.length < 10)) {

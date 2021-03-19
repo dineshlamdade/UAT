@@ -12,11 +12,6 @@
                      </div>
                      <div class="row">
                         <div class="col-md-12">
-
-                           <!-- <p>tax-adjustments-summary works!</p> -->
-                           <!-- <div class="row mt-4">
-   <div class="col-md-8"> 
-       </div> -->
                            <div class="row mt-4"></div>
                            <div class="table-responsive Custom_Table">
                               <table class="table table-striped table-hover table-bordered m-b-2">
@@ -30,9 +25,6 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor="let summary of summaryGridData; let i = index">
-                                       <!-- <td class="align-right-center">Tax in Advance On Salary Incomes</td>
-                  <td></td>
-                  <td></td> -->
                                        <td scope="row">
                                           <span tooltip="1">{{summary.taxAdjustmentType}}</span>
                                        </td>
@@ -48,15 +40,6 @@
                                              (click)="viewMaster(i)" tooltip="view"></i>
                                        </td>
                                     </tr>
-                                    <!-- <tr>
-               <td class="wd-5 align-right-center">Tax On Incomes Other Than Salary</td>
-               <td></td>
-               <td></td>
-               <td><i class="fa fa-edit font-16 text-dark-blue cursor-pointer" (click)="editMaster(i)"
-                  tooltip="Edit"></i>&nbsp;&nbsp;
-                  <i class="fa fa-eye font-16 text-dark-blue cursor-pointer" (click)="viewMaster(i)" tooltip="view"></i>
-               </td>
-           </tr> -->
                                  </tbody>
                               </table>
                            </div>

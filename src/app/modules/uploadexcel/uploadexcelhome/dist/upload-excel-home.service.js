@@ -15,8 +15,6 @@ var UploadExcelHomeService = /** @class */ (function () {
     function UploadExcelHomeService(_HTTP) {
         this._HTTP = _HTTP;
     }
-    //   URL: http://localhost:8083/hrms/v1/excel-template-generation
-    // XTenantId:PaysquareDefault
     UploadExcelHomeService.prototype.postExcelTemplateGeneration = function (data) {
         var headers = new http_1.HttpHeaders()
             .set('X-TenantId', 'PaysquareDefault');

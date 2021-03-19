@@ -59,15 +59,13 @@ import { Mediclaim80DComponent } from './mediclaim80-d/mediclaim80-d.component';
 import { MediclaimSummaryComponent } from './mediclaim80-d/mediclaim-summary/mediclaim-summary.component';
 import { MediclaimMasterComponent } from './mediclaim80-d/mediclaim-master/mediclaim-master.component';
 import { MediclaimDeclarationComponent } from './mediclaim80-d/mediclaim-declaration/mediclaim-declaration.component';
-import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
-
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import {MatSelectModule} from '@angular/material/select';
 import { TreatmentOfSpecifiedDiseasesComponent } from './treatment-of-specified-diseases/treatment-of-specified-diseases.component';
 import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-diseases/treatment-of-specified-summary/treatment-of-specified-summary.component';
 import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
 import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
-
+// import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 @NgModule({
   declarations: [
       InterestDepositSavingAccountComponent,
@@ -111,11 +109,11 @@ import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specifi
       MediclaimSummaryComponent,
       MediclaimMasterComponent,
       MediclaimDeclarationComponent,
-      ChapterVIASummaryComponent,
       TreatmentOfSpecifiedDiseasesComponent,
       TreatmentOfSpecifiedSummaryComponent,
       TreatmentOfSpecifiedMasterComponent,
       TreatmentOfSpecifiedDeclarationComponent,
+      // ChapterVIASummaryComponent,
      ],
   imports: [
     MatSelectModule,

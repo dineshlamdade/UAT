@@ -39,6 +39,8 @@ var button_1 = require("@angular/material/button");
 var icon_1 = require("@angular/material/icon");
 var form_field_1 = require("@angular/material/form-field");
 var app_primeNG_module_1 = require("src/app/app.primeNG.module");
+var job_master_component_1 = require("./job-master/job-master.component");
+var compliance_mapping_component_1 = require("./compliance-mapping/compliance-mapping.component");
 var OtherMasterModule = /** @class */ (function () {
     function OtherMasterModule() {
     }
@@ -54,13 +56,15 @@ var OtherMasterModule = /** @class */ (function () {
                 compliance_master_component_1.ComplianceMasterComponent,
                 bank_master_at_group_component_1.BankMasterAtGroupComponent,
                 bank_master_at_company_component_1.BankMasterAtCompanyComponent,
+                job_master_component_1.JobMasterComponent,
+                compliance_mapping_component_1.ComplianceMappingComponent,
             ],
             imports: [
                 button_1.MatButtonModule,
                 icon_1.MatIconModule,
                 form_field_1.MatFormFieldModule,
+                datepicker_1.BsDatepickerModule,
                 common_1.CommonModule,
-                other_master_routing_module_1.OtherMasterRoutingModule,
                 forms_1.ReactiveFormsModule,
                 forms_1.FormsModule,
                 ng_multiselect_dropdown_1.NgMultiSelectDropDownModule,
@@ -76,7 +80,6 @@ var OtherMasterModule = /** @class */ (function () {
                 modal_1.ModalModule.forRoot(),
                 progressbar_1.ProgressbarModule.forRoot(),
                 carousel_1.CarouselModule.forRoot(),
-                datepicker_1.BsDatepickerModule.forRoot(),
                 carousel_1.CarouselModule.forRoot(),
                 ngx_toastr_1.ToastrModule.forRoot({
                     positionClass: 'toast-top-center'

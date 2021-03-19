@@ -4,13 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { JobInformationService } from '../job-information.service';
-import { EducationSkillsInformationService } from '../../education-skills-information/education-skills-information.service';
+import { JobInformationService } from '../../../employee-master-services/job-information.service';
+import { EducationSkillsInformationService } from '../../../employee-master-services/education-skills-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { BankInformationService } from './../../bank-information/bank-information.service';
+import { BankInformationService } from './../../../employee-master-services/bank-information.service';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { MinumumWagesDetailsModel } from './../job-information-models/minimum-wages.model';
-import { PayrollAreaInformationService } from '../../payroll-area-information/payroll-area-information.service';
+import { MinumumWagesDetailsModel } from './../../../dto-models/minimum-wages.model';
+import { PayrollAreaInformationService } from '../../../employee-master-services/payroll-area-information.service';
 import { Router } from '@angular/router';
 
 @Component({

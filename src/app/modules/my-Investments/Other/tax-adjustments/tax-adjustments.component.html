@@ -1,5 +1,4 @@
 <app-leftmenu></app-leftmenu>
-<!-- Main body part  -->
 <div class="page">
   <app-header></app-header>
   <div class="section-body mt-2">
@@ -8,30 +7,21 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <!-- <div class="tabview tabview_fixed_deposit"> -->
               <div class="tabview tabview_fixed_deposit">
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-tax-adjustments-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-tax-adjustments-summary>
+                  <app-tax-adjustments-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)">
+                  </app-tax-adjustments-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
                 </label>
-
-                <!-- <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
-                  [checked]="tabIndex == 1" />
-                <div class="tabs about-page">
-                  <app-national-seving-certificate-master *ngIf="tabIndex== 1"> </app-national-seving-certificate-master>
-                </div>
-                <label class="nav" for="Master">
-                  <span> Master </span>
-                </label> -->
                 <input name="nav" type="radio" class="about-radio" id="Amount" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 1" />
-                  <div class="tabs about-page">
-                    <app-tax-adjustments-amount [data] ="data" *ngIf="tabIndex == 2"> </app-tax-adjustments-amount>
-                  </div>
+                <div class="tabs about-page">
+                  <app-tax-adjustments-amount [data]="data" *ngIf="tabIndex == 2"> </app-tax-adjustments-amount>
+                </div>
                 <label class="nav" for="Amount">
                   <span> Amount </span>
                 </label>

@@ -8,13 +8,14 @@ describe('EmployeeContributionToProvidentFundPFComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmployeeContributionToProvidentFundPFComponent ]
-    })
-    .compileComponents();
+      declarations: [EmployeeContributionToProvidentFundPFComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeeContributionToProvidentFundPFComponent);
+    fixture = TestBed.createComponent(
+      EmployeeContributionToProvidentFundPFComponent
+    );
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

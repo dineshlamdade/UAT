@@ -2,11 +2,10 @@ import { HostListener } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
-
 @Component({
   selector: 'app-tax-adjustments',
   templateUrl: './tax-adjustments.component.html',
-  styleUrls: ['./tax-adjustments.component.scss']
+  styleUrls: ['./tax-adjustments.component.scss'],
 })
 export class TaxAdjustmentsComponent implements OnInit {
   public tabIndex = 0;

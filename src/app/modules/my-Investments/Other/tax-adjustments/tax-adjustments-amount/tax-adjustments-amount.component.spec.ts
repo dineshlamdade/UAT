@@ -8,9 +8,8 @@ describe('TaxAdjustmentsAmountComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaxAdjustmentsAmountComponent ]
-    })
-    .compileComponents();
+      declarations: [TaxAdjustmentsAmountComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

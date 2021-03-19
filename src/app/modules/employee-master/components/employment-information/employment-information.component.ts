@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EmploymentInformationService } from './employment-information.service';
+import { EmploymentInformationService } from './../../employee-master-services/employment-information.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 
 @Component({
@@ -32,7 +32,6 @@ export class EmploymentInformationComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
     private EventEmitterService: EventEmitterService, private router: Router) {
-    // Active tab selection based on URLS
     if (router.url == '/employee-master/employment-information/employment-summary') {
       this.tabIndex = 0;
       this.EmpSummaryTabValidation();
@@ -100,7 +99,6 @@ export class EmploymentInformationComponent implements OnInit {
       // })
     })
 
-    // Active Tab event Subscription from other components
     this.tabSubscription = this.EventEmitterService.setJoiningInitiate().subscribe(res => {
 
       this.joiningTabValidation()

@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, ChangeDetectorRef, ViewEncapsulation, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 'use strict';
-import { PersonalInformationModel, internationalWorkerRequestDTO } from './personal-information.model';
-import { PersonalInformationService } from './personal-information.service';
+import { PersonalInformationModel, internationalWorkerRequestDTO } from './../../dto-models/personal-information.model';
+import { PersonalInformationService } from './../../employee-master-services/personal-information/personal-information.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
@@ -133,7 +133,6 @@ export class PersonalInformationComponent implements OnInit {
       this.getEmployeeData();
     }
 
-    // Get API call to get the Country List
     this.PersonalInformationService.getLocationInformation().subscribe(res => {
       this.countryList = res.data.results;
 
@@ -157,7 +156,6 @@ export class PersonalInformationComponent implements OnInit {
       severityLevel.enable();
     }
 
-    // Event emmiter instance from Landing page component for Add and ReJoinee
     this.addJoineeSubscription = this.EventEmitterService.setAddjoinee().subscribe(element => {
 
       if (element.rejoinee == true) {
@@ -194,10 +192,9 @@ export class PersonalInformationComponent implements OnInit {
     //   isOnCOC.enable();
     // }
 
-    // Global label API for Label change as per Company based
-    // We Are Filtering Labels as per the Language which selected in Web app
-    this.SharedInformationService.getGlobalLabels(this.selectedLanguage).subscribe(res => {
 
+    this.SharedInformationService.getGlobalLabels(this.selectedLanguage).subscribe(res => {
+      
       this.changesLabelArray = res.data.results.filter(item => {
         // Change English Label's name as per Company setting
         if (item.language == 'en') {
@@ -441,7 +438,6 @@ export class PersonalInformationComponent implements OnInit {
     this.personalInformationModel.severityLevel = event;
   }
 
-  // Save&Next button post API call
   saveNextPersonalInfoSubmit(personalInformationModel) {
     this.saveNextBoolean = true;
 
@@ -558,8 +554,6 @@ export class PersonalInformationComponent implements OnInit {
       })
     }
   }
-
-  // Get API call to Data of Personal info form
   getEmployeeData() {
 
     this.PersonalInformationService.getEmployeeData(this.employeeMasterId).subscribe((res: any) => {
@@ -570,7 +564,7 @@ export class PersonalInformationComponent implements OnInit {
     })
   }
 
-  // Get API data binding Function
+  // Get data binding Function
   getDataBinding(res) {
 
     this.personalInformationModel = res.data.results[0];
@@ -631,17 +625,20 @@ export class PersonalInformationComponent implements OnInit {
       this.maritalStatus.splice(3, 1);
     }
     this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = new Date(this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth);
-   
-    this.BasicInfoForm.patchValue({
-      employeeCode: this.personalInformationModel.employeeMasterRequestDTO.employeeCode,
-      birthDate: this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth,
-      firstName: this.personalInformationModel.employeeMasterRequestDTO.firstName,
-      gender: this.personalInformationModel.employeeMasterRequestDTO.gender
-    })
   }
 
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+      this.imageUrl = reader.result;
+    }, false);
 
-  // selected image binding
+    if (image) {
+      reader.readAsDataURL(image);
+    }
+  }
+
+  // selected image bindind
   uploadFile(event, uploadFile) {
 
     if (uploadFile.files[0].size > 1000000) {
@@ -677,8 +674,6 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
   get physically(): any { return this.BasicInfoForm.get('physicallyChallengedOption'); }
-
-  // Physically challenged field disable validation Function
   validatePhysically(physicallyChallengedB) {
 
     if (physicallyChallengedB == 'No') {
@@ -691,7 +686,6 @@ export class PersonalInformationComponent implements OnInit {
   }
   get expat(): any { return this.BasicInfoForm.get('countryOfOrigin'); }
 
-  // Expat field disable validation Function
   validateExpatBoolean(expatBoolean) {
 
     if (expatBoolean == 'No') {
@@ -707,8 +701,6 @@ export class PersonalInformationComponent implements OnInit {
       this.internationalWorkerRequestDTO.countryOfOrigin = '';
     }
   }
-
-  // WeatherONCOC field disable validation Function
   validateWeatherOnCOC(weatherOnCOC) {
 
     if (weatherOnCOC == 'No') {
@@ -716,8 +708,6 @@ export class PersonalInformationComponent implements OnInit {
       this.internationalWorkerRequestDTO.cocValidTill = '';
     }
   }
-
-  // Concatination function of First, middle, last Names to show in Full and Display Name
   concateFullName() {
 
     this.personalInformationModel.employeeMasterRequestDTO.fullName =
@@ -737,12 +727,10 @@ export class PersonalInformationComponent implements OnInit {
     this.formTouch();
   }
 
-  // Function for Form touch
   formTouch() {
     this.BasicInfoForm.markAsTouched();
   }
 
-  // Reset Form function
   resetForm() {
 
     this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
@@ -775,8 +763,6 @@ export class PersonalInformationComponent implements OnInit {
 
     this.employeeMasterId = null;
   }
-
-  // clear marriage date based on Selection of Marital status
   clearMarriageDate(maritalStatusBoolean) {
     if (maritalStatusBoolean !== 'Married') {
       this.personalInformationModel.anniversaryDate = '';
@@ -792,7 +778,6 @@ export class PersonalInformationComponent implements OnInit {
     this.birthdateClickboolean = true;
   }
 
-  // BirthDate field validation based of 18 years less and above
   birthDateValidation(event, confirmation) {
 
     if ((this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth != '' ||
@@ -826,8 +811,6 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-
-  // Nationality selection Function while user Searching In Dropdown
   validateNationalty(nationality) {
 
     if (this.personalInformationModel.nationality) {
@@ -849,7 +832,6 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  // Severity field enable validation on selection of Disablity Type
   enableSeverity() {
     if (this.personalInformationModel.disabilityType) {
       const severityLevel = this.BasicInfoForm.get('severityLevel');
@@ -857,7 +839,6 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  // WhetherOnCOC field enable validation on selection of countryOfOrigin
   enableWhetherOnCOC() {
     if (this.internationalWorkerRequestDTO.countryOfOrigin) {
       const isOnCOC = this.BasicInfoForm.get('isOnCOC');
@@ -865,7 +846,8 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  // Severity level message warning Function
+
+
   validateSaverityLevel(severityLevel) {
 
     if (severityLevel > 100 || severityLevel < 0) {
@@ -900,7 +882,6 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  // Marital status Validation on selection of Gender
   validateGender() {
 
     this.maritalStatus = 'Single,Married,Widow,Widower,Divorced'.split(',');
@@ -915,7 +896,6 @@ export class PersonalInformationComponent implements OnInit {
     }
   }
 
-  // Confirmation Modal function 
   UploadModal(confirmation: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       confirmation,
@@ -923,7 +903,6 @@ export class PersonalInformationComponent implements OnInit {
     );
   }
 
-  
   clearBithDate() {
     this.personalInformationModel.employeeMasterRequestDTO.dateOfBirth = null;
     this.validBirthDate = null;
