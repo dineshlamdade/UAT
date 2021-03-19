@@ -281,11 +281,11 @@
                           {{ summary.annualAmount | number: "1.2-2" }}
                         </span>
                       </td>
-                      <td class="wd-10">
+                      <!-- <td class="wd-10">
                                    <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
                                    {{summary.ecs==1?'Yes':'No'}}
                                    </span>
-                                </td>
+                                </td> -->
                     </tr>
                     <tr *ngIf="!paymentDetailGridData?.length">
                       <td colspan="7">
@@ -451,7 +451,7 @@
                       <span tooltip="Submitted">Submitted</span>
                     </td>
                     <td class="wd-5">
-                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)"
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)"
                         tooltip="Edit"></i>
                       &nbsp;&nbsp;
                     </td>
