@@ -324,8 +324,9 @@
                     type="text"
                     [ngModel]="summary.amountApproved | number: '1.2-2'"
                     class="form-control align-right"
-                    disabled
+                    disabled tooltip="{{summary.amountApproved | number: '1.2-2'}}"
                   />
+
                 </td>
                 <td>
                   <span tooltip="{{ summary.remark }}">
@@ -543,7 +544,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -602,12 +603,9 @@
                     </td>
                     <td>
                       <span>
-                        <input
-                          type="text"
-                          class="form-control align-right"
-                          (change)="changeReceiptAmountFormat()"
-                          [(ngModel)]="receiptAmount"
-                        />
+                          <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+
                       </span>
                     </td>
                     <td>
@@ -857,15 +855,6 @@
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
                   </td>
-                  <!-- <td>
-                    <span
-                      tooltip="{{
-                        documentSummary.receiptAmount | number: '1.2-2'
-                      }}"
-                    >
-                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
-                    </span>
-                  </td> -->
                   <td>
                     <div class="custom_Label_badge">
                       <button
@@ -873,6 +862,20 @@
                         (click)="
                           UploadedDocumentModal1(template1, documentIndex)
                         "
+                      >
+                        Documents
+                      </button>
+                      <span class="Label_badge">{{
+                        documentSummary.documentDetailList.length
+                      }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="custom_Label_badge">
+                      <button
+                        class="btn bg-color-lightgray text-000"
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
                       >
                         Documents
                       </button>
@@ -891,13 +894,6 @@
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
                     ></i>
-                    <div *ngFor="let doc of urlArray" hidden>
-                      <iframe
-                        style="height: 100vh; width: 100%; display: block"
-                        [src]="doc.blobURI"
-                        provider="google"
-                      ></iframe>
-                    </div>
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
@@ -1505,7 +1501,7 @@
     <button
       type="button"
       tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3)"
+      (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
@@ -1522,6 +1518,8 @@
     </button>
   </div>
 </ng-template>
+
+<!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
@@ -1551,8 +1549,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe
-          style="height: 100vh; width: 100%; display: block"
+        <iframe class="imagecover"
+
           [src]="urlSafe"
           provider="google"
         ></iframe>

@@ -84,7 +84,7 @@ export class BankInformationComponent implements OnInit {
     this.bankInfoForm = this.formBuilder.group({
       country: [''],
       state: [''],
-      bankIFSC: [''],
+      bankIFSC: [{ value: '', disabled: true }],
       bankName: [''],
       branchName: [''],
       branchAddress: [''],
@@ -105,10 +105,10 @@ export class BankInformationComponent implements OnInit {
     this.CommonDataService.getLocationInformation().subscribe(res => {
 
       this.countryList = res.data.results;
-      setTimeout(() => {
-        this.BankInformationModel.country = 'India';
-        this.bankInfoForm.get('country').setValue('India');
-      })
+      // setTimeout(() => {
+      //   this.BankInformationModel.country = 'India';
+      //   this.bankInfoForm.get('country').setValue('India');
+      // })
     })
     // this.initiateBankForm = this.EventEmitterService.setBankFormInitiate().subscribe(res => {
 
@@ -119,6 +119,23 @@ export class BankInformationComponent implements OnInit {
       }
     })
 
+  }
+
+  selectCountry(){
+
+    if(this.BankInformationModel.country == 'India'){
+      this.bankInfoForm.get('bankIFSC').enable();
+    } else{
+      this.bankInfoForm.get('bankIFSC').disable();
+      this.BankInformationModel.bankIFSC = '';
+      this.BankInformationModel.bankName = '';
+      this.BankInformationModel.branchName = '';
+      this.BankInformationModel.branchAddress = '';
+      this.confirmAccountNumber = '';
+      this.BankInformationModel.accountNo = '';
+      this.BankInformationModel.nameAsPerBank = '';
+      this.maxAccNumber = null;
+    }
   }
 
   getBankAccounts() {
@@ -217,6 +234,7 @@ export class BankInformationComponent implements OnInit {
       this.confirmAccountNumber = '';
       this.BankInformationModel.accountNo = '';
       this.BankInformationModel.nameAsPerBank = '';
+      this.maxAccNumber = null;
     }
     if (bankIFSC.length == 11) {
       this.IFSCDetails(bankIFSC);
@@ -298,6 +316,7 @@ export class BankInformationComponent implements OnInit {
       this.confirmAccountNumber = '';
       this.bankInfoForm.get('confirmAccountNo').setValue('');
       this.bankInfoForm.markAsUntouched();
+      this.bankInfoForm.get('bankIFSC').disable();
       this.accountNoMatched = false;
       if (this.saveNextBoolean == true) {
         this.saveNextBoolean = false;
@@ -333,6 +352,9 @@ export class BankInformationComponent implements OnInit {
     this.viewBankForm = false;
     this.maxAccNumber = null;
     this.addButton = true;
+    this.accountNumberCountError = '';
+    this.confirmAccountNumberCountError = '';
+    this.bankInfoForm.get('bankIFSC').enable();
     this.BankInformationModel.country = bank.country;
     this.BankInformationModel.bankIFSC = bank.bankIFSC;
     this.BankInformationModel.bankName = bank.bankName;
@@ -369,6 +391,8 @@ export class BankInformationComponent implements OnInit {
 
   viewBankGridRow(bank) {
     this.viewBankForm = true;
+    this.accountNumberCountError = '';
+    this.confirmAccountNumberCountError = '';
     this.BankInformationModel.country = bank.country;
     this.BankInformationModel.bankIFSC = bank.bankIFSC;
     this.BankInformationModel.bankName = bank.bankName;
@@ -411,8 +435,8 @@ export class BankInformationComponent implements OnInit {
     temp1.enable();
     const temp2 = this.bankInfoForm.get('state');
     temp2.enable();
-    const temp3 = this.bankInfoForm.get('bankIFSC');
-    temp3.enable();
+    // const temp3 = this.bankInfoForm.get('bankIFSC');
+    // temp3.enable();
     const temp4 = this.bankInfoForm.get('bankName');
     temp4.enable();
     const temp5 = this.bankInfoForm.get('branchName');
@@ -432,8 +456,12 @@ export class BankInformationComponent implements OnInit {
     this.clearFormData();
     this.accountNoMatched = false;
     this.addButton = false;
-    this.BankInformationModel.country = 'India';
-    this.bankInfoForm.get('country').setValue('India');
+    this.maxAccNumber = null;
+    this.accountNumberCountError = '';
+    this.confirmAccountNumberCountError = '';
+    this.BankInformationModel.country = '';
+    this.bankInfoForm.get('country').setValue('');
+    this.bankInfoForm.get('bankIFSC').disable();
     this.confirmAccountNumber = '';
     this.bankInfoForm.get('confirmAccountNo').setValue('');
     this.stateModel = '';

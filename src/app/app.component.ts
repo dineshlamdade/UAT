@@ -45,18 +45,18 @@ export class AppComponent implements OnInit {
       }
       this.bnIdle.startWatching(2).subscribe((res) => {
         if(res) {
-           // console.log("session expired"); commented by Anant
+            console.log("session expired");
         }
       })
      }
-  public ngOnInit(): void {
-    // if (this.router.getCurrentNavigation() === null) {
-    // if (!this.authService.isLoggedIn()) {
-    //   this.router.navigate(['/login']);
-    // } else {
-    //   this.router.navigate(['/dashboard']);
-    // }
-    // }
+  ngOnInit(): void {
+    if (this.router.getCurrentNavigation() === null) {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
+    }
     const body = document.getElementsByTagName('body')[0];
     body.classList.add('offcanvas-active');
     body.classList.add('font-montserrat');

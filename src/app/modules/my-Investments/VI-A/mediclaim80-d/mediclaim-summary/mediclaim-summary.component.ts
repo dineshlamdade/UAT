@@ -75,9 +75,7 @@ export class MediclaimSummaryComponent implements OnInit {
 
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-        res.data.results[0].interestOnFutureLoanDeclaredAmount
-      );
+
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.limit = res.data.results[0].limit;
@@ -118,6 +116,10 @@ export class MediclaimSummaryComponent implements OnInit {
     this.benefitAvailableOnDeclaredAmount = Math.min(this.grandTotalDeclaredAmount, this.limit);
     this.benefitAvailableOnActualAmount = Math.min(this.grandTotalActualAmount, this.limit);
     // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitE;
+  }
+
+  redirectToDeclarationActual(){
+
   }
 
   InfoDialogforSectionEightyEE(){

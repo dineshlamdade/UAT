@@ -42,6 +42,7 @@
     "passwordPolicyDescriptionPoint6": "Three unsuccessful attempts of login would result in account locked, which can only be unlocked by Admin."
   },
   "EmployeeMaster": {
+    "employeeSummary": "Employee Summary",
     "employeeMaster": "Employee Master",
     "personalInformation": "Personal Information",
     "contactInformation": "Contact Information",
@@ -85,7 +86,14 @@
     "countryOfOrigin": "Country Of Origin",
     "weatherOnCOC": "Whether On COC",
     "cocNo": "COC No.",
-    "cocValidTill": "COC Valid Till"
+    "cocValidTill": "COC Valid Till",
+    "saveAndNext": "Save & Next",
+    "save": "Enregistrer comme brouillon",
+    "reset": "Formulaire de réinitialisation",
+    "next": "अगला",
+    "previous": "पहले का",
+    "selectImage": "Select Image",
+    "imageInfo": "(Size should be less than 1 MB)"
   },
   "ContactInformationForm": {
     "contactInformationTitle": "Contact Information",
@@ -94,10 +102,10 @@
     "personal": "Personal",
     "officialMobileNumber": "Mobile Number",
     "officialemail": "Email Address",
-    "personalmobileNumber": "Mobile Number1",
+    "personalmobileNumber": "Mobile Number",
     "personalEmail": "Email Address",
     "emergencyContactName": "Name",
-    "emergencyContactNumber": "Emergency Contact Number",
+    "emergencyContactNumber": "Mobile Number",
     "localAddressTitle": "Local",
     "Address1": "Address 1",
     "Address2": "Address 2",
@@ -116,8 +124,12 @@
     "EmergencyContactDetails": "Emergency Contact",
     "ContactDetails": "Contact Details",
     "addressDetails": "Address Details",
-    "resetForm": "Reset",
-    "communicationErrorMsg": "Please select Communication Address Type"
+    "communicationErrorMsg": "Please select Communication Address Type",
+    "saveAndNext": "Save & Next",
+    "save": "Save",
+    "reset": "Reset",
+    "next": "Next",
+    "previous": "Previous"
   },
   "IdentityInformationForm": {
     "identityInformationTitle": "Identity Information",

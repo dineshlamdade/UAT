@@ -17,6 +17,9 @@ export class SukanyaSamriddhiComponent implements OnInit {
   public tabIndex = 0;
   public windowScrolled: boolean;
   public data: any;
+  public accountNo: string;
+  public modalRef: BsModalRef;
+
 
   constructor() { }
 
@@ -29,15 +32,23 @@ export class SukanyaSamriddhiComponent implements OnInit {
     console.log('data::',this.data);
   }
 
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.accountNo = event;
+  }
+
+
   changeTabIndex(index: number)
   {
+    console.log(this.accountNo)
     if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.accountNo = undefined;
+    }
     this.tabIndex = index;
   }
-
-  public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

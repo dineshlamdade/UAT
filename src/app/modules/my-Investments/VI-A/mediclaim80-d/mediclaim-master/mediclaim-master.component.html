@@ -1,5 +1,5 @@
 <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
-  <div class="tabview-contents">
+  <div class="my-contents">
      <div class="row">
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Type Of Expence</label>
@@ -75,15 +75,6 @@
         </div>
 
         <div class="col-sm-6 col-md-3 mt-10">
-           <!-- <label class="form-label">Benefeciary / ies</label>
-           <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
-                formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
-                [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
-              <option *ngFor="let familyMember of familyMemberName"
-                [value]="familyMember.value">
-                {{familyMember.label}}
-              </option>
-           </select> -->
            <label class="form-label">Benefeciary / ies</label>
               <ng-multiselect-dropdown [placeholder]="'None Selected'" appendTo="body" #multiSelect
               style="font-size: small;" [settings]="dropdownSettings" (change)='OnSelectionfamilyMemberGroup()'
@@ -94,31 +85,8 @@
               [ngClass]="{'is-invalid' : form.get('mediclaimBenefeciaryDetailList').status == 'INVALID'}"
               formControlName="mediclaimBenefeciaryDetailList">
             </ng-multiselect-dropdown>
-
-            <!-- <ng-multiselect-dropdown [placeholder]="'None Selected'" [settings]="dropdownSettings" [data]="dropdownList" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems">
-            </ng-multiselect-dropdown> -->
         </div>
-
-
-
      </div>
-
-     <!-- <div class="col-lg-4 col-md-12">
-      <label>"Select All" Option Enabled</label>
-      <div class="form-group multiselect_div">
-          <select id="multiselect3-all" name="multiselect3[]" class="multiselect multiselect-custom" multiple="multiple">
-              <option value="multiselect-all">Select All</option>
-              <option value="cheese">Cheese</option>
-              <option value="tomatoes">Tomatoes</option>
-              <option value="mozarella">Mozzarella</option>
-              <option value="mushrooms">Mushrooms</option>
-              <option value="pepperoni">Pepperoni</option>
-              <option value="onions">Onions</option>
-          </select>
-      </div>
-  </div> -->
-
-     <!-- <button (click)="abc()">abc</button> -->
      <div class="row mt-25" *ngIf="visibilityFlag">
         <div class="col-12">
            <fieldset>
@@ -312,6 +280,17 @@
                                     data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
                                 </td>
                              </tr>
+                             <tr>
+                              <th scope="row"><span tooltip="1">1</span></th>
+                              <td><span tooltip="Premium Reciept"></span>Premium Reciept</td>
+                              <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
+                                 class="fa fa-paperclip"
+                                 aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
+                              <td>
+                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
+                                  data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
+                              </td>
+                           </tr>
                           </tbody>
                        </table>
                     </div>
@@ -320,20 +299,6 @@
            </div>
         </div>
      </div>
-     <!-- <div class="row mt-25">
-        <div class="col-md-3">
-           <label class="custom-control custom-checkbox custom-control-inline pl-45">
-           <input formControlName="active" type="checkbox" class="custom-control-input"
-              name="example-inline-checkbox1" value="option1" checked
-              (change)="deactivateRemark()">
-           <span class="custom-control-label">Active </span>
-           </label>
-        </div>
-        <div class="col-md-3" *ngIf="hideRemarkDiv">
-           <label class="form-label pl-10">Remark</label>
-           <textarea formControlName="remark" [ngClass]="{'form-submitted': formDirective.submitted}" class="form-control ml-10" rows="1"></textarea>
-        </div>
-     </div> -->
      <div class="row mt-15">
         <div class="col-12">
            <div class="float-right mb-15">
@@ -358,7 +323,6 @@
                             <th scope="col" class="wd-10">Benefeciary / ies</th>
                             <th scope="col" class="wd-10">Start Date</th>
                             <th scope="col" class="wd-10">End Date</th>
-                            <!-- <th scope="col" class="wd-10">Relationship</th> -->
                             <th scope="col" class="wd-10">Frequency</th>
                             <th scope="col" class="wd-10">Premium Amount</th>
 
@@ -420,9 +384,6 @@
        <div class="card">
           <div class="card-body">
              <div class="row clearfix">
-                <!-- <div class="col-md-12">
-                   <label class="form-label">Upload File here :</label>
-                </div> -->
                 <div class="col-md-12">
                    <div class="fileuploadbox bg-color-lightgray">
                       <label class="filelabel">

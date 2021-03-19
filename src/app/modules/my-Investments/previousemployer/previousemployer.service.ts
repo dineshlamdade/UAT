@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class PreviousEmployerService {
-  public apiUrl = environment.apiBaseUrl;
+  public apiUrl = environment.baseUrl8085;
   constructor(private _HTTP: HttpClient) {}
 
 

@@ -1,3 +1,8 @@
+import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
+import { BusinessCycleComponent } from './business-cycle/business-cycle.component';
+import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
+import { HeadCreationComponent } from './head-creation/head-creation.component';
+import { SharedlayoutModule } from './../sharedlayout/sharedlayout.module';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,30 +18,49 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
-import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
+//import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
+
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatSliderModule } from '@angular/material/slider';
 
 import { payrollComponent } from './bc/bc.component';
-import {HeadcreationComponent} from './headcreation/headcreation.component';
-import {AttributecreationComponent} from './attributecreation/attributecreation.component';
-import {AttributeselectionComponent} from './attributeselection/attributeselection.component';
+import { HeadcreationComponent } from './headcreation/headcreation.component';
+import { AttributecreationComponent } from './attributecreation/attributecreation.component';
+import { AttributeselectionComponent } from './attributeselection/attributeselection.component';
 import { PayrollheadgroupcreationComponent } from './payrollheadgroupcreation/payrollheadgroupcreation.component';
+import { AttributeCreationComponent } from './attribute-creation/attribute-creation.component';
 import { CompanySettingRoutingModule } from './companysetting.routing.module';
-import { CompanySettingComponent } from './companysetting.component';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+
+
 @NgModule({
   declarations: [
-    payrollComponent,
-    HeadcreationComponent,
-    AttributecreationComponent,
-    AttributeselectionComponent,
-    PayrollheadgroupcreationComponent,
-    CompanySettingComponent,
+    // payrollComponent,
+    // HeadcreationComponent,
+    // AttributecreationComponent,
+    // AttributeselectionComponent,
+    // PayrollheadgroupcreationComponent,
+    // CompanySettingComponent,
+    HeadCreationComponent,
+    PayrollHeadGroupCreationComponent,
+    BusinessCycleComponent,
+    AttributeSelectionComponent,
+    AttributeCreationComponent,
+
+
+
+
+
+
+
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
+
     FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     MatSliderModule,
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
@@ -59,7 +83,7 @@ import { CompanySettingComponent } from './companysetting.component';
     CompanySettingRoutingModule,
   ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [DatePipe, NumberFormatPipe],
 
 })
 export class CompanySettingModule { }

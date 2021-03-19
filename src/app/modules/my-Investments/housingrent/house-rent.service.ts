@@ -6,13 +6,13 @@ import { environment } from 'src/environments/environment';
 
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class HouseRentService {
-  public apiUrl = environment.apiBaseUrl;
-  constructor(private _HTTP: HttpClient) {}
-
-/*....................Master Summary............................... */
+  public apiUrl = environment.baseUrl8085;
+  constructor(private _HTTP: HttpClient) { }
+  
+  /*....................Master Summary............................... */
   gethouseRentSummary() {
     return this._HTTP
       .get(this.apiUrl + 'houseRentalMaster/transactionSummary')

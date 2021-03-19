@@ -73,7 +73,7 @@ import { BlockCopyPasteDirective } from './../../core/utility/directives/appBloc
         ContactInformationComponent,
         IdentityInformationComponent,
         PreviousEmploymentInformationComponent,
-        BankInformationComponent,
+        // BankInformationComponent,
         PayrollAreaInformationComponent,
         FamilyInformationComponent,
         FamilyDetailsComponent,
@@ -138,7 +138,7 @@ import { BlockCopyPasteDirective } from './../../core/utility/directives/appBloc
         translocoLoader, {
             provide: TRANSLOCO_CONFIG,
             useValue: {
-                availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }],
+                availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
                 listenToLangChange: true,
                 reRenderOnLangChange: true,
                 defaultLang: 'en',

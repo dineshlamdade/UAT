@@ -76,9 +76,9 @@ const routes: Routes = [
         data: { title: ':: DelziaHR :: Chapter-VI-A-NPS' },
       },
       {
-        path:   '80C-NationalSevingCertificate',
+        path:   '80C-NationalSavingCertificate',
         component:  NationalSevingCertificateComponent,
-        data: { title: ':: DelziaHR :: NationalSevingCertificate' },
+        data: { title: ':: DelziaHR :: NationalSavingCertificate' },
       },
       {
         path:   '80C-FixedDepositsMoreThan5Years',

@@ -18,42 +18,42 @@ export class EstablishmentMasterService {
 
   postEstablishmentMaster(data) {
     console.log(data.regionMasterId);
-  return this._HTTP.post(environment.baseUrl8083 + '/establishment-master/add-establishment', data)
-    .pipe(map((res: any) => {
-      return res;
-    }));
-}
-putEstablishmentMaster(data) {
-  return this._HTTP.put(environment.baseUrl8083 + '/establishment-master/update', data)
-    .pipe(map((res: any) => {
-      return res;
-    }));
-}
+    return this._HTTP.post(environment.baseUrl8083 + 'establishment-master/add-establishment', data)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+  putEstablishmentMaster(data) {
+    return this._HTTP.put(environment.baseUrl8083 + 'establishment-master/update', data)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 
 
-getEstablishmentMasterDetails() {
-  const headers = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('X-TenantId', 'PaysquareDefault');
+  getEstablishmentMasterDetails() {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('X-TenantId', 'PaysquareDefault');
 
 
-  return this._HTTP.get(environment.baseUrl8083 + '/establishment-master/details', { 'headers': headers })
-    .pipe(map((res: any) => {
-      return res;
-    }));
-}
+    return this._HTTP.get(environment.baseUrl8083 + 'establishment-master/details', { 'headers': headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 
-getRegionMasterDetails() {
-  const headers = new HttpHeaders()
-    .set('content-type', 'application/json')
-    .set('Access-Control-Allow-Origin', '*')
-    .set('X-TenantId', 'PaysquareDefault');
+  getRegionMasterDetails() {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('X-TenantId', 'PaysquareDefault');
 
 
-  return this._HTTP.get(environment.baseUrl8083 + '/region-master/details', { 'headers': headers })
-    .pipe(map((res: any) => {
-      return res;
-    }));
-}
+    return this._HTTP.get(environment.baseUrl8083 + 'region-master/details', { 'headers': headers })
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
 }

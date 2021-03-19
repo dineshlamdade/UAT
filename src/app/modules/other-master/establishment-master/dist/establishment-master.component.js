@@ -21,7 +21,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         this.summaryHtmlDataList = [];
         this.issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
         this.primaryBusinessActivityList = ['Payroll', 'PayRoll', 'IT', 'HR1', '22'];
-        this.officePremisesOwnershipList = ['Owned', 'RENT', 'Lease'];
+        this.officePremisesOwnershipList = ['Owned', 'Rent', 'Lease'];
         this.showButtonSaveAndReset = true;
         this.registrationNumberList = [];
         this.companyRegistrationIdList = [];
@@ -34,6 +34,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         this.establishmentMasterId = 0;
         this.regionMasterDetails = [];
         this.typeOfEstablishmentList = [];
+        this.today = new Date();
         this.form = this.formBuilder.group({
             establishmentCode: new forms_1.FormControl('', forms_1.Validators.required),
             description: new forms_1.FormControl('', forms_1.Validators.required),
@@ -41,7 +42,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
             primaryBusinessActivity: new forms_1.FormControl('', forms_1.Validators.required),
             dateOfSetup: new forms_1.FormControl(''),
             officePremisesOwnership: new forms_1.FormControl(''),
-            regionMasterId: new forms_1.FormControl('', forms_1.Validators.required),
+            regionMasterId: new forms_1.FormControl(''),
             gstNumber: new forms_1.FormControl(''),
             gstIssueDate: new forms_1.FormControl(''),
             linNumber: new forms_1.FormControl(''),
@@ -49,8 +50,8 @@ var EstablishmentMasterComponent = /** @class */ (function () {
             stpi: new forms_1.FormControl(''),
             stpiIssueDate: new forms_1.FormControl(''),
             address1: new forms_1.FormControl('', forms_1.Validators.required),
-            address2: new forms_1.FormControl('', forms_1.Validators.required),
-            address3: new forms_1.FormControl('', forms_1.Validators.required),
+            address2: new forms_1.FormControl(''),
+            address3: new forms_1.FormControl(''),
             country: new forms_1.FormControl('', forms_1.Validators.required),
             pinCode: new forms_1.FormControl('', forms_1.Validators.required),
             state: new forms_1.FormControl(''),
@@ -74,7 +75,16 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         });
         // get Region dropdown data
         this.establishmentMasterService.getRegionMasterDetails().subscribe(function (res) {
-            _this.regionMasterDetails = res.data.results;
+            res.data.results.forEach(function (element, index) {
+                if (element.isActive == 1) {
+                    _this.regionMasterDetails.push({ masterCode: element.masterCode, masterId: element.masterId });
+                    if (index == 0) {
+                        _this.form.controls["regionMasterId"].setValidators(forms_1.Validators.required);
+                        _this.form.controls["regionMasterId"].updateValueAndValidity();
+                        console.log('index is 0');
+                    }
+                }
+            });
         });
         this.refreshHtmlTableData();
     };
@@ -146,6 +156,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                     _this.showButtonSaveAndReset = true;
                     _this.establishmentMasterId = 0;
                     _this.refreshHtmlTableData();
+                    _this.saveFormValidation();
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
@@ -167,9 +178,6 @@ var EstablishmentMasterComponent = /** @class */ (function () {
             data.stpiIssueDate = stpiIssueDate;
             data.dateOfSetup = dateOfSetup;
             data.regionMasterId = this.selectedRegionMasterCode;
-            console.log('---');
-            console.log(data.regionMasterId);
-            console.log('---');
             delete data.officialCountryCode;
             this.establishmentMasterService.postEstablishmentMaster(data).subscribe(function (res) {
                 console.log(res);
@@ -177,6 +185,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertMasterSuccess('Establishment Master Details Saved Successfully.', '');
                     _this.form.reset();
                     _this.refreshHtmlTableData();
+                    _this.saveFormValidation();
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
@@ -197,6 +206,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
     };
     EstablishmentMasterComponent.prototype.onSelectIssuedBy = function () { };
     EstablishmentMasterComponent.prototype.editMaster = function (i, establishmentMasterId) {
+        window.scrollTo(0, 0);
         this.isSaveAndReset = false;
         this.showButtonSaveAndReset = true;
         this.form.enable();
@@ -207,24 +217,50 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         this.form.get('regionMasterId').disable();
     };
     EstablishmentMasterComponent.prototype.viewMaster = function (i) {
-        this.establishmentMasterId = 0;
+        window.scrollTo(0, 0);
         this.isSaveAndReset = false;
-        this.showButtonSaveAndReset = false;
-        this.showButtonSaveAndReset = false;
+        this.showButtonSaveAndReset = true;
+        this.form.enable();
         this.form.reset();
         this.form.patchValue(this.masterGridDataList[i]);
         this.form.disable();
     };
     EstablishmentMasterComponent.prototype.cancelView = function () {
+        this.form.reset();
         this.establishmentMasterId = 0;
         this.isSaveAndReset = true;
         this.showButtonSaveAndReset = true;
         this.form.enable();
-        this.form.reset();
-        this.form.get('companyName').disable();
-        this.form.get('companyGroupName').disable();
         this.showButtonSaveAndReset = true;
         this.companyRegistrationId = 0; // for save it should be 0 and update it should have any integer value
+        this.saveFormValidation();
+    };
+    EstablishmentMasterComponent.prototype.saveFormValidation = function () {
+        this.form.patchValue({
+            establishmentCode: '',
+            description: '',
+            typeOfEstablishment: '',
+            primaryBusinessActivity: '',
+            dateOfSetup: '',
+            officePremisesOwnership: '',
+            regionMasterId: '',
+            gstNumber: '',
+            gstIssueDate: '',
+            linNumber: '',
+            linIssueDate: '',
+            stpi: '',
+            stpiIssueDate: '',
+            address1: '',
+            address2: '',
+            address3: '',
+            country: '',
+            pinCode: '',
+            state: '',
+            city: '',
+            village: ''
+        });
+        this.form.get('state').disable();
+        this.form.get('city').disable();
     };
     EstablishmentMasterComponent.prototype.checkLocalAddress = function () { };
     EstablishmentMasterComponent.prototype.onSelectPrimaryBusinessActivity = function (evt) { };
@@ -246,7 +282,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         }
     };
     EstablishmentMasterComponent.prototype.onSelectTypeOfEstablishment = function (evt) { };
-    EstablishmentMasterComponent.prototype.onBsValueChangeDateOfSetup = function (evt) { };
+    EstablishmentMasterComponent.prototype.onBsValueChangeDateOfSetup = function () { };
     EstablishmentMasterComponent.prototype.onSelectOfficePremisesOwnership = function (evt) { };
     EstablishmentMasterComponent.prototype.onBsValueChangeDateOfGstIssueDate = function () { };
     EstablishmentMasterComponent.prototype.onBsValueChangeLinIssueDate = function () { };
@@ -257,6 +293,13 @@ var EstablishmentMasterComponent = /** @class */ (function () {
         this.selectedRegionMasterCode = evt;
         var tempObj = this.regionMasterDetails.find(function (o) { return o.masterCode == _this.form.get('regionMasterId').value.trim(); });
         console.log(tempObj);
+    };
+    EstablishmentMasterComponent.prototype.keyPress = function (event) {
+        var pattern = /[0-9]/;
+        var inputChar = String.fromCharCode(event.charCode);
+        if (event.keyCode != 8 && !pattern.test(inputChar)) {
+            event.preventDefault();
+        }
     };
     EstablishmentMasterComponent = __decorate([
         core_1.Component({

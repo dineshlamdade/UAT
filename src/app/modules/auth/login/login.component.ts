@@ -22,9 +22,9 @@ export class LoginComponent implements OnInit {
   secLeft: number;
   interval;
   public locales = [
-    { label: '🇺🇸 English (US)', value: 'en-US' },
-    // { label: '🇬🇧 English (UK)', value: 'en-GB' },
-    { label: '🇫🇷 Français', value: 'fr' },
+    { label: 'English', value: 'en' },
+    { label: 'French', value: 'fr' },
+    { label: 'Hindi', value: 'hi' },
   ];
   public selectedLanguage: any;
   public locale = this.locales[0].value;
@@ -32,16 +32,17 @@ export class LoginComponent implements OnInit {
   public otp: number;
 
   constructor(private translocoService: TranslocoService,
-              private service: AuthService,
-              private router: Router,
-              private alertService: AlertServiceService,
-    ) {
-
+    private service: AuthService,
+    private router: Router,
+    private alertService: AlertServiceService,
+  ) {
+    
     // this.detectedLocale = this.getUsersLocale('en-US');
     this.selectedLanguage = localStorage.getItem('selectedLanguage');
     // generate a regex from the locales we support
     const supportedRegex = new RegExp('^' + this.locales.map((l) => l.value.substring(0, 2)).join('|^'));
     // check if the user's preferred language is supported and if so, use it.
+    
     if (this.selectedLanguage) {
       // check if the user's preferred language is supported and if so, use it.
       if (this.selectedLanguage.match(supportedRegex)) {
@@ -51,7 +52,7 @@ export class LoginComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-this.otpDiv = false;
+    this.otpDiv = false;
   }
 
   signIn() {
@@ -62,36 +63,36 @@ this.otpDiv = false;
     };
     console.log(data);
     this.service.postLogin(data)
-    .subscribe((res) => {
-      console.log(res);
-      this.otpDiv = true;
-      console.log(this.otpDiv);
-      this.alertService.sweetalertMasterSuccess(res['status']['message'],'');
+      .subscribe((res) => {
+        console.log(res);
+        this.otpDiv = true;
+        console.log(this.otpDiv);
+        this.alertService.sweetalertMasterSuccess(res['status']['message'], '');
 
-      this.interval = setInterval(() => {
-        if (this.timeLeft > 0) {
-          this.timeLeft--;
-          this.minLeft = Math.floor(this.timeLeft / 60);
-          this.secLeft = Math.floor(this.timeLeft % 60);
-        }
-        else {
-          // this.timeLeft = 1000;
-          //this.otpDiv = false;
-          window.location.reload();
-        }
-      }, 1000);
+        this.interval = setInterval(() => {
+          if (this.timeLeft > 0) {
+            this.timeLeft--;
+            this.minLeft = Math.floor(this.timeLeft / 60);
+            this.secLeft = Math.floor(this.timeLeft % 60);
+          }
+          else {
+            // this.timeLeft = 1000;
+            //this.otpDiv = false;
+            window.location.reload();
+          }
+        }, 1000);
 
         // this.alertService.sweetalertError('Something went wrong. Please try again.');
-    },
-    (err) => {
-      console.log(err.error);
-      if ( err instanceof HttpErrorResponse) {
-          this.alertService.sweetalertError(
-            err.error.status.message,
-          );
-      }
-    },
-    );
+      },
+        (err) => {
+          console.log(err.error);
+          if (err instanceof HttpErrorResponse) {
+            this.alertService.sweetalertError(
+              err.error.status.message,
+            );
+          }
+        },
+      );
 
   }
 
@@ -103,24 +104,24 @@ this.otpDiv = false;
     };
     console.log(data);
     this.service.postOTP(data)
-    .subscribe((res) => {
-      console.log(res);
-      // localStorage.setItem('token', res.data.results[0].token);
-      console.log(res.data.results[0].token);
-      this.router.navigate(['dashboard']);
-      this.alertService.sweetalertMasterSuccess('Login successfull','');
-      // this.alertService.sweetalertError('Something went wrong. Please try again.');
-    },
-    (err) => {
-            console.log(err.error);
-            if ( err instanceof HttpErrorResponse) {
-              if ( err.error.status.code === '400') {
-                this.alertService.sweetalertError(
-                   err.error.status.message,
-                );
-              }
+      .subscribe((res) => {
+        console.log(res);
+        // localStorage.setItem('token', res.data.results[0].token);
+        console.log(res.data.results[0].token);
+        this.router.navigate(['dashboard']);
+        this.alertService.sweetalertMasterSuccess('Login successfull', '');
+        // this.alertService.sweetalertError('Something went wrong. Please try again.');
+      },
+        (err) => {
+          console.log(err.error);
+          if (err instanceof HttpErrorResponse) {
+            if (err.error.status.code === '400') {
+              this.alertService.sweetalertError(
+                err.error.status.message,
+              );
             }
-    });
+          }
+        });
 
   }
 
@@ -131,14 +132,15 @@ this.otpDiv = false;
       password: this.password,
     };
     this.service.postLogin(data)
-    .subscribe((res) => {
-      console.log(res);
-    }
-    );
+      .subscribe((res) => {
+        console.log(res);
+      }
+      );
   }
 
   // change locale/language at runtime
   updateLocale(locale) {
+    
     localStorage.setItem('selectedLanguage', locale);
 
     if (this.locales.some((l) => l.value === locale)) {

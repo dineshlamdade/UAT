@@ -102,7 +102,7 @@ export class ProjectDetailComponent implements OnInit {
         if (res.data.results[0].benchToDate != null) {
           this.projectDetailsModel.benchToDate = new Date(res.data.results[0].benchToDate);
         }
-        
+
         //bench 
         if (this.projectDetailsModel.isOnBench == 1) {
           // this.projectDetailsModel.isOnBench = 'yes';
@@ -226,6 +226,7 @@ export class ProjectDetailComponent implements OnInit {
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
       this.projectDetailsModel = res.data.results[0];
       this.employeeProjectDetailId = this.projectDetailsModel.employeeProjectDetailId;
+      this.EventEmitterService.getJobSummaryInitiate('project');
 
       //this.getProjectFormForm();
       //redirecting page to summary page
@@ -423,7 +424,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   resetProjectForm() {
-    
+
     this.projectForm.reset();
     this.employeeProjectDetailId = 0;
     this.isOnBenchBoolean = 'no';

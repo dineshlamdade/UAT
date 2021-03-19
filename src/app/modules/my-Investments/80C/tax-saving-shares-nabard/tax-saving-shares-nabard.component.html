@@ -19,20 +19,16 @@
                 <label class="nav" for="summary">
                   <span> Summary </span>
                 </label>
-
-                <!-- <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
-                  [checked]="tabIndex == 1" />
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(1)"
+                [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <app-national-seving-certificate-master *ngIf="tabIndex== 1"> </app-national-seving-certificate-master>
+                  <app-tax-saving-nabard-actual [data] ="data" *ngIf="tabIndex == 1"> </app-tax-saving-nabard-actual>
                 </div>
-                <label class="nav" for="Master">
-                  <span> Master </span>
-                </label> -->
-                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                <!-- <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                   <div class="tabs about-page">
                     <app-tax-saving-nabard-actual [data] ="data" *ngIf="tabIndex == 2"> </app-tax-saving-nabard-actual>
-                  </div>
+                  </div> -->
                 <label class="nav" for="Declaration">
                   <span> Declaration & Actual </span>
                 </label>

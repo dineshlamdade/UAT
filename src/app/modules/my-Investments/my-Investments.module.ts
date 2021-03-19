@@ -22,7 +22,10 @@ import { HousingloanmasterComponent } from './housingloan/housingloanmaster/hous
 import { HousingloansummaryComponent } from './housingloan/housingloansummary/housingloansummary.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { PrimeNGModule } from 'src/app/app.primeNG.module';
+import { PrimeNGModule } from '../../app.primeNG.module';
+// import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {InputNumberModule} from 'primeng/inputnumber';
 import { HousingrentComponent } from './housingrent/housingrent.component';
 import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
 import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
@@ -33,7 +36,7 @@ import { PreviousemployermasterComponent } from './previousemployer/previousempl
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-    
+
     HousingloanComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,
@@ -70,6 +73,11 @@ import { PreviousemployermasterComponent } from './previousemployer/previousempl
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
     PrimeNGModule,
+    // BrowserModule,
+    // BrowserAnimationsModule,
+    InputNumberModule,
+    FormsModule
+
   ],
 
   providers: [ DatePipe, NumberFormatPipe ],

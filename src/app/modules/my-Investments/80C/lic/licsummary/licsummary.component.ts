@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
+import { NumberFormatPatternService } from '../../../../..//core/services/number-format-pattern.service';
+import { Renderer2 } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
+
 
 @Component({
   selector: 'app-licsummary',
@@ -24,7 +27,8 @@ export class LicsummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-   @Input() institution: string;
+  public tempFlag: boolean;
+  @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() policyNumber = new EventEmitter<any>();
@@ -33,6 +37,8 @@ export class LicsummaryComponent implements OnInit {
     private service: MyInvestmentsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService,
+    // private numberFormatPatternService : NumberFormatPatternService,
+    // el: ElementRef, renderer2: Renderer2
     ) { }
 
   public ngOnInit(): void {
@@ -47,13 +53,19 @@ export class LicsummaryComponent implements OnInit {
       institution : institution,
       policyNo : policyNo,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)
-    };
+      canEdit: (mode == 'edit' ? true : false)};
     this.institution = institution;
     this.policyNo = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
     this.myEvent.emit(data);
+  }
+
+  jumpToMasterPage(policyNo: string) {
+    this.tabIndex = 1;
+    const policyNumber = {
+      policyNo : policyNo,
+      tabIndex : this.tabIndex,
+    };
+    this.policyNumber.emit(policyNumber);
   }
 
   // ---------------------Summary ----------------------
@@ -63,48 +75,72 @@ export class LicsummaryComponent implements OnInit {
           this.summaryGridData = res.data.results[0].licMasterList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+          this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
           // console.log(res);
         });
       }
 
-    // Post New Future Policy Data API call
+   // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
-
         const data = {
             futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
         };
 
         console.log('addFuturePolicy Data..', data);
         this.service.postEightyCSummaryFuturePolicy(data).subscribe((res) => {
-            console.log('addFuturePolicy Res..', res);
+            // console.log('addFuturePolicy Res..', res);
+
             this.summaryGridData = res.data.results[0].licMasterList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+            this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
             this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-        });
 
-        this.alertService.sweetalertMasterSuccess("Future Amount was saved","");
+            // if(this.tempFlag === false) {
+            //   this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+            // }
+        });
+        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
       }
 
   // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
       this.addFuturePolicy();
+      console.log(this.addFuturePolicy)
     }
 
-    jumpToMasterPage(policyNo: string) {
-      this.tabIndex = 1;
-      const data = {
-        number : policyNo,
-        tabIndex : this.tabIndex
-      };;
-      this.policyNumber.emit(data);
-    }
-}
+    // keyPressedSpaceNotAllow(event: any) {
+    //   // ('[^a-zA-Z0-9]+', '', _)
+    //     // const pattern =  /[(^a-zA-Z0-9]+-*&)]/;
+    //     // const pattern =  '[^a-zA-Z0-9]+-*&';
+    //   const pattern =  /[ ]/;
+    //   let inputChar = String.fromCharCode(event.charCode);
+    //   if (pattern.test(inputChar)) {
+    //     event.preventDefault();
+    //   }
+    // }
+
+    keyPressedSpaceNotAllow(event: any) {
+      console.log("HI ");
+      const pattern = /[0-9\+\-\ ]/;
+      let inputChar = String.fromCharCode(event.key);
+
+      if (!pattern.test(inputChar)) {
+        this.futureNewPolicyDeclaredAmount = 0;
+        this.tempFlag = true;
+        // invalid character, prevent input
+        event.preventDefault();
+      } else {
+        this.tempFlag = false;
+      }
+  }
+
+
+  }
+
+
+
+  // pattern madhe - symbol add kara
