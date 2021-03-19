@@ -68,7 +68,6 @@ export class HouseRentService {
     ));
   }
 
-
   public getHousePropertyFilterData(propertyName: String): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'housePropertyTransaction/' + propertyName)
     .pipe(map((res: any) => {
