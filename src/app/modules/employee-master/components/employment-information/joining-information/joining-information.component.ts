@@ -47,8 +47,9 @@ export class JoiningInformationComponent implements OnInit {
   editJoining: boolean = false;
   public today = new Date();
   saveNextBoolean: boolean = false;
-
-
+  joiningTab: boolean = false;
+  exitStatus:any;
+  employeeExitInfoId:any;
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
@@ -65,6 +66,7 @@ export class JoiningInformationComponent implements OnInit {
     this.JoiningForm = this.formBuilder.group({
       joiningDate: ['', Validators.required],
       originalHireDate: [''],
+      
       joiningDateForGratuity: [''],
       companyName: ['', Validators.required],
       probationPeriodMonth: [''],
@@ -82,8 +84,6 @@ export class JoiningInformationComponent implements OnInit {
 
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
-
-
 
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
@@ -116,6 +116,10 @@ export class JoiningInformationComponent implements OnInit {
       if (res) {
         this.getJoiningFormInformation();
         this.editJoining = res.editJoining;
+      //  if( this.checkexitStatus())       
+      //   {
+      //     this.disableFields();
+      //   }
         if (res.viewJoining == true) {
           this.viewJoining = res.viewJoining;
           this.disableFields();
@@ -390,6 +394,22 @@ export class JoiningInformationComponent implements OnInit {
   onNoClick(): void {
     this.matDialog.closeAll();
   }
+
+
+//   checkexitStatus():boolean{
+
+//     this.EmploymentInformationService.getNumber().subscribe(number => {
+// this.employeeExitInfoId = number.text;})
+//     this.EmploymentInformationService.getExitInformation(this.employeeExitInfoId).subscribe(res => {
+      
+//           this.exitStatus = res.data.results[0].lastWorkingDate;   
+//           console.log(this.exitStatus)   
+//      } )
+//      if(this.exitStatus!=null)
+//      return true
+//      return false
+    
+// }
 
   cancel() {
     this.EventEmitterService.getEmpSummaryInitiate();
