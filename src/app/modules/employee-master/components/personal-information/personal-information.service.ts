@@ -34,6 +34,7 @@ export class PersonalInformationService {
     return this.httpClient.post(environment.baseUrl8082 + '/employee-personal-info', personalInformationModel, { headers: { 'X-TenantId': 'PaysquareDefault' } })
       .pipe(map((res: any) => {
         return res;
+       
       }))
   }
   updatePersonalInfoForm(personalInformationModel, employeeMasterId) {

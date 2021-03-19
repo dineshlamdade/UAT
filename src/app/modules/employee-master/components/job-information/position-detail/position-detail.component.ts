@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { PositionDetailsModel } from './../../../dto-models/position-details.model';
+import { PositionDetailsModel } from './../job-information-models/position-details.model';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
-import { JobInformationService } from '../../../employee-master-services/job-information.service';
+import { JobInformationService } from '../job-information.service';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
-import { PayrollAreaInformationService } from './../../../employee-master-services/payroll-area-information.service';
+import { PayrollAreaInformationService } from './../../payroll-area-information/payroll-area-information.service';
 import { Router } from '@angular/router';
 
 
@@ -165,9 +165,7 @@ export class PositionDetailComponent implements OnInit {
           this.filteredEmployeeTypeList.push(item)
         }
         if (item.category == 'Employee Status') {
-          console.log(' item' + item.category);
           this.employeeStatusList.push(item);
-          console.log(' item1' + item.category);
           this.filteredEmployeeStatusList.push(item)
         }
         if (item.category == 'Employee Tax Category') {

@@ -182,7 +182,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="Select Birth Date" bsDatepicker
-                                                    [maxDate]="today" formControlName="birthDate"
+                                                    [maxDate]="today" formControlName="birthDate" placement="center"
                                                     [(ngModel)]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
                                                     (click)="birthDateClickEvent($event);"
                                                     (bsValueChange)="birthDateValidation(personalInformationModel.employeeMasterRequestDTO.dateOfBirth,confirmation);"
@@ -221,7 +221,7 @@
                                     <div class="col-sm-6 col-md-3 mt-20">
                                         <label class="form-label">{{ 'PersonalInformationForm.maritalStatus' | transloco
                                             }}</label>
-                                        <select class="form-control" formControlName="maritalStatus"
+                                        <select class="form-control" formControlName="maritalStatus" placement="center"
                                             [(ngModel)]="personalInformationModel.maritialStatus"
                                             (change)="clearMarriageDate(personalInformationModel.maritialStatus);validateDropdown()"
                                             placeholder="Select">
@@ -244,9 +244,9 @@
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" [maxDate]="today"
                                                     [minDate]="personalInformationModel.employeeMasterRequestDTO.dateOfBirth"
-                                                    placeholder="Select Marriage Date" bsDatepicker
-                                                    formControlName="marriageDate"
-                                                    [(ngModel)]="personalInformationModel.anniversaryDate">
+                                                    placeholder="Select Marriage Date" 
+                                                    formControlName="marriageDate" 
+                                                    [(ngModel)]="personalInformationModel.anniversaryDate " bsDatepicker>  
                                             </div>
                                         </div>
                                     </div>
@@ -279,8 +279,8 @@
                                     <div class="col-sm-6 col-md-3 mt-20" *ngIf="Physically == 'Yes'">
                                         <label class="form-label">{{ 'PersonalInformationForm.securityLevel' | transloco
                                             }}</label>
-                                        <input type="number" class="form-control" placeholder="Enter Severity Level"
-                                            formControlName="severityLevel" maxlength="3" max="100"
+                                        <input type="number"  class="form-control" placeholder="Enter Severity Level"
+                                            formControlName="severityLevel" maxlength="5" max="100"
                                             (keyup)="formTouch()"
                                             (change)="validateSaverityLevel(personalInformationModel.severityLevel)"
                                             [(ngModel)]="personalInformationModel.severityLevel">
@@ -338,10 +338,10 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
-                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="Select COC Valid till date"
-                                                    bsDatepicker formControlName="cocValidTill" [minDate]="today"
+                                                    bsDatepicker formControlName="cocValidTill" [minDate]="today" placement="center"
                                                     [(ngModel)]="internationalWorkerRequestDTO.cocValidTill">
                                             </div>
                                         </div>
@@ -364,11 +364,11 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
-                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                                                <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" (keyup)="formTouch()"
                                                     placeholder="Select {{PersonalInfoLabels.PersonalAdditional2}}"
-                                                    bsDatepicker formControlName="PersonalAdditional2"
+                                                    bsDatepicker formControlName="PersonalAdditional2" placement="center"
                                                     [(ngModel)]="personalInformationModel.PersonalAdditional2">
                                             </div>
                                         </div>
