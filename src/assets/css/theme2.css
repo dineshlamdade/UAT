@@ -965,6 +965,11 @@ strong {
   align-items: center!important;
 }
 
+/* Previous Employer */
+.text-center
+{
+  text-align: center!important;
+}
 .justify-content-spacearound {
     justify-content: space-around!important;
 }

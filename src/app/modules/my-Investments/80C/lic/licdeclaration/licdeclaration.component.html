@@ -229,18 +229,13 @@
                     name="Previous Employer Name"
                     class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)"
-                    [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    "
-                  >
+                    [disabled]="isDisabled || summary.transactionStatus === 'Submitted'" >
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option
                       *ngFor="let previousEmployee of previousEmployeeList"
                       [value]="previousEmployee.value"
                       [selected]="
-                        previousEmployee.value == summary.previousEmployerId
-                      "
-                    >
+                        previousEmployee.value == summary.previousEmployerId">
                       {{ previousEmployee.label }}
                     </option>
                   </select>
@@ -903,6 +898,7 @@
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
                     ></i>
+
                     <!-- <div *ngFor="let doc of urlArray" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
@@ -910,6 +906,7 @@
                         provider="google"
                       ></iframe>n
                     </div> -->
+
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"

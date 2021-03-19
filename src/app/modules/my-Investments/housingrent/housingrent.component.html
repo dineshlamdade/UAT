@@ -31,7 +31,9 @@
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
-                  <app-houserentdeclaration *ngIf="tabIndex == 2"></app-houserentdeclaration>
+                  <app-houserentdeclaration *ngIf="tabIndex == 2"
+                    [data] = "data"
+                  ></app-houserentdeclaration>
                 </div>
 
                 <label class="nav" for="Declaration">

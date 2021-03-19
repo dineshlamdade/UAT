@@ -123,13 +123,27 @@ export class LicsummaryComponent implements OnInit {
     //   }
     // }
 
+  //   keyPressedSpaceNotAllow(event: any) {
+  //     console.log("HI ");
+  //     const pattern = /[0-9\+\-\ ]/;
+  //     let inputChar = String.fromCharCode(event.key);
+
+  //     if (!pattern.test(inputChar)) {
+  //       this.futureNewPolicyDeclaredAmount = 0;
+  //       this.tempFlag = true;
+  //       // invalid character, prevent input
+  //       event.preventDefault();
+  //     } else {
+  //       this.tempFlag = false;
+  //     }
+  // }
     keyPressedSpaceNotAllow(event: any) {
       console.log("HI ");
       const pattern = /[0-9\+\-\ ]/;
       let inputChar = String.fromCharCode(event.key);
 
       if (!pattern.test(inputChar)) {
-        this.futureNewPolicyDeclaredAmount == 0;
+        this.futureNewPolicyDeclaredAmount = 0;
         this.tempFlag = true;
         // invalid character, prevent input
         event.preventDefault();
