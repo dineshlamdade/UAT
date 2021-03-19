@@ -40,6 +40,8 @@ var BusinessYearComponent = /** @class */ (function () {
             { label: '2030', value: '2030' },
         ];
         this.BusinessyearList = [];
+    }
+    BusinessYearComponent.prototype.ngOnInit = function () {
         this.BusinessYearform = this.formBuilder.group({
             id: new forms_1.FormControl(null),
             description: new forms_1.FormControl('', forms_1.Validators.required),
@@ -47,8 +49,6 @@ var BusinessYearComponent = /** @class */ (function () {
             toDate: new forms_1.FormControl('', forms_1.Validators.required),
             businessYear: new forms_1.FormControl('', forms_1.Validators.required)
         });
-    }
-    BusinessYearComponent.prototype.ngOnInit = function () {
         this.getAllBusinessyear();
     };
     //add & update new BusinessYear
@@ -73,7 +73,10 @@ var BusinessYearComponent = /** @class */ (function () {
             //Update BusinessYear service
             addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
             addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
+            addBusinessYear.description = this.BusinessYearform.get('description').value;
             addBusinessYear.businessYearDefinitionId = this.editedRecordIndexId;
+            console.log('desc', this.BusinessYearform.get('description').value);
+            console.log(JSON.stringify(addBusinessYear));
             this.companySetttingService.UpdateBusinessYear(addBusinessYear).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllBusinessyear();
@@ -135,15 +138,18 @@ var BusinessYearComponent = /** @class */ (function () {
     // http://localhost:8086/hrms/v1/business-year/27
     BusinessYearComponent.prototype.GetBussinessyearById = function (id) {
         var _this = this;
+        console.log('gettt');
         this.editedRecordIndexId = id;
         console.log(id, this.BusinessyearList);
         this.updateFlag = true;
         this.companySetttingService.GetBusinessYearById(id)
             .subscribe(function (response) {
+            console.log(response);
             _this.BusinessYearform.patchValue({ id: response.data.results[0].businessYearDefinitionId });
             _this.BusinessYearform.patchValue({ description: response.data.results[0].description });
             _this.BusinessYearform.patchValue({ fromDate: response.data.results[0].fromDate });
             _this.BusinessYearform.patchValue({ toDate: response.data.results[0].toDate });
+            _this.BusinessYearform.patchValue({ businessYear: response.data.results[0].businessYear });
         });
         this.BusinessYearform.get('description').disable();
     };

@@ -12,7 +12,8 @@ var forms_1 = require("@angular/forms");
 var CycleCreationComponent = /** @class */ (function () {
     //template2:TemplateRef<any>;
     //template2: ElementRef;
-    function CycleCreationComponent(datepipe, companySetttingService, formBuilder, alertService) {
+    function CycleCreationComponent(modalService, datepipe, companySetttingService, formBuilder, alertService) {
+        this.modalService = modalService;
         this.datepipe = datepipe;
         this.companySetttingService = companySetttingService;
         this.formBuilder = formBuilder;
@@ -65,7 +66,6 @@ var CycleCreationComponent = /** @class */ (function () {
         this.uploadedFiles = [];
         this.loaded = 0;
         this.activeFrequencyList = [];
-        this.BusinessYear = [];
         this.ServicesList = [];
         //ServicesList: serviceDetails[];
         this.CycleDefinitionList = [];
@@ -86,13 +86,19 @@ var CycleCreationComponent = /** @class */ (function () {
         //businessCycleList=[];
         this.businessCycleList = [];
         this.data = [];
-        this.cycelCreationForm = this.formBuilder.group({
-            id: new forms_1.FormControl(null, forms_1.Validators.required),
-            fromDate: new forms_1.FormControl(null, forms_1.Validators.required),
-            toDate: new forms_1.FormControl('', forms_1.Validators.required)
-        });
     }
-    CycleCreationComponent.prototype.ngOnInit = function () { };
+    CycleCreationComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.cycleCreationForm = this.formBuilder.group({
+            businessCycleDefinitionId: new forms_1.FormControl(null, forms_1.Validators.required),
+            businessYear: new forms_1.FormControl(null, forms_1.Validators.required)
+        });
+        this.companySetttingService.getAllCycleDefinition().subscribe(function (res) {
+            _this.CycleDefinitionList = res.data.results;
+        });
+        this.getAllCycleCreationList();
+        this.getAllCycleCreation();
+    };
     CycleCreationComponent.prototype.DeleteCycleCreationById = function (businessCycleDefinitionId, BusinessYear) {
         var _this = this;
         this.updateFlag = false;
@@ -109,7 +115,7 @@ var CycleCreationComponent = /** @class */ (function () {
         this.companySetttingService.DeletePreviewCycleDiscard(this.businessCycleDefinitionId, this.Previewbusiness)
             .subscribe(function (response) {
             _this.getAllCycleCreation();
-            _this.cycelCreationForm.reset();
+            _this.cycleCreationForm.reset();
         });
     };
     CycleCreationComponent.prototype.GetCycleCreationById = function (businessCycleDefinitionId, BusinessYear) {
@@ -121,14 +127,6 @@ var CycleCreationComponent = /** @class */ (function () {
             .subscribe(function (response) {
             _this.CycleDefinitionByid = response.data.results;
             console.log('cycle creation array', _this.CycleDefinitionByid);
-            //   this.CycleDefinitionByid.forEach(element => {
-            //     element.fromDate = new Date(element.fromDate);
-            //     element.toDate = new Date(element.toDate);
-            // });
-            // this.CycleCreationForm.patchValue({ fromDate: response.data.results[0].fromDate });
-            // this.CycleCreationForm.patchValue({ toDate: response.data.results[0].toDate });
-            //this.demoData=response['result'][0];
-            // this.editformDate=response.data.results[0].fromDate;
             _this.name = response.data.results[0].businessCycleDefinition.name;
             _this.business = response.data.results[0].businessYear;
             _this.Frequency = response.data.results[0].businessCycleDefinition.frequency.name;
@@ -138,8 +136,8 @@ var CycleCreationComponent = /** @class */ (function () {
             _this.businessYearUpdate = BusinessYear;
             _this.data = _this.CycleDefinitionByid;
             _this.adjustedToNextCycle = false;
-            // this.getAllCycleCreation();
-            // this.CycleCreationForm.reset();
+            _this.getAllCycleCreation();
+            _this.CycleCreationForm.reset();
         });
     };
     CycleCreationComponent.prototype.ForcetoYearEndofcycleCreation = function () {
@@ -172,6 +170,87 @@ var CycleCreationComponent = /** @class */ (function () {
         this.companySetttingService.getAllCycleCreation().subscribe(function (res) {
             _this.CycleCreationList1 = res.data.results;
         });
+    };
+    CycleCreationComponent.prototype.addCycleCreation = function () {
+        var _this = this;
+        this.previewCycleList = [];
+        // businessCycleDefinitionId: number;
+        // businessCycleDefinition: any;
+        // businessYear: number;
+        var addCycleCreation = Object.assign({}, this.cycleCreationForm.value);
+        console.log('add cycle creation', addCycleCreation);
+        //
+        //
+        var businessCycleDefinition = {
+            businessCycleDefinitionId: addCycleCreation.businessCycleDefinitionId,
+            businessYear: addCycleCreation.businessYear
+        };
+        console.log(JSON.stringify(businessCycleDefinition));
+        // if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
+        this.companySetttingService.AddCycleCreation(businessCycleDefinition).subscribe(function (res) {
+            console.log('add cycle creation', res);
+            _this.previewCycleList = res.data.results;
+            _this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
+            _this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
+            _this.Previewbusiness = res.data.results[0].businessYear;
+            _this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
+            _this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
+            _this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
+            if (res.status.code == '200') {
+                _this.flag = true;
+            }
+            else {
+                _this.flag = false;
+            }
+            //  this.getAllCycleCreation();
+            _this.cycleCreationForm.reset();
+            _this.UploadModal2(_this.template2);
+        }, function (error) {
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+        });
+        // call this post service
+        // businessCycleDefinitionId
+        // const businessCycleDefinition1 = {
+        //   businessCycleDefinition: {
+        //     id: addCycleCreation.businessCycleDefinitionId
+        //   },
+        //   businessYear: addCycleCreation.businessYear
+        // };
+        // console.log( businessCycleDefinition1 );
+        // this.companySetttingService.addBusiness_cycle_cycle_definition( businessCycleDefinition1 ).subscribe( ( res: any ) => {
+        //   console.log( 'res', res );
+        // },
+        //   ( error: any ) => {
+        //     this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        //   } );
+    };
+    CycleCreationComponent.prototype.UploadModal2 = function (template) {
+        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-xl' }));
+    };
+    CycleCreationComponent.prototype.UploadModal1 = function (template) {
+        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
+    };
+    CycleCreationComponent.prototype.getBussinessyearName = function (name) {
+        this.Name = name;
+    };
+    CycleCreationComponent.prototype.CreateMoreCycleforNextYear = function () {
+        var _this = this;
+        var addCycleCreation = Object.assign({}, this.CycleCreationForm.value);
+        addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
+        addCycleCreation.businessYear = this.BusinessYearformorecycle;
+        this.companySetttingService.AddCycleCreation(addCycleCreation).subscribe(function (res) {
+            // this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+            _this.getAllCycleCreation();
+            _this.CycleCreationForm.reset();
+        }, function (error) {
+            //  this.sweetalertError( error["error"]["status"]["message"] );
+            // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
+        });
+    };
+    CycleCreationComponent.prototype.getBussinessyear = function (bussinessyear, businessCycleDefinitionid) {
+        ;
+        this.BusinessYearformorecycle = ++bussinessyear;
+        this.businessCycleDefinitionIdforMoreCycle = businessCycleDefinitionid;
     };
     __decorate([
         core_1.ViewChild('template2')

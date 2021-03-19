@@ -22,7 +22,7 @@ export class CycleDefinitionComponent implements OnInit {
   CycleupdateFlag: boolean = false;
   isViewAddDays: boolean = false;
   CycleupdateFlag1: boolean = false;
-  CycleDefinationForm: FormGroup;
+  cycleDefinitionForm: FormGroup;
   ServicesList = [];
   CycleDefinitionList = [];
   serviceName = [];
@@ -39,13 +39,13 @@ export class CycleDefinitionComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.CycleDefinationForm = this.formBuilder.group( {
+    this.cycleDefinitionForm = this.formBuilder.group( {
       id: new FormControl( null, ),
-      cycleName: [''],//['', [Validators.required, Validators.maxLength(10)]],
-      businessYearDefinitionId: new FormControl( '' ),
-      frequencyMasterId: new FormControl( '' ),
+      cycleName: new FormControl( '', Validators.required ),//['', [Validators.required, Validators.maxLength(10)]],
+      businessYearDefinitionId: new FormControl( '', Validators.required ),
+      frequencyMasterId: new FormControl( '', Validators.required ),
       addDays: new FormControl( '' ),
-      serviceName: new FormControl( '' ),
+      // serviceName: new FormControl( '', Validators.required ),
       services: new FormControl( '' ),
       // serviceName:this.formBuilder.array([])s
 
@@ -106,16 +106,16 @@ export class CycleDefinitionComponent implements OnInit {
 
 
 
-    let addCycleDefinition: saveCycleDefinition = Object.assign( {}, this.CycleDefinationForm.value );
+    let addCycleDefinition: saveCycleDefinition = Object.assign( {}, this.cycleDefinitionForm.value );
 
 
     // delete addCycleDefinition.addDays;
-    delete addCycleDefinition.description;
+
 
 
 
     if ( addCycleDefinition.id == undefined || addCycleDefinition.id == 0 || addCycleDefinition.id == null ) {
-      // const employerContributionMethod = this.CycleDefinationForm;
+      // const employerContributionMethod = this.cycleDefinitionForm;
       // console.log( 'employerContributionMethod', employerContributionMethod );
       addCycleDefinition.serviceName = [];
       this.ServicesList.forEach( function ( f ) {
@@ -136,7 +136,7 @@ export class CycleDefinitionComponent implements OnInit {
         } );
       this.ServicesList = [];
       this.serviceName = [];
-      this.CycleDefinationForm.reset();
+      this.cycleDefinitionForm.reset();
     }
     else {
       addCycleDefinition.businessCycleDefinitionId = addCycleDefinition.id;
@@ -145,12 +145,16 @@ export class CycleDefinitionComponent implements OnInit {
       //  this.serviceName.push(addCycleDefinition.services)
       addCycleDefinition.serviceName = this.serviceName;
       delete addCycleDefinition.serviceName;
+      addCycleDefinition.serviceName = this.cycleDefinitionForm.get( 'services' ).value;
+      this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
+      // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
+      addCycleDefinition.serviceName = this.serviceName;
       console.log( 'json', JSON.stringify( addCycleDefinition ) );
       this.companySetttingService.UpdateCycleDefinition( addCycleDefinition ).subscribe( ( res: any ) => {
 
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllCycleDefinition();
-        this.CycleDefinationForm.reset();
+        this.cycleDefinitionForm.reset();
         this.CycleupdateFlag = false;
         this.CycleupdateFlag1 = false;
 
@@ -171,19 +175,19 @@ export class CycleDefinitionComponent implements OnInit {
     if ( this.activeFrequencyList[findIndex].name == 'Adhoc' ) {
       console.log( 'i' );
       this.isViewAddDays = true;
-      // this.CycleDefinationForm.controls['addDays'].setValidators([Validators.required]);
+      // this.cycleDefinitionForm.controls['addDays'].setValidators([Validators.required]);
     }
     else {
       console.log( 'i3' );
       this.isViewAddDays = false;
       //
-      //this.CycleDefinationForm.patchValue:[{' addDays': null, disabled: true }],
+      //this.cycleDefinitionForm.patchValue:[{' addDays': null, disabled: true }],
       //     const control = new FormControl('Nancy');
 
-      this.CycleDefinationForm.patchValue( { addDays: null } );
+      this.cycleDefinitionForm.patchValue( { addDays: null } );
 
-      this.CycleDefinationForm.get( 'addDays' ).clearValidators();
-      this.CycleDefinationForm.get( 'addDays' ).updateValueAndValidity();
+      this.cycleDefinitionForm.get( 'addDays' ).clearValidators();
+      this.cycleDefinitionForm.get( 'addDays' ).updateValueAndValidity();
     }
   }
   getAllCycleDefinition(): void {
@@ -198,10 +202,11 @@ export class CycleDefinitionComponent implements OnInit {
   }
   CancelBusiness(): void {
     this.disabled = true;
-    this.CycleDefinationForm.reset();
+    this.cycleDefinitionForm.reset();
     this.updateFlag = false;
     this.CycleupdateFlag = false;
     this.CycleupdateFlag1 = false;
+    this.isViewAddDays = false;
   }
 
   GetCycleDefinitionbyIdDisable( id ): void {
@@ -213,19 +218,22 @@ export class CycleDefinitionComponent implements OnInit {
         let index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId )
         console.log( this.BusinessyearList[index] );
 
-        this.CycleDefinationForm.patchValue( { id: response.data.results[0].id } );
-        this.CycleDefinationForm.patchValue( { cycleName: response.data.results[0].cycleName } );
-        this.CycleDefinationForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
-        this.CycleDefinationForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
-        this.CycleDefinationForm.patchValue( { services: response.data.results[0].serviceName } );
-        this.CycleDefinationForm.patchValue( { addDays: response.data.results[0].addDays } );
+        this.cycleDefinitionForm.patchValue( { id: response.data.results[0].id } );
+        this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName } );
+        this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
+        this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
+        this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
+        this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
       } );
 
-    // this.CycleDefinationForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
+    // this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
 
   }
 
   GetCycleDefinitionbyId( id ): void {
+
+    // here remove validation
+
 
 
 
@@ -234,20 +242,20 @@ export class CycleDefinitionComponent implements OnInit {
     this.companySetttingService.GetCycleDefinitionById( id )
       .subscribe( response => { //: saveBusinessYear[]
 
-        this.CycleDefinationForm.patchValue( { id: response.data.results[0].id } );
-        this.CycleDefinationForm.patchValue( { cycleName: response.data.results[0].cycleName } );
-        this.CycleDefinationForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
-        this.CycleDefinationForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
-        this.CycleDefinationForm.patchValue( { services: response.data.results[0].serviceName } );
-        this.CycleDefinationForm.patchValue( { addDays: response.data.results[0].addDays } );
+        this.cycleDefinitionForm.patchValue( { id: response.data.results[0].id } );
+        this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName } );
+        this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
+        this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
+        this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
+        this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
 
       } );
   }
   resetCycledefinition(): void {
-    console.log( this.CycleDefinationForm );
+    console.log( this.cycleDefinitionForm );
 
-    //  this.CycleDefinationForm.reset();
-    // this.CycleDefinationForm.patchValue({ serviceName: [null] });
+    //  this.cycleDefinitionForm.reset();
+    // this.cycleDefinitionForm.patchValue({ serviceName: [null] });
     // this.ServicesList=[];
   }
 
@@ -263,7 +271,7 @@ export class CycleDefinitionComponent implements OnInit {
   }
   onItemDeSelect( item: any ) {
 
-    // this.CycleDefinationForm.controls.serviceName.push(item.serviceName)
+    // this.cycleDefinitionForm.controls.serviceName.push(item.serviceName)
     // this.ServicesList = [];
     var index = this.ServicesList.indexOf( item.serviceName )
     if ( index != -1 ) {

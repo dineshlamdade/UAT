@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CompanySettingsService } from '../../company-settings.service';
-import { saveBusinessYear, saveCycleDefinition, UpdateflagCycleCreation } from '../../model/business-cycle-model';
+import { saveBusinessYear, saveCycleCreation, saveCycleDefinition, UpdateflagCycleCreation } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 
 @Component( {
@@ -19,7 +19,7 @@ import { AlertServiceService } from '../../../../core/services/alert-service.ser
   styleUrls: ['./cycle-creation.component.scss']
 } )
 export class CycleCreationComponent implements OnInit {
-
+  modalRef: BsModalRef;
   BusinessYear = [
     { label: '2010', value: '2010' },
     { label: '2011', value: '2011' },
@@ -123,7 +123,7 @@ export class CycleCreationComponent implements OnInit {
   @ViewChild( 'template2' ) template2: TemplateRef<any>;
 
   activeFrequencyList: Array<any> = [];
-  BusinessYear: Array<any> = [];
+
   ServicesList: Array<any> = [];
   //ServicesList: serviceDetails[];
   CycleDefinitionList: Array<any> = [];
@@ -143,8 +143,8 @@ export class CycleCreationComponent implements OnInit {
 
   BusinessYearform: FormGroup;
   CycleDefinationForm: FormGroup;
+
   CycleCreationForm: FormGroup;
-  cycelCreationForm: FormGroup;
   BusinessYearId: string;
 
   id: number = 0;
@@ -183,20 +183,27 @@ export class CycleCreationComponent implements OnInit {
   businessCycleList: Array<any> = [];
   data = [];
   businessYearUpdate: string;
+  cycleCreationForm: FormGroup;
 
   //template2:TemplateRef<any>;
   //template2: ElementRef;
 
 
-  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) {
-    this.cycelCreationForm = this.formBuilder.group( {
-      id: new FormControl( null, Validators.required ),
-      fromDate: new FormControl( null, Validators.required ),
-      toDate: new FormControl( '', Validators.required ),
-    } );
+  constructor( private modalService: BsModalService, private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) {
+
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.cycleCreationForm = this.formBuilder.group( {
+      businessCycleDefinitionId: new FormControl( null, Validators.required ),
+      businessYear: new FormControl( null, Validators.required )
+    } );
+    this.companySetttingService.getAllCycleDefinition().subscribe( res => {
+      this.CycleDefinitionList = res.data.results;
+    } );
+    this.getAllCycleCreationList();
+    this.getAllCycleCreation();
+  }
 
   DeleteCycleCreationById( businessCycleDefinitionId, BusinessYear ) {
 
@@ -215,7 +222,7 @@ export class CycleCreationComponent implements OnInit {
       .subscribe( response => { //: saveBusinessYear[]
 
         this.getAllCycleCreation();
-        this.cycelCreationForm.reset();
+        this.cycleCreationForm.reset();
       } );
   }
 
@@ -228,16 +235,6 @@ export class CycleCreationComponent implements OnInit {
 
         this.CycleDefinitionByid = response.data.results;
         console.log( 'cycle creation array', this.CycleDefinitionByid )
-        //   this.CycleDefinitionByid.forEach(element => {
-        //     element.fromDate = new Date(element.fromDate);
-        //     element.toDate = new Date(element.toDate);
-        // });
-
-
-        // this.CycleCreationForm.patchValue({ fromDate: response.data.results[0].fromDate });
-        // this.CycleCreationForm.patchValue({ toDate: response.data.results[0].toDate });
-        //this.demoData=response['result'][0];
-        // this.editformDate=response.data.results[0].fromDate;
 
         this.name = response.data.results[0].businessCycleDefinition.name;
         this.business = response.data.results[0].businessYear;
@@ -250,8 +247,8 @@ export class CycleCreationComponent implements OnInit {
         this.data = this.CycleDefinitionByid;
         this.adjustedToNextCycle = false;
 
-        // this.getAllCycleCreation();
-        // this.CycleCreationForm.reset();
+        this.getAllCycleCreation();
+        this.CycleCreationForm.reset();
       } );
 
   }
@@ -293,6 +290,120 @@ export class CycleCreationComponent implements OnInit {
     } );
 
   }
+
+
+  addCycleCreation(): void {
+
+    this.previewCycleList = [];
+
+    // businessCycleDefinitionId: number;
+    // businessCycleDefinition: any;
+    // businessYear: number;
+
+
+
+    const addCycleCreation: saveCycleCreation = Object.assign( {}, this.cycleCreationForm.value );
+
+    console.log( 'add cycle creation', addCycleCreation );
+
+
+    //
+    //
+    const businessCycleDefinition = {
+      businessCycleDefinitionId: addCycleCreation.businessCycleDefinitionId,
+
+      businessYear: addCycleCreation.businessYear
+    }
+    console.log( JSON.stringify( businessCycleDefinition ) );
+    // if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
+    this.companySetttingService.AddCycleCreation( businessCycleDefinition ).subscribe( ( res: any ) => {
+      console.log( 'add cycle creation', res );
+
+      this.previewCycleList = res.data.results;
+      this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
+      this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
+      this.Previewbusiness = res.data.results[0].businessYear;
+      this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
+      this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
+      this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
+      if ( res.status.code == '200' ) {
+        this.flag = true
+      } else {
+        this.flag = false;
+      }
+
+      //  this.getAllCycleCreation();
+      this.cycleCreationForm.reset();
+      this.UploadModal2( this.template2 );
+    },
+      ( error: any ) => {
+        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+      } );
+
+    // call this post service
+    // businessCycleDefinitionId
+
+    // const businessCycleDefinition1 = {
+    //   businessCycleDefinition: {
+    //     id: addCycleCreation.businessCycleDefinitionId
+    //   },
+    //   businessYear: addCycleCreation.businessYear
+    // };
+    // console.log( businessCycleDefinition1 );
+
+    // this.companySetttingService.addBusiness_cycle_cycle_definition( businessCycleDefinition1 ).subscribe( ( res: any ) => {
+    //   console.log( 'res', res );
+
+    // },
+    //   ( error: any ) => {
+    //     this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    //   } );
+
+
+  }
+  UploadModal2( template: TemplateRef<any> ) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-xl' } )
+    );
+  }
+
+
+  UploadModal1( template: TemplateRef<any> ) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-md' } )
+    );
+  }
+
+  getBussinessyearName( name ): void {
+    this.Name = name;
+  }
+
+
+  CreateMoreCycleforNextYear() {
+
+    const addCycleCreation: saveCycleCreation = Object.assign( {}, this.CycleCreationForm.value );
+    addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
+    addCycleCreation.businessYear = this.BusinessYearformorecycle;
+
+    this.companySetttingService.AddCycleCreation( addCycleCreation ).subscribe( ( res: any ) => {
+
+      // this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+      this.getAllCycleCreation();
+      this.CycleCreationForm.reset();
+    },
+      ( error: any ) => {
+        //  this.sweetalertError( error["error"]["status"]["message"] );
+        // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
+      } );
+  }
+  getBussinessyear( bussinessyear: number, businessCycleDefinitionid ): void {
+    ;
+    this.BusinessYearformorecycle = ++bussinessyear;
+    this.businessCycleDefinitionIdforMoreCycle = businessCycleDefinitionid;
+  }
+
 
 
 

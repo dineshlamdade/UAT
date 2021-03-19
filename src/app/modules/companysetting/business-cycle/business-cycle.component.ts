@@ -171,29 +171,29 @@ export class BusinessCycleComponent implements OnInit {
     private companySetttingService: CompanySettingsService,
     private modalService: BsModalService ) {
 
-    this.BusinessYearform = this.formBuilder.group( {
-      id: new FormControl( null, ),
-      description: new FormControl( '', Validators.required ),
-      fromDate: new FormControl( '', Validators.required ),
-      toDate: new FormControl( '', Validators.required ),
+    // this.BusinessYearform = this.formBuilder.group( {
+    //   id: new FormControl( null, ),
+    //   description: new FormControl( '', Validators.required ),
+    //   fromDate: new FormControl( '', Validators.required ),
+    //   toDate: new FormControl( '', Validators.required ),
 
-    } );
+    // } );
 
     this.ServicesList = [];
 
 
 
-    this.CycleCreationForm = this.formBuilder.group( {
-      id: new FormControl( null, Validators.required ),
-      fromDate: new FormControl( null, Validators.required ),
-      toDate: new FormControl( '', Validators.required ),
-    } );
+    // this.CycleCreationForm = this.formBuilder.group( {
+    //   id: new FormControl( null, Validators.required ),
+    //   fromDate: new FormControl( null, Validators.required ),
+    //   toDate: new FormControl( '', Validators.required ),
+    // } );
 
-    this.cycelCreationForm = this.formBuilder.group( {
-      id: new FormControl( null, ),
-      businessCycleDefinitionId: new FormControl( '', Validators.required ),
-      businessYear: new FormControl( '', Validators.required ),
-    } );
+    // this.cycelCreationForm = this.formBuilder.group( {
+    //   id: new FormControl( null, ),
+    //   businessCycleDefinitionId: new FormControl( '', Validators.required ),
+    //   businessYear: new FormControl( '', Validators.required ),
+    // } );
 
 
 
@@ -439,76 +439,6 @@ export class BusinessCycleComponent implements OnInit {
 
 
 
-
-  addCycleCreation(): void {
-
-    this.previewCycleList = [];
-
-    // businessCycleDefinitionId: number;
-    // businessCycleDefinition: any;
-    // businessYear: number;
-
-
-
-    const addCycleCreation: saveCycleCreation = Object.assign( {}, this.cycelCreationForm.value );
-
-    console.log( 'add cycle creation', addCycleCreation );
-
-
-    //
-    //
-    const businessCycleDefinition = {
-      businessCycleDefinitionId: addCycleCreation.businessCycleDefinitionId,
-
-      businessYear: addCycleCreation.businessYear
-    }
-    console.log( JSON.stringify( businessCycleDefinition ) );
-    // if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
-    this.companySetttingService.AddCycleCreation( businessCycleDefinition ).subscribe( ( res: any ) => {
-      console.log( 'add cycle creation', res );
-
-      this.previewCycleList = res.data.results;
-      this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
-      this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
-      this.Previewbusiness = res.data.results[0].businessYear;
-      this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
-      this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
-      this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
-      if ( res.status.code == '200' ) {
-        this.flag = true
-      } else {
-        this.flag = false;
-      }
-
-      //  this.getAllCycleCreation();
-      this.cycelCreationForm.reset();
-      this.UploadModal2( this.template2 );
-    },
-      ( error: any ) => {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
-      } );
-
-    // call this post service
-    // businessCycleDefinitionId
-
-    // const businessCycleDefinition1 = {
-    //   businessCycleDefinition: {
-    //     id: addCycleCreation.businessCycleDefinitionId
-    //   },
-    //   businessYear: addCycleCreation.businessYear
-    // };
-    // console.log( businessCycleDefinition1 );
-
-    // this.companySetttingService.addBusiness_cycle_cycle_definition( businessCycleDefinition1 ).subscribe( ( res: any ) => {
-    //   console.log( 'res', res );
-
-    // },
-    //   ( error: any ) => {
-    //     this.alertService.sweetalertError( error["error"]["status"]["message"] );
-    //   } );
-
-
-  }
 
   // EditBussinessyear( BusinessId ): void {
 

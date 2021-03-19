@@ -224,7 +224,7 @@ export class CompanySettingsService {
   //update cycle-definition
   UpdateCycleDefinition( data: any ) {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'business-cycle-definition/updateCycle', data )
+    return this._HTTP.put( environment.baseUrl8086 + 'business-cycle-definition/update', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

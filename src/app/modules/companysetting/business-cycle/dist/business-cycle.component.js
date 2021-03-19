@@ -8,11 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 exports.__esModule = true;
 exports.BusinessCycleComponent = void 0;
 var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
 var BusinessCycleComponent = /** @class */ (function () {
     //template2:TemplateRef<any>;
     //template2: ElementRef;
     function BusinessCycleComponent(formBuilder, alertService, datePipe, http, datepipe, companySetttingService, modalService) {
+        // this.BusinessYearform = this.formBuilder.group( {
+        //   id: new FormControl( null, ),
+        //   description: new FormControl( '', Validators.required ),
+        //   fromDate: new FormControl( '', Validators.required ),
+        //   toDate: new FormControl( '', Validators.required ),
         this.formBuilder = formBuilder;
         this.alertService = alertService;
         this.datePipe = datePipe;
@@ -64,23 +68,18 @@ var BusinessCycleComponent = /** @class */ (function () {
         //businessCycleList=[];
         this.businessCycleList = [];
         this.data = [];
-        this.BusinessYearform = this.formBuilder.group({
-            id: new forms_1.FormControl(null),
-            description: new forms_1.FormControl('', forms_1.Validators.required),
-            fromDate: new forms_1.FormControl('', forms_1.Validators.required),
-            toDate: new forms_1.FormControl('', forms_1.Validators.required)
-        });
+        // } );
         this.ServicesList = [];
-        this.CycleCreationForm = this.formBuilder.group({
-            id: new forms_1.FormControl(null, forms_1.Validators.required),
-            fromDate: new forms_1.FormControl(null, forms_1.Validators.required),
-            toDate: new forms_1.FormControl('', forms_1.Validators.required)
-        });
-        this.cycelCreationForm = this.formBuilder.group({
-            id: new forms_1.FormControl(null),
-            businessCycleDefinitionId: new forms_1.FormControl('', forms_1.Validators.required),
-            businessYear: new forms_1.FormControl('', forms_1.Validators.required)
-        });
+        // this.CycleCreationForm = this.formBuilder.group( {
+        //   id: new FormControl( null, Validators.required ),
+        //   fromDate: new FormControl( null, Validators.required ),
+        //   toDate: new FormControl( '', Validators.required ),
+        // } );
+        // this.cycelCreationForm = this.formBuilder.group( {
+        //   id: new FormControl( null, ),
+        //   businessCycleDefinitionId: new FormControl( '', Validators.required ),
+        //   businessYear: new FormControl( '', Validators.required ),
+        // } );
         this.grandTabStatus = false;
         this.isCheckAll = false;
         this.isDisabled = true;
@@ -268,59 +267,6 @@ var BusinessCycleComponent = /** @class */ (function () {
     //         "forceToYearEnd": false
     // },
     //get all cycle-Creation
-    BusinessCycleComponent.prototype.addCycleCreation = function () {
-        var _this = this;
-        this.previewCycleList = [];
-        // businessCycleDefinitionId: number;
-        // businessCycleDefinition: any;
-        // businessYear: number;
-        var addCycleCreation = Object.assign({}, this.cycelCreationForm.value);
-        console.log('add cycle creation', addCycleCreation);
-        //
-        //
-        var businessCycleDefinition = {
-            businessCycleDefinitionId: addCycleCreation.businessCycleDefinitionId,
-            businessYear: addCycleCreation.businessYear
-        };
-        console.log(JSON.stringify(businessCycleDefinition));
-        // if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
-        this.companySetttingService.AddCycleCreation(businessCycleDefinition).subscribe(function (res) {
-            console.log('add cycle creation', res);
-            _this.previewCycleList = res.data.results;
-            _this.businessCycleDefinitionId = res.data.results[0].businessCycleDefinition.businessYearDefinitionId;
-            _this.Previewname = res.data.results[0].businessCycleDefinition.cycleName;
-            _this.Previewbusiness = res.data.results[0].businessYear;
-            _this.PreviewFrequency = res.data.results[0].businessCycleDefinition.frequency.name;
-            _this.PreviewfromDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.fromDate;
-            _this.PreviewtoDate = res.data.results[0].businessCycleDefinition.businessYearDefinition.toDate;
-            if (res.status.code == '200') {
-                _this.flag = true;
-            }
-            else {
-                _this.flag = false;
-            }
-            //  this.getAllCycleCreation();
-            _this.cycelCreationForm.reset();
-            _this.UploadModal2(_this.template2);
-        }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
-        });
-        // call this post service
-        // businessCycleDefinitionId
-        // const businessCycleDefinition1 = {
-        //   businessCycleDefinition: {
-        //     id: addCycleCreation.businessCycleDefinitionId
-        //   },
-        //   businessYear: addCycleCreation.businessYear
-        // };
-        // console.log( businessCycleDefinition1 );
-        // this.companySetttingService.addBusiness_cycle_cycle_definition( businessCycleDefinition1 ).subscribe( ( res: any ) => {
-        //   console.log( 'res', res );
-        // },
-        //   ( error: any ) => {
-        //     this.alertService.sweetalertError( error["error"]["status"]["message"] );
-        //   } );
-    };
     // EditBussinessyear( BusinessId ): void {
     //   alert( BusinessId );
     // }

@@ -9,7 +9,7 @@
         <label class="form-label">Description(Unique) </label>
 
 
-        <input ngClass="{'is-invalid' : BusinessYearform.get('description').status == 'INVALID'}" type="text"
+        <input [ngClass]="{'is-invalid' : BusinessYearform.get('description').status == 'INVALID'}" type="text"
           formControlName="description" class="form-control" placeholder="Enter Description">
 
 
@@ -27,7 +27,7 @@
 
             <input data-provide="datepicker" data-date-autoclose="true" formControlName="fromDate" class="form-control"
               placeholder="DD-MMM" (ngModelChange)="OnDateChange($event)" (bsValueChange)="onChangeFromDate()"
-              ngClass="{'is-invalid' : BusinessYearform.get('fromDate').status == 'INVALID'}" bsDatepicker
+              [ngClass]="{'is-invalid' : BusinessYearform.get('fromDate').status == 'INVALID'}" bsDatepicker
               [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
 
 
@@ -43,7 +43,7 @@
               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
             <input data-provide="datepicker" data-date-autoclose="true" formControlName="toDate" class="form-control"
-              placeholder="DD-MMM" ngClass="{'is-invalid' : BusinessYearform.get('toDate').status == 'INVALID'}"
+              placeholder="DD-MMM" [ngClass]="{'is-invalid' : BusinessYearform.get('toDate').status == 'INVALID'}"
               bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
 
 
@@ -55,8 +55,9 @@
 
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Business Year</label>
-        <select ngClass="{'is-invalid' : cycelCreationForm.get('businessYear').status == 'INVALID'}" name="businessYear"
-          id="businessYear" class="form-control  " formControlName="businessYear">
+        <select [ngClass]="{'is-invalid' : BusinessYearform.get('businessYear').status == 'INVALID'}"
+          name="businessYear" id="businessYear" class="form-control  " formControlName="businessYear">
+          <option selected value=''>Select </option>
           <option *ngFor="let by of BusinessYear" [value]="by.value">
             {{by.label}}
           </option>
@@ -73,14 +74,14 @@
           <button type="submit" *ngIf="!updateFlag"
             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"
             [disabled]="BusinessYearform.invalid"
-            [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}">
+            [[ngClass]]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}">
             <b><i class="fa fa-floppy-o"></i></b>
             Save</button>
 
 
 
           <button type="submit" *ngIf="updateFlag"
-            [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
+            [[ngClass]]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
                 class="fa fa-floppy-o"></i></b>
             Update</button>

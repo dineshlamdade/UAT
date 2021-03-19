@@ -174,7 +174,7 @@ var CompanySettingsService = /** @class */ (function () {
     };
     //update cycle-definition
     CompanySettingsService.prototype.UpdateCycleDefinition = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'business-cycle-definition/updateCycle', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'business-cycle-definition/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

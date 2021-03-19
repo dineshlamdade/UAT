@@ -31,13 +31,13 @@ var CycleDefinitionComponent = /** @class */ (function () {
     }
     CycleDefinitionComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.CycleDefinationForm = this.formBuilder.group({
+        this.cycleDefinitionForm = this.formBuilder.group({
             id: new forms_1.FormControl(null),
-            cycleName: [''],
-            businessYearDefinitionId: new forms_1.FormControl(''),
-            frequencyMasterId: new forms_1.FormControl(''),
+            cycleName: new forms_1.FormControl('', forms_1.Validators.required),
+            businessYearDefinitionId: new forms_1.FormControl('', forms_1.Validators.required),
+            frequencyMasterId: new forms_1.FormControl('', forms_1.Validators.required),
             addDays: new forms_1.FormControl(''),
-            serviceName: new forms_1.FormControl(''),
+            // serviceName: new FormControl( '', Validators.required ),
             services: new forms_1.FormControl('')
         });
         this.dropdownSettings = {
@@ -72,11 +72,10 @@ var CycleDefinitionComponent = /** @class */ (function () {
     CycleDefinitionComponent.prototype.addCycleDefinition = function () {
         var _this = this;
         console.log('in addCycleDefinition');
-        var addCycleDefinition = Object.assign({}, this.CycleDefinationForm.value);
+        var addCycleDefinition = Object.assign({}, this.cycleDefinitionForm.value);
         // delete addCycleDefinition.addDays;
-        delete addCycleDefinition.description;
         if (addCycleDefinition.id == undefined || addCycleDefinition.id == 0 || addCycleDefinition.id == null) {
-            // const employerContributionMethod = this.CycleDefinationForm;
+            // const employerContributionMethod = this.cycleDefinitionForm;
             // console.log( 'employerContributionMethod', employerContributionMethod );
             addCycleDefinition.serviceName = [];
             this.ServicesList.forEach(function (f) {
@@ -94,7 +93,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
             });
             this.ServicesList = [];
             this.serviceName = [];
-            this.CycleDefinationForm.reset();
+            this.cycleDefinitionForm.reset();
         }
         else {
             addCycleDefinition.businessCycleDefinitionId = addCycleDefinition.id;
@@ -102,11 +101,15 @@ var CycleDefinitionComponent = /** @class */ (function () {
             //  this.serviceName.push(addCycleDefinition.services)
             addCycleDefinition.serviceName = this.serviceName;
             delete addCycleDefinition.serviceName;
+            addCycleDefinition.serviceName = this.cycleDefinitionForm.get('services').value;
+            this.serviceName.push(this.cycleDefinitionForm.get('services').value);
+            // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
+            addCycleDefinition.serviceName = this.serviceName;
             console.log('json', JSON.stringify(addCycleDefinition));
             this.companySetttingService.UpdateCycleDefinition(addCycleDefinition).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllCycleDefinition();
-                _this.CycleDefinationForm.reset();
+                _this.cycleDefinitionForm.reset();
                 _this.CycleupdateFlag = false;
                 _this.CycleupdateFlag1 = false;
             }, function (error) {
@@ -122,17 +125,17 @@ var CycleDefinitionComponent = /** @class */ (function () {
         if (this.activeFrequencyList[findIndex].name == 'Adhoc') {
             console.log('i');
             this.isViewAddDays = true;
-            // this.CycleDefinationForm.controls['addDays'].setValidators([Validators.required]);
+            // this.cycleDefinitionForm.controls['addDays'].setValidators([Validators.required]);
         }
         else {
             console.log('i3');
             this.isViewAddDays = false;
             //
-            //this.CycleDefinationForm.patchValue:[{' addDays': null, disabled: true }],
+            //this.cycleDefinitionForm.patchValue:[{' addDays': null, disabled: true }],
             //     const control = new FormControl('Nancy');
-            this.CycleDefinationForm.patchValue({ addDays: null });
-            this.CycleDefinationForm.get('addDays').clearValidators();
-            this.CycleDefinationForm.get('addDays').updateValueAndValidity();
+            this.cycleDefinitionForm.patchValue({ addDays: null });
+            this.cycleDefinitionForm.get('addDays').clearValidators();
+            this.cycleDefinitionForm.get('addDays').updateValueAndValidity();
         }
     };
     CycleDefinitionComponent.prototype.getAllCycleDefinition = function () {
@@ -145,10 +148,11 @@ var CycleDefinitionComponent = /** @class */ (function () {
     };
     CycleDefinitionComponent.prototype.CancelBusiness = function () {
         this.disabled = true;
-        this.CycleDefinationForm.reset();
+        this.cycleDefinitionForm.reset();
         this.updateFlag = false;
         this.CycleupdateFlag = false;
         this.CycleupdateFlag1 = false;
+        this.isViewAddDays = false;
     };
     CycleDefinitionComponent.prototype.GetCycleDefinitionbyIdDisable = function (id) {
         var _this = this;
@@ -159,33 +163,34 @@ var CycleDefinitionComponent = /** @class */ (function () {
             .subscribe(function (response) {
             var index = _this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId; });
             console.log(_this.BusinessyearList[index]);
-            _this.CycleDefinationForm.patchValue({ id: response.data.results[0].id });
-            _this.CycleDefinationForm.patchValue({ cycleName: response.data.results[0].cycleName });
-            _this.CycleDefinationForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
-            _this.CycleDefinationForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
-            _this.CycleDefinationForm.patchValue({ services: response.data.results[0].serviceName });
-            _this.CycleDefinationForm.patchValue({ addDays: response.data.results[0].addDays });
+            _this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
+            _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName });
+            _this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
+            _this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
+            _this.cycleDefinitionForm.patchValue({ services: response.data.results[0].serviceName });
+            _this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
         });
-        // this.CycleDefinationForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
+        // this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
     };
     CycleDefinitionComponent.prototype.GetCycleDefinitionbyId = function (id) {
+        // here remove validation
         var _this = this;
         this.CycleupdateFlag = true;
         this.CycleupdateFlag1 = true;
         this.companySetttingService.GetCycleDefinitionById(id)
             .subscribe(function (response) {
-            _this.CycleDefinationForm.patchValue({ id: response.data.results[0].id });
-            _this.CycleDefinationForm.patchValue({ cycleName: response.data.results[0].cycleName });
-            _this.CycleDefinationForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
-            _this.CycleDefinationForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
-            _this.CycleDefinationForm.patchValue({ services: response.data.results[0].serviceName });
-            _this.CycleDefinationForm.patchValue({ addDays: response.data.results[0].addDays });
+            _this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
+            _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName });
+            _this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
+            _this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
+            _this.cycleDefinitionForm.patchValue({ services: response.data.results[0].serviceName });
+            _this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
         });
     };
     CycleDefinitionComponent.prototype.resetCycledefinition = function () {
-        console.log(this.CycleDefinationForm);
-        //  this.CycleDefinationForm.reset();
-        // this.CycleDefinationForm.patchValue({ serviceName: [null] });
+        console.log(this.cycleDefinitionForm);
+        //  this.cycleDefinitionForm.reset();
+        // this.cycleDefinitionForm.patchValue({ serviceName: [null] });
         // this.ServicesList=[];
     };
     CycleDefinitionComponent.prototype.onItemSelect = function (item) {
@@ -195,7 +200,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         console.log(item);
     };
     CycleDefinitionComponent.prototype.onItemDeSelect = function (item) {
-        // this.CycleDefinationForm.controls.serviceName.push(item.serviceName)
+        // this.cycleDefinitionForm.controls.serviceName.push(item.serviceName)
         // this.ServicesList = [];
         var index = this.ServicesList.indexOf(item.serviceName);
         if (index != -1) {

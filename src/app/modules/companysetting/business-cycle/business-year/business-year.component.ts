@@ -56,6 +56,10 @@ export class BusinessYearComponent implements OnInit {
   BusinessyearList = [];
 
   constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) {
+
+  }
+
+  ngOnInit(): void {
     this.BusinessYearform = this.formBuilder.group( {
       id: new FormControl( null ),
       description: new FormControl( '', Validators.required ),
@@ -65,9 +69,6 @@ export class BusinessYearComponent implements OnInit {
 
 
     } );
-  }
-
-  ngOnInit(): void {
     this.getAllBusinessyear();
   }
   //add & update new BusinessYear
@@ -97,7 +98,10 @@ export class BusinessYearComponent implements OnInit {
       //Update BusinessYear service
       addBusinessYear.fromDate = this.datepipe.transform( addBusinessYear.fromDate, "dd-MMM" );
       addBusinessYear.toDate = this.datepipe.transform( addBusinessYear.toDate, "dd-MMM" );
+      addBusinessYear.description = this.BusinessYearform.get( 'description' ).value;
       addBusinessYear.businessYearDefinitionId = this.editedRecordIndexId;
+      console.log( 'desc', this.BusinessYearform.get( 'description' ).value );
+      console.log( JSON.stringify( addBusinessYear ) );
       this.companySetttingService.UpdateBusinessYear( addBusinessYear ).subscribe( ( res: any ) => {
 
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
@@ -169,16 +173,22 @@ export class BusinessYearComponent implements OnInit {
   }
   // http://localhost:8086/hrms/v1/business-year/27
   GetBussinessyearById( id: number ): void {
+    console.log( 'gettt' );
     this.editedRecordIndexId = id;
     console.log( id, this.BusinessyearList );
     this.updateFlag = true;
 
     this.companySetttingService.GetBusinessYearById( id )
       .subscribe( response => { //: saveBusinessYear[]
+        console.log( response );
+
+
+
         this.BusinessYearform.patchValue( { id: response.data.results[0].businessYearDefinitionId } );
         this.BusinessYearform.patchValue( { description: response.data.results[0].description } );
         this.BusinessYearform.patchValue( { fromDate: response.data.results[0].fromDate } );
         this.BusinessYearform.patchValue( { toDate: response.data.results[0].toDate } );
+        this.BusinessYearform.patchValue( { businessYear: response.data.results[0].businessYear } );
 
       } );
     this.BusinessYearform.get( 'description' ).disable();

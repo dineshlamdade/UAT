@@ -19,7 +19,7 @@ export class saveCycleDefinition {
   serviceName: any[];
   cycleName: string;
   addDays: number;
-  description: string;
+
   id?: number;
 }
 
