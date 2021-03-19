@@ -12,7 +12,9 @@
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-ppsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-ppsummary>
+                  <app-ppsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"
+                  (accountNo)="redirectToMaster($event)"
+                  ></app-ppsummary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -21,7 +23,8 @@
                 <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
                   [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <app-ppmaster *ngIf="tabIndex== 1"> </app-ppmaster>
+                  <app-ppmaster *ngIf="tabIndex == 1"
+                  [accountNo]="accountNo" > </app-ppmaster>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>

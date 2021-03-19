@@ -282,7 +282,8 @@ export class DeclarationAndActualComponent implements OnInit {
       this.formBuilder.group({
         checkboxx: [false],
         familyMemberName: [null],
-        familyMemberInfoId: [null, Validators.required],
+        // familyMemberInfoId: [null, Validators.required],
+        familyMemberInfoId: [null],
         severity: [null],
         disabilityType: [null],
         // actualAmount: [{value:null, disabled: true}],
@@ -300,17 +301,25 @@ export class DeclarationAndActualComponent implements OnInit {
     );
   }
 
-  deleteCurrentEmployerRow(index) {
+  // deleteCurrentEmployerRow(index) {
+  //   this..removeAt(index);
+  // }
+
+  deleteRows(index) {
     this.currEmpFormArray.removeAt(index);
   }
+
+
 
   addPreviousEmployerRow() {
     this.priviousEmpFormArray.push(
       this.formBuilder.group({
         checkbox1: [false],
-        previousEmployerId:  [null, Validators.required],
+        previousEmployerId:  [null],
+        // previousEmployerId:  [null, Validators.required],
         familyMemberName: [null],
-        familyMemberInfoId: [null, Validators.required],
+        familyMemberInfoId: [null],
+        // familyMemberInfoId: [null, Validators.required],
         severity: [null],
         disabilityType: [null],
         actualAmount: [null],
@@ -327,6 +336,12 @@ export class DeclarationAndActualComponent implements OnInit {
       })
     );
   }
+
+  // deletePreviousEmployerRow(index: number) {
+  //   // this.priviousEmpFormArray.;
+  //   this.priviousEmpFormArray.removeAt(index);
+  // }
+
 
   deletePreviousEmployerRow(index) {
     this.priviousEmpFormArray.removeAt(index);
@@ -515,6 +530,13 @@ export class DeclarationAndActualComponent implements OnInit {
         if (element.relation !== 'Self') {
           this.familyMemberName.push(obj);
         }
+        this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+          // remove saved family member from dropdown
+          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          if (index > -1) {
+            this.familyMemberName.splice(index, 1);
+          }
+        });
       });
     });
   }
@@ -1194,13 +1216,14 @@ export class DeclarationAndActualComponent implements OnInit {
     this.alertService.sweetalertError(msg);
   }
 
-  deleteRows(index){
-    // const index = this.currentEmployerHandicappedDependentResponseList.indexOf(i);
-    // this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
-    console.log(this.currentEmployerHandicappedDependentResponseList);
-    this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
-    console.log(this.currentEmployerHandicappedDependentResponseList);
-  }
+  // deleteRows(index){
+  //   // const index = this.currentEmployerHandicappedDependentResponseList.indexOf(i);
+  //   // this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
+  //   console.log(this.currentEmployerHandicappedDependentResponseList);
+  //   this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
+  //   console.log(this.currentEmployerHandicappedDependentResponseList);
+  // }
+
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
@@ -1359,8 +1382,8 @@ export class DeclarationAndActualComponent implements OnInit {
         this.declarationService = new DeclarationService();
         this.declarationService.handicappedDependentTransactionId = null;
         this.declarationService.previousEmployerId = element.previousEmployerId;
-        this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
-        this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
+        this.declarationService.declaredAmount = this.unformatAmount(element.limit);
+        this.declarationService.actualAmount = this.unformatAmount(element.limit);
         // this.declarationService.declaredAmount = this.unformatAmount(element.declaredAmount);
         // this.declarationService.actualAmount = this.unformatAmount(element.actualAmount);
         this.declarationService.transactionStatus = 'Pending';
@@ -1371,7 +1394,7 @@ export class DeclarationAndActualComponent implements OnInit {
         // this.declarationService.handicappedDependentDetailMaster.amountRejected = 0.0;
         // this.declarationService.handicappedDependentDetailMaster.amountApproved = 0.0;
         this.declarationService.handicappedDependentDetailMaster.proofSubmissionId = element.proofSubmissionId;
-        this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
+        // this.declarationService.handicappedDependentDetailMaster.limit = element.limit;
         this.declarationService.handicappedDependentDetailMaster.relationship = element.relationship;
         this.declarationService.handicappedDependentDetailMaster.claiming80U = element.claiming80U;
         this.declarationService.handicappedDependentDetailMaster.employeeMasterId = element.employeeMasterId;
@@ -1738,6 +1761,22 @@ export class DeclarationAndActualComponent implements OnInit {
           element.actualAmount = this.numberFormat.transform(
             element.actualAmount
           );
+        });
+
+        this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+          // remove saved family member from dropdown
+          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          if (index > -1) {
+            this.familyMemberName.splice(index, 1);
+          }
+        });
+
+        this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
+          // remove saved family member from dropdown
+          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          if (index > -1) {
+            this.familyMemberName.splice(index, 1);
+          }
         });
 
         // format actual amount in appropriate manner

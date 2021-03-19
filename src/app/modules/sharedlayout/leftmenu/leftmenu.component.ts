@@ -22,7 +22,7 @@ export class LeftmenuComponent implements OnInit {
   public isChapetr6ACollapsed = true;
 
   public isOtherMaster = true;
-  isUploadExcel= true;
+  isUploadExcel = true;
   public isAuthCollapsed = true;
   public isStaticticsCollapsed = true;
   public isFriendsCollapsed = true;
@@ -73,8 +73,12 @@ export class LeftmenuComponent implements OnInit {
       this.isAuthCollapsed = false;
     }
     if ((this.router.url).includes('uploadexcel')) {
-      this.isUploadExcel = false;}
-    if ((this.router.url).includes('companysetting')) {
+      this.isUploadExcel = false;
+    }
+    if ((this.router.url).includes('co')) {
+      this.ischaptersettingCollapsed = false;
+    }
+    if ((this.router.url).includes('co')) {
       this.ischaptersettingCollapsed = false;
     }
     if ((this.router.url).includes('employee-master')) {
@@ -96,7 +100,7 @@ export class LeftmenuComponent implements OnInit {
       name: 'Company Settings',
       subDetails: [{
         name: 'payroll',
-        routerlink: '/companysetting/payroll',
+        routerlink: '/co/cycle',
       },
         // {
         //   name: '80C-PPF',

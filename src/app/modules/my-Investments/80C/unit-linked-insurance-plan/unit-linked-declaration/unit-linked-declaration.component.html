@@ -521,9 +521,11 @@
                   </td>
                   <td>
                     <div class="custom_Label_badge">
-                      <button class="btn bg-color-lightgray text-000" (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        ">
+                      <button
+                        class="btn bg-color-lightgray text-000"
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
+                      >
                         Documents
                       </button>
                       <span class="Label_badge">{{
@@ -692,8 +694,7 @@
                     </select>
                   </td>
                   <td>
-                    <span>{{ summary.isECS === 1 ? "Yes" : "No" }}
-                      {{ summary.declaredAmount }}</span>
+                    <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
                   </td>
                   <td>
                     <div class="custom_icon_badge">

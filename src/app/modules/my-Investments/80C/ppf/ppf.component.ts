@@ -9,14 +9,15 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 
 })
 export class PPFComponent implements OnInit {
-  policyNumber: string;
-  constructor() { }
+
   public tabIndex = 0;
   public windowScrolled: boolean;
   public data: any;
+  public accountNo: string;
 
   public modalRef: BsModalRef;
 
+  constructor() { }
   ngOnInit(): void {
   }
 
@@ -28,14 +29,18 @@ export class PPFComponent implements OnInit {
 
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
-    this.policyNumber = event;
+    this.accountNo = event;
   }
 
 
   changeTabIndex(index: number)
   {
+    console.log(this.accountNo)
     if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.accountNo = undefined;
     }
     this.tabIndex = index;
   }

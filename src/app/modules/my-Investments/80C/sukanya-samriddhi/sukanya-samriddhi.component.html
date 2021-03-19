@@ -18,7 +18,9 @@
                   [checked]="tabIndex == 0"
                 />
                 <div class="tabs about-page">
-                  <app-sukanya-samriddhi-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-sukanya-samriddhi-summary>
+                  <app-sukanya-samriddhi-summary *ngIf="tabIndex == 0"
+                  (myEvent)="changeTabIndexForRedirect($event)"
+                  (accountNo)="redirectToMaster($event)"></app-sukanya-samriddhi-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -33,7 +35,8 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-sukanya-samriddhi-master *ngIf="tabIndex == 1"> </app-sukanya-samriddhi-master>
+                  <app-sukanya-samriddhi-master *ngIf="tabIndex == 1"
+                  [accountNo]="accountNo"  > </app-sukanya-samriddhi-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>

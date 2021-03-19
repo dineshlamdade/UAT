@@ -73,7 +73,7 @@ import { BlockCopyPasteDirective } from './../../core/utility/directives/appBloc
         ContactInformationComponent,
         IdentityInformationComponent,
         PreviousEmploymentInformationComponent,
-        BankInformationComponent,
+        // BankInformationComponent,
         PayrollAreaInformationComponent,
         FamilyInformationComponent,
         FamilyDetailsComponent,

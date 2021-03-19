@@ -11,16 +11,17 @@ var core_1 = require("@angular/core");
 var http_1 = require("@angular/common/http");
 var operators_1 = require("rxjs/operators");
 var environment_1 = require("./../../../../environments/environment");
+var headers1 = new http_1.HttpHeaders({
+    'X-TenantId': 'PaysquareDefault',
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+});
 var CompanyMasterService = /** @class */ (function () {
     function CompanyMasterService(_HTTP) {
         this._HTTP = _HTTP;
     }
     CompanyMasterService.prototype.getCountryCodes = function () {
-        var headers = new http_1.HttpHeaders()
-            .set('Content-Type', 'application/json')
-            .set('Access-Control-Allow-Origin', '*')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/location-information/phone-code', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/location-information/phone-code')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -38,67 +39,49 @@ var CompanyMasterService = /** @class */ (function () {
         }));
     };
     CompanyMasterService.prototype.getTypeOfEstablishment = function () {
-        var headers = new http_1.HttpHeaders()
-            .set('Content-Type', 'application/json')
-            .set('Access-Control-Allow-Origin', '*')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/companygroupdropdown-master/TypeOfEstablishment', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companygroupdropdown-master/TypeOfEstablishment', { 'headers': headers1 })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyMasterService.prototype.getIndustryTypeMaster = function () {
-        var headers = new http_1.HttpHeaders()
-            .set('Content-Type', 'application/json')
-            .set('Access-Control-Allow-Origin', '*')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/companygroupdropdown-master/industrytype', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companygroupdropdown-master/industrytype', { 'headers': headers1 })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyMasterService.prototype.postCompanyMaster = function (data) {
-        var headers = new http_1.HttpHeaders()
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/companymaster', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'companymaster', data, { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyMasterService.prototype.getCompanyMasterDataById = function (id) {
-        var headers = new http_1.HttpHeaders()
-            .set('Content-Type', 'application/json')
-            .set('Access-Control-Allow-Origin', '*')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/companymaster/' + id, { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companymaster/' + id, { 'headers': headers1 })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyMasterService.prototype.getAllCompanyMasterData = function () {
-        var headers = new http_1.HttpHeaders()
-            .set('content-type', 'application/json')
-            .set('Access-Control-Allow-Origin', '*')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/companymaster', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companymaster', { 'headers': headers1 })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyMasterService.prototype.getCurrencyList = function () {
-        var headers = new http_1.HttpHeaders()
-            .set('content-type', 'application/json')
-            .set('Access-Control-Allow-Origin', '*')
-            .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/currency-information/symbol', { headers: headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/currency-information/symbol', { headers: headers1 })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyMasterService.prototype.getLanguagesList = function () {
         return this._HTTP.get(environment_1.environment.baseUrl8082 + '/language-information/name', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    CompanyMasterService.prototype.getCompanyMasterById = function (id) {
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companymaster/' + id, { 'headers': headers1 })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

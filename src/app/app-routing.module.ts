@@ -2,6 +2,10 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
+//////////////////
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+
+
 
 
 
@@ -14,11 +18,9 @@ const routes: Routes = [
  
   { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
- { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
+  { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
- 
-  { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
   {
     path: 'investment',
     loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
@@ -38,10 +40,42 @@ const routes: Routes = [
     loadChildren: './modules/employee-master/employee-master.module#EmployeeMasterModule'
   },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
-  
-  
+  { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
+
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
-  { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },   
+  { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
+
+
+  //////////////////////////////////////////
+
+  // {
+  //   path: 'payroll',
+  //   component: payrollComponent,
+  //   data: { title: ':: Epic :: Company Settings' }
+  // },
+  // {
+  //   path: 'headcreation',
+  //   component: HeadcreationComponent,
+  //   data: { title: ':: Epic :: Company Settings' }
+  // },
+  // {
+  //   path: 'attributecreation',
+  //   component: AttributecreationComponent,
+  //   data: { title: ':: Epic :: Company Settings' }
+  // },
+  // {
+  //   path: 'attributeselection',
+  //   component: AttributeselectionComponent,
+  //   data: { title: ':: Epic :: Company Settings' }
+  // },
+  // {
+  //   path: 'payrollheadgroupcreation',
+  //   component: PayrollheadgroupcreationComponent,
+  //   data: { title: ':: Epic :: Company Settings' }
+  // },
+
+
+  ///////////////////////////////////////////////////
 ];
 
 @NgModule({

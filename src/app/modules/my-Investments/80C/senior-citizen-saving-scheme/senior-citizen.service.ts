@@ -8,7 +8,7 @@ import { Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class SeniorCitizenService {
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.baseUrl8085;
 
 
   constructor(private _HTTP: HttpClient) { }

@@ -1,3 +1,4 @@
+
 import { investmentChapterVIAModule } from './modules/my-Investments/VI-A/chapterVIA.module';
 import { workflowModule } from './modules/workflow/workflow.module';
 import { OtherMasterModule } from './modules/other-master/other-master.module';
@@ -40,6 +41,7 @@ import { TokenInterceptorService } from './modules/auth/token-interceptor/token-
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
   //accordion and accordion tab
+//accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
@@ -49,8 +51,24 @@ import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
-import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.module';
+
+//////////////////////addaed by bharati////
+//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
+
+//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+
+import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
+import { CompanySettingModule } from './modules/companysetting/companysetting.module';
+import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
+
+
+
+
+////////////////////////////////////
+
+
 import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 
@@ -61,11 +79,22 @@ import { AccordionModule } from 'primeng/accordion';
   declarations: [
     AppComponent,
     ProfileComponent,
+    ShortenStringPipe,
+
     SettingsComponent,
    
    
 
+
+    //////////////////////////
+    // payrollComponent,
+    // HeadcreationComponent,
+    // AttributecreationComponent,
+    // AttributeselectionComponent,
+    // PayrollheadgroupcreationComponent,
+    ///////////////////////////////////////
   ],
+  exports: [],
   imports: [
     BrowserModule,
     AuthModule,
@@ -118,7 +147,9 @@ import { AccordionModule } from 'primeng/accordion';
     EmployeemasterlistpageModule,
 
 
+
   ],
+
   providers: [BsDatepickerModule,
     BnNgIdleService,
     AuthGuard,
@@ -139,10 +170,12 @@ import { AccordionModule } from 'primeng/accordion';
       useClass: TokenInterceptorService,
       multi: true,
     },
+    ShortenStringPipe,
   ],
   // schemas: [
   //   CUSTOM_ELEMENTS_SCHEMA
   // ],
+
 
   bootstrap: [AppComponent]
 })
