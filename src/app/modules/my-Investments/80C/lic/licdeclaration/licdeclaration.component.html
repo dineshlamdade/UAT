@@ -549,7 +549,6 @@
       </div>
     </div>
   </div>
-
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -608,9 +607,14 @@
                     </td>
                     <td>
                       <span>
-                          <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
-                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-
+                          <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
+                          <input
+                          type="text"
+                          class="form-control align-right"
+                          (change)="changeReceiptAmountFormat()"
+                          [(ngModel)]="receiptAmount"
+                        />
                       </span>
                     </td>
                     <td>
@@ -899,6 +903,13 @@
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
                     ></i>
+                    <!-- <div *ngFor="let doc of urlArray" hidden>
+                      <iframe
+                        style="height: 100vh; width: 100%; display: block"
+                        [src]="doc.blobURI"
+                        provider="google"
+                      ></iframe>n
+                    </div> -->
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"

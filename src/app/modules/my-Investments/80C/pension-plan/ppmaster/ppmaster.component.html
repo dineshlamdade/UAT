@@ -38,6 +38,7 @@
            <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
                 formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
                 [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let familyMember of familyMemberName"
                 [value]="familyMember.value">
                 {{familyMember.label}}
@@ -101,6 +102,7 @@
                     <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                        <option [ngValue]="null">Select</option>
                       <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}

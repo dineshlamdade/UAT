@@ -12,7 +12,20 @@ export class FixedDepositsSummaryComponent implements OnInit {
   @Input() institution: string;
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() accountNo = new EventEmitter<any>();
+
+  onEditSummary(institution: string, accountNumber: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution: institution,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
+    };
+    this.institution = institution;
+    this.accountNumber = accountNumber;
+
+    this.myEvent.emit(data);
+  }
+
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
@@ -84,16 +97,19 @@ export class FixedDepositsSummaryComponent implements OnInit {
     console.log(this.addFuturePolicy)
   }
 
-  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
+  jumpToMasterPage(n: number) {
+    //console.log(n);
     this.tabIndex = 1;
-    const data = {
-      institution : institution,
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+    //this.editMaster(3);
+  }
+
+  // On onEditSummary
+  onEditSummary1(institution: string, accountNumber: string) {
+    this.tabIndex = 2;
     this.institution = institution;
     this.accountNumber = accountNumber;
-    this.myEvent.emit(data);
+    console.log('institution::', institution);
+    console.log('accountNumber::', accountNumber);
   }
 }
 

@@ -41,7 +41,7 @@ export class NpsSummaryComponent implements OnInit {
 
   // public previousEmployerB: string;
   public futureNewPolicyDeclaredAmount: string;
-  public limitD : number = 50000;
+  public limitD : number = 150000;
   public deductionE : number;
   public eligibleForDeductionF : number;
 
