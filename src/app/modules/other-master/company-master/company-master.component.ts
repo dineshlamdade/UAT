@@ -1,3 +1,4 @@
+import { ShortenStringPipe } from './../../../core/utility/pipes/shorten-string.pipe';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -10,6 +11,7 @@ import { AlertServiceService } from 'src/app/core/services/alert-service.service
   selector: 'app-company-master',
   templateUrl: './company-master.component.html',
   styleUrls: ['./company-master.component.scss'],
+  providers: [ShortenStringPipe]
 })
 export class CompanyMasterComponent implements OnInit {
   public companyMasterform: any = FormGroup;
@@ -17,22 +19,28 @@ export class CompanyMasterComponent implements OnInit {
   selectedImageFileLogo2: any;
   selectedImageFileLogo3: any;
   @ViewChild('fileInput') public el: ElementRef;
+  public groupStartDateValidation;
+  public shortNameInvalid: boolean = false;
+  public companyNameInvalid: boolean = false;
+  public invalidWebsite: boolean = false;
+
 
   imageUrl: any = "./assets/emp-master-images/empIcon5.png";
   selectedImg: any;
 
 
 
+
   employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
   countryCode: Array<any> = [];
-  public isContractorDataList = ['No', 'Yes'];
+  public isContractorDataList = ['Group Company', 'Contractor'];
   public companyClassificationList = ['A', 'B', 'C'];
   // public languageList = ['English'];
   //public currencyList = ['Dollar','Euro', 'Rupee', 'Yen', 'Pound','Rupees'];
   currencyList: Array<any> = [];
   languageList: Array<any> = [];
   public summaryHtmlDataList = [];
-  public companyGroupNameList = [];
+  public companyGroupCodeList = [];
   masterGridDataList: Array<any> = [];
   public scaleList = [];
   public reasonForExitList = [];
@@ -49,13 +57,13 @@ export class CompanyMasterComponent implements OnInit {
   uploadFiles: any;
   public tempObjForgroupNameScaleStartDate: any;
   isSaveAndReset: boolean = true;
+  public today = new Date();
 
   public groupNameScaleNameStartDateObject: any[] = [];
 
 
 
-
-  constructor(private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private datePipe: DatePipe, private companyMasterService: CompanyMasterService,
+  constructor(private shortenString: ShortenStringPipe, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private datePipe: DatePipe, private companyMasterService: CompanyMasterService,
     private companyGroupMasterService: CompanyGroupMasterService, private alertService: AlertServiceService) {
     this.summaryHtmlDataList = [];
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '' };
@@ -64,11 +72,12 @@ export class CompanyMasterComponent implements OnInit {
 
 
     this.companyMasterform = this.formBuilder.group({
-      code: new FormControl('', Validators.required),
+      // code: new FormControl({ value: null, disabled: true }),
+      code: new FormControl({ value: null, disabled: true }),
       companyName: new FormControl('', Validators.required),
       shortName: new FormControl('', Validators.required),
-      companyGroupName: new FormControl('', Validators.required),
-      companyGroupName1: new FormControl({ value: null, disabled: true }),
+      companyGroupCode: new FormControl('', Validators.required),
+      companyGroupCode1: new FormControl({ value: null, disabled: true }),
       typeOfEstablishment: new FormControl('', Validators.required),
       industryType: new FormControl('', Validators.required),
       scale: new FormControl('', Validators.required),
@@ -78,15 +87,16 @@ export class CompanyMasterComponent implements OnInit {
       address1: new FormControl('', Validators.required),
       address2: new FormControl(''),
       address3: new FormControl(''),
-      country: new FormControl(''),
-      pinCode: new FormControl(''),
-      state: new FormControl(''),
-      city: new FormControl(''),
+      country: new FormControl('', Validators.required),
+      pinCode: new FormControl('', Validators.required),
+      state: new FormControl({ value: null, disabled: true }),
+      city: new FormControl({ value: null, disabled: true }),
       village: new FormControl(''),
-      phoneNumber: new FormControl(''),
+      // tslint:disable-next-line: max-line-length
+      phoneNumber: ['', Validators.compose([Validators.required, Validators.pattern(/^(\d{10}|\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3}))$/)])],
       emailId: new FormControl('', [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       website: new FormControl('', [Validators.pattern("(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?")]),
-      contractor: new FormControl(''),
+      isContractor: new FormControl(''),
       language: new FormControl(''),
       currency: new FormControl(''),
       logo1: new FormControl(''),
@@ -95,7 +105,7 @@ export class CompanyMasterComponent implements OnInit {
       endDate: new FormControl(''),
       reason: new FormControl(''),
       remark: new FormControl(''),
-      isdCode: new FormControl(''),
+      isdCode: new FormControl('', Validators.required),
       officialMobileNumber: new FormControl(''),
       contactInformation: new FormControl(''),
       companyActive: new FormControl(''),
@@ -106,18 +116,15 @@ export class CompanyMasterComponent implements OnInit {
     this.companyMasterform.get('endDate').disable();
     this.companyMasterform.get('companyActive').setValue(true);
     this.companyMasterform.get('companyActive').disable();
-    this.employeeMasterRequestDTO.contractor = 'No';
+    this.employeeMasterRequestDTO.isContractor = '';
     this.employeeMasterRequestDTO.language = 'English';
-
-    // this.companyMasterform.set('contractor').value = false;
-    // this.companyMasterform.setValue({
-    //   contractor: false,
-    // });
   }
 
   ngOnInit(): void {
+    this.employeeMasterRequestDTO.isContractor = '';
+    this.employeeMasterRequestDTO.reason = '';
+    this.companyMasterform.get('companyActive').disable();
     this.deactiveActiveCheckBox();
-    // this.isEditMode = false;
 
     this.companyMasterService.getLanguagesList().subscribe(res => {
       this.languageList = res.data.results;
@@ -187,6 +194,8 @@ export class CompanyMasterComponent implements OnInit {
   }
 
   editMaster(i: number, globalCompanyMasterId: number) {
+    window.scrollTo(0, 0);
+    this.companyMasterform.get('code').disable();
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
     this.showButtonSaveAndReset = true;
     this.isSaveAndReset = false;
@@ -201,45 +210,38 @@ export class CompanyMasterComponent implements OnInit {
     this.globalCompanyMasterId = globalCompanyMasterId;
 
 
-    const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
-    if (to !== '9999-12-31') {
-      this.companyMasterform.controls['remark'].clearValidators();
-      this.companyMasterform.controls['remark'].updateValueAndValidity();
-      this.companyMasterform.controls['reason'].clearValidators();
-      this.companyMasterform.controls['reason'].updateValueAndValidity();
-    }
+    // const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
+    // if (to !== '9999-12-31') {
+    //   this.companyMasterform.controls['remark'].clearValidators();
+    //   this.companyMasterform.controls['remark'].updateValueAndValidity();
+    //   this.companyMasterform.controls['reason'].clearValidators();
+    //   this.companyMasterform.controls['reason'].updateValueAndValidity();
+    // }
     this.index = 0;
-    console.log(this.masterGridDataList[i].contractor);
+    console.log(this.masterGridDataList[i].isContractor);
 
     this.companyMasterform.patchValue(this.masterGridDataList[i]);
     console.log(this.masterGridDataList[i]);
 
-    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupName);
+    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupCode);
     console.log(this.tempObjForgroupNameScaleStartDate);
     this.companyMasterform.patchValue({
-      companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
+      companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
     });
-
-    if (this.employeeMasterRequestDTO.contractor === true) {
-      this.companyMasterform.patchValue({
-        contractor: 'Yes',
-      });
-    } else {
-      this.companyMasterform.patchValue({
-        contractor: 'No',
-      });
-      this.companyMasterform.get('companyGroupName1').disable();
-
-    }
 
     this.companyMasterform.controls['endDate'].clearValidators();
     this.companyMasterform.controls['remark'].clearValidators();
     this.companyMasterform.controls["endDate"].updateValueAndValidity();
     this.companyMasterform.controls["remark"].updateValueAndValidity();
     this.companyMasterform.get('code').disable();
+    this.companyMasterform.get('state').disable();
+    this.companyMasterform.get('city').disable();
+    this.companyMasterform.get('companyActive').disable();
+
   }
 
   viewMaster(globalCompanyMasterId: number, i: number) {
+    window.scrollTo(0, 0);
     this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
 
     this.selectedImageFileLogo1 = undefined;
@@ -249,22 +251,22 @@ export class CompanyMasterComponent implements OnInit {
     this.showButtonSaveAndReset = false;
     this.companyMasterform.reset();
     this.companyMasterform.patchValue(this.masterGridDataList[i]);
-    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupName);
+    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === this.masterGridDataList[i].companyGroupCode);
     console.log(this.tempObjForgroupNameScaleStartDate);
     this.companyMasterform.patchValue({
-      companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
+      companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
     });
-    if (this.employeeMasterRequestDTO.contractor === true) {
-      this.companyMasterform.patchValue({
-        contractor: 'Yes',
-      });
-    } else {
-      const newLocal = 'No';
-      this.companyMasterform.patchValue({
-        contractor: newLocal,
-      });
+    // if (this.employeeMasterRequestDTO.isContractor === true) {
+    //   // this.companyMasterform.patchValue({
+    //   //   contractor: 'Yes',
+    //   // });
+    // } else {
+    //   // const newLocal = 'No';
+    //   // this.companyMasterform.patchValue({
+    //   //   contractor: newLocal,
+    //   // });
 
-    }
+    // }
     this.companyMasterform.disable();
   }
 
@@ -273,19 +275,20 @@ export class CompanyMasterComponent implements OnInit {
     this.masterGridDataList = [];
 
     this.companyMasterService.getAllCompanyMasterData().subscribe(res => {
-      console.log(res);
+      console.log('check', res);
       this.masterGridDataList = res.data.results;
       let i = 1;
       res.data.results.forEach(element => {
-        let contractor;
-        if (element.contractor === false) {
-          contractor = 'No';
-        } else {
-          contractor = 'Yes'
-        }
+        // let contractor;
+        // if (element.contractor === false) {
+        //   contractor = 'No';
+        // } else {
+        //   contractor = 'Yes'
+        // }
         const obj = {
           SrNo: i++,
           shortName: element.shortName,
+          shortenShortName: this.shortenString.transform(element.shortName),
           StartDate: element.startDate,
           EndDate: element.endDate,
           Scale: element.scale,
@@ -302,6 +305,7 @@ export class CompanyMasterComponent implements OnInit {
           companyLogo2: element.companyLogo2 ? null : '',
           companyLogo3: element.companyLogo3 ? null : '',
           companyName: element.companyName,
+          shortenCompanyName: this.shortenString.transform(element.companyName),
           country: element.country,
           createdBy: element.createdBy,
           createdOn: element.createdOn,
@@ -309,6 +313,7 @@ export class CompanyMasterComponent implements OnInit {
           emailId: element.emailId,
           formerName: element.formerName,
           industryType: element.industryType,
+          shortenIndustryType: this.shortenString.transform(element.industryType),
           language: element.language,
           logo1ImageName: element.logo1ImageName ? null : '',
           logo1Type: element.logo1Type ? null : '',
@@ -324,9 +329,11 @@ export class CompanyMasterComponent implements OnInit {
           typeOfEstablishment: element.typeOfEstablishment,
           updatedBy: element.updatedBy,
           updatedOn: element.updatedOn,
-          contractor: contractor,
+          isContractor: element.isContractor,
           village: element.village,
           website: element.website,
+          servicePeriod: element.servicePeriod,
+          servicePeriodShort: element.servicePeriodShort
         };
         this.summaryHtmlDataList.push(obj);
       });
@@ -335,16 +342,21 @@ export class CompanyMasterComponent implements OnInit {
     console.log('summary');
     console.log(this.summaryHtmlDataList);
 
-    this.companyGroupMasterService.getCompanyGroupMaster().subscribe(res => {
+    this.companyGroupMasterService.getCompanyGroupMasterActive().subscribe(res => {
+      this.companyGroupCodeList = [];
+      this.groupNameScaleNameStartDateObject = [];
       let companyGroupcode;
       let startDate;
       let scale;
       console.log(res);
 
       res.data.results.forEach(element => {
-        this.companyGroupNameList.push(element.companyGroupCode);
-
-        this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupName: element.companyGroupName });
+        if (element.companyGroupActive == 1) {
+          this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: false });
+        } else {
+          this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: true });
+        }
+        this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupCode: element.companyGroupCode });
       });
     });
   }
@@ -362,26 +374,85 @@ export class CompanyMasterComponent implements OnInit {
     this.deactivateRemark();
     this.saveFormValidation();
   }
+  // copied from companygroup master
+  // onChangeEndDate(evt: any) {
+  //   console.log(this.companyMasterform.get('endDate').value);
+  //   // console.log(this.endDateModel);
+  //   //  console.log(evt.target.value);
+  //   //  console.log(this.form.get('endDate').value);
+  //   if (this.companyMasterform.get('endDate').value == '' || this.companyMasterform.get('endDate').value == null) {
+  //     this.companyMasterform.controls["remark"].clearValidators();
+  //     this.companyMasterform.controls["remark"].updateValueAndValidity();
+
+  //     this.companyMasterform.controls["reason"].clearValidators();
+  //     this.companyMasterform.controls["reason"].updateValueAndValidity();
+
+  //   } else {
+  //     console.log(evt);
+  //     console.log(this.companyMasterform.get('endDate').value);
+  //     const from = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'yyyy-MM-dd');
+  //     const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
+  //     if (from > to) {
+  //       this.companyMasterform.controls['endDate'].reset()
+
+  //     }
+
+  //     this.companyMasterform.controls["remark"].setValidators(Validators.required);
+  //     this.companyMasterform.controls["remark"].updateValueAndValidity();
+
+  //     this.companyMasterform.controls["reason"].setValidators(Validators.required);
+  //     this.companyMasterform.controls["reason"].updateValueAndValidity();
+  //     this.companyMasterform.get('companyGroupActive').setValue(true);
+  //     this.deactivateRemark();
+
+
+
+  //   }
+
+
+  // }
   onChangeEndDate(evt: any) {
-    const from = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'yyyy-MM-dd');
-    const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
-    if (from > to) {
-      this.companyMasterform.controls['endDate'].reset();
+    // const from = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'yyyy-MM-dd');
+    // const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
+    // if (from > to) {
+    //   this.companyMasterform.controls['endDate'].reset();
+    // }
+    if (this.companyMasterform.get('endDate').value == '' || this.companyMasterform.get('endDate').value == null) {
+      this.companyMasterform.get('remark').clearValidators();
+      this.companyMasterform.controls['remark'].updateValueAndValidity();
+      this.companyMasterform.get('reason').clearValidators();
+      this.companyMasterform.controls['reason'].updateValueAndValidity();
+
+      this.companyMasterform.patchValue({
+        remark: '',
+        reason: '',
+      });
+
+      this.companyMasterform.get('remark').disable();
+      this.companyMasterform.get('reason').disable();
+
+    } else {
+      this.companyMasterform.get('remark').enable();
+      this.companyMasterform.get('reason').enable();
+
+      this.companyMasterform.controls['remark'].setValidators(Validators.required);
+      this.companyMasterform.controls['remark'].updateValueAndValidity();
+
+      this.companyMasterform.controls['reason'].setValidators(Validators.required);
+      this.companyMasterform.controls['reason'].updateValueAndValidity();
+      this.companyMasterform.get('companyActive').setValue(false);
+
+      this.deactivateRemark();
+
     }
-    this.companyMasterform.controls["remark"].setValidators(Validators.required);
-    this.companyMasterform.controls["remark"].updateValueAndValidity();
 
-    this.companyMasterform.controls["reason"].setValidators(Validators.required);
-    this.companyMasterform.controls["reason"].updateValueAndValidity();
-    this.companyMasterform.get('companyActive').setValue(false);
-
-    this.deactivateRemark();
   }
   onChangeStartDate() {
     const from = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'yyyy-MM-dd');
     const to = this.datePipe.transform(this.tempObjForgroupNameScaleStartDate.startDate, 'yyyy-MM-dd');
+    this.today = new Date(from);
     console.log(this.tempObjForgroupNameScaleStartDate.startDate);
-    console.log(from);
+
     if (from < to) {
       alert('Start Date should not be less than Company Group Start Date');
       this.companyMasterform.patchValue({
@@ -392,7 +463,8 @@ export class CompanyMasterComponent implements OnInit {
     }
 
   }
-  deactivateRemark() {
+  deactivateRemark() { }
+  deactivateRemark1() {
     if (this.companyMasterform.value.companyActive === false) {
       this.companyMasterform.get('companyActive').disable();
 
@@ -426,19 +498,13 @@ export class CompanyMasterComponent implements OnInit {
       const data = this.companyMasterform.getRawValue();
       const startDate = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'dd-MMM-y');
       const endDate = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'dd-MMM-y');
-      let isContractor1: boolean = false;
-      if (this.companyMasterform.get('contractor').value === 'No') {
-        isContractor1 = false;
-      } else {
-        isContractor1 = true;
-      }
 
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.globalCompanyMasterId = this.globalCompanyMasterId;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.code = code;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.shortName = this.companyMasterform.get('shortName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyName = this.companyMasterform.get('companyName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.formerName = this.companyMasterform.get('formerName').value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupName = this.companyMasterform.get('companyGroupName').value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupCode = this.companyMasterform.get('companyGroupCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address1 = this.companyMasterform.get('address1').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address2 = this.companyMasterform.get('address2').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address3 = this.companyMasterform.get('address3').value;
@@ -451,7 +517,7 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.phoneNumber = this.companyMasterform.get('phoneNumber').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.emailId = this.companyMasterform.get('emailId').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.website = this.companyMasterform.get('website').value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.contractor = isContractor1;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.isContractor = this.companyMasterform.get('isContractor').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.typeOfEstablishment = this.companyMasterform.get('typeOfEstablishment').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.language = this.companyMasterform.get('language').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.currency = this.companyMasterform.get('currency').value;
@@ -473,10 +539,8 @@ export class CompanyMasterComponent implements OnInit {
 
       this.requestDTOString.companyMasterRequestDTOs.push(this.companyMasterRequestDTOs.companyMasterRequestDTOs[0]);
       console.log(this.selectedImageFileLogo2);
-
-
       var formData = new FormData();
-      console.log('222' + this.employeeMasterRequestDTO.code);
+
       console.log(JSON.stringify(this.requestDTOString));
       formData.append('requestDTOString', JSON.stringify(this.requestDTOString));
       if (this.selectedImageFileLogo1 !== undefined) {
@@ -493,12 +557,13 @@ export class CompanyMasterComponent implements OnInit {
         if (res.data.results.length > 0) {
           this.alertService.sweetalertMasterSuccess('Company  Master Updated Successfully.', '');
           this.employeeMasterRequestDTO = new EmployeeMasterRequestDTO('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-          this.saveFormValidation();
+
           // this.companyMasterform.reset();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
           this.globalCompanyMasterId = 0;
           this.refreshHtmlTableData();
+          this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -516,19 +581,19 @@ export class CompanyMasterComponent implements OnInit {
       const data = this.companyMasterform.getRawValue();
       const startDate = this.datePipe.transform(this.companyMasterform.get('startDate').value, 'dd-MMM-y');
       const endDate = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'dd-MMM-y');
-      let isContractor2: boolean;
-      if (this.companyMasterform.get('contractor').value === 'No') {
-        isContractor2 = false;
-      } else {
-        isContractor2 = true;
-      }
+      // let isContractor2: boolean;
+      // if (this.companyMasterform.get('contractor').value === 'No') {
+      //   isContractor2 = false;
+      // } else {
+      //   isContractor2 = true;
+      // }
 
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.globalCompanyMasterId = 0;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.code = this.companyMasterform.get('code').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.shortName = this.companyMasterform.get('shortName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyName = this.companyMasterform.get('companyName').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.formerName = this.companyMasterform.get('formerName').value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupName = this.companyMasterform.get('companyGroupName').value;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.companyGroupCode = this.companyMasterform.get('companyGroupCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address1 = this.companyMasterform.get('address1').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address2 = this.companyMasterform.get('address2').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.address3 = this.companyMasterform.get('address3').value;
@@ -541,7 +606,7 @@ export class CompanyMasterComponent implements OnInit {
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.isdCode = this.companyMasterform.get('isdCode').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.emailId = this.companyMasterform.get('emailId').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.website = this.companyMasterform.get('website').value;
-      this.companyMasterRequestDTOs.employeeMasterRequestDTO.contractor = isContractor2;
+      this.companyMasterRequestDTOs.employeeMasterRequestDTO.isContractor = this.companyMasterform.get('isContractor').value;;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.typeOfEstablishment = this.companyMasterform.get('typeOfEstablishment').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.language = this.companyMasterform.get('language').value;
       this.companyMasterRequestDTOs.employeeMasterRequestDTO.currency = this.companyMasterform.get('currency').value;
@@ -581,9 +646,10 @@ export class CompanyMasterComponent implements OnInit {
         console.log(res);
         if (res.data.results.length > 0) {
           this.alertService.sweetalertMasterSuccess('Company  Master Saved Successfully.', '');
-          this.saveFormValidation();
+
           // this.companyMasterform.reset();
           this.refreshHtmlTableData();
+          this.saveFormValidation();
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
@@ -596,7 +662,7 @@ export class CompanyMasterComponent implements OnInit {
 
 
   }
-  onSelectScale() { }
+
 
   checkLocalAddress() {
   }
@@ -622,23 +688,62 @@ export class CompanyMasterComponent implements OnInit {
       });
     }
   }
+  setPaymentDetailToDate(evt: any) {
+    let endDate12 = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'dd-MMM-y');
+    // debugger
+    // console.log(this.endDate1);
+    // console.log(this.endDate1.nativeElement);
+    // console.log(this.endDate1.nativeElement.value);
+    // if (this.endDate1 !== undefined) {
+    //   this.endDate1.nativeElement.value = this.datePipe.transform(this.endDate1.nativeElement.value, 'dd-MMM-y');
 
-  setPaymentDetailToDate() {
-    const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
-    if (to !== null) {
-      if (to.trim() === '9999-12-31') {
-        this.companyMasterform.controls["remark"].clearValidators();
-        this.companyMasterform.controls["remark"].updateValueAndValidity();
+    // }
+    //  console.log(this.endDate1.nativeElement.value);
+    // const endDate = this.datePipe.transform(this.endDateModel, 'yyyy-MM-dd');
 
-        this.companyMasterform.controls["reason"].clearValidators();
-        this.companyMasterform.controls["reason"].updateValueAndValidity();
-        this.companyMasterform.get('companyActive').setValue(true);
-        this.deactivateRemark();
-      }
 
+
+    if (endDate12 == '' || endDate12 == null) {
+      this.companyMasterform.controls["remark"].clearValidators();
+      this.companyMasterform.controls["remark"].updateValueAndValidity();
+
+      this.companyMasterform.controls["reason"].clearValidators();
+      this.companyMasterform.controls["reason"].updateValueAndValidity();
+
+    } else {
+      this.companyMasterform.controls["remark"].setValidators([Validators.required]);
+      this.companyMasterform.controls["remark"].updateValueAndValidity();
+
+      this.companyMasterform.controls["reason"].setValidators([Validators.required]);
+      this.companyMasterform.controls["reason"].updateValueAndValidity();
+      // this.form.get('companyGroupActive').setValue(true);
+      // this.hideRemarkDiv = false;
+      this.deactivateRemark();
+      // } else {
+      //   this.form.get('companyGroupActive').setValue(false);
+      //   this.hideRemarkDiv = true;
+      //   this.deactivateRemark();
+
+      //
     }
   }
-// selected image bindind
+
+  // setPaymentDetailToDate() {
+  //   // const to = this.datePipe.transform(this.companyMasterform.get('endDate').value, 'yyyy-MM-dd');
+  //   // if (to !== null) {
+  //   //   if (to.trim() === '9999-12-31') {
+  //       this.companyMasterform.controls["remark"].clearValidators();
+  //       this.companyMasterform.controls["remark"].updateValueAndValidity();
+
+  //       this.companyMasterform.controls["reason"].clearValidators();
+  //       this.companyMasterform.controls["reason"].updateValueAndValidity();
+  //       this.companyMasterform.get('companyActive').setValue(true);
+  //       this.deactivateRemark();
+
+
+
+  // }
+  // selected image bindind
   uploadFile(event, uploadFile) {
     console.log(event);
     console.log(uploadFile);
@@ -723,15 +828,26 @@ export class CompanyMasterComponent implements OnInit {
   }
 
   onSelectGroupMaster(evt: any) {
-    this.tempObjForgroupNameScaleStartDate = null;
-    console.log(evt);
-    //  console.log(evt.target.value);
-    this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === evt);
-    console.log(this.tempObjForgroupNameScaleStartDate);
-    this.companyMasterform.patchValue({
-      scale: this.tempObjForgroupNameScaleStartDate.scale,
-      companyGroupName1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
-    });
+    if (evt == '') {
+      this.tempObjForgroupNameScaleStartDate = null;
+      this.companyMasterform.patchValue({
+        scale: '',
+        companyGroupCode1: '',
+        startDate: ''
+      });
+    } else {
+      this.tempObjForgroupNameScaleStartDate = null;
+      console.log(evt);
+      //  console.log(evt.target.value);
+      this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(o => o.groupName === evt);
+      console.log(this.tempObjForgroupNameScaleStartDate);
+      this.companyMasterform.patchValue({
+        scale: this.tempObjForgroupNameScaleStartDate.scale,
+        companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
+        startDate: ''
+      });
+      this.groupStartDateValidation = new Date(this.tempObjForgroupNameScaleStartDate.startDate);
+    }
   }
 
   saveFormValidation() {
@@ -756,8 +872,8 @@ export class CompanyMasterComponent implements OnInit {
     this.companyMasterform.controls["address1"].setValidators(Validators.required);
     this.companyMasterform.controls["address1"].updateValueAndValidity();
 
-    this.companyMasterform.controls["companyGroupName"].setValidators(Validators.required);
-    this.companyMasterform.controls["companyGroupName"].updateValueAndValidity();
+    this.companyMasterform.controls["companyGroupCode"].setValidators(Validators.required);
+    this.companyMasterform.controls["companyGroupCode"].updateValueAndValidity();
 
     this.companyMasterform.controls["shortName"].setValidators(Validators.required);
     this.companyMasterform.controls["shortName"].updateValueAndValidity();
@@ -770,18 +886,104 @@ export class CompanyMasterComponent implements OnInit {
 
     this.companyMasterform.get('endDate').disable();
     this.companyMasterform.get('reason').disable();
+    this.companyMasterform.get('code').disable();
 
     this.companyMasterform.get('remark').disable();
+
     this.companyMasterform.get('companyActive').setValue(true);
-    this.companyMasterform.get('contractor').setValue('No');
     this.companyMasterform.patchValue({
       language: 'English',
     });
     this.companyMasterform.patchValue({
       currency: this.currencyList[2],
+      companyGroupCode: '',
+      country: '',
+      isdCode: '',
+      typeOfEstablishment: '',
+      industryType: '',
+      scale: '',
+      coClassification: '',
+      reason: '',
+      isContractor: '',
     });
 
     this.deactiveActiveCheckBox();
     this.companyMasterform.get('companyActive').disable();
+    this.companyMasterform.get('state').disable();
+    this.companyMasterform.get('city').disable();
+  }
+  keyPress(event: any) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  isCompanyNameContainsOnlySpecialCharacter() {
+    this.companyNameInvalid = false
+    var splChars = "*|,\" :<>[]{}`\!';()@&$#%1234567890";
+    for (var i = 0; i < this.companyMasterform.get('companyName').value.length; i++) {
+      if (splChars.indexOf(this.companyMasterform.get('companyName').value.charAt(i)) != -1) {
+        //alert("Illegal characters detected!");
+        this.companyNameInvalid = true;
+      } else {
+        this.companyNameInvalid = false;
+        break;
+      }
+
+    }
+    if (this.companyNameInvalid == true) {
+      this.companyMasterform.get('companyName').status = 'INVALID';
+
+    }
+  }
+  isShortNameContainsOnlySpecialCharacter() {
+    this.shortNameInvalid = false
+    var splChars = "*|,\":<>[]{}`\!';^()@&$#%1234567890";
+    for (var i = 0; i < this.companyMasterform.get('shortName').value.length; i++) {
+      if (splChars.indexOf(this.companyMasterform.get('shortName').value.charAt(i)) != -1) {
+        //alert("Illegal characters detected!");
+        this.shortNameInvalid = true;
+      } else {
+        this.shortNameInvalid = false;
+        break;
+      }
+
+    }
+    if (this.shortNameInvalid == true) {
+      this.companyMasterform.get('shortName').status = 'INVALID';
+    }
+  }
+  keyPressedSpaceNotAllow(event: any) {
+    const pattern = /[ ]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  onSelectCountry(evt: any) {
+    this.companyMasterform.patchValue({
+      pinCode: '',
+      state: '',
+      city: '',
+      village: '',
+    });
+  }
+
+
+  onChangeWebsiteName(evt: string) {
+    var text = evt.split('.');
+
+    let s = evt.lastIndexOf('.') - evt.indexOf('.');
+    console.log(s);
+    // if tow dot presnt and without space
+    if (evt.indexOf('.') == evt.lastIndexOf('.') || s == 1) {
+      this.invalidWebsite = true;
+    } else {
+      this.invalidWebsite = false;
+
+    }
+
+
   }
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { ExitInformationModel } from './../../../dto-models/employment-forms-models/exit-information.model';
-import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service'
+import { ExitInformationModel } from './../employment-forms-models/exit-information.model';
+import { EmploymentInformationService } from './../employment-information.service'
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -29,6 +29,12 @@ export class ExitInformationComponent implements OnInit {
   exitSubscription: Subscription;
   JoiningDate: any;
   @Input() data: any;
+  public today = new Date();
+  resigndate: any;
+  lastWorkDate:any;
+  
+
+
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EmploymentInformationService: EmploymentInformationService,
@@ -38,6 +44,7 @@ export class ExitInformationComponent implements OnInit {
   ngOnInit(): void {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+    
 
     const JoiningDate = localStorage.getItem('joiningDate');
     this.JoiningDate = new Date(JoiningDate)
@@ -53,7 +60,7 @@ export class ExitInformationComponent implements OnInit {
 
     const birthDate = localStorage.getItem('birthDate')
     this.birthDate = new Date(birthDate);
-
+//this.resignationDate=new Date(this.ExitInformation.resignationDate);
     this.ExitInformation.retirementDate = this.add_years(this.birthDate, 58).toString();
 
     this.ExitInformation.retirementDate = this.datepipe.transform(this.ExitInformation.retirementDate, "dd-MMM-yyyy");
@@ -62,6 +69,7 @@ export class ExitInformationComponent implements OnInit {
 
       this.employeeExitInfoId = number.text;
       this.getExitInformationData(this.employeeExitInfoId);
+      
     })
     //  this.getExitInformationData(this.employeeExitInfoId);
 
@@ -72,8 +80,7 @@ export class ExitInformationComponent implements OnInit {
         this.editExit = res.editExit;
         this.viewExit = res.viewExit;
         this.getExitInformationData(this.employeeExitInfoId);
-
-
+      
         if (this.viewExit == true) {
           const resignationDate = this.ExitForm.get('resignationDate');
           resignationDate.disable();
@@ -81,6 +88,8 @@ export class ExitInformationComponent implements OnInit {
           expectedLeavingDate.disable();
           const lastWorkingDate = this.ExitForm.get('lastWorkingDate');
           lastWorkingDate.disable();
+           
+        
 
           const reasonForLeaving = this.ExitForm.get('reasonForLeaving');
           reasonForLeaving.disable();
@@ -109,6 +118,8 @@ export class ExitInformationComponent implements OnInit {
     ExitInformation.lastWorkingDate = this.datepipe.transform(ExitInformation.lastWorkingDate, "dd-MMM-yyyy");
     ExitInformation.retirementDate = this.datepipe.transform(ExitInformation.retirementDate, "dd-MMM-yyyy");
     ExitInformation.employeeMasterId = this.employeeMasterId;
+
+   
     // if (this.employeeExitInfoId) {
     // this.EmploymentInformationService.putExitForm(ExitInformation, this.employeeExitInfoId).subscribe(res => {
     //   this.notifyService.showSuccess(res.status.messsage, "Success..!!");
@@ -141,7 +152,7 @@ export class ExitInformationComponent implements OnInit {
       this.EmploymentInformationService.postExitForm(ExitInformation).subscribe(res => {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         // this.ExitInformation = res.data.results[0];
-
+        
         this.employeeExitInfoId = res.data.results[0].employeeExitInfoId;
         localStorage.setItem('employeeExitInfoId', this.employeeExitInfoId);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
@@ -154,7 +165,10 @@ export class ExitInformationComponent implements OnInit {
       })
     }
     // }
+
+
   }
+  
 
   putExitSubmit(ExitInformation) {
     // if (ExitInformation.employmentStatusBoolean) {
@@ -182,7 +196,6 @@ export class ExitInformationComponent implements OnInit {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
   }
-
   getExitInformationData(employeeExitInfoId) {
 
     this.EmploymentInformationService.getExitInformation(employeeExitInfoId).subscribe(res => {
@@ -190,13 +203,18 @@ export class ExitInformationComponent implements OnInit {
 
       if (res.data.results[0]) {
         this.ExitInformation = res.data.results[0];
-
+      
         if (res.data.results[0].retirementDate) {
 
           this.ExitInformation.retirementDate = res.data.results[0].retirementDate;
+          this.lastWorkDate=new Date(this.ExitInformation.lastWorkingDate);
+      
+          //this.ExitInformation.expectedLeavingDate =res.data.results[0].expectedLeavingDate;
+          
         }
         else {
           this.ExitInformation.retirementDate = this.add_years(this.birthDate, 58);
+          
           // this.ExitForm.get('projectedRetirementDate').setValue(this.ExitInformation.projectedRetirementDate);
         }
       }
@@ -213,4 +231,39 @@ export class ExitInformationComponent implements OnInit {
   cancel() {
     this.EventEmitterService.getEmpSummaryInitiate();
   }
+
+  calculateExpectedLeavingDateFromMonths(resignationDate) {
+    
+    if (resignationDate) {
+      let noticePeriodDaysModel = Number(localStorage.getItem('noticePeriodDaysModel'));
+      let noticePeriodMonthModel = Number(localStorage.getItem('noticePeriodMonthModel'));
+
+      if (noticePeriodDaysModel) {
+        let noticePeriodDaysModel = Number(localStorage.getItem('noticePeriodDaysModel'));
+        resignationDate.setDate(resignationDate.getDate() + noticePeriodDaysModel);  // for Days
+        
+        this.ExitInformation.expectedLeavingDate = resignationDate;
+        
+      }
+      this.resigndate=new Date(this.ExitForm.get('resignationDate').value);
+    
+
+      if (noticePeriodMonthModel) {
+        let expectedLeavingDate: any;
+
+        resignationDate.setMonth(resignationDate.getMonth() + noticePeriodMonthModel); // for Months
+        expectedLeavingDate = resignationDate.toISOString().slice(0, 10);
+        expectedLeavingDate = this.datepipe.transform(expectedLeavingDate, 'dd-MMM-yyyy');
+      
+        this.ExitInformation.expectedLeavingDate = expectedLeavingDate;
+      }
+     // this.expectedLeavingDate=this.datepipe.transform(this.ExitInformation.expectedLeavingDate);
+    
+    }
+  
+  }
+  lastWorkingDateChanged(){
+    this.lastWorkDate=new Date(this.ExitForm.get('lastWorkingDate').value);
+  }
+  
 }

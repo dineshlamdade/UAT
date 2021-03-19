@@ -6,8 +6,10 @@ import { of } from 'rxjs';
 // import * as en from './../../../assets/i18n/en.json';
 // import * as fr from './../../../assets/i18n/fr.json';
 
-var en = require('./../../../assets/i18n/en.json');
-var fr = require('./../../../assets/i18n/fr.json');
+var en = require('./../../../assets/i18n/english.json');
+var fr = require('./../../../assets/i18n/french.json');
+var hi = require('./../../../assets/i18n/hindi.json');
+
 // "use strict";
 // const express = require("express");
 // const config = require("./../../assets/i18n/fr.json");
@@ -24,11 +26,17 @@ var fr = require('./../../../assets/i18n/fr.json');
  */
 @Injectable({ providedIn: 'root' })
 export class HttpLoader implements TranslocoLoader {
+  
   getTranslation(langPath: string) {
+    
     if (langPath === 'en') {
       return of(en);
-    } else {
+    } 
+    if(langPath === 'fr') {
       return of(fr);
+    }
+    if(langPath === 'hi') {
+      return of(hi);
     }
   }
 }

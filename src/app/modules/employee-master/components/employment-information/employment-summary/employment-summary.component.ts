@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
+import { EmploymentInformationService } from './../employment-information.service';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 
 
@@ -60,9 +60,13 @@ export class EmploymentSummaryComponent implements OnInit {
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
       
       this.EmploymentInformationSumarry = res.data.results;
+      console.log(this.EmploymentInformationSumarry);
       this.joiningDate = res.data.results[0].joiningDate;
       if (res.data.results[0].joiningDate) {
         localStorage.setItem('joiningDate', res.data.results[0].joiningDate);
+      }
+      if (res.data.results[0].rejoiningDate) {
+        localStorage.setItem('rejoiningDate', res.data.results[0].rejoiningDate);
       }
 
       if (res.data.results[0].employementInfoId) {
@@ -164,6 +168,7 @@ export class EmploymentSummaryComponent implements OnInit {
     }
     if (element.transaction == 'Joining') {
       element.editJoining = true;
+      element.startdate = '2020-10-10';
       setTimeout(() => {
         this.EventEmitterService.getJoiningInitiate(element);
       }, 500)

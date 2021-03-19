@@ -20,7 +20,7 @@ import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
 import { LicComponent } from './lic/lic.component';
 import { LicdeclarationComponent } from './lic/licdeclaration/licdeclaration.component';
 import { LicmasterComponent } from './lic/licmaster/licmaster.component';
-import { LicsummaryComponent } from './lic/licsummary/licsummary.component';
+import { LicsummaryComponent,} from './lic/licsummary/licsummary.component';
 import { PensionPlanComponent } from './pension-plan/pension-plan.component';
 import { PpdeclarationComponent } from './pension-plan/ppdeclaration/ppdeclaration.component';
 import { PpmasterComponent } from './pension-plan/ppmaster/ppmaster.component';
@@ -65,6 +65,8 @@ import { SeniorCitizenDeclarationComponent } from './senior-citizen-saving-schem
 import { TuitionFeesComponent } from './tuition-fees/tuition-fees.component';
 import { TuitionFeesSummaryComponent } from './tuition-fees/tuition-fees-summary/tuition-fees-summary.component';
 import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-declaration/tuition-fees-declaration.component';
+import { PrimeNGModule } from '../../../app.primeNG.module';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -140,6 +142,11 @@ import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-dec
     }),
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
+    PrimeNGModule,
+    InputNumberModule,
+    // BrowserModule,
+    // BrowserAnimationsModule,
+
   ],
 
   providers: [ DatePipe, NumberFormatPipe],

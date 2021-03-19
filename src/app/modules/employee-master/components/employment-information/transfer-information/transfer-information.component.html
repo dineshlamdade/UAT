@@ -11,9 +11,9 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Transfer To</label>
-                                    <select class="form-control" placeholder="Select Company"
+                                    <select class="form-control" placeholder="Select"
                                         formControlName="transferTo" [(ngModel)]="TransferToInformation.transferTo">
-                                        <option value="" selected disabled>Select Company</option>
+                                        <option value="" selected>Select</option>
                                         <option *ngFor="let option of companyListForJoining" [value]="option">
                                             {{option}}
                                         </option>
@@ -29,7 +29,7 @@
                                             </div>
                                             <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="effectiveDate" [minDate]="JoiningDate"
+                                                formControlName="effectiveDate" [minDate]="JoiningDate" placement="center"
                                                 [(ngModel)]="TransferToInformation.effectiveDate" class="form-control"
                                                 placeholder="  /   /" bsDatepicker>
                                         </div>
@@ -40,7 +40,7 @@
                                     <label class="form-label">
                                         Remark</label>
                                     <input type="text" class="form-control" [(ngModel)]="TransferToInformation.remark"
-                                        formControlName="transferRemark">
+                                        formControlName="transferRemark"  placeholder="Enter Remark">
                                 </div>
                             </div>
                         </fieldset>

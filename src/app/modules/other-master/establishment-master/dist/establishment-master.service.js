@@ -21,13 +21,13 @@ var EstablishmentMasterService = /** @class */ (function () {
     }
     EstablishmentMasterService.prototype.postEstablishmentMaster = function (data) {
         console.log(data.regionMasterId);
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/establishment-master/add-establishment', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'establishment-master/add-establishment', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     EstablishmentMasterService.prototype.putEstablishmentMaster = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8083 + '/establishment-master/update', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'establishment-master/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -37,7 +37,7 @@ var EstablishmentMasterService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/establishment-master/details', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'establishment-master/details', { 'headers': headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -47,7 +47,7 @@ var EstablishmentMasterService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/region-master/details', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'region-master/details', { 'headers': headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

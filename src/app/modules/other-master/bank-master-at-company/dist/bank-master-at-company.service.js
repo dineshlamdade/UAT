@@ -20,37 +20,37 @@ var BankMasterAtCompanyService = /** @class */ (function () {
         this._HTTP = _HTTP;
     }
     BankMasterAtCompanyService.prototype.postBankMaster = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/company-bankmaster/add-bank', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'company-bankmaster/add-bank', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtCompanyService.prototype.postBankMasterMapping = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/company-bankmaster-mapping/map-bankmaster', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'company-bankmaster-mapping/map-bankmaster', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtCompanyService.prototype.getBankMasterDetails = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/company-bankmaster/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'company-bankmaster/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtCompanyService.prototype.putBankMasterMapping = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8083 + '/company-bankmaster-mapping/update', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'company-bankmaster-mapping/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtCompanyService.prototype.getDataFromIFSC = function (bankIFSC) {
-        return this._HTTP.get(environment_1.environment.baseUrl8082 + '/bank-master/data/' + bankIFSC, { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.get(environment_1.environment.baseUrl8082 + 'bank-master/data/' + bankIFSC, { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtCompanyService.prototype.getCompanyBanMasterMappingDetails = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/company-bankmaster-mapping/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'company-bankmaster-mapping/details/', { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -60,13 +60,13 @@ var BankMasterAtCompanyService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP["delete"](environment_1.environment.baseUrl8083 + '/company-bankmaster-mapping/' + data, { headers: headers })
+        return this._HTTP["delete"](environment_1.environment.baseUrl8083 + 'company-bankmaster-mapping/' + data, { headers: headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     BankMasterAtCompanyService.prototype.getGroupCompanyDetails = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/group-company/details', { headers: { 'X-TenantId': 'PaysquareDefault' } })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'group-company/details', { headers: { 'X-TenantId': 'PaysquareDefault' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

@@ -127,6 +127,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
     };
     BankMasterAtCompanyComponent.prototype.editMaster = function (accountNumber, companyBankMasterId, accountType) {
         var _this = this;
+        window.scrollTo(0, 0);
         this.form.setControl('pfFormArray', new forms_1.FormArray([]));
         this.companyBankMasterId = companyBankMasterId;
         this.isGlobalView = false;
@@ -192,6 +193,7 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
     };
     BankMasterAtCompanyComponent.prototype.viewMaster = function (accountNumber, companyBankMasterId, accountType) {
         var _this = this;
+        window.scrollTo(0, 0);
         this.form.setControl('pfFormArray', new forms_1.FormArray([]));
         this.companyBankMasterId = companyBankMasterId;
         this.isGlobalView = false;

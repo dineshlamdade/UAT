@@ -68,7 +68,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalCertificationDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalCertificationDate">
@@ -84,7 +84,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalValidityFromDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalValidityFromDate"
@@ -101,7 +101,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalValidityToDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalValidityToDate"
@@ -159,7 +159,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalFeesValidityFromDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityFromDate"
@@ -178,7 +178,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
-                                                    formControlName="renewalFeesValidityToDate"
+                                                    formControlName="renewalFeesValidityToDate" placement="center"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityToDate"
                                                     [minDate]="employeeCertificateRequestModel.renewalFeesValidityFromDate">
                                             </div>
@@ -226,45 +226,49 @@
                         </div>
                     </form>
 
-                    
-                    <legend style="font-size: 17px !important;">Summary</legend>
+
+                    <div class="row mt-10">
+                        <div class="col-md-12">
+                            <h3 class="font-14 text-purple font-bold">Summary</h3>
+                        </div>
+                    </div>
                     <p-table [value]="certificateSummaryGridData" [scrollable]="true" [style]="{width:'1000px'}"
                         scrollHeight="200px">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:150px">
-                                <col style="width:100px">
+                                <col class="wd-20">
+                                <col class="wd-10">
+                                <col class="wd-20">
+                                <col class="wd-20">
+                                <col class="wd-20">
+                                <col class="wd-10">
                             </colgroup>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th class="primeng-table-header-center">Certificate Name</th>
-                                <th class="primeng-table-header-center">Mandatory</th>
-                                <th class="primeng-table-header-center">Valid For</th>
-                                <th class="primeng-table-header-center">Valid From Date</th>
-                                <th class="primeng-table-header-center">Valid To Date</th>
-                                <th class="primeng-table-header-center">Action</th>
+                                <th class="primeng-table-header-center wd-20">Certificate Name</th>
+                                <th class="primeng-table-header-center wd-10">Mandatory</th>
+                                <th class="primeng-table-header-center wd-20">Valid For</th>
+                                <th class="primeng-table-header-center wd-20">Valid From Date</th>
+                                <th class="primeng-table-header-center wd-20">Valid To Date</th>
+                                <th class="primeng-table-header-center wd-10">Action</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-certificate>
                             <tr>
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{certificate.certificateMasterMappingId.certificateMaster.certificateName}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                                         {{certificate.renewable}}
                                     </span></td>
 
-                                <td class="primeng-table-header-center"><span>{{certificate.validFor}}</span>
+                                <td class="primeng-table-header-left"><span>{{certificate.validFor}}</span>
                                 </td>
 
 
-                                <td class="primeng-table-header-center"><span>
+                                <td class="primeng-table-header-left"><span>
                             <tr *ngFor="let history of certificate.history">
                                 {{history.renewalValidityFromDate}}
                             </tr>
@@ -273,7 +277,7 @@
                             </td>
 
 
-                            <td class="primeng-table-header-center"><span>
+                            <td class="primeng-table-header-left"><span>
                                     <tr *ngFor="let history of certificate.history">
                                         {{history.renewalValidityToDate}}
                                     </tr>
@@ -281,7 +285,7 @@
 
                             </td>
 
-                            <td class="primeng-table-header-center"><span><i
+                            <td class="primeng-table-header-left"><span><i
                                         class="fa fa-pencil font-16 text-blue cursor-pointer  mr-10" tooltip="Edit"
                                         (click)="editCertificate(certificate)"></i>
 
@@ -291,9 +295,12 @@
                             </tr>
                         </ng-template>
                     </p-table>
-                    <span class="font-14 font500 align-center text-red no-data-center"
-                        *ngIf="certificateSummaryGridData.length==0">No
-                        data found</span>
+                    <ng-template pTemplate="emptymessage">
+                        <tr *ngIf="certificateSummaryGridData.length == 0">
+                            <td colspan="4" class="text-center"><span class="font-14 font500 text-red">No Data
+                                    Available</span></td>
+                        </tr>
+                    </ng-template>
                 </div>
             </div>
         </div>

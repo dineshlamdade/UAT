@@ -22,20 +22,21 @@ export class DeclarationFormComponent implements OnInit {
   public dropdownListid: any;
   public templateUserIdList = [];
   public isView: boolean = false;
-  public claimTempId: number = 0;
+  public isEdit: boolean = false;
+  public declarationMessageId: number = 0;
   constructor(
     public declarationService: DeclarationService,
     public fb: FormBuilder,
     private modalService: BsModalService,
     private alertService: AlertServiceService,
   ) { }
-
+  public allTechnologies = ["Reimbursement", "Reimbursement1", "Reimbursement2"]; 
   ngOnInit(): void {
     this.declarationForm = this.fb.group({
-      createdBy: new FormControl(''),
-      createDateTime: new FormControl(''),
-      lastModifiedBy: new FormControl(''),
-      lastModifiedDateTime: new FormControl(''),
+      // createdBy: new FormControl(''),
+      // createDateTime: new FormControl(''),
+      // lastModifiedBy: new FormControl(''),
+      // lastModifiedDateTime: new FormControl(''),
       declarationMessageId: new FormControl(''),
       declarationMessageName: new FormControl('', Validators.required),
       module: new FormControl('', Validators.required),
@@ -54,7 +55,29 @@ export class DeclarationFormComponent implements OnInit {
   //................. Submit claim form.................
   submitClaimMaster() {
     window.scrollTo(0, 0);
- 
+    console.log("this.declarationMessageId",this.declarationMessageId);
+    console.log("its edit ")
+    if(this.declarationMessageId > 0){
+      this.submitted = true;
+      if (this.declarationForm.invalid) {
+        return;
+      }
+      console.log(this.declarationForm.value);
+      let postData = this.declarationForm.getRawValue();
+      console.log("postData", postData);
+      this.declarationService.editClaimData(postData).subscribe((res) => {
+        console.log("Claim value", res);
+        // this.templateUserIdList.push(res.data.results[0]);
+        this.alertService.sweetalertMasterSuccess("Register form updated successfully", "");
+        // console.log("templateUserId", this.templateUserIdList);
+        this.getClaimTemplatesList();
+      })
+      this.resetForm();
+      this.declarationForm.reset({
+        active: new FormControl(true),
+      });
+    }else{
+      console.log("its save ")
       this.submitted = true;
       if (this.declarationForm.invalid) {
         return;
@@ -71,6 +94,8 @@ export class DeclarationFormComponent implements OnInit {
       this.declarationForm.reset({
         active: new FormControl(true),
       });
+    }
+     
  
  
 }
@@ -113,12 +138,14 @@ export class DeclarationFormComponent implements OnInit {
   }
   
   getClaimTemplateEditById(claimTempId, companyId) {
-    this.claimTempId = claimTempId;
+  this.declarationMessageId = claimTempId;
     window.scrollTo(0, 0);
     this.declarationService.getClaimTemplateViewById(claimTempId, companyId).subscribe((res) => {
       console.log(res);
+      this.isEdit = true;
       let claimTemplateList = res.data.results[0];
       console.log(claimTemplateList);
+      this.declarationForm.enable();
       this.declarationForm.patchValue(claimTemplateList);
       this.claimGridDataList = res.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO;
       // this.isView = true;
@@ -169,7 +196,18 @@ console.log("event", event)
     console.log("event", event)
       }
     
-
+      resetForm(){
+        window.scrollTo(0, 0);
+        this.declarationForm.reset({
+          active: new FormControl(true),
+        });
+        // this.getAllFields();
+        this.isView = false;
+        this.isEdit = false;
+        this.declarationForm.enable();
+        // this.claimForm.controls.remark.disable();
+        
+      }
 
   mindatoryChangeEvt(index, changeValue, fieldName) {
     console.log(index, changeValue, fieldName);

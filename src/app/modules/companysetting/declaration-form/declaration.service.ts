@@ -52,7 +52,7 @@ getClaimTemplateViewById(regClaimTemplateId, companyId){
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('X-TenantId', 'PaysquareDefault');
-    return this.http.put(this.apiUrl + 'summary-template/edit-template', data, {headers:{'X-TenantId': 'PaysquareDefault'}}) 
+    return this.http.put(this.apiUrl + 'declaration-message-company/edit-template', data, {headers:{'X-TenantId': 'PaysquareDefault'}}) 
     .pipe(map((response: any)=>{
       return response
     }))

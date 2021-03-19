@@ -18,17 +18,19 @@
 
                           <div class="col-sm-3">
                             <label class="form-label">Name</label>
-                            <input type="text" formControlName="complianceName" class="form-control"
+                            <input type="text" formControlName="complianceName" class="form-control" autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('complianceName').status == 'INVALID'}"
                               name="complianceName" placeholder="Enter Compliance Name">
                           </div>
 
                           <div class="col-sm-3" *ngIf="!isEditMode">
-                            <label class="form-label">Statuatory-Institution Master</label>
+                            <label class="form-label">Statutory-Institution Master</label>
                             <select name="statutoryInstituteName" id="statutoryInstituteName" class="form-control"
                               formControlName="statutoryInstituteName"
                               [ngClass]="{'is-invalid' : form.get('statutoryInstituteName').status == 'INVALID'}"
                               (change)='onSelectStatuatoryInstitutionMaster($event.target.value)'>
+
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of institutionNameList" [value]="issuedBy.value">
                                 {{issuedBy.label}}
                               </option>
@@ -36,9 +38,9 @@
                           </div>
 
                           <div class="col-sm-3" *ngIf="isEditMode">
-                            <label class="form-label">Statuatory-Institution Master</label>
+                            <label class="form-label">Statutory-Institution Master</label>
                             <input type="text" formControlName="statutoryInstituteName" class="form-control"
-                              disabled=true name="statutoryInstituteName">
+                              autocomplete="off" disabled=true name="statutoryInstituteName">
                           </div>
 
 
@@ -46,13 +48,14 @@
                           <div class="col-sm-3">
                             <label class="form-label">Compliance Head Name</label>
                             <input type="text" formControlName="complianceHeadName" class="form-control"
-                              name="complianceHeadName">
+                              autocomplete="off" name="complianceHeadName">
                           </div>
 
 
                           <div class="col-sm-3">
                             <label class="form-label">Compliance Short Name</label>
-                            <input type="text" formControlName="shortName" class="form-control" name="shortName">
+                            <input type="text" formControlName="shortName" class="form-control" name="shortName"
+                              autocomplete="off">
                           </div>
                         </div>
 
@@ -61,7 +64,7 @@
 
                           <div class="col-sm-3">
                             <label class="form-label">Account No</label>
-                            <input type="text" formControlName="accountNumber" class="form-control"
+                            <input type="text" formControlName="accountNumber" class="form-control" autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('accountNumber').status == 'INVALID'}"
                               name="accountNumber" placeholder="Enter Account No">
                           </div>
@@ -69,6 +72,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Registration No</label>
                             <input type="text" formControlName="registrationNumber" class="form-control"
+                              autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('registrationNumber').status == 'INVALID'}"
                               name="registrationNumber" placeholder="Enter Registration Number">
                           </div>
@@ -78,6 +82,7 @@
                             <label class="form-label">Company Name</label>
                             <select name="groupCompanyId" id="groupCompanyId" class="form-control"
                               formControlName="groupCompanyId">
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of companyIdList" [value]="issuedBy.id">
                                 {{issuedBy.itemName}}
                               </option>
@@ -85,7 +90,7 @@
                           </div>
 
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment</label>
 
                             <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect
@@ -97,6 +102,21 @@
                               formControlName="establishmentMasterId" [disabled]=isEditableEstablismentMasterId>
                             </ng-multiselect-dropdown>
 
+                          </div> -->
+
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Establishment</label>
+                            <select name="Establishment" id="Establishment" class="form-control"
+                              formControlName="establishmentMasterId" [(ngModel)]="selectedEstablishmentMasterId"
+                              [ngClass]="{'is-invalid' : form.get('establishmentMasterId').status == 'INVALID'}"
+                              (change)='onSelectEstablishment($event.target.value)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of dropdownList" [value]="issuedBy.establishmentMasterId"
+                                [disabled]=isEditableEstablismentMasterId>
+                                {{issuedBy.establishmentCode}}
+                              </option>
+                            </select>
                           </div>
 
                         </div>
@@ -127,22 +147,31 @@
                           </div>
 
                           <div class="col-sm-3">
-                            <label class="form-label">User Name to access government website </label>
+                            <label class="form-label">User Name to access Gov. website </label>
                             <input type="text" formControlName="userNameForWebsite" class="form-control"
-                              name="userNameForWebsite" placeholder="Enter User Name">
+                              autocomplete="off" name="userNameForWebsite" placeholder="Enter User Name">
                           </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">administratedBy</label>
+                            <input type="text" formControlName="administratedBy" class="form-control" autocomplete="off"
+                              [ngClass]="{'is-invalid' : form.get('administratedBy').status == 'INVALID'}"
+                              name="administratedBy" placeholder="administratedBy">
+                          </div>
+
+
 
                         </div>
 
-                        <div class="row pull-right">
-                          <div class="col-sm-12 pull-right">
-                            <div *ngIf="isActivateButton ==0">
+                        <!-- <div class="row mt-20 pull-right">
+                          <div class="col-sm-12 pull-right"> -->
+                        <!-- <div *ngIf="isActivateButton ==0">
                               <button type="button"
                                 class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                 tooltip="Delete" (click)="activateComplianceMaster()"><b><i
                                     class="fa fa-times-circle"></i></b> Activate Record</button>
-                            </div>
-                            <div *ngIf="isGlobalView == false && isEditMode == true">
+                            </div> -->
+                        <!-- <div *ngIf="isGlobalView == false && isEditMode == true && isActivateButton!==0">
                               <button type="button"
                                 class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                                 tooltip="Delete" (click)="DeleteComplianceMaster()"><b><i
@@ -150,12 +179,11 @@
 
                               <button type="submit"
                                 class="pull-right custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                                tooltip="Update" (click)="UpdateComplianceMaster()"><b><i
-                                    class="fa fa-floppy-o"></i></b>
+                                tooltip="Update" (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                                 Update</button>
-                            </div>
-                          </div>
-                        </div>
+                            </div> -->
+                        <!-- </div>
+                        </div> -->
 
                       </fieldset>
 
@@ -168,7 +196,6 @@
                   <div class="row" formArrayName="pfFormArray">
                     <div class="col-md-12" *ngFor="let item of pfArray.controls; index as i">
                       <fieldset [formGroupName]="i">
-                        <legend>Provident Fund (PF) Details</legend>
                         <div class="row">
 
                           <!-- <div class="col-sm-3">
@@ -177,7 +204,7 @@
                               name="establishmentName" [disabled]=true>
                           </div> -->
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
@@ -186,13 +213,14 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">Status</label>
                             <select class="form-control" formControlName="pfStatus"
                               [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('pfStatus').status == 'INVALID'}"
                               (change)='onSelectPfStatus($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of pfStatusList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -291,6 +319,7 @@
                             <label class="form-label">Employee Contribution</label>
                             <select class="form-control" formControlName='employeeContribution'
                               (change)="onChaneEmployeeContribution($event,i)">
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of ContributionMethodChoiceList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -340,6 +369,7 @@
                             <label class="form-label">Company Contribution</label>
                             <select name="companyContribution" class="form-control"
                               formControlName="companyContribution">
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of ContributionMethodChoiceList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -386,25 +416,182 @@
 
 
                         </div>
-                        <div class="row pull-right" *ngIf="isGlobalView ==false">
-                          <div class="col-sm-12 pull-right">
-                            <button type="submit" id="submitbutton"
-                              onclick="document.getElementById('submitbutton').disabled = true;document.getElementById('submitbutton').style.opacity='0.5';"
-                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('pfFormArray')['controls'][i].invalid,
-                            'btn-bg-green': !form.get('pfFormArray')['controls'][i].invalid}"
-                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                              [disabled]="form.get('pfFormArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdatePf(i)"><b><i class="fa fa-floppy-o"></i></b>
-                              Update</button>
 
-                            <button type="button"
-                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                              tooltip="Delete" (click)="DeletePf(i)"><b><i class="fa fa-times-circle"></i></b>
-                              Delete</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="row mt-20">
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Special Rate Applicable</label>
+                            <select class="form-control" formControlName="specialRateApplicableEMPCount"
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,1)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of employeeSpecialRateApplicableList"
+                                [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Special Rate</label>
+                            <input type="text" formControlName="specialRateEMPCountPercent" class="form-control"
+                              name="specialRateEMPCountPercent" autocomplete="off"
+                              placeholder="Enter Employee Special Rate">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Special Rate Applicable</label>
+                            <select class="form-control" formControlName="specialRateApplicableCompCount"
+                              (change)='onSelectCompanySpecialRateApplicable($event.target.value,1)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of companySpecialRateApplicableList"
+                                [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Special Rate</label>
+                            <input type="text" formControlName="specialRateCompCountPercent" class="form-control"
+                              name="specialRateCompCountPercent" autocomplete="off"
+                              placeholder="Enter companyToDate Special Rate">
+                          </div>
+
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label class="form-label">Industry Type</label>
+                            <select class="form-control" formControlName="industryType"
+                              (change)='onSelectPfStatus($event.target.value)'>
+                              <!-- <option selected value=''>Select </option> -->
+                              <option *ngFor="let issuedBy of industryTypeList" [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
                           </div>
                         </div>
+
+                        <div class="col-md-12">
+                          <fieldset>
+
+                            <legend>Wages Celling Details</legend>
+                            <div class="row">
+                              <div class="col-sm-3">
+                                <label class="form-label">PF Basic Below Wage Celling</label>
+                                <select class="form-control" formControlName="basicDABelowWageCelling"
+                                  (change)='onSelectPfStatus($event.target.value)'>
+                                  <option selected value=''>Select </option>
+                                  <option *ngFor="let issuedBy of basicDABelowWageCellingList"
+                                    [value]="issuedBy.itemName">
+                                    {{issuedBy.itemName}}
+                                  </option>
+                                </select>
+                              </div>
+
+                              <div class="col-sm-3">
+                                <label class="form-label">PF Basic Above Wage Celling</label>
+                                <select class="form-control" formControlName="basicDAAboveWageCelling"
+                                  (change)='onSelectPfStatus($event.target.value)'>
+                                  <option selected value=''>Select </option>
+                                  <option *ngFor="let issuedBy of basicDAAboveWageCellingList"
+                                    [value]="issuedBy.itemName">
+                                    {{issuedBy.itemName}}
+                                  </option>
+                                </select>
+                              </div>
+
+
+
+
+
+
+                            </div>
+                            <div class="row pull-right" *ngIf="isGlobalView ==false  && isActivateButton!==0">
+                              <div class="col-sm-12 pull-right">
+                                <button type="submit" id="submitbutton"
+                                  onclick="document.getElementById('submitbutton').disabled = true;document.getElementById('submitbutton').style.opacity='0.5';"
+                                  [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('pfFormArray')['controls'][i].invalid,
+                                                                                        'btn-bg-green': !form.get('pfFormArray')['controls'][i].invalid}"
+                                  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                  [disabled]="form.get('pfFormArray')['controls'][i].invalid" tooltip="Update"
+                                  (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                                  Update</button>
+
+                                <button type="button"
+                                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                  tooltip="Delete" (click)="DeletePf(i)"><b><i class="fa fa-times-circle"></i></b>
+                                  Delete</button>
+
+                                <button type="button"
+                                  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                  tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                                  Cancel</button>
+                              </div>
+                            </div>
+                          </fieldset>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                       </fieldset>
+
+
+
                     </div>
+
+
+
+
+
+
+
                   </div>
 
 
@@ -417,7 +604,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">EPS</label>
                             <input type="text" formControlName="eps1" class="form-control" name="eps1"
-                              [ngClass]="{'is-invalid' : form.get('eps1').status == 'INVALID'}"
+                              autocomplete="off" [ngClass]="{'is-invalid' : form.get('eps1').status == 'INVALID'}"
                               placeholder="Enter EPS Status">
                           </div>
 
@@ -456,7 +643,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">ESI</label>
                             <input type="text" formControlName="esic1" class="form-control" name="esic1"
-                              [ngClass]="{'is-invalid' : form.get('esic1').status == 'INVALID'}"
+                              autocomplete="off" [ngClass]="{'is-invalid' : form.get('esic1').status == 'INVALID'}"
                               placeholder="Enter ESI">
                           </div>
                           <!-- <div class="col-sm-3">
@@ -508,6 +695,7 @@
                             <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
                               [ngClass]="{'is-invalid' : form.get('ptState').status == 'INVALID'}"
                               (change)='onSelectPtState($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let state of states" [value]="state">
                                 {{state}}
                               </option>
@@ -519,6 +707,7 @@
                             <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
                               [ngClass]="{'is-invalid' : form.get('ptCity').status == 'INVALID'}"
                               (change)='onSelectPtCity($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of cityList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -541,6 +730,7 @@
                             <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
                               [ngClass]="{'is-invalid' : form.get('lwfState').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of states" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -559,20 +749,20 @@
 
                           <div class="col-sm-3">
                             <label class="form-label">TAN</label>
-                            <input type="text" formControlName="tan" class="form-control" name="tan"
+                            <input type="text" formControlName="tan" class="form-control" name="tan" autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('tan').status == 'INVALID'}" placeholder="Enter TAN">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">TDS Circle</label>
                             <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
-                              [ngClass]="{'is-invalid' : form.get('tdsCircle').status == 'INVALID'}"
+                              autocomplete="off" [ngClass]="{'is-invalid' : form.get('tdsCircle').status == 'INVALID'}"
                               placeholder="Enter TDS Circle">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">Deductor Status</label>
-                            <input type="text" formControlName="deductorStatus" class="form-control"
+                            <input type="text" formControlName="deductorStatus" class="form-control" autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('deductorStatus').status == 'INVALID'}"
                               name="deductorStatus" placeholder="Enter Deductor Status">
                           </div>
@@ -626,7 +816,7 @@
                   <div class="row" *ngIf="isPfNew">
                     <div class="col-md-12">
                       <fieldset>
-                        <legend>Provident Fund (PF) Details</legend>
+                        <legend>Provident Fund (PF) Details 1</legend>
                         <div class="row">
 
                           <div class="col-sm-3">
@@ -634,6 +824,7 @@
                             <select class="form-control" formControlName="pfStatus"
                               [ngClass]="{'is-invalid' : form.get('pfStatus').status == 'INVALID'}"
                               (change)='onSelectPfStatus($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of pfStatusList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -735,6 +926,7 @@
                             <label class="form-label">Employee Contribution</label>
                             <select class="form-control" formControlName="employeeContribution"
                               (change)="onChaneEmployeeContribution($event,-1)">
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of ContributionMethodChoiceList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -787,6 +979,7 @@
                             <label class="form-label">Company Contribution</label>
                             <select name="companyContribution" class="form-control"
                               formControlName="companyContribution">
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of ContributionMethodChoiceList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -830,9 +1023,94 @@
                           </div>
 
                         </div>
+
+
+                        <div class="row mt-20">
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Special Rate Applicable</label>
+                            <select class="form-control" formControlName="specialRateApplicableEMPCount"
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of employeeSpecialRateApplicableList"
+                                [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Employee Special Rate</label>
+                            <input type="text" formControlName="specialRateEMPCountPercent" class="form-control"
+                              name="specialRateEMPCountPercent" autocomplete="off"
+                              placeholder="Enter Employee Special Rate">
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Special Rate Applicable</label>
+                            <select class="form-control" formControlName="specialRateApplicableCompCount"
+                              (change)='onSelectCompanySpecialRateApplicable($event.target.value,0)'>
+                              <option selected value=''>Select </option>
+                              <option *ngFor="let issuedBy of companySpecialRateApplicableList"
+                                [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <label class="form-label">Company Special Rate</label>
+                            <input type="text" formControlName="specialRateCompCountPercent" class="form-control"
+                              name="specialRateCompCountPercent" autocomplete="off"
+                              placeholder="Enter Company Special Rate">
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <label class="form-label">Industry Type</label>
+                            <select class="form-control" formControlName="industryType"
+                              (change)='onSelectEmployeeSpecialRateApplicable($event.target.value,0)'>
+                              <!-- <option selected value=''>Select </option> -->
+                              <option *ngFor="let issuedBy of industryTypeList" [value]="issuedBy.itemName">
+                                {{issuedBy.itemName}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
                       </fieldset>
                     </div>
                   </div>
+
+                  <div class="col-md-12" *ngIf="isPfNew">
+                    <fieldset>
+
+                      <legend>Wages Celling Details</legend>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label class="form-label">PF Basic Below Wage Celling</label>
+                          <select class="form-control" formControlName="basicDABelowWageCelling"
+                            (change)='onSelectPfStatus($event.target.value)'>
+                            <option selected value=''>Select </option>
+                            <option *ngFor="let issuedBy of basicDABelowWageCellingList" [value]="issuedBy.itemName">
+                              {{issuedBy.itemName}}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <label class="form-label">PF Basic Above Wage Celling</label>
+                          <select class="form-control" formControlName="basicDAAboveWageCelling"
+                            (change)='onSelectPfStatus($event.target.value)'>
+                            <option selected value=''>Select </option>
+                            <option *ngFor="let issuedBy of basicDAAboveWageCellingList" [value]="issuedBy.itemName">
+                              {{issuedBy.itemName}}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+
 
                   <div class="row" *ngIf="isSa">
                     <div class="col-md-12">
@@ -870,6 +1148,30 @@
                           </div>
 
                         </div>
+                        <div class="row pull-right mt-20" *ngIf="isGlobalView ==false">
+                          <div class="col-sm-12 pull-right">
+                            <button type="submit" id="submitbuttonSa"
+                              onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
+                              [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('saArray')['controls'][i].invalid,
+                                                      'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
+                              (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              Update</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Delete" (click)="DeleteSa(i)"><b><i class="fa fa-times-circle"></i></b>
+                              Delete</button>
+
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+                          </div>
+                        </div>
                       </fieldset>
                     </div>
                   </div>
@@ -880,7 +1182,7 @@
                         <legend>EMPLOYEE PENSION SCHEME (EPS) {{isGlobalView}}</legend>
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
@@ -889,11 +1191,12 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">EPS</label>
                             <input type="text" formControlName="eps1" class="form-control" name="eps1"
+                              autocomplete="off"
                               [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1').status == 'INVALID'}"
                               placeholder="Enter EPS Status">
                           </div>
@@ -929,7 +1232,7 @@
                             'btn-bg-green': !form.get('epsArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('epsArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateEps(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -937,6 +1240,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteEps(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -953,7 +1261,7 @@
 
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
@@ -962,10 +1270,11 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
                           <div class="col-sm-3">
                             <label class="form-label">ESI</label>
                             <input type="text" formControlName="esic1" class="form-control" name="esic1"
+                              autocomplete="off"
                               [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1').status == 'INVALID'}"
                               placeholder="Enter ESI">
                           </div>
@@ -1012,13 +1321,20 @@
                             'btn-bg-green': !form.get('esiArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('esiArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateEsi(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
                             <button type="button"
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteEsi(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
+
                           </div>
                         </div>
 
@@ -1035,7 +1351,7 @@
                         <legend>PROFESSIONAL TAX(PT)</legend>
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
@@ -1044,13 +1360,14 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">State</label>
                             <select name="ptState" id="ptState" class="form-control" formControlName="ptState"
                               [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptState').status == 'INVALID'}"
                               (change)='onSelectPtState($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let state of states" [value]="state">
                                 {{state}}
                               </option>
@@ -1062,6 +1379,7 @@
                             <select name="ptCity" id="ptCity" class="form-control" formControlName="ptCity"
                               [ngClass]="{'is-invalid' :form.get('ptArray')['controls'][i].get('ptCity').status == 'INVALID'}"
                               (change)='onSelectPtCity($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of cityList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -1077,7 +1395,7 @@
                             'btn-bg-green': !form.get('ptArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('ptArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdatePt(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1085,6 +1403,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeletePt(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1099,7 +1422,7 @@
                         <legend>LABOUR WELFARE FUND (LWF)</legend>
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
@@ -1108,7 +1431,7 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
 
                           <div class="col-sm-3">
@@ -1116,6 +1439,7 @@
                             <select name="lwfState" id="lwfState" class="form-control" formControlName="lwfState"
                               [ngClass]="{'is-invalid' :form.get('lwfArray')['controls'][i].get('lwfState').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of states" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -1131,7 +1455,7 @@
                             'btn-bg-green': !form.get('lwfArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('lwfArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateLwf(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1139,6 +1463,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteLwf(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1154,7 +1483,7 @@
                         <legend>TAX DEDUCTED AT SOURCE (TDS)</legend>
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               (change)='onSelectEstablishmentName($event.target.value,i)'>
@@ -1163,11 +1492,11 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">TAN</label>
-                            <input type="text" formControlName="tan" class="form-control" name="tan"
+                            <input type="text" formControlName="tan" class="form-control" name="tan" autocomplete="off"
                               [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tan').status == 'INVALID'}"
                               placeholder="Enter TAN">
                           </div>
@@ -1175,13 +1504,14 @@
                           <div class="col-sm-3">
                             <label class="form-label">TDS Circle</label>
                             <input type="text" formControlName="tdsCircle" class="form-control" name="tdsCircle"
+                              autocomplete="off"
                               [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('tdsCircle').status == 'INVALID'}"
                               placeholder="Enter TDS Circle">
                           </div>
 
                           <div class="col-sm-3">
                             <label class="form-label">Deductor Status</label>
-                            <input type="text" formControlName="deductorStatus" class="form-control"
+                            <input type="text" formControlName="deductorStatus" class="form-control" autocomplete="off"
                               [ngClass]="{'is-invalid' :form.get('tdsArray')['controls'][i].get('deductorStatus').status == 'INVALID'}"
                               name="deductorStatus" placeholder="Enter Deductor Status">
                           </div>
@@ -1195,7 +1525,7 @@
                             'btn-bg-green': !form.get('tdsArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('tdsArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateTds(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1203,6 +1533,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteTds(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1217,7 +1552,7 @@
                         <legend>Gratuity FORM ARRAY</legend>
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               [ngClass]="{'is-invalid' :form.get('gratuityArray')['controls'][i].establishmentName == 'INVALID'}"
@@ -1227,7 +1562,7 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
 
                           <div class="col-sm-3">
@@ -1265,7 +1600,7 @@
                             'btn-bg-green': !form.get('gratuityArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('gratuityArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateGratuity(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1273,6 +1608,11 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteGratuity(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
                           </div>
                         </div>
 
@@ -1286,7 +1626,7 @@
                         <legend>SUPER ANNUATION (SA)</legend>
                         <div class="row">
 
-                          <div class="col-sm-3">
+                          <!-- <div class="col-sm-3">
                             <label class="form-label">Establishment Name</label>
                             <select class="form-control" formControlName="establishmentName"
                               [ngClass]="{'is-invalid' :form.get('saArray')['controls'][i].establishmentName == 'INVALID'}"
@@ -1296,7 +1636,7 @@
                                 {{issuedBy.establishmentCode}}
                               </option>
                             </select>
-                          </div>
+                          </div> -->
 
                           <div class="col-sm-3">
                             <label class="form-label">Max Percentage (%)</label>
@@ -1334,7 +1674,7 @@
                             'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
-                              (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
+                              (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                               Update</button>
 
 
@@ -1342,6 +1682,12 @@
                               class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
                               tooltip="Delete" (click)="DeleteSa(i)"><b><i class="fa fa-times-circle"></i></b>
                               Delete</button>
+
+                            <button type="button"
+                              class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                              tooltip="Cancel" (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                              Cancel</button>
+
                           </div>
                         </div>
 
@@ -1379,12 +1725,48 @@
                           Cancel</button>
                       </ng-container>
                     </div>
-                    <div class="float-right mb-15" *ngIf="isEditMode">
+
+
+                    <div class="float-right mb-15" *ngIf="isView == true ">
+                      <!-- <button type="submit" id="submitbuttonSa"
+                        onclick="document.getElementById('submitbuttonSa').disabled = true;document.getElementById('submitbuttonSa').style.opacity='0.5';"
+                        [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('saArray')['controls'][i].invalid,
+                                                                            'btn-bg-green': !form.get('saArray')['controls'][i].invalid}"
+                        class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                        [disabled]="form.get('saArray')['controls'][i].invalid" tooltip="Update"
+                        (click)="UpdateSa(i)"><b><i class="fa fa-floppy-o"></i></b>
+                        Update</button> -->
+                      <!-- <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Delete"
+                        (click)="deleteAll()"><b><i class="fa fa-times-circle"></i></b>
+                        Delete</button> -->
+
+
+                      <span *ngIf="isActivateButton ==0">
+                        <button type="button"
+                          class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                          tooltip="Delete" (click)="activateComplianceMaster()"><b><i
+                              class="fa fa-times-circle"></i></b>
+                          Activate Record</button>
+                      </span>
+
                       <button type="button"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
                         (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
                         Cancel</button>
+
+
                     </div>
+
+
+
+
+                    <!-- <div class="float-right mb-15" *ngIf="isEditMode">
+                      <button type="button"
+                        class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" tooltip="Cancel"
+                        (click)="cancelView()"><b><i class="fa fa-times-circle"></i></b>
+                        Cancel</button>
+                    </div> -->
                   </div> <!-- <end of div col-6 -->
 
 
@@ -1409,7 +1791,7 @@
                       <tr>
                         <th scope="col" class="wd-8">Sr. No.</th>
                         <th scope="col" class="wd-15">Compliance Name</th>
-                        <th scope="col" class="wd-15">Statuatory Institution Master</th>
+                        <th scope="col" class="wd-15">Statutory Institution Master</th>
                         <th scope="col" class="wd-10">Compliance Head Name</th>
                         <th scope="col" class="wd-10">Compliance Short Name</th>
                         <th scope="col" class="wd-12">Account No</th>
@@ -1421,7 +1803,7 @@
                     <tbody>
 
                       <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
-                        <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
+                        <td class="wd-10"><span tooltip="{{summary.complianceMasterId}}">{{summary.SrNo}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.complianceName}}">{{summary.complianceName}}</span>
                         </td>
@@ -1429,8 +1811,10 @@
                             tooltip="{{summary.statutoryInstituteName}}">{{summary.statutoryInstituteName}}</span>
                         </td>
                         <td class="wd-10"><span
-                            tooltip="{{summary.filter.complianceDetailObject.complianceHeadName}}">{{summary.filter.complianceDetailObject.complianceHeadName}}</span>
+                            tooltip="{{summary.complianceHeadName}}">{{summary.complianceHeadName}}</span>
                         </td>
+                        <!-- <td class="wd-10"><span tooltip=""></span>
+                        </td> -->
                         <td class="wd-10"><span
                             tooltip="{{summary.complianceHeadShortName}}">{{summary.complianceHeadShortName}}</span>
                         </td>
@@ -1442,7 +1826,7 @@
                         </td>
 
                         <td class="wd-10"><span
-                            tooltip="{{summary.establishmentNames}}">{{summary.establishmentNames}}</span>
+                            tooltip="{{summary.establishmentCode}}">{{summary.establishmentCode}}</span>
                         </td>
 
                         <td class="wd-10">
@@ -1463,7 +1847,7 @@
                               (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
                               tooltip="Edit"></i> </span>
 
-                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
+                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3 ml-10"
                             (click)="viewMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames,summary.isActive)"
                             tooltip="View"></i>
                         </td>
@@ -1482,114 +1866,37 @@
           </div>
         </form>
 
-        <form class="card" role="complianceApplicationForm" [formGroup]="complianceApplicationForm"
-          #formDirective="ngForm" method="post" novalidate>
-          <div class="row">
-            <div class="col-md-12">
-              <fieldset>
-                <legend>Compliance Applicability</legend>
-                <div class="row mt-20">
-
-                  <div class="col-sm-3">
-                    <label class="form-label">Compliance Name</label>
-                    <select name="complianceName" id="complianceName" class="form-control"
-                      [ngClass]="{'is-invalid' : complianceApplicationForm.get('complianceName').status == 'INVALID'}"
-                      formControlName="complianceName">
-                      <option *ngFor="let issuedBy of summaryHtmlDataList" [value]="issuedBy.complianceMasterId">
-                        {{issuedBy.complianceName}}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="col-sm-3">
-                    <label class="form-label">Job Field</label>
-                    <select name="jobMasterType" id="jobMasterType" class="form-control" formControlName="jobMasterType"
-                      [ngClass]="{'is-invalid' : complianceApplicationForm.get('jobMasterType').status == 'INVALID'}"
-                      (change)='onSelectJobMasterType($event.target.value)'>
-                      <option *ngFor="let issuedBy of getAllOtherMasterDetailsResponse" [value]="issuedBy.itemName">
-                        {{issuedBy.itemName}}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="col-sm-3">
-                    <label class="form-label">Job Field Details</label>
-
-                    <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect style="font-size: small;"
-                      [settings]="dropdownSettingsAllOtherMasterMappingDetails"
-                      [data]="getFilteredRecordOfAllOtherMastersMappingDetailsList"
-                      (onSelect)="onItemSelectMappingDetails($event)"
-                      (onDeSelectAll)="onDeselectAllMappingDetails($event)"
-                      (onSelectAll)="onSelectAllMappingDetails($event)"
-                      (onDeSelect)="onItemDeSelectMappingDetails($event)" formControlName="allOtherMasterMappingDetails"
-                      [ngClass]="{'is-invalid' : complianceApplicationForm.get('allOtherMasterMappingDetails').status == 'INVALID'}">
-                    </ng-multiselect-dropdown>
-
-                  </div>
-                </div>
-                <div class="row mt-20">
-                  <div class="col-sm-12">
 
 
-                    <button type="submit" [disabled]="complianceApplicationForm.invalid"
-                      class="pull-right custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                      (click)="saveComplianceApplication()"
-                      [ngClass]="{'disabled-btn-bg-green' : complianceApplicationForm.invalid,'btn-bg-green': !complianceApplicationForm.invalid}"><b><i
-                          class="fa fa-floppy-o"></i></b> Save</button>
-                  </div>
-                </div>
 
-              </fieldset>
-            </div>
+        <ng-template #confirmdialog>
+          <div class="modal-header">
+            <h5 class="modal-title" id="UploadModalLabel">Confirmation Dialog</h5>
+            <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">×</span></button>
           </div>
-
-
-          <div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="mb-0">
-                  <h3 class="font-14 text-purple font-bold">Summary</h3>
-                </div>
-                <!-- <div class=""> -->
-                <div class="table-responsive Custom_Table">
-                  <table class="table table-striped table-hover table-bordered m-b-0">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col" class="wd-50">Sr. No.</th>
-                        <th scope="col" class="wd-50">Job Field</th>
-                        <th scope="col" class="wd-50">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      <tr *ngFor="let summary of summaryHtmlDataListComplianceApplicability; let i = index">
-                        <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
-                        </td>
-                        <td class="wd-10"><span tooltip="{{summary.jobMasterType}}">{{summary.jobMasterType}}</span>
-                        </td>
-
-
-                        <td class="wd-10">
-                          <!-- <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                            (click)="editMaster(i,summary.complianceMasterId ,summary.complianceHeadShortName,summary.establishmentNames)"
-                            tooltip="Edit"></i> -->
-
-                          <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3"
-                            (click)="viewMasterComplianceApplicability(i)" tooltip="View"></i>
-                        </td>
-                      </tr>
-                      <tr *ngIf="!summaryHtmlDataListComplianceApplicability?.length">
-                        <td colspan="10">
-                          <span class="font-14 font500 align-center text-red">No Data Available</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+          <div class="modal-body">
+            <div class="card mb-0">
+              <div class="card-body p-0 m-0">
+                <div class="row clearfix">
+                  <div class="col-md-12">
+                    <i class="fa fa-question-circle font-18 font700" aria-hidden="true"></i> &nbsp; &nbsp; <label
+                      class="font-14 mb-0 font700">Are You Sure do you want to delete Record.</label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </form>
+          <div class="modal-footer">
+            <button type="button" class="btn bg-color-green" (click)="modalRef.hide()" (click)="clickedOnYes()"> <i
+                class="fa fa-check" aria-hidden="true"></i> &nbsp; Yes</button>
+            <button type="button" class="btn bg-btn-red" (click)="modalRef.hide()"> <i class="fa fa-times"
+                aria-hidden="true"></i> &nbsp; No</button>
+          </div>
+        </ng-template>
+
+
+
       </div>
     </div>
   </div>

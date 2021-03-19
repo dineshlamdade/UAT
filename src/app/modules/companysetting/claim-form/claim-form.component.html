@@ -118,8 +118,8 @@
                                                                             (change)="mindatoryChangeEvt(i, $event.target.value,getfields.fieldName)">
                                                                           
                                                                             <option value="">Select</option>
-                                                                            <option value="true" selected="{{(getfields.mandatory && isView)?'Selected' : ''}}">Yes</option>
-                                                                            <option value="false" selected="{{(!getfields.mandatory && isView)?'Selected' : ''}}">No</option>
+                                                                            <option value="true" selected="{{(getfields.mandatory && (isView || isEdit))?'Selected' : ''}}">Yes</option>
+                                                                            <option value="false" selected="{{(!getfields.mandatory && (isView || isEdit))?'Selected' : ''}}">No</option>
 
                                                                         </select>
 

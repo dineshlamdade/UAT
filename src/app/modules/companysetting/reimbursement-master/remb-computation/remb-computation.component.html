@@ -1,4 +1,4 @@
-<form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+<form >
     <div class="tabview-myform mt-3">
         <div class="row">
             <div class="col-12">
@@ -11,16 +11,17 @@
                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                         <div class="form-group">
                                             <label class="form-label">Non Taxable Payment</label>
-                                            <select class="form-control"  >
+                                            <select class="form-control" [(ngModel)]="selectedvalue" [ngModelOptions]="{standalone: true}">
                                                 <option>Select</option>
-                                                <option value="">Till Annual</option>
-                                                <option value="">Till Accural</option>
-                                                <option value="">SDM</option>
+                                                <option value="Till Annual">Till Annual</option>
+                                                <option value="Till Annual">Till Annual</option>
+                                                <option value="SDM">SDM</option>
                        
                                             </select>
                                         </div>
+                                       
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12" *ngIf="selectedvalue == 'SDM'">
                                         <div class="form-group">
                                             <label class="form-label">Non Taxable SDM</label>
                                             <select class="form-control"  >
@@ -36,17 +37,15 @@
                                 <div class="row mb-2">
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
-                                            <label class="form-label">Taxable Payment</label>
-                                            <select class="form-control"  >
-                                                <option>Select</option>
-                                                <option value="">Till Annual</option>
-                                                <option value="">Till Accural</option>
-                                                <option value="">SDM</option>
-                       
-                                            </select>
+                                            <label class="form-label ">Taxable Payment</label>
+                                            <ng-multiselect-dropdown  [placeholder]="'None Selected'" 
+                                            [settings]="dropdownSettings" [data]="dropdownList"
+                                            (onSelect)="onItemSelect($event)"
+                                            (onSelectAll)="onSelectAll($event)" [(ngModel)]="selectedItems"  [ngModelOptions]="{standalone: true}">
+                                        </ng-multiselect-dropdown>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="selectedItems == 'Intermediary'">
                                         <div class="form-group">
                                             <label class="form-label">Frequency </label>
                                             <select class="form-control"  >
@@ -82,16 +81,16 @@
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label class="form-label">Lapse - Accrued Ent. Payable</label>
-                                            <select class="form-control"  >
+                                            <select class="form-control" [(ngModel)]="selectedvalue2"  [ngModelOptions]="{standalone: true}">
                                                 <option>Select</option>
-                                                <option value="">Till Annual</option>
-                                                <option value="">Till Accural</option>
-                                                <option value="">SDM</option>
+                                                <option value="Till Annual">Till Annual</option>
+                                                <option value="Till Accural">Till Accural</option>
+                                                <option value="SDM">SDM</option>
                        
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="selectedvalue2 == 'SDM'">
                                         <div class="form-group">
                                             <label class="form-label">Frequency </label>
                                             <select class="form-control"  >
@@ -103,7 +102,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="selectedvalue2 == 'SDM'">
                                         <div class="form-group">
                                             <label class="form-label">Period Defination</label>
                                             <select class="form-control"  >
@@ -118,7 +117,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="selectedvalue2 == 'SDM'">
                                         <div class="form-group">
                                             <label class="form-label">No of Cycles after period end</label>
                                             <input type="text" class="form-control" placeholder="No of cycle" >
@@ -199,9 +198,22 @@
                             <div class="row mb-2">
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
-                                        <label class="form-label">Bill of last finacial year </label>
-                                          <input type="text" class="form-control" placeholder="Enter Days">  
+                                        <label class="form-label">Bill of last finacial year which can be claimed in next FY </label>
+                                        <div class="row mb-2">
+                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                <select class="form-control" id="" >
+                                                    <option>DD</option>
+                                                    <option value="">1</option>
+                                                </select>
                                     </div>
+                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                        <select class="form-control" id="" >
+                                            <option>MM</option>
+                                            <option value="">1</option>
+                                        </select>
+                            </div>
+                                    </div>
+                                </div>
                                 </div>
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">

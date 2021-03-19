@@ -188,6 +188,7 @@ export class ClaimFormComponent implements OnInit {
     this.claimService.getClaimTemplateList().subscribe((res) => {
       console.log(res);
       this.templateUserIdList = res.data.results;
+      console.log("191", this.templateUserIdList);
     })
   }
 

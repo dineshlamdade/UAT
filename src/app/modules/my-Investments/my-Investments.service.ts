@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class MyInvestmentsService {
-public apiUrl = environment.apiBaseUrl;
+public apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -581,5 +581,33 @@ public apiUrl = environment.apiBaseUrl;
 
       });
   }
+
+
+  //--------------------------------Housing Loan -------------------------------------------------------//
+  getCountryList() {
+
+    return this._HTTP.get(environment.baseUrl8082+ '/location-information/country/', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+  getEmployeeAddressList() : Observable<any>  {
+
+    return this._HTTP.get(environment.baseUrl8082+ '/employeeContact-information/1',)
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+  getAddressFromPIN(pinCode) :  Observable<any>  {
+
+    return this._HTTP.get(environment.baseUrl8082+ '/pincode-details-check/' + pinCode , { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
+
 
 }

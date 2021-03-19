@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, Pipe, PipeTransform } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { PreviousEmploymentInformation } from './../../dto-models/previous-employment-information.model';
+import { PreviousEmploymentInformation } from './previous-employment-information.model';
 // import * as wjcGrid from '@grapecity/wijmo.grid';
 // import * as wjcCore from '@grapecity/wijmo';
 // import * as wjcInput from '@grapecity/wijmo.input';
 import { DatePipe } from '@angular/common';
 import { Subscribable, Subscription } from 'rxjs';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
-import { PreviousEmploymentInformationService } from './../../employee-master-services/previous-employment-information/previous-employment-information.service';
+import { PreviousEmploymentInformationService } from './previous-employment-information.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from './../../shared modals/confirmation-modal/confirmation-modal.component';
 import Swal from 'sweetalert2';
@@ -65,7 +65,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
   CTCANNUM: any;
   public today = new Date();
   viewEmploymentInfoForm: boolean = false;
-  JoiningDate: any;
+  validationDate: any;
   saveNextBoolean: boolean = false
 
 
@@ -107,7 +107,14 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     })
 
     const JoiningDate = localStorage.getItem('joiningDate');
-    this.JoiningDate = new Date(JoiningDate)
+    const ReJoiningDate = localStorage.getItem('rejoiningDate');
+
+    if(ReJoiningDate){
+      this.validationDate = new Date(ReJoiningDate)
+    } else{
+      this.validationDate = new Date(JoiningDate)
+
+    }
     // this.initiatePreviousEmploymentInfoForm = this.EventEmitterService.setPreviousEmploymentInfoInitiate().subscribe(res => {
     // })
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeletePreviousEmpForm().subscribe(res => {
@@ -129,43 +136,6 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     });
   }
 
-  // previousEmploymentInfoSubmit() {
-
-  //   this.summaryGridData.forEach(data => {
-  //     data.employeeMasterId = this.employeeMasterId;
-
-  //     if (data.employeePreviousEmploymentId) {
-  //       this.PreviousEmpInformationService.putPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-
-  //         // this.previousSmmaryGridData = res.data.results[0];
-  //         this.getPreviousEmployees();
-
-  //         // if (this.summaryGridData.length > 0) {
-  //         //   this.EmptyGridTrue = true;
-  //         // }
-  //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-
-  //       }, (error: any) => {
-  //         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-  //         // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
-  //       })
-  //     } else {
-  //       this.PreviousEmpInformationService.postPreviousEmpInfoForm(this.summaryGridData).subscribe(res => {
-
-  //         // this.previousSmmaryGridData = res.data.results[0];
-  //         this.getPreviousEmployees();
-  //         this.summaryGridData = [];
-  //         if (this.previousSmmaryGridData.length > 0) {
-  //           this.EmptyGridTrue = true;
-  //         }
-  //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-
-  //       }, (error: any) => {
-  //         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-  //       })
-  //     }
-  //   })
-  // }
   PreviousEmpSaveNextSubmit(previousEmploymentInformation) {
     this.saveNextBoolean = true;
 
@@ -284,7 +254,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
         this.previousSmmaryGridData.forEach(data => {
           return data.dateOfRelieving = this.datepipe.transform(data.dateOfRelieving, 'dd-MMM-yyyy');
         })
-
+        this.resetForm();
         if (this.summaryGridData.length > 0) {
           this.EmptyGridTrue = true;
         } else {
@@ -322,6 +292,7 @@ export class PreviousEmploymentInformationComponent implements OnInit {
     this.previousEmploymentInformation.remark = '';
     this.previousEmploymentInformation.previousJobProfile = '';
     this.previousEmploymentInformation.currency = '';
+    this.previousEmploymentInfoForm.get('currency').setValue('');
     this.previousEmploymentInformation.exemptGratuityReceived = '';
     this.previousEmploymentInformation.exemptLeaveSalaryReceived = '';
     this.previousEmploymentInformation.exemptVRSReceived = '';

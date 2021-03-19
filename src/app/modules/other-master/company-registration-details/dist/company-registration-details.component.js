@@ -18,7 +18,8 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
         this.datePipe = datePipe;
         this.alertService = alertService;
         this.summaryHtmlDataList = [];
-        this.issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
+        // issuedByList = ['Registrar of Companies', 'Commissioner of Charities'];
+        this.issuedByList = [];
         this.showButtonSaveAndReset = true;
         //isEditMode  : boolean = false;
         this.registrationNumberList = [];
@@ -30,23 +31,25 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
         this.companyMasterId = 0;
         this.isSaveAndReset = true;
         this.isEditMode = false;
+        this.invalidPAN = false;
+        this.today = new Date();
         this.form = this.formBuilder.group({
             companyRegistrationId: new forms_1.FormControl('', forms_1.Validators.required),
-            registrationNumber: new forms_1.FormControl(null, forms_1.Validators.required),
+            registrationNumber: new forms_1.FormControl(null),
             companyName: new forms_1.FormControl({ value: null, disabled: true }),
             companyGroupName: new forms_1.FormControl({ value: null, disabled: true }),
             dateOfIncorporation: new forms_1.FormControl(null, forms_1.Validators.required),
-            issuedBy: new forms_1.FormControl(null, forms_1.Validators.required),
-            msmeNumber: new forms_1.FormControl(null, forms_1.Validators.required),
-            pan: new forms_1.FormControl(null, forms_1.Validators.required),
-            udyogAadhaarNumber: new forms_1.FormControl(null, forms_1.Validators.required),
-            companyRegistrationId1: new forms_1.FormControl('')
+            issuedBy: new forms_1.FormControl('', forms_1.Validators.required),
+            msmeNumber: new forms_1.FormControl(null),
+            pan: new forms_1.FormControl('', [forms_1.Validators.pattern("^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$")]),
+            udyogAadhaarNumber: new forms_1.FormControl(null),
+            companyRegistrationId1: new forms_1.FormControl(null)
         });
     }
     CompanyRegistrationDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.companyRegistrationDetailsService.getAllActiveCompanyForRegistration().subscribe(function (res) {
-            console.log(res);
+            console.log('getAllActiveCompanyForRegistration', res);
             _this.tempObjForCompanyRegistration = res.data.results;
             res.data.results.forEach(function (element) {
                 var obj = {
@@ -55,6 +58,12 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                     companyMasterId: element.companyMasterId
                 };
                 _this.companyRegistrationIdList.push(obj);
+            });
+        });
+        this.companyRegistrationDetailsService.getCompanyRegistrationIssuedBy().subscribe(function (res) {
+            _this.issuedByList = [];
+            res.data.results.forEach(function (element) {
+                _this.issuedByList.push(element.dropdownValue);
             });
         });
         this.refreshHtmlTableData();
@@ -100,8 +109,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
             });
         }, function (error) {
             _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
-        }, function () {
-        });
+        }, function () { });
         //  this.companyRegistrationIdList.filter((v,i,a)=>a.findIndex(t=>t.companyMasterId === v.companyMasterId) == i);
     };
     CompanyRegistrationDetailsComponent.prototype.save = function () {
@@ -132,6 +140,10 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                     _this.form.reset();
                     _this.isEditMode = false;
                     _this.refreshHtmlTableData();
+                    _this.form.patchValue({
+                        companyRegistrationId: '',
+                        issuedBy: ''
+                    });
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
@@ -153,12 +165,17 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                 pan: this.form.get('pan').value,
                 udyogAadhaarNumber: this.form.get('udyogAadhaarNumber').value
             };
+            console.log(JSON.stringify(data));
             this.companyRegistrationDetailsService.postCompanyRegistrationDetails(data).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
                     _this.alertService.sweetalertMasterSuccess('Company Registration Details Saved Successfully.', '');
                     _this.form.reset();
                     _this.refreshHtmlTableData();
+                    _this.form.patchValue({
+                        companyRegistrationId: '',
+                        issuedBy: ''
+                    });
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
@@ -171,17 +188,28 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
     CompanyRegistrationDetailsComponent.prototype.onBsValueChangeDateOfIncorporation = function () { };
     CompanyRegistrationDetailsComponent.prototype.onSelectCompanyRegistrationId = function (evt) {
         var _this = this;
-        var temp = this.tempObjForCompanyRegistration.find(function (o) { return o.code == _this.form.get('companyRegistrationId').value; });
-        this.companyMasterId = temp.companyMasterId;
-        console.log(temp.companyMasterId);
-        this.companyMasterId = temp.companyMasterId;
-        this.form.patchValue({
-            companyName: temp.companyName,
-            companyGroupName: temp.companyGroupName
-        });
+        console.log(evt);
+        if (evt == '') {
+            this.form.patchValue({
+                companyName: '',
+                companyGroupName: '',
+                pan: ''
+            });
+        }
+        else {
+            var temp = this.tempObjForCompanyRegistration.find(function (o) { return o.code == _this.form.get('companyRegistrationId').value; });
+            this.companyMasterId = temp.companyMasterId;
+            console.log(temp.companyMasterId);
+            this.companyMasterId = temp.companyMasterId;
+            this.form.patchValue({
+                companyName: temp.companyName,
+                companyGroupName: temp.companyGroupName,
+                pan: ''
+            });
+        }
     };
-    CompanyRegistrationDetailsComponent.prototype.onSelectIssuedBy = function () { };
     CompanyRegistrationDetailsComponent.prototype.editMaster = function (i) {
+        window.scrollTo(0, 0);
         this.isEditMode = true;
         this.isSaveAndReset = false;
         this.showButtonSaveAndReset = true;
@@ -204,6 +232,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
         this.form.get('companyRegistrationId1').disable();
     };
     CompanyRegistrationDetailsComponent.prototype.viewMaster = function (i) {
+        window.scrollTo(0, 0);
         this.isSaveAndReset = false;
         this.isEditMode = true;
         this.showButtonSaveAndReset = false;
@@ -227,6 +256,29 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
         this.form.get('companyGroupName').disable();
         this.showButtonSaveAndReset = true;
         this.companyRegistrationId = 0; // for save it should be 0 and update it should have any integer value
+        this.form.patchValue({
+            companyRegistrationId: '',
+            issuedBy: ''
+        });
+    };
+    CompanyRegistrationDetailsComponent.prototype.onChangePAN = function (evt) {
+        var _this = this;
+        console.log(evt);
+        if (evt.length == 10) {
+            debugger;
+            console.log(this.form.get('companyRegistrationId').value);
+            console.log(this.tempObjForCompanyRegistration);
+            var index1 = this.tempObjForCompanyRegistration.findIndex(function (o) { return o.code == _this.form.get('companyRegistrationId').value; });
+            console.log(evt[3].toUpperCase());
+            console.log(this.tempObjForCompanyRegistration[index1].fourthCharacterOfPan);
+            if (evt[3] == this.tempObjForCompanyRegistration[index1].fourthCharacterOfPan) {
+                this.invalidPAN = false;
+            }
+            else {
+                this.invalidPAN = true;
+            }
+            // invalidPAN
+        }
     };
     CompanyRegistrationDetailsComponent = __decorate([
         core_1.Component({

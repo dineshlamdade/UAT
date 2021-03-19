@@ -10,7 +10,7 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class GgcService {
 
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.baseUrl8085;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -40,7 +40,7 @@ export class GgcService {
   }
 
   getTransactionByProofSubmissionId(proofSubmissionId: String) {
-    return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/' + proofSubmissionId)
+    return this._HTTP.get(this.apiUrl + 'donations80GGC-transaction/psid/{proofSubmissionId}?proofSubmissionId=' + proofSubmissionId)
     .pipe(map((res: any) => {
       return res;
     }));
