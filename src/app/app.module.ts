@@ -31,6 +31,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ProfileComponent } from './modules/profile/profile.component';
 import { ProfileModule } from './modules/profile/profile.module';
 import { QueryModule } from './modules/query/query.module';
+import { LoanModule } from './modules/loan/loan.module';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SettingsModule } from './modules/settings/settings.module';
 import { BnNgIdleService } from 'bn-ng-idle';
@@ -95,6 +96,7 @@ import { AccordionModule } from 'primeng/accordion';
     DashboardModule,
     PayrollModule,
     QueryModule,
+    LoanModule,
     /////////////////
     //  payrollModule,
     CompanySettingModule,

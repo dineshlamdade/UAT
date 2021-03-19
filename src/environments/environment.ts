@@ -12,6 +12,9 @@ export const environment = {
   apiBaseUrl: 'http://localhost:8085/hrms/v1/',
   baseUrl8086:  'http://localhost:8086/hrms/v1/',
   baseUrl8084:  'http://localhost:8084/hrms/v1/',
+  baseUrl8091:  'http://localhost:8091/hrms/v1/',
+
+
 };
 
 /*

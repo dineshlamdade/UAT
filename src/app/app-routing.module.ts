@@ -22,6 +22,14 @@ const routes: Routes = [
   { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
   { path: 'query', loadChildren: './modules/query/query.module#QueryModule' },
+  // { path: 'loan', loadChildren: './modules/loan/loan.module#LoanModule' },
+
+  {
+    path: 'loan',
+    loadChildren: () => import('./modules/loan/loan.module').then(m => m.LoanModule)
+  },
+
+
   { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },

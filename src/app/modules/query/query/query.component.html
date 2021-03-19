@@ -1,1 +1,189 @@
-<p>query works!</p>
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="queryForm" (ngSubmit)="queryFormSubmit()">
+                <fieldset>
+                  <legend>Stardard Quetion & Answer</legend>
+
+                  <div class="tabview-contents">
+                    <div class="row">
+                      <div class="col-sm-6 col-md-4">
+                        <label class="form-label">Code</label>
+                        <input
+                          type="text"
+                          formControlName="code"
+                          class="form-control"
+                          placeholder="Code" disabled
+                        />
+                      </div>
+                      <div class="col-sm-6 col-md-4">
+                        <label class="form-label">Description</label>
+                        <input
+                          type="text"
+                          formControlName="description"
+                          class="form-control"
+                          placeholder="Description"
+                        />
+                        <div *ngIf="f.description.touched && f.description.invalid" class="alert alert-danger">
+                          <div *ngIf="f.description.errors.required">Description is required.</div>
+                          <div *ngIf="f.description.errors.pattern">Enter only albhanumric character.</div>
+                        </div>
+
+                      </div>
+                      <div class="col-sm-6 col-md-4">
+                        <label class="form-label">Module Name</label>
+                        <select
+                          class="form-control custom-select"
+                          formControlName="moduleId"
+                          placeholder="Select"
+                        >
+                          <option [ngValue]="null" selected>Select</option>
+                          <option value="1">LMS</option>
+                          <option value="2">Registration</option>
+                          <option value="3">Loan</option>
+                          <option value="4">Reimbursement</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <fieldset>
+                    <legend>Languagewies - Quetion & Answer</legend>
+                    <fieldset>
+                      <legend>  </legend>
+                      <div class="row" cdkDropListGroup>
+                        <fieldset class="col-md-4">
+                          <legend>Keywords</legend>
+                          <select
+                            class="form-control custom-select"
+
+                            placeholder="Select"  >
+
+                            <option  [ngValue]="null" selected>Emplyee</option>
+                            <option >Employee Code</option>
+                            <option >Employee Name</option>
+                            <option>Employee Email</option>
+                            <option>Employee Phone Number</option>
+                            <option>Employee Gender</option>
+                            <option>Employee Gread</option>
+                          </select>
+                          <select
+                            class="form-control custom-select"
+                            >
+                            <option  [ngValue]="null" selected>Company</option>
+                          </select>
+                          <select
+                            class="form-control custom-select"
+                            >
+                            <option  [ngValue]="null" selected>Date</option>
+                          </select>
+                        </fieldset>
+
+                        &nbsp;
+
+                        <div class="col-md-7">
+                          <div class="col-md-12">
+                            <label class="form-label" style="color:darkmagenta;">Quetion</label>
+                            <label class="form-label">Subject</label>
+                            <input type="text"  class="form-control" placeholder="subject" formControlName="questionSubject" />
+                            <label class="form-label">Description</label>
+                            <ckeditor [editor]="Editor" data="hello" formControlName="questionDescription">
+                            </ckeditor>
+                          <!-- </div> -->
+                          </div>
+                          <br><br>
+                          <div class="col-md-12">
+                            <label class="form-label" style="color:darkmagenta;">Answer</label>
+                            <label class="form-label">Subject</label>
+                            <input
+                              type="text"
+                              formControlName="answerSubject"
+                              class="form-control" placeholder="Subject"
+                            />
+                            <label class="form-label">Description</label>
+                            <ckeditor [editor]="Editor" data="hello" formControlName="answerDescription">
+                            </ckeditor>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </fieldset>
+                  <div class="row" style="margin: 20px">
+                    <input type="checkbox" formControlName="active"  (change)="changeEvent($event)"/>&nbsp;
+                    <label class="form-label" style="margin-right: 70px;" >Active</label>
+
+                    <label class="form-label" >Remark</label>&nbsp;&nbsp;&nbsp;
+                    <textarea type="text" formControlName="remark" [disabled]="toogleBool"></textarea>
+                  </div>
+                </fieldset>
+                <div class="row" style="margin: 10px" >
+                  <button type="submit"  class="btn btn-danger">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i
+                    >&nbsp;&nbsp;Save</button
+                  >&nbsp;
+                  <button type="reset"  class="btn btn-dark" (click)="reset()">
+                    <i class="fa fa-refresh" aria-hidden="true"></i
+                    >&nbsp;&nbsp;Reset</button
+                  >&nbsp;
+                  <button type="button"  class="btn btn-dark" (click)="cancel()" >
+                    <i class="fa fa-times" aria-hidden="true"></i
+                    >&nbsp;&nbsp;Cancel</button
+                  >
+                  <br>
+                  <br>
+                </div>
+                <fieldset>
+                  <legend>Summary</legend>
+                  <div class="row mt-30">
+                    <div class="col-12 col-md-12 col-sm-12">
+                      <div class="table-responsive Custom_Table">
+                        <table
+                          class="table table-striped table-bordered table-hover m-b-0"
+                        >
+                          <thead class="thead-dark">
+                            <tr >
+                              <th scope="col" class="wd-9">Sr No.</th>
+                              <th scope="col" class="wd-14">Module Name</th>
+                              <th scope="col" class="wd-14">Code</th>
+                              <th scope="col" class="wd-20">Description</th>
+                              <th scope="col" class="wd-19">Status</th>
+                              <th scope="col" class="wd-14">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let query of queryListData; let i = index;">
+                              <td class="wd-9">{{i+1}}</td>
+                              <td class="wd-14">{{query.moduleId}}</td>
+                              <td class="wd-14">{{query.code}}</td>
+                              <td class="wd-20">{{query.description}}</td>
+                              <td class="wd-19">{{query.active}}</td>
+                              <td>
+                                <i class="fa fa-eye" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                >&nbsp;
+                                <i class="fa fa-pencil" aria-hidden="true" (click)="editQuery(query)"></i
+                                >&nbsp;
+                              </td>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
+
