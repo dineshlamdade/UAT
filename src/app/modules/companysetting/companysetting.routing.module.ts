@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
+import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
 
 
 const routes: Routes = [
@@ -54,11 +55,11 @@ const routes: Routes = [
             data: { title: ':: Epic :: Company Settings' }
           },
 
-          // {
-          //   path:   'Financial-Master',
-          //   component:  FinancialMasterComponent,
-          //   data: { title: '::Financial-Master' },
-          // },
+          {
+            path: 'roleprivilege',
+            component: RolePrivilegeComponent,
+            data: { title: ':: Epic :: Company Settings' }
+          },
 
     ],
 

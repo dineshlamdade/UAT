@@ -71,12 +71,10 @@
                             <div class="border-card p-2 mt_2">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label class="form-label mb-2">Currency</label>
-                                        <input type="text" class="form-control" disabled>
-                                    </div>
-                                    <div class="col-md-2">
                                         <label class="form-label mb-2"> Payroll Area - Frequency</label>
                                         <input type="text" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-md-1">
                                     </div>
                                     <div class="col-md-2 pl-0">
                                         <label class="form-label mb-2">Updation Field</label>
@@ -90,6 +88,8 @@
                                     <div class="col-md-2">
                                         <label class="form-label mb-2">Approval Status</label>
                                         <input type="text" class="form-control" disabled>
+                                    </div>
+                                    <div class="col-md-1">
                                     </div>
                                     <div class="col-md-3 ml-30">
                                         <div class="row">
@@ -124,21 +124,21 @@
                                         </th>
                                         <th rowspan="2">
                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                Head Type
-                                                <div class="Sort_Filter_Position">
-                                                    <p-sortIcon field="headtype"></p-sortIcon>
-                                                    <p-columnFilter field="headtype" display="menu" class="p-ml-auto"></p-columnFilter>
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th rowspan="2">
-                                            <div class="p-d-flex p-jc-between p-ai-center">
                                                 Head Description
                                                 <div class="Sort_Filter_Position">
                                                     <p-sortIcon field="headdesc"></p-sortIcon>
                                                     <p-columnFilter field="headdesc" display="menu" class="p-ml-auto">
 
                                                     </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                Nature
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="nature"></p-sortIcon>
+                                                    <p-columnFilter field="nature" display="menu" class="p-ml-auto"></p-columnFilter>
                                                 </div>
                                             </div>
                                         </th>
@@ -168,6 +168,17 @@
                                                 <div class="Sort_Filter_Position">
                                                     <p-sortIcon field="closingamt"></p-sortIcon>
                                                     <p-columnFilter field="closingamt" display="menu" class="p-ml-auto">
+
+                                                    </p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2" class="wd-5">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                                UOM
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="UOM"></p-sortIcon>
+                                                    <p-columnFilter field="UOM" display="menu" class="p-ml-auto">
 
                                                     </p-columnFilter>
                                                 </div>
@@ -211,7 +222,7 @@
                                                 Type
                                                 <div class="Sort_Filter_Position">
                                                     <p-sortIcon field="activity"></p-sortIcon>
-                                                    <p-columnFilter field="activity" display="menu" class="p-ml-auto">
+                                                    <p-columnFilter field="activity" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
 
                                                     </p-columnFilter>
                                                 </div>
@@ -233,7 +244,7 @@
                                                 To Date
                                                 <div class="Sort_Filter_Position">
                                                     <p-sortIcon field="ToDate"></p-sortIcon>
-                                                    <p-columnFilter field="ToDate" display="menu" class="p-ml-auto">
+                                                    <p-columnFilter field="ToDate" matchMode="between" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" class="p-ml-auto">
 
                                                     </p-columnFilter>
                                                 </div>
@@ -246,15 +257,22 @@
                                 <ng-template pTemplate="body" let-user1>
                                     <tr class="p-selectable-row">
                                         <td class="text-center">{{user1.srno}}</td>
-                                        <td class="bg-color-light_gray">
-                                            <label class="form-lable mb-0 text-link" (click)="ViewHistory(template)">{{user1.headtype}}</label>
-                                        </td>
                                         <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                        <td class="bg-color-light_gray"><input type="text" value={{user1.nature}} class="form-control" disabled></td>
                                         <td><input type="text" value={{user1.openingval}} class="form-control" disabled></td>
                                         <td><input type="text" value={{user1.chngamount}} class="form-control" disabled></td>
                                         <td><input type="text" value={{user1.closingamt}} class="form-control" disabled></td>
+                                        <td><input type="text" value={{user1.UOM}} class="form-control" disabled></td>
                                         <td><input type="text" value={{user1.onceevery}} class="form-control"></td>
-                                        <td><input type="text" value={{user1.Frequency}} class="form-control" disabled></td>
+                                        <td>
+                                            <select name="revision type" class="form-control custom-select">
+                                    <option value="-" selected>-</option>
+                                    <option value="MM"> MM </option>
+                                    <option value="QT"> QT</option>
+                                    <option value=" HY "> HY</option>
+                                    <option value=" YR "> YR</option>
+                                 </select>
+                                        </td>
                                         <td><input type="text" value={{user1.FromDate}} class="form-control" disabled></td>
                                         <td>
                                             <select name="revision type" class="form-control custom-select">
@@ -303,64 +321,3 @@
         </div>
     </div>
 </form>
-<ng-template #template>
-    <div class="modal-header">
-        <h5 class="modal-title" id="UploadModalLabel">History</h5>
-        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-         aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-        <div class="card">
-            <div class="card-body p-0 m-0">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="form-label">Head Name</label>
-                        <input type="text" class="form-control" disabled>
-                    </div>
-                </div>
-                <div class="row clearfix mt-10">
-                    <div class="col-md-12">
-                        <div class="table-responsive Custom_Table">
-                            <table class="table table-striped table-hover table-bordered m-b-0">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th class="wd-15 font700">From Date</th>
-                                        <th class="wd-15 font700">To Date</th>
-                                        <th class="wd-15 font700">Opening Value</th>
-                                        <th class="wd-15 font700">Change Value</th>
-                                        <th class="wd-10 font700">Change %</th>
-                                        <th class="wd-15 font700">Closing Value</th>
-                                        <th class="wd-15 font700">Unit of Measure</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>12-Apr-2018</td>
-                                        <td>12-Apr-2019</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>14-Mar-2018</td>
-                                        <td>14-Mar-2019</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                        <td>0.0</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()"><i class="fa fa-times"></i> &nbsp;Close</button>
-    </div>
-</ng-template>

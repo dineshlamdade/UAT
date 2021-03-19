@@ -1,12 +1,5 @@
-<!-- <app-leftmenu></app-leftmenu>
 
-<div class="page">
-    <app-header></app-header>
-    <div class="section-body mt-3">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12"> -->
-                    <form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
+<form class="card" role="form" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
       <div class="card">
        <div class="card-body">
         <div class="row">
@@ -26,7 +19,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">User Group</label>
-                            <select name="groupName" class="form-control custom-select" formControlName="groupName"
+                            <select name="groupName" class="form-control custom-select" formControlName="userGroupId"
                             >
                             <option *ngFor="let groupName of groupNameList"
                             [value]="groupName.value">

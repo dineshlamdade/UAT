@@ -165,13 +165,14 @@ export class GarnishmentMasterComponent implements OnInit {
     this.garnishmentService.getindianincometax().subscribe((res) => {
       console.log(res);
       const test1 = res;
-      test1.data.results.forEach((element) => {
-        const obj = {
-          label: element.description,
-          value: element.description,
-        };
-        this.incomeTexList.push(obj);
-      });
+      this.incomeTexList = test1.data.results
+      // test1.data.results.forEach((element) => {
+      //   const obj = {
+      //     label: element.description,
+      //     value: element.description,
+      //   };
+      //   this.incomeTexList.push(obj);
+      // });
     });
 
     //-----------------------Get  compliance  head  Name  API ------------------------------
@@ -190,27 +191,16 @@ export class GarnishmentMasterComponent implements OnInit {
     this.garnishmentService.getComplianceHeadNane().subscribe((res) => {
       this.tempObjForComplianceHeadMaster = res.data.results;
       console.log('getComplianceHeadNane:', this.tempObjForComplianceHeadMaster);
-      res.data.results.forEach((element) => {
-        const obj = {
-          label: element.complianceHeadName,
-          value: element.complianceHeadName,
-        };
-        this.complianceHeadNameList.push(obj);
-      });
+      // res.data.results.forEach((element) => {
+      //   const obj = {
+      //     label: element.complianceHeadName,
+      //     value: element.complianceHeadId,
+      //   };
+      //   this.complianceHeadNameList.push(obj);
+      // });
     });
 
-    //-----------------------Get Institution API api------------------------------
-    this.garnishmentService.getInstitutionMaster().subscribe((res) => {
-      this.tempObjForInstitutionMaster = res.data.results;
-      console.log('getInstitutionMaster:', this.tempObjForInstitutionMaster);
-      res.data.results.forEach((element) => {
-        // const obj = {
-        //   label: element.institutionName,
-        //   value: element.institutionName,
-        // };
-        // this.complianceInstitutionMasterDetails.push(obj);
-      });
-    });
+   
 
 
 
@@ -268,41 +258,41 @@ export class GarnishmentMasterComponent implements OnInit {
       this.masterGridDataList = res.data.results;
       res.data.results.forEach(element => {
 
-        const obj = {
-          SrNo: i++,
-          nameOfInstitution: element.nameOfInstitution,
-          complianceHeadName: element.complianceHeadName,
-          thirdPartyMasterId: element.thirdPartyMasterId,
-          description: element.description,
-          contactPerson: element.contactPerson,
-          contactNumber: element.contactNumber,
-          emailId: element.emailId,
-          address1: element.address1,
-          address2: element.address2,
-          address3: element.address3,
-          country: element.country,
-          pinCode: element.pinCode,
-          state: element.state,
-          city: element.city,
-          villege: element.villege,
-          pan: element.pan,
-          accountNoInPayeeBook: element.accountNoInPayeeBook,
-          standardName: element.standardName,
-          formula: element.formula,
-          sdm: element.sdm,
-          frequency: element.frequency,
-          investmentSection: element.investmentSection,
-          familyMember: element.familyMember,
-          documentId: element.documentId,
-          remark: element.remark,
-          isActive: element.isActive,
+        // const obj = {
+        //   SrNo: i++,
+        //   nameOfInstitution: element.nameOfInstitution,
+        //   complianceHeadName: element.complianceHeadName,
+        //   thirdPartyMasterId: element.thirdPartyMasterId,
+        //   description: element.description,
+        //   contactPerson: element.contactPerson,
+        //   contactNumber: element.contactNumber,
+        //   emailId: element.emailId,
+        //   address1: element.address1,
+        //   address2: element.address2,
+        //   address3: element.address3,
+        //   country: element.country,
+        //   pinCode: element.pinCode,
+        //   state: element.state,
+        //   city: element.city,
+        //   villege: element.villege,
+        //   pan: element.pan,
+        //   accountNoInPayeeBook: element.accountNoInPayeeBook,
+        //   standardName: element.standardName,
+        //   formula: element.formula,
+        //   sdm: element.sdm,
+        //   frequency: element.frequency,
+        //   investmentSection: element.investmentSection,
+        //   familyMember: element.familyMember,
+        //   documentId: element.documentId,
+        //   remark: element.remark,
+        //   isActive: element.isActive,
 
-        };
+        // };
         if (element.isActive == false) {
-          this.summaryHtmlDataList.push(obj);
+          this.summaryHtmlDataList.push(element);
         }
         var s = this.complianceInstitutionMasterDetails.findIndex(function (o) {
-          return o.thirdPartyMasterId === obj.thirdPartyMasterId;
+          return o.thirdPartyMasterId === element.thirdPartyMasterId;
         });
         if (s !== -1) {
           this.complianceInstitutionMasterDetails.splice(s, 1);
@@ -477,36 +467,50 @@ export class GarnishmentMasterComponent implements OnInit {
 
 onSelectHeadName(evt: any) {
   this.complianceInstitutionMasterDetails=[];
-    console.log(evt.target.value)
-    let temp2 = this.tempObjForComplianceHeadMaster.find
-      (o => o.complianceHeadName === evt.target.value);
-    console.log('temp2::', temp2);
 
-    let temp = this.tempObjForInstitutionMaster.find
-      (o => o.complianceHeadId === temp2.complianceHeadId);
-    console.log('temp::', temp);
-    const obj = {
-      label: temp.institutionName,
-      value: temp.institutionName,
-    };
-    this.complianceInstitutionMasterDetails.push(obj);
+  
+   //-----------------------Get Institution API api------------------------------
+   this.garnishmentService.getInstitutionMaster().subscribe((res) => {
+  
+    this.tempObjForInstitutionMaster = res.data.results;
+    // console.log('getInstitutionMaster:', this.tempObjForInstitutionMaster);
+    this.tempObjForInstitutionMaster.forEach(element => {
+      if(element.complianceHeadId == evt.target.value){
+        
+        const obj = {
+            label: element.institutionName,
+            value: element.institutionName,
+          };
+
+          this.complianceInstitutionMasterDetails.push(obj);
+
+          
+      }
+    });
+    if(this.complianceInstitutionMasterDetails.length == 1){
+    //  alert("here")
+    this.form.get('complianceHeadName').setValue(evt.target.value)
+    this.form.get('nameOfInstitution').setValue(this.complianceInstitutionMasterDetails[0].label)
+     this.onSelectThirdPartyMasterId(this.complianceInstitutionMasterDetails[0].label)
+    }else{
+      // debugger
+      // this.form.reset();
+      // console.log(JSON.stringify(this.form.value))
+      this.form.get('complianceHeadName').setValue(evt.target.value)
+    }
+  });
+
+  
+  
+    // console.log(evt.target.value)
+  
+
+    
 
    // this.complianceInstitutionMasterDetails.push(institutionName);
  
 
-    // this.form.get('nameOfInstitution').setValue(temp.institutionName);
-    this.form.patchValue({
-      address1: temp.address1,
-      address2: temp.address2,
-      city: temp.city,
-      country: temp.country,
-      emailId: temp.emailId,
-      pinCode: temp.pinCode,
-      state: temp.state,
-      contactNumber: temp.contactNumber,
-      villege: temp.village,
-      address3: temp.address3,
-    });
+   
   }
 
     // const toSelect = this.MasterHead.find(
@@ -530,23 +534,23 @@ onSelectHeadName(evt: any) {
 
 
   onSelectThirdPartyMasterId(evt: any) {
-    console.log('tempObjForInstitutionMaster', this.tempObjForInstitutionMaster);
-
-    // let temp = this.tempObjForInstitutionMaster.find
-    //   (o => o.institutionName == this.form.get('nameOfInstitution').value);
-    // console.log('temp::', temp);
-    // this.form.patchValue({
-    //   address1: temp.address1,
-    //   address2: temp.address2,
-    //   city: temp.city,
-    //   country: temp.country,
-    //   emailId: temp.emailId,
-    //   pinCode: temp.pinCode,
-    //   state: temp.state,
-    //   contactNumber: temp.contactNumber,
-    //   villege: temp.village,
-    //   address3: temp.address3,
-    // });
+    // console.log('tempObjForInstitutionMaster', this.tempObjForInstitutionMaster);
+// alert(this.form.get('nameOfInstitution').value)
+    let temp = this.tempObjForInstitutionMaster.find
+      (o => o.institutionName == this.form.get('nameOfInstitution').value);
+    console.log('temp::', temp);
+    this.form.patchValue({
+      address1: temp.address1,
+      address2: temp.address2,
+      city: temp.city,
+      country: temp.country,
+      emailId: temp.emailId,
+      pinCode: temp.pinCode,
+      state: temp.state,
+      contactNumber: temp.contactNumber,
+      villege: temp.village,
+      address3: temp.address3,
+    });
 
   }
 

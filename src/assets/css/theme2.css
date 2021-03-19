@@ -101,7 +101,7 @@ background: linear-gradient(-45deg, #6c7709, #818e0b)!important; */
 }
 
 .custom-switch-input:checked~.custom-switch-indicator {
-    background: #5a5278
+    background: #38b449
 }
 
 .selectgroup-input:checked+.selectgroup-button {
@@ -1016,6 +1016,14 @@ strong {
 
 .justify-content-spacearound {
     justify-content: space-around!important;
+}
+
+.justify-content-spacebetween {
+    justify-content: space-between!important;
+}
+
+.align-items-center {
+    align-items: center!important;
 }
 
 
@@ -2325,6 +2333,14 @@ border-right: 2px dotted green; */
     font-family: Montserrat, sans-serif!important;
 }
 
+.flex-directioncol {
+    flex-direction: column!important;
+}
+
+.mb_5 {
+    margin-bottom: 5px!important;
+}
+
 
 /* job master tab set */
 
@@ -2332,6 +2348,78 @@ border-right: 2px dotted green; */
 /*
 CSS for the main interaction
 */
+
+.tabset>input[type="radio"] {
+    position: absolute;
+    left: -200vw;
+}
+
+.tabset .tab-panel {
+    display: none;
+}
+
+.tabset>input:first-child:checked~.tab-panels>.tab-panel:first-child,
+.tabset>input:nth-child(3):checked~.tab-panels>.tab-panel:nth-child(2),
+.tabset>input:nth-child(5):checked~.tab-panels>.tab-panel:nth-child(3),
+.tabset>input:nth-child(7):checked~.tab-panels>.tab-panel:nth-child(4),
+.tabset>input:nth-child(9):checked~.tab-panels>.tab-panel:nth-child(5),
+.tabset>input:nth-child(11):checked~.tab-panels>.tab-panel:nth-child(6) {
+    display: block;
+}
+
+.tabset>label {
+    position: relative;
+    display: inline-block;
+    padding: 15px 15px 25px;
+    padding: 15px 25px 25px;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 0px;
+}
+
+.tabset>label::after {
+    content: "";
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    width: 40px;
+    height: 4px;
+    background: #8d8d8d;
+}
+
+.tabset>label:hover,
+.tabset>input:focus+label {
+    color: #713f93!important;
+}
+
+.tabset>label:hover::after,
+.tabset>input:focus+label::after,
+.tabset>input:checked+label::after {
+    background: #713f93!important;
+}
+
+.tabset>input:checked+label {
+    border-color: #ccc;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+    color: #713f93!important;
+}
+
+.tab-panel {
+    padding: 30px 0;
+    border-top: 1px solid #ccc;
+}
+
+.tab-panel {
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.tabset {
+    width: 100%;
+}
 
 .tabset>input[type="radio"] {
     position: absolute;
@@ -2741,4 +2829,117 @@ legend {
 
 .without::-webkit-datetime-edit-ampm-field {
     display: none;
+}
+
+.toggle-box {
+    display: none;
+}
+
+.toggle-box+label {
+    cursor: pointer;
+    display: block;
+    font-weight: bold;
+    line-height: 21px;
+    margin-bottom: 5px;
+}
+
+.toggle-box+label+div {
+    display: none;
+    margin-bottom: 10px;
+}
+
+.toggle-box:checked+label+div {
+    display: block;
+}
+
+.toggle-box+label:before {
+    background-color: #4F5150;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    content: "+";
+    display: block;
+    float: left;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 5px;
+    text-align: center;
+    width: 20px;
+}
+
+.toggle-box:checked+label:before {
+    content: "\2212";
+}
+
+.toggle-sub-box {
+    display: none;
+}
+
+.toggle-sub-box+label {
+    cursor: pointer;
+    display: block;
+    font-weight: bold;
+    line-height: 21px;
+    margin-bottom: 5px;
+}
+
+.toggle-sub-box+label+div {
+    display: none;
+    margin-bottom: 10px;
+}
+
+.toggle-sub-box:checked+label+div {
+    display: block;
+}
+
+.toggle-sub-box+label:before {
+    background-color: #4F5150;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    content: "\1F892";
+    display: block;
+    float: left;
+    font-weight: bold;
+    font-size: 20px;
+    height: 20px;
+    line-height: 18px;
+    margin-right: 5px;
+    text-align: center;
+    width: 20px;
+}
+
+.toggle-sub-box:checked+label:before {
+    background-color: #4F5150;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    content: "\1F893";
+    display: block;
+    float: left;
+    font-weight: bold;
+    font-size: 20px;
+    height: 20px;
+    line-height: 35px;
+    margin-right: 5px;
+    text-align: center;
+    width: 20px;
+}
+
+.selectedfield {
+    font-weight: bold!important;
+    text-decoration: underline!important;
+}
+
+.multiselect-dropdown {
+    font-weight: 500!important;
+    font-size: 12px!important;
+}
+
+.disabled-button {
+    opacity: 0.7!important;
 }

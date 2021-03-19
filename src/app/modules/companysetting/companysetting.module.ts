@@ -42,6 +42,8 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import { UserRoleComponent } from './user-rolesand-permission/user-role/user-role.component';
 import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
 import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
+import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
+
 
 
 @NgModule({
@@ -55,6 +57,7 @@ import { UserRolesandPermissionComponent } from './user-rolesand-permission/user
     UserRolesandPermissionComponent,
     UserRoleComponent,
     UserGroupComponent,
+    RolePrivilegeComponent,
   ],
   imports: [
     CommonModule,

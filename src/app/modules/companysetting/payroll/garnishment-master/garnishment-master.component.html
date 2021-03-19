@@ -14,9 +14,9 @@
                 <select name="complianceHeadName" id="complianceHeadName" class="form-control"
                 [ngClass]="{'is-invalid' : form.get('complianceHeadName').status == 'INVALID'}"
                    formControlName="complianceHeadName" (change)='onSelectHeadName($event)'>
-                  <option *ngFor="let complianceHeadName of complianceHeadNameList" 
-                    [value]="complianceHeadName.value">
-                {{complianceHeadName.label}}
+                  <option *ngFor="let complianceHeadName of tempObjForComplianceHeadMaster" 
+                    [value]="complianceHeadName.complianceHeadId">
+                {{complianceHeadName.complianceHeadName}}
                   </option>
                 </select>
               </div>
@@ -256,8 +256,8 @@
                 <select name="investmentSection" id="investmentSection" formControlName="investmentSection"
                   class="form-control custom-select"
                   [ngClass]="{'is-invalid' : form.get('investmentSection').status == 'INVALID'}">
-                  <option *ngFor="let investmentSection of incomeTexList" [value]="investmentSection.value">
-                    {{investmentSection.value}}
+                  <option *ngFor="let investmentSection of incomeTexList">
+                    {{investmentSection.description}}
                   </option>
                 </select>
 

@@ -34,6 +34,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PayrollInputsRoutingModule } from './payroll-inputs-routing.module';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
+import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
 
 
 
@@ -42,7 +43,8 @@ import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.
   declarations: [
     PayrollListComponent,
      FinancialMasterComponent,
-     NonRecurringAmtComponent
+     NonRecurringAmtComponent,
+     NonRecurringQtyComponent
     ],
   imports: [
     CommonModule,

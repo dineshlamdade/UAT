@@ -38,7 +38,6 @@ import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptorService } from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
   //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
@@ -47,22 +46,14 @@ import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
 import { investmentOthersModule } from './modules/my-Investments/others/others.module';
 import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
-
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
-
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-
 import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.module';
-
-
-
-
-
-
 import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
+
 
 
 
@@ -71,6 +62,7 @@ import { AccordionModule } from 'primeng/accordion';
     AppComponent,
     ProfileComponent,
     SettingsComponent,
+   
    
 
   ],
