@@ -71,6 +71,7 @@ import { CompanySettingRoutingModule } from './modules/companysetting/companyset
 
 import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
+import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 
 
 
@@ -146,7 +147,7 @@ import { AccordionModule } from 'primeng/accordion';
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
-
+    EmailSmsModule
 
   ],
 
