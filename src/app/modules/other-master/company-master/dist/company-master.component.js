@@ -110,7 +110,7 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.companyMasterService.getCurrencyList().subscribe(function (res) {
             _this.currencyList = res.data.results;
         }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+            //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         }, function () {
             _this.companyMasterform.patchValue({
                 currency: _this.currencyList[2]
@@ -497,7 +497,7 @@ var CompanyMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -576,7 +576,7 @@ var CompanyMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -597,7 +597,7 @@ var CompanyMasterComponent = /** @class */ (function () {
                 _this.companyMasterform.get('state').setValue(res.data.results[0].state);
                 _this.companyMasterform.get('city').setValue(res.data.results[0].city);
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };

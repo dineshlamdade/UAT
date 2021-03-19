@@ -108,7 +108,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                 // console.log(this.summaryHtmlDataList);
             });
         }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+            //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         }, function () { });
         //  this.companyRegistrationIdList.filter((v,i,a)=>a.findIndex(t=>t.companyMasterId === v.companyMasterId) == i);
     };
@@ -149,7 +149,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -181,7 +181,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };

@@ -10,7 +10,8 @@ exports.environment = {
     baseUrl: 'http://localhost:8080/hrms/v1',
     baseUrl8082: 'http://localhost:8082/hrms/v1',
     baseUrl8083: 'http://localhost:8083/hrms/v1/',
-    baseUrl8080: 'http://deliziahruat.paysquare.com:8080/hrms/v1/',
+    // baseUrl8080: 'http://deliziahruat.paysquare.com:8080/hrms/v1/',
+    baseUrl8080: 'http://192.168.1.162:8080/hrms/v1/',
     apiBaseUrl: 'http://localhost:8085/hrms/v1/',
     baseUrl8086: 'http://localhost:8086/hrms/v1/',
     baseUrl8084: 'http://localhost:8084/hrms/v1/'

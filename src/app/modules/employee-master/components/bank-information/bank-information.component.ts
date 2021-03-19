@@ -121,11 +121,11 @@ export class BankInformationComponent implements OnInit {
 
   }
 
-  selectCountry(){
+  selectCountry() {
 
-    if(this.BankInformationModel.country == 'India'){
+    if (this.BankInformationModel.country == 'India') {
       this.bankInfoForm.get('bankIFSC').enable();
-    } else{
+    } else {
       this.bankInfoForm.get('bankIFSC').disable();
       this.BankInformationModel.bankIFSC = '';
       this.BankInformationModel.bankName = '';
@@ -140,7 +140,7 @@ export class BankInformationComponent implements OnInit {
 
   getBankAccounts() {
     this.BankInformationService.getBankInformation(this.employeeMasterId).subscribe(res => {
-      
+
       this.bankSummaryGridData = res.data.results[0];
       // this.employeeBankInfoId = res.data.results[0][0].employeeBankInfoId;
     });
@@ -243,7 +243,7 @@ export class BankInformationComponent implements OnInit {
   IFSCDetails(bankIFSC) {
 
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
-      
+
       this.maxAccNumber = res.data.results[0].limit
       if (this.maxAccNumber == 0) {
         this.maxAccNumber = null;
@@ -469,7 +469,7 @@ export class BankInformationComponent implements OnInit {
   }
 
   confirmMatchAccountNo(confirmPassword) {
-    
+
     if (confirmPassword == this.BankInformationModel.accountNo) {
       this.accountNoMatched = true;
 
@@ -531,12 +531,12 @@ export class BankInformationComponent implements OnInit {
   }
 
   accountNoMatchValidation() {
-    
+
     if (this.bankInfoForm.controls['confirmAccountNo'].value == this.BankInformationModel.accountNo
       && this.BankInformationModel.accountNo.length > 0) {
-        this.accountNoMatched = true;
+      this.accountNoMatched = true;
       this.CommonDataService.sweetalertMasterSuccess("Success..!!", 'Account Number Matched');
-    } else{
+    } else {
       this.accountNoMatched = false;
     }
   }
@@ -580,7 +580,7 @@ export class BankInformationComponent implements OnInit {
     }
   }
 
-  getHideconfirmAccountNo(confirmAccountNumber){
+  getHideconfirmAccountNo(confirmAccountNumber) {
     if (confirmAccountNumber.length > 0) {
       this.confirmAccountNo1 = true
       setTimeout(() => {
@@ -590,7 +590,7 @@ export class BankInformationComponent implements OnInit {
   }
 
   formTouch(bankInfoForm: FormGroup) {
-    
+
     (<any>Object).values(bankInfoForm.controls).forEach(control => {
       control.markAsTouched();
 

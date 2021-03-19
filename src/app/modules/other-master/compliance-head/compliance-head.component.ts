@@ -90,7 +90,7 @@ export class ComplianceHeadComponent implements OnInit {
         }
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 

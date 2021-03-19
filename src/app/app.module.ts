@@ -35,8 +35,8 @@ import { SettingsComponent } from './modules/settings/settings.component';
 import { SettingsModule } from './modules/settings/settings.module';
 import { BnNgIdleService } from 'bn-ng-idle';
 
-registerLocaleData(localeFr, 'fr');
-registerLocaleData(localeGb, 'en-GB');
+registerLocaleData( localeFr, 'fr' );
+registerLocaleData( localeGb, 'en-GB' );
 
 import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
@@ -77,7 +77,7 @@ import { AccordionModule } from 'primeng/accordion';
 
 
 
-@NgModule({
+@NgModule( {
   declarations: [
     AppComponent,
     ProfileComponent,
@@ -118,12 +118,12 @@ import { AccordionModule } from 'primeng/accordion';
     NgApexchartsModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
-    ToastrModule.forRoot({
-    }),
-    CalendarModule.forRoot({
+    ToastrModule.forRoot( {
+    } ),
+    CalendarModule.forRoot( {
       provide: DateAdapter,
       useFactory: adapterFactory,
-    }),
+    } ),
     CKEditorModule,
     BrowserAnimationsModule,
     TranslocoModule,
@@ -170,5 +170,5 @@ import { AccordionModule } from 'primeng/accordion';
 
 
   bootstrap: [AppComponent]
-})
+} )
 export class AppModule { }

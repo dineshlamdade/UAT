@@ -27,29 +27,28 @@ var progressbar_1 = require("ngx-bootstrap/progressbar");
 var tooltip_1 = require("ngx-bootstrap/tooltip");
 var ngx_toastr_1 = require("ngx-toastr");
 var NumberFormatPipe_1 = require("../../core/utility/pipes/NumberFormatPipe");
-//import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
 var slider_1 = require("@angular/material/slider");
 var attribute_creation_component_1 = require("./attribute-creation/attribute-creation.component");
 var companysetting_routing_module_1 = require("./companysetting.routing.module");
 var http_1 = require("@angular/common/http");
+var business_year_component_1 = require("./business-cycle/business-year/business-year.component");
+var cycle_definition_component_1 = require("./business-cycle/cycle-definition/cycle-definition.component");
+var cycle_creation_component_1 = require("./business-cycle/cycle-creation/cycle-creation.component");
 var CompanySettingModule = /** @class */ (function () {
     function CompanySettingModule() {
     }
     CompanySettingModule = __decorate([
         core_1.NgModule({
             declarations: [
-                // payrollComponent,
-                // HeadcreationComponent,
-                // AttributecreationComponent,
-                // AttributeselectionComponent,
-                // PayrollheadgroupcreationComponent,
-                // CompanySettingComponent,
                 head_creation_component_1.HeadCreationComponent,
                 payroll_head_group_creation_component_1.PayrollHeadGroupCreationComponent,
                 business_cycle_component_1.BusinessCycleComponent,
                 attribute_selection_component_1.AttributeSelectionComponent,
                 attribute_creation_component_1.AttributeCreationComponent,
+                business_year_component_1.BusinessYearComponent,
+                cycle_definition_component_1.CycleDefinitionComponent,
+                cycle_creation_component_1.CycleCreationComponent
             ],
             imports: [
                 common_1.CommonModule,

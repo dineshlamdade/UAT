@@ -123,7 +123,7 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
       });
 
     }, (error: any) => {
-      this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+      //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
     }, () => { });
 
@@ -170,7 +170,7 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
       });
 
     } else {
@@ -203,7 +203,7 @@ export class CompanyRegistrationDetailsComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
     }

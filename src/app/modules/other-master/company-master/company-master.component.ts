@@ -133,7 +133,7 @@ export class CompanyMasterComponent implements OnInit {
     this.companyMasterService.getCurrencyList().subscribe(res => {
       this.currencyList = res.data.results;
     }, (error: any) => {
-      this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+      //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
     }, () => {
       this.companyMasterform.patchValue({
@@ -568,7 +568,7 @@ export class CompanyMasterComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 
@@ -654,7 +654,7 @@ export class CompanyMasterComponent implements OnInit {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 
@@ -683,7 +683,7 @@ export class CompanyMasterComponent implements OnInit {
         this.companyMasterform.get('city').setValue(res.data.results[0].city);
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
     }

@@ -18,42 +18,26 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../core/utility/pipes/NumberFormatPipe';
-//import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
-
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatSliderModule } from '@angular/material/slider';
-
-import { payrollComponent } from './bc/bc.component';
-import { HeadcreationComponent } from './headcreation/headcreation.component';
-import { AttributecreationComponent } from './attributecreation/attributecreation.component';
-import { AttributeselectionComponent } from './attributeselection/attributeselection.component';
-import { PayrollheadgroupcreationComponent } from './payrollheadgroupcreation/payrollheadgroupcreation.component';
 import { AttributeCreationComponent } from './attribute-creation/attribute-creation.component';
 import { CompanySettingRoutingModule } from './companysetting.routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserModule } from '@angular/platform-browser';
+import { BusinessYearComponent } from './business-cycle/business-year/business-year.component';
+import { CycleDefinitionComponent } from './business-cycle/cycle-definition/cycle-definition.component';
+import { CycleCreationComponent } from './business-cycle/cycle-creation/cycle-creation.component';
 
 
-@NgModule({
+@NgModule( {
   declarations: [
-    // payrollComponent,
-    // HeadcreationComponent,
-    // AttributecreationComponent,
-    // AttributeselectionComponent,
-    // PayrollheadgroupcreationComponent,
-    // CompanySettingComponent,
     HeadCreationComponent,
     PayrollHeadGroupCreationComponent,
     BusinessCycleComponent,
     AttributeSelectionComponent,
     AttributeCreationComponent,
-
-
-
-
-
-
-
+    BusinessYearComponent,
+    CycleDefinitionComponent,
+    CycleCreationComponent
   ],
   imports: [
     CommonModule,
@@ -76,14 +60,14 @@ import { BrowserModule } from '@angular/platform-browser';
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
-    ToastrModule.forRoot({
+    ToastrModule.forRoot( {
       positionClass: 'toast-top-center',
-    }),
+    } ),
     SharedlayoutModule,
     CompanySettingRoutingModule,
   ],
 
   providers: [DatePipe, NumberFormatPipe],
 
-})
+} )
 export class CompanySettingModule { }

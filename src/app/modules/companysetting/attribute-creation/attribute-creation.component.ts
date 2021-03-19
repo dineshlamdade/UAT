@@ -1,18 +1,17 @@
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef, Inject, HostListener, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
+import { Component, OnInit, TemplateRef, Inject, ViewEncapsulation } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { FormArray, AbstractControl } from '@angular/forms';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { MyInvestmentsService } from './../../my-Investments/my-Investments.service';
 
 
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+
 import { FileService } from '../../my-Investments/file.service';
 
 import { NumberFormatPipe } from './../../../core/utility/pipes/NumberFormatPipe';
-import { from } from 'rxjs';
-//sneha
+
 import Swal from 'sweetalert2';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 /////////////////bharati
@@ -41,12 +40,12 @@ export class SaveAttributeSelection {
   attributeMasterIdList: any[];
 }
 
-@Component({
+@Component( {
   selector: 'app-attribute-creation',
   templateUrl: './attribute-creation.component.html',
   styleUrls: ['./attribute-creation.component.scss'],
   encapsulation: ViewEncapsulation.None
-})
+} )
 export class AttributeCreationComponent implements OnInit {
   AttributeCreationList: Array<any> = [];
   NatureList: Array<any> = [];
@@ -80,7 +79,7 @@ export class AttributeCreationComponent implements OnInit {
     private attributeCreationService: CompanySettingsService,
     private numberFormat: NumberFormatPipe,
     private modalService: BsModalService,
-    @Inject(DOCUMENT) private document: Document) {
+    @Inject( DOCUMENT ) private document: Document ) {
     this.NatureList = [
       { label: 'L', value: 'L' },
       { label: 'F', value: 'F' },
@@ -94,29 +93,29 @@ export class AttributeCreationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.AttributeCreationForm = this.formBuilder.group({
-      id: new FormControl(null,),
-      code: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      attributeNature: new FormControl('', Validators.required),
-      optionList: new FormControl('', Validators.required),
+    this.AttributeCreationForm = this.formBuilder.group( {
+      id: new FormControl( null, ),
+      code: new FormControl( '', Validators.required ),
+      description: new FormControl( '', Validators.required ),
+      attributeNature: new FormControl( '', Validators.required ),
+      optionList: new FormControl( '', Validators.required ),
       // optionList: this.formBuilder.array([]),
       // type: new FormControl('', ),
       // isStatutory: new FormControl('0'),
-    });
+    } );
 
     this.getAllAttributeCreation();
   }
 
 
-  sweetalert7(message: any) {
-    Swal.fire({
+  sweetalert7( message: any ) {
+    Swal.fire( {
       text: message,
-    })
+    } )
   }
 
-  sweetalertWarning(message: any) {
-    Swal.fire({
+  sweetalertWarning( message: any ) {
+    Swal.fire( {
       title: message,
       showCloseButton: true,
       showCancelButton: false,
@@ -127,11 +126,11 @@ export class AttributeCreationComponent implements OnInit {
       icon: 'warning',
       timer: 15000,
       timerProgressBar: true,
-    })
+    } )
   }
 
-  sweetalertInfo(message: any) {
-    Swal.fire({
+  sweetalertInfo( message: any ) {
+    Swal.fire( {
       title: message,
       showCloseButton: true,
       showCancelButton: false,
@@ -141,11 +140,11 @@ export class AttributeCreationComponent implements OnInit {
       icon: 'info',
       timer: 15000,
       timerProgressBar: true,
-    })
+    } )
   }
 
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
+  sweetalertMasterSuccess( message: any, text: any ) {
+    Swal.fire( {
       title: message,
       text: text,
       showCloseButton: true,
@@ -156,11 +155,11 @@ export class AttributeCreationComponent implements OnInit {
       icon: 'success',
       timer: 15000,
       timerProgressBar: true,
-    })
+    } )
   }
 
-  sweetalertError(message: any) {
-    Swal.fire({
+  sweetalertError( message: any ) {
+    Swal.fire( {
       title: message,
       showCloseButton: true,
       showCancelButton: false,
@@ -170,62 +169,62 @@ export class AttributeCreationComponent implements OnInit {
       icon: 'error',
       timer: 15000,
       timerProgressBar: true,
-    })
+    } )
   }
   // get All AttributeCreation
   getAllAttributeCreation(): void {
-    this.attributeCreationService.getAllAttributeCreation().subscribe(res => {
+    this.attributeCreationService.getAllAttributeCreation().subscribe( res => {
       debugger
       this.AttributeCreationList = res.data.results;
-    });
+    } );
   }
 
   // Get Attribute Creation ById
-  GetAttributeCreationByIdDisable(id): void {
+  GetAttributeCreationByIdDisable( id ): void {
     debugger;
     // this.CycleupdateFlag=true;
     // this.CycleupdateFlag1=false;
     this.disabled = false;
     this.viewCancelButton = true;
-    this.attributeCreationService.GetAttributeCreationById(id)
-      .subscribe(response => {
+    this.attributeCreationService.GetAttributeCreationById( id )
+      .subscribe( response => {
         debugger
         //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-        this.AttributeCreationForm.patchValue({ code: response.data.results[0].code });
-        this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
-        this.AttributeCreationForm.patchValue({ attributeNature: response.data.results[0].attributeNature });
-        if (response.data.results[0].attributeNature == "L") {
+        this.AttributeCreationForm.patchValue( { code: response.data.results[0].code } );
+        this.AttributeCreationForm.patchValue( { description: response.data.results[0].description } );
+        this.AttributeCreationForm.patchValue( { attributeNature: response.data.results[0].attributeNature } );
+        if ( response.data.results[0].attributeNature == "L" ) {
           this.hidevalue = true;
         }
         else {
           this.hidevalue = false;
         }
         this.summons = [];
-        if (response.data.results[0].optionList.length > 0) {
-          response.data.results[0].optionList.forEach(element => {
+        if ( response.data.results[0].optionList.length > 0 ) {
+          response.data.results[0].optionList.forEach( element => {
             // const obj = {
             //     label: element,
             //     value: element,
             // };
 
-            this.summons.push(element.optionValue);
+            this.summons.push( element.optionValue );
             // const control = <FormArray>this.AttributeCreationForm.controls['optionList'];
             // control.push(element.optionValue)
             //this.transactionInstitutionNames.push(obj);
             //  this.AttributeCreationForm.patchValue({ optionList: this.summons});
-          });
+          } );
 
-          this.AttributeCreationForm.patchValue({ optionList: this.summons });
+          this.AttributeCreationForm.patchValue( { optionList: this.summons } );
         }
-      });
+      } );
 
     this.summons = [];
   }
 
 
-  onChangeEvent(event: any): void {
+  onChangeEvent( event: any ): void {
     debugger;
-    this.summons.push(event);
+    this.summons.push( event );
     //this.summons
     // this.newlist.push(this.summons.values)
     // if ((this.id == undefined || this.id == '00000000-0000-0000-0000-000000000000')) {
@@ -236,34 +235,34 @@ export class AttributeCreationComponent implements OnInit {
 
   }
 
-  onStatusChange(event): void {
+  onStatusChange( event ): void {
     debugger
     this.selectedNature = event.target.value;
-    if (this.selectedNature == 'L') {
+    if ( this.selectedNature == 'L' ) {
       this.hidevalue = true;
-      this.AttributeCreationForm.controls['optionList'].setValidators([Validators.required]);
+      this.AttributeCreationForm.controls['optionList'].setValidators( [Validators.required] );
     }
     else {
       this.summons = [];
       this.hidevalue = false;
-      this.AttributeCreationForm.patchValue({ addDays: null });
-      this.AttributeCreationForm.get('optionList').clearValidators();
-      this.AttributeCreationForm.get('optionList').updateValueAndValidity();
+      this.AttributeCreationForm.patchValue( { addDays: null } );
+      this.AttributeCreationForm.get( 'optionList' ).clearValidators();
+      this.AttributeCreationForm.get( 'optionList' ).updateValueAndValidity();
     }
   }
   addOptionList(): void {
-    this.AttributeCreationForm.patchValue({ optionList: '' });
+    this.AttributeCreationForm.patchValue( { optionList: '' } );
   }
 
   //add new AttributeCreation
   addAttributeCreation(): void {
     debugger
-    const addAttributeCreation: SaveAttributeCreation = Object.assign({});
+    const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
     //addAttributeCreation.options=this.summons;
     addAttributeCreation.options = [];
-    this.summons.forEach(function (f) {
-      addAttributeCreation.options.push(f);
-    });
+    this.summons.forEach( function ( f ) {
+      addAttributeCreation.options.push( f );
+    } );
     addAttributeCreation.numberOfOption = this.summons.length.toString();
     addAttributeCreation.code = this.AttributeCreationForm.value.code;
     addAttributeCreation.description = this.AttributeCreationForm.value.description;
@@ -271,21 +270,21 @@ export class AttributeCreationComponent implements OnInit {
     //     code;string;
     // description:string;
     // attributeNature:string;
-    if (addAttributeCreation.globalAttributeMasterId == undefined || addAttributeCreation.globalAttributeMasterId == 0) {
+    if ( addAttributeCreation.globalAttributeMasterId == undefined || addAttributeCreation.globalAttributeMasterId == 0 ) {
 
-      this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe((res: any) => {
+      this.attributeCreationService.AddAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
         debugger
         addAttributeCreation.options = [];
         this.summons = [];
-        this.sweetalertMasterSuccess("Success..!!", res.status.message);
+        this.sweetalertMasterSuccess( "Success..!!", res.status.message );
         this.getAllAttributeCreation();
         this.hidevalue = false;
         this.AttributeCreationForm.reset();
         //  this.AttributeCreationForm.patchValue({ isStatutory:'0' });
       },
-        (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);
-        });
+        ( error: any ) => {
+          this.sweetalertError( error["error"]["status"]["message"] );
+        } );
     }
     // else{
     //     debugger
@@ -319,7 +318,7 @@ export class AttributeCreationComponent implements OnInit {
     this.viewCancelButton = false;
     this.hidevalue = false;
     this.summons = [];
-    this.AttributeCreationForm.patchValue({ isStatutory: '0' });
+    this.AttributeCreationForm.patchValue( { isStatutory: '0' } );
   }
 
 }

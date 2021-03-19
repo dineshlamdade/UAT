@@ -13,7 +13,6 @@ exports.AttributeCreationComponent = exports.SaveAttributeSelection = exports.Sa
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-//sneha
 var sweetalert2_1 = require("sweetalert2");
 var SaveAttributeCreation = /** @class */ (function () {
     function SaveAttributeCreation() {

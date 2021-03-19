@@ -123,8 +123,8 @@
 
                         <ng-template #newDeb>
 
-                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
-                          'btn-bg-green': !form.invalid}"
+                          <button type="submit"
+                            [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}"
                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                             (click)="save()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
                             Update</button>

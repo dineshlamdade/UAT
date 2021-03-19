@@ -86,7 +86,7 @@ var ComplianceHeadComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
