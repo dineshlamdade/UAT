@@ -36,7 +36,7 @@ const routes: Routes = [
   },
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
   { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
-
+  { path: 'lock', loadChildren: './modules/lock/lock.module#LockModule' },
 
   { path: 'email-sms', loadChildren: './modules/email-sms/email-sms.module#EmailSmsModule' },
 

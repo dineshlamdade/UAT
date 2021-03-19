@@ -66,7 +66,7 @@ import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/e
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
 import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
-
+import { LockModule } from './modules/lock/lock.module';
 
 
 
@@ -106,6 +106,7 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     /////////////////
     //  payrollModule,
     CompanySettingModule,
+    LockModule,
     ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,

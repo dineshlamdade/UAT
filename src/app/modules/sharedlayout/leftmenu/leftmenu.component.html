@@ -618,9 +618,25 @@
         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
             [routerLink]="['/payrollheadgroupcreation']" href="javascript:void(0)">Payroll Head Group Creation</a>
         </li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/reimbursement']" href="javascript:void(0)">Reimbursement Master</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/registerForm']" href="javascript:void(0)">Register Form  </a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/summaryForm']" href="javascript:void(0)">Summary Form</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/claimForm']" href="javascript:void(0)">Claim Form</a></li>
+        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/declarationForm']" href="javascript:void(0)">Declaration Message</a></li>
       </ul>
     </li>
-
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <a href="javascript:void(0)" (click)="islockCollapsed = !islockCollapsed" [attr.aria-expanded]="!islockCollapsed" aria-controls="islocksCollapsed" class="has-arrow arrow-c"><i class="fa fa-cogs" aria-hidden="true"></i><span>Lock</span></a>
+      <ul class="collapse" id="islockCollapsed" [collapse]="islockCollapsed" [isAnimated]="true">
+         <!--  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+              <a class="submenu" [routerLink]="['/investments-houseRent']" href="javascript:void(0)">House Rent</a>
+          </li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-houseLoan']" href="javascript:void(0)">House Loan</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-chapterSixA']" href="javascript:void(0)">Chapter VI-A</a></li> -->
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/lock']" href="javascript:void(0)">Lock</a></li>
+      
+   </ul>
+  </li>
 
     <!-- 19th March 21 Rucha-->
     <li>
