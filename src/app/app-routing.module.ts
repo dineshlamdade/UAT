@@ -19,18 +19,6 @@ const routes: Routes = [
   { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
   { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
   { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
-<<<<<<< HEAD
-  { path: 'query', loadChildren: './modules/query/query.module#QueryModule' },
-  // { path: 'loan', loadChildren: './modules/loan/loan.module#LoanModule' },
-
-  {
-    path: 'loan',
-    loadChildren: () => import('./modules/loan/loan.module').then(m => m.LoanModule)
-  },
-
-
-=======
->>>>>>> 2a19aacddef4d19fac36958483c95accb54de122
   { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
   { path: 'uploadexcel', loadChildren: './modules/uploadexcel/uploadexcel.module#UploadexcelModule' },
   { path: 'employeelist', loadChildren: './modules/employeemasterlistpage/employeemasterlistpage.module#EmployeemasterlistpageModule' },
@@ -56,38 +44,6 @@ const routes: Routes = [
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 
 
-<<<<<<< HEAD
-    //////////////////////////////////////////
-    { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
-    // {
-    //   path: 'payroll',
-    //   component: payrollComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'headcreation',
-    //   component: HeadcreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'attributecreation',
-    //   component: AttributecreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'attributeselection',
-    //   component: AttributeselectionComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'payrollheadgroupcreation',
-    //   component: PayrollheadgroupcreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-
-
-    ///////////////////////////////////////////////////
-=======
   //////////////////////////////////////////
 
   // {
@@ -118,7 +74,6 @@ const routes: Routes = [
 
 
   ///////////////////////////////////////////////////
->>>>>>> 2a19aacddef4d19fac36958483c95accb54de122
 ];
 
 @NgModule({
