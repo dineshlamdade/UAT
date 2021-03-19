@@ -49,30 +49,30 @@
    </div>
    <div class="row mt-20">
     <div class="col-sm-6 col-md-3">
-       <label class="form-label">Addrsss 1</label>
+       <label class="form-label">Address 1</label>
        <input type="text" formControlName="address1" class="form-control"
           placeholder="Enter Property Name"
           [ngClass]="{ 'is-invalid': submitted && masterForm.address1.errors }"  >
        <div *ngIf="submitted && masterForm.address1.errors" class="invalid-feedback">
-          <div *ngIf="masterForm.address1.errors.required">Property Name is mandatory</div>
+          <div *ngIf="masterForm.address1.errors.required">Address 1 Name is mandatory</div>
        </div>
     </div>
     <div class="col-sm-6 col-md-3">
-      <label class="form-label">Addrsss 2</label>
+      <label class="form-label">Address 2</label>
       <input type="text" formControlName="address2" class="form-control"
          placeholder="Enter Property Name"
          [ngClass]="{ 'is-invalid': submitted && masterForm.address2.errors }"  >
       <div *ngIf="submitted && masterForm.address2.errors" class="invalid-feedback">
-         <div *ngIf="masterForm.address2.errors.required">Property Name is mandatory</div>
+         <div *ngIf="masterForm.address2.errors.required">Address 2 Name is mandatory</div>
       </div>
    </div>
    <div class="col-sm-6 col-md-3">
-    <label class="form-label">Addrsss 3</label>
+    <label class="form-label">Address 3</label>
     <input type="text" formControlName="address3" class="form-control"
        placeholder="Enter Property Name"
        [ngClass]="{ 'is-invalid': submitted && masterForm.address3.errors }"  >
     <div *ngIf="submitted && masterForm.address3.errors" class="invalid-feedback">
-       <div *ngIf="masterForm.address3.errors.required">Property Name is mandatory</div>
+       <div *ngIf="masterForm.address3.errors.required">Address 3 Name is mandatory</div>
     </div>
  </div>
  <div class="col-sm-6 col-md-3">

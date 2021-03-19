@@ -1,6 +1,6 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, Input, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog} from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -19,6 +19,8 @@ import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.se
   styleUrls: ['./unit-linked-master.component.scss']
 })
 export class UnitLinkedMasterComponent implements OnInit {
+  @Input() public accountNo: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -94,6 +96,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -112,7 +115,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl(null, Validators.required),
+      accountHolderName: new FormControl({ value : null, disabled : true}, Validators.required),
       relationship: new FormControl({ value: null, disabled: true }, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
@@ -127,7 +130,9 @@ export class UnitLinkedMasterComponent implements OnInit {
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
+      investmentGroup2MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [
@@ -167,6 +172,11 @@ export class UnitLinkedMasterComponent implements OnInit {
           this.familyMemberName.push(obj);
         }
       });
+      this.form.patchValue({
+        familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
+        accountHolderName: this.familyMemberGroup[0].familyMemberName,
+        relationship: this.familyMemberGroup[0].relation,
+      });
     });
 
     this.deactivateRemark();
@@ -202,6 +212,12 @@ export class UnitLinkedMasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo != undefined || this.accountNo != null) {
+      const input = this.accountNo;
+      this.editSummaryMaster(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -312,7 +328,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
@@ -327,7 +343,7 @@ export class UnitLinkedMasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
       const data = this.form.getRawValue();
-
+      data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(',', '');
@@ -376,6 +392,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
     }
   }
@@ -399,34 +416,20 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
-    if (
-      this.form.value.premiumAmount != null &&
-      this.form.value.frequencyOfPayment != null
-    ) {
-      let installment = this.form.value.premiumAmount;
-
-      installment = installment.toString().replace(',', '');
-
-      // console.log(installment);
-      if (!this.form.value.frequencyOfPayment) {
-        installment = 0;
-      }
-      if (this.form.value.frequencyOfPayment === 'Monthly') {
-        installment = installment * 12;
-      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-        installment = installment * 4;
-      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-        installment = installment * 2;
-      } else {
-        installment = installment * 1;
-      }
-      const formatedPremiumAmount = this.numberFormat.transform(
-        this.form.value.premiumAmount
-      );
-      // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-      this.form.get('annualAmount').setValue(installment);
+    let installment = this.form.value.premiumAmount;
+    if (!this.form.value.frequencyOfPayment) {
+      installment = 0;
     }
+    if (this.form.value.frequencyOfPayment === 'Monthly') {
+      installment = installment * 12;
+    } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+      installment = installment * 4;
+    } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+      installment = installment * 2;
+    } else {
+      installment = installment * 1;
+    }
+    this.form.get('annualAmount').setValue(installment);
   }
 
   // Family relationship shown on Policyholder selection
@@ -452,21 +455,48 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  // On Master Edit functionality
-  editMaster(i: number) {
+  //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
+  editSummaryMaster(accountNumber) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isClear = true;
+    this.unitLinkedInsurancePlanService.getULIPMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(accountNumber);
+      const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+      }
+    });
   }
+
+  findByPolicyNo(accountNumber, masterGridData) {
+    return masterGridData.find((x) => x.accountNumber === accountNumber);
+  }
+
+  // On Master Edit functionality
+  // editMaster(i: number) {
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount =  this.masterGridData[i].premiumAmount;
+  //   this.isClear = true;
+  // }
 
   // On Edit Cancel
   cancelEdit() {
@@ -479,23 +509,22 @@ export class UnitLinkedMasterComponent implements OnInit {
   }
 
   // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
+  // viewMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.numberFormat.transform(
+  //     this.masterGridData[i].premiumAmount
+  //   );
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isCancel = true;
+  // }
 
   // On View Cancel
-  cancelView() {
+  resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);

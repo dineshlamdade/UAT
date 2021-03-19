@@ -22,19 +22,19 @@ var StatuatoryComplianceService = /** @class */ (function () {
         }));
     };
     StatuatoryComplianceService.prototype.getCompliaceInstitutionMasterDetails = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/compliance-institution-master/details', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'compliance-institution-master/details', { headers: { 'X-TenantId': 'PaysquareGlobal' } })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     StatuatoryComplianceService.prototype.postComplianceInstituionMaster = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/compliance-institution-master/add-institution', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'compliance-institution-master/add-institution', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     StatuatoryComplianceService.prototype.putComplianceInstituionMaster = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8083 + '/compliance-institution-master/update', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'compliance-institution-master/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

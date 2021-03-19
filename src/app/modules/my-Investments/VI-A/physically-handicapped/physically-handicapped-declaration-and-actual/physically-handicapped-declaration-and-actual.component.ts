@@ -57,6 +57,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
   public institutionNameList: Array<any> = [];
   public physicallyHandicappedDetail;
   public previousEmployerHandicappedDetailList;
+
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
@@ -168,6 +169,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
 
   public disability : string;
   public severity : string;
+  public limit : any;
+  public proofSubmissionId : any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -234,18 +237,18 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.getpreviousEmployeName();
     this.getAllPreviousEmployer();
 
-    if (this.today.getMonth() + 1 <= 3) {
-      this.financialYear =
-        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
-    } else {
-      this.financialYear =
-        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
-    }
+    // if (this.today.getMonth() + 1 <= 3) {
+    //   this.financialYear =
+    //     this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+    // } else {
+    //   this.financialYear =
+    //     this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    // }
 
-    const splitYear = this.financialYear.split('-', 2);
+    // const splitYear = this.financialYear.split('-', 2);
 
-    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+    // this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    // this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
   //--------- convenience getter for easy access to form fields ---------------
@@ -351,6 +354,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
 
             this.previousEmployerHandicappedDetailList =
               res.data.results[0].previousEmployerHandicappedDetailList;
+
             // this.documentDetailList = res.data.results[0].documentInformation;
             this.documentDetailList = res.data.results[0].documentInformationList;
             this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
@@ -791,7 +795,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         this.isCheckAll = true;
         this.enableSelectAll = true;
         this.enableCheckboxFlag2 = item.institutionName;
-        item.group2TransactionList.forEach((element) => {
+        item.previousEmployerHandicappedDetailList.forEach((element) => {
           this.uploadGridData.push(element.physicallyHandicappedDetailId);
         });
         this.enableFileUpload = true;
@@ -815,21 +819,21 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].group2TransactionList[
+    this.transactionDetail[j].previousEmployerHandicappedDetailList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].group2TransactionList[i].declaredAmount
+      this.transactionDetail[j].previousEmployerHandicappedDetailList[i].declaredAmount
     );
     // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].group2TransactionList[
+    this.transactionDetail[j].previousEmployerHandicappedDetailList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
+    this.transactionDetail[j].previousEmployerHandicappedDetailList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -854,7 +858,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].group2TransactionList[i].dueDate =
+    this.transactionDetail[j].previousEmployerHandicappedDetailList[i].dueDate =
       summary.dueDate;
   }
 
@@ -863,9 +867,9 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     summary: {
       previousEmployerName: any;
       // declaredAmount: number;
-      dateOfPayment: Date;
+      // dateOfPayment: Date;
       actualAmount: number;
-      dueDate: Date;
+      // dueDate: Date;
     },
     i: number,
     j: number
@@ -984,8 +988,8 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.declarationService.actualAmount -
-      this.transactionDetail[j].group2TransactionList[i].actualAmount;
-    this.transactionDetail[j].group2TransactionList[
+      this.transactionDetail[j].previousEmployerHandicappedDetailList[i].actualAmount;
+    this.transactionDetail[j].previousEmployerHandicappedDetailList[
       i
     ] = this.declarationService;
     this.declarationService = new DeclarationService();
@@ -1003,7 +1007,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].group2TransactionList.push(
+    this.transactionDetail[j].previousEmployerHandicappedDetailList.push(
       this.declarationService
     );
     this.declarationService = new DeclarationService();
@@ -1014,7 +1018,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     console.log(this.transactionDetail);
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
-      element.group2TransactionList.forEach((element) => {
+      element.previousEmployerHandicappedDetailList.forEach((element) => {
         element.dateOfPayment = this.datePipe.transform(
           element.dateOfPayment,
           'yyyy-MM-dd'
@@ -1031,7 +1035,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
       this.transactionDetail.forEach((element) => {
-        element.group2TransactionList.forEach((element) => {
+        element.previousEmployerHandicappedDetailList.forEach((element) => {
           element.dateOfPayment = new Date(element.dateOfPayment);
         });
       });
@@ -1092,41 +1096,81 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     //   );
     //   return;
     // }
-    console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
-    this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
-        if (innerElement.declaredAmount !== null) {
-          innerElement.declaredAmount = innerElement.declaredAmount
+
+    this.transactionDetail.forEach((element) => {
+      //current emp table number format
+      console.log('physicallyHandicappedDetail::', this.physicallyHandicappedDetail);
+      element.physicallyHandicappedDetail.forEach((item) => {
+        if (item.actualAmount !== null) {
+          item.actualAmount = item.actualAmount
             .toString()
             .replace(',', '');
         } else {
-          innerElement.declaredAmount = 0.0;
+          item.actualAmount = 0.0;
         }
-        if (innerElement.actualAmount !== null) {
+        if (item.declaredAmount !== null) {
+          item.declaredAmount = item.declaredAmount
+            .toString()
+            .replace(',', '');
+        } else {
+          item.declaredAmount = 0.0;
+        }
+      });
+
+      //previous emp table number format
+      if (element.previousEmployerHandicappedDetailList !== null) {
+     console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
+      element.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+
+        if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
             .replace(',', '');
         } else {
           innerElement.actualAmount = 0.0;
         }
-
-        // const dateOfPaymnet = this.datePipe.transform(
-        //   innerElement.dateOfPayment,
-        //   'yyyy-MM-dd'
-        // );
-        // const dueDate = this.datePipe.transform(
-        //   innerElement.dueDate,
-        //   'yyyy-MM-dd'
-        // );
-
-        // innerElement.dateOfPayment = dateOfPaymnet;
-        // innerElement.dueDate = dueDate;
+        if (innerElement.declaredAmount !== undefined || innerElement.declaredAmount !== null) {
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(',', '');
+        } else {
+          innerElement.declaredAmount = 0.0;
+        }
       });
+    }
+    });
+
+
+
+    // console.log('previousEmployerHandicappedDetailList::', this.previousEmployerHandicappedDetailList);
+    // this.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+    //     if (innerElement.actualAmount !== null) {
+    //       innerElement.actualAmount = innerElement.actualAmount
+    //         .toString()
+    //         .replace(',', '');
+    //     } else {
+    //       innerElement.actualAmount = 0.0;
+    //     }
+
+    //     // if (innerElement.actualAmount !== null) {
+    //     //   innerElement.actualAmount = innerElement.actualAmount
+    //     //     .toString()
+    //     //     .replace(',', '');
+    //     // } else {
+    //     //   innerElement.actualAmount = 0.0;
+    //     // }
+
+    //   });
 
     // this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
       physicallyHandicappedDetail: this.physicallyHandicappedDetail,
       previousEmployerHandicappedDetailList: this.previousEmployerHandicappedDetailList,
       transactionIds: this.uploadGridData,
+      proofSubmissionId : '',
+      disability : this.disability,
+      severity: this.severity,
+      limit: this.limit,
       // receiptAmount: this.receiptAmount,
       // documentRemark: this.documentRemark,
     };
@@ -1143,29 +1187,25 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
       .subscribe((res) => {
         console.log(res);
         if (res.data.results.length > 0) {
-          this.transactionDetail = res.data.results[0].physicallyHandicappedDetail;
+          this.physicallyHandicappedDetail = res.data.results[0].physicallyHandicappedDetail;
           this.previousEmployerHandicappedDetailList = res.data.results[0].previousEmployerHandicappedDetailList;
           this.documentDetailList = res.data.results[0].documentInformationList;
           // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
           // this.grandActualTotal = res.data.results[0].grandActualTotal;
           // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-          this.transactionDetail.forEach((element) => {
-            element.group2TransactionList.forEach((innerElement) => {
-              if (innerElement.dateOfPayment !== null) {
-                innerElement.dateOfPayment = new Date(
-                  innerElement.dateOfPayment
-                );
-              }
-              if (this.employeeJoiningDate < innerElement.dueDate) {
-                innerElement.active = false;
-              }
-              innerElement.declaredAmount = this.numberFormat.transform(
-                innerElement.declaredAmount
-              );
-              // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
-            });
-          });
+          // this.physicallyHandicappedDetail.forEach((element) => {
+          //   this.initialArrayIndex.push(element.previousEmployerHandicappedDetailList.length);
+          //   element.previousEmployerHandicappedDetailList.forEach((innerElement) => {
+
+          //     innerElement.declaredAmount = this.numberFormat.transform(
+          //       innerElement.declaredAmount
+          //     );
+          //     innerElement.actualAmount = this.numberFormat.transform(
+          //       innerElement.actualAmount
+          //     );
+          //   });
+          // });
           this.alertService.sweetalertMasterSuccess(
             'Transaction Saved Successfully.',
             ''
@@ -1236,11 +1276,11 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].group2TransactionList[i].dueDate =
+    this.editTransactionUpload[j].previousEmployerHandicappedDetailList[i].dueDate =
       summary.dueDate;
     console.log(
       'onDueDateChangeInEditCase::',
-      this.editTransactionUpload[j].group2TransactionList[i].dueDate
+      this.editTransactionUpload[j].previousEmployerHandicappedDetailList[i].dueDate
     );
   }
 
@@ -1268,7 +1308,7 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     );
     console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[
+    this.editTransactionUpload[j].previousEmployerHandicappedDetailList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
@@ -1436,17 +1476,28 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
         console.log('physicallyHandicappedDetail', this.physicallyHandicappedDetail);
         this.previousEmployerHandicappedDetailList = res.data.results[0].previousEmployerHandicappedDetailList;
         console.log('transactionDetail', this.transactionDetail);
-        // this.documentDetailList = res.data.results[0].documentInformation;
         this.documentDetailList = res.data.results[0].documentInformationList;
+        this.disability = res.data.results[0].disability;
+        this.limit = res.data.results[0].limit;
+        this.severity = res.data.results[0].severity;
+        this.proofSubmissionId = res.data.results[0].proofSubmissionId;
+        // this.documentDetailList = res.data.results[0].documentInformation;
         // this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
         // this.grandActualTotal = res.data.results[0].grandActualTotal;
         // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        this.disability = res.data.results[0].disability;
-        this.severity = res.data.results[0].severity;
-        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
+        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].previousEmployerHandicappedDetailList.length;
 
         this.initialArrayIndex = [];
+
+        this.physicallyHandicappedDetail.forEach((element) => {
+          element.declaredAmount = this.numberFormat.transform(
+            element.declaredAmount
+          );
+          element.actualAmount = this.numberFormat.transform(
+            element.actualAmount
+          );
+        });
 
         this.previousEmployerHandicappedDetailList.forEach((element) => {
           element.declaredAmount = this.numberFormat.transform(
@@ -1489,10 +1540,10 @@ export class PhysicallyHandicappedDeclarationAndActualComponent implements OnIni
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].group2TransactionList[i].dateOfPayment =
+    this.transactionDetail[j].previousEmployerHandicappedDetailList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(
-      this.transactionDetail[j].group2TransactionList[i].dateOfPayment
+      this.transactionDetail[j].previousEmployerHandicappedDetailList[i].dateOfPayment
     );
   }
 }

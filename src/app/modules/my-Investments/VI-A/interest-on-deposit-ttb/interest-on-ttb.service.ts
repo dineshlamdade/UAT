@@ -11,8 +11,8 @@ import { Observable, of, BehaviorSubject , throwError } from 'rxjs';
 })
 export class InterestOnTtbService {
 
-  public apiUrl = environment.apiBaseUrl;
-  public apiBaseUrlEmployee = environment.baseUrl8082;
+  public apiUrl = environment.baseUrl8085;
+  public baseUrl8085Employee = environment.baseUrl8082;
 
   constructor(private _HTTP: HttpClient) { }
 
@@ -44,7 +44,7 @@ export class InterestOnTtbService {
 
   //get ifsc detail
     getDataFromIFSC(bankIFSC) : Observable<any>  {
-    return this._HTTP.get(this.apiBaseUrlEmployee + '/bank-master/data/' + bankIFSC)
+    return this._HTTP.get(this.baseUrl8085Employee + '/bank-master/data/' + bankIFSC)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -52,7 +52,7 @@ export class InterestOnTtbService {
 
   //state info list
   getStateInfoList() : Observable<any>  {
-    return this._HTTP.get(this.apiBaseUrlEmployee + '/location-information/state')
+    return this._HTTP.get(this.baseUrl8085Employee + '/location-information/state')
     .pipe(map((res: any) => {
       return res;
     }));
@@ -60,7 +60,7 @@ export class InterestOnTtbService {
 
   //IFSC code list
   getIFSCCodeList(state : string) : Observable<any>  {
-    return this._HTTP.get(this.apiBaseUrlEmployee + '/bank-master/ifsc/' + state)
+    return this._HTTP.get(this.baseUrl8085Employee + '/bank-master/ifsc/' + state)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -68,7 +68,7 @@ export class InterestOnTtbService {
 
    //search IFSCcode service
     searchIFSC(terms: any, stateModel) {
-      return this._HTTP.get(this.apiBaseUrlEmployee+ '/bank-master/ifsc/' + stateModel + '/' + terms)
+      return this._HTTP.get(this.baseUrl8085Employee+ '/bank-master/ifsc/' + stateModel + '/' + terms)
     .pipe(map((res: any) =>{
       return res;
     }))

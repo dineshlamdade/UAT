@@ -12,7 +12,9 @@
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-national-seving-certificate-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-national-seving-certificate-summary>
+                  <app-national-seving-certificate-summary *ngIf="tabIndex == 0"
+                  (myEvent)="changeTabIndexForRedirect($event)"
+                  (accountNo)="redirectToMaster($event)"></app-national-seving-certificate-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -21,7 +23,8 @@
                 <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
                   [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <app-national-seving-certificate-master *ngIf="tabIndex== 1"> </app-national-seving-certificate-master>
+                  <app-national-seving-certificate-master *ngIf="tabIndex == 1"
+                  [accountNo]="accountNo"> </app-national-seving-certificate-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>

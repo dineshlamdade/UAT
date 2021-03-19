@@ -49,7 +49,10 @@ var LeftmenuComponent = /** @class */ (function () {
         if ((this.router.url).includes('uploadexcel')) {
             this.isUploadExcel = false;
         }
-        if ((this.router.url).includes('companysetting')) {
+        if ((this.router.url).includes('co')) {
+            this.ischaptersettingCollapsed = false;
+        }
+        if ((this.router.url).includes('co')) {
             this.ischaptersettingCollapsed = false;
         }
         if ((this.router.url).includes('employee-master')) {
@@ -71,7 +74,7 @@ var LeftmenuComponent = /** @class */ (function () {
                 name: 'Company Settings',
                 subDetails: [{
                         name: 'payroll',
-                        routerlink: '/companysetting/payroll'
+                        routerlink: '/co/cycle'
                     },
                 ]
             },

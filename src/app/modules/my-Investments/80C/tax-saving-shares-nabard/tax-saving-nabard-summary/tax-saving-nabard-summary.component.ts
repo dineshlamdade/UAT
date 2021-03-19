@@ -12,18 +12,18 @@ import { TaxSavingNabardService } from '../tax-saving-nabard.service';
 export class TaxSavingNabardSummaryComponent implements OnInit {
 
       @Input() institution: string;
-      @Input() policyNo: string;
+      @Input() accountNumber: string;
       @Output() myEvent = new EventEmitter<any>();
 
-      onEditSummary(institution: string, policyNo: string) {
-        this.tabIndex = 2;
+      redirectToDeclarationActual(institution: string, accountNumber: string) {
+        this.tabIndex = 1;
         const data = {
           institution: institution,
-          policyNo: policyNo,
+          accountNumber: accountNumber,
           tabIndex: this.tabIndex,
         };
         this.institution = institution;
-        this.policyNo = policyNo;
+        this.accountNumber = accountNumber;
         //console.log('institution::', institution);
         //console.log('policyNo::', policyNo);
         this.myEvent.emit(data);
@@ -62,9 +62,7 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
           this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-            res.data.results[0].futureNewPolicyDeclaredAmount
-          );
+          this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
           this.grandTotalDeclaredAmount =
             res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -74,10 +72,6 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
 
       // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
-          .toString()
-          .replace(',', '');
-
         const data = {
           futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
         };
@@ -90,9 +84,7 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
             this.summaryGridData = res.data.results[0].transactionDetailList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-              res.data.results[0].futureNewPolicyDeclaredAmount
-            );
+            this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
             this.grandTotalDeclaredAmount =
               res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount =
@@ -103,24 +95,9 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
 
       // On Change Future New Policy Declared Amount with formate
       onChangeFutureNewPolicyDeclaredAmount() {
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          this.futureNewPolicyDeclaredAmount
-        );
         this.addFuturePolicy();
       }
 
-      jumpToMasterPage(n: number) {
-        //console.log(n);
-        this.tabIndex = 1;
-        //this.editMaster(3);
-      }
 
-      // On onEditSummary
-      onEditSummary1(institution: string, policyNo: string) {
-        this.tabIndex = 2;
-        this.institution = institution;
-        this.policyNo = policyNo;
-        console.log('institution::', institution);
-        console.log('policyNo::', policyNo);
-      }
+
     }

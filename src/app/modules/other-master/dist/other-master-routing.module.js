@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.OtherMasterRoutingModule = void 0;
+var compliance_mapping_component_1 = require("./compliance-mapping/compliance-mapping.component");
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
@@ -69,6 +70,11 @@ var routes = [
     {
         path: 'jobMaster',
         component: job_master_component_1.JobMasterComponent,
+        data: { title: ':: Delizia-HR :: Home' }
+    },
+    {
+        path: 'complianceMapping',
+        component: compliance_mapping_component_1.ComplianceMappingComponent,
         data: { title: ':: Delizia-HR :: Home' }
     },
 ];

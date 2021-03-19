@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class FileService {
-  public apiUrl = environment.apiBaseUrl;
+  public apiUrl = environment.baseUrl8085;
   constructor(private http: HttpClient) {
   }
 
@@ -33,7 +33,7 @@ export class FileService {
   public uploadMultipleFiles(files: File[], data: any): Observable<any> {
     let formData: any = new FormData();
     console.log('in uploadMultipleFiles Service::', files);
-    for (const file of files) { 
+    for (const file of files) {
       formData.append('licDocuments', file);
     }
     // formData.append('licDocuments', files);
