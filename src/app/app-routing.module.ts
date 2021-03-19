@@ -37,6 +37,9 @@ const routes: Routes = [
   { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
   { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
 
+
+  { path: 'email-sms', loadChildren: './modules/email-sms/email-sms.module#EmailSmsModule' },
+
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 
