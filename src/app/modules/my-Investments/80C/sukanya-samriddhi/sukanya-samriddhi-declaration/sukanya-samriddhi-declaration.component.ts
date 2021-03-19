@@ -161,6 +161,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public canEdit: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -198,6 +199,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
@@ -205,6 +207,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
 
       const data = {
         label: 'All',

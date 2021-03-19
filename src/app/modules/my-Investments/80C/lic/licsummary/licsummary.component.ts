@@ -18,7 +18,7 @@ export class LicsummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: any;
+  // public futureNewPolicyDeclaredAmount: any;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -28,6 +28,7 @@ export class LicsummaryComponent implements OnInit {
   public grandTabStatus: boolean;
   public selectedInstitution: string;
   public tempFlag: boolean;
+  public futureNewPolicyDeclaredAmount = 0;
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -107,9 +108,14 @@ export class LicsummaryComponent implements OnInit {
       }
 
   // On Change Future New Policy Declared Amount with formate
-    onChangeFutureNewPolicyDeclaredAmount() {
-      this.addFuturePolicy();
-      console.log(this.addFuturePolicy)
+    public onChangeFutureNewPolicyDeclaredAmount(): void {
+      console.log('asdsdsd',this.futureNewPolicyDeclaredAmount);
+      // console.log('asdsdsd',parseInt(this.futureNewPolicyDeclaredAmount));
+      if (this.futureNewPolicyDeclaredAmount !== 0.00) {
+       this.addFuturePolicy();
+
+      }
+      //console.log(this.addFuturePolicy)
     }
 
     // keyPressedSpaceNotAllow(event: any) {
@@ -129,7 +135,7 @@ export class LicsummaryComponent implements OnInit {
       let inputChar = String.fromCharCode(event.key);
 
       if (!pattern.test(inputChar)) {
-        this.futureNewPolicyDeclaredAmount = 0;
+        this.futureNewPolicyDeclaredAmount == 0;
         this.tempFlag = true;
         // invalid character, prevent input
         event.preventDefault();
