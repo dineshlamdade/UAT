@@ -12,18 +12,18 @@ import { TaxSavingNabardService } from '../tax-saving-nabard.service';
 export class TaxSavingNabardSummaryComponent implements OnInit {
 
       @Input() institution: string;
-      @Input() policyNo: string;
+      @Input() accountNumber: string;
       @Output() myEvent = new EventEmitter<any>();
 
-      onEditSummary(institution: string, policyNo: string) {
-        this.tabIndex = 2;
+      redirectToDeclarationActual(institution: string, accountNumber: string) {
+        this.tabIndex = 1;
         const data = {
           institution: institution,
-          policyNo: policyNo,
+          accountNumber: accountNumber,
           tabIndex: this.tabIndex,
         };
         this.institution = institution;
-        this.policyNo = policyNo;
+        this.accountNumber = accountNumber;
         //console.log('institution::', institution);
         //console.log('policyNo::', policyNo);
         this.myEvent.emit(data);
@@ -98,18 +98,6 @@ export class TaxSavingNabardSummaryComponent implements OnInit {
         this.addFuturePolicy();
       }
 
-      jumpToMasterPage(n: number) {
-        //console.log(n);
-        this.tabIndex = 1;
-        //this.editMaster(3);
-      }
 
-      // On onEditSummary
-      onEditSummary1(institution: string, policyNo: string) {
-        this.tabIndex = 2;
-        this.institution = institution;
-        this.policyNo = policyNo;
-        console.log('institution::', institution);
-        console.log('policyNo::', policyNo);
-      }
+
     }
