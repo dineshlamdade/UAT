@@ -549,7 +549,6 @@
       </div>
     </div>
   </div>
-
   <div class="row mt-30">
     <div class="col-12">
       <div class="card">
@@ -608,9 +607,14 @@
                     </td>
                     <td>
                       <span>
-                          <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
-                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
-
+                          <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
+                          <input
+                          type="text"
+                          class="form-control align-right"
+                          (change)="changeReceiptAmountFormat()"
+                          [(ngModel)]="receiptAmount"
+                        />
                       </span>
                     </td>
                     <td>
@@ -860,20 +864,15 @@
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td>
-                    <div class="custom_Label_badge">
-                      <button
-                        class="btn bg-color-lightgray text-000"
-                        (click)="docViewer(template3, documentSummary.documentDetailList)"
-
-                      >
-                        Documents
-                      </button>
-                      <span class="Label_badge">{{
-                        documentSummary.documentDetailList.length
-                      }}</span>
-                    </div>
-                  </td>
+                  <!-- <td>
+                    <span
+                      tooltip="{{
+                        documentSummary.receiptAmount | number: '1.2-2'
+                      }}"
+                    >
+                      {{ documentSummary.receiptAmount | number: "1.2-2" }}
+                    </span>
+                  </td> -->
                   <td>
                     <div class="custom_Label_badge">
                       <button
@@ -899,6 +898,9 @@
                       tooltip="Download"
                     ></i>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4256065b1022144fafd0dae0bf389ba0a338bbbe
                     <!-- <div *ngFor="let doc of urlArray" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
@@ -906,8 +908,11 @@
                         provider="google"
                       ></iframe>n
                     </div> -->
+<<<<<<< HEAD
 =======
 >>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df
+=======
+>>>>>>> 4256065b1022144fafd0dae0bf389ba0a338bbbe
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"

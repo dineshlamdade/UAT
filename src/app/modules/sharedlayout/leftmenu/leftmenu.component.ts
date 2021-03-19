@@ -16,6 +16,7 @@ export class LeftmenuComponent implements OnInit {
   public isProjectCollapsed = true;
   public isJobportalCollapsed = true;
 
+  public isPayrollInputsCollapsed = true;
   public isInvestmentCollapsed = true;
   public isOtherCollapsed = true;
   public isEightyCCollapsed = true;
@@ -53,6 +54,9 @@ export class LeftmenuComponent implements OnInit {
 
     if ((this.router.url).includes('payroll')) {
       this.isCollapsed = false;
+    }
+    if ((this.router.url).includes('PayrollInputs')) {
+      this.isPayrollInputsCollapsed = false;
     }
     if ((this.router.url).includes('investment')) {
       this.isInvestmentCollapsed = false;

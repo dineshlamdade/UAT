@@ -88,12 +88,21 @@ export class TokenInterceptorService implements HttpInterceptor {
   }
 
   private addToken(request: HttpRequest<any>, token: string) {
+    //console.log('My token ',token);
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`,
+        'X-Authorization': token,
       },
     });
   }
+  // private addToken(request: HttpRequest<any>, token: string) {
+  //   //console.log('My token ',token);
+  //   return request.clone({
+  //     setHeaders: {
+  //       'X-Authorization': `${token}`,
+  //     },
+  //   });
+  // }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
