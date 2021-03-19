@@ -19,6 +19,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">Code</label>
                             <input type="text" formControlName="establishmentCode" class="form-control"
+                              autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('establishmentCode').status == 'INVALID'}"
                               name="establishmentCode" placeholder="Enter Establishment Code">
                           </div>
@@ -26,7 +27,7 @@
 
                           <div class="col-sm-3">
                             <label class="form-label">Description</label>
-                            <input type="text" formControlName="description" class="form-control"
+                            <input type="text" formControlName="description" class="form-control" autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('description').status == 'INVALID'}"
                               name="description" placeholder="Enter Description">
                           </div>
@@ -37,6 +38,7 @@
                               formControlName="typeOfEstablishment"
                               [ngClass]="{'is-invalid' : form.get('typeOfEstablishment').status == 'INVALID'}"
                               (change)='onSelectTypeOfEstablishment($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let reason of typeOfEstablishmentList" [value]="reason.label">
                                 {{reason.label}}
                               </option>
@@ -50,6 +52,7 @@
                               formControlName="primaryBusinessActivity"
                               [ngClass]="{'is-invalid' : form.get('primaryBusinessActivity').status == 'INVALID'}"
                               (change)='onSelectPrimaryBusinessActivity($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of primaryBusinessActivityList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -67,8 +70,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfSetup"
                                 (bsValueChange)="onBsValueChangeDateOfSetup()" data-provide="datepicker"
-                                data-date-autoclose="true" class="form-control" placeholder="Date of Setup"
-                                bsDatepicker>
+                                [maxDate]="today" data-date-autoclose="true" class="form-control"
+                                placeholder="Date of Setup" bsDatepicker>
                             </div>
                           </div>
 
@@ -78,6 +81,7 @@
                               formControlName="officePremisesOwnership"
                               [ngClass]="{'is-invalid' : form.get('officePremisesOwnership').status == 'INVALID'}"
                               (change)='onSelectOfficePremisesOwnership($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of officePremisesOwnershipList" [value]="issuedBy">
                                 {{issuedBy}}
                               </option>
@@ -90,6 +94,7 @@
                               formControlName="regionMasterId"
                               [ngClass]="{'is-invalid' : form.get('regionMasterId').status == 'INVALID'}"
                               (change)='onSelectRegionMasterId($event.target.value)'>
+                              <option selected value=''>Select </option>
                               <option *ngFor="let issuedBy of regionMasterDetails" [value]="issuedBy.masterId">
                                 {{issuedBy.masterCode}}
                               </option>
@@ -110,7 +115,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">GST No.</label>
                             <input type="text" formControlName="gstNumber" class="form-control" name="gstNumber"
-                              placeholder="Enter GST No.">
+                              autocomplete="off" placeholder="Enter GST No.">
                           </div>
 
 
@@ -131,7 +136,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">LIN No.</label>
                             <input type="text" formControlName="linNumber" class="form-control" name="linNumber"
-                              placeholder="Enter LIN No."
+                              placeholder="Enter LIN No." autocomplete="off"
                               [ngClass]="{'is-invalid' : form.get('linNumber').status == 'INVALID'}">
                           </div>
 
@@ -159,7 +164,7 @@
                           <div class="col-sm-3">
                             <label class="form-label">STPI No.</label>
                             <input type="text" formControlName="stpi" class="form-control" name="stpi"
-                              placeholder="Enter STPI No."
+                              autocomplete="off" placeholder="Enter STPI No."
                               [ngClass]="{'is-invalid' : form.get('stpi').status == 'INVALID'}">
                           </div>
 
@@ -171,7 +176,7 @@
                                 (bsValueChange)="onBsValueChangeStpiIssueDate()" data-provide="datepicker"
                                 data-date-autoclose="true" class="form-control"
                                 [ngClass]="{'is-invalid' : form.get('stpiIssueDate').status == 'INVALID'}"
-                                placeholder="STPI Issue Date" bsDatepicker>
+                                placeholder="STPI Issued Date" bsDatepicker>
                             </div>
                           </div>
                         </div>
@@ -202,29 +207,28 @@
                             <div class="col-sm-3">
                               <label class="form-label"> Address 1</label>
                               <input type="text" formControlName="address1" class="form-control " name="address1"
-                                [ngClass]="{'is-invalid' : form.get('address1').status == 'INVALID'}"
+                                autocomplete="off" [ngClass]="{'is-invalid' : form.get('address1').status == 'INVALID'}"
                                 placeholder="Enter Address 1">
                             </div>
 
                             <div class="col-sm-3">
                               <label class="form-label"> Address 2</label>
                               <input type="text" formControlName="address2" class="form-control " name="address2"
-                                [ngClass]="{'is-invalid' : form.get('address2').status == 'INVALID'}"
-                                placeholder="Enter Address 2">
+                                autocomplete="off" placeholder="Enter Address 2">
                             </div>
 
                             <div class="col-sm-3">
                               <label class="form-label"> Address 3</label>
                               <input type="text" formControlName="address3" class="form-control " name="address3"
-                                [ngClass]="{'is-invalid' : form.get('address3').status == 'INVALID'}"
-                                placeholder="Enter Address 3">
+                                autocomplete="off" placeholder="Enter Address 3">
                             </div>
 
                             <div class="col-sm-3">
                               <label class="form-label">Country</label>
                               <select name="country" id="country" class="form-control"
-                                [ngClass]="{'is-invalid' : form.get('address1').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('country').status == 'INVALID'}"
                                 formControlName="country">
+                                <option selected value=''>Select </option>
 
                                 <option *ngFor="let country of countries" [value]="country">
                                   {{country}}
@@ -244,28 +248,29 @@
                             <div class="col-sm-3">
                               <label class="form-label">PIN</label>
                               <input type="text" class="form-control" placeholder="Enter PIN" minlength="1"
-                                maxlength="6" formControlName="pinCode" pattern="[0-9]{6}"
+                                autocomplete="off" maxlength="6" formControlName="pinCode" pattern="[0-9]{6}"
                                 [ngClass]="{'is-invalid' : form.get('pinCode').status == 'INVALID'}"
+                                (keypress)="keyPress($event)"
                                 (keyup)="checkLocalAddress(); getPermanentAddressFromPIN();">
                             </div>
 
                             <div class="col-sm-3">
                               <label class="form-label">State</label>
                               <input type="text" formControlName="state" class="form-control " name="state"
-                                placeholder="Enter state">
+                                disabled=true placeholder="Enter state">
                             </div>
 
                             <div class="col-sm-3">
                               <label class="form-label">City</label>
-                              <input type="text" formControlName="city" class="form-control " name="city"
-                                placeholder="Enter City">
+                              <input type="text" formControlName="city" class="form-control " name="city" disabled=true
+                                autocomplete="off" placeholder="Enter City">
                             </div>
 
 
                             <div class="col-sm-3">
                               <label class="form-label">Village</label>
                               <input type="text" formControlName="village" class="form-control " name="village"
-                                placeholder="Enter Village">
+                                autocomplete="off" placeholder="Enter Village">
                             </div>
 
                           </div>

@@ -20,13 +20,13 @@ var CompanyRegistrationDetailsService = /** @class */ (function () {
         this._HTTP = _HTTP;
     }
     CompanyRegistrationDetailsService.prototype.postCompanyRegistrationDetails = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8083 + '/companyregistration-master', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8083 + 'companyregistration-master', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     CompanyRegistrationDetailsService.prototype.putCompanyRegistrationDetails = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8083 + '/companyregistration-master', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8083 + 'companyregistration-master', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -36,7 +36,8 @@ var CompanyRegistrationDetailsService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/companymaster/getAllActiveCompanysForRegistration', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companymaster/getAllActiveCompanysForRegistration', { 'headers': headers })
+            // return this._HTTP.get(environment.baseUrl8083 + 'companymaster', { 'headers': headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -46,7 +47,16 @@ var CompanyRegistrationDetailsService = /** @class */ (function () {
             .set('content-type', 'application/json')
             .set('Access-Control-Allow-Origin', '*')
             .set('X-TenantId', 'PaysquareDefault');
-        return this._HTTP.get(environment_1.environment.baseUrl8083 + '/companyregistration-master', { 'headers': headers })
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companyregistration-master', { 'headers': headers })
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    CompanyRegistrationDetailsService.prototype.getCompanyRegistrationIssuedBy = function () {
+        var headers = new http_1.HttpHeaders()
+            .set('content-type', 'application/json')
+            .set('X-TenantId', 'PaysquareDefault');
+        return this._HTTP.get(environment_1.environment.baseUrl8083 + 'companygroupdropdown-master/CompanyRegistrationIssuedBy', { 'headers': headers })
             .pipe(operators_1.map(function (res) {
             return res;
         }));

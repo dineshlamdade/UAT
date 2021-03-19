@@ -150,7 +150,7 @@ export class LanguageDetailComponent implements OnInit {
   }
 
   editLanguageRow(language) {
-
+    window.scrollTo(0, 0);
     this.LanguageEditFlag = true;
     this.LanguageviewFlag = false;
     this.employeeLanguageRequestModel.employeeLanguageinfoId = language.employeeLanguageinfoId;
@@ -281,5 +281,26 @@ export class LanguageDetailComponent implements OnInit {
         }
       })
     }
+  }
+  afterChangeReadValue(){
+    // check that which radio button is selected 
+    if(this.LanguageInfoForm.get('languageRead').value.length>0){
+      this.LanguageInfoForm.get('languageRead').setValue('');
+    }
+    else{}  
+  }
+  afterChangeWriteValue(){
+    // check that which radio button is selected 
+    if(this.LanguageInfoForm.get('languageWrite').value.length>0){
+      this.LanguageInfoForm.get('languageWrite').setValue('');
+    }
+    else{}  
+  }
+  afterChangeSpeakValue(){
+    // check that which radio button is selected 
+    if(this.LanguageInfoForm.get('languageSpeak').value.length>0){
+      this.LanguageInfoForm.get('languageSpeak').setValue('');
+    }
+    else{}  
   }
 }

@@ -16,9 +16,9 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="joiningDate"
+                                                formControlName="joiningDate" 
                                                 [(ngModel)]="JoiningInformationModel.joiningDate"
                                                 (bsValueChange)="assignJoiningDateTo(JoiningInformationModel.joiningDate);
                                                 calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, JoiningInformationModel.joiningDate)"
@@ -36,8 +36,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
-                                                data-provide="datepicker" data-date-autoclose="true"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY'}"
+                                                data-provide="datepicker" data-date-autoclose="true" 
                                                 formControlName="originalHireDate" placement="center"
                                                 [(ngModel)]="JoiningInformationModel.originalHireDate" [maxDate]="today"
                                                 class="form-control" placeholder="  /   /" bsDatepicker>
@@ -52,9 +52,9 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY'}"
                                                 data-provide="datepicker" data-date-autoclose="true"
-                                                formControlName="joiningDateForGratuity" placement="center"
+                                                formControlName="joiningDateForGratuity" placement="center" 
                                                 [(ngModel)]="JoiningInformationModel.joiningDateForGratuity"
                                                 [maxDate]="today" class="form-control" placeholder="  /   /"
                                                 bsDatepicker>
@@ -184,7 +184,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="expectedConfirmationDate" placement="center"
                                                 [(ngModel)]="JoiningInformationModel.expectedConfirmationDate"
@@ -210,7 +210,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY','customTodayClass': 'today' }"
+                                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY'}"
                                                 data-provide="datepicker" data-date-autoclose="true"
                                                 formControlName="confirmationDate" placement="center"
                                                 [(ngModel)]="JoiningInformationModel.confirmationDate"
@@ -266,7 +266,7 @@
                                         class="custom_button custom_btn btn-labeled btn-labeled-left mr-15"
                                         tooltip="Update"><b><i class="fa fa-floppy-o"></i></b>Update</button>
 
-                                    <button type="button" toltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
+                                    <button type="button" *ngIf="!editJoining" toltip="Reset" (click)="resetForm()" [hidden]="viewJoining"
                                         class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left"><b><i
                                                 class="fa fa-refresh" aria-hidden="true"></i></b> Reset</button>
 

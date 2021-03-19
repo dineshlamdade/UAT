@@ -42,7 +42,7 @@ export class SkillsDetailComponent implements OnInit {
   skillEditFlag: boolean = false;
   skillviewFlag: boolean = false;
   confirmationMsg: string;
-  
+  descriptionInvalid:boolean;
 
 
 
@@ -57,7 +57,7 @@ export class SkillsDetailComponent implements OnInit {
     this.SkillInfoForm = this.formBuilder.group({
       skillName: ['', Validators.required],
       skillDescription: ['', Validators.required],
-      proficiency: ['', Validators.required],
+      proficiency: [''],
     });
 
     const empId = localStorage.getItem('employeeMasterId')
@@ -137,7 +137,7 @@ export class SkillsDetailComponent implements OnInit {
   }
 
   editSkillRow(skill) {
-
+    window.scrollTo(0, 0);
     this.skillEditFlag = true;
     this.skillviewFlag = false;
     this.employeeSkillDetailsRequestModel.employeeSkillInfoId = skill.employeeSkillInfoId;
@@ -269,4 +269,23 @@ export class SkillsDetailComponent implements OnInit {
     this.employeeSkillDetailsRequestModel.skillName = '';
     this.SkillInfoForm.get('skillName').setValue('');
   }
+
+  isDescriptionContainsOnlySpecialCharacter(){ 
+     
+    this.descriptionInvalid = false
+    var splChars = "*|,\":<>[]{}`\!';()@&^$#%1234567890 ";
+    for ( var i = 0; i < this.SkillInfoForm.get( 'skillDescription' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.SkillInfoForm.get( 'skillDescription' ).value.charAt( i ) ) != -1 ) {
+        this.descriptionInvalid = true;
+      } else {
+        this.descriptionInvalid = false;
+        break;
+      }
+    }
+    if ( this.descriptionInvalid == true ) {
+      this.SkillInfoForm.get('skillDescription').invalid;
+    }
+  }
+
+
 }

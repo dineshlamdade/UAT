@@ -11,9 +11,9 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 export class PPFSummaryComponent implements OnInit {
 
   @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() policyNumber = new EventEmitter<any>();
+  @Output() accountNo = new EventEmitter<any>();
 
       public summaryGridData: Array<any> = [];
       public tabIndex = 0;
@@ -42,20 +42,29 @@ export class PPFSummaryComponent implements OnInit {
   }
 
 
-  redirectToDeclarationActual(institution: string, policyNo: string, mode: string) {
+  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
     this.tabIndex = 2;
     const data = {
       institution : institution,
-      policyNo : policyNo,
+      accountNumber : accountNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)
     };
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
     //console.log('institution::', institution);
     //console.log('policyNo::', policyNo);
     // console.log('View redirect to declaration',data)
     this.myEvent.emit(data);
+  }
+
+  jumpToMasterPage(accountNumber: string) {
+    this.tabIndex = 1;
+    const accountNo = {
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex
+    };;
+    this.accountNo.emit(accountNo);
   }
 
   // ---------------------Summary ----------------------
@@ -65,7 +74,7 @@ export class PPFSummaryComponent implements OnInit {
           this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+          this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
            console.log(res);
@@ -74,8 +83,6 @@ export class PPFSummaryComponent implements OnInit {
 
     // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
 
         const data = {
             futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
@@ -87,7 +94,7 @@ export class PPFSummaryComponent implements OnInit {
             this.summaryGridData = res.data.results[0].transactionDetailList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureNewPolicyDeclaredAmount);
+            this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
             this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         });
@@ -97,7 +104,7 @@ export class PPFSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
+      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
       this.addFuturePolicy();
     }
 
@@ -107,14 +114,7 @@ export class PPFSummaryComponent implements OnInit {
     //     //this.editMaster(3);
     // }
 
-    jumpToMasterPage(policyNo: string) {
-      this.tabIndex = 1;
-      const data = {
-        number : policyNo,
-        tabIndex : this.tabIndex
-      };;
-      this.policyNumber.emit(data);
-    }
+
 
   // On onEditSummary
     // onEditSummary1(institution: string, policyNo: string) {
