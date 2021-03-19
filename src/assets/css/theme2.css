@@ -966,7 +966,11 @@ strong {
   align-items: center!important;
 }
 
-
+/* Previous Employer */
+.text-center
+{
+  text-align: center!important;
+}
 /* custom text color css end */
 
 

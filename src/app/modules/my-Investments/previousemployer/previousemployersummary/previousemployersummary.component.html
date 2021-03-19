@@ -8,66 +8,58 @@
                     <th scope="col" class="wd-20">Employer Name</th>
                     <th scope="col" class="wd-20">Date of Leaving</th>
                     <th scope="col" class="wd-20">Type of Regime</th>
-                    <th scope="col" class="wd-15">Declared</th>
-                    <th scope="col" class="wd-15">Actual</th>
+                    <th scope="col" class="wd-15">Taxable Income</th>
+                    <th scope="col" class="wd-15">Tax Deducted at Source(TDS)</th>
                     <th scope="col" class="wd-15">Action</th>
                  </tr>
               </thead>
               <tbody>
                  <tr>
+               <tr *ngFor="let previousEmployerSummaryDetail of previousEmployerSummaryDetailList ;  let i = index">
                     <td >
-                       <span ></span>
+                     <span tooltip="{{previousEmployerSummaryDetail.name}}">{{previousEmployerSummaryDetail.name}}</span>                  
                     </td>
-                    <td >
-                    <span>
-                    </span>
+                    <td>
+                    <span tooltip="{{ previousEmployerSummaryDetail.dateOfLeaving | date :'dd-MMM-yyyy' }}">{{previousEmployerSummaryDetail.dateOfLeaving
+                     | date :"dd-MMM-yyyy"}}</span>
                     </td>
                     <td class="wd-20">
+                       <span tooltip="{{previousEmployerSummaryDetail.typeOfRegime}}">{{previousEmployerSummaryDetail.typeOfRegime}}</span>   
+                    </td>
+                    <td class="wd-15 align-right">
                        <span >
+                      <span tooltip="{{previousEmployerSummaryDetail.taxableIncome}}">{{previousEmployerSummaryDetail.taxableIncome}}</span>   
                       
                        </span>
                     </td>
                     <td class="wd-15 align-right">
-                       <span >
-                      
-                       </span>
+                     
+                      <span tooltip="{{previousEmployerSummaryDetail.taxDeductedAtSource}}">{{previousEmployerSummaryDetail.taxDeductedAtSource}}</span>   
+
                     </td>
-                    <td class="wd-15 align-right">
-                       <span >
-                      
-                       </span>
-                    </td>
+               <!--      <td class="wd-10">
+                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                            (click)="redirectToDeclarationActual(previousEmployerSummaryDetail.name,  'edit')"
+                            tooltip="Edit"></i>&nbsp;&nbsp;
+                        <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                            (click)="redirectToDeclarationActual(previousEmployerSummaryDetail.name, 'view')"
+                            tooltip="View"></i>
+                    
+                    </td> -->
                     <td class="wd-10">
-                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                      tooltip="Edit"></i>&nbsp;&nbsp;
-                      <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                      tooltip="View"></i>
-                    </td>
+                     <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                     (click)="redirectToDeclarationActual(previousEmployerSummaryDetail.name,  'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                     <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                     (click)="redirectToDeclarationActual(previousEmployerSummaryDetail.name,  'view')" tooltip="View"></i>
+                   </td>
                  </tr>
                  <tr>
-                    <td colspan="6">
-                       <span class="font-14 font500 align-center text-red">No Data
-                       Available</span>
-                    </td>
+                  <tr *ngIf="!previousEmployerSummaryDetailList?.length">
+                     <td colspan="6">
+                         <span class="font-14 font500 align-center text-red">No Data
+                             Available</span>
+                     </td>
                  </tr>
-              
-         <!--         <tr class="table-light-color">
-                    <td colspan="3" class="align-right font700">Grand Total &nbsp;<span class="Letterbadge">C</span> = &nbsp;
-                      <span class="Letterbadge">A</span> + &nbsp;<span class="Letterbadge"> B
-                       </span>
-                    </td>
-                    <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{grandTotalDeclaredAmount | number:'1.2-2'}}">
-                       {{grandTotalDeclaredAmount | number:'1.2-2'}}
-                       </span>
-                    </td>
-                    <td class="align-right">
-                       <span class="padding-right-12" tooltip="{{grandTotalActualAmount | number:'1.2-2'}}">
-                       {{grandTotalActualAmount | number:'1.2-2'}}
-                       </span>
-                    </td>
-                    <td></td>
-                 </tr> -->
               </tbody>
            </table>
         </div>

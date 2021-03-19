@@ -351,7 +351,7 @@
                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" 
                        data-provide="datepicker"
                         data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker 
-                                            
+                        (bsValueChange)="rentDetails()"               
                         [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.fromDate.errors }">
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.fromDate.errors" class="invalid-feedback">
                         <div *ngIf="landRentDetailForm.fromDate.errors.required">From Date is mandatory</div>
