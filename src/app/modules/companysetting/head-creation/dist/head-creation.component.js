@@ -13,10 +13,10 @@ exports.HeadCreationComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var sweetalert2_1 = require("sweetalert2");
 var HeadCreationComponent = /** @class */ (function () {
-    function HeadCreationComponent(formBuilder, headCreationService, document) {
+    function HeadCreationComponent(formBuilder, alertService, headCreationService, document) {
         this.formBuilder = formBuilder;
+        this.alertService = alertService;
         this.headCreationService = headCreationService;
         this.document = document;
         this.NatureList = [];
@@ -32,7 +32,7 @@ var HeadCreationComponent = /** @class */ (function () {
         this.TypeList = [
             { label: 'House Rental', value: 'House Rental' },
             { label: 'Basic Salary', value: 'Basic Salary' },
-            { label: 'Dearness Allowance', value: 'Dearness Allowance' },
+            { label: 'Dearness Allowance', value: 'Dearness Allowance' }
         ];
     }
     HeadCreationComponent.prototype.ngOnInit = function () {
@@ -84,12 +84,12 @@ var HeadCreationComponent = /** @class */ (function () {
         var addHeadCreation = Object.assign({}, this.HeadCreationForm.value);
         if (addHeadCreation.id == undefined || addHeadCreation.id == 0) {
             this.headCreationService.AddHeadCreation(addHeadCreation).subscribe(function (res) {
-                _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllHeadCreation();
                 _this.HeadCreationForm.reset();
                 _this.HeadCreationForm.patchValue({ isStatutory: '0' });
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
         // else{
@@ -130,65 +130,6 @@ var HeadCreationComponent = /** @class */ (function () {
         // this.notificationForm.patchValue({ scheduleTime: this.CurrentTime });
         // }
     };
-    HeadCreationComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    HeadCreationComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    HeadCreationComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    HeadCreationComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    HeadCreationComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
     HeadCreationComponent = __decorate([
         core_1.Component({
             selector: 'app-head-creation',
@@ -196,7 +137,7 @@ var HeadCreationComponent = /** @class */ (function () {
             styleUrls: ['./head-creation.component.scss'],
             encapsulation: core_1.ViewEncapsulation.None
         }),
-        __param(2, core_1.Inject(common_1.DOCUMENT))
+        __param(3, core_1.Inject(common_1.DOCUMENT))
     ], HeadCreationComponent);
     return HeadCreationComponent;
 }());

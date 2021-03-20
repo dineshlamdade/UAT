@@ -9,7 +9,6 @@ exports.__esModule = true;
 exports.PayrollHeadGroupCreationComponent = exports.headDetail = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var sweetalert2_1 = require("sweetalert2");
 var headDetail = /** @class */ (function () {
     function headDetail() {
     }
@@ -17,11 +16,12 @@ var headDetail = /** @class */ (function () {
 }());
 exports.headDetail = headDetail;
 var PayrollHeadGroupCreationComponent = /** @class */ (function () {
-    function PayrollHeadGroupCreationComponent(modalService, datepipe, formBuilder, companySettingsService) {
+    function PayrollHeadGroupCreationComponent(modalService, datepipe, formBuilder, companySettingsService, alertService) {
         this.modalService = modalService;
         this.datepipe = datepipe;
         this.formBuilder = formBuilder;
         this.companySettingsService = companySettingsService;
+        this.alertService = alertService;
         this.AttributeSelectionList = [];
         this.PayrollHeadGroupList = [];
         this.sourceProducts = [];
@@ -216,7 +216,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         // this.CycleupdateFlag1=false;
         this.companySettingsService.DeletePayrollHeadGroup(id)
             .subscribe(function (response) {
-            _this.sweetalertMasterSuccess("Success..!!", response.status.message);
+            _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllPayrollHeadGroup();
             _this.AttributeCreationForm.reset();
             // this.targetProducts=[];
@@ -507,12 +507,12 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
                 _this.targetProducts = [];
                 _this.viewCancelButton = false;
                 _this.viewupdateButton = false;
-                _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllPayrollHeadGroup();
                 _this.hidevalue = false;
                 _this.AttributeCreationForm.reset();
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
     };
@@ -670,10 +670,10 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         }
         this.companySettingsService.AddAttributeAssignment(addData)
             .subscribe(function (res) {
-            _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+            _this.alertService.sweetalertMasterSuccess(res.status.message, '');
             // this.todisabletodate=true;
         }, function (error) {
-            _this.sweetalertError(error["error"]["status"]["message"]);
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
         this.ServicesList = [];
         this.AttributeCreationForm.reset();
@@ -791,13 +791,13 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             this.companySettingsService.AddPayrollHeadGroup(addAttributeCreation).subscribe(function (res) {
                 addAttributeCreation.headMasters = [];
                 _this.targetProducts = [];
-                _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllPayrollHeadGroup();
                 _this.getAllHeadCreation();
                 //this.hidevalue=false;
                 _this.AttributeCreationForm.reset();
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
         else {
@@ -883,79 +883,6 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         //     template,
         //     Object.assign({}, { class: 'gray modal-xl' })
         // );
-    };
-    //************* */
-    //   UploadModal22(){
-    //   return new Promise((resolve, reject) => {
-    //     this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById(283).subscribe(res => {
-    //
-    //       this.AttGroupList =res.data.results[0];//[0].attributeMasters;
-    //     if (this.AttGroupList.length == 0 )
-    //        reject('nodata');
-    //        else
-    //        resolve('gotdata');
-    //     });
-    //   });
-    // }
-    //********* */
-    PayrollHeadGroupCreationComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    PayrollHeadGroupCreationComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    PayrollHeadGroupCreationComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    PayrollHeadGroupCreationComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    PayrollHeadGroupCreationComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
     };
     PayrollHeadGroupCreationComponent = __decorate([
         core_1.Component({

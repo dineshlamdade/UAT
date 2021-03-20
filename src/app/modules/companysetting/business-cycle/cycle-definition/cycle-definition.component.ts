@@ -307,6 +307,13 @@ export class CycleDefinitionComponent implements OnInit {
         //  this.BusinessYearform.reset();
       } );
   }
+  keyPressedSpaceNotAllow( event: any ) {
+    const pattern = /[ ]/;
+    let inputChar = String.fromCharCode( event.charCode );
+    if ( pattern.test( inputChar ) ) {
+      event.preventDefault();
+    }
+  }
 
 
 

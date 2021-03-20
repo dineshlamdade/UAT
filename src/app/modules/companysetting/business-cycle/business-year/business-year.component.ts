@@ -1,14 +1,7 @@
 
-import { Component, OnInit, ViewChild, TemplateRef, Inject, HostListener, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DatePipe, DOCUMENT } from '@angular/common';
-//import { AlertServiceService } from 'src/app/core/services/alert-service.service';
-import { HttpClient } from '@angular/common/http';
-//import { AlertServiceService } from './src/app/core/services/alert-service.service';
-
-
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CompanySettingsService } from '../../company-settings.service';
 import { saveBusinessYear } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
@@ -66,8 +59,6 @@ export class BusinessYearComponent implements OnInit {
       fromDate: new FormControl( '', Validators.required ),
       toDate: new FormControl( '', Validators.required ),
       businessYear: new FormControl( '', Validators.required ),
-
-
     } );
     this.getAllBusinessyear();
   }
@@ -75,8 +66,6 @@ export class BusinessYearComponent implements OnInit {
   addBusinessYear(): void {
 
     let addBusinessYear: saveBusinessYear = Object.assign( {}, this.BusinessYearform.value );
-
-    // if (addBusinessYear.id == undefined || addBusinessYear.id == 0) {
     if ( this.editedRecordIndexId == 0 ) {
       delete addBusinessYear.id;
       addBusinessYear.fromDate = this.datepipe.transform( addBusinessYear.fromDate, 'dd-MMM' );
@@ -94,8 +83,6 @@ export class BusinessYearComponent implements OnInit {
         } );
     }
     else {
-
-      //Update BusinessYear service
       addBusinessYear.fromDate = this.datepipe.transform( addBusinessYear.fromDate, "dd-MMM" );
       addBusinessYear.toDate = this.datepipe.transform( addBusinessYear.toDate, "dd-MMM" );
       addBusinessYear.description = this.BusinessYearform.get( 'description' ).value;
@@ -149,22 +136,9 @@ export class BusinessYearComponent implements OnInit {
         this.BusinessYearform.reset();
       } );
   }
-  onChangeFromDate() {
-    const from = this.datepipe.transform( this.BusinessYearform.get( 'fromDate' ).value, 'yyyy-MM-dd' );
-    this.today = new Date( from );
-  }
 
-  OnDateChange( event ): void {
-
-
-    // this.minDate1 = event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
-    // this.minDate = event.getTime();
-    //    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) {
-    //       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });
-    //     }
-
-  }
   ResetBusiness(): void {
+    this.editedRecordIndexId = 0;
     this.BusinessYearform.reset();
     this.BusinessYearform.enable();
     this.updateFlag = false;
@@ -181,9 +155,6 @@ export class BusinessYearComponent implements OnInit {
     this.companySetttingService.GetBusinessYearById( id )
       .subscribe( response => { //: saveBusinessYear[]
         console.log( response );
-
-
-
         this.BusinessYearform.patchValue( { id: response.data.results[0].businessYearDefinitionId } );
         this.BusinessYearform.patchValue( { description: response.data.results[0].description } );
         this.BusinessYearform.patchValue( { fromDate: response.data.results[0].fromDate } );
@@ -193,6 +164,4 @@ export class BusinessYearComponent implements OnInit {
       } );
     this.BusinessYearform.get( 'description' ).disable();
   }
-
-
 }

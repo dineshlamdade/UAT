@@ -383,20 +383,20 @@ export class CycleCreationComponent implements OnInit {
 
   CreateMoreCycleforNextYear() {
 
-    const addCycleCreation: saveCycleCreation = Object.assign( {}, this.CycleCreationForm.value );
-    addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
-    addCycleCreation.businessYear = this.BusinessYearformorecycle;
+    // const addCycleCreation: saveCycleCreation = Object.assign( {}, this.CycleCreationForm.value );
+    // addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
+    // addCycleCreation.businessYear = this.BusinessYearformorecycle;
 
-    this.companySetttingService.AddCycleCreation( addCycleCreation ).subscribe( ( res: any ) => {
+    // this.companySetttingService.AddCycleCreation( addCycleCreation ).subscribe( ( res: any ) => {
 
-      // this.sweetalertMasterSuccess( "Success..!!", res.status.message );
-      this.getAllCycleCreation();
-      this.CycleCreationForm.reset();
-    },
-      ( error: any ) => {
-        //  this.sweetalertError( error["error"]["status"]["message"] );
-        // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
-      } );
+    //   // this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+    //   this.getAllCycleCreation();
+    //   this.CycleCreationForm.reset();
+    // },
+    //   ( error: any ) => {
+    //     //  this.sweetalertError( error["error"]["status"]["message"] );
+    //     // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
+    //   } );
   }
   getBussinessyear( bussinessyear: number, businessCycleDefinitionid ): void {
     ;

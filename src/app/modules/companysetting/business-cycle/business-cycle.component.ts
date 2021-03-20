@@ -50,30 +50,15 @@ export class BusinessCycleComponent implements OnInit {
   enableCheckbox: number;
   enableCheckboxFlag: number;
   enableCheckboxFlag3: boolean;
-  addRow1: boolean;
-  addRow2: number;
-  previousEmployeName: Array<any> = [];
+
   totalDeclaredAmount: any;
   totalActualAmount: any;
   futureNewPolicyDeclaredAmount: number;
-  grandTotalDeclaredAmount: number;
-  grandTotalActualAmount: number;
-  grandDeclarationTotal: number;
-  grandActualTotal: number;
-  grandRejectedTotal: number;
-  grandApprovedTotal: number;
-  grandTabStatus: boolean;
   isCheckAll: boolean;
   isDisabled: boolean;
   enableSelectAll: boolean;
-
-
-
-  ////// ---------service
-  // declarationService: DeclarationService;
   displayUploadFile = false;
   uploadedFiles: any[] = [];
-  // msgs2: Message[];
   date3: Date;
   loaded = 0;
   selectedFiles: FileList;
@@ -82,34 +67,19 @@ export class BusinessCycleComponent implements OnInit {
   receiptAmount: number;
   receiptDate: Date;
   selectedInstitution: string;
-  // policyDuplicate: string;
-  //-------------------------------------------------------------------------
-  //sumDeclared: any;
   enableCheckboxFlag2: any;
   greaterDateValidations: boolean;
-  //minDate: Date;
-  //financialYearStart: Date;
   windowScrolled: boolean;
-  // ---------------------------Bharati----------------------------------
   @ViewChild( 'template2' ) template2: TemplateRef<any>;
 
   activeFrequencyList: Array<any> = [];
   BusinessYear: Array<any> = [];
-  ServicesList: Array<any> = [];
-  //ServicesList: serviceDetails[];
-  CycleDefinitionList: Array<any> = [];
-  CycleCreationList: Array<any> = [];
-  CycleCreationList1: Array<any> = [];
-  CycleDefinitionByid: Array<any> = [];
+
+
+
   previewCycleList: Array<any> = [];
-  //tableData: any =[];
-  serviceName = [];
-  //selectedLevel;
-  minDate: Date = new Date();
 
 
-  //selectedItems=[];
-  // selectedItems:serviceDetails[];
 
 
   BusinessYearform: FormGroup;
@@ -160,46 +130,8 @@ export class BusinessCycleComponent implements OnInit {
 
 
   constructor(
-    private formBuilder: FormBuilder,
-    private alertService: AlertServiceService,
+    private formBuilder: FormBuilder ) {
 
-    private datePipe: DatePipe,
-
-    private http: HttpClient,
-
-    public datepipe: DatePipe,
-    private companySetttingService: CompanySettingsService,
-    private modalService: BsModalService ) {
-
-    // this.BusinessYearform = this.formBuilder.group( {
-    //   id: new FormControl( null, ),
-    //   description: new FormControl( '', Validators.required ),
-    //   fromDate: new FormControl( '', Validators.required ),
-    //   toDate: new FormControl( '', Validators.required ),
-
-    // } );
-
-    this.ServicesList = [];
-
-
-
-    // this.CycleCreationForm = this.formBuilder.group( {
-    //   id: new FormControl( null, Validators.required ),
-    //   fromDate: new FormControl( null, Validators.required ),
-    //   toDate: new FormControl( '', Validators.required ),
-    // } );
-
-    // this.cycelCreationForm = this.formBuilder.group( {
-    //   id: new FormControl( null, ),
-    //   businessCycleDefinitionId: new FormControl( '', Validators.required ),
-    //   businessYear: new FormControl( '', Validators.required ),
-    // } );
-
-
-
-
-
-    this.grandTabStatus = false;
     this.isCheckAll = false;
     this.isDisabled = true;
     this.enableSelectAll = false;
@@ -235,74 +167,8 @@ export class BusinessCycleComponent implements OnInit {
 
 
 
-    this.getAllCycleDefinition();
-    // this.getAllCycleCreation();
-    // this.getAllCycleCreationList();
-
-    // getAllServices(): void {
-
-
-
-
-    // this.dropdownSettings = {
-    //   singleSelection: false,
-    //   idField: 'id',
-    //   textField: 'label',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   itemsShowLimit: 2,
-    //   allowSearchFilter: true
-    // };
-
-    this.enableAddRow = 0;
-    this.enableCheckboxFlag = 1;
-    this.enableCheckboxFlag3 = false;
-    // this.declarationService = new DeclarationService();
-
-    // Business Financial Year API Call
-    // this.Service.getBusinessFinancialYear().subscribe(res => {
-    //   this.financialYearStart = res.data.results[0].fromDate;
-    // });
-
-    // Family Member List API call
-    // this.Service.getFamilyInfo().subscribe(res => {
-    //   this.familyMemberGroup = res.data.results;
-    //   res.data.results.forEach(element => {
-    //     const obj = {
-    //       label: element.familyMemberName,
-    //       value: element.familyMemberName,
-    //     };
-    //     this.familyMemberName.push(obj);
-    //   });
-    // });
-
-    // Summary get Call on Page Load
-    // this.Service.getEightyCSummary().subscribe(res => {
-    //   //console.log(res.data);
-    //   this.summaryGridData = res.data.results[0].licMasterList;
-    //   this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-    //   this.totalActualAmount = res.data.results[0].totalActualAmount;
-    //   this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-    //   this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-    //   this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-    // });
-
-    // this.Service.getpreviousEmployeName().subscribe(res => {
-    //   console.log(res);
-    //   if (!res.data.results[0]) {
-    //     return;
-    //   }
-    //   res.data.results.forEach(element => {
-    //     const obj = {
-    //       label: element,
-    //       value: element,
-    //     };
-    //     this.previousEmployeName.push(obj);
-    //   });
-    // });
-
-
   }
+
 
 
 
@@ -366,16 +232,16 @@ export class BusinessCycleComponent implements OnInit {
   //     "active": true
   // },
 
-  getAllCycleDefinition(): void {
-    this.CycleDefinitionList = [];
-    this.companySetttingService.getAllCycleDefinition().subscribe( res => {
+  // getAllCycleDefinition(): void {
+  //   this.CycleDefinitionList = [];
+  //   this.companySetttingService.getAllCycleDefinition().subscribe( res => {
 
-      this.CycleDefinitionList = res.data.results;
+  //     this.CycleDefinitionList = res.data.results;
 
-      console.log( 'cycle creation res', this.CycleDefinitionList )
+  //     console.log( 'cycle creation res', this.CycleDefinitionList )
 
-    } );
-  }
+  //   } );
+  // }
 
 
   //   "createdBy": null,
@@ -510,24 +376,24 @@ export class BusinessCycleComponent implements OnInit {
 
 
 
-  CreateMoreCycleforNextYear() {
+  // CreateMoreCycleforNextYear() {
 
-    const addCycleCreation: saveCycleCreation = Object.assign( {}, this.cycelCreationForm.value );
-    addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
-    addCycleCreation.businessYear = this.BusinessYearformorecycle;
-    //  if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
-    this.companySetttingService.AddCycleCreation( addCycleCreation ).subscribe( ( res: any ) => {
+  //   const addCycleCreation: saveCycleCreation = Object.assign( {}, this.cycelCreationForm.value );
+  //   addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
+  //   addCycleCreation.businessYear = this.BusinessYearformorecycle;
+  //   //  if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
+  //   this.companySetttingService.AddCycleCreation( addCycleCreation ).subscribe( ( res: any ) => {
 
-      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-      //  this.getAllCycleCreation();
-      this.cycelCreationForm.reset();
-    },
-      ( error: any ) => {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+  //     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+  //     //  this.getAllCycleCreation();
+  //     this.cycelCreationForm.reset();
+  //   },
+  //     ( error: any ) => {
+  //       this.alertService.sweetalertError( error["error"]["status"]["message"] );
 
-      } );
+  //     } );
 
-  }
+  // }
 
   // getPhonesFormControls(): AbstractControl[] {
   //   return ( <FormArray>this.form1.get( 'Description' ) ).controls,
@@ -562,10 +428,7 @@ export class BusinessCycleComponent implements OnInit {
     container.setViewMode( 'month' );
   }
 
-  summaryPage() {
-    this.getAllCycleDefinition();
 
-  }
 
 
   // jumpToMasterPage( n: number ) {
@@ -575,12 +438,12 @@ export class BusinessCycleComponent implements OnInit {
   // }
 
   declarationPage() {
-    this.tabIndex = 2;
+    //  this.tabIndex = 2;
     //  this.transactionInstitutionNames = [];
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
     //console.log(data);
     //   this.transactionInstitutionNames.push( data );
     //console.log(this.transactionInstitutionNames);
@@ -633,51 +496,51 @@ export class BusinessCycleComponent implements OnInit {
 
   // Post Master Page Data API call
   addMaster( formData: any, formDirective: FormGroupDirective ): void {
-    console.log( 'in add master' );
-    if ( this.BusinessYearform.invalid ) {
-      return;
-    }
+    // console.log( 'in add master' );
+    // if ( this.BusinessYearform.invalid ) {
+    //   return;
+    // }
 
-    const startDate = this.BusinessYearform.value.startDate;
-    const endDate = this.BusinessYearform.value.endDate;
+    // const startDate = this.BusinessYearform.value.startDate;
+    // const endDate = this.BusinessYearform.value.endDate;
 
-    if ( ( startDate > endDate ) && ( endDate !== null ) ) {
-      this.greaterDateValidations = true;
-      return;
-    } else {
-      this.greaterDateValidations = false;
-    }
+    // if ( ( startDate > endDate ) && ( endDate !== null ) ) {
+    //   this.greaterDateValidations = true;
+    //   return;
+    // } else {
+    //   this.greaterDateValidations = false;
+    // }
 
-    const start = this.datePipe.transform( this.BusinessYearform.get( 'fromDate' ).value, 'dd-MMM' );
-    const end = this.datePipe.transform( this.BusinessYearform.get( 'toDate' ).value, 'dd-MMM' );
-    const data = this.BusinessYearform.getRawValue();
+    // const start = this.datePipe.transform( this.BusinessYearform.get( 'fromDate' ).value, 'dd-MMM' );
+    // const end = this.datePipe.transform( this.BusinessYearform.get( 'toDate' ).value, 'dd-MMM' );
+    // const data = this.BusinessYearform.getRawValue();
 
-    data.fromDate = start;
-    data.toDate = end;
-    delete data.id;
-    data.businessYearDefinitionId = this.editedRecordIndexId;
-    // data.premiumAmount = data.premiumAmount.toString().replace(',', "");
-    console.log( JSON.stringify( data ) );
+    // data.fromDate = start;
+    // data.toDate = end;
+    // delete data.id;
+    // data.businessYearDefinitionId = this.editedRecordIndexId;
+    // // data.premiumAmount = data.premiumAmount.toString().replace(',', "");
+    // console.log( JSON.stringify( data ) );
 
-    this.companySetttingService.UpdateBusinessYear( data ).subscribe( res => {
-      //console.log(res);
-      if ( res.data.results.length > 0 ) {
-        res.data.results.forEach( element => {
-          element.startDate = new Date( element.startDate );
-          element.endDate = new Date( element.endDate );
-        } );
-        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-      } else {
-        this.alertService.sweetalertWarning( res.status.messsage );
-      }
-    } );
+    // this.companySetttingService.UpdateBusinessYear( data ).subscribe( res => {
+    //   //console.log(res);
+    //   if ( res.data.results.length > 0 ) {
+    //     res.data.results.forEach( element => {
+    //       element.startDate = new Date( element.startDate );
+    //       element.endDate = new Date( element.endDate );
+    //     } );
+    //     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+    //   } else {
+    //     this.alertService.sweetalertWarning( res.status.messsage );
+    //   }
+    // } );
 
-    this.Index = -1;
-    //console.log(this.form.getRawValue());
-    formDirective.resetForm();
-    this.BusinessYearform.reset();
+    // this.Index = -1;
+    // //console.log(this.form.getRawValue());
+    // formDirective.resetForm();
+    // this.BusinessYearform.reset();
 
-    this.showUpdateButton = false;
+    // this.showUpdateButton = false;
 
   }
 
@@ -770,37 +633,37 @@ export class BusinessCycleComponent implements OnInit {
   //   // this.resetAll();
   // }
 
-  // ON select to check input boxex
-  onSelectUpload( data: any, event: { target: { checked: any; }; }, i: number, j: number, item ) {
-    const checked = event.target.checked;
-    if ( checked ) {
-      this.uploadGridData.push( data.licTransactionId );
-    } else {
-      const index = this.uploadGridData.indexOf( data.licTransactionId );
-      this.uploadGridData.splice( index, 1 );
-    }
-    if ( this.uploadGridData.length ) {
-      this.enableCheckboxFlag3 = true;
-      this.enableCheckboxFlag2 = item.institutionName;
-    } else {
-      this.enableCheckboxFlag3 = false;
-      this.enableCheckboxFlag2 = null;
-    }
-    console.log( this.uploadGridData );
-    console.log( this.uploadGridData.length );
-    console.log( item.lictransactionList.length );
+  // // ON select to check input boxex
+  // onSelectUpload( data: any, event: { target: { checked: any; }; }, i: number, j: number, item ) {
+  //   const checked = event.target.checked;
+  //   if ( checked ) {
+  //     this.uploadGridData.push( data.licTransactionId );
+  //   } else {
+  //     const index = this.uploadGridData.indexOf( data.licTransactionId );
+  //     this.uploadGridData.splice( index, 1 );
+  //   }
+  //   if ( this.uploadGridData.length ) {
+  //     this.enableCheckboxFlag3 = true;
+  //     this.enableCheckboxFlag2 = item.institutionName;
+  //   } else {
+  //     this.enableCheckboxFlag3 = false;
+  //     this.enableCheckboxFlag2 = null;
+  //   }
+  //   console.log( this.uploadGridData );
+  //   console.log( this.uploadGridData.length );
+  //   console.log( item.lictransactionList.length );
 
-    if ( this.uploadGridData.length == item.lictransactionList.length ) {
-      this.isCheckAll = true;
-      this.enableSelectAll = true;
-      this.enableCheckboxFlag2 = item.institutionName;
-    } else {
-      this.isCheckAll = false;
-      this.enableSelectAll = false;
-      this.enableCheckboxFlag2 = null;
-      this.uploadGridData = [];
-    }
-  }
+  //   if ( this.uploadGridData.length == item.lictransactionList.length ) {
+  //     this.isCheckAll = true;
+  //     this.enableSelectAll = true;
+  //     this.enableCheckboxFlag2 = item.institutionName;
+  //   } else {
+  //     this.isCheckAll = false;
+  //     this.enableSelectAll = false;
+  //     this.enableCheckboxFlag2 = null;
+  //     this.uploadGridData = [];
+  //   }
+  // }
 
 
   // To Check / Uncheck All  Checkboxes
@@ -926,32 +789,32 @@ export class BusinessCycleComponent implements OnInit {
   // }
 
 
-  UploadModal( template: TemplateRef<any> ) {
-    this.modalRef = this.modalService.show(
-      template,
-      Object.assign( {}, { class: 'gray modal-md' } )
-    );
-  }
+  // UploadModal( template: TemplateRef<any> ) {
+  //   this.modalRef = this.modalService.show(
+  //     template,
+  //     Object.assign( {}, { class: 'gray modal-md' } )
+  //   );
+  // }
 
-  UploadModal1( template: TemplateRef<any> ) {
-    this.modalRef = this.modalService.show(
-      template,
-      Object.assign( {}, { class: 'gray modal-md' } )
-    );
-  }
+  // UploadModal1( template: TemplateRef<any> ) {
+  //   this.modalRef = this.modalService.show(
+  //     template,
+  //     Object.assign( {}, { class: 'gray modal-md' } )
+  //   );
+  // }
 
 
-  UploadModalYesNo( template: TemplateRef<any> ) {
-    this.modalRef1 = this.modalService.show(
-      template,
-      Object.assign( {}, { class: 'gray modal-md' } )
-    );
-  }
-  UploadModal2( template: TemplateRef<any> ) {
-    this.modalRef = this.modalService.show(
-      template,
-      Object.assign( {}, { class: 'gray modal-xl' } )
-    );
-  }
+  // UploadModalYesNo( template: TemplateRef<any> ) {
+  //   this.modalRef1 = this.modalService.show(
+  //     template,
+  //     Object.assign( {}, { class: 'gray modal-md' } )
+  //   );
+  // }
+  // UploadModal2( template: TemplateRef<any> ) {
+  //   this.modalRef = this.modalService.show(
+  //     template,
+  //     Object.assign( {}, { class: 'gray modal-xl' } )
+  //   );
+  // }
 }
 

@@ -55,7 +55,6 @@ var BusinessYearComponent = /** @class */ (function () {
     BusinessYearComponent.prototype.addBusinessYear = function () {
         var _this = this;
         var addBusinessYear = Object.assign({}, this.BusinessYearform.value);
-        // if (addBusinessYear.id == undefined || addBusinessYear.id == 0) {
         if (this.editedRecordIndexId == 0) {
             delete addBusinessYear.id;
             addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, 'dd-MMM');
@@ -70,7 +69,6 @@ var BusinessYearComponent = /** @class */ (function () {
             });
         }
         else {
-            //Update BusinessYear service
             addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
             addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
             addBusinessYear.description = this.BusinessYearform.get('description').value;
@@ -118,18 +116,8 @@ var BusinessYearComponent = /** @class */ (function () {
             _this.BusinessYearform.reset();
         });
     };
-    BusinessYearComponent.prototype.onChangeFromDate = function () {
-        var from = this.datepipe.transform(this.BusinessYearform.get('fromDate').value, 'yyyy-MM-dd');
-        this.today = new Date(from);
-    };
-    BusinessYearComponent.prototype.OnDateChange = function (event) {
-        // this.minDate1 = event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
-        // this.minDate = event.getTime();
-        //    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) {
-        //       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });
-        //     }
-    };
     BusinessYearComponent.prototype.ResetBusiness = function () {
+        this.editedRecordIndexId = 0;
         this.BusinessYearform.reset();
         this.BusinessYearform.enable();
         this.updateFlag = false;

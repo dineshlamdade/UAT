@@ -4,7 +4,10 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { DatePipe } from '@angular/common';
 
 import Swal from 'sweetalert2';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
+
+
 
 import { headDetailPHG, SaveAttributeAssignment, SavePHG, UpdateflagCycleCreation, UpdateflagCycleCreationPHG } from '../model/business-cycle-model';
 
@@ -75,6 +78,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     private datepipe: DatePipe,
     private formBuilder: FormBuilder,
     private companySettingsService: CompanySettingsService,
+    private alertService: AlertServiceService,
   ) { }
 
 
@@ -285,7 +289,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.companySettingsService.DeletePayrollHeadGroup( id )
       .subscribe( response => { //: saveBusinessYear[]
 
-        this.sweetalertMasterSuccess( "Success..!!", response.status.message )
+        this.alertService.sweetalertMasterSuccess( response.status.message, '' )
         this.getAllPayrollHeadGroup();
         this.AttributeCreationForm.reset();
         // this.targetProducts=[];
@@ -648,13 +652,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         this.targetProducts = [];
         this.viewCancelButton = false;
         this.viewupdateButton = false;
-        this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllPayrollHeadGroup();
         this.hidevalue = false;
         this.AttributeCreationForm.reset();
       },
         ( error: any ) => {
-          this.sweetalertError( error["error"]["status"]["message"] );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
   }
@@ -843,11 +847,11 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.companySettingsService.AddAttributeAssignment( addData )
       .subscribe( ( res: any ) => {
 
-        this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         // this.todisabletodate=true;
       },
         ( error: any ) => {
-          this.sweetalertError( error["error"]["status"]["message"] );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     this.ServicesList = [];
     this.AttributeCreationForm.reset();
@@ -988,14 +992,14 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
         addAttributeCreation.headMasters = [];
         this.targetProducts = [];
-        this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllPayrollHeadGroup();
         this.getAllHeadCreation();
         //this.hidevalue=false;
         this.AttributeCreationForm.reset();
       },
         ( error: any ) => {
-          this.sweetalertError( error["error"]["status"]["message"] );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
     else {
@@ -1134,68 +1138,68 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   //********* */
 
 
-  sweetalert7( message: any ) {
-    Swal.fire( {
-      text: message,
-    } )
-  }
+  // sweetalert7( message: any ) {
+  //   Swal.fire( {
+  //     text: message,
+  //   } )
+  // }
 
-  sweetalertWarning( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      background: '#e68a00',
-      icon: 'warning',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
+  // sweetalertWarning( message: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     background: '#e68a00',
+  //     icon: 'warning',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
 
-  sweetalertInfo( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'info',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
+  // sweetalertInfo( message: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'info',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
 
-  sweetalertMasterSuccess( message: any, text: any ) {
-    Swal.fire( {
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
+  // sweetalertMasterSuccess( message: any, text: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     text: text,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'success',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
 
-  sweetalertError( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
+  // sweetalertError( message: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'error',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
 
 }

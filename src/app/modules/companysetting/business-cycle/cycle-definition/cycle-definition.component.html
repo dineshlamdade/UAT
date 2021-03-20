@@ -8,8 +8,9 @@
 
         <div class="col-sm-6 col-md-3">
           <label class="form-label">Cycle Definition</label>
-          <input type="text" [ngClass]="{'is-invalid' : cycleDefinitionForm.get('cycleName').status == 'INVALID'}"
-            [readonly]="!disabled" formControlName="cycleName" class="form-control"
+          <input type="text" [readonly]="!disabled" formControlName="cycleName" class="form-control"
+            (keypress)="keyPressedSpaceNotAllow($event)"
+            [ngClass]="{'is-invalid' : cycleDefinitionForm.get('cycleName').status == 'INVALID'}"
             placeholder="Enter Cycle Definition">
         </div>
 
@@ -19,10 +20,10 @@
           <select placeholder="select" name="businessYearDefinitionId" id="businessYearDefinitionId"
             class="form-control  " formControlName="businessYearDefinitionId"
             [ngClass]="{'is-invalid' : cycleDefinitionForm.get('businessYearDefinitionId').status == 'INVALID'}">
+            <option selected value=''>Select </option>
             <option *ngFor="let businessYearList of BusinessyearList"
               [value]="businessYearList.businessYearDefinitionId">
               {{businessYearList.yearDefinition}}
-              <!-- {{businessYearList.businessYearDefinitionId}} -->
             </option>
           </select>
         </div>
@@ -33,6 +34,7 @@
             (change)="onChangeFrequencyFromCycleDefinition($event.target.value);" class="form-control  "
             formControlName="frequencyMasterId"
             [ngClass]="{'is-invalid' : cycleDefinitionForm.get('frequencyMasterId').status == 'INVALID'}">
+            <option selected value=''>Select </option>
             <option *ngFor="let activeFrequency of activeFrequencyList" [value]="activeFrequency.id">
               {{activeFrequency.name}}
             </option>
@@ -41,14 +43,16 @@
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
           <label class="form-label">Add Days</label>
-          <input type="number" [min]=1 formControlName="addDays" class="form-control" placeholder="Enter Days">
+          <input type="number" formControlName="addDays" class="form-control" placeholder="Enter Days">
         </div>
 
 
         <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
           [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
           <label class="form-label">Services</label>
-          <select name="services" id="services" class="form-control  " formControlName="services">
+          <select name="services" id="services" class="form-control  " formControlName="services"
+            [ngClass]="{'is-invalid' : cycleDefinitionForm.get('services').status == 'INVALID'}">
+            <option selected value=''>Select </option>
             <option *ngFor="let Services of serviceNameDropDownList" [value]="Services.serviceName">
               {{Services.serviceName}}
             </option>
@@ -103,7 +107,7 @@
       <div class="col-12">
         <div class="card">
           <div class="mb-0">
-            <h3 class="font-14 text-purple font-bold">Summary2</h3>
+            <h3 class="font-14 text-purple font-bold">Summary</h3>
           </div>
           <div class="">
             <div class="table-responsive Custom_Table">

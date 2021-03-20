@@ -11,19 +11,8 @@ var core_1 = require("@angular/core");
 var BusinessCycleComponent = /** @class */ (function () {
     //template2:TemplateRef<any>;
     //template2: ElementRef;
-    function BusinessCycleComponent(formBuilder, alertService, datePipe, http, datepipe, companySetttingService, modalService) {
-        // this.BusinessYearform = this.formBuilder.group( {
-        //   id: new FormControl( null, ),
-        //   description: new FormControl( '', Validators.required ),
-        //   fromDate: new FormControl( '', Validators.required ),
-        //   toDate: new FormControl( '', Validators.required ),
+    function BusinessCycleComponent(formBuilder) {
         this.formBuilder = formBuilder;
-        this.alertService = alertService;
-        this.datePipe = datePipe;
-        this.http = http;
-        this.datepipe = datepipe;
-        this.companySetttingService = companySetttingService;
-        this.modalService = modalService;
         this.today = new Date();
         this.editedRecordIndexId = 0;
         // summaryGridData: Array<any> = [];
@@ -40,25 +29,12 @@ var BusinessCycleComponent = /** @class */ (function () {
         //transactionInstitutionNames: Array<any> = [];
         this.familyMemberName = [];
         this.tabIndex = 0;
-        this.previousEmployeName = [];
-        ////// ---------service
-        // declarationService: DeclarationService;
         this.displayUploadFile = false;
         this.uploadedFiles = [];
         this.loaded = 0;
         this.activeFrequencyList = [];
         this.BusinessYear = [];
-        this.ServicesList = [];
-        //ServicesList: serviceDetails[];
-        this.CycleDefinitionList = [];
-        this.CycleCreationList = [];
-        this.CycleCreationList1 = [];
-        this.CycleDefinitionByid = [];
         this.previewCycleList = [];
-        //tableData: any =[];
-        this.serviceName = [];
-        //selectedLevel;
-        this.minDate = new Date();
         this.id = 0;
         this.CycleupdateFlag1 = false;
         this.disabled = true;
@@ -68,19 +44,6 @@ var BusinessCycleComponent = /** @class */ (function () {
         //businessCycleList=[];
         this.businessCycleList = [];
         this.data = [];
-        // } );
-        this.ServicesList = [];
-        // this.CycleCreationForm = this.formBuilder.group( {
-        //   id: new FormControl( null, Validators.required ),
-        //   fromDate: new FormControl( null, Validators.required ),
-        //   toDate: new FormControl( '', Validators.required ),
-        // } );
-        // this.cycelCreationForm = this.formBuilder.group( {
-        //   id: new FormControl( null, ),
-        //   businessCycleDefinitionId: new FormControl( '', Validators.required ),
-        //   businessYear: new FormControl( '', Validators.required ),
-        // } );
-        this.grandTabStatus = false;
         this.isCheckAll = false;
         this.isDisabled = true;
         this.enableSelectAll = false;
@@ -105,61 +68,6 @@ var BusinessCycleComponent = /** @class */ (function () {
     BusinessCycleComponent.prototype.ngOnInit = function () {
         this.myDateValue = new Date();
         this.bsConfig = Object.assign({}, { containerClass: 'theme-green custom' });
-        this.getAllCycleDefinition();
-        // this.getAllCycleCreation();
-        // this.getAllCycleCreationList();
-        // getAllServices(): void {
-        // this.dropdownSettings = {
-        //   singleSelection: false,
-        //   idField: 'id',
-        //   textField: 'label',
-        //   selectAllText: 'Select All',
-        //   unSelectAllText: 'UnSelect All',
-        //   itemsShowLimit: 2,
-        //   allowSearchFilter: true
-        // };
-        this.enableAddRow = 0;
-        this.enableCheckboxFlag = 1;
-        this.enableCheckboxFlag3 = false;
-        // this.declarationService = new DeclarationService();
-        // Business Financial Year API Call
-        // this.Service.getBusinessFinancialYear().subscribe(res => {
-        //   this.financialYearStart = res.data.results[0].fromDate;
-        // });
-        // Family Member List API call
-        // this.Service.getFamilyInfo().subscribe(res => {
-        //   this.familyMemberGroup = res.data.results;
-        //   res.data.results.forEach(element => {
-        //     const obj = {
-        //       label: element.familyMemberName,
-        //       value: element.familyMemberName,
-        //     };
-        //     this.familyMemberName.push(obj);
-        //   });
-        // });
-        // Summary get Call on Page Load
-        // this.Service.getEightyCSummary().subscribe(res => {
-        //   //console.log(res.data);
-        //   this.summaryGridData = res.data.results[0].licMasterList;
-        //   this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        //   this.totalActualAmount = res.data.results[0].totalActualAmount;
-        //   this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-        //   this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-        //   this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-        // });
-        // this.Service.getpreviousEmployeName().subscribe(res => {
-        //   console.log(res);
-        //   if (!res.data.results[0]) {
-        //     return;
-        //   }
-        //   res.data.results.forEach(element => {
-        //     const obj = {
-        //       label: element,
-        //       value: element,
-        //     };
-        //     this.previousEmployeName.push(obj);
-        //   });
-        // });
     };
     // selected() {
     //   this.selectedFrequency = this.selectedLevel.name;
@@ -205,14 +113,13 @@ var BusinessCycleComponent = /** @class */ (function () {
     //   "serviceName": "serviceName1",
     //     "active": true
     // },
-    BusinessCycleComponent.prototype.getAllCycleDefinition = function () {
-        var _this = this;
-        this.CycleDefinitionList = [];
-        this.companySetttingService.getAllCycleDefinition().subscribe(function (res) {
-            _this.CycleDefinitionList = res.data.results;
-            console.log('cycle creation res', _this.CycleDefinitionList);
-        });
-    };
+    // getAllCycleDefinition(): void {
+    //   this.CycleDefinitionList = [];
+    //   this.companySetttingService.getAllCycleDefinition().subscribe( res => {
+    //     this.CycleDefinitionList = res.data.results;
+    //     console.log( 'cycle creation res', this.CycleDefinitionList )
+    //   } );
+    // }
     //   "createdBy": null,
     //     "createDateTime": null,
     //       "lastModifiedBy": null,
@@ -307,20 +214,20 @@ var BusinessCycleComponent = /** @class */ (function () {
         //       //  this.sweetalertError(error["error"]["status"]["message"]);
         //     });
     };
-    BusinessCycleComponent.prototype.CreateMoreCycleforNextYear = function () {
-        var _this = this;
-        var addCycleCreation = Object.assign({}, this.cycelCreationForm.value);
-        addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
-        addCycleCreation.businessYear = this.BusinessYearformorecycle;
-        //  if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
-        this.companySetttingService.AddCycleCreation(addCycleCreation).subscribe(function (res) {
-            _this.alertService.sweetalertMasterSuccess(res.status.message, '');
-            //  this.getAllCycleCreation();
-            _this.cycelCreationForm.reset();
-        }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
-        });
-    };
+    // CreateMoreCycleforNextYear() {
+    //   const addCycleCreation: saveCycleCreation = Object.assign( {}, this.cycelCreationForm.value );
+    //   addCycleCreation.businessCycleDefinitionId = this.businessCycleDefinitionIdforMoreCycle;
+    //   addCycleCreation.businessYear = this.BusinessYearformorecycle;
+    //   //  if ( addCycleCreation.id == undefined || addCycleCreation.id == 0 ) {
+    //   this.companySetttingService.AddCycleCreation( addCycleCreation ).subscribe( ( res: any ) => {
+    //     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+    //     //  this.getAllCycleCreation();
+    //     this.cycelCreationForm.reset();
+    //   },
+    //     ( error: any ) => {
+    //       this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    //     } );
+    // }
     // getPhonesFormControls(): AbstractControl[] {
     //   return ( <FormArray>this.form1.get( 'Description' ) ).controls,
     //     ( <FormArray>this.form1.get( 'FromDate' ) ).controls,
@@ -348,21 +255,18 @@ var BusinessCycleComponent = /** @class */ (function () {
         };
         container.setViewMode('month');
     };
-    BusinessCycleComponent.prototype.summaryPage = function () {
-        this.getAllCycleDefinition();
-    };
     // jumpToMasterPage( n: number ) {
     //   console.log( n );
     //   this.tabIndex = 1;
     //   // this.editMaster(3);
     // }
     BusinessCycleComponent.prototype.declarationPage = function () {
-        this.tabIndex = 2;
+        //  this.tabIndex = 2;
         //  this.transactionInstitutionNames = [];
-        var data = {
-            label: 'All',
-            value: 'All'
-        };
+        // const data = {
+        //   label: 'All',
+        //   value: 'All',
+        // };
         //console.log(data);
         //   this.transactionInstitutionNames.push( data );
         //console.log(this.transactionInstitutionNames);
@@ -409,275 +313,44 @@ var BusinessCycleComponent = /** @class */ (function () {
     };
     // Post Master Page Data API call
     BusinessCycleComponent.prototype.addMaster = function (formData, formDirective) {
-        var _this = this;
-        console.log('in add master');
-        if (this.BusinessYearform.invalid) {
-            return;
-        }
-        var startDate = this.BusinessYearform.value.startDate;
-        var endDate = this.BusinessYearform.value.endDate;
-        if ((startDate > endDate) && (endDate !== null)) {
-            this.greaterDateValidations = true;
-            return;
-        }
-        else {
-            this.greaterDateValidations = false;
-        }
-        var start = this.datePipe.transform(this.BusinessYearform.get('fromDate').value, 'dd-MMM');
-        var end = this.datePipe.transform(this.BusinessYearform.get('toDate').value, 'dd-MMM');
-        var data = this.BusinessYearform.getRawValue();
-        data.fromDate = start;
-        data.toDate = end;
-        delete data.id;
-        data.businessYearDefinitionId = this.editedRecordIndexId;
-        // data.premiumAmount = data.premiumAmount.toString().replace(',', "");
-        console.log(JSON.stringify(data));
-        this.companySetttingService.UpdateBusinessYear(data).subscribe(function (res) {
-            //console.log(res);
-            if (res.data.results.length > 0) {
-                res.data.results.forEach(function (element) {
-                    element.startDate = new Date(element.startDate);
-                    element.endDate = new Date(element.endDate);
-                });
-                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
-            }
-            else {
-                _this.alertService.sweetalertWarning(res.status.messsage);
-            }
-        });
-        this.Index = -1;
-        //console.log(this.form.getRawValue());
-        formDirective.resetForm();
-        this.BusinessYearform.reset();
-        this.showUpdateButton = false;
-    };
-    // Calculate annual amount on basis of premium and frquency
-    // calculateAnnualAmount() {
-    //   let installment = this.form.value.premiumAmount;
-    //   installment = installment.toString().replace( ',', "" );
-    //   //console.log(installment);
-    //   if ( !this.form.value.frequencyOfPayment ) {
-    //     installment = 0;
-    //   }
-    //   if ( this.form.value.frequencyOfPayment === 'Monthly' ) {
-    //     installment = installment * 12;
-    //   } else if ( this.form.value.frequencyOfPayment === 'Quarterly' ) {
-    //     installment = installment * 4;
-    //   } else if ( this.form.value.frequencyOfPayment === 'Halfyearly' ) {
-    //     installment = installment * 2;
-    //   } else {
-    //     installment = installment * 1;
-    //   }
-    //   // let formatedPremiumAmount = this.numberFormat.transform( this.form.value.premiumAmount )
-    //   // //console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    //   // this.form.get( 'premiumAmount' ).setValue( formatedPremiumAmount );
-    //   // this.form.get( 'annualAmount' ).setValue( installment );
-    // }
-    // Family relationship shown on Policyholder selection
-    // OnSelectionfamilyMemberGroup() {
-    //   const toSelect = this.familyMemberGroup.find(c => c.familyMemberName === this.form.get('policyholdername').value);
-    //   this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    //   this.form.get('relationship').setValue(toSelect.relation);
-    // }
-    // ----------------------------------------------- Declaration --------------------------------------
-    // On declaration page get API call for All Institutions added into Master
-    // declarationPage() {
-    //   // this.tabIndex = 2;
-    //   // this.transactionInstitutionNames = [];
-    //   // const data = {
-    //   //   label: 'All',
-    //   //   value: 'All',
-    //   // };
-    //   //console.log(data);
-    //   // this.transactionInstitutionNames.push(data);
-    //   // //console.log(this.transactionInstitutionNames);
-    //   // this.Service.getEightyCDeclarationInstitutions().subscribe(res => {
-    //   //   res.data.results[0].forEach(element => {
-    //   //     const obj = {
-    //   //       label: element,
-    //   //       value: element,
-    //   //     };
-    //   //     this.transactionInstitutionNames.push(obj);
-    //   //   });
-    //   //   //console.log(res);
-    //   // });
-    //   // this.resetAll();
-    //   // this.selectedTransactionInstName('All');
-    // }
-    // On institution selection show all transactions list accordingly all policies
-    // selectedTransactionInstName( institutionName: any ) {
-    //   // const data = institutionName;
-    //   // //console.log(data);
-    //   // this.Service.getTransactionInstName(data).subscribe(res => {
-    //   //   console.log(res);
-    //   //   this.transactionDetail = res.data.results[0].licTransactionDetail;
-    //   //   this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-    //   //   this.grandActualTotal = res.data.results[0].grandActualTotal;
-    //   //   this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-    //   //   this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-    //   //   this.transactionDetail.forEach(element => {
-    //   //     element.lictransactionList.forEach(innerElement => {
-    //   //       if (innerElement.dateOfPayment !== null) {
-    //   //         innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-    //   //       }
-    //   //     });
-    //   //   })
-    //   // });
-    //   // if (institutionName == 'All') {
-    //   //   this.grandTabStatus = true;
-    //   //   this.isDisabled = true;
-    //   // } else {
-    //   //   this.grandTabStatus = false;
-    //   //   this.isDisabled = false;
-    //   // }
-    //   // this.resetAll();
-    // }
-    // ON select to check input boxex
-    BusinessCycleComponent.prototype.onSelectUpload = function (data, event, i, j, item) {
-        var checked = event.target.checked;
-        if (checked) {
-            this.uploadGridData.push(data.licTransactionId);
-        }
-        else {
-            var index = this.uploadGridData.indexOf(data.licTransactionId);
-            this.uploadGridData.splice(index, 1);
-        }
-        if (this.uploadGridData.length) {
-            this.enableCheckboxFlag3 = true;
-            this.enableCheckboxFlag2 = item.institutionName;
-        }
-        else {
-            this.enableCheckboxFlag3 = false;
-            this.enableCheckboxFlag2 = null;
-        }
-        console.log(this.uploadGridData);
-        console.log(this.uploadGridData.length);
-        console.log(item.lictransactionList.length);
-        if (this.uploadGridData.length == item.lictransactionList.length) {
-            this.isCheckAll = true;
-            this.enableSelectAll = true;
-            this.enableCheckboxFlag2 = item.institutionName;
-        }
-        else {
-            this.isCheckAll = false;
-            this.enableSelectAll = false;
-            this.enableCheckboxFlag2 = null;
-            this.uploadGridData = [];
-        }
-    };
-    // To Check / Uncheck All  Checkboxes
-    // checkUncheckAll( item: any ) {
-    //   //console.log('hi...');
-    //   if ( this.isCheckAll ) {
-    //     this.isCheckAll = false;
-    //     this.enableSelectAll = false;
-    //     this.enableCheckboxFlag2 = null;
-    //   } else {
-    //     this.isCheckAll = true;
-    //     this.enableSelectAll = true;
-    //     this.enableCheckboxFlag2 = item.institutionName;
-    //     this.uploadGridData = [];
-    //   }
-    // }
-    // editDeclrationRow(summary: { previousEmployerName: any; declaredAmount: any; dateOfPayment: any; actualAmount: any; }, i: any, j: any) {
-    //   this.declarationService = new DeclarationService(summary);
-    // }
-    // updateDeclrationRow( i: string | number, j: string | number ) {
-    //   this.transactionDetail[j].actualTotal += this.declarationService.actualAmount - this.transactionDetail[j].lictransactionList[i].actualAmount;
-    //   this.transactionDetail[j].lictransactionList[i] = this.declarationService;
-    //   this.declarationService = new DeclarationService();
-    // }
-    // SaveDeclrationRow( j ) {
-    //   if ( !this.declarationService ) {
-    //     return;
-    //   }
-    //   this.transactionDetail[j].declarationTotal += this.declarationService.declaredAmount;
-    //   this.transactionDetail[j].actualTotal += this.declarationService.actualAmount;
-    //   this.grandActualTotal += this.declarationService.actualAmount;
-    //   this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    //   this.transactionDetail[j].lictransactionList.push( this.declarationService );
-    //   this.declarationService = new DeclarationService();
-    // }
-    // submitDeclaration() {
-    //   // this.tabIndex = 0;
-    //   console.log(this.transactionDetail);
-    //   this.tabIndex = 0;
-    //   this.transactionDetail.forEach(element => {
-    //     element.lictransactionList.forEach(element => {
-    //       element.dateOfPayment = this.datePipe.transform(element.dateOfPayment, 'yyyy-MM-dd');
-    //     });
-    //   });
-    //   const data = this.transactionDetail;
-    //   this.Service.postEightyCDeclarationTransaction(data).subscribe(res => {
-    //     console.log(res);
-    //     this.transactionDetail = res.data.results[0].licTransactionDetail;
-    //     this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-    //     this.grandActualTotal = res.data.results[0].grandActualTotal;
-    //     this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-    //     this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-    //     this.transactionDetail.forEach(element => {
-    //       element.lictransactionList.forEach(element => {
-    //         element.dateOfPayment = new Date(element.dateOfPayment);
-    //       });
-    //     });
-    //   });
-    //   this.resetAll();
-    // }
-    // resetAll() {
-    //   this.enableEditRow = this.enablePolicyTable = this.addRow2 = -1;
-    //   this.uploadGridData = [];
-    //   this.enableCheckboxFlag3 = false;
-    //   this.enableCheckboxFlag2 = null;
-    //   this.declarationService = new DeclarationService();
-    // }
-    ///// --------------------------------rahul-------------
-    // UploadFilePopUp() {
-    //   this.displayUploadFile = true;
-    // }
-    // onUpload(event) {
-    //   console.log(event);
-    //   this.currentFileUpload = event.files;
-    //   // for(let file of event.files) {
-    //   //     this.uploadedFiles.push(file);
-    //   // }
-    //   // this.SuccessMessage();
-    //   this.upload();
-    // }
-    // Uploads the file to backend server.
-    // upload() {
-    //   // this.currentFileUpload = this.selectedFiles.item(0);
-    //   const data = {
-    //     licTransactionIDs: this.uploadGridData,
-    //     receiptNumber: this.receiptNumber,
-    //     receiptAmount: this.receiptAmount,
-    //     receiptDate: this.receiptDate,
-    //   };
-    //   this.fileService.uploadSingleFile(this.currentFileUpload, data)
-    //     .pipe(tap(event => {
-    //       if (event.type === HttpEventType.UploadProgress) {
-    //         this.loaded = Math.round(100 * event.loaded / event.total);
-    //       }
-    //     }))
-    //     .subscribe(event => {
-    //       if (event instanceof HttpResponse) {
-    //         // this.snackBar.open('File uploaded successfully!', 'Close', {
-    //         //   duration: 3000
-    //         // });
-    //         this.fileService.fetchFileNames();
-    //       }
-    //     });
-    // }
-    BusinessCycleComponent.prototype.UploadModal = function (template) {
-        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
-    };
-    BusinessCycleComponent.prototype.UploadModal1 = function (template) {
-        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
-    };
-    BusinessCycleComponent.prototype.UploadModalYesNo = function (template) {
-        this.modalRef1 = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
-    };
-    BusinessCycleComponent.prototype.UploadModal2 = function (template) {
-        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-xl' }));
+        // console.log( 'in add master' );
+        // if ( this.BusinessYearform.invalid ) {
+        //   return;
+        // }
+        // const startDate = this.BusinessYearform.value.startDate;
+        // const endDate = this.BusinessYearform.value.endDate;
+        // if ( ( startDate > endDate ) && ( endDate !== null ) ) {
+        //   this.greaterDateValidations = true;
+        //   return;
+        // } else {
+        //   this.greaterDateValidations = false;
+        // }
+        // const start = this.datePipe.transform( this.BusinessYearform.get( 'fromDate' ).value, 'dd-MMM' );
+        // const end = this.datePipe.transform( this.BusinessYearform.get( 'toDate' ).value, 'dd-MMM' );
+        // const data = this.BusinessYearform.getRawValue();
+        // data.fromDate = start;
+        // data.toDate = end;
+        // delete data.id;
+        // data.businessYearDefinitionId = this.editedRecordIndexId;
+        // // data.premiumAmount = data.premiumAmount.toString().replace(',', "");
+        // console.log( JSON.stringify( data ) );
+        // this.companySetttingService.UpdateBusinessYear( data ).subscribe( res => {
+        //   //console.log(res);
+        //   if ( res.data.results.length > 0 ) {
+        //     res.data.results.forEach( element => {
+        //       element.startDate = new Date( element.startDate );
+        //       element.endDate = new Date( element.endDate );
+        //     } );
+        //     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        //   } else {
+        //     this.alertService.sweetalertWarning( res.status.messsage );
+        //   }
+        // } );
+        // this.Index = -1;
+        // //console.log(this.form.getRawValue());
+        // formDirective.resetForm();
+        // this.BusinessYearform.reset();
+        // this.showUpdateButton = false;
     };
     __decorate([
         core_1.ViewChild('template2')

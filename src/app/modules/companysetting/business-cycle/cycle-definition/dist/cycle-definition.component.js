@@ -231,6 +231,13 @@ var CycleDefinitionComponent = /** @class */ (function () {
             //  this.BusinessYearform.reset();
         });
     };
+    CycleDefinitionComponent.prototype.keyPressedSpaceNotAllow = function (event) {
+        var pattern = /[ ]/;
+        var inputChar = String.fromCharCode(event.charCode);
+        if (pattern.test(inputChar)) {
+            event.preventDefault();
+        }
+    };
     __decorate([
         core_1.ViewChild('multiSelect')
     ], CycleDefinitionComponent.prototype, "multiSelect");

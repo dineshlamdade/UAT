@@ -2,8 +2,10 @@ import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import Swal from 'sweetalert2';
 import { SaveHeadCreation } from '../model/business-cycle-model';
+import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
+
+
 
 
 
@@ -24,7 +26,7 @@ export class HeadCreationComponent implements OnInit {
   disabled: boolean = true;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder, private alertService: AlertServiceService,
     private headCreationService: CompanySettingsService,
     @Inject( DOCUMENT ) private document: Document ) {
     this.NatureList = [
@@ -36,8 +38,7 @@ export class HeadCreationComponent implements OnInit {
     this.TypeList = [
       { label: 'House Rental', value: 'House Rental' },
       { label: 'Basic Salary', value: 'Basic Salary' },
-      { label: 'Dearness Allowance', value: 'Dearness Allowance' },
-      // { label: 'HRA Pune', value: 'HRA Pune' },
+      { label: 'Dearness Allowance', value: 'Dearness Allowance' }
     ];
 
   }
@@ -100,13 +101,13 @@ export class HeadCreationComponent implements OnInit {
       this.headCreationService.AddHeadCreation( addHeadCreation ).subscribe( ( res: any ) => {
 
 
-        this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllHeadCreation();
         this.HeadCreationForm.reset();
         this.HeadCreationForm.patchValue( { isStatutory: '0' } );
       },
         ( error: any ) => {
-          this.sweetalertError( error["error"]["status"]["message"] );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
     // else{
@@ -151,71 +152,4 @@ export class HeadCreationComponent implements OnInit {
     // }
 
   }
-
-
-  sweetalert7( message: any ) {
-    Swal.fire( {
-      text: message,
-    } )
-  }
-
-  sweetalertWarning( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      background: '#e68a00',
-      icon: 'warning',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-  sweetalertInfo( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'info',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-  sweetalertMasterSuccess( message: any, text: any ) {
-    Swal.fire( {
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-  sweetalertError( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-
 }
