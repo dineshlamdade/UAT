@@ -142,7 +142,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
     MyInvestmentsRoutingModule,
     PrimeNGModule,
     MyInvestmentsModule,
-    NgMultiSelectDropDownModule
+        NgMultiSelectDropDownModule,
   ],
 
   providers: [ DatePipe, NumberFormatPipe],
