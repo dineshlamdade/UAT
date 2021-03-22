@@ -18,7 +18,7 @@ export class LicsummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: any;
+  // public futureNewPolicyDeclaredAmount: any;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -28,6 +28,7 @@ export class LicsummaryComponent implements OnInit {
   public grandTabStatus: boolean;
   public selectedInstitution: string;
   public tempFlag: boolean;
+  public futureNewPolicyDeclaredAmount = 0;
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();

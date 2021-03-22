@@ -60,7 +60,7 @@
               <td>
 
                 <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  mode="decimal" locale="en-IN" [minFractionDigits]="2"
+                (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  min="0" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                 [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber>
 
               </td>

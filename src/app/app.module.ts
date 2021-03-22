@@ -83,8 +83,8 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     ShortenStringPipe,
 
     SettingsComponent,
-   
-   
+
+
 
 
     //////////////////////////
@@ -95,6 +95,7 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     // PayrollheadgroupcreationComponent,
     ///////////////////////////////////////
   ],
+
   exports: [],
   imports: [
     BrowserModule,
@@ -138,7 +139,7 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     AppRoutingModule,
     DashboardModule,
     MyInvestmentsModule,
-  
+
     EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,
