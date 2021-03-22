@@ -40,15 +40,15 @@ export class PpsummaryComponent implements OnInit {
     // Summary get Call on Page Load
     this.summaryPage();
   }
-  redirectToDeclarationActual(institution: string, policyNo: string, mode: string) {
+  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
     this.tabIndex = 2;
     const data = {
       institution : institution,
-      policyNo : policyNo,
+      accountNumber : accountNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)};
     this.institution = institution;
-    // this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
     this.myEvent.emit(data);
   }
 

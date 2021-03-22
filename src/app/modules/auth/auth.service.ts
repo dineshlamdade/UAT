@@ -21,13 +21,15 @@ private readonly JWT_TOKEN = '%qycutr';
   postLogin(data) {
 
     return this.http.post(this.apiUrl + 'users/login', data);
+   // return this.http.post('http://deliziahruat.paysquare.com:8080/hrms/v1/users/login', data)
     // .pipe(map((res: any) => {
     //   return res;
     // }));
   }
 
   postOTP(data) {
-    return this.http.post(this.apiUrl + 'otp/validate', data)
+     return this.http.post(this.apiUrl + 'otp/validate', data)
+   // return this.http.post('http://deliziahruat.paysquare.com:8080/hrms/v1/otp/validate', data)
     .pipe(map((res: any) => {
       this.doLoginUser(res.data.results[0].token);
       return res;
@@ -83,12 +85,16 @@ private readonly JWT_TOKEN = '%qycutr';
   }
 
   getJwtToken() {
+   // console.log("JWT_TOKEN",sessionStorage.getItem(this.JWT_TOKEN));
     return sessionStorage.getItem(this.JWT_TOKEN);
   }
 
   getprivileges() {
+    
     return jwt_decode(sessionStorage.getItem(this.JWT_TOKEN));
+    
   }
+ 
 
   private doLoginUser(tokens: Tokens) {
    // this.loggedUser = username;

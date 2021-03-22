@@ -1,5 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:src/app/modules/my-Investments/Other/Child Education Allowance/cea/cea.component.spec.ts
+import { CeaComponent } from './cea.component';
+
+describe('CeaComponent', () => {
+  let component: CeaComponent;
+  let fixture: ComponentFixture<CeaComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ CeaComponent ]
+=======
+>>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df
 import { HousingloanComponent } from './housingloan.component';
 
 describe('HousingloanComponent', () => {
@@ -9,12 +23,24 @@ describe('HousingloanComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HousingloanComponent ]
+<<<<<<< HEAD
+=======
+>>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df:src/app/modules/my-Investments/housingloan/housingloan.component.spec.ts
+>>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
+<<<<<<< HEAD
     fixture = TestBed.createComponent(HousingloanComponent);
+=======
+<<<<<<< HEAD:src/app/modules/my-Investments/Other/Child Education Allowance/cea/cea.component.spec.ts
+    fixture = TestBed.createComponent(CeaComponent);
+=======
+    fixture = TestBed.createComponent(HousingloanComponent);
+>>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df:src/app/modules/my-Investments/housingloan/housingloan.component.spec.ts
+>>>>>>> 8344f947721814c7625c8f3732c3fe1e683427df
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

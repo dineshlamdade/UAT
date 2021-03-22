@@ -37,7 +37,7 @@ RUN npm i @babel/compat-data@7.8.0
 
 #RUN npm i @angular-devkit/build-angular@0.901.9
 
-RUN npm run build
+RUN npm run build --prod
 
 #Stage 2
 FROM nginx:alpine
