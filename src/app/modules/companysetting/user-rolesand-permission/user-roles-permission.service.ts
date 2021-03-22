@@ -16,8 +16,19 @@ import { AuthService } from '../../auth/auth.service';
 export class UserRolesPermissionService {
 
   public apiUrl = environment.baseUrl8080;
+  httpOptions: any;
+  headers_object = new HttpHeaders();
+  
+  constructor(private _HTTP: HttpClient,private authservice : AuthService) { 
 
-  constructor(private _HTTP: HttpClient,private authservice : AuthService) { }
+    this.headers_object.append('Content-Type', 'application/json');
+    this.headers_object.append('Access-Control-Allow-Origin', '*');
+    this.headers_object.append('Access-Control-Request-Method', 'GET, POST, PUT, DELETE, OPTIONS');
+    this.httpOptions = 
+    {
+      headers:this.headers_object
+    };
+  }
 
   // getByCompanyGroupMaster() {
 
@@ -69,7 +80,7 @@ export class UserRolesPermissionService {
 
       getAllUserGroupData() {
       let token = this.authservice.getJwtToken()
-      console.log("token::", token);
+      // console.log("token::", token);
        
       //  const setheaders = new HttpHeaders({
       //     'Content-Type': 'application/json',
@@ -95,7 +106,7 @@ export class UserRolesPermissionService {
         //   return res;
         // }));
      
-        return this._HTTP.get<any>( environment.baseUrl8080 +'user-group/getByCompanyGroupId/12' ,{ headers: headerDict})
+        return this._HTTP.get<any>( environment.baseUrl8080 +'user-group/getByCompanyGroupId/12' )
           // .pipe(map((res: any) => {
           //   return res;
           // }));

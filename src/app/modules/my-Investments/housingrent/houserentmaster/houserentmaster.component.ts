@@ -665,9 +665,30 @@ export class HouserentmasterComponent implements OnInit {
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.houseDetailsRentsubmitted = true;
-    // if (this.houseRentform.invalid) {
-    //   return;
-    // }
+
+    if (this.houseRentform.invalid) 
+/*  if (this.houseRentform.invalid &&  this.landLordDetailTableList.length >0 &&
+      this.RentDetailTableList.length >0) */
+     /*  console.log('agreementDetailList', this.agreementDetailsTableList.length); */
+      console.log('landLordDetailTableList', this.landLordDetailTableList.length);
+      console.log('RentDetailTableList', this.RentDetailTableList.length);
+       {
+      return;
+    }
+    
+    if (this.landLordDetailTableList.length >0)
+    {
+      this.alertService.sweetalertWarning(
+      'Please Enter Landlord Details ' );   
+       return;
+    }
+    if( this.RentDetailTableList.length >0)
+    {
+      this.alertService.sweetalertWarning(
+      'Please Enter Rent Details ' );   
+       return;
+    }
+
     /*  const from = this.datePipe.transform(
       this.landRentDetailForm.get('fromDate').value,
       'yyyy-MM-dd'
