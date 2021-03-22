@@ -61,7 +61,12 @@ var BusinessYearComponent = /** @class */ (function () {
             addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, 'dd-MMM');
             console.log(JSON.stringify(addBusinessYear));
             this.companySetttingService.AddBusinessYear(addBusinessYear).subscribe(function (res) {
-                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
+                if (res.status.code == "503") {
+                    _this.alertService.sweetalertError(res.status.message);
+                }
+                else {
+                    _this.alertService.sweetalertMasterSuccess(res.status.message, '');
+                }
                 _this.getAllBusinessyear();
                 _this.BusinessYearform.reset();
             }, function (error) {
@@ -122,6 +127,7 @@ var BusinessYearComponent = /** @class */ (function () {
         this.BusinessYearform.enable();
         this.updateFlag = false;
         this.BusinessYearform.get('description').enable();
+        this.BusinessYearform.get('businessYear').setValue('');
     };
     // http://localhost:8086/hrms/v1/business-year/27
     BusinessYearComponent.prototype.GetBussinessyearById = function (id) {

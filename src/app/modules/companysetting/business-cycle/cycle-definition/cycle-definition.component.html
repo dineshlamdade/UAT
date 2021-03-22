@@ -19,14 +19,24 @@
           <label class="form-label">Business Year</label>
           <select placeholder="select" name="businessYearDefinitionId" id="businessYearDefinitionId"
             class="form-control  " formControlName="businessYearDefinitionId"
+            (change)="onChangeBusinessYear($event.target.value)"
             [ngClass]="{'is-invalid' : cycleDefinitionForm.get('businessYearDefinitionId').status == 'INVALID'}">
             <option selected value=''>Select </option>
             <option *ngFor="let businessYearList of BusinessyearList"
               [value]="businessYearList.businessYearDefinitionId">
-              {{businessYearList.yearDefinition}}
+              {{businessYearList.description}}
             </option>
           </select>
         </div>
+
+        <div class="col-sm-6 col-md-3">
+          <label class="form-label">From Date - To Date</label>
+          <input type="text" [readonly]="!disabled" formControlName="yearDefinition" class="form-control">
+        </div>
+
+
+
+
 
         <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
           <label class="form-label">Frequency</label>
@@ -35,18 +45,24 @@
             formControlName="frequencyMasterId"
             [ngClass]="{'is-invalid' : cycleDefinitionForm.get('frequencyMasterId').status == 'INVALID'}">
             <option selected value=''>Select </option>
-            <option *ngFor="let activeFrequency of activeFrequencyList" [value]="activeFrequency.id">
+            <option *ngFor="let activeFrequency of sortedFrequencyList" [value]="activeFrequency.id">
               {{activeFrequency.name}}
             </option>
           </select>
         </div>
 
         <div class="col-sm-6 col-md-3" *ngIf="isViewAddDays == true">
-          <label class="form-label">Add Days</label>
+          <label class="form-label">Days In Cycle</label>
           <input type="number" formControlName="addDays" class="form-control" placeholder="Enter Days">
         </div>
 
 
+
+
+
+      </div>
+
+      <div class="row">
         <div class="col-sm-6 col-md-3" *ngIf="CycleupdateFlag"
           [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
           <label class="form-label">Services</label>
@@ -62,15 +78,16 @@
         <div class="col-sm-6 col-md-3" *ngIf="!CycleupdateFlag">
           <label class="form-label">Services</label>
           <ng-multiselect-dropdown [placeholder]="'None Selected'" #multiSelect style="font-size: small;"
+            [ngClass]="{'is-invalid' : cycleDefinitionForm.get('multiselectServices').status == 'INVALID'}"
             [settings]="dropdownSettings" [data]="serviceNameDropDownList" (onSelect)="onItemSelect($event)"
-            (onSelectAll)="onSelectAll($event)" (onDeSelect)="onItemDeSelect($event)">
+            formControlName="multiselectServices" (onSelectAll)="onSelectAll($event)"
+            (onDeSelect)="onItemDeSelect($event)">
           </ng-multiselect-dropdown>
         </div>
-
-
-
       </div>
+
     </div>
+
   </div>
 
   <div class="row mt-15">
@@ -118,14 +135,27 @@
                     <th scope="col" class="wd-30">Cycle Definition </th>
                     <th scope="col" class="wd-15">Description</th>
                     <th scope="col" class="wd-15">Service Name</th>
-                    <th scope="col" class="wd-15">Business Year</th>
+                    <th colspan="2" scope="col" class="wd-15">Business Year</th>
                     <th scope="col" class="wd-20">Action</th>
 
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+
+                    <th></th>
+                    <th></th>
+
+
+
+
+                    <th scope="col">From Date</th>
+                    <th scope="col">To Date</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let summary of CycleDefinitionList; let i = index">
+                  <tr *ngFor="let summary of CycleDefinitionList ; let i = index">
                     <td class="align-center wd-8">
                       <span>{{i+1}}</span>
                     </td>
@@ -139,9 +169,12 @@
                       <span>{{summary.serviceName}}</span>
                     </td>
                     <td class="wd-15">
-                      <span>{{summary.businessYearDefinition.yearDefinition}} </span>
+                      <span>{{summary.businessYearDefinition.fromDate}} </span>
                     </td>
 
+                    <td class="wd-15">
+                      <span>{{summary.businessYearDefinition.toDate}} </span>
+                    </td>
 
                     <td>
                       <button *ngIf="!summary.isUsed" type="button" class="btn btn-icon" title="Edit"><i

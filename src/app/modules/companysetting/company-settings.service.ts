@@ -5,10 +5,9 @@ import { Observable } from 'rxjs';
 import { SaveAttributeCreation } from '../companysetting/attributecreation/attributecreation.model';
 import { environment } from './../../../environments/environment';
 /// import { SaveAttributeSelection, SavePHG } from './payroll-head-group-creation/payroll-head-group-creation.component';
-import { saveBusinessYear } from '../companysetting/bc/payroll.model';
-import { SaveHeadCreation } from '../companysetting/headcreation/headcreation.model';
+
 import { UpdateflagCycleCreation } from '../companysetting/payrollheadgroupcreation/payrollheadgroupcreation.model';
-import { SaveAttributeSelection, saveCycleDefinition, SavePHG } from './model/business-cycle-model';
+import { SaveAttributeSelection, saveBusinessYear, saveCycleDefinition, SaveHeadCreation, SavePHG } from './model/business-cycle-model';
 
 @Injectable( {
   providedIn: 'root'
@@ -295,7 +294,7 @@ export class CompanySettingsService {
   // get All HeadCreation
   getAllHeadCreation() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-master/global' )
+    return this._HTTP.get( environment.baseUrl8086 + 'head-creation/get' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -304,7 +303,7 @@ export class CompanySettingsService {
   //get HeadCreationById
   GetHeadCreationById( id: number ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-master/global/' + id )
+    return this._HTTP.get( environment.baseUrl8086 + 'head-creation/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -313,7 +312,7 @@ export class CompanySettingsService {
   //add new BusinessYear
   AddHeadCreation( data: SaveHeadCreation ): Observable<number | {}> {
 
-    return this._HTTP.post( environment.baseUrl8086 + 'payrollhead-master', data )
+    return this._HTTP.post( environment.baseUrl8086 + 'head-creation', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

@@ -10,8 +10,6 @@ exports.CycleCreationComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var CycleCreationComponent = /** @class */ (function () {
-    //template2:TemplateRef<any>;
-    //template2: ElementRef;
     function CycleCreationComponent(modalService, datepipe, companySetttingService, formBuilder, alertService) {
         this.modalService = modalService;
         this.datepipe = datepipe;
@@ -41,57 +39,67 @@ var CycleCreationComponent = /** @class */ (function () {
             { label: '2029', value: '2029' },
             { label: '2030', value: '2030' },
         ];
-        this.today = new Date();
+        // today: any = new Date();
         this.updateFlag = false;
-        this.editedRecordIndexId = 0;
+        // editedRecordIndexId: number = 0;
         this.todisabletodate = false;
-        // summaryGridData: Array<any> = [];
-        // summaryComputationGridDate: any;
-        // masterGridData: Array<any> = [];
-        //paymentDetailGridData: Array<any> = [];
-        this.declarationGridData = [];
-        this.familyMemberGroup = [];
-        this.frequencyOfPayment = [];
-        // BusinessYear: Array<any> = [];
-        this.InstitutionNames = [];
-        this.transactionDetail = [];
-        this.uploadGridData = [];
-        //transactionInstitutionNames: Array<any> = [];
-        this.familyMemberName = [];
-        this.tabIndex = 0;
-        this.previousEmployeName = [];
-        ////// ---------service
-        // declarationService: DeclarationService;
+        // declarationGridData: Array<any> = [];
+        // familyMemberGroup: Array<any> = [];
+        //frequencyOfPayment: Array<any> = [];
+        //InstitutionNames: Array<any> = [];
+        // transactionDetail: Array<any> = [];
+        // uploadGridData: Array<any> = [];
+        // familyMemberName: Array<any> = [];
+        //Index: number;
+        // showUpdateButton: boolean;
+        // tabIndex = 0;
+        // radioSelected: string;
+        //familyRelationSame: boolean;
+        //enableEditRow: number;
+        //enableAddRow: number;
+        // enablePolicyTable: number;
+        //enableCheckbox: number;
+        //enableCheckboxFlag: number;
+        // enableCheckboxFlag3: boolean;
+        // addRow1: boolean;
+        // addRow2: number;
+        //previousEmployeName: Array<any> = [];
+        //totalDeclaredAmount: any;
+        //totalActualAmount: any;
+        //futureNewPolicyDeclaredAmount: number;
+        //grandTotalDeclaredAmount: number;
+        //grandTotalActualAmount: number;
+        // grandDeclarationTotal: number;
+        //grandActualTotal: number;
+        //  grandRejectedTotal: number;
+        //  grandApprovedTotal: number;
+        // grandTabStatus: boolean;
+        //  isCheckAll: boolean;
+        // isDisabled: boolean;
+        // enableSelectAll: boolean;
         this.displayUploadFile = false;
-        this.uploadedFiles = [];
-        this.loaded = 0;
-        this.activeFrequencyList = [];
-        this.ServicesList = [];
-        //ServicesList: serviceDetails[];
+        // activeFrequencyList: Array<any> = [];
+        // ServicesList: Array<any> = [];
         this.CycleDefinitionList = [];
         this.CycleCreationList = [];
         this.CycleCreationList1 = [];
         this.CycleDefinitionByid = [];
         this.previewCycleList = [];
-        //tableData: any =[];
         this.serviceName = [];
-        //selectedLevel;
         this.minDate = new Date();
         this.id = 0;
         this.CycleupdateFlag1 = false;
         this.disabled = true;
-        //demoData: Array<getchapter> = [];
         this.editRowID = '';
         this.adjustedToNextCycle = false;
-        //businessCycleList=[];
         this.businessCycleList = [];
         this.data = [];
     }
     CycleCreationComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.cycleCreationForm = this.formBuilder.group({
-            businessCycleDefinitionId: new forms_1.FormControl(null, forms_1.Validators.required),
-            businessYear: new forms_1.FormControl(null, forms_1.Validators.required)
+            businessCycleDefinitionId: new forms_1.FormControl('', forms_1.Validators.required),
+            businessYear: new forms_1.FormControl('', forms_1.Validators.required)
         });
         this.companySetttingService.getAllCycleDefinition().subscribe(function (res) {
             _this.CycleDefinitionList = res.data.results;

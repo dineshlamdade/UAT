@@ -72,9 +72,15 @@ export class BusinessYearComponent implements OnInit {
       addBusinessYear.toDate = this.datepipe.transform( addBusinessYear.toDate, 'dd-MMM' );
       console.log( JSON.stringify( addBusinessYear ) );
       this.companySetttingService.AddBusinessYear( addBusinessYear ).subscribe( ( res: any ) => {
+        if ( res.status.code == "503" ) {
+          this.alertService.sweetalertError( res.status.message );
+        } else {
+          this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+
+        }
 
 
-        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+
         this.getAllBusinessyear();
         this.BusinessYearform.reset();
       },
@@ -144,6 +150,7 @@ export class BusinessYearComponent implements OnInit {
     this.updateFlag = false;
 
     this.BusinessYearform.get( 'description' ).enable();
+    this.BusinessYearform.get( 'businessYear' ).setValue( '' );
   }
   // http://localhost:8086/hrms/v1/business-year/27
   GetBussinessyearById( id: number ): void {

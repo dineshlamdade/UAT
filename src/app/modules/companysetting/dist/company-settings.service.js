@@ -230,21 +230,21 @@ var CompanySettingsService = /** @class */ (function () {
     };
     // get All HeadCreation
     CompanySettingsService.prototype.getAllHeadCreation = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'payrollhead-master/global')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'head-creation/get')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //get HeadCreationById
     CompanySettingsService.prototype.GetHeadCreationById = function (id) {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'payrollhead-master/global/' + id)
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'head-creation/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //add new BusinessYear
     CompanySettingsService.prototype.AddHeadCreation = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'payrollhead-master', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'head-creation', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

@@ -1,24 +1,9 @@
+
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, TemplateRef, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { FormArray, AbstractControl } from '@angular/forms';
-import { DatePipe, DOCUMENT } from '@angular/common';
-import { MyInvestmentsService } from './../../my-Investments/my-Investments.service';
-
-
-import { HttpClient } from '@angular/common/http';
-
-import { FileService } from '../../my-Investments/file.service';
-
-import { NumberFormatPipe } from './../../../core/utility/pipes/NumberFormatPipe';
-
-import Swal from 'sweetalert2';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-/////////////////bharati
-//import { SaveAttributeCreation } from './attributecreation.model';
-import { BsDatepickerConfig, BsDatepickerViewMode } from 'ngx-bootstrap/datepicker';
-import { de } from 'date-fns/locale';
-import { element } from 'protractor';
+import { DOCUMENT } from '@angular/common';
+import { AlertServiceService } from '../../../core/services/alert-service.service';
 
 export class SaveAttributeCreation {
   globalAttributeMasterId: number;
@@ -69,16 +54,8 @@ export class AttributeCreationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private Service: MyInvestmentsService,
-    private datePipe: DatePipe,
-    // private messageService: MessageService,
-    private http: HttpClient,
-    // private notifyService: NotificationsService,
-    public datepipe: DatePipe,
-    private fileService: FileService,
     private attributeCreationService: CompanySettingsService,
-    private numberFormat: NumberFormatPipe,
-    private modalService: BsModalService,
+    private alertService: AlertServiceService,
     @Inject( DOCUMENT ) private document: Document ) {
     this.NatureList = [
       { label: 'L', value: 'L' },
@@ -108,87 +85,25 @@ export class AttributeCreationComponent implements OnInit {
   }
 
 
-  sweetalert7( message: any ) {
-    Swal.fire( {
-      text: message,
-    } )
-  }
 
-  sweetalertWarning( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      background: '#e68a00',
-      icon: 'warning',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-  sweetalertInfo( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'info',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-  sweetalertMasterSuccess( message: any, text: any ) {
-    Swal.fire( {
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
-
-  sweetalertError( message: any ) {
-    Swal.fire( {
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    } )
-  }
   // get All AttributeCreation
   getAllAttributeCreation(): void {
     this.attributeCreationService.getAllAttributeCreation().subscribe( res => {
-      debugger
+
       this.AttributeCreationList = res.data.results;
     } );
   }
 
   // Get Attribute Creation ById
   GetAttributeCreationByIdDisable( id ): void {
-    debugger;
+
     // this.CycleupdateFlag=true;
     // this.CycleupdateFlag1=false;
     this.disabled = false;
     this.viewCancelButton = true;
     this.attributeCreationService.GetAttributeCreationById( id )
       .subscribe( response => {
-        debugger
+
         //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
         this.AttributeCreationForm.patchValue( { code: response.data.results[0].code } );
         this.AttributeCreationForm.patchValue( { description: response.data.results[0].description } );
@@ -223,7 +138,7 @@ export class AttributeCreationComponent implements OnInit {
 
 
   onChangeEvent( event: any ): void {
-    debugger;
+
     this.summons.push( event );
     //this.summons
     // this.newlist.push(this.summons.values)
@@ -236,7 +151,7 @@ export class AttributeCreationComponent implements OnInit {
   }
 
   onStatusChange( event ): void {
-    debugger
+
     this.selectedNature = event.target.value;
     if ( this.selectedNature == 'L' ) {
       this.hidevalue = true;
@@ -256,7 +171,7 @@ export class AttributeCreationComponent implements OnInit {
 
   //add new AttributeCreation
   addAttributeCreation(): void {
-    debugger
+
     const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
     //addAttributeCreation.options=this.summons;
     addAttributeCreation.options = [];
@@ -273,26 +188,26 @@ export class AttributeCreationComponent implements OnInit {
     if ( addAttributeCreation.globalAttributeMasterId == undefined || addAttributeCreation.globalAttributeMasterId == 0 ) {
 
       this.attributeCreationService.AddAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
-        debugger
+
         addAttributeCreation.options = [];
         this.summons = [];
-        this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllAttributeCreation();
         this.hidevalue = false;
         this.AttributeCreationForm.reset();
         //  this.AttributeCreationForm.patchValue({ isStatutory:'0' });
       },
         ( error: any ) => {
-          this.sweetalertError( error["error"]["status"]["message"] );
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
     // else{
-    //     debugger
+    //
     //   //Update BusinessYear service
     //   addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
     //   addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
     //   this.payrollService.UpdateBusinessYear(addBusinessYear.id,addBusinessYear).subscribe((res:any )=> {
-    //   debugger
+    //
     //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
     //   this.getAllBusinessyear();
     //   this.BusinessYearform.reset();

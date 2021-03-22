@@ -42,15 +42,14 @@
         </div>
       </div>
 
-      <!-- // i have added business year hard coded data in below dropdown -->
 
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Business Year</label>
         <select [ngClass]="{'is-invalid' : BusinessYearform.get('businessYear').status == 'INVALID'}"
           name="businessYear" id="businessYear" class="form-control  " formControlName="businessYear">
           <option selected value=''>Select </option>
-          <option *ngFor="let by of BusinessYear" [value]="by.value">
-            {{by.label}}
+          <option *ngFor="let businessYear of BusinessYear" [value]="businessYear.value">
+            {{businessYear.label}}
           </option>
         </select>
       </div>
@@ -65,14 +64,14 @@
           <button type="submit" *ngIf="!updateFlag"
             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"
             [disabled]="BusinessYearform.invalid"
-            [[ngClass]]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}">
+            [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}">
             <b><i class="fa fa-floppy-o"></i></b>
             Save</button>
 
 
 
           <button type="submit" *ngIf="updateFlag"
-            [[ngClass]]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
+            [ngClass]="{'disabled-btn-bg-green' : BusinessYearform.invalid,'btn-bg-green': !BusinessYearform.invalid}"
             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"><b><i
                 class="fa fa-floppy-o"></i></b>
             Update</button>

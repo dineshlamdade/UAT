@@ -1,15 +1,13 @@
 
 import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, ViewChild, TemplateRef, Inject, HostListener, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { DatePipe, DOCUMENT } from '@angular/common';
-import { AlertServiceService } from 'src/app/core/services/alert-service.service';
-import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
 
 
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { saveCycleCreation, saveCycleDefinition, UpdateflagCycleCreation } from '../model/business-cycle-model';
+
 
 
 @Component( {
@@ -27,11 +25,11 @@ export class BusinessCycleComponent implements OnInit {
   // summaryComputationGridDate: any;
   // masterGridData: Array<any> = [];
   //paymentDetailGridData: Array<any> = [];
-  declarationGridData: Array<any> = [];
-  familyMemberGroup: Array<any> = [];
+  //declarationGridData: Array<any> = [];
+  //familyMemberGroup: Array<any> = [];
   frequencyOfPayment: Array<any> = [];
   // BusinessYear: Array<any> = [];
-  InstitutionNames: Array<any> = [];
+  //InstitutionNames: Array<any> = [];
   transactionDetail: Array<any> = [];
   uploadGridData: Array<any> = [];
   //transactionInstitutionNames: Array<any> = [];

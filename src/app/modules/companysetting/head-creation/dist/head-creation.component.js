@@ -24,6 +24,7 @@ var HeadCreationComponent = /** @class */ (function () {
         this.HeadCreationList = [];
         this.viewCancelButton = false;
         this.disabled = true;
+        this.categoryList = [{ value: 'Imbursement', label: 'Imbursement' }, { value: 'Stautatory', label: 'Stautatory' }];
         this.NatureList = [
             { label: 'Earning', value: 'Earning' },
             { label: 'Deduction', value: 'Deduction' },
@@ -38,12 +39,13 @@ var HeadCreationComponent = /** @class */ (function () {
     HeadCreationComponent.prototype.ngOnInit = function () {
         this.HeadCreationForm = this.formBuilder.group({
             id: new forms_1.FormControl(null),
-            standardName: new forms_1.FormControl('', forms_1.Validators.required),
-            description: new forms_1.FormControl('', forms_1.Validators.required),
             shortName: new forms_1.FormControl('', forms_1.Validators.required),
             headNature: new forms_1.FormControl('', forms_1.Validators.required),
-            type: new forms_1.FormControl(''),
-            isStatutory: new forms_1.FormControl(0)
+            standardName: new forms_1.FormControl('', forms_1.Validators.required),
+            description: new forms_1.FormControl('', forms_1.Validators.required),
+            category: new forms_1.FormControl(''),
+            statutory: new forms_1.FormControl('false'),
+            type: new forms_1.FormControl('')
         });
         this.getAllHeadCreation();
     };
@@ -57,37 +59,41 @@ var HeadCreationComponent = /** @class */ (function () {
     // get HeadCreation by Id
     HeadCreationComponent.prototype.GetHeadCreationbyIdDisable = function (id) {
         var _this = this;
-        ;
         // this.CycleupdateFlag=true;
         // this.CycleupdateFlag1=false;
         this.disabled = false;
         this.viewCancelButton = true;
         this.headCreationService.GetHeadCreationById(id)
             .subscribe(function (response) {
-            //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
+            _this.HeadCreationForm.patchValue({ id: response.data.results[0].headMasterId });
             _this.HeadCreationForm.patchValue({ standardName: response.data.results[0].standardName });
             _this.HeadCreationForm.patchValue({ description: response.data.results[0].description });
             _this.HeadCreationForm.patchValue({ shortName: response.data.results[0].shortName });
             _this.HeadCreationForm.patchValue({ headNature: response.data.results[0].headNature });
-            if (response.data.results[0].isStatutory == 1) {
-                _this.HeadCreationForm.patchValue({ isStatutory: '1' });
-            }
-            else {
-                _this.HeadCreationForm.patchValue({ isStatutory: '0' });
-            }
             _this.HeadCreationForm.patchValue({ type: response.data.results[0].type });
+            _this.HeadCreationForm.patchValue({ statutory: (response.data.results[0].statutory).toString() });
+            _this.HeadCreationForm.patchValue({ category: response.data.results[0].category });
+            // if ( response.data.results[0].statutory == 1 ) {
+            //   this.HeadCreationForm.patchValue( { statutory: '1' } );
+            // }
+            // else {
+            //   this.HeadCreationForm.patchValue( { statutory: '0' } );
+            // }
+            // this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
         });
     };
-    //add new HeadCreation
     HeadCreationComponent.prototype.addHeadCreation = function () {
         var _this = this;
         var addHeadCreation = Object.assign({}, this.HeadCreationForm.value);
         if (addHeadCreation.id == undefined || addHeadCreation.id == 0) {
+            // delete addHeadCreation.id;
+            // delete addHeadCreation.type;
+            console.log(JSON.stringify(addHeadCreation));
             this.headCreationService.AddHeadCreation(addHeadCreation).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllHeadCreation();
                 _this.HeadCreationForm.reset();
-                _this.HeadCreationForm.patchValue({ isStatutory: '0' });
+                // this.HeadCreationForm.patchValue( { statutory: '0' } );
             }, function (error) {
                 _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
@@ -114,15 +120,14 @@ var HeadCreationComponent = /** @class */ (function () {
         this.disabled = true;
         this.HeadCreationForm.reset();
         this.viewCancelButton = false;
-        this.HeadCreationForm.patchValue({ isStatutory: '0' });
+        this.HeadCreationForm.patchValue({ statutory: 'false' });
     };
     HeadCreationComponent.prototype.ResetHeadCreation = function () {
         this.HeadCreationForm.reset();
         this.viewCancelButton = false;
-        this.HeadCreationForm.patchValue({ isStatutory: '0' });
+        this.HeadCreationForm.patchValue({ statutory: 'false' });
     };
     HeadCreationComponent.prototype.onChangeEvent = function (event) {
-        ;
         this.Name = event.target.value;
         // if ((this.id == undefined || this.id == '00000000-0000-0000-0000-000000000000')) {
         this.HeadCreationForm.patchValue({ shortName: this.Name });

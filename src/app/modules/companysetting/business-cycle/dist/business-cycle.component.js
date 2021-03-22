@@ -19,11 +19,11 @@ var BusinessCycleComponent = /** @class */ (function () {
         // summaryComputationGridDate: any;
         // masterGridData: Array<any> = [];
         //paymentDetailGridData: Array<any> = [];
-        this.declarationGridData = [];
-        this.familyMemberGroup = [];
+        //declarationGridData: Array<any> = [];
+        //familyMemberGroup: Array<any> = [];
         this.frequencyOfPayment = [];
         // BusinessYear: Array<any> = [];
-        this.InstitutionNames = [];
+        //InstitutionNames: Array<any> = [];
         this.transactionDetail = [];
         this.uploadGridData = [];
         //transactionInstitutionNames: Array<any> = [];

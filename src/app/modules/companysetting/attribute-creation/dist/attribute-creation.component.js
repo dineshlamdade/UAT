@@ -13,7 +13,6 @@ exports.AttributeCreationComponent = exports.SaveAttributeSelection = exports.Sa
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var sweetalert2_1 = require("sweetalert2");
 var SaveAttributeCreation = /** @class */ (function () {
     function SaveAttributeCreation() {
     }
@@ -30,20 +29,10 @@ var AttributeCreationComponent = /** @class */ (function () {
     // TypeList: Array<any> = [];
     // HeadCreationList:Array<any> = [];
     // Name:string;
-    function AttributeCreationComponent(formBuilder, Service, datePipe, 
-    // private messageService: MessageService,
-    http, 
-    // private notifyService: NotificationsService,
-    datepipe, fileService, attributeCreationService, numberFormat, modalService, document) {
+    function AttributeCreationComponent(formBuilder, attributeCreationService, alertService, document) {
         this.formBuilder = formBuilder;
-        this.Service = Service;
-        this.datePipe = datePipe;
-        this.http = http;
-        this.datepipe = datepipe;
-        this.fileService = fileService;
         this.attributeCreationService = attributeCreationService;
-        this.numberFormat = numberFormat;
-        this.modalService = modalService;
+        this.alertService = alertService;
         this.document = document;
         this.AttributeCreationList = [];
         this.NatureList = [];
@@ -74,84 +63,22 @@ var AttributeCreationComponent = /** @class */ (function () {
         });
         this.getAllAttributeCreation();
     };
-    AttributeCreationComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    AttributeCreationComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    AttributeCreationComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    AttributeCreationComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    AttributeCreationComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
     // get All AttributeCreation
     AttributeCreationComponent.prototype.getAllAttributeCreation = function () {
         var _this = this;
         this.attributeCreationService.getAllAttributeCreation().subscribe(function (res) {
-            debugger;
             _this.AttributeCreationList = res.data.results;
         });
     };
     // Get Attribute Creation ById
     AttributeCreationComponent.prototype.GetAttributeCreationByIdDisable = function (id) {
         var _this = this;
-        debugger;
         // this.CycleupdateFlag=true;
         // this.CycleupdateFlag1=false;
         this.disabled = false;
         this.viewCancelButton = true;
         this.attributeCreationService.GetAttributeCreationById(id)
             .subscribe(function (response) {
-            debugger;
             //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
             _this.AttributeCreationForm.patchValue({ code: response.data.results[0].code });
             _this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
@@ -181,7 +108,6 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.summons = [];
     };
     AttributeCreationComponent.prototype.onChangeEvent = function (event) {
-        debugger;
         this.summons.push(event);
         //this.summons
         // this.newlist.push(this.summons.values)
@@ -192,7 +118,6 @@ var AttributeCreationComponent = /** @class */ (function () {
         // }
     };
     AttributeCreationComponent.prototype.onStatusChange = function (event) {
-        debugger;
         this.selectedNature = event.target.value;
         if (this.selectedNature == 'L') {
             this.hidevalue = true;
@@ -212,7 +137,6 @@ var AttributeCreationComponent = /** @class */ (function () {
     //add new AttributeCreation
     AttributeCreationComponent.prototype.addAttributeCreation = function () {
         var _this = this;
-        debugger;
         var addAttributeCreation = Object.assign({});
         //addAttributeCreation.options=this.summons;
         addAttributeCreation.options = [];
@@ -228,25 +152,24 @@ var AttributeCreationComponent = /** @class */ (function () {
         // attributeNature:string;
         if (addAttributeCreation.globalAttributeMasterId == undefined || addAttributeCreation.globalAttributeMasterId == 0) {
             this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe(function (res) {
-                debugger;
                 addAttributeCreation.options = [];
                 _this.summons = [];
-                _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllAttributeCreation();
                 _this.hidevalue = false;
                 _this.AttributeCreationForm.reset();
                 //  this.AttributeCreationForm.patchValue({ isStatutory:'0' });
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
         // else{
-        //     debugger
+        //
         //   //Update BusinessYear service
         //   addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
         //   addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
         //   this.payrollService.UpdateBusinessYear(addBusinessYear.id,addBusinessYear).subscribe((res:any )=> {
-        //   debugger
+        //
         //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
         //   this.getAllBusinessyear();
         //   this.BusinessYearform.reset();
@@ -280,7 +203,7 @@ var AttributeCreationComponent = /** @class */ (function () {
             styleUrls: ['./attribute-creation.component.scss'],
             encapsulation: core_1.ViewEncapsulation.None
         }),
-        __param(9, core_1.Inject(common_1.DOCUMENT))
+        __param(3, core_1.Inject(common_1.DOCUMENT))
     ], AttributeCreationComponent);
     return AttributeCreationComponent;
 }());

@@ -2,8 +2,9 @@ import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import { SaveHeadCreation } from '../model/business-cycle-model';
+
 import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
+import { SaveHeadCreation } from '../model/business-cycle-model';
 
 
 
@@ -24,6 +25,7 @@ export class HeadCreationComponent implements OnInit {
   HeadCreationForm: FormGroup;
   Name: string;
   disabled: boolean = true;
+  categoryList = [{ value: 'Imbursement', label: 'Imbursement' }, { value: 'Stautatory', label: 'Stautatory' }]
 
   constructor(
     private formBuilder: FormBuilder, private alertService: AlertServiceService,
@@ -47,14 +49,14 @@ export class HeadCreationComponent implements OnInit {
 
     this.HeadCreationForm = this.formBuilder.group( {
       id: new FormControl( null ),
-      standardName: new FormControl( '', Validators.required ),
-      description: new FormControl( '', Validators.required ),
       shortName: new FormControl( '', Validators.required ),
       headNature: new FormControl( '', Validators.required ),
+      standardName: new FormControl( '', Validators.required ),
+      description: new FormControl( '', Validators.required ),
+      category: new FormControl( '' ),
+      statutory: new FormControl( 'false' ),
       type: new FormControl( '' ),
-      isStatutory: new FormControl( 0 ),
     } );
-
     this.getAllHeadCreation();
   }
 
@@ -68,7 +70,6 @@ export class HeadCreationComponent implements OnInit {
 
   // get HeadCreation by Id
   GetHeadCreationbyIdDisable( id ): void {
-    ;
     // this.CycleupdateFlag=true;
     // this.CycleupdateFlag1=false;
     this.disabled = false;
@@ -76,35 +77,38 @@ export class HeadCreationComponent implements OnInit {
     this.headCreationService.GetHeadCreationById( id )
       .subscribe( response => {
 
-        //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
+        this.HeadCreationForm.patchValue( { id: response.data.results[0].headMasterId } );
         this.HeadCreationForm.patchValue( { standardName: response.data.results[0].standardName } );
         this.HeadCreationForm.patchValue( { description: response.data.results[0].description } );
         this.HeadCreationForm.patchValue( { shortName: response.data.results[0].shortName } );
         this.HeadCreationForm.patchValue( { headNature: response.data.results[0].headNature } );
-        if ( response.data.results[0].isStatutory == 1 ) {
-          this.HeadCreationForm.patchValue( { isStatutory: '1' } );
-        }
-        else {
-          this.HeadCreationForm.patchValue( { isStatutory: '0' } );
-        }
         this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
+        this.HeadCreationForm.patchValue( { statutory: ( response.data.results[0].statutory ).toString() } );
+        this.HeadCreationForm.patchValue( { category: response.data.results[0].category } );
+
+        // if ( response.data.results[0].statutory == 1 ) {
+        //   this.HeadCreationForm.patchValue( { statutory: '1' } );
+        // }
+        // else {
+        //   this.HeadCreationForm.patchValue( { statutory: '0' } );
+        // }
+        // this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
       } );
 
   }
 
-  //add new HeadCreation
   addHeadCreation(): void {
 
     const addHeadCreation: SaveHeadCreation = Object.assign( {}, this.HeadCreationForm.value );
     if ( addHeadCreation.id == undefined || addHeadCreation.id == 0 ) {
-
+      // delete addHeadCreation.id;
+      // delete addHeadCreation.type;
+      console.log( JSON.stringify( addHeadCreation ) );
       this.headCreationService.AddHeadCreation( addHeadCreation ).subscribe( ( res: any ) => {
-
-
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllHeadCreation();
         this.HeadCreationForm.reset();
-        this.HeadCreationForm.patchValue( { isStatutory: '0' } );
+        // this.HeadCreationForm.patchValue( { statutory: '0' } );
       },
         ( error: any ) => {
           this.alertService.sweetalertError( error["error"]["status"]["message"] );
@@ -132,18 +136,17 @@ export class HeadCreationComponent implements OnInit {
     this.disabled = true;
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
-    this.HeadCreationForm.patchValue( { isStatutory: '0' } );
+    this.HeadCreationForm.patchValue( { statutory: 'false' } );
   }
 
   ResetHeadCreation(): void {
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
-    this.HeadCreationForm.patchValue( { isStatutory: '0' } );
+    this.HeadCreationForm.patchValue( { statutory: 'false' } );
   }
 
 
   onChangeEvent( event: any ): void {
-    ;
     this.Name = event.target.value;
     // if ((this.id == undefined || this.id == '00000000-0000-0000-0000-000000000000')) {
     this.HeadCreationForm.patchValue( { shortName: this.Name } );

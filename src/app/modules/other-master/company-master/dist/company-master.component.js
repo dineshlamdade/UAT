@@ -188,10 +188,10 @@ var CompanyMasterComponent = /** @class */ (function () {
         console.log(this.masterGridDataList[i].isContractor);
         this.companyMasterform.patchValue(this.masterGridDataList[i]);
         console.log(this.masterGridDataList[i]);
-        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === _this.masterGridDataList[i].companyGroupCode; });
+        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.companyGroupCode === _this.masterGridDataList[i].companyGroupCode; });
         console.log(this.tempObjForgroupNameScaleStartDate);
         this.companyMasterform.patchValue({
-            companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode
+            companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupName
         });
         this.companyMasterform.controls['endDate'].clearValidators();
         this.companyMasterform.controls['remark'].clearValidators();
@@ -213,10 +213,10 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.showButtonSaveAndReset = false;
         this.companyMasterform.reset();
         this.companyMasterform.patchValue(this.masterGridDataList[i]);
-        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === _this.masterGridDataList[i].companyGroupCode; });
+        this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.companyGroupCode === _this.masterGridDataList[i].companyGroupCode; });
         console.log(this.tempObjForgroupNameScaleStartDate);
         this.companyMasterform.patchValue({
-            companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode
+            companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupName
         });
         // if (this.employeeMasterRequestDTO.isContractor === true) {
         //   // this.companyMasterform.patchValue({
@@ -303,18 +303,15 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.companyGroupMasterService.getCompanyGroupMasterActive().subscribe(function (res) {
             _this.companyGroupCodeList = [];
             _this.groupNameScaleNameStartDateObject = [];
-            var companyGroupcode;
-            var startDate;
-            var scale;
             console.log(res);
             res.data.results.forEach(function (element) {
-                if (element.companyGroupActive == 1) {
+                if (element.companyGroupActive == true) {
                     _this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: false });
                 }
                 else {
                     _this.companyGroupCodeList.push({ name: element.companyGroupCode, disabled: true });
                 }
-                _this.groupNameScaleNameStartDateObject.push({ groupName: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupCode: element.companyGroupCode });
+                _this.groupNameScaleNameStartDateObject.push({ companyGroupCode: element.companyGroupCode, startDate: element.startDate, scale: element.scale, companyGroupName: element.companyGroupName });
             });
         });
     };
@@ -326,7 +323,7 @@ var CompanyMasterComponent = /** @class */ (function () {
         this.selectedImageFileLogo1 = undefined;
         this.selectedImageFileLogo2 = undefined;
         this.selectedImageFileLogo3 = undefined;
-        this.tempObjForgroupNameScaleStartDate = { scale: '', groupName: '', startDate: '', groupName1: '' };
+        this.tempObjForgroupNameScaleStartDate = { scale: '', companyGroupCode: '', startDate: '', companyGroupName: '' };
         this.globalCompanyMasterId = 0;
         this.deactivateRemark();
         this.saveFormValidation();
@@ -712,6 +709,7 @@ var CompanyMasterComponent = /** @class */ (function () {
         ;
     };
     CompanyMasterComponent.prototype.onSelectGroupMaster = function (evt) {
+        console.log(evt);
         if (evt == '') {
             this.tempObjForgroupNameScaleStartDate = null;
             this.companyMasterform.patchValue({
@@ -724,11 +722,11 @@ var CompanyMasterComponent = /** @class */ (function () {
             this.tempObjForgroupNameScaleStartDate = null;
             console.log(evt);
             //  console.log(evt.target.value);
-            this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.groupName === evt; });
+            this.tempObjForgroupNameScaleStartDate = this.groupNameScaleNameStartDateObject.find(function (o) { return o.companyGroupCode === evt; });
             console.log(this.tempObjForgroupNameScaleStartDate);
             this.companyMasterform.patchValue({
                 scale: this.tempObjForgroupNameScaleStartDate.scale,
-                companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupCode,
+                companyGroupCode1: this.tempObjForgroupNameScaleStartDate.companyGroupName,
                 startDate: ''
             });
             this.groupStartDateValidation = new Date(this.tempObjForgroupNameScaleStartDate.startDate);

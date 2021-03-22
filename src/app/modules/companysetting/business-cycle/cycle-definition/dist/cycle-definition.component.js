@@ -28,6 +28,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.serviceNameDropDownList = [];
         this.Multiselectflag = false;
         this.updateFlag = false;
+        this.sortedFrequencyList = [];
     }
     CycleDefinitionComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -38,7 +39,9 @@ var CycleDefinitionComponent = /** @class */ (function () {
             frequencyMasterId: new forms_1.FormControl('', forms_1.Validators.required),
             addDays: new forms_1.FormControl(''),
             // serviceName: new FormControl( '', Validators.required ),
-            services: new forms_1.FormControl('')
+            services: new forms_1.FormControl(''),
+            yearDefinition: new forms_1.FormControl({ value: '', disabled: true }),
+            multiselectServices: new forms_1.FormControl('', forms_1.Validators.required)
         });
         this.dropdownSettings = {
             singleSelection: false,
@@ -66,6 +69,47 @@ var CycleDefinitionComponent = /** @class */ (function () {
         var _this = this;
         this.companySetttingService.getActiveFrequency().subscribe(function (res) {
             _this.activeFrequencyList = res.data.results;
+        }, function (error) {
+        }, function () {
+            // for ( let i = 0; i < this.activeFrequencyList.length; i++ ){
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'daily'; }) !== -1) {
+                console.log('in daily');
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'daily'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'weekly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'weekly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'biweeekly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'biweeekly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'semi-monthly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'semi-monthly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'monthly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'monthly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'quarterly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'quarterly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'half-yearly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'half-yearly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'yearly'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'yearly'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            if (_this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() === 'adhoc'; }) !== -1) {
+                var index = _this.activeFrequencyList.findIndex(function (o) { return o.name.toLowerCase() == 'adhoc'; });
+                _this.sortedFrequencyList.push(_this.activeFrequencyList[index]);
+            }
+            console.log(' this.sortedFrequencyList', _this.sortedFrequencyList);
         });
     };
     //add new cycle-definition & update
@@ -153,6 +197,16 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.CycleupdateFlag = false;
         this.CycleupdateFlag1 = false;
         this.isViewAddDays = false;
+        this.cycleDefinitionForm.patchValue({
+            id: null,
+            cycleName: '',
+            businessYearDefinitionId: '',
+            frequencyMasterId: '',
+            addDays: '',
+            services: ''
+        });
+        this.cycleDefinitionForm.controls['multiselectServices'].setValidators(forms_1.Validators.required);
+        this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
     };
     CycleDefinitionComponent.prototype.GetCycleDefinitionbyIdDisable = function (id) {
         var _this = this;
@@ -179,12 +233,19 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.CycleupdateFlag1 = true;
         this.companySetttingService.GetCycleDefinitionById(id)
             .subscribe(function (response) {
+            console.log('xx');
             _this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
-            _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName });
+            _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName.split('_')[0] });
             _this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
             _this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
             _this.cycleDefinitionForm.patchValue({ services: response.data.results[0].serviceName });
             _this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
+            var index = _this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId; });
+            _this.cycleDefinitionForm.patchValue({
+                yearDefinition: _this.BusinessyearList[index].yearDefinition
+            });
+            _this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
+            _this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
         });
     };
     CycleDefinitionComponent.prototype.resetCycledefinition = function () {
@@ -232,10 +293,24 @@ var CycleDefinitionComponent = /** @class */ (function () {
         });
     };
     CycleDefinitionComponent.prototype.keyPressedSpaceNotAllow = function (event) {
-        var pattern = /[ ]/;
+        var pattern = /[ '_',  ]/;
         var inputChar = String.fromCharCode(event.charCode);
         if (pattern.test(inputChar)) {
             event.preventDefault();
+        }
+    };
+    CycleDefinitionComponent.prototype.onChangeBusinessYear = function (evt) {
+        console.log(evt);
+        if (evt == '') {
+            this.cycleDefinitionForm.patchValue({
+                yearDefinition: ''
+            });
+        }
+        else {
+            var index = this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == evt; });
+            this.cycleDefinitionForm.patchValue({
+                yearDefinition: this.BusinessyearList[index].yearDefinition
+            });
         }
     };
     __decorate([

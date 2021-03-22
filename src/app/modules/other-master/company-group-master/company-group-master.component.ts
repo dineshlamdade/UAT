@@ -337,9 +337,7 @@ export class CompanyGroupMasterComponent implements OnInit {
   }
   onChangeEndDate( evt: any ) {
     console.log( this.form.get( 'endDate' ).value );
-    // console.log(this.endDateModel);
-    //  console.log(evt.target.value);
-    //  console.log(this.form.get('endDate').value);
+
     if ( this.form.get( 'endDate' ).value == '' || this.form.get( 'endDate' ).value == null ) {
       this.form.controls["remark"].clearValidators();
       this.form.controls["remark"].updateValueAndValidity();
@@ -377,18 +375,6 @@ export class CompanyGroupMasterComponent implements OnInit {
   }
   onChangeEngagementEndDate( evt: any ) {
     let endDate12 = this.datePipe.transform( this.form.get( 'endDate' ).value, 'dd-MMM-y' );
-    // debugger
-    // console.log(this.endDate1);
-    // console.log(this.endDate1.nativeElement);
-    // console.log(this.endDate1.nativeElement.value);
-    // if (this.endDate1 !== undefined) {
-    //   this.endDate1.nativeElement.value = this.datePipe.transform(this.endDate1.nativeElement.value, 'dd-MMM-y');
-
-    // }
-    //  console.log(this.endDate1.nativeElement.value);
-    // const endDate = this.datePipe.transform(this.endDateModel, 'yyyy-MM-dd');
-
-
 
     if ( endDate12 == '' || endDate12 == null ) {
       this.form.controls["remark"].clearValidators();
@@ -412,107 +398,13 @@ export class CompanyGroupMasterComponent implements OnInit {
 
       this.form.controls["reasonForExit"].setValidators( [Validators.required] );
       this.form.controls["reasonForExit"].updateValueAndValidity();
-      // this.form.get('companyGroupActive').setValue(true);
-      // this.hideRemarkDiv = false;
+
       this.deactivateRemark();
 
 
 
-
-
-
-
-      // } else {
-      //   this.form.get('companyGroupActive').setValue(false);
-      //   this.hideRemarkDiv = true;
-      //   this.deactivateRemark();
-
-      //
     }
   }
-  // const endDate = this.datePipe.transform(this.form.get('endDate').value, 'dd-MMM-y');
-  // console.log(endDate);
-  // this.form.get('remark').setValidators([Validators.required]);
-  // this.form.get('reasonForExit').setValidators([Validators.required]);
-
-  // console.log(endDate);
-  // if(endDate !== '31-Dec-9999'){
-  //   this.form.get('remark').setValidators([Validators.required]);
-  //   this.form.get('reasonForExit').setValidators([Validators.required]);
-
-  // } else {
-  //   this.form.remark.clearValidators();
-  //   this.form.reasonForExit.clearValidators();
-  // }
-  //  this.form.get['remark'].setValidator([Validators.required]);
-  //  this.form.get['remark'].updateValueAndValidity();
-  //  this.form.get('reasonForExit').setValidator([Validators.required]);
-  //  this.form.get('reasonForExit').updateValueAndValidity();
-
-
-  // sweetalert7(message: any) {
-  //   Swal.fire({
-  //     text: message,
-  //   });
-  // }
-
-  // sweetalertWarning(message: any) {
-  //   Swal.fire({
-  //     title: message,
-  //     showCloseButton: true,
-  //     showCancelButton: false,
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     background: '#e68a00',
-  //     icon: 'warning',
-  //     timer: 15000,
-  //     timerProgressBar: true,
-  //   });
-  // }
-
-  // sweetalertInfo(message: any) {
-  //   Swal.fire({
-  //     title: message,
-  //     showCloseButton: true,
-  //     showCancelButton: false,
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     icon: 'info',
-  //     timer: 15000,
-  //     timerProgressBar: true,
-  //   });
-  // }
-
-  // sweetalertMasterSuccess(message: any, text: any) {
-  //   Swal.fire({
-  //     title: message,
-  //     text: text,
-  //     showCloseButton: true,
-  //     showCancelButton: false,
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     icon: 'success',
-  //     timer: 15000,
-  //     timerProgressBar: true,
-  //   });
-  // }
-
-  // sweetalertError(message: any) {
-  //   Swal.fire({
-  //     title: message,
-  //     showCloseButton: true,
-  //     showCancelButton: false,
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     icon: 'error',
-  //     timer: 15000,
-  //     timerProgressBar: true,
-  //   });
-  // }
   deactivateRemark() {
 
     if ( this.form.get( 'companyGroupActive' ).value === false ) {

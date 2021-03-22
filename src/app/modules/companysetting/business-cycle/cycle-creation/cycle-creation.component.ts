@@ -1,16 +1,11 @@
 
-import { Component, OnInit, ViewChild, TemplateRef, Inject, HostListener, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { DatePipe, DOCUMENT } from '@angular/common';
-//import { AlertServiceService } from 'src/app/core/services/alert-service.service';
-import { HttpClient } from '@angular/common/http';
-//import { AlertServiceService } from './src/app/core/services/alert-service.service';
-
-
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CompanySettingsService } from '../../company-settings.service';
-import { saveBusinessYear, saveCycleCreation, saveCycleDefinition, UpdateflagCycleCreation } from '../../model/business-cycle-model';
+import { saveCycleCreation, UpdateflagCycleCreation } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 
 @Component( {
@@ -47,98 +42,85 @@ export class CycleCreationComponent implements OnInit {
     { label: '2030', value: '2030' },
 
   ];
-  today: any = new Date();
+  // today: any = new Date();
   updateFlag: boolean = false;
-  editedRecordIndexId: number = 0;
+  // editedRecordIndexId: number = 0;
   todisabletodate: boolean = false;
 
-  // summaryGridData: Array<any> = [];
-  // summaryComputationGridDate: any;
-  // masterGridData: Array<any> = [];
-  //paymentDetailGridData: Array<any> = [];
-  declarationGridData: Array<any> = [];
-  familyMemberGroup: Array<any> = [];
-  frequencyOfPayment: Array<any> = [];
-  // BusinessYear: Array<any> = [];
-  InstitutionNames: Array<any> = [];
-  transactionDetail: Array<any> = [];
-  uploadGridData: Array<any> = [];
-  //transactionInstitutionNames: Array<any> = [];
-  familyMemberName: Array<any> = [];
 
-  // form: FormGroup;
-  // form1: FormGroup;
-  Index: number;
-  showUpdateButton: boolean;
-  tabIndex = 0;
-  radioSelected: string;
-  familyRelationSame: boolean;
-  enableEditRow: number;
-  enableAddRow: number;
-  enablePolicyTable: number;
-  enableCheckbox: number;
-  enableCheckboxFlag: number;
-  enableCheckboxFlag3: boolean;
-  addRow1: boolean;
-  addRow2: number;
-  previousEmployeName: Array<any> = [];
-  totalDeclaredAmount: any;
-  totalActualAmount: any;
-  futureNewPolicyDeclaredAmount: number;
-  grandTotalDeclaredAmount: number;
-  grandTotalActualAmount: number;
-  grandDeclarationTotal: number;
-  grandActualTotal: number;
-  grandRejectedTotal: number;
-  grandApprovedTotal: number;
-  grandTabStatus: boolean;
-  isCheckAll: boolean;
-  isDisabled: boolean;
-  enableSelectAll: boolean;
+  // declarationGridData: Array<any> = [];
+  // familyMemberGroup: Array<any> = [];
+  //frequencyOfPayment: Array<any> = [];
+
+  //InstitutionNames: Array<any> = [];
+  // transactionDetail: Array<any> = [];
+  // uploadGridData: Array<any> = [];
+
+  // familyMemberName: Array<any> = [];
 
 
+  //Index: number;
+  // showUpdateButton: boolean;
+  // tabIndex = 0;
+  // radioSelected: string;
+  //familyRelationSame: boolean;
+  //enableEditRow: number;
+  //enableAddRow: number;
+  // enablePolicyTable: number;
+  //enableCheckbox: number;
+  //enableCheckboxFlag: number;
+  // enableCheckboxFlag3: boolean;
+  // addRow1: boolean;
+  // addRow2: number;
+  //previousEmployeName: Array<any> = [];
+  //totalDeclaredAmount: any;
+  //totalActualAmount: any;
+  //futureNewPolicyDeclaredAmount: number;
+  //grandTotalDeclaredAmount: number;
+  //grandTotalActualAmount: number;
+  // grandDeclarationTotal: number;
+  //grandActualTotal: number;
+  //  grandRejectedTotal: number;
+  //  grandApprovedTotal: number;
+  // grandTabStatus: boolean;
+  //  isCheckAll: boolean;
+  // isDisabled: boolean;
+  // enableSelectAll: boolean;
 
-  ////// ---------service
-  // declarationService: DeclarationService;
   displayUploadFile = false;
-  uploadedFiles: any[] = [];
+  // uploadedFiles: any[] = [];
   // msgs2: Message[];
-  date3: Date;
-  loaded = 0;
-  selectedFiles: FileList;
-  currentFileUpload: File;
-  receiptNumber: number;
-  receiptAmount: number;
-  receiptDate: Date;
-  selectedInstitution: string;
-  // policyDuplicate: string;
-  //-------------------------------------------------------------------------
-  //sumDeclared: any;
-  enableCheckboxFlag2: any;
-  greaterDateValidations: boolean;
-  //minDate: Date;
-  //financialYearStart: Date;
+  // : Date;
+  // loaded = 0;
+  //selectedFiles: FileList;
+  // currentFileUpload: File;
+  //receiptNumber: number;
+  // receiptAmount: number;
+  // receiptDate: Date;
+  // selectedInstitution: string;
+
+  //enableCheckboxFlag2: any;
+  // greaterDateValidations: boolean;
+
   windowScrolled: boolean;
   // ---------------------------Bharati----------------------------------
   @ViewChild( 'template2' ) template2: TemplateRef<any>;
 
-  activeFrequencyList: Array<any> = [];
+  // activeFrequencyList: Array<any> = [];
 
-  ServicesList: Array<any> = [];
-  //ServicesList: serviceDetails[];
+  // ServicesList: Array<any> = [];
+
   CycleDefinitionList: Array<any> = [];
   CycleCreationList: Array<any> = [];
   CycleCreationList1: Array<any> = [];
   CycleDefinitionByid: Array<any> = [];
   previewCycleList: Array<any> = [];
-  //tableData: any =[];
+
   serviceName = [];
-  //selectedLevel;
+
   minDate: Date = new Date();
 
 
-  //selectedItems=[];
-  // selectedItems:serviceDetails[];
 
 
   BusinessYearform: FormGroup;
@@ -152,7 +134,7 @@ export class CycleCreationComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   myDateValue: Date;
   Name: string;
-  // minDate1: Date;
+
   CycleName: string;
 
   CycleupdateFlag1: boolean = false;
@@ -165,7 +147,7 @@ export class CycleCreationComponent implements OnInit {
   fromDate: string;
   toDate: string;
   editformDate: string;
-  //demoData: Array<getchapter> = [];
+
   editRowID: any = '';
   BusinessYearformorecycle: number;
   Previewname: string;
@@ -176,17 +158,16 @@ export class CycleCreationComponent implements OnInit {
   businessCycleDefinitionId: number;
   businessCycleDefinitionIdforMoreCycle: number;
   CycleCreationName: string;
-  // StausCode: string;
+
   selectedFrequency: string;
   adjustedToNextCycle: boolean = false;
-  //businessCycleList=[];
+
   businessCycleList: Array<any> = [];
   data = [];
   businessYearUpdate: string;
   cycleCreationForm: FormGroup;
 
-  //template2:TemplateRef<any>;
-  //template2: ElementRef;
+
 
 
   constructor( private modalService: BsModalService, private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) {
@@ -195,8 +176,8 @@ export class CycleCreationComponent implements OnInit {
 
   ngOnInit() {
     this.cycleCreationForm = this.formBuilder.group( {
-      businessCycleDefinitionId: new FormControl( null, Validators.required ),
-      businessYear: new FormControl( null, Validators.required )
+      businessCycleDefinitionId: new FormControl( '', Validators.required ),
+      businessYear: new FormControl( '', Validators.required )
     } );
     this.companySetttingService.getAllCycleDefinition().subscribe( res => {
       this.CycleDefinitionList = res.data.results;

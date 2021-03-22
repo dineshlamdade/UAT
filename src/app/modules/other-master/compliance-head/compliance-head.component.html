@@ -74,8 +74,8 @@
                       <label class="form-label">Website</label>
                       <input type="text" formControlName="website" class="form-control" autocomplete="off"
                         (focusout)="onChangeWebsiteName($event.target.value)"
-                        [ngClass]="{'is-invalid' : form.get('website').status == 'INVALID' || invalidWebsite == true}"
-                        name="website" placeholder="Enter Website Name">
+                        [ngClass]="{'is-invalid' :   invalidWebsite == true}" name="website"
+                        placeholder="Enter Website Name">
                     </div>
 
                     <div class="col-md-3 mt-20">
@@ -216,8 +216,8 @@
                             (click)="editMaster(i,summary.complianceHeadId)" tooltip="Edit"></i>
 
                           <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
-                            tooltip="View"></i>
-
+                            tooltip="View"></i> &nbsp;&nbsp;
+                          &nbsp;
                           <i class="fa fa-trash-o font-16 text-red cursor-pointer"
                             (click)="ConfirmationDialog(confirmdialog, summary.complianceHeadId)" tooltip="Delete"></i>
                         </td>

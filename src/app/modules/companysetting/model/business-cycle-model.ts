@@ -39,14 +39,17 @@ export class UpdateflagCycleCreation {
 }
 
 
+
 export class SaveHeadCreation {
   id: number;
   shortName: string;
   headNature: string;
   standardName: string;
-  type: string;
   description: string;
-  isStatutory: boolean;
+  category?: string;
+  type?: string;
+  displayName?: string;
+  statutory: boolean;
 }
 
 
