@@ -1247,4 +1247,3 @@ class PreviousEmployeeService {
     Object.assign(this, obj);
   }
 }
-
