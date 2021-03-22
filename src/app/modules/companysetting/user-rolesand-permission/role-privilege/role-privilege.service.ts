@@ -16,8 +16,8 @@ export class RolePrivilegeService {
   //---------------employeeRoleAssignmentApi------------------------
 
   getEmployeeRoleAssignment(){
-    let token = this.authservice.getJwtToken()
-    console.log(token);
+    // let token = this.authservice.getJwtToken()
+    // console.log(token);
     const headers = {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
