@@ -65,6 +65,7 @@ import { TreatmentOfSpecifiedDiseasesComponent } from './treatment-of-specified-
 import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-diseases/treatment-of-specified-summary/treatment-of-specified-summary.component';
 import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
 import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
+import {InputNumberModule} from 'primeng/inputnumber';
 // import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 
 @NgModule({
@@ -115,34 +116,35 @@ import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specifi
       TreatmentOfSpecifiedMasterComponent,
       TreatmentOfSpecifiedDeclarationComponent,
      ],
-  imports: [
-    MatSelectModule,
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatSliderModule,
-    TooltipModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    CollapseModule.forRoot(),
-    AccordionModule.forRoot(),
-    TooltipModule.forRoot(),
-    PopoverModule.forRoot(),
-    AlertModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),
-    ProgressbarModule.forRoot(),
-    CarouselModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    CarouselModule.forRoot(),
-    ToastrModule.forRoot({
-      positionClass: 'toast-top-center',
-    }),
-    SharedlayoutModule,
-    MyInvestmentsRoutingModule,
-    PrimeNGModule,
-    MyInvestmentsModule,
-    NgMultiSelectDropDownModule
-  ],
+    imports: [
+        MatSelectModule,
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatSliderModule,
+        TooltipModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        CollapseModule.forRoot(),
+        AccordionModule.forRoot(),
+        TooltipModule.forRoot(),
+        PopoverModule.forRoot(),
+        AlertModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ModalModule.forRoot(),
+        ProgressbarModule.forRoot(),
+        CarouselModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        CarouselModule.forRoot(),
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+        }),
+        SharedlayoutModule,
+        MyInvestmentsRoutingModule,
+        PrimeNGModule,
+        MyInvestmentsModule,
+        NgMultiSelectDropDownModule,
+        InputNumberModule
+    ],
 
   providers: [ DatePipe, NumberFormatPipe],
 

@@ -239,7 +239,7 @@
 <div class="row mt-15">
   <div class="col-12">
     <div class="float-right mb-15">
-      <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="cancelFormEdit()"
+      <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="openForm12BModal(template1)"
       tooltip="Form 12B"><b><i class="fa fa-download -o"></i></b> Form 12B</button> &nbsp;
       
       <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
@@ -371,4 +371,24 @@
   <div class="modal-footer">
      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
   </div>
+</ng-template>
+
+
+<ng-template #template1>
+   <div class="modal-header">
+      <h5 class="modal-title" id="jasdjgh">
+         Edit 
+       </h5>
+       <h5 class="modal-title" id="UploadedDocumentModalLabel"></h5>
+       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">×</span>
+       </button>
+   </div>
+  <hr>
+<span style="text-align:center;"><b>FORM NO. 12B</b></span>
+<span style="text-align:center;font-size:10px;"><b>[See rule 26A]</b></span>
+<p style="font-weight:bold; margin-left:10px;">1. Name and address of the employee...................</p>
+<p style="font-weight:bold;margin-left:10px;">2. Permanent Account No...............................</p>
+<p style="font-weight:bold;margin-left:10px;">3. Residential status............................</p>
+
 </ng-template>
