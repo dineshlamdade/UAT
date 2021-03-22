@@ -425,6 +425,7 @@ export class PpmasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
+      this.documentRemark = '';
 
     }
   }

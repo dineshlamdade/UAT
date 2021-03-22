@@ -1,0 +1,171 @@
+<div class="tabview-contents">
+
+  <div class="col-12">
+    <div role="form" (ngSubmit)="saveTransaction(formDirective)" [formGroup]="taxAdjustmentForm" #formDirective="ngForm"
+      method="post" novalidate>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">Note*&nbsp;</span> Tax in Advance On
+      Salary Incomes => This is the tax paid in advance against future payroll cycle's tax liabilities
+    </label>
+  </div>
+  <div class="col-md-12">
+    <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">&nbsp;</span>Tax On income Other
+      Than salary => This is the tax on non-salary incomes. This amount shall not be set of with future payroll
+      cycle tax liabilities.
+    </label>
+  </div>
+  <div class="row mt-15">
+    <div class="col-12">
+      <div class="table-responsive Custom_Table">
+        <table *ngIf="toggle" class="table table-striped table-hover table-bordered m-b-0">
+
+          <thead class="thead-dark">
+
+            <tr>
+              <th rowspan="2" scope="rowgroup" class="wd-10 font700">Payroll Cycle</th>
+              <th rowspan="2" scope="rowgroup" class="wd-10 font700">Type</th>
+              <th colspan="2" scope="colgroup" class="wd-30 font700">Payroll Cycles Falling Between</th>
+              <th rowspan="2" scope="rowgroup" class="wd-10 font700">Deduction Amounts-Per Payroll Cycles</th>
+            </tr>
+            <tr>
+              <th scope="col" class="wd-15 font700"> From Date</th>
+              <th scope="col" class="wd-15 font700">To Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="
+                                                  let summary of transactionDetail;
+                                                  let i = index;
+                                                  count as c">
+
+              <td>
+                <select name="cycleDefinition" id="cycleDefinition" class="form-control custom-select"
+                  [ngClass]="{ 'is-invalid': submitted && masterForm.cycleDefinition.errors }">
+                  <option *ngFor="let types of AdditionalTaxList" [value]="types.value"
+                    [selected]="types.value == summary.cycleDefinition">
+                    {{types.label}}
+                  </option>
+                </select>
+
+
+              </td>
+              <td>
+                <select name="taxAdjustmentType" id="taxAdjustmentType" class="form-control custom-select"
+                  [ngClass]="{ 'is-invalid': submitted && masterForm.taxAdjustmentType.errors }">
+                  <option *ngFor="let types of typeList" [value]="types.value"
+                    [selected]="types.value == summary.taxAdjustmentType">
+                    {{types.label}}
+                  </option>
+                </select>
+              </td>
+
+              <td class="align-left-center" class="form-group" class="input-group" class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                    data-date-autoclose="true" class="form-control" (ngModelChange)="
+                                                    summary.fromDate = $event.toLocaleDateString();
+                                                    setFromDate(summary, i)
+                                                  " [disabled]="
+                                                    isDisabled || summary.transactionStatus === 'Submitted'
+          
+                                                            " (bsValueChange)="setFromDateToDate()"
+                    [ngModel]="summary.fromDate | date: 'dd-MMM-yyyy'" [minDate]="paymentDetailMinDate"
+                    [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker>
+                </span>
+
+              </td>
+              <td class="wd-15 align-right-center">
+                <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
+                    data-date-autoclose="true" class="form-control"
+                    (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                    [minDate]="paymentDetailMinDate" [ngModel]="summary.toDate | date: 'dd-MMM-yyyy'"
+                    [maxDate]="maxFromDate" placeholder="To Date" bsDatepicker>
+                </span>
+              </td>
+
+              <td>
+                <div class="custom_icon_badge">
+                  <input type="text" id="deductionAmountPerCycle{{
+                                                            summary.investmentGroup3TransactionId
+                                                          }}" name="deductionAmountPerCycle{{
+                                                            summary.investmentGroup3TransactionId
+                                                          }}" [(ngModel)]="summary.deductionAmountPerCycle"
+                    [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
+                    class="form-control align-right" />
+                </div>
+              </td>
+            </tr>
+
+            <tr role="form" (ngSubmit)="saveTransaction(formDirective)" [formGroup]="taxAdjustmentForm"
+              #formDirective="ngForm" method="post" novalidate>
+              <td>
+                <select name="cycleDefinition" formControlName="cycleDefinition" class="form-control custom-select"
+                  [ngClass]="{ 'is-invalid': submitted && masterForm.cycleDefinition.errors }">
+                  <option *ngFor="let types of AdditionalTaxList" [value]="types.value">
+                    {{types.label}}
+                  </option>
+                </select>
+              </td>
+
+              <td>
+                <select name="taxAdjustmentType" formControlName="taxAdjustmentType" class="form-control custom-select"
+                  [ngClass]="{ 'is-invalid': submitted && masterForm.taxAdjustmentType.errors }">
+                  <option *ngFor="let types of typeList" [value]="types.value">
+                    {{types.label}}
+                  </option>
+                </select>
+              </td>
+
+              <td class="align-left-center" class="form-group" class="input-group" class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                    (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                    [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
+                    [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
+                </span>
+              </td>
+              <td class="wd-15 align-right-center">
+                <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                    (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                    [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" placeholder="To Date" bsDatepicker
+                    [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }">
+                </span>
+              </td>
+              <td>
+                <div class="custom_icon_badge">
+                  <input type="text" formControlName="deductionAmountPerCycle" class="form-control align-right"
+                    placeholder="" [ngClass]="{
+                                            'is-invalid':
+                                              submitted && masterForm.deductionAmountPerCycle.errors
+                                          }" />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row mt-15">
+    <div class="col-12">
+      <div class="float-right mb-15">
+        <button type="submit" (click)="formDirective.ngSubmit.emit()"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="save">
+          <b><i class="fa fa-floppy-o"></i></b> Save
+        </button> &nbsp; &nbsp;
+        <button type="button" (click)="resetView()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="reset"><b>
+            <i class="fa fa-floppy-o"></i></b> Cancel </button> &nbsp;
+
+      </div>
+    </div>
+  </div>
+</div>

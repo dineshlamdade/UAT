@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
     if (this.router.getCurrentNavigation() === null) {
       if (!this.authService.isLoggedIn()) {
         this.router.navigate(['/login']);
-      } else 
+      } else
       {
         this.router.navigate(['/dashboard']);
       }

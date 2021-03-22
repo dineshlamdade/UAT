@@ -67,6 +67,9 @@ import { TuitionFeesSummaryComponent } from './tuition-fees/tuition-fees-summary
 import { TuitionFeesDeclarationComponent } from './tuition-fees/tuition-fees-declaration/tuition-fees-declaration.component';
 import { PrimeNGModule } from '../../../app.primeNG.module';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { SummaryComponent } from './summary/summary.component';
+import { EmployeeContributionToProvidentFundPFComponent } from './employee-contribution-to-provident-fund-pf/employee-contribution-to-provident-fund-pf.component';
+import { EmployeeContributionToVPFComponent } from './employee-contribution-to-vpf/employee-contribution-to-vpf.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +120,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     TuitionFeesComponent,
     TuitionFeesSummaryComponent,
     TuitionFeesDeclarationComponent,
+    SummaryComponent,
+    EmployeeContributionToProvidentFundPFComponent,
+    EmployeeContributionToVPFComponent,
 
      ],
   imports: [
