@@ -143,6 +143,8 @@ export class EducationDetailComponent implements OnInit {
       }
     })
   }
+
+  
   setEducationList() {
     // to check the value is present or not in the grid for senior secondary and higher secondary
     var target = this.EducationSummaryData.find(temp => temp.education == 'Higher Secondary' || 'Senior Secondary')
@@ -159,8 +161,7 @@ export class EducationDetailComponent implements OnInit {
           }
         }
       }
-    }
-   // let now = this.EducationSummaryData[0]['education'];    
+    }   
   }
 
 
