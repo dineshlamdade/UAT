@@ -1,5 +1,4 @@
-import { IDSASummaryComponent } from './interest-deposit-savingAccount/IDSA-summary/IDSA-summary.component';
-import { InterestDepositSavingAccountComponent } from './interest-deposit-savingAccount/interest-deposit-savingAccount.component';
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,8 +17,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
-import { IDSAMasterComponent } from './interest-deposit-savingAccount/IDSA-master/IDSA-master.component';
-import { IDSADeclarationComponent } from './interest-deposit-savingAccount/IDSA-declaration/IDSA-declaration.component';
 import { NPSComponent } from './nps/nps.component';
 import { NpsSummaryComponent } from './nps/nps-summary/nps-summary.component';
 import { NpsMasterComponent } from './nps/nps-master/nps-master.component';
@@ -69,10 +66,6 @@ import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specifi
 
 @NgModule({
   declarations: [
-      InterestDepositSavingAccountComponent,
-      IDSASummaryComponent,
-      IDSAMasterComponent,
-      IDSADeclarationComponent,
       NPSComponent,
       NpsSummaryComponent,
       NpsMasterComponent,

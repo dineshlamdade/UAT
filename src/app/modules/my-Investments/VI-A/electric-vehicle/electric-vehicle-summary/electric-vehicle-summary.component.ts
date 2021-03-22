@@ -11,12 +11,11 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
   styleUrls: ['./electric-vehicle-summary.component.scss']
 })
 export class ElectricVehicleSummaryComponent implements OnInit {
-  @Input() lenderName: string;
-  // @Input() loanAccountNumber: string;
+
+  @Input() institution: string;
+  @Input() vehicleNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() loanAccountNumber = new EventEmitter<any>();
-
-
+  @Output() vehicleNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -30,13 +29,10 @@ export class ElectricVehicleSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-
-  // public previousEmployerB: string;
   public futureNewPolicyDeclaredAmount: string;
   public limit : number;
   public benefitAvailableOnActualAmount :number;
   public benefitAvailableOnDeclaredAmount : number;
-  // public eligibleForDeductionF : number;
 
   constructor(
     private service: MyInvestmentsService,
@@ -46,29 +42,40 @@ export class ElectricVehicleSummaryComponent implements OnInit {
   ) {  }
 
   public ngOnInit(): void {
+     // Summary get Call
     this.summaryPage();
   }
-  onEditSummary(lenderName: string, loanAccountNumber: string) {
-    // this.tabIndex = 2;
-    // const data = {
-    //   lenderName: lenderName,
-    //   loanAccountNumber: loanAccountNumber,
-    //   tabIndex: this.tabIndex,
-    // };
-    // this.lenderName = lenderName;
-    // this.loanAccountNumber = loanAccountNumber;
-    // this.myEvent.emit(data);
+
+
+  redirectToDeclarationActual(institution: string, vehicleNumber: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution : institution,
+      vehicleNumber : vehicleNumber,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)};
+    this.institution = institution;
+    this.vehicleNumber = vehicleNumber;
+    this.myEvent.emit(data);
   }
-  // ---------------------Summary ----------------------
-  // Summary get Call
+
+  jumpToMasterPage(vehicleNumber: string) {
+    this.tabIndex = 1;
+    const vehicleNo = {
+      vehicleNumber : vehicleNumber,
+      tabIndex : this.tabIndex,
+    };
+    this.vehicleNo.emit(vehicleNo);
+  }
+
+   // ---------------------Summary ----------------------
+    // Summary get Call
   summaryPage() {
     this.electricVehicleService.getElectricVehicleSummary().subscribe((res) => {
       this.summaryGridData = res.data.results[0].electricVehicleSummaryDetails;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-        res.data.results[0].interestOnFutureLoanDeclaredAmount
-      );
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.limit = res.data.results[0].limit;
@@ -80,9 +87,6 @@ export class ElectricVehicleSummaryComponent implements OnInit {
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
-    .toString().replace(',', '');
-
     const data = {
       futureNewPolicyDeclaredAmount: this. futureNewPolicyDeclaredAmount,
     };
@@ -96,9 +100,7 @@ export class ElectricVehicleSummaryComponent implements OnInit {
         this.summaryGridData = res.data.results[0];
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].interestOnFutureLoanDeclaredAmount
-        );
+        this.futureNewPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
         this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         this.limit = res.data.results[0].limit;
@@ -109,29 +111,11 @@ export class ElectricVehicleSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-    this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-      this.futureNewPolicyDeclaredAmount
-    );
+    this.futureNewPolicyDeclaredAmount =   this.futureNewPolicyDeclaredAmount;
     this.addFuturePolicy();
     this.onChangeLimit();
 
   }
-
-  jumpToMasterPage(loanAccountNumber: string) {
-    this.tabIndex = 1;
-    const data = {
-      number : loanAccountNumber,
-      tabIndex : this.tabIndex
-    };;
-    this.loanAccountNumber.emit(data);
-  }
-
-  // On onEditSummary
-  // onEditSummary1(lenderName: string) {
-  //   this.tabIndex = 2;
-  //   this.lenderName = lenderName;
-  //   console.log('lenderName::', lenderName);
-  // }
 
   onChangeLimit() {
     this.benefitAvailableOnDeclaredAmount = Math.min(this.grandTotalDeclaredAmount, this.limit);

@@ -36,7 +36,7 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
 })
 export class ElectricVehicleMasterComponent implements OnInit {
 
-  @Input() public loanAccountNumber: string;
+  @Input() public vehicleNo: any;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -113,6 +113,8 @@ export class ElectricVehicleMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public proofSubmissionId ;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -135,8 +137,8 @@ export class ElectricVehicleMasterComponent implements OnInit {
       loanAccountNumber: new FormControl(null, Validators.required),
       loanStartDate: new FormControl(null, Validators.required),
       loanEndDate: new FormControl(null, Validators.required),
-      proofSubmissionId:new FormControl(null),
       electricVehicleLoanMasterId: new FormControl(null),
+      proofSubmissionId : new FormControl(''),
     });
 
     this.masterPage();
@@ -158,19 +160,6 @@ export class ElectricVehicleMasterComponent implements OnInit {
       this.financialYearStart = res.data.results[0].loanStartDate;
     });
 
-    // Family Member List API call
-    // this.Service.getFamilyInfo().subscribe((res) => {
-    //   this.familyMemberGroup = res.data.results;
-    //   res.data.results.forEach((element) => {
-    //     const obj = {
-    //       label: element.familyMemberName,
-    //       value: element.familyMemberName,
-    //     };
-    //     this.familyMemberName.push(obj);
-    //   });
-    // });
-
-    // this.deactivateRemark();
 
     // Get All Institutes From Global Table
     this.Service.getAllInstitutesFromGlobal().subscribe((res) => {
@@ -205,6 +194,15 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.vehicleNo != undefined || this.vehicleNo != null) {
+      const input = this.vehicleNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.vehicleNumber);
+      console.log('editMaster vehicleNumber', input.vehicleNumber);
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -304,9 +302,6 @@ export class ElectricVehicleMasterComponent implements OnInit {
         element.loanStartDate = new Date(element.loanStartDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
-      if (this.loanAccountNumber !== undefined || this.loanAccountNumber !== null) {
-        this.getInstituteDetails(this.loanAccountNumber)
-      }
     });
   }
 
@@ -318,7 +313,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Electric vehicle  Document needed to Create Master.'
       );
@@ -332,7 +327,9 @@ export class ElectricVehicleMasterComponent implements OnInit {
         this.form.get('loanEndDate').value,
         'yyyy-MM-dd'
       );
+      console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
+            data.proofSubmissionId = this.proofSubmissionId;
 
       data.loanStartDate = from;
       data.loanEndDate = to;
@@ -367,15 +364,15 @@ export class ElectricVehicleMasterComponent implements OnInit {
           }
         });
 
-      this.Index = -1;
-      formDirective.resetForm();
-      this.form.reset();
-      // this.form.get('active').setValue(true);
-      // this.form.get('ecs').setValue(0);
-      this.showUpdateButton = false;
-      this.paymentDetailGridData = [];
-      this.masterfilesArray = [];
-      this.submitted = false;
+        this.Index = -1;
+        formDirective.resetForm();
+        this.form.reset();
+        this.showUpdateButton = false;
+        this.paymentDetailGridData = [];
+        this.masterfilesArray = [];
+        this.urlArray = [];
+        this.submitted = false;
+
     }
   }
 
@@ -406,34 +403,42 @@ export class ElectricVehicleMasterComponent implements OnInit {
     this.form.get('relationship').setValue(toSelect.relation);
   }
 
-  // Deactivate the Remark
-  // deactivateRemark() {
-  //   if (this.form.value.active === false) {
-  //     // this.form.get('remark').enable();
-  //     this.hideRemarkDiv = true;
-  //     this.form.get('remark').setValidators([Validators.required]);
-  //   } else {
-  //     this.form.get('remark').clearValidators();
-  //     this.hideRemarkDiv = false;
-  //     // this.form.get('remark').disable();
-  //     this.form.get('remark').reset();
-  //   }
-  // }
 
-  // On Master Edit functionality
-  editMaster(i: number) {
+
+   //------------- On Master Edit functionality --------------------
+   editMaster(vehicleNumber) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    // const formatedPremiumAmount = this.numberFormat.transform(
-    //   this.masterGridData[i].premiumAmount
-    // );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    // this.isClear = true;
+    this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.loanStartDate = new Date(element.loanStartDate);
+        element.loanEndDate = new Date(element.loanEndDate);
+      });
+      console.log(vehicleNumber)
+      const obj =  this.findByvehicleNumber(vehicleNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.vehicleNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.rcBook;
+      this.proofSubmissionId = obj.proofSubmissionId;
+
+      }
+    });
+
+  }
+
+  findByvehicleNumber(vehicleNumber,masterGridData){
+    return masterGridData.find(x => x.vehicleNumber === vehicleNumber)
   }
 
   // On Edit Cancel
@@ -462,6 +467,15 @@ export class ElectricVehicleMasterComponent implements OnInit {
     this.isCancel = true;
   }
 
+  //---------- On View Cancel -------------------
+  resetView() {
+    this.form.reset();
+    this.showUpdateButton = false;
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.urlArray = [];
+    this.isCancel = false;
+  }
   // On View Cancel
   cancelView() {
     this.form.reset();
@@ -484,7 +498,41 @@ export class ElectricVehicleMasterComponent implements OnInit {
     );
     this.form.patchValue(electricVehicle);
   }
+//---------- For Doc Viewer -----------------------
+ //----------------- Remove  Document -------------
+  removeSelectedLicMasterDocument(index: number) {
+  this.masterfilesArray.splice(index, 1);
+}
+nextDocViewer() {
 
+  this.urlIndex = this.urlIndex + 1;
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI,
+  );
+}
+
+previousDocViewer() {
+
+  this.urlIndex = this.urlIndex - 1;
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI,
+  );
+}
+
+docViewer(template3: TemplateRef<any>,index:any) {
+  console.log("---in doc viewer--");
+  this.urlIndex = index;
+
+  console.log("urlArray::", this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI,
+  );
+  console.log("urlSafe::",  this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-xl' }),
+  );
+}
 
 }
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   Component,
   Inject,
+  Input,
   OnInit,
   TemplateRef,
 } from '@angular/core';
@@ -29,6 +30,7 @@ import { NpsService } from '../nps.service';
   styleUrls: ['./nps-master.component.scss'],
 })
 export class NpsMasterComponent implements OnInit {
+  @Input() public accountNo :any;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -104,6 +106,7 @@ export class NpsMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public proofSubmissionId ;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -155,6 +158,14 @@ export class NpsMasterComponent implements OnInit {
     const splitYear = this.financialYear.split('-', 2);
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo != undefined || this.accountNo != null) {
+      const input = this.accountNo;
+      this.editMaster(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
+
+
   }
 
   // initiate Reactive Master Form
@@ -197,6 +208,8 @@ export class NpsMasterComponent implements OnInit {
     this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
+
+
   }
 
   // Family Member List API call
@@ -362,7 +375,7 @@ export class NpsMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'National Pension Scheme Document needed to Create Master.'
       );
@@ -377,7 +390,7 @@ export class NpsMasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
       const data = this.form.getRawValue();
-
+      data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
       data.premiumAmount = data.premiumAmount.toString().replace(',', '');
@@ -414,15 +427,17 @@ export class NpsMasterComponent implements OnInit {
           }
         });
 
-      this.Index = -1;
-      formDirective.resetForm();
-      this.form.reset();
-      this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
-      this.showUpdateButton = false;
-      this.paymentDetailGridData = [];
-      this.masterfilesArray = [];
-      this.submitted = false;
+        this.Index = -1;
+        formDirective.resetForm();
+        this.form.reset();
+        this.form.get('active').setValue(true);
+        this.form.get('ecs').setValue(0);
+        this.showUpdateButton = false;
+        this.paymentDetailGridData = [];
+        this.masterfilesArray = [];
+        this.urlArray = [];
+        this.submitted = false;
+        this.documentRemark = '';
 
     }
     this.form.patchValue({
@@ -503,47 +518,53 @@ export class NpsMasterComponent implements OnInit {
     }
   }
 
-  // On Master Edit functionality
-  editMaster(i: number) {
+  //------------- On Master Edit functionality --------------------
+  editMaster(accountNumber) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isClear = true;
+    this.npsService.getNpsMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(accountNumber)
+      const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.accountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
+
+      }
+    });
+
   }
 
-  // On Edit Cancel
-  cancelEdit() {
-    this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
-    this.showUpdateButton = false;
-    this.paymentDetailGridData = [];
-    this.isClear = false;
+  findByaccountNumber(accountNumber,masterGridData){
+    return masterGridData.find(x => x.accountNumber === accountNumber)
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
+ //---------- On View Cancel -------------------
+ resetView() {
+  this.form.reset();
+  this.form.get('active').setValue(true);
+  this.form.get('ecs').setValue(0);
+  this.showUpdateButton = false;
+  this.paymentDetailGridData = [];
+  this.masterfilesArray = [];
+  this.urlArray = [];
+  this.isCancel = false;
+}
 
   // On View Cancel
   cancelView() {

@@ -293,6 +293,13 @@ export class TaxsavingMfDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
     this.Service
       .getELSSDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {

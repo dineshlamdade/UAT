@@ -15,10 +15,10 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class InterestOnTtaComponent implements OnInit {
 
   public tabIndex = 0;
-  public policyNumber: string;
+  public accountNo: string;
   public windowScrolled: boolean;
   public data: any;
-
+  public modalRef: BsModalRef;
   constructor() { }
 
   ngOnInit(): void {
@@ -27,24 +27,25 @@ export class InterestOnTtaComponent implements OnInit {
   changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
-    console.log('data::',this.data);
+    console.log('data::', this.data);
   }
 
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
-    this.policyNumber = event;
+    this.accountNo = event;
   }
-
 
   changeTabIndex(index: number)
   {
+    console.log(this.accountNo)
     if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.accountNo = undefined;
+    }
     this.tabIndex = index;
   }
-
-  public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

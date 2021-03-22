@@ -272,8 +272,10 @@ export class LicmasterComponent implements OnInit {
       this.form.controls.policyEndDate.reset();
     }
     this.form.patchValue({
-      fromDate: this.policyMinDate,
+      fromDate: this.form.value.policyStartDate,
     });
+     console.log('policyMinDate',this.policyMinDate);
+
 
     this.setPaymentDetailToDate();
   }

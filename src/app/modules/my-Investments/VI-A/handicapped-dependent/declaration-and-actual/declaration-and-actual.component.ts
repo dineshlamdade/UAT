@@ -300,10 +300,9 @@ export class DeclarationAndActualComponent implements OnInit {
       })
     );
   }
-
-  deleteCurrentEmployerRow(index) {
+  deleteRows(index) {
     this.currEmpFormArray.removeAt(index);
-  }
+      }
 
   addPreviousEmployerRow() {
     this.priviousEmpFormArray.push(
@@ -506,7 +505,7 @@ export class DeclarationAndActualComponent implements OnInit {
   }
 
    //Get Family Name List
-  getMasterFamilyInfo() {
+   getMasterFamilyInfo() {
     this.handicappedDependentService.getFamilyInfoList().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
@@ -518,10 +517,16 @@ export class DeclarationAndActualComponent implements OnInit {
         if (element.relation !== 'Self') {
           this.familyMemberName.push(obj);
         }
+        this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+          // remove saved family member from dropdown
+          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          if (index > -1) {
+            this.familyMemberName.splice(index, 1);
+          }
+        });
       });
     });
   }
-
     OnSelectionfamilyMemberGroup(formArrayElement, event) {
 
       if (event.target.value !== '0: null') {
@@ -1197,13 +1202,13 @@ export class DeclarationAndActualComponent implements OnInit {
     this.alertService.sweetalertError(msg);
   }
 
-  deleteRows(index){
-    // const index = this.currentEmployerHandicappedDependentResponseList.indexOf(i);
-    // this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
-    console.log(this.currentEmployerHandicappedDependentResponseList);
-    this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
-    console.log(this.currentEmployerHandicappedDependentResponseList);
-  }
+  // deleteRows(index){
+  //   // const index = this.currentEmployerHandicappedDependentResponseList.indexOf(i);
+  //   // this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
+  //   console.log(this.currentEmployerHandicappedDependentResponseList);
+  //   this.currentEmployerHandicappedDependentResponseList.splice(index, 1);
+  //   console.log(this.currentEmployerHandicappedDependentResponseList);
+  // }
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
@@ -1741,6 +1746,21 @@ export class DeclarationAndActualComponent implements OnInit {
           element.actualAmount = this.numberFormat.transform(
             element.actualAmount
           );
+        });
+        this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
+          // remove saved family member from dropdown
+          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          if (index > -1) {
+            this.familyMemberName.splice(index, 1);
+          }
+        });
+
+        this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
+          // remove saved family member from dropdown
+          const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+          if (index > -1) {
+            this.familyMemberName.splice(index, 1);
+          }
         });
 
         // format actual amount in appropriate manner
