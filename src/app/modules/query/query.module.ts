@@ -5,7 +5,7 @@ import { QueryComponent } from './query/query.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { NgDragDropModule } from 'ng-drag-drop';
+
 
 @NgModule({
   declarations:
@@ -18,7 +18,7 @@ import { NgDragDropModule } from 'ng-drag-drop';
     SharedlayoutModule,
     CKEditorModule,
 
-    NgDragDropModule.forRoot(),
+
   ]
 })
 export class QueryModule { }

@@ -7,9 +7,9 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form [formGroup]="queryForm" (ngSubmit)="queryFormSubmit()">
+              <form [formGroup]="queryForm" (ngSubmit)="queryFormSubmit()" #formDirective="ngForm">
                 <fieldset>
-                  <legend>Stardard Quetion & Answer</legend>
+                  <legend>Standard Quetion & Answer</legend>
 
                   <div class="tabview-contents">
                     <div class="row">
@@ -28,12 +28,11 @@
                           type="text"
                           formControlName="description"
                           class="form-control"
-                          placeholder="Description"
+                          placeholder="Enter Description" [ngClass]="{'is-invalid' : queryForm.get('description').status == 'INVALID'}"
                         />
-                        <div *ngIf="f.description.touched && f.description.invalid" class="alert alert-danger">
-                          <div *ngIf="f.description.errors.required">Description is required.</div>
-                          <div *ngIf="f.description.errors.pattern">Enter only albhanumric character.</div>
-                        </div>
+                        <!-- <div *ngIf="f.description.touched && f.description.errors" class="invalid-feedback">
+                          <div *ngIf="f.description.errors.pattrn">Alphanumric character only.</div>
+                        </div> -->
 
                       </div>
                       <div class="col-sm-6 col-md-4">
@@ -41,7 +40,7 @@
                         <select
                           class="form-control custom-select"
                           formControlName="moduleId"
-                          placeholder="Select"
+                          placeholder="Select" [ngClass]="{'is-invalid' : queryForm.get('moduleId').status == 'INVALID'}"
                         >
                           <option [ngValue]="null" selected>Select</option>
                           <option value="1">LMS</option>
@@ -49,22 +48,18 @@
                           <option value="3">Loan</option>
                           <option value="4">Reimbursement</option>
                         </select>
+                        <!-- <div *ngIf="f.moduleId.touched && f.moduleId.errors" class="invalid-feedback">
+                      </div> -->
                       </div>
                     </div>
                   </div>
-                  <fieldset>
-                    <legend>Languagewies - Quetion & Answer</legend>
-                    <fieldset>
-                      <legend>  </legend>
-                      <div class="row" cdkDropListGroup>
+                      <div class="row tabview-contents">
                         <fieldset class="col-md-4">
                           <legend>Keywords</legend>
                           <select
                             class="form-control custom-select"
-
                             placeholder="Select"  >
-
-                            <option  [ngValue]="null" selected>Emplyee</option>
+                            <option  [ngValue]="null" selected>Employee</option>
                             <option >Employee Code</option>
                             <option >Employee Name</option>
                             <option>Employee Email</option>
@@ -84,27 +79,27 @@
                           </select>
                         </fieldset>
 
-                        &nbsp;
-
                         <div class="col-md-7">
                           <div class="col-md-12">
-                            <label class="form-label" style="color:darkmagenta;">Quetion</label>
+                            <h6  style="color:darkmagenta;">Question</h6>
                             <label class="form-label">Subject</label>
-                            <input type="text"  class="form-control" placeholder="subject" formControlName="questionSubject" />
+                            <input type="text"  class="form-control" placeholder="subject" formControlName="questionSubject" placeholder="Enter Subject"
+                            [ngClass]="{'is-invalid' : queryForm.get('questionSubject').status == 'INVALID'}"/>
+                            <br>
                             <label class="form-label">Description</label>
                             <ckeditor [editor]="Editor" data="hello" formControlName="questionDescription">
                             </ckeditor>
-                          <!-- </div> -->
                           </div>
                           <br><br>
                           <div class="col-md-12">
-                            <label class="form-label" style="color:darkmagenta;">Answer</label>
+                            <h6  style="color:darkmagenta;">Answer</h6>
                             <label class="form-label">Subject</label>
                             <input
                               type="text"
                               formControlName="answerSubject"
-                              class="form-control" placeholder="Subject"
-                            />
+                              class="form-control" placeholder="Enter Subject"
+                               [ngClass]="{'is-invalid' : queryForm.get('answerSubject').status == 'INVALID'}"/>
+                              <br>
                             <label class="form-label">Description</label>
                             <ckeditor [editor]="Editor" data="hello" formControlName="answerDescription">
                             </ckeditor>
@@ -112,34 +107,57 @@
                         </div>
                       </div>
                     </fieldset>
-                  </fieldset>
-                  <div class="row" style="margin: 20px">
-                    <input type="checkbox" formControlName="active"  (change)="changeEvent($event)"/>&nbsp;
+
+                  <!-- <div class="row" style="margin: 20px">
+                    <input type="checkbox" formControlName="active"  />&nbsp;
+                    (change)="changeEvent($event)"
                     <label class="form-label" style="margin-right: 70px;" >Active</label>
 
                     <label class="form-label" >Remark</label>&nbsp;&nbsp;&nbsp;
-                    <textarea type="text" formControlName="remark" [disabled]="toogleBool"></textarea>
+                    <textarea type="text" formControlName="remark" [disabled]="toogleBool" placeholder="Enter Remark"
+                    [ngClass]="{ 'is-invalid':f.remark.touched && f.remark.errors}"></textarea>
+                  </div> -->
+                  <ng-container>
+
+                  <div class=" row mt-20 ">
+                    <div class="col-md-3">
+                      <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                        <input formControlName="active"
+                          autocomplete="off" type="checkbox" class="custom-control-input"
+                          name="example-inline-checkbox1" checked  (change)="changeEvent($event)"
+                          readonly>
+                        <span class="custom-control-label">Active </span>
+                      </label>
+                    </div>
+                    <div class="col-md-3"  *ngIf="hideRemarkDiv">
+                      <label class="form-label">Remark</label>
+                      <textarea formControlName="remark"
+                        autocomplete="off"
+                        [ngClass]="{'is-invalid' : queryForm.get('remark').status == 'INVALID', 'form-submitted': formDirective.submitted}"
+                        class="form-control" rows="2" placeholder="Enter Remark"></textarea>
+                    </div>
                   </div>
-                </fieldset>
-                <div class="row" style="margin: 10px" >
-                  <button type="submit"  class="btn btn-danger">
-                    <i class="fa fa-floppy-o" aria-hidden="true"></i
-                    >&nbsp;&nbsp;Save</button
+                </ng-container>
+
+
+
+                <ng-container>
+                <div class="row " style="margin: 10px" >
+                  <button type="submit"  class="custom_button custom_btn btn-labeled btn-labeled-left"
+                  tooltip="Save"[disabled]="!queryForm.valid"
+                   [ngClass]="{'disabled-btn-bg-green' : queryForm.invalid,'btn-bg-green': !queryForm.invalid}">
+                   <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
                   >&nbsp;
-                  <button type="reset"  class="btn btn-dark" (click)="reset()">
-                    <i class="fa fa-refresh" aria-hidden="true"></i
-                    >&nbsp;&nbsp;Reset</button
+                  <button type="button"  tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                    <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
                   >&nbsp;
-                  <button type="button"  class="btn btn-dark" (click)="cancel()" >
-                    <i class="fa fa-times" aria-hidden="true"></i
-                    >&nbsp;&nbsp;Cancel</button
-                  >
-                  <br>
-                  <br>
+                  <button type="button" tooltip="Cancel"  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
+                   <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>
                 </div>
-                <fieldset>
-                  <legend>Summary</legend>
-                  <div class="row mt-30">
+              </ng-container>
+              <div class="tabview-contents">
+                  <h3 class="font-14 text-purple font-bold ">Summary</h3>
+                  <div class="row mt-20">
                     <div class="col-12 col-md-12 col-sm-12">
                       <div class="table-responsive Custom_Table">
                         <table
@@ -175,7 +193,8 @@
                       </div>
                     </div>
                   </div>
-                </fieldset>
+
+              </div>
               </form>
             </div>
           </div>
