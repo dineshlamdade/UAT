@@ -65,6 +65,7 @@ import { TreatmentOfSpecifiedDiseasesComponent } from './treatment-of-specified-
 import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-diseases/treatment-of-specified-summary/treatment-of-specified-summary.component';
 import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
 import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
+import {InputNumberModule} from 'primeng/inputnumber';
 // import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 
 @NgModule({
