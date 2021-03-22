@@ -10,6 +10,7 @@ export class TaxsavingMutualFundComponent implements OnInit {
 
   public tabIndex = 0;
   public windowScrolled: boolean;
+  public accountNo: string;
   public data: any;
 
   constructor() {}
@@ -19,12 +20,23 @@ export class TaxsavingMutualFundComponent implements OnInit {
   changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
-    console.log('data::', this.data);
+    console.log('data::',this.data);
   }
 
-  changeTabIndex(index: number) {
-    if (index !== 2) {
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.accountNo = event;
+  }
+
+
+  changeTabIndex(index: number)
+  {
+    console.log(this.accountNo)
+    if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.accountNo = undefined;
     }
     this.tabIndex = index;
   }

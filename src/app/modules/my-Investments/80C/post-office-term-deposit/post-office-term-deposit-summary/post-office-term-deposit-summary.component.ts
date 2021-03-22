@@ -59,24 +59,21 @@ export class PostOfficeTermDepositSummaryComponent implements OnInit {
       // Summary get Call
       summaryPage() {
         this.postOfficeTermDepositService.getPOTDepositSummary().subscribe((res) => {
+          if (res.data.results.length > 0) {
           this.summaryGridData = res.data.results[0].transactionDetailList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-            res.data.results[0].futureNewPolicyDeclaredAmount
-          );
+          this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
           this.grandTotalDeclaredAmount =
             res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
           console.log(res);
+          }
         });
       }
 
       // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount
-          .toString()
-          .replace(',', '');
 
         const data = {
           futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
@@ -87,25 +84,22 @@ export class PostOfficeTermDepositSummaryComponent implements OnInit {
           .postPOTDepositSummaryFuturePolicy(data)
           .subscribe((res) => {
             //console.log('addFuturePolicy Res..', res);
+            if (res.data.results.length > 0) {
             this.summaryGridData = res.data.results[0].transactionDetailList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-              res.data.results[0].futureNewPolicyDeclaredAmount
-            );
+            this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
             this.grandTotalDeclaredAmount =
               res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount =
               res.data.results[0].grandTotalActualAmount;
+            }
           });
         this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
       }
 
       // On Change Future New Policy Declared Amount with formate
       onChangeFutureNewPolicyDeclaredAmount() {
-        this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-          this.futureNewPolicyDeclaredAmount
-        );
         this.addFuturePolicy();
       }
 

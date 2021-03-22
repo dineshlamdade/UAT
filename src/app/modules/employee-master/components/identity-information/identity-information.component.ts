@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { IdentityInformation, VisaInformation } from './../../dto-models/identity-information.model';
+import { IdentityInformation, VisaInformation } from './identity-information.model';
 import { DatePipe } from '@angular/common';
-import { IdentityInformationService } from './../../employee-master-services/identity-informmation/identity-information.service';
+import { IdentityInformationService } from './identity-information.service';
 import { Subscription } from 'rxjs';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
@@ -71,18 +71,6 @@ export class IdentityInformationComponent implements OnInit {
 
     this.tomorrow.setDate(this.tomorrow.getDate());
     this.yesterday.setDate(this.yesterday.getDate() - 1);
-
-    // let pastportExpiry = new Date();
-    // let drivingExpiry = new Date();
-    // let visaDate = new Date();
-    // this.pastportExpiryDate1 = new Date(pastportExpiry.setDate(pastportExpiry.getDate()));
-    // this.pastportExpiryDate2 = new Date(pastportExpiry.setDate(pastportExpiry.getDate() - pastportExpiry.getDay() + 3650));
-
-    // this.drivingExpiryDate1 = new Date(drivingExpiry.setDate(drivingExpiry.getDate()));
-    // this.drivingExpiryDate2 = new Date(drivingExpiry.setDate(drivingExpiry.getDate() - drivingExpiry.getDay() + 3650));
-
-    // this.visaValidTill1 = new Date(visaDate.setDate(visaDate.getDate()));
-    // this.visaValidTill2 = new Date(visaDate.setDate(visaDate.getDate() - visaDate.getDay() + 3650));
   }
 
   ngOnInit(): void {
@@ -125,6 +113,7 @@ export class IdentityInformationComponent implements OnInit {
     })
     this.getIdentityInfoData();
 
+    // Grid delete row Sucscription event from Confirmation dialog
     this.confirmDeleteSubscription = this.EventEmitterService.setConfirmDeleteIdentityForm().subscribe(element => {
 
       this.deleteInternationalWorkerID.push(element.employeeVisaDetailId);
@@ -140,6 +129,7 @@ export class IdentityInformationComponent implements OnInit {
     })
   }
 
+  // Save&Next Submit method
   IdentitySaveNextSubmit(IdentityInformation) {
     this.saveNextBoolean = true;
 
@@ -147,6 +137,7 @@ export class IdentityInformationComponent implements OnInit {
   }
 
 
+  // Identity form save method
   IdentityInfoFormSubmit(IdentityInformation) {
 
     IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate =
@@ -182,7 +173,7 @@ export class IdentityInformationComponent implements OnInit {
 
       this.dataBinding(res);
       // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
-      this.sweetalertMasterSuccess(res.status.messsage, "Success..!!");
+      this.SharedInformationService.sweetalertMasterSuccess(res.status.messsage, "Success..!!");
       this.IdentityInfoForm.markAsUntouched();
 
       if (this.deleteInternationalWorkerID.length > 0) {
@@ -200,10 +191,12 @@ export class IdentityInformationComponent implements OnInit {
         this.router.navigate(['/employee-master/compliance-information/compliance-summary']);
       }
     }, (error: any) => {
-      this.sweetalertError(error["error"]["status"]["messsage"]);
+      this.SharedInformationService.sweetalertError(error["error"]["status"]["messsage"]);
       // this.notifyService.showError(error["error"]["status"]["messsage"], "Error..!!")
     })
   }
+
+  // Get API of Identity form data
   getIdentityInfoData() {
     this.IdentityInformationService.getIdentityInfoData().subscribe((res: any) => {
 
@@ -211,6 +204,8 @@ export class IdentityInformationComponent implements OnInit {
       this.dataBinding(res);
     })
   }
+
+  // Data binding function of Get API of Identity form
   dataBinding(res) {
 
     if (res.data.results[0].employeeESICDTOResponseDTO) {
@@ -224,6 +219,7 @@ export class IdentityInformationComponent implements OnInit {
     }
   }
 
+  // Edit Visa grid row method
   editVisaInfo(visa) {
 
     this.VisaInformation.countryName = visa.countryName;
@@ -232,6 +228,7 @@ export class IdentityInformationComponent implements OnInit {
     this.VisaInformation.employeeVisaDetailId = visa.employeeVisaDetailId;
   }
 
+  // Delete Visa grid row confirmation dialog method
   removeVisaItem(visa, confirmation) {
     this.visaItem = visa;
 
@@ -242,6 +239,7 @@ export class IdentityInformationComponent implements OnInit {
     );
   }
 
+  // Delete Visa grid row method
   deleteRecord() {
     this.deleteInternationalWorkerID.push(this.visaItem.employeeVisaDetailId);
     this.IdentityInfoForm.markAsTouched();
@@ -260,7 +258,7 @@ export class IdentityInformationComponent implements OnInit {
   }
 
 
-
+  // Push Visa information in array for Save method
   pushToGrid() {
     let data = [];
 
@@ -385,35 +383,6 @@ export class IdentityInformationComponent implements OnInit {
   resetForm() {
     this.IdentityInfoForm.reset();
     this.data = [];
-  }
-
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
-
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    })
   }
 
   keyPress(event: any) {

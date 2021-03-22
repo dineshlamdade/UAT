@@ -4,6 +4,7 @@ import {
   Component,
   HostListener,
   Inject,
+  Input,
   OnInit,
   Optional,
   TemplateRef,
@@ -32,7 +33,7 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-master.component.scss'],
 })
 export class PostOfficeMasterComponent implements OnInit {
-
+  @Input() public accountNo: any;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -100,7 +101,7 @@ export class PostOfficeMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-
+  public proofSubmissionId ;
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
@@ -108,6 +109,7 @@ export class PostOfficeMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -126,7 +128,7 @@ export class PostOfficeMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl(null, Validators.required),
+      accountHolderName: new FormControl({value: null, disabled: true},Validators.required),
       relationship: new FormControl({ value: null, disabled: true }, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
@@ -141,7 +143,9 @@ export class PostOfficeMasterComponent implements OnInit {
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
+      // investmentGroup1MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId : new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -180,6 +184,11 @@ export class PostOfficeMasterComponent implements OnInit {
         if (element.relation === 'Self') {
           this.familyMemberName.push(obj);
         }
+        this.form.patchValue({
+          familyMemberInfoId: this.familyMemberGroup[0].familyMemberInfoId,
+          accountHolderName: this.familyMemberGroup[0].familyMemberName,
+          relationship: this.familyMemberGroup[0].relation,
+        })
       });
     });
 
@@ -216,6 +225,16 @@ export class PostOfficeMasterComponent implements OnInit {
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo !== undefined || this.accountNo !== null) {
+      const input = this.accountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editOnSummary(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
+
   }
 
   // convenience getter for easy access to form fields
@@ -329,8 +348,8 @@ export class PostOfficeMasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
-    if (this.masterfilesArray.length === 0) {
+    console.log("urlArray.length",this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
@@ -344,7 +363,9 @@ export class PostOfficeMasterComponent implements OnInit {
         this.form.get('toDate').value,
         'yyyy-MM-dd'
       );
+      console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
+       data.proofSubmissionId = this.proofSubmissionId;
 
       data.fromDate = from;
       data.toDate = to;
@@ -394,6 +415,7 @@ export class PostOfficeMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
     }
   }
@@ -411,41 +433,28 @@ export class PostOfficeMasterComponent implements OnInit {
   // Remove Post Office Master Document
   removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
-    console.log('this.filesArray::', this.masterfilesArray);
-    console.log('this.filesArray.size::', this.masterfilesArray.length);
+    // console.log('this.filesArray::', this.masterfilesArray);
+    // console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
-    if (
-      this.form.value.premiumAmount != null &&
-      this.form.value.frequencyOfPayment != null
-    ) {
-      let installment = this.form.value.premiumAmount;
-
-      installment = installment.toString().replace(',', '');
-
-      // console.log(installment);
-      if (!this.form.value.frequencyOfPayment) {
-        installment = 0;
-      }
-      if (this.form.value.frequencyOfPayment === 'Monthly') {
-        installment = installment * 12;
-      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-        installment = installment * 4;
-      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-        installment = installment * 2;
-      } else {
-        installment = installment * 1;
-      }
-      const formatedPremiumAmount = this.numberFormat.transform(
-        this.form.value.premiumAmount
-      );
-      // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-      this.form.get('annualAmount').setValue(installment);
+    let installment = this.form.value.premiumAmount;
+    if (!this.form.value.frequencyOfPayment) {
+      installment = 0;
     }
+    if (this.form.value.frequencyOfPayment === 'Monthly') {
+      installment = installment * 12;
+    } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+      installment = installment * 4;
+    } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+      installment = installment * 2;
+    } else {
+      installment = installment * 1;
+    }
+    this.form.get('annualAmount').setValue(installment);
   }
+
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
@@ -470,6 +479,73 @@ export class PostOfficeMasterComponent implements OnInit {
     }
   }
 
+  // // On Master Edit functionality
+  // editOnSummary(accountNumber) {
+  //   //this.scrollToTop();
+  //   this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
+  //     console.log('masterGridData::', res);
+  //     this.masterGridData = res.data.results;
+  //     this.masterGridData.forEach((element) => {
+  //       element.policyStartDate = new Date(element.policyStartDate);
+  //       element.policyEndDate = new Date(element.policyEndDate);
+  //       element.fromDate = new Date(element.fromDate);
+  //       element.toDate = new Date(element.toDate);
+  //     });
+
+  //     console.log(accountNumber)
+  //     const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+
+  //     console.log("Edit Master",obj);
+  //     if (obj!= 'undefined'){
+
+  //   this.paymentDetailGridData = obj.paymentDetails;
+  //   this.form.patchValue(obj);
+  //   this.Index = obj.accountNumber;
+  //   this.showUpdateButton = true;
+  //   this.isClear = true;
+  //   this.proofSubmissionId = obj.proofSubmissionId;
+  //   this.urlArray = obj.documentInformationList;
+
+  //     }
+  // });
+  // }
+
+   //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
+   editOnSummary(accountNumber) {
+    //this.scrollToTop();
+    this.postOfficeService.getPostOfficeMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.policyStartDate = new Date(element.policyStartDate);
+        element.policyEndDate = new Date(element.policyEndDate);
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
+      console.log(accountNumber)
+      const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.accountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
+    }
+    });
+    }
+
+
+  findByPolicyNo(accountNumber,masterGridData){
+    return masterGridData.find(x => x.accountNumber === accountNumber)
+  }
+
   // On Master Edit functionality
   editMaster(i: number) {
     //this.scrollToTop();
@@ -487,13 +563,14 @@ export class PostOfficeMasterComponent implements OnInit {
   }
 
   // On Edit Cancel
-  cancelEdit() {
+  resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
     this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
+    this.masterfilesArray = [];
   }
 
   // On Master Edit functionality
@@ -507,7 +584,6 @@ export class PostOfficeMasterComponent implements OnInit {
     const formatedPremiumAmount = this.numberFormat.transform(
       this.masterGridData[i].premiumAmount
     );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isCancel = true;
   }

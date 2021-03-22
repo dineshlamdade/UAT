@@ -98,9 +98,6 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
   public hideRemoveRow: boolean;
   public isClear: boolean;
   public isCancel: boolean;
-  public financialYear: any;
-  public financialYearStartDate: Date;
-  public financialYearEndDate: Date;
   public today = new Date();
 
   public transactionStatustList: any;
@@ -141,33 +138,14 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
     (this.specifiedDiseaseNameList = [
       { label: 'Malignant Cancers', value: 'Malignant Cancers' },
-      {
-        label: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',
-        value: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',
-      },
+      {label: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',value: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',},
       { label: 'Chronic Renal failure', value: 'Chronic Renal failure' },
-      {
-        label: 'Hematological disorders - Hemophilia',
-        value: 'Hematological disorders - Hemophilia',
-      },
-    ]),
-      {
-        label: 'Hematological disorders - Thalassaemia',
-        value: 'Hematological disorders - Thalassaemia',
-      },
-      {
-        label:
-          'Neurological diseases with disability level >=40% per cent and above',
-        value:
-          'Neurological diseases with disability level >=40% per cent and above',
-      };
+      {label: 'Hematological disorders - Hemophilia', value: 'Hematological disorders - Hemophilia',},  { label: 'Hematological disorders - Thalassaemia', value: 'Hematological disorders - Thalassaemia',},
+      {label:'Neurological diseases with disability level >=40% per cent and above', value:'Neurological diseases with disability level >=40% per cent and above',}    ]),
 
     this.neurologicalDiseaseNameList = [
       { label: 'Dementia', value: 'Dementia' },
-      {
-        label: 'Dystonia Musculorum Deformans',
-        value: 'Dystonia Musculorum Deformans',
-      },
+      {label: 'Dystonia Musculorum Deformans',value: 'Dystonia Musculorum Deformans', },
       { label: 'Motor Neuron Disease', value: 'Motor Neuron Disease' },
       { label: 'Ataxia', value: 'Ataxia' },
       { label: 'Chorea', value: 'Chorea' },
@@ -226,10 +204,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
       }
     });
-    const splitYear = this.financialYear.split('-', 2);
 
-    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
   // ------------------------------------Master----------------------------

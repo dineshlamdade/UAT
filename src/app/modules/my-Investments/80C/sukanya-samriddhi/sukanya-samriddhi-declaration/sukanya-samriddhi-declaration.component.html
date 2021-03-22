@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="canEdit && isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -235,7 +235,7 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
+              <tr *ngIf="!isDisabled && canEdit">
                 <td *ngIf="previousEmployeeList?.length" colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
@@ -431,7 +431,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
+  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
         <button type="button" (click)="
@@ -750,8 +750,7 @@
                   </td>
                   <td>
                     <span
-                      >{{ summary.isECS === 1 ? "Yes" : "No" }}
-                      {{ summary.declaredAmount }}</span
+                      >{{ summary.isECS === 1 ? "Yes" : "No" }}</span
                     >
                   </td>
                   <td>

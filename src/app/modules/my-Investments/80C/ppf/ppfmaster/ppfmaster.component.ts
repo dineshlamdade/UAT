@@ -18,7 +18,7 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   styleUrls: ['./ppfmaster.component.scss']
 })
 export class PPFMasterComponent implements OnInit {
-  @Input() public policyNumber: string;
+  @Input() public accountNo: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -96,6 +96,7 @@ export class PPFMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public proofSubmissionId ;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -119,15 +120,16 @@ export class PPFMasterComponent implements OnInit {
         familyMemberInfoId: new FormControl(null, Validators.required),
         active: new FormControl(true, Validators.required),
         remark: new FormControl(null),
-        frequencyOfPayment: new FormControl(null),
-        premiumAmount: new FormControl(null),
-        annualAmount: new FormControl({value: null, disabled: true}),
-        fromDate: new FormControl(null),
-        toDate: new FormControl(null),
+        frequencyOfPayment: new FormControl(null, Validators.required),
+        premiumAmount: new FormControl(null, Validators.required),
+        annualAmount: new FormControl({value: null, disabled: true}, Validators.required),
+        fromDate: new FormControl(null,Validators.required),
+        toDate: new FormControl(null, Validators.required),
         ecs: new FormControl(0),
         masterPaymentDetailId: new FormControl(0),
         investmentGroup1MasterId: new FormControl(0),
         depositType: new FormControl('recurring'),
+        proofSubmissionId : new FormControl('')
       });
 
       this.frequencyOfPaymentList = [
@@ -194,9 +196,16 @@ this.masterPage();
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
 
-  }
+    if (this.accountNo !== undefined || this.accountNo !== null) {
+      const input = this.accountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
 
-  // ------------------------------------Master----------------------------
+  }
 
     // convenience getter for easy access to form fields
     get masterForm() { return this.form.controls; }
@@ -301,9 +310,9 @@ this.masterPage();
             element.toDate = new Date(element.toDate);
             }
           });
-          if (this.policyNumber !== undefined || this.policyNumber !== null) {
-            this.getInstituteDetails(this.policyNumber)
-          }
+          // if (this.policyNumber !== undefined || this.policyNumber !== null) {
+          //   this.getInstituteDetails(this.policyNumber)
+          // }
         });
       }
 
@@ -315,25 +324,24 @@ this.masterPage();
         if (this.form.invalid) {
           return;
         }
-
-        if (this.masterfilesArray.length === 0) {
-          this.alertService.sweetalertWarning('LIC Document needed to Create Master.');
+        console.log("urlArray.length",this.urlArray.length)
+        if (this.masterfilesArray.length === 0 && this.urlArray.length === 0 ) {
+          this.alertService.sweetalertWarning('PPF Document needed to Create Master.');
           return;
-        }
-
-         else {
+        }else {
           const data = this.form.getRawValue();
+                data.proofSubmissionId = this.proofSubmissionId;
           if (this.form.value.frequencyOfPayment !== 'As & When'){
           const from = this.datePipe.transform(this.form.get('fromDate').value, 'yyyy-MM-dd');
           const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
 
-
+          data.proofSubmissionId = this.proofSubmissionId;
           data.fromDate = from;
           data.toDate = to;
           data.premiumAmount = data.premiumAmount.toString().replace(',', '');
           }
 
-          console.log('LICdata::', data);
+          console.log('PPF::', data);
 
 
           this.Service.submitPPFMasterData(this.masterfilesArray, data)
@@ -373,6 +381,7 @@ this.masterPage();
           this.showUpdateButton = false;
           this.paymentDetailGridData = [];
           this.masterfilesArray = [];
+          this.urlArray = [];
           this.submitted = false;
         }
 
@@ -411,7 +420,7 @@ this.masterPage();
           }
           else{
           let installment = this.form.value.premiumAmount;
-          installment = installment.toString().replace(',', '');
+          // installment = installment.toString().replace(',', '');
           // console.log(installment);
 
           if (!this.form.value.frequencyOfPayment) {
@@ -427,9 +436,9 @@ this.masterPage();
           else {
               installment = installment * 1;
           }
-          const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
+          // const formatedPremiumAmount = this.numberFormat.transform(this.form.value.premiumAmount);
           // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+          // this.form.get('premiumAmount').setValue(installment);
           this.form.get('annualAmount').setValue(installment);
         }
       }
@@ -455,68 +464,177 @@ this.masterPage();
           }
         }
 
-      // On Master Edit functionality
-        editMaster(i: number) {
+      // // On Master Edit functionality
+      //   editMaster(i: number) {
+      //     //this.scrollToTop();
+      //     console.log('inedit as and when', this.masterGridData[i].frequency);
+      //     if (this.masterGridData[i].frequency === 'As & When') {
+
+      //       this.form.patchValue({
+      //         institution: this.masterGridData[i].institution,
+      //         accountNumber: this.masterGridData[i].accountNumber,
+      //         accountHolderName: this.masterGridData[i].accountHolderName,
+      //         relationship: this.masterGridData[i].relationship,
+      //         policyStartDate:this.masterGridData[i].policyStartDate,
+      //         fromDate: this.masterGridData[i].fromDate,
+      //         familyMemberInfoId: this.masterGridData[i].familyMemberInfoId,
+      //         frequencyOfPayment: this.masterGridData[i].frequencyOfPayment,
+      //     });
+
+      //     }
+      //     else{
+      //     this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+      //     this.form.patchValue(this.masterGridData[i]);
+      //     this.Index = i;
+      //     this.showUpdateButton = true;
+      //     const formatedPremiumAmount = this.masterGridData[i].premiumAmount;
+      //     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+      //     this.isClear = true;
+      //   }
+      // }
+
+
+        // // On Master Edit functionality
+        editMaster(accountNumber) {
           //this.scrollToTop();
-          console.log('inedit as and when', this.masterGridData[i].frequency);
-          if (this.masterGridData[i].frequency === 'As & When') {
+          this.Service.getPPFMaster().subscribe((res) => {
+            console.log('masterGridData::', res);
+            this.masterGridData = res.data.results;
+            this.masterGridData.forEach((element) => {
+              if (element.policyStartDate !== null) {
+              element.policyStartDate = new Date(element.policyStartDate);
+              }
+              if (element.policyEndDate !== null) {
+              element.policyEndDate = new Date(element.policyEndDate);
+              }
+              if (element.fromDate !== null) {
+              element.fromDate = new Date(element.fromDate);
+              }
+              if (element.toDate !== null) {
+              element.toDate = new Date(element.toDate);
+              }
+            });
+
+            const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+
+            console.log("Edit Master",obj);
+            // if (obj!= 'undefined'){
+          console.log('inedit as and when', obj.frequency);
+          if (obj.frequency === 'As & When') {
 
             this.form.patchValue({
-              institution: this.masterGridData[i].institution,
-              accountNumber: this.masterGridData[i].accountNumber,
-              accountHolderName: this.masterGridData[i].accountHolderName,
-              relationship: this.masterGridData[i].relationship,
-              policyStartDate:this.masterGridData[i].policyStartDate,
-              fromDate: this.masterGridData[i].fromDate,
-              familyMemberInfoId: this.masterGridData[i].familyMemberInfoId,
-              frequencyOfPayment: this.masterGridData[i].frequencyOfPayment,
-              //premiumAmount: this.masterGridData[i].institution,
-              //annualAmount: this.masterGridData[i].institution,
-
-              //toDate: new FormControl(null),
-              //ecs: new FormControl(0),
-
-
-
+              institution: obj.institution,
+              accountNumber: obj.accountNumber,
+              accountHolderName: obj.accountHolderName,
+              relationship: obj.relationship,
+              policyStartDate:obj.policyStartDate,
+              fromDate: obj.fromDate,
+              familyMemberInfoId: obj.familyMemberInfoId,
+              frequencyOfPayment: obj.frequencyOfPayment,
           });
 
           }
           else{
-          this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-          this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
-          this.Index = i;
+          this.paymentDetailGridData = obj.paymentDetails;
+          this.form.patchValue(obj);
+          this.Index =  obj.accountNumber;
           this.showUpdateButton = true;
-          const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
-          // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
           this.isClear = true;
-        }
+          this.urlArray = obj.documentInformationList;
+          this.proofSubmissionId = obj.proofSubmissionId;
+          // const formatedPremiumAmount = this.masterGridData[accountNumber].premiumAmount;
+          // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+
+        // }
+      }
+    });
+  }
+   findByPolicyNo(accountNumber,masterGridData){
+        return masterGridData.find(x => x.accountNumber === accountNumber)
       }
 
+
+      //      editMaster(accountNumber) {
+      //     // this.scrollToTop();
+      //     this.Service.getPPFMaster().subscribe((res) => {
+      //       console.log('masterGridData::', res);
+      //       this.masterGridData = res.data.results;
+      //       this.masterGridData.forEach((element) => {
+      //         if (element.policyStartDate !== null) {
+      //         element.policyStartDate = new Date(element.policyStartDate);
+      //         }
+      //         if (element.policyEndDate !== null) {
+      //         element.policyEndDate = new Date(element.policyEndDate);
+      //         }
+      //         if (element.fromDate !== null) {
+      //         element.fromDate = new Date(element.fromDate);
+      //         }
+      //         if (element.toDate !== null) {
+      //         element.toDate = new Date(element.toDate);
+      //         }
+      //       });
+      //       const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+
+      //       console.log("Edit Master",obj);
+      //       if (obj!= 'undefined'){
+
+      //       console.log('inedit as and when', this.masterGridData[accountNumber].frequency);
+      //     if (this.masterGridData[accountNumber].frequency === 'As & When') {
+
+      //       this.form.patchValue({
+      //         institution: obj.institution,
+      //         accountNumber: obj.accountNumber,
+      //         accountHolderName: obj.accountHolderName,
+      //         relationship: obj.relationship,
+      //         policyStartDate:obj.policyStartDate,
+      //         fromDate: obj.fromDate,
+      //         familyMemberInfoId: obj.familyMemberInfoId,
+      //         frequencyOfPayment: obj.frequencyOfPayment,
+      //     });
+
+      //     }
+      //     else{
+      //     this.paymentDetailGridData = obj.paymentDetails;
+      //     this.form.patchValue(obj);
+      //     this.Index = accountNumber;
+      //     this.showUpdateButton = true;
+      //     this.isClear = true;
+      //     this.urlArray = obj.documentInformationList;
+      //     this.proofSubmissionId = obj.proofSubmissionId;
+      //   }
+      // }
+      //     });
+      //  }
+
+
+
+
+
       // On Edit Cancel
-        cancelEdit() {
+      resetView() {
           this.form.reset();
           this.form.get('active').setValue(true);
           this.form.get('ecs').setValue(0);
           this.showUpdateButton = false;
           this.paymentDetailGridData = [];
+          this.masterfilesArray = [];
+          this.urlArray = [];
           this.isClear = false;
         }
 
       // On Master Edit functionality
-        viewMaster(i: number) {
-          //this.scrollToTop();
-          this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-          this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
-          this.Index = i;
-          this.showUpdateButton = true;
-          const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
-          // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-          this.isCancel = true;
-        }
+        // viewMaster(i: number) {
+        //   //this.scrollToTop();
+        //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+        //   this.form.patchValue(this.masterGridData[i]);
+        //   this.Index = i;
+        //   this.showUpdateButton = true;
+        //   const formatedPremiumAmount = this.masterGridData[i].premiumAmount;
+        //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+        //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+        //   this.isCancel = true;
+        // }
 
       // On View Cancel
         cancelView() {
@@ -533,12 +651,51 @@ this.masterPage();
               Object.assign({}, { class: 'gray modal-md' }),
           );
 
-      }
-      getInstituteDetails(policNo) {
-        const institude = this.masterGridData.find(
-          (element) => element.policyNo === policNo.number
-        );
-        this.form.patchValue(institude);
-      }
+       }
+        getInstituteDetails(policNo) {
+          const institude = this.masterGridData.find(
+            (element) => element.policyNo === policNo.number
+          );
+          this.form.patchValue(institude);
+        }
 
-}
+        previousDocViewer() {
+
+          this.urlIndex = this.urlIndex - 1;
+          this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+            this.urlArray[this.urlIndex].blobURI,
+          );
+          // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+          //   this.urlArray[this.urlIndex]
+          // );
+        }
+
+          //---------- For Doc Viewer -----------------------
+          nextDocViewer() {
+
+            this.urlIndex = this.urlIndex + 1;
+            this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+              this.urlArray[this.urlIndex].blobURI,
+            );
+            // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+            //   this.urlArray[this.urlIndex]
+            // );
+          }
+        docViewer(template3: TemplateRef<any>,index:any) {
+          console.log("---in doc viewer--");
+          this.urlIndex = index;
+
+          console.log("urlArray::", this.urlArray);
+          this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+            this.urlArray[this.urlIndex].blobURI,
+          );
+          //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+          //this.urlSafe
+          console.log("urlSafe::",  this.urlSafe);
+          this.modalRef = this.modalService.show(
+            template3,
+            Object.assign({}, { class: 'gray modal-xl' }),
+          );
+        }
+
+  }

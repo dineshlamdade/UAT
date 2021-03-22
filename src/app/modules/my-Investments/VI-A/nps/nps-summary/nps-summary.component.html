@@ -90,8 +90,10 @@
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount" (blur)='onChangeFutureNewPolicyDeclaredAmount()'
-                  placeholder="0.00" class="form-control width120 inline_center align-right">
+<!--                <p-inputNumber  min="0" [(ngModel)]="futureNewPolicyDeclaredAmount" (blur)='onChangeFutureNewPolicyDeclaredAmount()'-->
+<!--                                placeholder="0.00" class="form-control width120 inline_center align-right"></p-inputNumber>-->
+                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                                 (onBlur) ='onChangeFutureNewPolicyDeclaredAmount()' min="0" mode="decimal" placeholder="0.00"></p-inputNumber>
               </td>
               <td></td>
               <td></td>
@@ -124,7 +126,6 @@
 
               <td class="align-right">
               </td>
-              <td></td>
             </tr>
 
             <tr class="table-light-color">
@@ -135,6 +136,9 @@
                 </span>
               </td>
               <td class="align-right">
+                <span class="padding-right-12" tooltip="{{limitD | number:'1.2-2'}}">
+                  {{limitD | number:'1.2-2'}}
+                </span>
               </td>
               <td></td>
             </tr>
@@ -154,6 +158,9 @@
                 </span>
               </td>
               <td class="align-right">
+                <span class="padding-right-12" tooltip="{{deductionE | number:'1.2-2'}}">
+                  {{deductionE | number:'1.2-2'}}
+                </span>
               </td>
               <td></td>
             </tr>
@@ -173,6 +180,9 @@
                 </span>
               </td>
               <td class="align-right">
+                <span class="padding-right-12" tooltip="{{eligibleForDeductionF | number:'1.2-2'}}">
+                  {{eligibleForDeductionF | number:'1.2-2'}}
+                </span>
               </td>
               <td></td>
             </tr>

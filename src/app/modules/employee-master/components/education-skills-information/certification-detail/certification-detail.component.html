@@ -68,7 +68,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalCertificationDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalCertificationDate">
@@ -84,7 +84,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalValidityFromDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalValidityFromDate"
@@ -101,7 +101,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalValidityToDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalValidityToDate"
@@ -159,7 +159,7 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
                                                     formControlName="renewalFeesValidityFromDate"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityFromDate"
@@ -178,7 +178,7 @@
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                                                     data-provide="datepicker" data-date-autoclose="true"
                                                     class="form-control" placeholder="  /   /" bsDatepicker
-                                                    formControlName="renewalFeesValidityToDate"
+                                                    formControlName="renewalFeesValidityToDate" placement="center"
                                                     [(ngModel)]="employeeCertificateRequestModel.renewalFeesValidityToDate"
                                                     [minDate]="employeeCertificateRequestModel.renewalFeesValidityFromDate">
                                             </div>

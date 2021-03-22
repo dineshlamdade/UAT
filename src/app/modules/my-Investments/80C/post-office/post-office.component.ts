@@ -9,6 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class PostOfficeComponent implements OnInit {
 
+  public accountNo: string;
   public tabIndex = 0;
   public windowScrolled: boolean;
   public data: any;
@@ -23,11 +24,22 @@ export class PostOfficeComponent implements OnInit {
     console.log('data::', this.data);
   }
 
-  changeTabIndex(index: number) {
-    if (index !== 2) {
+  changeTabIndex(index: number)
+  {
+    console.log(this.accountNo)
+    if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.accountNo = undefined;
+    }
     this.tabIndex = index;
+  }
+
+
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.accountNo = event;
   }
 
   public modalRef: BsModalRef;

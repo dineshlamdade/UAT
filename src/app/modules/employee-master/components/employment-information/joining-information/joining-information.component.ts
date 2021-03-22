@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation, Input, Optional, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { JoiningInformationModel } from './../../../dto-models/employment-forms-models/joining-information.model';
-import { EmploymentInformationService } from './../../../employee-master-services/employment-information.service';
+import { JoiningInformationModel } from './../employment-forms-models/joining-information.model';
+import { EmploymentInformationService } from './../employment-information.service';
 import { DatePipe } from '@angular/common';
 import { EventEmitterService } from './../../../employee-master-services/event-emitter/event-emitter.service';
 import { Subscription } from 'rxjs';
@@ -47,8 +47,9 @@ export class JoiningInformationComponent implements OnInit {
   editJoining: boolean = false;
   public today = new Date();
   saveNextBoolean: boolean = false;
-
-
+  joiningTab: boolean = false;
+  exitStatus:any;
+  employeeExitInfoId:any;
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
@@ -65,6 +66,7 @@ export class JoiningInformationComponent implements OnInit {
     this.JoiningForm = this.formBuilder.group({
       joiningDate: ['', Validators.required],
       originalHireDate: [''],
+      
       joiningDateForGratuity: [''],
       companyName: ['', Validators.required],
       probationPeriodMonth: [''],
@@ -83,8 +85,6 @@ export class JoiningInformationComponent implements OnInit {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
-
-
     //get group companies infomartion
     this.EmploymentInformationService.getCompanyInformation().subscribe(res => {
 
@@ -94,6 +94,10 @@ export class JoiningInformationComponent implements OnInit {
       });
       if (this.companyListForJoining.length == 1) {
         this.JoiningInformationModel.companyName = this.companyListForJoining[0];
+        this.JoiningForm.patchValue({
+          companyName: this.JoiningInformationModel.companyName,
+        })
+
       }
     })
     // this.getJoiningFormInformation();
@@ -101,16 +105,21 @@ export class JoiningInformationComponent implements OnInit {
     // this.EmploymentInformationService.getViewFlag().subscribe(number => {
     //   
     //   this.certificateViewFlag = number;
-    //   // console.log('certificateViewFlag::', this.certificateViewFlag);
     //   this.disableFields(this.certificateViewFlag);
 
     // })
     // if (this.confirmMsg == 'viewJoining') {
+
+    // Subscription Event from edit joining Summary page
     this.joiningDataSubscription = this.EventEmitterService.setJoiningData().subscribe(res => {
 
       if (res) {
         this.getJoiningFormInformation();
         this.editJoining = res.editJoining;
+      //  if( this.checkexitStatus())       
+      //   {
+      //     this.disableFields();
+      //   }
         if (res.viewJoining == true) {
           this.viewJoining = res.viewJoining;
           this.disableFields();
@@ -154,9 +163,14 @@ export class JoiningInformationComponent implements OnInit {
     temp15.disable();
     // }
   }
-  // ngOnDestroy() {
-  // }
 
+  saveNextJoiningSubmit(JoiningInformationModel) {
+    this.saveNextBoolean = true;
+
+    this.joiningFormSubmit(JoiningInformationModel);
+  }
+
+  // Joining form submit method
   joiningFormSubmit(JoiningInformationModel) {
 
     JoiningInformationModel.employeeMasterId = this.employeeMasterId;
@@ -238,6 +252,7 @@ export class JoiningInformationComponent implements OnInit {
     }
   }
 
+  // Get API call for joining form information
   getJoiningFormInformation() {
 
     this.EmploymentInformationService.getJoiningInformation(this.employeeMasterId).subscribe(res => {
@@ -247,6 +262,12 @@ export class JoiningInformationComponent implements OnInit {
       if (res.data.results[0]) {
         this.JoiningInformationModel = res.data.results[0];
         this.JoiningInformationModel.joiningDate = new Date(this.JoiningInformationModel.joiningDate);
+        this.JoiningForm.patchValue({
+          joiningDate: this.JoiningInformationModel.joiningDate,
+          companyName: this.JoiningInformationModel.companyName,
+          originalHireDate: this.JoiningInformationModel.originalHireDate,
+          joiningDateForGratuity: this.JoiningInformationModel.joiningDateForGratuity
+        })
         // this.JoiningInformationModel.companyName = res.data.results[0].companyName;
         if (res.data.results.length > 0) {
           if (this.JoiningInformationModel.isNoticePeriodInMonth == 1) {
@@ -273,6 +294,7 @@ export class JoiningInformationComponent implements OnInit {
     this.JoiningForm.markAsUntouched();
   }
 
+  // Probation Months and days Field visible method
   probationPeriod(event) {
     const probationPeriod = this.JoiningForm.get('probationPeriod');
     if (probationPeriod.value == "true") {
@@ -286,6 +308,7 @@ export class JoiningInformationComponent implements OnInit {
     }
   }
 
+  // Notice Months and days Field visible method
   noticePeriod(event) {
     const noticePeriod = this.JoiningForm.get('noticePeriod');
     if (noticePeriod.value == "true") {
@@ -296,6 +319,7 @@ export class JoiningInformationComponent implements OnInit {
       this.noticePeriodDaysModel = '';
     }
   }
+
 
   assignJoiningDateTo(joiningDate) {
 
@@ -309,6 +333,8 @@ export class JoiningInformationComponent implements OnInit {
   add_years(dt, n) {
     return new Date(dt.setFullYear(dt.getFullYear() + n));
   }
+
+  // Calsulation of Expected COnfirmation date based on Probation months
   calculateExpectedConfirmationDateFromMonths(probationPeriodMonthModel, joiningDate) {
 
     if (probationPeriodMonthModel) {
@@ -323,6 +349,8 @@ export class JoiningInformationComponent implements OnInit {
       this.JoiningInformationModel.expectedConfirmationDate = assignDate;
     }
   }
+
+  // Calsulation of Expected COnfirmation date based on Probation Days
   calculateExpectedConfirmationDateFromDays(probationPeriodDaysModel, joiningDate) {
 
     probationPeriodDaysModel = parseInt(probationPeriodDaysModel);
@@ -335,14 +363,17 @@ export class JoiningInformationComponent implements OnInit {
 
     this.JoiningInformationModel.expectedConfirmationDate = expectedConfirmationDate;
   }
+
   setNoticePeriodMonthModel(noticePeriodMonthModel) {
     localStorage.setItem('noticePeriodMonthModel', noticePeriodMonthModel);
     localStorage.removeItem('noticePeriodDaysModel');
   }
+
   setNoticePeriodDaysModel(noticePeriodDaysModel) {
     localStorage.setItem('noticePeriodDaysModel', noticePeriodDaysModel);
     localStorage.removeItem('noticePeriodMonthModel');
   }
+
   confirmationPopup() {
     if (this.JoiningInformationModel.expectedConfirmationDate) {
       const dialogRef = this.dialog.open(ConfirmationModalComponent, {
@@ -352,11 +383,6 @@ export class JoiningInformationComponent implements OnInit {
     }
   }
 
-  saveNextJoiningSubmit(JoiningInformationModel) {
-    this.saveNextBoolean = true;
-
-    this.joiningFormSubmit(JoiningInformationModel);
-  }
 
   disableExpectedConfirmationDate() {
     // if (this.JoiningInformationModel.confirmationDate) {
@@ -368,6 +394,22 @@ export class JoiningInformationComponent implements OnInit {
   onNoClick(): void {
     this.matDialog.closeAll();
   }
+
+
+//   checkexitStatus():boolean{
+
+//     this.EmploymentInformationService.getNumber().subscribe(number => {
+// this.employeeExitInfoId = number.text;})
+//     this.EmploymentInformationService.getExitInformation(this.employeeExitInfoId).subscribe(res => {
+      
+//           this.exitStatus = res.data.results[0].lastWorkingDate;   
+//           console.log(this.exitStatus)   
+//      } )
+//      if(this.exitStatus!=null)
+//      return true
+//      return false
+    
+// }
 
   cancel() {
     this.EventEmitterService.getEmpSummaryInitiate();

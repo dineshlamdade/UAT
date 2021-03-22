@@ -6,6 +6,7 @@
            <select name="beast" id="Institution" class="form-control custom-select"
                 formControlName="institutionName"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.institutionName.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let institutionName of institutionNameList"
                 [value]="institutionName.value">
                 {{institutionName.label}}
@@ -21,7 +22,7 @@
               placeholder="Enter Policy No."
               [ngClass]="{ 'is-invalid': submitted && masterForm.policyNo.errors }"  >
            <div *ngIf="submitted && masterForm.policyNo.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.policyNo.errors.required">Policy No. is mandatory</div>
+              <div *ngIf="masterForm.policyNo.errors.required">Policy No is mandatory</div>
            </div>
         </div>
         <div class="col-sm-6 col-md-3">
@@ -29,6 +30,7 @@
            <select name="Policy_Holder_Name" id="PolicyHolderName" class="form-control custom-select"
                 formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'
                 [ngClass]="{ 'is-invalid': submitted && masterForm.policyholdername.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let familyMember of familyMemberName"
                 [value]="familyMember.value">
                 {{familyMember.label}}
@@ -88,31 +90,36 @@
               <legend>Payment Details</legend>
               <div class="row">
                  <div class="col-sm-6 col-md-3">
-                    <label class="form-label">Frequency of Payment</label>
+                    <label class="form-label">Frequency Of Payment</label>
                     <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                        <option [ngValue]="null">Select</option>
                       <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}
                       </option>
                     </select>
                     <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is mandatory</div>
+                       <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency Of Payment is mandatory</div>
                     </div>
                  </div>
+                 
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Premium Amount</label>
-                    <input type="text" formControlName="premiumAmount" class="form-control align-right" (change)='calculateAnnualAmount()'
-                      name="Premium Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }">
-                    <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
+                    <p-inputNumber   class="form-control align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur) = "calculateAnnualAmount()"
+                      [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }"
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+
+                      <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                        <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
                     </div>
                  </div>
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Annual Amount</label>
-                    <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'" formControlName="annualAmount"
-                      class="form-control align-right" name="Annual Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }">
+                    <p-inputNumber   class="form-control align-right" formControlName="annualAmount" name="Annual Amount"
+                      [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }"
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                     <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
                        <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
                     </div>
@@ -268,7 +275,15 @@
                                 <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement</td>
                                 <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
                                    class="fa fa-paperclip"
-                                   aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
+                                   aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                   <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                                    <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                                      <i class="fa fa-paperclip text-orange"
+                                      (click)="docViewer(template3,i)"></i> &nbsp;
+                                      {{ doc.fileName }}
+                                    </div>
+                                  </div>
+                                  </td>
                                 <td>
                                    <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
                                     data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
@@ -286,7 +301,7 @@
         <div class="col-md-3">
            <label class="custom-control custom-checkbox custom-control-inline pl-45">
            <input formControlName="active" type="checkbox" class="custom-control-input"
-              name="example-inline-checkbox1" value="option1" checked
+              name="example -inline-checkbox1" value="option1" checked
               (change)="deactivateRemark()">
            <span class="custom-control-label">Active </span>
            </label>
@@ -299,8 +314,11 @@
      <div class="row mt-15">
         <div class="col-12">
            <div class="float-right mb-15">
-              <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
-                <i class="fa fa-floppy-o"></i></b> Save</button>
+            <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+          <button type="button"  (click)="resetView()"
+            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+            <i class="fa fa-floppy-o"></i></b> Reset</button>
            </div>
         </div>
      </div>
@@ -348,13 +366,12 @@
                             <td class="wd-10"><span tooltip="Submitted">Submitted</span>
                             </td>
                             <td class="wd-5">
-                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;&nbsp;
-                            </td>
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.policyNo)" tooltip="Edit"></i> &nbsp;&nbsp;
+                          </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">
                             <td colspan="10">
-                                <span class="font-14 font500 align-center text-red">No Data
-                    Available</span>
+                                <span class="font-14 font500 align-center text-red">No Data Available</span>
                             </td>
                         </tr>
                     </tbody>
@@ -420,3 +437,62 @@
        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
     </div>
  </ng-template>
+
+<!-- For Doc Viewer  -->
+<ng-template #template3>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
+<button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button
+          type="button"
+          class="btn active Next_Previous_Btn"
+          tooltip="Previous Document"
+          (click)="previousDocViewer()"
+          [disabled]="urlIndex == 0"
+        >
+          <i class="fa fa-angle-left text-white font-30 p-10"></i>
+        </button>
+      </div>
+      <div class="col-md-10">
+        <iframe
+          style="height: 100vh; width: 100%; display: block"
+          [src]="urlSafe"
+          provider="google"
+        ></iframe>
+        <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
+      </div>
+      <div class="col-md-1">
+        <button
+          type="button"
+          class="btn active Next_Previous_Btn"
+          tooltip="Next Document"
+          (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1"
+        >
+          <i class="fa fa-angle-right text-white font-30 p-10"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+      Ok
+    </button>
+  </div>
+</ng-template>
+

@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PayrollAreaInformationService } from '../../employee-master-services/payroll-area-information.service';
-import { EmployeeSummaryBean } from './../../dto-models/employee-summary.model';
-import { EmployeeSummaryService } from './../../employee-master-services/employee-summary.service';
+import { PayrollAreaInformationService } from '../payroll-area-information/payroll-area-information.service';
+import { EmployeeSummaryBean } from './employee-summary.model';
+import { EmployeeSummaryService } from './employee-summary.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
 import { AuthService } from './../../../auth/auth.service';
 

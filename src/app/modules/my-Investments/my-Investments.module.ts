@@ -22,15 +22,34 @@ import { HousingloanmasterComponent } from './housingloan/housingloanmaster/hous
 import { HousingloansummaryComponent } from './housingloan/housingloansummary/housingloansummary.component';
 import { MyInvestmentsRoutingModule } from './my-Investments-routing.module';
 import { MyInvestmentsComponent } from './my-investments.component';
-import { PrimeNGModule } from 'src/app/app.primeNG.module';
+import { PrimeNGModule } from '../../app.primeNG.module';
+// import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {InputNumberModule} from 'primeng/inputnumber';
 import { HousingrentComponent } from './housingrent/housingrent.component';
 import { HouserentdeclarationComponent } from './housingrent/houserentdeclaration/houserentdeclaration.component';
 import { HouserentmasterComponent } from './housingrent/houserentmaster/houserentmaster.component';
 import { HouserentsummaryComponent } from './housingrent/houserentsummary/houserentsummary.component';
+import { PreviousemployerComponent } from './previousemployer/previousemployer.component';
+import { PreviousemployersummaryComponent } from './previousemployer/previousemployersummary/previousemployersummary.component';
+import { PreviousemployermasterComponent } from './previousemployer/previousemployermaster/previousemployermaster.component';
+import { NationalSavingCertificateNSCComponent } from './Other/national-saving-certificate-nsc/national-saving-certificate-nsc.component';
+import { HousePropertyComponent } from './Other/house-property/house-property.component';
+import { PrincipalRepaymentOnHousingLoanComponent } from './Other/principal-repayment-on-housing-loan/principal-repayment-on-housing-loan.component';
+import { TaxAdjustmentsComponent } from './Other/tax-adjustments/tax-adjustments.component';
+import { TaxAdjustmentsAmountComponent } from './Other/tax-adjustments/tax-adjustments-amount/tax-adjustments-amount.component';
+import { TaxAdjustmentsSummaryComponent } from './Other/tax-adjustments/tax-adjustments-summary/tax-adjustments-summary.component';
+import { ChildhostelallowanceComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/childhostelallowance.component';
+import { ChildeducationallowanceComponent } from './Other/Child Education Allowance/childeducationallowance/childeducationallowance.component';
+import { ChaComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/cha/cha.component';
+import { CeaComponent } from './Other/Child Education Allowance/cea/cea.component';
+import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
+import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
+import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
+
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
-    
     HousingloanComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,
@@ -39,6 +58,26 @@ import { HouserentsummaryComponent } from './housingrent/houserentsummary/houser
     HouserentdeclarationComponent,
     HouserentmasterComponent,
     HouserentsummaryComponent,
+    PreviousemployerComponent,
+    PreviousemployersummaryComponent,
+    PreviousemployermasterComponent,
+    NationalSavingCertificateNSCComponent,
+    HousePropertyComponent,
+    PrincipalRepaymentOnHousingLoanComponent,
+    TaxAdjustmentsComponent,
+    TaxAdjustmentsAmountComponent,
+    TaxAdjustmentsSummaryComponent,
+    ChildhostelallowanceComponent,
+    ChaComponent,
+    ChildeducationallowanceComponent,
+    CeaComponent,
+    CeamasterComponent,
+    ChamasterComponent,
+    ChapterVIASummaryComponent,
+    PrincipalRepaymentOnHousingLoanComponent,
+
+   
+
   ],
   imports: [
     CommonModule,
@@ -64,6 +103,11 @@ import { HouserentsummaryComponent } from './housingrent/houserentsummary/houser
     SharedlayoutModule,
     MyInvestmentsRoutingModule,
     PrimeNGModule,
+    // BrowserModule,
+    // BrowserAnimationsModule,
+    InputNumberModule,
+    FormsModule
+
   ],
 
   providers: [ DatePipe, NumberFormatPipe ],
