@@ -161,6 +161,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public canEdit: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -198,6 +199,7 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
@@ -205,6 +207,8 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
       this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
 
       const data = {
         label: 'All',
@@ -1142,6 +1146,31 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
       });
   }
 
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>) {
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
   // Common Function for filter to call API
   getTransactionFilterData(
@@ -1337,36 +1366,6 @@ export class SukanyaSamriddhiDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
-  }
-
-
-   // ---------------- Doc Viewr Code ----------------------------
-   nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
-
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
-    console.log("documentDetailList::", documentDetailList)
-    this.urlArray = documentDetailList;
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
-    );
   }
 }
 

@@ -1,4 +1,3 @@
-import value from '*.json';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -18,6 +17,11 @@ export class QueryComponent implements OnInit {
   queryListData: any;
   editflag: boolean = false;
   hideRemarkDiv:boolean = false;
+  isVisible:boolean=false;
+  isShown: boolean= true;
+
+  p: number = 1;
+  moduleListData: any;
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService) {
 
@@ -26,7 +30,7 @@ export class QueryComponent implements OnInit {
       "updatedBy": new FormControl(''),
       "createdOn": new FormControl(''),
       "updatedOn": new FormControl(''),
-      "id": new FormControl(0),
+      "queAnsMasterId": new FormControl(0),
       "code": new FormControl(''),
       "description": new FormControl(null, [Validators.required ,Validators.pattern('^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]+$')]),
       "moduleId": new FormControl(null,[Validators.required]),
@@ -34,13 +38,14 @@ export class QueryComponent implements OnInit {
       "questionDescription": new FormControl(null),
       "answerSubject": new FormControl(null,[Validators.required]),
       "answerDescription": new FormControl(null),
-      "remark": new FormControl(''),
+      "remark": new FormControl(null),
       "active": new FormControl(true,[Validators.required]),
 
     });
   }
   ngOnInit(): void {
     this.getAllData();
+    this.getModuleName();
   }
   get f(){
     return this.queryForm.controls;
@@ -52,18 +57,16 @@ export class QueryComponent implements OnInit {
         {
           this.toster.success("",'Query Added Successfully');
           this.queryForm.controls['active'].setValue(true);
+          this.getAllData();
         })
     }else{
       this.updateQuery();
       this.queryForm.controls['active'].setValue(true);
     }
-    this.getAllData();
     this.queryForm.reset();
-
     if (this.queryForm.invalid) {
       return;
   }
-  this.getAllData();
   }
   getAllData()
   {
@@ -76,6 +79,7 @@ export class QueryComponent implements OnInit {
     this.queryService.updateQuery(this.queryForm.value).subscribe(res =>
       {
     this.toster.success("",'Query Updated Successfully');
+    this.getAllData();
       }
       )
   }
@@ -84,7 +88,9 @@ export class QueryComponent implements OnInit {
     this.editflag = true;
     this.queryForm.enable();
     this.queryForm.patchValue(query);
-    this.queryForm.controls['code'].setValue(value);
+    this.isVisible =true;
+    this.isShown = false;
+    this.queryForm.controls['code'].disable();
   }
   viewQuery(query)
   {
@@ -103,17 +109,25 @@ cancel()
   this.reset();
   this.queryForm.controls['active'].setValue(true);
 }
+getModuleName()
+{
+  this.queryService.getModuleName().subscribe(res => {
+    this.moduleListData = res.data.results;
+
+  })
+}
 changeEvent($event) {
+  alert(this.hideRemarkDiv)
   if ($event.target.checked) {
       this.hideRemarkDiv = false;
+      this.queryForm.controls['active'].setValue(true);
   }
   else {
       this.hideRemarkDiv = true;
+      this.queryForm.controls['active'].setValue(false);
+
   }
 
 }
-// deactiveActiveCheckBox()
-// {
 
-// }
 }

@@ -143,7 +143,7 @@ export class PostOfficeMasterComponent implements OnInit {
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
-      investmentGroup1MasterPaymentDetailId: new FormControl(0),
+      // investmentGroup1MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId : new FormControl('')
     });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FamilyInformationService } from './../../employee-master-services/family-information.service';
+import { FamilyInformationService } from './family-information.service';
 
 
 
@@ -47,7 +47,6 @@ export class FamilyInformationComponent implements OnInit {
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe(res => {
 
       this.FamilySummaryGridData = res.data.results[0].familyDetailsSummaryBeans;
-      console.log(this.FamilySummaryGridData);
 
       this.FamilySummaryGridData.forEach(res => {
         if (res.status == 1) {

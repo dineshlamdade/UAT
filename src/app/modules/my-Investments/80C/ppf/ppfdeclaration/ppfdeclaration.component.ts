@@ -895,6 +895,7 @@ export class PPFDeclarationComponent implements OnInit {
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    console.log("filesArray empty",this.filesArray);
     this.globalSelectedAmount = '0.00';
   }
 
@@ -995,6 +996,33 @@ export class PPFDeclarationComponent implements OnInit {
       }
     );
   }
+
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>) {
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
   // Common Function for filter to call API
   getTransactionFilterData(
     institution: String,
@@ -1187,35 +1215,6 @@ export class PPFDeclarationComponent implements OnInit {
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
   }
-
-    // ---------------- Doc Viewr Code ----------------------------
-    nextDocViewer() {
-      this.urlIndex = this.urlIndex + 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-    }
-
-    previousDocViewer() {
-      this.urlIndex = this.urlIndex - 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-    }
-
-    docViewer(template3: TemplateRef<any>, documentDetailList: any) {
-      console.log("documentDetailList::", documentDetailList)
-      this.urlArray = documentDetailList;
-      this.urlIndex = 0;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      console.log(this.urlSafe);
-      this.modalRef = this.modalService.show(
-        template3,
-        Object.assign({}, { class: 'gray modal-xl' }),
-      );
-    }
 }
 
 class DeclarationService {

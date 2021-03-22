@@ -8,16 +8,16 @@
           <div class="card">
             <div class="card-body" style="border:1px solid rgb(189, 175, 175)">
               <form [formGroup]="AddLoanForm" (ngSubmit)="addloanFormSubmit()">
-                <label>
-               Apply Loan
-                </label>
+                <fieldset>
+                  <legend>Apply Loan</legend>
+
                 <div class="row">
                   <div class="col-md-3">
                     <label class="form-label">Loan Type</label>
                     <select
                       class="form-control custom-select"
                       formControlName="loantype"
-                      placeholder="Select"
+                      placeholder="Select" disabled
                     >
                       <option [ngValue]="null" selected>Select</option>
                       <option>Personal Loan</option>
@@ -32,14 +32,14 @@
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Underline Asset Value</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" disabled/>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Car Type/Institution</label>
                     <select
                       class="form-control custom-select"
                       formControlName="loantype"
-                      placeholder="Select"
+                      placeholder="Select" disabled
                     >
                       <option [ngValue]="null" selected>Select</option>
                       <option>Personal Loan</option>
@@ -53,7 +53,7 @@
                 <div class="row">
                   <div class="col-md-3">
                     <label class="form-label">Interrst rate (%)</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" disabled/>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Loan Amount</label>
@@ -64,11 +64,11 @@
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">No of Installment</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" disabled/>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Installment Amount</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" disabled/>
                   </div>
                 </div>
                 <br />
@@ -97,7 +97,10 @@
                 <br />
                 <div class="row">
                   <div class="tabview-contents col-md-5">
-                    Quarantor
+
+                  <h3 class="font-14 text-purple font-bold "> Quarantor</h3>
+                  <div class="table-responsive Custom_Table">
+
                     <table
                       class="table table-striped table-bordered table-hover m-b-0"
                     >
@@ -116,9 +119,13 @@
                         </tr>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                   <div class="tabview-contents col-md-5">
-                    Deviations
+
+                  <h3 class="font-14 text-purple font-bold ">Deviations</h3>
+                  <div class="table-responsive Custom_Table">
+
                     <table
                       class="table table-striped table-bordered table-hover m-b-0"
                     >
@@ -141,10 +148,14 @@
                         </tr>
                       </tbody>
                     </table>
+                    </div>
                   </div>
                 </div>
+                <br>
                   <div class="col-md-6">
-                    Upload Documents
+                  <h3 class="font-14 text-purple font-bold "> Upload Documents</h3>
+                  <div class="table-responsive Custom_Table">
+
                     <table
                       class="table table-striped table-bordered table-hover m-b-0"
                     >
@@ -173,10 +184,12 @@
                         </tr>
                       </tbody>
                     </table>
+                    </div>
                   </div>
-
+                  <br>
                   <div class="col-md-7">
-                    Approver Details
+                  <h3 class="font-14 text-purple font-bold "> Approver Details</h3>
+                      <div class="table-responsive Custom_Table">
                     <table
                       class="table table-striped table-bordered table-hover m-b-0"
                     >
@@ -201,8 +214,10 @@
                         </tr>
                       </tbody>
                     </table>
+                    </div>
+
                   </div>
-                  <div class="row float-right" style="margin: 10px">
+                  <!-- <div class="row float-right" style="margin: 10px">
                     <button type="button"  class="btn btn-danger" style="background-color:darkmagenta;">
                       <i class="fa fa-floppy-o" aria-hidden="true"></i
                       >&nbsp;&nbsp;Save</button
@@ -215,7 +230,30 @@
                       <i class="fa fa-times" aria-hidden="true"></i
                       >&nbsp;&nbsp;Cancel</button
                     >&nbsp;
-                  </div>
+                  </div> -->
+                  <ng-container class="float-right">
+                    <div class="row float-right" style="margin: 10px" >
+                      <button type="submit"   class="custom_button custom_btn btn-labeled btn-labeled-left"
+                      tooltip="Save"[disabled]="!AddLoanForm.valid"
+                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
+                       <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
+                      >&nbsp;
+
+                      <button type="button"  tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                        <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
+                      >&nbsp;
+
+                      <!-- <button type="submit" tooltip="Update"   class="custom_button custom_btn btn-labeled btn-labeled-left"
+                     [disabled]="!AddLoanForm.valid"
+                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
+                       <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
+                      >&nbsp; -->
+
+                      <button type="button" tooltip="Cancel"  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
+                       <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>
+                    </div>
+                  </ng-container>
+                </fieldset>
               </form>
             </div>
           </div>

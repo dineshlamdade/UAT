@@ -5,6 +5,7 @@ import { QueryComponent } from './query/query.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     ReactiveFormsModule,
     SharedlayoutModule,
     CKEditorModule,
-
+    NgxPaginationModule
 
   ]
 })

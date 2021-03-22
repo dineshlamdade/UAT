@@ -30,10 +30,6 @@
                           class="form-control"
                           placeholder="Enter Description" [ngClass]="{'is-invalid' : queryForm.get('description').status == 'INVALID'}"
                         />
-                        <!-- <div *ngIf="f.description.touched && f.description.errors" class="invalid-feedback">
-                          <div *ngIf="f.description.errors.pattrn">Alphanumric character only.</div>
-                        </div> -->
-
                       </div>
                       <div class="col-sm-6 col-md-4">
                         <label class="form-label">Module Name</label>
@@ -42,41 +38,66 @@
                           formControlName="moduleId"
                           placeholder="Select" [ngClass]="{'is-invalid' : queryForm.get('moduleId').status == 'INVALID'}"
                         >
-                          <option [ngValue]="null" selected>Select</option>
-                          <option value="1">LMS</option>
-                          <option value="2">Registration</option>
-                          <option value="3">Loan</option>
-                          <option value="4">Reimbursement</option>
+                          <option [ngValue]="null" selected >Select</option>
+                          <option value="{{module.applicationModuleId}}" *ngFor="let module of moduleListData " >{{module.applicationModuleName}}</option>
+
                         </select>
-                        <!-- <div *ngIf="f.moduleId.touched && f.moduleId.errors" class="invalid-feedback">
-                      </div> -->
                       </div>
                     </div>
                   </div>
                       <div class="row tabview-contents">
-                        <fieldset class="col-md-4">
+                        <fieldset class="col-md-4" style="height:fit-content;">
                           <legend>Keywords</legend>
-                          <select
-                            class="form-control custom-select"
-                            placeholder="Select"  >
-                            <option  [ngValue]="null" selected>Employee</option>
-                            <option >Employee Code</option>
-                            <option >Employee Name</option>
-                            <option>Employee Email</option>
-                            <option>Employee Phone Number</option>
-                            <option>Employee Gender</option>
-                            <option>Employee Gread</option>
-                          </select>
-                          <select
-                            class="form-control custom-select"
-                            >
-                            <option  [ngValue]="null" selected>Company</option>
-                          </select>
-                          <select
-                            class="form-control custom-select"
-                            >
-                            <option  [ngValue]="null" selected>Date</option>
-                          </select>
+
+                          <div class="card" >
+                            <div class="card-body box-border">
+                              <div id="page">
+                                <div>
+                                  <input class="toggle-box" id="identifier-1" type="checkbox" value=true />
+                                  <label for="identifier-1">Employee</label>
+                                  <div class="ml-30">
+                                    <a class="p-0 d-flex">
+                                      <label class="custom-control custom-checkbox ">
+                                        <ul>
+                                        <li>Employee Name</li>
+                                        <li>Employee Email</li>
+                                        <li>Employee Phone Number</li>
+                                        <li>Employee Gender</li>
+                                        <li>Employee Gread</li>
+                                      </ul>
+                                      </label>
+                                    </a>
+                                  </div>
+                                </div>
+                                <div>
+                                  <input class="toggle-box" id="identifier-2" type="checkbox" value=true />
+                                  <label for="identifier-2" class="mt-10">Company</label>
+                                  <div class="ml-30">
+                                    <a class="p-0 position_relative">
+                                      <label class="custom-control custom-checkbox mr-15">
+                                        <ul>
+                                          <li>Company Name</li>
+                                        </ul>
+                                      </label>
+                                    </a>
+                                  </div>
+                                </div>
+                                <div >
+                                  <input class="toggle-box" id="identifier-3" type="checkbox" value=true />
+                                  <label for="identifier-3" class="mt-10">Date</label>
+                                  <div class="ml-30">
+                                    <a class="p-0 position_relative">
+                                      <label class="custom-control custom-checkbox mr-15">
+                                        <ul>
+                                          <li>Date</li>
+                                        </ul>
+                                      </label>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </fieldset>
 
                         <div class="col-md-7">
@@ -107,18 +128,7 @@
                         </div>
                       </div>
                     </fieldset>
-
-                  <!-- <div class="row" style="margin: 20px">
-                    <input type="checkbox" formControlName="active"  />&nbsp;
-                    (change)="changeEvent($event)"
-                    <label class="form-label" style="margin-right: 70px;" >Active</label>
-
-                    <label class="form-label" >Remark</label>&nbsp;&nbsp;&nbsp;
-                    <textarea type="text" formControlName="remark" [disabled]="toogleBool" placeholder="Enter Remark"
-                    [ngClass]="{ 'is-invalid':f.remark.touched && f.remark.errors}"></textarea>
-                  </div> -->
                   <ng-container>
-
                   <div class=" row mt-20 ">
                     <div class="col-md-3">
                       <label class="custom-control custom-checkbox custom-control-inline pl-45">
@@ -134,28 +144,37 @@
                       <textarea formControlName="remark"
                         autocomplete="off"
                         [ngClass]="{'is-invalid' : queryForm.get('remark').status == 'INVALID', 'form-submitted': formDirective.submitted}"
-                        class="form-control" rows="2" placeholder="Enter Remark"></textarea>
+                        class="form-control" rows="2" placeholder="Enter Remark"
+                        [required]="hideRemarkDiv"></textarea>
                     </div>
                   </div>
                 </ng-container>
 
 
 
-                <ng-container>
-                <div class="row " style="margin: 10px" >
-                  <button type="submit"  class="custom_button custom_btn btn-labeled btn-labeled-left"
+                <ng-container class="float-right">
+                <div class="row float-right" style="margin: 10px" >
+                  <button type="submit"  *ngIf="isShown" class="custom_button custom_btn btn-labeled btn-labeled-left"
                   tooltip="Save"[disabled]="!queryForm.valid"
                    [ngClass]="{'disabled-btn-bg-green' : queryForm.invalid,'btn-bg-green': !queryForm.invalid}">
                    <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
                   >&nbsp;
-                  <button type="button"  tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+
+                  <button type="button"  tooltip="Reset" *ngIf="isShown" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
                     <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
                   >&nbsp;
-                  <button type="button" tooltip="Cancel"  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
+
+                  <button type="submit" tooltip="Update" *ngIf="isVisible"  class="custom_button custom_btn btn-labeled btn-labeled-left"
+                 [disabled]="!queryForm.valid"
+                   [ngClass]="{'disabled-btn-bg-green' : queryForm.invalid,'btn-bg-green': !queryForm.invalid}">
+                   <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
+                  >&nbsp;
+
+                  <button type="button" tooltip="Cancel" *ngIf="isVisible" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
                    <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>
                 </div>
               </ng-container>
-              <div class="tabview-contents">
+              <div class="tabview-contents" style="margin-top: 70px;">
                   <h3 class="font-14 text-purple font-bold ">Summary</h3>
                   <div class="row mt-20">
                     <div class="col-12 col-md-12 col-sm-12">
@@ -174,22 +193,24 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let query of queryListData; let i = index;">
+                            <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
                               <td class="wd-9">{{i+1}}</td>
                               <td class="wd-14">{{query.moduleId}}</td>
                               <td class="wd-14">{{query.code}}</td>
                               <td class="wd-20">{{query.description}}</td>
-                              <td class="wd-19">{{query.active}}</td>
+                              <td class="wd-19" *ngIf="query.active">Active</td>
+                              <td class="wd-19" *ngIf="!query.active">Inactive</td>
                               <td>
-                                <i class="fa fa-eye" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
                                 >&nbsp;
-                                <i class="fa fa-pencil" aria-hidden="true" (click)="editQuery(query)"></i
+                                <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
                                 >&nbsp;
                               </td>
                             </tr>
                             <tr></tr>
                           </tbody>
                         </table>
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
                       </div>
                     </div>
                   </div>

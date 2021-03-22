@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 export class QueryService {
 
 public apiUrl = environment.baseUrl8091;
+public apiUrl1 = environment.baseUrl8083;
   constructor(private http : HttpClient ) { }
 
 public getAll()
@@ -21,6 +22,10 @@ public addQuery(data)
 public updateQuery(data)
 {
  return this.http.put<any>(this.apiUrl + '/QuestionAnswer' ,data);
+}
+public getModuleName()
+{
+  return this.http.get<any>(this.apiUrl1 + 'application-module/');
 }
 
 }

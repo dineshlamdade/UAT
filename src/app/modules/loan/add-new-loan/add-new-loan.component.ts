@@ -23,5 +23,16 @@ export class AddNewLoanComponent implements OnInit {
   {
 
   }
+  reset(){
+    this.AddLoanForm.enable();
+    this.AddLoanForm.reset();
+    // this.AddLoanForm.controls['active'].setValue(true);
+
+  }
+cancel()
+{
+  this.reset();
+  // this.AddLoanForm.controls['active'].setValue(true);
+}
 
 }
