@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit,TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { RolePrivilegeService } from './role-privilege.service';
+import { AlertServiceService } from '../../../../core/services/alert-service.service';
 
 export interface User1 {
   full; read; write; modify; delete;
@@ -19,7 +20,7 @@ export interface data {
 })
 export class RolePrivilegeComponent implements OnInit {
 
-  registerForm: FormGroup;
+  rolePrivilegeForm: FormGroup;
     submitted = false;
 
   public modalRef: BsModalRef;
@@ -37,12 +38,17 @@ export class RolePrivilegeComponent implements OnInit {
   companyNameList: any;
   menuAllMasterData: any[];
   menuSummaryData: any;
+  editFlag: any;
+
+  get f(){
+    return this.rolePrivilegeForm.controls;
+  }
 
   constructor(private modalService: BsModalService,
-    private formBuilder: FormBuilder, private service:RolePrivilegeService) { }
+    private formBuilder: FormBuilder, private service:RolePrivilegeService, private alertService: AlertServiceService, ) { }
 
   ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
+    this.rolePrivilegeForm = this.formBuilder.group({
       employeeRoleAssignmentId: new FormControl(''),
       globalUserMasterId: new FormControl(''),
       companyGroupMasterId: new FormControl(''),
@@ -137,6 +143,43 @@ export class RolePrivilegeComponent implements OnInit {
         console.log('menuSummaryData::', res);
        this.menuSummaryData = res.data.results;
       }) ;
+     }
+
+     onSubmit(){
+      if(!this.editFlag){
+        console.log(JSON.stringify(this.rolePrivilegeForm.value));
+        this.service.addUserRolePrivilege(this.rolePrivilegeForm.value).subscribe(res =>
+          {
+            this.alertService.sweetalertMasterSuccess("User Group data save successfully","");
+          })
+      }else{
+        this.updateRolePrivilege();
+      }
+     }
+
+     updateRolePrivilege(){
+      this.service.updateUserRolePrivilege(this.rolePrivilegeForm.value).subscribe(res =>
+        {
+          this.alertService.sweetalertMasterSuccess("User Group data save successfully","");
+        }
+        )
+     }
+
+     editQuery(query)
+     {
+       this.editFlag = true;
+       this.rolePrivilegeForm.enable();
+       this.rolePrivilegeForm.patchValue(query);
+     }
+     viewQuery(query)
+     {
+       this.editFlag = false;
+      this.rolePrivilegeForm.patchValue(query);
+      this.rolePrivilegeForm.disable();
+     }
+     reset(){
+       this.rolePrivilegeForm.enable();
+       this.rolePrivilegeForm.reset();
      }
 
 

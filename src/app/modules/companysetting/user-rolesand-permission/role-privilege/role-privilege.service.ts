@@ -48,6 +48,17 @@ getCompanyId(){
   return this._HTTP.get<any>(environment.baseUrl8080 +'userRolePrivilegesMatrix/12' ) 
  }
 
+
+ public addUserRolePrivilege(data)
+ {
+   return this._HTTP.post<any>(this.apiUrl  +'userRolePrivilegesMatrix/' ,data);
+ }
+
+ public updateUserRolePrivilege(data)
+ {
+   return this._HTTP.post<any>(this.apiUrl  +'userRolePrivilegesMatrix/' ,data);
+ }
+
  
 
 }

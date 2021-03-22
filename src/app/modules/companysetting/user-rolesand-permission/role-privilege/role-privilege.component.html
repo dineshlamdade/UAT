@@ -8,7 +8,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <form [formGroup]="rolePrivilegeForm" (ngSubmit)="onSubmit()">
                 <div class="box-line-border radius-10 p-3 mt-3">
                   <div class="row">
                     <div class="col-md-2">
@@ -25,6 +25,14 @@
                       </ng-multiselect-dropdown>
                     </div>
                     <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Company Name</label>
+                        <select name="Gender" class="form-control custom-select" formControlName="companyName">
+                          <option *ngFor="let companyName of companyNameList" [value]="companyName.companyId">
+                              {{companyName.companyName}}
+                            </option>
+                         </select>
+                      </div>
+                    <div class="col-md-2">
                       <label class="form-label mt-1 mb-0">User Group</label>
                       <select name="userName" class="form-control custom-select" formControlName="userName">
                         <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId">
@@ -40,15 +48,15 @@
                           </option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                       <label class="form-label mt-1 mb-0">Company Name</label>
                       <select name="Gender" class="form-control custom-select" formControlName="companyName">
                         <option *ngFor="let companyName of companyNameList" [value]="companyName.companyId">
                             {{companyName.companyName}}
                           </option>
                        </select>
-                    </div>
-                    <div class="col-md-1">
+                    </div> -->
+                    <!-- <div class="col-md-1">
                       <button
                         type="button"
                         tooltip="Button"
@@ -56,8 +64,8 @@
                       >
                         <b><i class="fa fa-play"></i></b> Go
                       </button>
-                    </div>
-                    <div class="col-md-2 mt-15">
+                    </div> -->
+                    <!-- <div class="col-md-2 mt-15">
                       <div class="input-group">
                         <input
                           type="text"
@@ -66,7 +74,7 @@
                         />
                         <span class="input-group-append"> </span>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="row mt-20">
@@ -254,24 +262,16 @@
                                       >
                                       <div class="ml-30">
                                         <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="Personal Information"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Personal Information
-                                            </span>
-                                          </label>
+                                            <label class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                        value="Personal Information" />
+                     <span class="custom-control-label">Personal Information
+                     </span>
+                     </label>
                                         </a>
                                         <a class="p-0 d-flex">
                                           <label
-                                            for="identifier-4"
+                                            for=""
                                             class="custom-control custom-checkbox"
                                           >
                                             <input
@@ -287,7 +287,7 @@
                                         </a>
                                         <a class="p-0 d-flex">
                                           <label
-                                            for="identifier-4"
+                                            for=""
                                             class="custom-control custom-checkbox"
                                           >
                                             <input
@@ -303,7 +303,7 @@
                                         </a>
                                         <a class="p-0 d-flex">
                                           <label
-                                            for="identifier-4"
+                                            for=""
                                             class="custom-control custom-checkbox"
                                           >
                                             <input
@@ -319,7 +319,7 @@
                                         </a>
                                         <a class="p-0 d-flex">
                                           <label
-                                            for="identifier-4"
+                                            for=""
                                             class="custom-control custom-checkbox"
                                           >
                                             <input
@@ -351,7 +351,7 @@
                                         </a>
                                         <a class="p-0 d-flex">
                                           <label
-                                            for="identifier-4"
+                                            
                                             class="custom-control custom-checkbox"
                                           >
                                             <input
@@ -367,7 +367,7 @@
                                         </a>
                                         <a class="p-0 d-flex">
                                           <label
-                                            for="identifier-4"
+                                            for=""
                                             class="custom-control custom-checkbox"
                                           >
                                             <input
@@ -1141,7 +1141,7 @@
                   <div class="col-md-12">
                     <div class="float-right">
                       <button
-                        type="button" tooltip="Button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
+                        type="submit" tooltip="Button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-save"></i></b> Save
                       </button>
                       <button  type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left">
