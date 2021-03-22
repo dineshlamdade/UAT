@@ -10,6 +10,7 @@ import { EventEmitterService } from './../../employee-master/employee-master-ser
 })
 export class LeftmenuComponent implements OnInit {
   public menuDetails: Array<any>;
+
   public isCollapsed = true;
 
   public isEmployeeMaster = true;
@@ -18,6 +19,7 @@ export class LeftmenuComponent implements OnInit {
 
   public isPayrollInputsCollapsed = true;
   public isInvestmentCollapsed = true;
+  public isOtherCollapsed = true;
   public isEightyCCollapsed = true;
   public isChapetr6ACollapsed = true;
 
@@ -62,6 +64,9 @@ export class LeftmenuComponent implements OnInit {
     }
     if ((this.router.url).includes('80C')) {
       this.isEightyCCollapsed = false;
+    }
+    if ((this.router.url).includes('Other')) {
+      this.isOtherCollapsed = false;
     }
     if ((this.router.url).includes('Chapter-VI-A')) {
       this.isChapetr6ACollapsed = false;
@@ -112,6 +117,10 @@ export class LeftmenuComponent implements OnInit {
         // }
       ],
     },
+
+
+
+
 
     //////////////////////////////
 

@@ -146,8 +146,6 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
-      investmentGroup1MasterPaymentDetailId: new FormControl(0),
-
       depositType: new FormControl('recurring'),
       proofSubmissionId : new FormControl('')
     });
@@ -392,7 +390,6 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
                 'Go to "Declaration & Actual" Page to see Schedule.'
               );
             } else {
-              // this.alertService.sweetalertWarning(res.status.messsage);
               this.alertService.sweetalertError('This Policy Holder Already Added');
             }
           } else {
@@ -412,6 +409,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
+       this.documentRemark = '';
     }
   }
 

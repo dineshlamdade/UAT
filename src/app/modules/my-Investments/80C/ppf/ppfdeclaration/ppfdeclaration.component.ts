@@ -895,6 +895,7 @@ export class PPFDeclarationComponent implements OnInit {
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    console.log("filesArray empty",this.filesArray);
     this.globalSelectedAmount = '0.00';
   }
 

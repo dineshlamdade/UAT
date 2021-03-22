@@ -517,21 +517,6 @@ export class TaxsavingMfMasterComponent implements OnInit {
     return masterGridData.find(x => x.accountNumber === accountNumber)
   }
 
-  // // On Master Edit functionality
-  // editMaster(i: number) {
-  //   // this.scrollToTop();
-  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-  //   this.form.patchValue(this.masterGridData[i]);
-  //   // console.log(this.form.getRawValue());
-  //   this.Index = i;
-  //   this.showUpdateButton = true;
-  //   const formatedPremiumAmount = this.numberFormat.transform(
-  //     this.masterGridData[i].premiumAmount,
-  //   );
-  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-  //   this.isClear = true;
-  // }
 
   // On Edit Cancel
   cancelEdit() {
@@ -568,10 +553,43 @@ export class TaxsavingMfMasterComponent implements OnInit {
     this.paymentDetailGridData = [];
     this.isCancel = false;
   }
+
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-md' }),
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+   //---------- For Doc Viewer -----------------------
+   nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>,index:any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log("urlSafe::",  this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
   }
 

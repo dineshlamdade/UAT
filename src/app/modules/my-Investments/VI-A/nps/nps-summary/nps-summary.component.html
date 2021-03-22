@@ -90,8 +90,10 @@
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <input type="text" [(ngModel)]="futureNewPolicyDeclaredAmount" (blur)='onChangeFutureNewPolicyDeclaredAmount()'
-                  placeholder="0.00" class="form-control width120 inline_center align-right">
+<!--                <p-inputNumber  min="0" [(ngModel)]="futureNewPolicyDeclaredAmount" (blur)='onChangeFutureNewPolicyDeclaredAmount()'-->
+<!--                                placeholder="0.00" class="form-control width120 inline_center align-right"></p-inputNumber>-->
+                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                                 (onBlur) ='onChangeFutureNewPolicyDeclaredAmount()' min="0" mode="decimal" placeholder="0.00"></p-inputNumber>
               </td>
               <td></td>
               <td></td>

@@ -28,6 +28,8 @@ import { translocoLoader } from './core/strategies/transloco.loader';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProfileComponent } from './modules/profile/profile.component';
 import { ProfileModule } from './modules/profile/profile.module';
+import { QueryModule } from './modules/query/query.module';
+import { LoanModule } from './modules/loan/loan.module';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SettingsModule } from './modules/settings/settings.module';
 import { BnNgIdleService } from 'bn-ng-idle';
@@ -46,7 +48,7 @@ import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
 import { EightyCModule } from './modules/my-Investments/80C/eighty-c.module';
 import { MyInvestmentsModule } from './modules/my-Investments/my-Investments.module';
-import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+//import { investmentOthersModule } from './modules/my-Investments/others/others.module';
 import { PayrollModule } from './modules/companysetting/payroll/payroll.module';
 import { AdminApprovalModule } from './modules/admin-approval/admin-approval.module';
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
@@ -84,8 +86,8 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     ShortenStringPipe,
 
     SettingsComponent,
-   
-   
+
+
 
 
     //////////////////////////
@@ -96,6 +98,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     // PayrollheadgroupcreationComponent,
     ///////////////////////////////////////
   ],
+
   exports: [],
   imports: [
     BrowserModule,
@@ -104,6 +107,8 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     AccordionModule,
     DashboardModule,
     PayrollModule,
+    QueryModule,
+    LoanModule,
 
     CompanySettingModule,
     MyInvestmentsModule,
@@ -139,7 +144,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     AppRoutingModule,
     DashboardModule,
     MyInvestmentsModule,
-  
+
     EmployeeMasterModule,
     PrimeNGModule,
     AccordionModule,
