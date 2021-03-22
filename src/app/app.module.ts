@@ -72,6 +72,7 @@ import { LockModule } from './modules/lock/lock.module';
 import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
+import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 
 
 
@@ -148,7 +149,8 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
-    EmailSmsModule
+    EmailSmsModule,
+    LoanMasterModule
 
   ],
 
@@ -167,11 +169,7 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
         prodMode: false,
       } as TranslocoConfig,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true,
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
     ShortenStringPipe,
   ],
   // schemas: [

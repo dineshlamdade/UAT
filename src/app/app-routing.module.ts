@@ -44,6 +44,8 @@ const routes: Routes = [
   { path: 'lock', loadChildren: './modules/lock/lock.module#LockModule' },
 
   { path: 'email-sms', loadChildren: './modules/email-sms/email-sms.module#EmailSmsModule' },
+  { path: 'loan-master', loadChildren: './modules/loan-master/loan-master.module#LoanMasterModule' },
+
 
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },

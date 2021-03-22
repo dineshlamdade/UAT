@@ -21,11 +21,22 @@ export class TokenInterceptorService implements HttpInterceptor {
 
     if (this.authService.getJwtToken()) {
       request = this.addToken(request, this.authService.getJwtToken());
+    //   const cloned = request.clone({
+    //     setHeaders: {
+    //       'Content-Type' : 'application/json',
+    //       'Accept'       : '*',
+    //       'X-Authorization': this.authService.getJwtToken(),
+    //       'Access-Control-Max-Age': '600',
+    //     },
+    // });
+
+    // return next.handle(cloned);
     }
 
     return next.handle(request).pipe(catchError((error) => {
       const type = error.status;
       console.log(error.status);
+      console.log(error.error);
       switch (type) {
         case  401 : {
           this.authService.logout();
@@ -59,7 +70,7 @@ export class TokenInterceptorService implements HttpInterceptor {
 
         }
 
-      console.log('my error status', error.status);
+      //console.log('my error status', error.status);
 
       // if ( error.status === 401) {
       //   this.authService.logout();
@@ -91,7 +102,10 @@ export class TokenInterceptorService implements HttpInterceptor {
     //console.log('My token ',token);
     return request.clone({
       setHeaders: {
+        'Content-Type' : 'application/json',
+        'Accept'       : 'application/json, text/plain, */*',
         'X-Authorization': token,
+        'Access-Control-Max-Age': '600',
       },
     });
   }
