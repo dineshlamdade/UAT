@@ -292,6 +292,13 @@ export class UnitLinkedDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
     this.unitLinkedInsurancePlanService
       .getULIPInstitutionListWithPolicyNo()
       .subscribe((res) => {

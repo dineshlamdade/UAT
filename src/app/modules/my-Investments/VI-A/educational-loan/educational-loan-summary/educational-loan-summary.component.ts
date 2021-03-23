@@ -10,22 +10,10 @@ import { EducationalLoanServiceService } from '../educational-loan-service.servi
   styleUrls: ['./educational-loan-summary.component.scss']
 })
 export class EducationalLoanSummaryComponent implements OnInit {
-  @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() lenderName: string;
+  @Input() loanAccountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() loanAccountNumber = new EventEmitter<any>();
-
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      policyNo: policyNo,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.policyNo = policyNo;
-    this.myEvent.emit(data);
-  }
+  @Output() loanAccountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -38,9 +26,7 @@ export class EducationalLoanSummaryComponent implements OnInit {
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
-  public selectedInstitution: string;
-
-  // public previousEmployerB: string;
+  public selectedlenderName: string;
   public interestOnFutureLoanDeclaredAmount: string;
   public limit  : number;
   public deductionE : number;
@@ -48,8 +34,6 @@ export class EducationalLoanSummaryComponent implements OnInit {
   public ActualAmountBenefit : number;
   public benifitDeclared : number;
   public benifitActual : number;
-  // public eligibleForDeductionF : number;
-
   constructor(
     private service: MyInvestmentsService,
     private educationalLoanServiceService: EducationalLoanServiceService,
@@ -59,6 +43,28 @@ export class EducationalLoanSummaryComponent implements OnInit {
 
   public ngOnInit(): void {
     this.summaryPage();
+  }
+
+
+  redirectToDeclarationActual(lenderName: string, loanAccountNumber: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      lenderName : lenderName,
+      loanAccountNumber : loanAccountNumber,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)};
+    this.lenderName = lenderName;
+    this.loanAccountNumber = loanAccountNumber;
+    this.myEvent.emit(data);
+  }
+
+  jumpToMasterPage(loanAccountNumber: string) {
+    this.tabIndex = 1;
+    const loanAccountNo = {
+      loanAccountNumber : loanAccountNumber,
+      tabIndex : this.tabIndex,
+    };
+    this.loanAccountNo.emit(loanAccountNo);
   }
 
   // ---------------------Summary ----------------------
@@ -116,23 +122,6 @@ export class EducationalLoanSummaryComponent implements OnInit {
     this.addFuturePolicy();
   }
 
-  jumpToMasterPage(policyNo: string) {
-    this.tabIndex = 1;
-    const data = {
-      number : policyNo,
-      tabIndex : this.tabIndex
-    };;
-    this.loanAccountNumber.emit(data);
-  }
-
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.policyNo = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
-  }
 
   onChangeLimit() {
     this.DeclaredAmountBenefit = Math.min(this.grandTotalDeclaredAmount, this.limit);

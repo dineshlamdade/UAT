@@ -10,6 +10,7 @@ import { EventEmitterService } from './../../employee-master/employee-master-ser
 } )
 export class LeftmenuComponent implements OnInit {
   public menuDetails: Array<any>;
+
   public isCollapsed = true;
 
   public isEmployeeMaster = true;
@@ -115,6 +116,10 @@ export class LeftmenuComponent implements OnInit {
         // }
       ],
     },
+
+
+
+
 
     //////////////////////////////
 

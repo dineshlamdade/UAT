@@ -8,7 +8,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <form [formGroup]="rolePrivilegeForm" (ngSubmit)="onSubmit()">
                 <div class="box-line-border radius-10 p-3 mt-3">
                   <div class="row">
                     <div class="col-md-2">
@@ -25,9 +25,19 @@
                       </ng-multiselect-dropdown>
                     </div>
                     <div class="col-md-2">
+                        <label class="form-label mt-1 mb-0">Company Name</label>
+                        <select name="Gender" class="form-control custom-select" formControlName="companyName" (change)="onSelectCompanyName($event.target.value)">
+                            <option value="">select</option>
+                          <option *ngFor="let companyName of companyNameList" [value]="companyName.companyId"  >
+                              {{companyName.companyName}}
+                            </option>
+                         </select>
+                      </div>
+                    <div class="col-md-2">
                       <label class="form-label mt-1 mb-0">User Group</label>
-                      <select name="userName" class="form-control custom-select" formControlName="userName">
-                        <option *ngFor="let userGroupName of userGroupNameList" [value]="userGroupName.userGroupId">
+                      <select name="userName" class="form-control custom-select" formControlName="userName" (change)="onSelectGroupName($event.target.value)">
+                        <option value="">select</option>
+                        <option *ngFor="let userGroupName of userGroupList" [value]="userGroupName.userGroupId" >
                             {{userGroupName.groupName}}
                           </option>
                        </select>
@@ -35,38 +45,12 @@
                     <div class="col-md-2">
                       <label class="form-label mt-1 mb-0">User Role</label>
                       <select name="userRoll" class="form-control custom-select" formControlName="userRoll">
-                        <option *ngFor="let userRoleName of userRoleNameList" [value]="userRoleName.userRoleId">
+                        <option *ngFor="let userRoleName of userRoleData" [value]="userRoleName.userRoleId">
                             {{userRoleName.roleName}}
                           </option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                      <label class="form-label mt-1 mb-0">Company Name</label>
-                      <select name="Gender" class="form-control custom-select" formControlName="companyName">
-                        <option *ngFor="let companyName of companyNameList" [value]="companyName.companyId">
-                            {{companyName.companyName}}
-                          </option>
-                       </select>
-                    </div>
-                    <div class="col-md-1">
-                      <button
-                        type="button"
-                        tooltip="Button"
-                        class="mt-15 custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                      >
-                        <b><i class="fa fa-play"></i></b> Go
-                      </button>
-                    </div>
-                    <div class="col-md-2 mt-15">
-                      <div class="input-group">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Search for..."
-                        />
-                        <span class="input-group-append"> </span>
-                      </div>
-                    </div>
+                  
                   </div>
                 </div>
                 <div class="row mt-20">
@@ -97,31 +81,23 @@
                                 <th>
                                   <label
                                     class="custom-control custom-checkbox checkbox-center"
-                                    tooltip="Select All"
-                                  >
+                                    tooltip="Select All" >
                                     <input
                                       type="checkbox"
                                       class="custom-control-input"
-                                      name="select"
-                                    />
-                                    <span class="custom-control-label"
-                                      >Select All</span
-                                    >
+                                      name="select" />
+                                    <span class="custom-control-label" >Select All</span>
                                   </label>
                                 </th>
                                 <th>
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
+                                    <label class="custom-control custom-checkbox checkbox-center" >
                                       <input
                                         type="checkbox"
                                         class="custom-control-input"
                                         name="select"
                                       />
-                                      <span class="custom-control-label"
-                                        >Full</span
-                                      >
+                                      <span class="custom-control-label" >Full</span>
                                     </label>
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="date"></p-sortIcon>
@@ -135,17 +111,13 @@
                                 </th>
                                 <th>
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
+                                    <label  class="custom-control custom-checkbox checkbox-center" >
                                       <input
                                         type="checkbox"
                                         class="custom-control-input"
-                                        name="select"
+                                        name="select" 
                                       />
-                                      <span class="custom-control-label"
-                                        >Read</span
-                                      >
+                                      <span class="custom-control-label"  >Read</span>
                                     </label>
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="days"></p-sortIcon>
@@ -160,17 +132,13 @@
                                 </th>
                                 <th>
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
+                                    <label class="custom-control custom-checkbox checkbox-center">
                                       <input
                                         type="checkbox"
                                         class="custom-control-input"
                                         name="select"
                                       />
-                                      <span class="custom-control-label"
-                                        >Write</span
-                                      >
+                                      <span class="custom-control-label" >Write</span >
                                     </label>
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="days"></p-sortIcon>
@@ -185,17 +153,13 @@
                                 </th>
                                 <th class="wd-8">
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
+                                    <label class="custom-control custom-checkbox checkbox-center" >
                                       <input
                                         type="checkbox"
                                         class="custom-control-input"
                                         name="select"
                                       />
-                                      <span class="custom-control-label"
-                                        >Modify</span
-                                      >
+                                      <span class="custom-control-label">Modify</span>
                                     </label>
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="WO"></p-sortIcon>
@@ -209,17 +173,13 @@
                                 </th>
                                 <th class="wd-8">
                                   <div class="p-d-flex p-jc-center p-ai-center">
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
+                                    <label class="custom-control custom-checkbox checkbox-center">
                                       <input
                                         type="checkbox"
                                         class="custom-control-input"
                                         name="select"
                                       />
-                                      <span class="custom-control-label"
-                                        >Delete</span
-                                      >
+                                      <span class="custom-control-label">Delete</span>
                                     </label>
                                     <div class="Sort_Filter_Position">
                                       <p-sortIcon field="holiday"></p-sortIcon>
@@ -247,681 +207,81 @@
                                         class="toggle-box"
                                         id="identifier-4"
                                         type="checkbox"
-                                        checked
-                                      />
-                                      <label for="identifier-4"
-                                        >Employee Master</label
-                                      >
+                                        checked/>
+                                      <label for="identifier-4">{{menuData.mainMenuName}}</label>
                                       <div class="ml-30">
                                         <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="Personal Information"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Personal Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Compliance Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Identity Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Contact Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label">
-                                              Previous Employment Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Education & Skill Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Employment Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Payroll Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                        <a class="p-0 d-flex">
-                                          <label
-                                            for="identifier-4"
-                                            class="custom-control custom-checkbox"
-                                          >
-                                            <input
-                                              type="checkbox"
-                                              class="custom-control-input"
-                                              name="example-checkbox1"
-                                              value="abc"
-                                            />
-                                            <span class="custom-control-label"
-                                              >Family Information
-                                            </span>
-                                          </label>
-                                        </a>
-                                      </div>
+                                            <label class="custom-control custom-checkbox">
+                                                      <input type="checkbox" class="custom-control-input" name="example-checkbox1"
+                                                         value="Personal Information" />
+                                                   <span class="custom-control-label">{{menuData.subMenuOrFormName1}}</span>
+                     
+                                              </label> </a>
+                                          </div>
                                     </div>
                                     <!-- end of employee master left menu -->
                                   </div>
                                 </td>
                                 <td class="text-center">
                                   <div>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
+                                       <label class="custom-control custom-checkbox checkbox-center">
                                       <input
                                         type="checkbox"
                                         class="custom-control-input"
                                         name="select"
                                       />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
+                                      <span class="custom-control-label">full</span>
                                     </label>
                                   </div>
                                 </td>
                                 <td class="text-center">
-                                  <div>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                  </div>
-                                </td>
-                                <td class="text-center">
-                                  <div>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                  </div>
-                                </td>
-                                <td class="text-center">
-                                  <div>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                  </div>
-                                </td>
-                                <td class="text-center">
-                                  <div>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                    <label
-                                      class="custom-control custom-checkbox checkbox-center"
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        class="custom-control-input"
-                                        name="select"
-                                      />
-                                      <span class="custom-control-label"></span>
-                                    </label>
-                                  </div>
-                                </td>
+                                    <div>
+                                         <label class="custom-control custom-checkbox checkbox-center">
+                                        <input
+                                          type="checkbox"
+                                          class="custom-control-input"
+                                          name="select" (click)= "onSelectAllReadCheckBox($event.target,menuData,'read')"
+                                        />
+                                        <span class="custom-control-label">read</span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td class="text-center">
+                                    <div>
+                                         <label class="custom-control custom-checkbox checkbox-center">
+                                        <input
+                                          type="checkbox"
+                                          class="custom-control-input"
+                                          name="select" (click)= "onSelectAllWriteCheckBox($event.target,menuData,'write')"
+                                        />
+                                        <span class="custom-control-label">write</span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td class="text-center">
+                                    <div>
+                                         <label class="custom-control custom-checkbox checkbox-center">
+                                        <input
+                                          type="checkbox"
+                                          class="custom-control-input"
+                                          name="select" (click)= "onSelectAllModifyCheckBox($event.target,menuData,'modify')"
+                                        />
+                                        <span class="custom-control-label">modify</span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td class="text-center">
+                                    <div>
+                                         <label class="custom-control custom-checkbox checkbox-center">
+                                        <input
+                                          type="checkbox"
+                                          class="custom-control-input"
+                                          name="select" (click)= "onSelectAllDeleteCheckBox($event.target,menuData,'delete')"
+                                        />
+                                        <span class="custom-control-label">delete</span>
+                                      </label>
+                                    </div>
+                                  </td>
                               </tr>
                             </ng-template>
                             <ng-template pTemplate="emptymessage">
@@ -936,7 +296,7 @@
                             </ng-template>
                           </p-table>
                         </section>
-                        <section id="Report" class="tab-panel">
+                        <!-- <section id="Report" class="tab-panel">
                           <p-table [value]="users2">
                             <ng-template pTemplate="header">
                               <tr>
@@ -1051,7 +411,7 @@
                                         </a>
                                       </div>
                                     </div>
-                                    <!-- end of employee master left menu -->
+                                   
                                   </div>
                                 </td>
                                 <td class="text-center">
@@ -1131,7 +491,7 @@
                               </tr>
                             </ng-template>
                           </p-table>
-                        </section>
+                        </section> -->
                       </div>
                     </div>
                   </div>
@@ -1141,10 +501,10 @@
                   <div class="col-md-12">
                     <div class="float-right">
                       <button
-                        type="button" tooltip="Button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
+                        type="submit" tooltip="Button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
                         <b><i class="fa fa-save"></i></b> Save
                       </button>
-                      <button  type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left">
+                      <button  type="button" tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left" (click)="reset()">
                         <b><i class="fa fa-refresh"></i></b> Reset
                       </button>
                     </div>
@@ -1243,16 +603,16 @@
                                 {{rowIndex + 1}}
                               </td>
                               <td class="text-center" rowspan="2">
-                                {{ menuSummary.company }}
+                                {{ menuSummary.companyName }}
                               </td>
                               <td class="text-center" rowspan="2">
-                                {{ menuSummary.usergrup }}
+                                {{ menuSummary.groupName }}
                               </td>
                               <td>
                                 <label
                                   class="mb-0 text-link"
                                   (click)="largepopup(template)"
-                                  >{{ menuSummary.userrole }}</label
+                                  >{{ menuSummary.roleName }}</label
                                 >
                               </td>
 
@@ -1276,10 +636,10 @@
                               </td>
                               <td class="wd-5 text-center">
                                 <i class="fa fa-edit font-16 text-blue cursor-pointer" tooltip="Edit"
-                                ></i>
+                               (click)="editMenuSummary(menuSummary)" ></i>
                                 &nbsp;&nbsp;
                                 <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"
-                                ></i>
+                                (click)="viewMenuSummary(menuSummary)"></i>
                               </td>
                             </tr>
                           </ng-template>
@@ -1641,7 +1001,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Personal Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1658,7 +1018,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Compliance Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1675,7 +1035,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Identity Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1692,7 +1052,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Contact Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1709,7 +1069,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label">
-                                      Previous Employment Information
+                                     
                                     </span>
                                   </label>
                                 </a>
@@ -1726,7 +1086,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Education & Skill Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1743,7 +1103,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Employment Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1760,7 +1120,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Payroll Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1777,7 +1137,7 @@
                                       checked
                                     />
                                     <span class="custom-control-label"
-                                      >Family Information
+                                      >
                                     </span>
                                   </label>
                                 </a>
@@ -1900,463 +1260,7 @@
                             </label>
                           </div>
                         </td>
-                        <td class="text-center">
-                          <div>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                          </div>
-                        </td>
-                        <td class="text-center">
-                          <div>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                          </div>
-                        </td>
-                        <td class="text-center">
-                          <div>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                          </div>
-                        </td>
-                        <td class="text-center">
-                          <div>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                            <label
-                              class="custom-control custom-checkbox checkbox-center"
-                            >
-                              <input
-                                type="checkbox"
-                                class="custom-control-input"
-                                name="select"
-                                checked
-                              />
-                              <span class="custom-control-label"></span>
-                            </label>
-                          </div>
-                        </td>
-                      </tr>
+                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                       <tr>

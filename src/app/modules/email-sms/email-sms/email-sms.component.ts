@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { EmailSmsService } from '../email-sms.service';
 
 @Component({
   selector: 'app-email-sms',
@@ -26,9 +27,10 @@ export class EmailSmsComponent implements OnInit {
   keyword:any = [];
   fieldMap: any;
   mappingData: any = [];
+  emailSmsData: any;
 
 
-  constructor() {
+  constructor(private emailService: EmailSmsService) {
     this.keyword = [ 
       {
         'name':'employeeCode',
@@ -97,13 +99,27 @@ export class EmailSmsComponent implements OnInit {
   this.fieldMap = new Map<string, string>(this.mappingData);
 
 
-
-  
+    this.emailSmsForm = new FormGroup({
+      'templateCode': new FormControl(''),
+      'templateName': new FormControl(''),
+      'moduleId': new FormControl(''),
+      'emailSubject': new FormControl(''),
+      'emailBody': new FormControl(''),
+      'smsBody': new FormControl(''),
+      'status': new FormControl(true),
+      'remark':new FormControl('')
+    })
    }
 
   ngOnInit(): void {
+     this.getEmailData()
   }
 
+  getEmailData(){
+    this.emailService.getEmailSmsmData().subscribe( res=>{
+      this.emailSmsData = res.data.results;
+    })
+  }
 
   emailSmsSubmit(){
 
@@ -111,13 +127,6 @@ export class EmailSmsComponent implements OnInit {
 
 
   /*** CKeditor Drag and Drop */
-  // allowDrop(ev): void {
-  //   ev.preventDefault();
-  // }
-
-  // drag(ev): void {
-  //   ev.dataTransfer.setData('dragElement', ev.target.id);
-  // }
 
   allowDrop(ev): void {
     ev.preventDefault();
@@ -128,53 +137,31 @@ export class EmailSmsComponent implements OnInit {
   }
 
   drop(ev): void {
-    alert()
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var newValue = document.getElementById(data).textContent;
-
+    const data = ev.dataTransfer.getData('text');
     const dataValue = this.fieldMap.get(data);
 
-    var startPos = ev.target.selectionStart;
-    var endPos = ev.target.selectionEnd;
+    console.log("data value after drop: "+ dataValue)
+    const startPos = ev.target.selectionStart;
+    const endPos = ev.target.selectionEnd;
+
+    console.log( ev.target.value)
 
     ev.target.value = ev.target.value.substring(0, startPos)
-      + dataValue 
+      + dataValue
       + ev.target.value.substring(endPos, ev.target.value.length);
 
-      let bodyValue = ev.target.value = ev.target.value.substring(0, startPos)
+    let bodyValue = ev.target.value.substring(0, startPos)
       + '[' + data + ']'
-      + ev.target.value.substring(endPos, ev.target.value.length);
+      // + ev.target.value.substring(endPos, ev.target.value.length);
+
+      // console.log( ev.target.value.substring(0, startPos))
+
+      // console.log(data)
+
+      // console.log(ev.target.value.substring(endPos, ev.target.value.length))
 
       console.log(bodyValue)
   }
-
-  // drop(ev): void {
-  //   ev.preventDefault();
-  //   const data = ev.dataTransfer.getData('dragElement');
-  //   const dataValue = this.fieldMap.get(data);
-
-  //   console.log("data value after drop: "+ dataValue)
-  //   const startPos = ev.target.selectionStart;
-  //   const endPos = ev.target.selectionEnd;
-
-  //   console.log( ev.target.value)
-
-  //   ev.target.value = ev.target.value.substring(0, startPos)
-  //     + dataValue
-  //     + ev.target.value.substring(endPos, ev.target.value.length);
-
-  //   let bodyValue = ev.target.value.substring(0, startPos)
-  //     + '[' + data + ']'
-  //     // + ev.target.value.substring(endPos, ev.target.value.length);
-
-  //     // console.log( ev.target.value.substring(0, startPos))
-
-  //     // console.log(data)
-
-  //     // console.log(ev.target.value.substring(endPos, ev.target.value.length))
-
-  //     console.log(bodyValue)
-  // }
 
 }

@@ -14,20 +14,7 @@ export class SummaryComponent implements OnInit {
   @Input() familyMemberName: string;
   @Input() disabilityType: string;
   @Output() myEvent = new EventEmitter<any>();
-
-
-  onEditSummary(familyMemberName: string, disabilityType: string) {
-    this.tabIndex = 2;
-    const data = {
-      familyMemberName: familyMemberName,
-      disabilityType: disabilityType,
-      tabIndex: this.tabIndex,
-    };
-    this.familyMemberName = familyMemberName;
-    this.disabilityType = disabilityType;
-    this.myEvent.emit(data);
-  }
-
+  @Output() disabilityTypeName = new EventEmitter<any>();
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
@@ -39,8 +26,7 @@ export class SummaryComponent implements OnInit {
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
-  public selectedInstitution: string;
-
+  public selectedfamilyMemberName: string;
 
   public limit : number;
   public benefitActualAmount : number;
@@ -56,7 +42,26 @@ export class SummaryComponent implements OnInit {
   public ngOnInit(): void {
     this.summaryPage();
   }
+  redirectToDeclarationActual(familyMemberName: string, disabilityType: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      familyMemberName : familyMemberName,
+      disabilityType : disabilityType,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)};
+    this.familyMemberName = familyMemberName;
+    this.disabilityType = disabilityType;
+    this.myEvent.emit(data);
+  }
 
+  jumpToMasterPage(disabilityType: string) {
+    this.tabIndex = 1;
+    const disabilityTypeName = {
+      disabilityType : disabilityType,
+      tabIndex : this.tabIndex,
+    };
+    this.disabilityTypeName.emit(disabilityTypeName);
+  }
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -70,14 +75,6 @@ export class SummaryComponent implements OnInit {
       this.onChangelimit();
     });
   }
-
-
-  jumpToMasterPage(n: number) {
-    //console.log(n);
-    this.tabIndex = 1;
-    //this.editMaster(3);
-  }
-
   // On onEditSummary
   onEditSummary1(familyMemberName: string, disabilityType: string) {
     this.tabIndex = 2;

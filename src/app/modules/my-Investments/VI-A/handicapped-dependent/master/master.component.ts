@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   Component,
   Inject,
+  Input,
   OnInit,
   TemplateRef,
 } from '@angular/core';
@@ -28,6 +29,8 @@ import { HandicappedDependentService } from '../handicapped-dependent.service';
   styleUrls: ['./master.component.scss']
 })
 export class MasterComponent implements OnInit {
+  @Input() public disabilityTypeName : any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -104,6 +107,7 @@ export class MasterComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
 
   public globalAddRowIndex: number;
+  public proofSubmissionId;
   public globalSelectedAmount: string;
 
   public disability : string;
@@ -155,29 +159,21 @@ export class MasterComponent implements OnInit {
 
  public ngOnInit(): void {
     this.initiateMasterForm();
-    this.getFinacialYear();
     this.getMasterFamilyInfo();
-    // this.getIdentityInformation();
-    // this.getInstitutesFromGlobal();
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
     this.getPreviousEmployer();
-    if (this.today.getMonth() + 1 <= 3) {
-      this.financialYear =
-        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
-    } else {
-      this.financialYear =
-        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+
+    if (this.disabilityTypeName != undefined || this.disabilityTypeName != null) {
+      const input = this.disabilityTypeName;
+      this.editMaster(input.disabilityType);
+      console.log('editMaster disabilityType', input.disabilityType);
     }
-    const splitYear = this.financialYear.split('-', 2);
-    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
   }
 
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-
       disabilityType: new FormControl(null, Validators.required),
       severity: new FormControl(null, Validators.required),
       familyMemberName: new FormControl(null, Validators.required),
@@ -186,12 +182,6 @@ export class MasterComponent implements OnInit {
     });
   }
 
-  // Business Financial Year API Call
-  getFinacialYear() {
-    this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
-      this.financialYearStart = res.data.results[0].fromDate;
-    });
-  }
 
   // Family Member List API call
   getMasterFamilyInfo() {
@@ -216,22 +206,9 @@ export class MasterComponent implements OnInit {
       (element) => element.familyMemberName == this.form.get('familyMemberName').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    // this.form.get('familyMemberName').setValue(toSelect.familyMemberName);
     this.form.get('relationship').setValue(toSelect.relation);
   }
 
-  // Get All Institutes From Global Table
-  getInstitutesFromGlobal() {
-    this.myInvestmentsService.getAllInstitutesFromGlobal().subscribe((res) => {
-      res.data.results.forEach((element: { insurerName: any }) => {
-        const obj = {
-          label: element.insurerName,
-          value: element.insurerName,
-        };
-        this.familyMemberNameList.push(obj);
-      });
-    });
-  }
 
   // Get All Previous Employer
   getPreviousEmployer() {
@@ -257,16 +234,14 @@ export class MasterComponent implements OnInit {
       this.disability = res.data.results[0].disability;
       this.severity = res.data.results[0].severity;
       this.masterGridData.forEach((element) => {
-        element.policyStartDate = new Date(element.policyStartDate);
-        element.policyEndDate = new Date(element.policyEndDate);
-        element.fromDate = new Date(element.fromDate);
-        element.toDate = new Date(element.toDate);
-        // remove saved family member from dropdown
-        const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
-        if (index > -1) {
-          this.familyMemberName.splice(index, 1);
-        }
-      });
+
+                // remove saved family member from dropdown
+                const index = this.familyMemberName.findIndex(item => item.label == element.familyMemberName)
+
+                if (index > -1) {
+                  this.familyMemberName.splice(index, 1);
+                }
+              });
     });
   }
 
@@ -279,7 +254,7 @@ export class MasterComponent implements OnInit {
 
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Handicapped Dependent Document needed to Create Master.'
       );
@@ -287,9 +262,7 @@ export class MasterComponent implements OnInit {
     } else {
 
       const data = this.form.getRawValue();
-      // {
-      //   handicappedDependantDetail : this.form.getRawValue()
-      // };
+      data.proofSubmissionId = this.proofSubmissionId;
 
       console.log('Handicapped Dependent ::', data);
 
@@ -324,13 +297,11 @@ export class MasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
-      // this.form.get('active').setValue(true);
-      // this.form.get('isClaiming80U').setValue(0);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
-
+      this.urlArray = [];
     }
     // this.form.patchValue({
     //   accountType: 'Tier_1',
@@ -355,25 +326,57 @@ export class MasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-  // On Master Edit functionality
-  editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    this.isClear = true;
-    this.masterfilesArray = this.masterGridData[i].documentInformationList
 
+
+  // // On Master Edit functionality
+  // editMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   this.isClear = true;
+  //   this.masterfilesArray = this.masterGridData[i].documentInformationList
+  // }
+
+  //------------- On Master Edit functionality --------------------
+  editMaster(disabilityType) {
+    //this.scrollToTop();
+    this.handicappedDependentService.getHandicappedDependentMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.disability = res.data.results[0].disability;
+      this.severity = res.data.results[0].severity;
+      console.log(disabilityType)
+      const obj =  this.findBydisabilityType(disabilityType,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.disabilityType;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
+
+      }
+    });
+
+  }
+  findBydisabilityType(disabilityType,masterGridData){
+    return masterGridData.find(x => x.disabilityType === disabilityType)
   }
 
   // On Edit Cancel
-  cancelEdit() {
+  resetView() {
     this.form.reset();
-    this.form.get('active').setValue(true);
     this.form.get('isClaiming80U').setValue(0);
     this.showUpdateButton = false;
+    this.urlArray = [];
     this.paymentDetailGridData = [];
     this.isClear = false;
   }
@@ -415,5 +418,42 @@ export class MasterComponent implements OnInit {
     if(checked) {
       this.isSaveVisible = false;
     }
+  }
+
+    //---------- For Doc Viewer -----------------------
+    nextDocViewer() {
+
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    previousDocViewer() {
+
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    docViewer(template3: TemplateRef<any>,index:any) {
+      console.log("---in doc viewer--");
+      this.urlIndex = index;
+
+      console.log("urlArray::", this.urlArray);
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      console.log("urlSafe::",  this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
+    //----------------- Remove LicMaster Document -----------------------------
+  removeSelectedLicMasterDocument(index: number) {
+    this.masterfilesArray.splice(index, 1);
+
   }
 }

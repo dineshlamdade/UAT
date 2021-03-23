@@ -14,10 +14,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData; let i = index">
-              <td
-                class="text-link wd-20 align-left"
-                (click)="jumpToMasterPage(i)"
-              >
+              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.accountNumber)">
                 <span tooltip="{{ summary.bankName }}">{{
                   summary.bankName}}</span>
               </td>
@@ -43,8 +40,10 @@
               </td>
               <td class="wd-10">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                  (click)="onEditSummary(summary.familyMemberName, summary.disabilityType)" tooltip="Edit"></i>&nbsp;&nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                (click)="redirectToDeclarationActual(summary.bankName, summary.accountNumber, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                (click)="redirectToDeclarationActual(summary.bankName, summary.accountNumber, 'view')" tooltip="View"></i>
+              </td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="5">
