@@ -18,6 +18,6 @@ node {
   sh ("echo y | docker system prune")
   }
   stage('Email Send ') {
-  emailext body: '', compressLog: true, subject: 'DeliziaHR-New-UI-Buit-Log', to: 'amit.bhoyar@paysquare.com'
+  emailext attachLog: true, body: '', compressLog: true, subject: 'DeliziaHR-New-UI-Buit-Log', to: 'amit.bhoyar@paysquare.com'
   }
 }
