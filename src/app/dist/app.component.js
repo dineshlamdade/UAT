@@ -45,7 +45,7 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         if (this.router.getCurrentNavigation() === null) {
             if (!this.authService.isLoggedIn()) {
-                //  this.router.navigate( ['/login'] );
+                this.router.navigate(['/login']);
             }
             else {
                 this.router.navigate(['/dashboard']);

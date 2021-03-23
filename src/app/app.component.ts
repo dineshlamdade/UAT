@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     if ( this.router.getCurrentNavigation() === null ) {
       if ( !this.authService.isLoggedIn() ) {
-        //  this.router.navigate( ['/login'] );
+        this.router.navigate( ['/login'] );
       } else {
         this.router.navigate( ['/dashboard'] );
       }
