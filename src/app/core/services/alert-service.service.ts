@@ -4,23 +4,23 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 declare const $: any;
 
-@Injectable({
+@Injectable( {
   providedIn: 'root'
-})
+} )
 export class AlertServiceService {
 
   returnValue: boolean;
-  constructor(private router: Router,
+  constructor( private router: Router,
   ) { }
 
-  sweetalert7(message: any) {
-    Swal.fire({
+  sweetalert7( message: any ) {
+    Swal.fire( {
       text: message,
-    })
+    } )
   }
 
-  sweetalertWarning(message: any) {
-    Swal.fire({
+  sweetalertWarning( message: any ) {
+    Swal.fire( {
       title: message,
       showCloseButton: true,
       showCancelButton: false,
@@ -31,11 +31,11 @@ export class AlertServiceService {
       icon: 'warning',
       timer: 15000,
       timerProgressBar: true,
-    })
+    } )
   }
 
-  sweetalertInfo(message: any) {
-    Swal.fire({
+  sweetalertInfo( message: any ) {
+    Swal.fire( {
       title: message,
       showCloseButton: true,
       showCancelButton: false,
@@ -45,12 +45,12 @@ export class AlertServiceService {
       icon: 'info',
       timer: 5000,
       timerProgressBar: true,
-    })
+    } )
   }
 
 
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
+  sweetalertMasterSuccess( message: any, text: any ) {
+    Swal.fire( {
       title: message,
       text: text,
       showCloseButton: true,
@@ -61,11 +61,12 @@ export class AlertServiceService {
       icon: 'success',
       timer: 5000,
       timerProgressBar: true,
-    })
+    } )
   }
 
-  sweetalertError(message: any) {
-    Swal.fire({
+
+  sweetalertError( message: any ) {
+    Swal.fire( {
       title: message,
       showCloseButton: true,
       showCancelButton: false,
@@ -75,7 +76,7 @@ export class AlertServiceService {
       icon: 'error',
       timer: 5000,
       timerProgressBar: true,
-    })
+    } );
   }
 
   // lert( title: string, type: any, redirectPath: string) {
@@ -148,9 +149,9 @@ export class AlertServiceService {
 
 
 
-  showNotification(msg: number, name: string) {
+  showNotification( msg: number, name: string ) {
     const message = ['Welcome to EHR India' + ' <br> <b>' + name + '</b> ', '' + ' <b>' + name + '</b> '];
-    $.notify({
+    $.notify( {
       icon: 'notifications',
       message: message[msg],
     }, {
@@ -172,7 +173,7 @@ export class AlertServiceService {
         '</div>' +
         '<a href="{3}" target="{4}" data-notify="url"></a>' +
         '</div>',
-    });
+    } );
   }
 
 }
