@@ -6,7 +6,7 @@ node {
   stage 'Docker build Web'
   dir("${env.WORKSPACE}/") {
     docker.build('paysquare/deliziahrnewui')
-    emailext attachLog: true, body: '', compressLog: true, subject: 'DeliziaHR-New-UI-Buit-Log', to: 'amit.bhoyar@paysquare.com'
+    
     }
 
   stage 'Docker push Web'
@@ -18,7 +18,6 @@ node {
   stage('Remove Unused docker image') {
   sh ("echo y | docker system prune")
   }
-  stage('Email Send ') {
-  emailext attachLog: true, body: '', compressLog: true, subject: 'DeliziaHR-New-UI-Buit-Log', to: 'amit.bhoyar@paysquare.com'
-  }
+  
 }
+
