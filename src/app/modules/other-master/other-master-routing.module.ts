@@ -1,4 +1,4 @@
-import { UserGroupComponent } from './user-group/user-group.component';
+
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
 
 
