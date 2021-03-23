@@ -40,7 +40,7 @@ RUN npm i @babel/compat-data@7.8.0
 RUN npm run build --prod
 
 #Stage 2
-FROM nginx:alpine
+FROM nginx:stable
 COPY --from=web app/mysite.conf /etc/nginx/conf.d/default.conf
 COPY --from=web app/dist/ /srv/mysite/
 
