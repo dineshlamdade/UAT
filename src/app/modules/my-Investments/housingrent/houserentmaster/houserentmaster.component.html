@@ -242,9 +242,9 @@
                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                         data-provide="datepicker" data-date-autoclose="true" class="form-control"
                          placeholder="Start Date" bsDatepicker
-                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted && houseRentMaster.fromDate.errors }">
-                     <div *ngIf="agreementDetailssubmitted && houseRentMaster.fromDate.errors"class="invalid-feedback">
-                        <div *ngIf="houseRentMaster.fromDate.errors.required">Start Date is mandatory</div>
+                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors }">
+                     <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
+                        <div *ngIf="houseAgreementMasterForm.fromDate.errors.required">Start Date is mandatory</div>
                      </div>
                      
                   </div>
