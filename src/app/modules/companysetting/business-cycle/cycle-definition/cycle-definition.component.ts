@@ -41,7 +41,7 @@ export class CycleDefinitionComponent implements OnInit {
       addDays: new FormControl( '' ),
       // serviceName: new FormControl( '', Validators.required ),
       services: new FormControl( '' ),
-      yearDefinition: new FormControl( { value: '', disabled: true } ),
+      yearDefinition: new FormControl( { value: '', disabled: true } ),// this. is from date to date autopopulated field..
       multiselectServices: new FormControl( '', Validators.required ),
       // serviceName:this.formBuilder.array([])s
 
@@ -247,6 +247,7 @@ export class CycleDefinitionComponent implements OnInit {
     } );
   }
   CancelBusiness(): void {
+    this.cycleDefinitionForm
     this.disabled = true;
     this.cycleDefinitionForm.reset();
     this.updateFlag = false;
@@ -272,16 +273,21 @@ export class CycleDefinitionComponent implements OnInit {
     this.disabled = false;
     this.companySetttingService.GetCycleDefinitionById( id )
       .subscribe( response => {
-        let index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId )
-        console.log( this.BusinessyearList[index] );
 
         this.cycleDefinitionForm.patchValue( { id: response.data.results[0].id } );
-        this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName } );
+        this.cycleDefinitionForm.patchValue( { cycleName: response.data.results[0].cycleName.split( '_' )[0] } );
         this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
         this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
         this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
         this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
 
+        let index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId );
+        this.cycleDefinitionForm.patchValue( {
+          yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
+        } );
+        this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
+        this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
+        this.cycleDefinitionForm.disable();
       } );
 
 
@@ -308,10 +314,8 @@ export class CycleDefinitionComponent implements OnInit {
         this.cycleDefinitionForm.patchValue( { frequencyMasterId: response.data.results[0].frequency.id } );
         this.cycleDefinitionForm.patchValue( { services: response.data.results[0].serviceName } );
         this.cycleDefinitionForm.patchValue( { addDays: response.data.results[0].addDays } );
-
-        let index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId );
         this.cycleDefinitionForm.patchValue( {
-          yearDefinition: this.BusinessyearList[index].yearDefinition,
+          yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate,
         } );
         this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
         this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
@@ -390,7 +394,7 @@ export class CycleDefinitionComponent implements OnInit {
     } else {
       let index = this.BusinessyearList.findIndex( o => o.businessYearDefinitionId == evt );
       this.cycleDefinitionForm.patchValue( {
-        yearDefinition: this.BusinessyearList[index].yearDefinition,
+        yearDefinition: this.BusinessyearList[index].fullFromDate + ' / ' + this.BusinessyearList[index].fullToDate,
       } );
     }
 

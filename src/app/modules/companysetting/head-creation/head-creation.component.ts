@@ -137,12 +137,24 @@ export class HeadCreationComponent implements OnInit {
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
     this.HeadCreationForm.patchValue( { statutory: 'false' } );
+    this.HeadCreationForm.patchValue( {
+      headNature: '',
+      type: '',
+      category: '',
+
+    } );
   }
 
   ResetHeadCreation(): void {
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
     this.HeadCreationForm.patchValue( { statutory: 'false' } );
+    this.HeadCreationForm.patchValue( {
+      headNature: '',
+      type: '',
+      category: '',
+
+    } );
   }
 
 

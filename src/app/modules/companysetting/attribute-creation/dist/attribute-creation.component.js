@@ -188,13 +188,19 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
         //this.HeadCreationForm.patchValue({ isStatutory:'0' });
+        this.AttributeCreationForm.patchValue({
+            attributeNature: ''
+        });
     };
     AttributeCreationComponent.prototype.ResetAttributeCreation = function () {
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
         this.hidevalue = false;
         this.summons = [];
-        this.AttributeCreationForm.patchValue({ isStatutory: '0' });
+        this.AttributeCreationForm.patchValue({
+            attributeNature: ''
+        });
+        //this.AttributeCreationForm.patchValue( { isStatutory: '0' } );
     };
     AttributeCreationComponent = __decorate([
         core_1.Component({

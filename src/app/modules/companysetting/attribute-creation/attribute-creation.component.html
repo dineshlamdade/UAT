@@ -10,7 +10,7 @@
             <div class="card-body">
 
               <form class="card" role="form" [formGroup]="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
-                method="post" novalidate>
+                #formDirective="ngForm" method="post" novalidate>
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
@@ -18,7 +18,7 @@
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="code" class="form-control"
                         placeholder="Code"
-                        ngClass="{'is-invalid' : AttributeCreationForm.get('code').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('code').status == 'INVALID'}">
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-4">
@@ -26,7 +26,7 @@
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
                         placeholder="Description"
-                        ngClass="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
                   <!-- <div class="col-sm-6 col-md-3">
@@ -39,9 +39,10 @@
                   <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Nature</label>
                     <select (change)="onStatusChange($event);"
-                      ngClass="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}"
+                      [ngClass]="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}"
                       name="attributeNature" id="attributeNature" class="form-control custom-select"
                       formControlName="attributeNature">
+                      <option selected value=''>Select </option>
                       <option *ngFor="let by of NatureList" [value]="by.value">
                         {{by.label}}
                       </option>
@@ -53,7 +54,7 @@
                     <label class="form-label">Value</label>
                     <div class="input-group">
                       <input type="text"
-                        ngClass="{'is-invalid' : AttributeCreationForm.get('optionList').status == 'INVALID'}"
+                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('optionList').status == 'INVALID'}"
                         [readonly]="!disabled" (change)="onChangeEvent($event.target.value)"
                         formControlName="optionList" class="form-control" placeholder="Description">
                     </div>
@@ -89,7 +90,7 @@
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
-                        ngClass="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
                         Save</button>

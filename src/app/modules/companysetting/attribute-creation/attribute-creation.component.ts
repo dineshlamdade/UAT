@@ -226,6 +226,9 @@ export class AttributeCreationComponent implements OnInit {
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
     //this.HeadCreationForm.patchValue({ isStatutory:'0' });
+    this.AttributeCreationForm.patchValue( {
+      attributeNature: ''
+    } );
   }
 
   ResetAttributeCreation(): void {
@@ -233,7 +236,10 @@ export class AttributeCreationComponent implements OnInit {
     this.viewCancelButton = false;
     this.hidevalue = false;
     this.summons = [];
-    this.AttributeCreationForm.patchValue( { isStatutory: '0' } );
+    this.AttributeCreationForm.patchValue( {
+      attributeNature: ''
+    } );
+    //this.AttributeCreationForm.patchValue( { isStatutory: '0' } );
   }
 
 }

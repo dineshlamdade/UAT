@@ -191,6 +191,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         });
     };
     CycleDefinitionComponent.prototype.CancelBusiness = function () {
+        this.cycleDefinitionForm;
         this.disabled = true;
         this.cycleDefinitionForm.reset();
         this.updateFlag = false;
@@ -215,14 +216,19 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.disabled = false;
         this.companySetttingService.GetCycleDefinitionById(id)
             .subscribe(function (response) {
-            var index = _this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId; });
-            console.log(_this.BusinessyearList[index]);
             _this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
-            _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName });
+            _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName.split('_')[0] });
             _this.cycleDefinitionForm.patchValue({ businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId });
             _this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
             _this.cycleDefinitionForm.patchValue({ services: response.data.results[0].serviceName });
             _this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
+            var index = _this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId; });
+            _this.cycleDefinitionForm.patchValue({
+                yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate
+            });
+            _this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
+            _this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
+            _this.cycleDefinitionForm.disable();
         });
         // this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
     };
@@ -240,9 +246,8 @@ var CycleDefinitionComponent = /** @class */ (function () {
             _this.cycleDefinitionForm.patchValue({ frequencyMasterId: response.data.results[0].frequency.id });
             _this.cycleDefinitionForm.patchValue({ services: response.data.results[0].serviceName });
             _this.cycleDefinitionForm.patchValue({ addDays: response.data.results[0].addDays });
-            var index = _this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == response.data.results[0].businessYearDefinition.businessYearDefinitionId; });
             _this.cycleDefinitionForm.patchValue({
-                yearDefinition: _this.BusinessyearList[index].yearDefinition
+                yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate
             });
             _this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
             _this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
@@ -309,7 +314,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         else {
             var index = this.BusinessyearList.findIndex(function (o) { return o.businessYearDefinitionId == evt; });
             this.cycleDefinitionForm.patchValue({
-                yearDefinition: this.BusinessyearList[index].yearDefinition
+                yearDefinition: this.BusinessyearList[index].fullFromDate + ' / ' + this.BusinessyearList[index].fullToDate
             });
         }
     };

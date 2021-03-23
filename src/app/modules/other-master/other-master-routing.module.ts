@@ -1,4 +1,3 @@
-import { UserGroupComponent } from './user-group/user-group.component';
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
 
 
@@ -73,11 +72,7 @@ const routes: Routes = [
     component: ComplianceMappingComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
-  // {
-  //   path: 'user',
-  //   component: UserGroupComponent,
-  //   data: { title: ':: Delizia-HR :: Home' },
-  // },
+
 ];
 
 @NgModule( {

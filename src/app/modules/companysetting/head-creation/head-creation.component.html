@@ -9,7 +9,7 @@
           <div class="card">
             <div class="card-body">
               <form class="card" role="form" [formGroup]="HeadCreationForm" (ngSubmit)="addHeadCreation()" method="post"
-                novalidate>
+                #formDirective="ngForm" novalidate>
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Code</label>
@@ -162,25 +162,25 @@
                                                     </tr> -->
 
                             <tr *ngFor="let summary of HeadCreationList; let i = index">
-                              <td class="align-center wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{i+1}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class=" align-left wd-10">
                                 <span>{{summary.standardName}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.description}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.shortName}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.headNature}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.type}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.category}}</span>
                               </td>
                               <td>

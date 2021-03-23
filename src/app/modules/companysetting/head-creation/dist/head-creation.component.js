@@ -121,11 +121,21 @@ var HeadCreationComponent = /** @class */ (function () {
         this.HeadCreationForm.reset();
         this.viewCancelButton = false;
         this.HeadCreationForm.patchValue({ statutory: 'false' });
+        this.HeadCreationForm.patchValue({
+            headNature: '',
+            type: '',
+            category: ''
+        });
     };
     HeadCreationComponent.prototype.ResetHeadCreation = function () {
         this.HeadCreationForm.reset();
         this.viewCancelButton = false;
         this.HeadCreationForm.patchValue({ statutory: 'false' });
+        this.HeadCreationForm.patchValue({
+            headNature: '',
+            type: '',
+            category: ''
+        });
     };
     HeadCreationComponent.prototype.onChangeEvent = function (event) {
         this.Name = event.target.value;
