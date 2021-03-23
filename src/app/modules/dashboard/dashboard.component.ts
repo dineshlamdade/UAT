@@ -15,11 +15,12 @@ public userName: string;
   public ngOnInit(): void {
     const body = document.getElementsByTagName('body')[0].classList.add('offcanvas-active');
     this.token = this.authService.getprivileges();
-    this.userName = this.token.privileges[0].userName;
+    // console.log(this.token)
+    this.userName = this.token.UserDetails.userName;
     const expiryDate = (new Date(this.token.exp * 1000));
     const initalDate = (new Date(this.token.iat * 1000));
-    console.log(expiryDate);
-    console.log(initalDate);
+    // console.log(expiryDate);
+    // console.log(initalDate);
 
   }
 

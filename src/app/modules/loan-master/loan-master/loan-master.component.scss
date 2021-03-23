@@ -1,0 +1,11 @@
+.about-page{
+  margin-top: 10px;
+}
+
+.tabview{
+  grid-template-columns: 1fr 1fr 1fr 1fr !important;
+}
+
+.tabs {
+  grid-column-end: span 4 !important;
+}

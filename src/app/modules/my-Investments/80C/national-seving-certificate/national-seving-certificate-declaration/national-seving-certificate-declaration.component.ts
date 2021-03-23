@@ -294,6 +294,15 @@ export class NationalSevingCertificateDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+
+
     this.nscService
       .getNSCInstitutionListWithPolicyNo()
       .subscribe((res) => {

@@ -1,3 +1,4 @@
+import { UserGroupComponent } from './user-group/user-group.component';
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
 
 
@@ -5,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
 import { BankMasterAtGroupComponent } from './bank-master-at-group/bank-master-at-group.component';
-// import { CompanyMasterComponent } from '../create-company/company-master/company-master.component';
 import { CompanyGroupMasterComponent } from './company-group-master/company-group-master.component';
 import { CompanyMasterComponent } from './company-master/company-master.component';
 import { CompanyRegistrationDetailsComponent } from './company-registration-details/company-registration-details.component';
@@ -73,10 +73,15 @@ const routes: Routes = [
     component: ComplianceMappingComponent,
     data: { title: ':: Delizia-HR :: Home' },
   },
+  // {
+  //   path: 'user',
+  //   component: UserGroupComponent,
+  //   data: { title: ':: Delizia-HR :: Home' },
+  // },
 ];
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
+@NgModule( {
+  imports: [RouterModule.forChild( routes )],
   exports: [RouterModule]
-})
+} )
 export class OtherMasterRoutingModule { }

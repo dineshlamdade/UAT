@@ -538,4 +538,44 @@ export class UnitLinkedMasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
+
+  //---------- For Doc Viewer -----------------------
+  nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  docViewer(template3: TemplateRef<any>,index:any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+    //this.urlSafe
+    console.log("urlSafe::",  this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
 }

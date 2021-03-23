@@ -514,40 +514,41 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       });
       console.log(accountNumber)
       const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
-    // Object.assign({}, { class: 'gray modal-md' }),
-    console.log("Edit Master",obj);
-    if (obj!= 'undefined'){
 
-    this.paymentDetailGridData = obj.paymentDetails;
-    this.form.patchValue(obj);
-    this.Index = obj.policyNo;
-    this.showUpdateButton = true;
-    this.isClear = true;
-    this.urlArray = obj.documentInformationList;
-    this.proofSubmissionId = obj.proofSubmissionId;
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.accountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.documentInformationList;
+      this.proofSubmissionId = obj.proofSubmissionId;
     }
     });
-  }
+    }
 
   findByPolicyNo(accountNumber,masterGridData){
     return masterGridData.find(x => x.accountNumber === accountNumber)
   }
 
   // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
+  // viewMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.numberFormat.transform(
+  //     this.masterGridData[i].premiumAmount
+  //   );
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isCancel = true;
+  // }
 
   // On View Cancel
   resetView() {
@@ -557,8 +558,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];
+    this.urlArray = [];
     this.isCancel = false;
-    this.isClear = false;
   }
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(

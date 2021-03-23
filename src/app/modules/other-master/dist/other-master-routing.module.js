@@ -12,7 +12,6 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
 var bank_master_at_group_component_1 = require("./bank-master-at-group/bank-master-at-group.component");
-// import { CompanyMasterComponent } from '../create-company/company-master/company-master.component';
 var company_group_master_component_1 = require("./company-group-master/company-group-master.component");
 var company_master_component_1 = require("./company-master/company-master.component");
 var company_registration_details_component_1 = require("./company-registration-details/company-registration-details.component");

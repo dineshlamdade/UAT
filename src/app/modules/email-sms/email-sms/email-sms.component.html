@@ -35,7 +35,7 @@
                                         </div>
                                     </div>
                                     <fieldset>
-                                        <legend>Languagewies - Quetion & Answer</legend>
+                                        <legend>Email & SMS</legend>
                                         <fieldset>
                                             <legend> </legend>
                                             <div class="row" cdkDropListGroup>
@@ -54,7 +54,7 @@
 
                                                     <ul style="height: 100px; overflow-y: scroll; width: 200px;">
                                                         <div *ngFor="let key of keyword">
-                                                            <li id="{{key.id}}" draggable="true"
+                                                            <li id="{{key.name}}" draggable="true"
                                                                 (dragstart)="drag($event)">
                                                                 {{key.description}}
                                                             </li>
@@ -77,7 +77,7 @@
                                                             style="color:darkmagenta;">Email</label>
                                                         <label class="form-label">Subject</label>
                                                         <input type="text" class="form-control" placeholder="subject" />
-                                                        <label class="form-label">Description</label>
+                                                        <label class="form-label">Body</label>
                                                         <!-- <ckeditor [editor]="Editor"  data="hello"
                                                             (drop)="drop($event)" (dragover)="allowDrop($event)">
                                                         </ckeditor> -->

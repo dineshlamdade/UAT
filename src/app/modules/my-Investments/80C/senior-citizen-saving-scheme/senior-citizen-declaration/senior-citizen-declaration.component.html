@@ -198,7 +198,7 @@
                     <input
                       type="text"
                       formControlName="accountNumber"
-                      class="form-control"
+                      class="form-control" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
                       placeholder="Account No."
                       [ngClass]="{
                         'is-invalid':

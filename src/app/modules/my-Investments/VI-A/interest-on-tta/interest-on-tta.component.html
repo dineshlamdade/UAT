@@ -9,50 +9,33 @@
           <div class="card">
             <div class="card-body">
               <div class="tabview">
-                <input
-                  name="nav"
-                  type="radio"
-                  class="about-radio"
-                  id="summary"
-                  (change)="changeTabIndex(0)"
-                  [checked]="tabIndex == 0"
-                />
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-interest-on-tta-summary *ngIf="tabIndex == 0"
-                    (myEvent)="changeTabIndexForRedirect($event)"
-                    (policyNumber)="redirectToMaster($event)">
-                  </app-interest-on-tta-summary>
+                  <app-interest-on-tta-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"
+                  (accountNo)="redirectToMaster($event)"
+                  ></app-interest-on-tta-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
                 </label>
 
-                <input
-                  name="nav"
-                  type="radio"
-                  class="nav home-radio"
-                  id="Master"
-                  (change)="changeTabIndex(1)"
-                  [checked]="tabIndex == 1"
-                />
+                <input name="nav" type="radio" class="nav home-radio" id="Master" (change)="changeTabIndex(1)"
+                  [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
-                  <app-interest-on-tta-master *ngIf="tabIndex == 1" > </app-interest-on-tta-master>
-                  <!-- <app-licmaster *ngIf="tabIndex == 1" [policyNumber]="policyNumber"> </app-licmaster> -->
+                  <app-interest-on-tta-master *ngIf="tabIndex == 1"
+                  [accountNo]="accountNo" > </app-interest-on-tta-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>
                 </label>
 
-                <input
-                  name="nav"
-                  type="radio"
-                  class="about-radio"
-                  id="Declaration"
-                  (change)="changeTabIndex(2)"
-                  [checked]="tabIndex == 2"/>
+                <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
-                  <app-interest-on-tta-declaration [data] =  "data" *ngIf="tabIndex == 2"></app-interest-on-tta-declaration>
+                  <app-interest-on-ttb-declaration [data]="data" *ngIf="tabIndex == 2"></app-interest-on-ttb-declaration>
                 </div>
+
                 <label class="nav" for="Declaration">
                   <span> Declaration & Actual </span>
                 </label>
@@ -60,18 +43,9 @@
             </div>
           </div>
         </div>
-        <div
-          class="scroll-to-top"
-          [ngClass]="{ 'show-scrollTop': windowScrolled }"
-        >
-          <button
-            type="button"
-            class="btn active"
-            data-toggle="button"
-            aria-pressed="true"
-            tooltip="Top"
-            (click)="scrollToTop()"
-          >
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
             <i class="fa fa-angle-double-up text-white font-18"></i>
           </button>
         </div>
