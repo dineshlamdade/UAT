@@ -6,6 +6,7 @@ node {
   stage 'Docker build Web'
   dir("${env.WORKSPACE}/") {
     docker.build('paysquare/deliziahrnewui')
+    emailext attachLog: true, body: '', compressLog: true, subject: 'DeliziaHR-New-UI-Buit-Log', to: 'amit.bhoyar@paysquare.com'
     }
 
   stage 'Docker push Web'
