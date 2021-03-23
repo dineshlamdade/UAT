@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { CompanySettingsService } from '../../company-settings.service';
 import { saveBusinessYear } from '../../model/business-cycle-model';

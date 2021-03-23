@@ -21,7 +21,13 @@ var LeftmenuComponent = /** @class */ (function () {
         this.isEmployeeMaster = true;
         this.isProjectCollapsed = true;
         this.isJobportalCollapsed = true;
+        this.isPayrollInputsCollapsed = true;
+        this.isCollapsedRolesPermission = true;
         this.isInvestmentCollapsed = true;
+        this.isOtherCollapsed = true;
+        this.isEightyCCollapsed = true;
+        this.isChapetr6ACollapsed = true;
+        this.islockCollapsed = true;
         this.isOtherMaster = true;
         this.isUploadExcel = true;
         this.isAuthCollapsed = true;
@@ -37,8 +43,20 @@ var LeftmenuComponent = /** @class */ (function () {
         if ((this.router.url).includes('payroll')) {
             this.isCollapsed = false;
         }
+        if ((this.router.url).includes('PayrollInputs')) {
+            this.isPayrollInputsCollapsed = false;
+        }
         if ((this.router.url).includes('investment')) {
             this.isInvestmentCollapsed = false;
+        }
+        if ((this.router.url).includes('80C')) {
+            this.isEightyCCollapsed = false;
+        }
+        if ((this.router.url).includes('Other')) {
+            this.isOtherCollapsed = false;
+        }
+        if ((this.router.url).includes('Chapter-VI-A')) {
+            this.isChapetr6ACollapsed = false;
         }
         if ((this.router.url).includes('otherMaster')) {
             this.isOtherMaster = false;

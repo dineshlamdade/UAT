@@ -711,6 +711,7 @@
 
 
 
+      <!-- Other Master Menu added by Anant starting from here -->
 
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a href="javascript:void(0)" (click)="isOtherMaster = !isOtherMaster" [attr.aria-expanded]="!isOtherMaster"
@@ -750,6 +751,9 @@
         </ul>
       </li>
 
+      <!-- Other Master Menu added by Anant End here -->
+
+
       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a href="javascript:void(0)" (click)="ischaptersettingCollapsed = !ischaptersettingCollapsed"
           [attr.aria-expanded]="!ischaptersettingCollapsed" aria-controls="investmentsCollapsed"
@@ -779,8 +783,7 @@
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                   [routerLink]="['/userrolesandpermission']" href="javascript:void(0)">User Roles and Permission
                 </a></li>
-              <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/userrole']" href="javascript:void(0)">User Role
-                           </a></li> -->
+
               <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
                   [routerLink]="['/roleprivilege']" href="javascript:void(0)">Role Privilege
                 </a>

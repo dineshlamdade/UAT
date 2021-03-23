@@ -7,11 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.CompanySettingModule = void 0;
-var attribute_selection_component_1 = require("./attribute-selection/attribute-selection.component");
-var business_cycle_component_1 = require("./business-cycle/business-cycle.component");
-var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
-var head_creation_component_1 = require("./head-creation/head-creation.component");
-var sharedlayout_module_1 = require("./../sharedlayout/sharedlayout.module");
 var common_1 = require("@angular/common");
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
@@ -31,10 +26,32 @@ var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
 var slider_1 = require("@angular/material/slider");
 var attribute_creation_component_1 = require("./attribute-creation/attribute-creation.component");
 var companysetting_routing_module_1 = require("./companysetting.routing.module");
-var http_1 = require("@angular/common/http");
+// import {TableModule} from 'primeng/table';
+// import {ButtonModule} from 'primeng/button';
+// import { CustomerService } from './payroll/financial-master/customerservice';
+var table_1 = require("primeng/table");
+var button_1 = require("primeng/button");
+var calendar_1 = require("primeng/calendar");
+var slider_2 = require("primeng/slider");
+var dialog_1 = require("primeng/dialog");
+var multiselect_1 = require("primeng/multiselect");
+var contextmenu_1 = require("primeng/contextmenu");
+var toast_1 = require("primeng/toast");
+var inputtext_1 = require("primeng/inputtext");
+var progressbar_2 = require("primeng/progressbar");
+// import { UserRoleComponent } from './user-rolesand-permission/user-role/user-role.component';
+// import { UserGroupComponent } from './user-rolesand-permission/user-group/user-group.component';
+// import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
+// import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
+// import { HttpClientModule } from '@angular/common/http';
 var business_year_component_1 = require("./business-cycle/business-year/business-year.component");
 var cycle_definition_component_1 = require("./business-cycle/cycle-definition/cycle-definition.component");
 var cycle_creation_component_1 = require("./business-cycle/cycle-creation/cycle-creation.component");
+var business_cycle_component_1 = require("./business-cycle/business-cycle.component");
+var sharedlayout_module_1 = require("../sharedlayout/sharedlayout.module");
+var attribute_selection_component_1 = require("./attribute-selection/attribute-selection.component");
+var head_creation_component_1 = require("./head-creation/head-creation.component");
+var payroll_head_group_creation_component_1 = require("./payroll-head-group-creation/payroll-head-group-creation.component");
 var CompanySettingModule = /** @class */ (function () {
     function CompanySettingModule() {
     }
@@ -52,9 +69,8 @@ var CompanySettingModule = /** @class */ (function () {
             ],
             imports: [
                 common_1.CommonModule,
-                forms_1.FormsModule,
-                http_1.HttpClientModule,
                 forms_1.ReactiveFormsModule,
+                forms_1.FormsModule,
                 slider_1.MatSliderModule,
                 tooltip_1.TooltipModule.forRoot(),
                 datepicker_1.BsDatepickerModule.forRoot(),
@@ -75,6 +91,16 @@ var CompanySettingModule = /** @class */ (function () {
                 }),
                 sharedlayout_module_1.SharedlayoutModule,
                 companysetting_routing_module_1.CompanySettingRoutingModule,
+                table_1.TableModule,
+                calendar_1.CalendarModule,
+                slider_2.SliderModule,
+                dialog_1.DialogModule,
+                multiselect_1.MultiSelectModule,
+                contextmenu_1.ContextMenuModule,
+                button_1.ButtonModule,
+                toast_1.ToastModule,
+                inputtext_1.InputTextModule,
+                progressbar_2.ProgressBarModule,
             ],
             providers: [common_1.DatePipe, NumberFormatPipe_1.NumberFormatPipe]
         })

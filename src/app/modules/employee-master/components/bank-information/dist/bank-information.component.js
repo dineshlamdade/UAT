@@ -9,7 +9,7 @@ exports.__esModule = true;
 exports.BankInformationComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var bank_information_model_1 = require("./../../dto-models/bank-information.model");
+var bank_information_model_1 = require("./bank-information.model");
 var rxjs_1 = require("rxjs");
 var password_match_validator_1 = require("./password-match.validator");
 var BankInformationComponent = /** @class */ (function () {
@@ -20,7 +20,7 @@ var BankInformationComponent = /** @class */ (function () {
         this.BankInformationService = BankInformationService;
         this.CommonDataService = CommonDataService;
         this.router = router;
-        this.BankInformationModel = new bank_information_model_1.BankInformationModel('', '', '', '', '', '', '', '', '', '');
+        this.BankInformationModel = new bank_information_model_1.BankInformationModel('', '', '', '', '', '', '', '', '');
         this.BankInformationArray = [];
         this.countryList = [];
         this.filteredCountries = [];
@@ -70,22 +70,16 @@ var BankInformationComponent = /** @class */ (function () {
         var empId = localStorage.getItem('employeeMasterId');
         this.employeeMasterId = Number(empId);
         this.getBankAccounts();
-        this.getStates();
         this.CommonDataService.getLocationInformation().subscribe(function (res) {
             _this.countryList = res.data.results;
-            // setTimeout(() => {
-            //   this.BankInformationModel.country = 'India';
-            //   this.bankInfoForm.get('country').setValue('India');
-            // })
         });
-        // this.initiateBankForm = this.EventEmitterService.setBankFormInitiate().subscribe(res => {
-        // })
         this.shareCountryDataSubcription = this.EventEmitterService.setCountryData().subscribe(function (res) {
             if (res) {
                 _this.countryList = res.countryList;
             }
         });
     };
+    // Selection of country based validation for IFSC and other fields
     BankInformationComponent.prototype.selectCountry = function () {
         if (this.BankInformationModel.country == 'India') {
             this.bankInfoForm.get('bankIFSC').enable();
@@ -102,86 +96,13 @@ var BankInformationComponent = /** @class */ (function () {
             this.maxAccNumber = null;
         }
     };
+    // Get API method of bank accounts
     BankInformationComponent.prototype.getBankAccounts = function () {
         var _this = this;
         this.BankInformationService.getBankInformation(this.employeeMasterId).subscribe(function (res) {
             _this.bankSummaryGridData = res.data.results[0];
             // this.employeeBankInfoId = res.data.results[0][0].employeeBankInfoId;
         });
-    };
-    BankInformationComponent.prototype.getStates = function () {
-        var _this = this;
-        this.BankInformationService.getStates().subscribe(function (res) {
-            _this.states = res.data.results;
-            _this.Totalstates = res.data.results;
-            _this.editstates = res.data.results;
-            _this.stateModel = '';
-        });
-    };
-    BankInformationComponent.prototype.searchIFSC = function (searchTerm, bankIFSC) {
-        var _this = this;
-        if (searchTerm.query.length < 2) {
-            this.IFSCcodeList = [];
-            this.TotalIFSCcodeList = [];
-        }
-        if (bankIFSC.length < 11) {
-            this.BankInformationModel.bankName = '';
-            this.BankInformationModel.branchName = '';
-            this.BankInformationModel.branchAddress = '';
-            this.confirmAccountNumber = '';
-            this.BankInformationModel.accountNo = '';
-            this.BankInformationModel.nameAsPerBank = '';
-        }
-        if (searchTerm.query.length == 2) {
-            // setTimeout(() => {
-            this.BankInformationService.searchIFSC(searchTerm.query, this.stateModel).subscribe(function (res) {
-                _this.IFSCcodeList = res.data.results[0];
-                _this.TotalIFSCcodeList = res.data.results[0];
-                if (_this.TotalIFSCcodeList.length > 0) {
-                    _this.filterIFSCCodes(searchTerm.query);
-                }
-                else {
-                    _this.CommonDataService.sweetalertError('Recordnot found');
-                    // this.notifyService.showError ('Recordnot found', "Error..!!")
-                }
-            });
-            // }, 1500)
-        }
-        this.filterIFSCCodes(searchTerm.query);
-        if (bankIFSC.length == 11) {
-            var ifsc = this.TotalIFSCcodeList.filter(function (item) {
-                return item == searchTerm.query;
-            });
-            if (ifsc == searchTerm.query) {
-                this.IFSCDetails(searchTerm.query);
-            }
-        }
-    };
-    BankInformationComponent.prototype.filterIFSCCodes = function (searchTerm) {
-        if (searchTerm.length > 2) {
-            searchTerm = searchTerm.toLowerCase();
-            var ifsc = this.TotalIFSCcodeList.filter(function (item) {
-                return JSON.stringify(item).toLowerCase().includes(searchTerm);
-            });
-            this.IFSCcodeList = ifsc;
-            // this.GridIFSCcodeList = ifsc;
-            this.showOptios = true;
-        }
-    };
-    BankInformationComponent.prototype.searchStates = function (searchTerm) {
-        this.BankInformationModel.bankName = '';
-        this.BankInformationModel.branchName = '';
-        this.BankInformationModel.branchAddress = '';
-        this.BankInformationModel.bankIFSC = '';
-        this.confirmAccountNumber = '';
-        this.BankInformationModel.accountNo = '';
-        this.BankInformationModel.nameAsPerBank = '';
-        this.IFSCcodeList = [];
-        // searchTerm = searchTerm.toLowerCase();
-        //   const ifsc = this.Totalstates.filter((item) => {
-        //     return JSON.stringify(item).toLowerCase().includes(searchTerm);
-        //   });
-        //   this.states = ifsc;
     };
     // Get IFSC Details
     BankInformationComponent.prototype.getDataFromIFSC = function (bankIFSC) {
@@ -202,6 +123,7 @@ var BankInformationComponent = /** @class */ (function () {
         var _this = this;
         this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(function (res) {
             _this.maxAccNumber = res.data.results[0].limit;
+            _this.maxNumber = _this.maxAccNumber;
             if (_this.maxAccNumber == 0) {
                 _this.maxAccNumber = null;
             }
@@ -220,42 +142,13 @@ var BankInformationComponent = /** @class */ (function () {
         this.BankInformationModel.accountNo = '';
         this.BankInformationModel.nameAsPerBank = '';
     };
-    // bankInfoSubmit() {
-    //   this.summaryGridData.forEach(data => {
-    //     data.employeeMasterId = this.employeeMasterId;
-    //     delete data.confirmAccountNo;
-    //     if (data.employeeBankInfoId) {
-    //       this.BankInformationService.putBankInfoForm(this.summaryGridData).subscribe(res => {
-    //         // this.summaryGridData = res.data.results;
-    //         this.getBankAccounts();
-    //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-    //         this.summaryGridData = [];
-    //         // this.BankInformationModel.country = '';
-    //         this.BankInformationModel.bankIFSC = '';
-    //         this.BankInformationModel.bankName = '';
-    //         this.BankInformationModel.branchName = '';
-    //         this.BankInformationModel.branchAddress = '';
-    //         this.BankInformationModel.nameAsPerBank = '';
-    //         this.BankInformationModel.accountNo = '';
-    //         this.stateModel = '';
-    //         this.confirmAccountNumber = '';
-    //         this.BankInformationModel.employeeBankInfoId = '';
-    //       })
-    //     } else {
-    //       this.BankInformationService.postBankInfoForm(this.summaryGridData).subscribe(res => {
-    //         // this.summaryGridData = res.data.results;
-    //         this.summaryGridData = [];
-    //         this.getBankAccounts();
-    //         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-    //         // this.notifyService.showSuccess(res.status.messsage, "Success..!!")
-    //       })
-    //     }
-    //   })
-    // }
+    // Save&Next Submit Method
     BankInformationComponent.prototype.BankSaveNextSubmit = function (BankInformationModel) {
         this.saveNextBoolean = true;
+        this.maxAccNumber = this.maxAccNumber;
         this.postBankInfoForm(BankInformationModel);
     };
+    // Bank Form save Post Function
     BankInformationComponent.prototype.postBankInfoForm = function (BankInformationModel) {
         var _this = this;
         BankInformationModel.employeeMasterId = this.employeeMasterId;
@@ -278,6 +171,7 @@ var BankInformationComponent = /** @class */ (function () {
             _this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         });
     };
+    // Bank Form save Put Function
     BankInformationComponent.prototype.updateBankGridRow = function (BankInformationModel) {
         var _this = this;
         BankInformationModel.employeeMasterId = this.employeeMasterId;
@@ -295,9 +189,10 @@ var BankInformationComponent = /** @class */ (function () {
             _this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
         });
     };
+    // Edit grid row method
     BankInformationComponent.prototype.editBankGridRow = function (bank) {
         this.viewBankForm = false;
-        this.maxAccNumber = null;
+        this.maxAccNumber = this.maxNumber;
         this.addButton = true;
         this.accountNumberCountError = '';
         this.confirmAccountNumberCountError = '';
@@ -335,6 +230,7 @@ var BankInformationComponent = /** @class */ (function () {
         var temp9 = this.bankInfoForm.get('confirmAccountNo');
         temp9.enable();
     };
+    // View grid row method
     BankInformationComponent.prototype.viewBankGridRow = function (bank) {
         this.viewBankForm = true;
         this.accountNumberCountError = '';
@@ -367,6 +263,7 @@ var BankInformationComponent = /** @class */ (function () {
         var temp9 = this.bankInfoForm.get('confirmAccountNo');
         temp9.disable();
     };
+    // close Edit and view method
     BankInformationComponent.prototype.closeBankGridRow = function (BankInformationModel) {
         this.viewBankForm = false;
         this.resetForm();
@@ -409,6 +306,7 @@ var BankInformationComponent = /** @class */ (function () {
         this.stateModel = '';
         this.bankInfoForm.get('state').setValue('');
     };
+    // Account number verification API
     BankInformationComponent.prototype.confirmMatchAccountNo = function (confirmPassword) {
         var _this = this;
         if (confirmPassword == this.BankInformationModel.accountNo) {
@@ -428,14 +326,19 @@ var BankInformationComponent = /** @class */ (function () {
             this.accountNoMatched = false;
         }
     };
+    // Account number validation method
     BankInformationComponent.prototype.validateAccountNo = function (accountNo) {
         this.formTouch(this.bankInfoForm);
         if (this.maxAccNumber) {
-            if (accountNo.length < this.maxAccNumber || accountNo.length > this.maxAccNumber) {
+            if (accountNo.length != this.maxAccNumber) 
+            // if (accountNo.length < this.maxAccNumber || accountNo.length > this.maxAccNumber)
+            {
                 this.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
+                this.isAccountNoValid = false;
             }
             else {
                 this.accountNumberCountError = '';
+                this.isAccountNoValid = true;
             }
         }
         if (accountNo == 0) {
