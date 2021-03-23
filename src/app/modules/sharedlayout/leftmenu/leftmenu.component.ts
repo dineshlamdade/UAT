@@ -84,9 +84,6 @@ export class LeftmenuComponent implements OnInit {
     if ( ( this.router.url ).includes( 'co' ) ) {
       this.ischaptersettingCollapsed = false;
     }
-    if ( ( this.router.url ).includes( 'co' ) ) {
-      this.ischaptersettingCollapsed = false;
-    }
     if ( ( this.router.url ).includes( 'employee-master' ) ) {
       this.isEmployeeMaster = false;
     }

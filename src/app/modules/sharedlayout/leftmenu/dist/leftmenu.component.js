@@ -70,9 +70,6 @@ var LeftmenuComponent = /** @class */ (function () {
         if ((this.router.url).includes('co')) {
             this.ischaptersettingCollapsed = false;
         }
-        if ((this.router.url).includes('co')) {
-            this.ischaptersettingCollapsed = false;
-        }
         if ((this.router.url).includes('employee-master')) {
             this.isEmployeeMaster = false;
         }
