@@ -1,4 +1,4 @@
-# Create image based on the official Node 10 image from dockerhub
+ Create image based on the official Node 10 image from dockerhub
 FROM centos as web
 
 
@@ -40,20 +40,7 @@ RUN npm i @babel/compat-data@7.8.0
 RUN npm run build --prod
 
 #Stage 2
-FROM nginx:stable
+FROM nginx:alpine
 COPY --from=web app/mysite.conf /etc/nginx/conf.d/default.conf
 COPY --from=web app/dist/ /srv/mysite/
-
-RUN  apt-get update \
-      && apt-get install -y cron certbot python-certbot-nginx bash wget \
-      && rm -rf /var/lib/apt/lists/* \
-      && echo "@monthly certbot renew --nginx >> /var/log/cron.log 2>&1" >/etc/cron.d/certbot-renew \
-      && crontab /etc/cron.d/certbot-renew
-      
-
-VOLUME /etc/letsencrypt
-
-
 EXPOSE 80
-CMD["certbot" "certonly" "--standalone" "--agree-tos" "-m ithelpdesk@paysquare.com" "-n" "-d dev.deliziahr.com" ]
-
