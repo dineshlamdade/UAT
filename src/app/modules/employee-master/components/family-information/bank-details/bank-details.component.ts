@@ -63,7 +63,8 @@ export class BankDetailsComponent implements OnInit {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
-    if (this.BankAccountDataSource.length == 0) {
+    if (this.BankAccountDataSource.length == 0)
+     {
       this.FamilyInformationService.getFamilyMemberInfo(this.employeeMasterId).subscribe(res => {
 
         this.familyMemberList = res.data.results[0];

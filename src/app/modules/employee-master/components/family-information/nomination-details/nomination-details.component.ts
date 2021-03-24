@@ -180,7 +180,7 @@ export class NominationDetailsComponent implements OnInit {
             'personalAccidentInsurancePercentage': 0,
             'mediclaimInsurancePercentage': 0
           }
-          this.FamilyMemberList.push(obj);
+         // this.FamilyMemberList.push(obj);
         }
 
         // const TABLE_DATA: NominationElement[] = this.FamilyMemberList;
@@ -412,6 +412,7 @@ export class NominationDetailsComponent implements OnInit {
   filterCity(state, ESIC) {
     
     let cities = [];
+    console.log(this.ESICLocationLIST);
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {
         cities.push(city.district);
@@ -749,6 +750,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   resetNomination() {
+   
     this.getNomination();
   }
 

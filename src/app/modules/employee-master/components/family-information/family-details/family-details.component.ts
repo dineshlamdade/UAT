@@ -107,7 +107,7 @@ export class FamilyDetailsComponent implements OnInit {
       companyMediclaimApplicable: [''],
       isDependant: [''],
       image: [''],
-      remark: [''],
+      remark: [{value: null, disabled: true}],
       isActive: [{ value: null, disabled: true }],
       companyMediclaimToggle: ['', Validators.required],
       dependentOnEmployeeToggle: ['', Validators.required],
@@ -229,13 +229,16 @@ export class FamilyDetailsComponent implements OnInit {
   activeSetBoolean(event) {
 
     if (event == true) {
+      
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
       this.FamilyDetailsInfoForm.get('remark').clearValidators();
       this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
+     
     } else {
       this.familyMemberInfoRequestDTO.isMemberActive = 0;
       this.FamilyDetailsInfoForm.get('remark').setValidators([Validators.required]);
       this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.controls['remark'].disable();
     }
   }
 
@@ -707,7 +710,8 @@ export class FamilyDetailsComponent implements OnInit {
   editFamilyMember(family) {
     this.enableForm();
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-
+      this.FamilyDetailsInfoForm.controls['dateOfBirth'].disable();  
+      this.FamilyDetailsInfoForm.controls['ageBracket'].disable();
       this.updateFormFlag = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;

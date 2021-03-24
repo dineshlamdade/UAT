@@ -108,7 +108,8 @@
                                                     }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter NPR Number"
                                                     formControlName="nationalPopulationRegNumber"
-                                                    [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nprNumber"
+                                                  
+                                                    [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.nprNumber" (keypress)="keyPress($event)"
                                                     (keyup)="updateNPRName(IdentityInformation.employeePersonalInfoRequestDTO.nprNumber)">
                                             </div>
 
@@ -125,7 +126,7 @@
                                                 <label class="form-label">{{ 'IdentityInformationForm.esicIP' |
                                                     transloco }}</label>
                                                 <input type="text" class="form-control" placeholder="Enter ESICIP"
-                                                    formControlName="esicIP"
+                                                    formControlName="esicIP" (keypress)="keyPress($event)"
                                                     [(ngModel)]="IdentityInformation.employeeESICDTORequestDTO.eSICCode">
                                             </div>
 
@@ -168,7 +169,7 @@
                                                                     class="fa fa-calendar"></i></span>
                                                         </div>
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                            data-provide="datepicker" data-date-autoclose="true"
+                                                            data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
                                                             [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.drivingLicenseExpiryDate"
                                                             formControlName="drivingLicenceExpiryDate"
@@ -234,7 +235,7 @@
                                                                     class="fa fa-calendar"></i></span>
                                                         </div>
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                            data-provide="datepicker" data-date-autoclose="true"
+                                                            data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
                                                             formControlName="dateOfIssue" [maxDate]="today"
                                                             [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportValidFrom">
@@ -252,7 +253,7 @@
                                                                     class="fa fa-calendar"></i></span>
                                                         </div>
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                            data-provide="datepicker" data-date-autoclose="true"
+                                                            data-provide="datepicker" data-date-autoclose="true"  placement="center"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
                                                             formControlName="expiryDate" [minDate]="today"
                                                             [(ngModel)]="IdentityInformation.employeePersonalInfoRequestDTO.passportExpiryDate">
@@ -305,7 +306,7 @@
                                                                     class="fa fa-calendar"></i></span>
                                                         </div>
                                                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                            data-provide="datepicker" data-date-autoclose="true"
+                                                            data-provide="datepicker" data-date-autoclose="true"  placement="center"
                                                             class="form-control" placeholder="Select Date" bsDatepicker
                                                             formControlName="validTill" [minDate]="today"
                                                             [(ngModel)]="VisaInformation.validTill">
