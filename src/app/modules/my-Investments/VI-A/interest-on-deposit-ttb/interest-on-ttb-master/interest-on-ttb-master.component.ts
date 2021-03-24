@@ -4,6 +4,7 @@ import {
   Component,
   Inject,
   OnInit,
+  Input,
   TemplateRef,
 } from '@angular/core';
 import {
@@ -28,7 +29,7 @@ import { InterestOnTtbService } from '../interest-on-ttb.service';
   styleUrls: ['./interest-on-ttb-master.component.scss']
 })
 export class InterestOnTtbMasterComponent implements OnInit {
-
+@Input() public accountNo :any;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -116,10 +117,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public disability : string;
   public severity : string;
   public isClaiming80U: boolean = true;
-
-
-
-
+  public proofSubmissionId ;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -145,11 +143,9 @@ export class InterestOnTtbMasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
     this.initiateMasterForm();
-
-
   }
 
- public ngOnInit(): void {
+    public ngOnInit(): void {
 
     this.getFinacialYear();
     this.getMasterIFSCCodeList();
@@ -168,6 +164,13 @@ export class InterestOnTtbMasterComponent implements OnInit {
     const splitYear = this.financialYear.split('-', 2);
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.accountNo != undefined || this.accountNo != null) {
+      const input = this.accountNo;
+      this.editMaster(input.accountNumber);
+      console.log('editMaster accountNumber', input.accountNumber);
+    }
+
   }
 
   // initiate Reactive Master Form
@@ -202,16 +205,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
       this.interestOnTtbService.getStateInfoList().subscribe((res) => {
         this.stateNameList = res.data.results;
       });
-      // this.interestOnTtbService.getStateInfoList().subscribe((res) => {
-      //   res.data.results.forEach((element) => {
-      //     const obj = {
-      //       label: element,
-      //       value: element,
-      //     };
-      //     this.stateNameList.push(obj);
-      //   });
-      //   console.log("statelist",this.stateNameList);
-      // });
     }
 
       //get ifsc detail
@@ -247,12 +240,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
     getDataFromIFSC(bankIFSC) {
       if (bankIFSC.length < 11) {
-        // this.BankInformationModel.bankName = '';
-        // this.BankInformationModel.branchName = '';
-        // this.BankInformationModel.bankAddress = '';
-        // this.confirmAccountNumber = '';
-        // this.BankInformationModel.accountNo = '';
-        // this.BankInformationModel.nameAsPerBank = '';
       }
       if (bankIFSC.length == 11) {
         this.IFSCDetails(bankIFSC);
@@ -275,12 +262,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
       }
       if (bankIFSC.length < 11) {
-        // this.BankInformationModel.bankName = '';
-        // this.BankInformationModel.branchName = '';
-        // this.BankInformationModel.bankAddress = '';
-        // this.confirmAccountNumber = '';
-        // this.BankInformationModel.accountNo = '';
-        // this.BankInformationModel.nameAsPerBank = '';
       }
       if (searchTerm.query.length == 2) {
         // setTimeout(() => {
@@ -291,8 +272,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
           if (this.ifscCodeList.length > 0) {
             this.filterIFSCCodes(searchTerm.query);
           } else {
-           // this.alertService.sweetalertError('Record Not Found');
-            // this.notifyService.showError ('Recordnot found', "Error..!!")
           }
         });
         // }, 1500)
@@ -376,9 +355,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
     } else {
 
       const data = this.form.getRawValue();
-      // {
-      //   handicappedDependantDetail : this.form.getRawValue()
-      // };
+      data.proofSubmissionId = this.proofSubmissionId;
 
       console.log('Interest On 80TTA ::', data);
 
@@ -411,12 +388,12 @@ export class InterestOnTtbMasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
-      // this.form.get('active').setValue(true);
-      // this.form.get('isClaiming80U').setValue(0);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
+      this.documentRemark = '';
 
     }
   }
@@ -438,40 +415,39 @@ export class InterestOnTtbMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-  // On Master Edit functionality
-  editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    this.isClear = true;
-    this.masterfilesArray = this.masterGridData[i].documentInformationList
 
-  }
 
-  // On Edit Cancel
-  cancelEdit() {
-    this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('isClaiming80U').setValue(0);
-    this.showUpdateButton = false;
-    this.paymentDetailGridData = [];
-    this.isClear = false;
-  }
+    //------------- On Master Edit functionality --------------------
+    editMaster(accountNumber) {
+      this.interestOnTtbService.get80TTBMaster().subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
+        console.log(accountNumber)
+        const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
 
-    this.isCancel = true;
-  }
+        // Object.assign({}, { class: 'gray modal-md' }),
+        console.log("Edit Master",obj);
+        if (obj!= 'undefined'){
+
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+
+        }
+      });
+
+    }
+
+    findByaccountNumber(accountNumber,masterGridData){
+      return masterGridData.find(x => x.accountNumber === accountNumber)
+    }
+
+
 
   // On View Cancel
   cancelView() {
@@ -489,10 +465,53 @@ export class InterestOnTtbMasterComponent implements OnInit {
     );
   }
 
-  resetForm() {
+  //---------- On View Cancel -------------------
+  resetView() {
     this.form.reset();
+    this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.isCancel = false;
   }
 
+   //---------- For Doc Viewer -----------------------
+   nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>,index:any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log("urlSafe::",  this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
+
+    //----------------- Remove LicMaster Document -----------------------------
+    removeSelectedDocument(index: number) {
+      this.masterfilesArray.splice(index, 1);
+    }
 }
 
 

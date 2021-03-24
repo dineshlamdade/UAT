@@ -283,6 +283,13 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   }
 
   public getBankNameList() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.bankNameList.push(data);
+
     this.interestOnTtbService
       .get80TTBWithBankNameList()
       .subscribe((res) => {

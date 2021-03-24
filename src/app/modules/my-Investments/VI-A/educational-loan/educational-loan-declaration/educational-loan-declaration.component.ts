@@ -297,6 +297,13 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
   public getLenderNameList() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.lenderNameList.push(data);
+    this.transactionPolicyList.push(data);
     this.educationalLoanServiceService
       // .getElectricVehicleDeclarationLenderName()
       .getEducationalLoanLenderNameList()

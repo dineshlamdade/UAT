@@ -164,13 +164,17 @@
                     <input type="text" id="declaredAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                       name="declaredAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                      [disabled]="initialArrayIndex[j] > i" [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    " />
                   </div>
                 </td>
                 <td>
                   <input type="text" id="actualAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}"
                     name="actualAmount{{ summary.interestOnSavingDeposit80TTTransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
+                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)" [disabled]="
+                    isDisabled || summary.transactionStatus === 'Submitted'
+                  "
                     class="form-control align-right" />
                 </td>
                 <td>

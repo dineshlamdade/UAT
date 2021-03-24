@@ -6,6 +6,7 @@
            <select name="beast" id="Institution" class="form-control custom-select"
                 formControlName="institutionName"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.institutionName.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let institutionName of institutionNameList"
                 [value]="institutionName.value">
                 {{institutionName.label}}
@@ -17,7 +18,7 @@
         </div>
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Policy No.</label>
-           <input type="text" formControlName="policyNo" class="form-control"
+           <input type="text" formControlName="policyNo" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" class="form-control"
               placeholder="Enter Policy No."
               [ngClass]="{ 'is-invalid': submitted && masterForm.policyNo.errors }"  >
            <div *ngIf="submitted && masterForm.policyNo.errors" class="invalid-feedback">
@@ -29,6 +30,7 @@
            <select name="Policy_Holder_Name" id="PolicyHolderName" class="form-control custom-select"
                 formControlName="policyholdername" (change)='OnSelectionfamilyMemberGroup()'
                 [ngClass]="{ 'is-invalid': submitted && masterForm.policyholdername.errors }">
+                <option [ngValue]="null">Select</option>
               <option *ngFor="let familyMember of familyMemberName"
                 [value]="familyMember.value">
                 {{familyMember.label}}
@@ -92,6 +94,7 @@
                     <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
                         formControlName="frequencyOfPayment" class="form-control custom-select"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                        <option [ngValue]="null">Select</option>
                       <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                         [value]="frequencyOfPayment.value">
                         {{frequencyOfPayment.label}}
@@ -101,6 +104,7 @@
                        <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency Of Payment is mandatory</div>
                     </div>
                  </div>
+
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Premium Amount</label>
                     <p-inputNumber   class="form-control align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur) = "calculateAnnualAmount()"
@@ -147,7 +151,7 @@
                           </div>
                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()"
-                            [minDate]="minFormDate"
+
                             [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
                             [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
                           <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">

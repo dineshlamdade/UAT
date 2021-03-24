@@ -1,0 +1,108 @@
+<app-leftmenu></app-leftmenu>
+<!-- Main body part  -->
+<form [formGroup]="form" #formDirective="ngForm">
+    <div>
+        <div class="page">
+            <app-header></app-header>
+            <div class="tabview-contents">
+                <div class="section-body bg-color-white">
+
+                    <div class="row pb-0">
+                        <!-- <div class="mt-15 pl-0 pr-0 mb-0 font-16 col-md-1">
+                            <label class="text-purple form-label mt-15">Payroll Area</label>
+                        </div> -->
+                        <div class="col-8 pr-0 pl-0">
+                            <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-bg-green"  [routerLink]="['/PayrollInputs/Financial-Master']">Financial Master</button>
+                            </div>
+                            <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-bg-green"   [routerLink]="['/PayrollInputs/Non-Recurring-Amount']"> Non-Recurring-Amount</button>
+                            </div>
+                            <div class="btn-group mt-20 ml-4" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-bg-green">Non Account</button>
+                            </div>
+                                <!-- <button type="button" class="btn bg-color-lightgray">Workman</button>
+                                <button type="button" class="btn bg-color-lightgray">Apprentice</button> -->
+                           
+                          
+                        </div>
+                      
+                     
+                    </div>
+                  
+
+                  
+                    <div class="row">
+                        <div class="col-md-12 p-20">
+                       
+
+                            <p-table [value]="users1">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th rowspan="2">
+                                            
+                                            <input type="checkbox" > 
+                                           
+                                        </th>
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                               Employee Code
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="name"></p-sortIcon>
+                                                    <p-columnFilter type="text" field="name" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                       
+                                    
+                                        <th rowspan="2">
+                                            <div class="p-d-flex p-jc-between p-ai-center">
+                                               Employee Name
+                                                <div class="Sort_Filter_Position">
+                                                    <p-sortIcon field="date"></p-sortIcon>
+                                                    <p-columnFilter type="date" field="date" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                   
+                                </ng-template>
+
+
+
+                                <ng-template pTemplate="body" let-user1>
+                                    <tr class="p-selectable-row">
+                                      
+                                        <td style="width: 3rem">
+                                            <input type="checkbox" >
+                                        </td>
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headtype}}</label>
+                                            <!-- <input type="text" value={{user1.headtype}} class="form-control" disabled> -->
+                                        </td>
+                                        <!-- <td class="bg-color-light_gray"> <span class="text-link" (click)="ViewHistory(template)">{{user1.headcode}}</span></td> -->
+                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                       </tr>
+
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="15" class="font-14 font500 text-center text-red"><span>No Data
+                    Available</span></td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+
+
+
+
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

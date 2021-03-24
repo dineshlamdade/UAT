@@ -130,8 +130,8 @@
 
                           <ng-template #newDeb>
 
-                            <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : complianceApplicationForm.invalid,
-                                                              'btn-bg-green': !complianceApplicationForm.invalid}"
+                            <button type="submit"
+                              [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               tooltip="Update" (click)="saveComplianceApplication()"
                               [disabled]="complianceApplicationForm.invalid"><b><i class="fa fa-floppy-o"></i></b>

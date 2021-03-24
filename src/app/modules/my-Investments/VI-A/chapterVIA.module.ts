@@ -1,5 +1,4 @@
-import { IDSASummaryComponent } from './interest-deposit-savingAccount/IDSA-summary/IDSA-summary.component';
-import { InterestDepositSavingAccountComponent } from './interest-deposit-savingAccount/interest-deposit-savingAccount.component';
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,8 +17,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { NumberFormatPipe } from '../../../core/utility/pipes/NumberFormatPipe';
 import { SharedlayoutModule } from '../../sharedlayout/sharedlayout.module';
 import { MyInvestmentsRoutingModule } from '../my-Investments-routing.module';
-import { IDSAMasterComponent } from './interest-deposit-savingAccount/IDSA-master/IDSA-master.component';
-import { IDSADeclarationComponent } from './interest-deposit-savingAccount/IDSA-declaration/IDSA-declaration.component';
 import { NPSComponent } from './nps/nps.component';
 import { NpsSummaryComponent } from './nps/nps-summary/nps-summary.component';
 import { NpsMasterComponent } from './nps/nps-master/nps-master.component';
@@ -65,13 +62,11 @@ import { TreatmentOfSpecifiedDiseasesComponent } from './treatment-of-specified-
 import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-diseases/treatment-of-specified-summary/treatment-of-specified-summary.component';
 import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
 import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
+import {InputNumberModule} from 'primeng/inputnumber';
+// import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 
 @NgModule({
   declarations: [
-      InterestDepositSavingAccountComponent,
-      IDSASummaryComponent,
-      IDSAMasterComponent,
-      IDSADeclarationComponent,
       NPSComponent,
       NpsSummaryComponent,
       NpsMasterComponent,
@@ -114,34 +109,35 @@ import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specifi
       TreatmentOfSpecifiedMasterComponent,
       TreatmentOfSpecifiedDeclarationComponent,
      ],
-  imports: [
-    MatSelectModule,
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatSliderModule,
-    TooltipModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    CollapseModule.forRoot(),
-    AccordionModule.forRoot(),
-    TooltipModule.forRoot(),
-    PopoverModule.forRoot(),
-    AlertModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    ModalModule.forRoot(),
-    ProgressbarModule.forRoot(),
-    CarouselModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    CarouselModule.forRoot(),
-    ToastrModule.forRoot({
-      positionClass: 'toast-top-center',
-    }),
-    SharedlayoutModule,
-    MyInvestmentsRoutingModule,
-    PrimeNGModule,
-    MyInvestmentsModule,
-    NgMultiSelectDropDownModule
-  ],
+    imports: [
+        MatSelectModule,
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatSliderModule,
+        TooltipModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        CollapseModule.forRoot(),
+        AccordionModule.forRoot(),
+        TooltipModule.forRoot(),
+        PopoverModule.forRoot(),
+        AlertModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ModalModule.forRoot(),
+        ProgressbarModule.forRoot(),
+        CarouselModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        CarouselModule.forRoot(),
+        ToastrModule.forRoot({
+            positionClass: 'toast-top-center',
+        }),
+        SharedlayoutModule,
+        MyInvestmentsRoutingModule,
+        PrimeNGModule,
+        MyInvestmentsModule,
+        NgMultiSelectDropDownModule,
+        InputNumberModule
+    ],
 
   providers: [ DatePipe, NumberFormatPipe],
 

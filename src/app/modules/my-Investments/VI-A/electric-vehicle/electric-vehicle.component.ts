@@ -15,9 +15,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class ElectricVehicleComponent implements OnInit {
   public tabIndex = 0;
-  public loanAccountNumber: string;
+  public vehicleNo: string;
   public windowScrolled: boolean;
   public data: any;
+  public modalRef: BsModalRef;
+
 
   constructor() { }
 
@@ -32,19 +34,21 @@ export class ElectricVehicleComponent implements OnInit {
 
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
-    this.loanAccountNumber = event;
+    this.vehicleNo = event;
   }
 
 
   changeTabIndex(index: number)
   {
+    console.log(this.vehicleNo)
     if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.vehicleNo = undefined;
+    }
     this.tabIndex = index;
   }
-
-  public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

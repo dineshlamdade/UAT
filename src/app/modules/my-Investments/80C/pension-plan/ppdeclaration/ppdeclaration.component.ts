@@ -35,9 +35,9 @@ import { PensionPlanService } from '../pension-plan.service';
   styleUrls: ['./ppdeclaration.component.scss'],
 })
 export class PpdeclarationComponent implements OnInit {
-  @Input() institution: string;
-  @Input() policyNo: string;
-  @Input() data: any;
+  @Input() public institution: string;
+  @Input() public accountNumber: string;
+  @Input() public data: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -161,6 +161,8 @@ export class PpdeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public canEdit: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -197,12 +199,15 @@ export class PpdeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
       this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
+      this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -292,8 +297,16 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.PensionPlanService
-      .getPensionPlanDeclarationInstitutionListWithPolicyNo()
+
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+
+    this.PensionPlanService.getPensionPlanDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;

@@ -27,7 +27,7 @@
         </div>
         <div class="col-sm-6 col-md-3">
           <label class="form-label">Policy No.</label>
-          <input type="text" formControlName="policyNumber" class="form-control"
+          <input type="text" formControlName="policyNumber" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" class="form-control"
             placeholder="Enter Policy No."
             [ngClass]="{ 'is-invalid': submitted && masterForm.policyNumber.errors }"  >
           <div *ngIf="submitted && masterForm.policyNumber.errors" class="invalid-feedback">

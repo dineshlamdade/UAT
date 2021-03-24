@@ -99,8 +99,8 @@
                  </span>
                </td>
                <td>
-                 <!-- <button id="remove" (click)="deleteRows(i)">DELETE</button> -->
-                 <i class="fa fa-times text-red font700 font-16" (click)="deleteRows(i)" tooltip="Delete Record"></i>
+
+                 <!-- <i class="fa fa-times text-red font700 font-16" (click)="deleteRows(i)" tooltip="Delete Record"></i> -->
               </td>
 
              </tr>
@@ -173,7 +173,6 @@
                  </td>
                  <td>
                   <i class="fa fa-times text-red font700 font-16" (click)="deleteRows(i)" tooltip="Delete Record"></i>
-                    <!-- <button id="remove" (click)="deleteCurrentEmployerRow(currEmpFormArrayElement)">DELETE</button> -->
                  </td>
              </tr>
              <tr>
@@ -397,7 +396,8 @@
                    </span>
                  </td>
                  <td>
-                   <button id="remove" (click)="deletePreviousEmployerRow(priviousEmpFormArrayElement)">DELETE</button>
+                  <i class="fa fa-times text-red font700 font-16" (click)="deletePreviousEmployerRow(i)" tooltip="Delete Record"></i>
+                  <!-- <button id="remove" (click)="deletePreviousEmployerRow(priviousEmpFormArrayElement)">DELETE</button> -->
                 </td>
              </tr>
                <tr>

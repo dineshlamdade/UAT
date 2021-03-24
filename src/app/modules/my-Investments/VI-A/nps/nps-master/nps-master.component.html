@@ -124,7 +124,7 @@
                  </div>
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Annual Amount</label>
-                    <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'" formControlName="annualAmount"
+                    <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" formControlName="annualAmount"
                       class="form-control align-right" name="Annual Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }">
                     <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
                        <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
@@ -310,13 +310,16 @@
         </div>
      </div> -->
      <div class="row mt-15">
-        <div class="col-12">
-           <div class="float-right mb-15">
-              <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
-                <i class="fa fa-floppy-o"></i></b> Save</button>
-           </div>
-        </div>
-     </div>
+      <div class="col-12">
+         <div class="float-right mb-15">
+          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+        <button type="button"  (click)="resetView()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+          <i class="fa fa-floppy-o"></i></b> Reset</button>
+         </div>
+      </div>
+   </div>
      <div class="row mt-20">
       <div class="col-12">
          <div class="card">
@@ -361,7 +364,7 @@
                           <td class="wd-10"><span tooltip="Submitted">Submitted</span>
                           </td>
                           <td class="wd-5">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;&nbsp;
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                           </td>
                       </tr>
                       <tr *ngIf="!masterGridData?.length">
