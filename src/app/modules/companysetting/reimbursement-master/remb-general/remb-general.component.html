@@ -26,7 +26,7 @@
                                             <label class="form-label">Display Name</label>
                                             <input type="text" class="form-control" placeholder="Description"
                                             formControlName="displayName"
-                                                [ngClass]="{'is-invalid' : submitted && f.description.errors}">
+                                                >
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
@@ -101,21 +101,24 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr
-                                                        *ngFor="let attributeList of this.headAllattributes; index as i">
+                                                        *ngFor="let attributeList of headAllattributes; index as i">
                                                         <td>{{i+1}}</td>
                                                         <td>{{attributeList.typeValue}}</td>
-                                                        <td> <input type="text" placeholder="" class="form-control" formControlName="amountLimit"></td>
-                                                        <td><input type="text" placeholder="" class="form-control" formControlName="quantityLimit"> </td>
-                                                        <td> <input type="text" placeholder="" class="form-control" formControlName="onesEvery">
-                                                        </td>
-                                                        <td> <select class="form-control" formControlName="frequency">
+                                                        <td> <input type="number" placeholder="Amount Limit" min="0"  class="form-control"
+                                                         (change)="amountLimitChange(i, $event.target.value, attributeList.typeValue)"></td>
+                                                         <td> <input type="number" min="0"  placeholder="Quantity Limit	" class="form-control"
+                                                            (change)="quantityLimitChange(i, $event.target.value, attributeList.typeValue)"></td>
+                                                            <td> <input type="number" min="0"  placeholder="Once Every" class="form-control"
+                                                                (change)="onceEveryChange(i, $event.target.value, attributeList.typeValue)"></td>
+             
+                                                        <td> <select class="form-control"  (change)="frequencyChange(i, $event.target.value, attributeList.typeValue)">
                                                                 <option value="">Select</option>
                                                                 <option *ngFor="let headFrequency of headAllSequency"
                                                                     value="{{headFrequency.frequencyName}}">
                                                                     {{headFrequency.frequencyName}}</option>
 
                                                             </select> </td>
-                                                        <td> <input type="text" placeholder="" class="form-control" formControlName="gapsBetTwoAttributeClaims">
+                                                        <td> <input type="number" min="0" placeholder="Gap Between 2 Claims (In Days)" class="form-control"  (change)="claimDaysChange(i, $event.target.value, attributeList.typeValue)">
                                                         </td>
 
                                                     </tr>
@@ -130,6 +133,7 @@
                                 <div class="row mt-4">
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
+                                            
                                             <label class="form-label">Claim Taxable</label>
                                             <div class="row">
                                                 <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
@@ -137,17 +141,18 @@
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                             formControlName="claimTaxable"
-                                                                name="radio1" value="claim">
+                                                                name="claimTaxable" value="0">
                                                             <div class="custom-control-label">Yes</div>
                                                         </label>
                                                     </div>
+    
                                                 </div>
                                                 <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                     <div class="custom-controls-stacked">
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                             formControlName="claimTaxable"
-                                                                name="radio1" value="claim" checked="checked">
+                                                                name="claimTaxable" value="1" checked="checked">
                                                             <div class="custom-control-label">No</div>
                                                         </label>
                                                     </div>
@@ -160,7 +165,7 @@
                                             <label class="form-label">Bill Submission Limit</label>
                                             <select class="form-control" [(ngModel)]="selectedvalue"
                                             formControlName="billSubLimitMethod"
-                                                [ngModelOptions]="{standalone: true}">
+                                                >
                                                 <option>Select</option>
                                                 <option value="Till Accural Limit">Till Accural Limit</option>
                                                 <option value="Till Annual Limit">Till Annual Limit</option>
@@ -173,10 +178,10 @@
                                             <label class="form-label">SDM List</label>
                                             <select class="form-control" formControlName="billSubLimitSDMId">
                                                 <option>Select</option>
-                                                <option value="">Abc</option>
-                                                <option value="">Abc</option>
-                                                <option value="">Abc</option>
-                                                <option value="">Abc </option>
+                                                <option value="1">Abc</option>
+                                                <option value="2">Lmn</option>
+                                                <option value="3">sss</option>
+                                                <option value="4">dff </option>
 
                                             </select>
                                         </div>
@@ -191,7 +196,7 @@
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                             formControlName="enableInvestmentDeclaration"
-                                                                name="radio3" value="option1" checked>
+                                                                name="enableInvestmentDeclaration" value="0" checked>
                                                             <div class="custom-control-label">Yes</div>
                                                         </label>
                                                     </div>
@@ -201,7 +206,7 @@
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                             formControlName="enableInvestmentDeclaration"
-                                                                name="radio3" value="option1" checked="checked">
+                                                                name="enableInvestmentDeclaration" value="1" checked="checked">
                                                             <div class="custom-control-label">No</div>
                                                         </label>
                                                     </div>
@@ -218,7 +223,7 @@
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                             formControlName="cyclewiseBalanceTracking"
-                                                                name="radio2" value="cycle" checked>
+                                                                name="cyclewiseBalanceTracking" value="0" checked>
                                                             <div class="custom-control-label">Yes</div>
                                                         </label>
                                                     </div>
@@ -228,7 +233,7 @@
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                             formControlName="cyclewiseBalanceTracking"
-                                                                name="radio2" value="cycle" checked="checked">
+                                                                name="cyclewiseBalanceTracking" value="1" checked="checked">
                                                             <div class="custom-control-label">No</div>
                                                         </label>
                                                     </div>
@@ -244,14 +249,16 @@
                                         <div class="row">
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
-                                                <div class="row">
+                                                <div class="row"> 
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">Registration Template</label>
-                                                        <select class="form-control" formControlName="regTemplateId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
-
+                                                    
+                                                        <select class="form-control"
+                                                            formControlName="regTemplateId">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList1"
+                                                                value="{{headTempList.regTemplateId}}">{{headTempList.regTemplateName}}</option>
+            
                                                         </select>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
@@ -354,20 +361,20 @@
                                                         <label class="form-label">Approval Workflow</label>
                                                         <select class="form-control" formControlName="regiApprWorkflowId">
                                                             <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
+                                                            <option value="1">Abc</option>
+                                                            <option value="2">Abc</option>
+                                                            <option value="3">Abc</option>
+                                                            <option value="4">Abc</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                                         <label class="form-label">Approval SDM</label>
                                                         <select class="form-control" formControlName="regiApprSDMId">
                                                             <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
+                                                            <option value="1">Abc</option>
+                                                            <option value="2">Abc</option>
+                                                            <option value="3">Abc</option>
+                                                            <option value="4">Abc</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -380,20 +387,20 @@
                                                         <label class="form-label">Approval Workflow</label>
                                                         <select class="form-control" formControlName="claimApprWorkflowId">
                                                             <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
+                                                            <option value="1">Abc</option>
+                                                            <option value="2">Abc</option>
+                                                            <option value="3">Abc</option>
+                                                            <option value="4">Abc</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                                         <label class="form-label">Approval SDM</label>
                                                         <select class="form-control" formControlName="claimApprSDMId">
                                                             <option>Select</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
-                                                            <option value="">Abc</option>
+                                                            <option value="1">Abc</option>
+                                                            <option value="2">Abc</option>
+                                                            <option value="3">Abc</option>
+                                                            <option value="4">Abc</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -411,11 +418,14 @@
                                                 <div class="row">
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">List of summary heads</label>
-                                                        <select class="form-control" formControlName="reiListSummaryHeadTempId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
-
+                                        
+                                                        <select class="form-control"
+                                                            formControlName="reiListSummaryHeadTempId"
+                                                           >
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let headTempList of headTemplateList3"
+                                                                value="{{headTempList.reiListSummaryHeadTempId}}">{{headTempList.listSummaryHeadTemplateName}}</option>
+            
                                                         </select>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
@@ -434,12 +444,14 @@
                                                 <div class="row">
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">Declaration Message</label>
-                                                        <select class="form-control" formControlName="declarationTemplateMappingId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
-
-                                                        </select>
+                                                        <select class="form-control"
+                                                        formControlName="declarationTemplateMappingId"
+                                                        >
+                                                        <option value="">Select</option>
+                                                        <option *ngFor="let headTempList of headTemplateList4"
+                                                            value="{{headTempList.declarationMessageId}}">{{headTempList.declarationMessageName}}</option>
+        
+                                                    </select>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
@@ -460,11 +472,18 @@
                                                 <div class="row">
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">Form Activation Template</label>
-                                                        <select class="form-control" formControlName="formActiveTempid">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
-
+                                                        <select class="form-control"
+                                                            formControlName="formActiveTempid"
+                                                            >
+                                                            <option value="">Select</option>
+                                                            <!-- <option *ngFor="let headTempList of headTemplateList"
+                                                                value="{{headTempList.regTemplateId}}">{{headTempList.regTemplateName}}</option> -->
+                                                                <option value="1">Select</option>
+                                                                <option value="2">aaa</option>
+                                                                <option value="3">sss</option>
+                                                                <option value="4">ddd</option>
+                                                                <option value="5">ccc</option>
+                                                                <option value="6">vvv</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
@@ -485,12 +504,14 @@
                                                 <div class="row">
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">Claim Template</label>
-                                                        <select class="form-control" formControlName="claimTempId">
-                                                            <option>Select</option>
-                                                            <option value="">Template 1</option>
-                                                            <option value="">Template 2</option>
-
-                                                        </select>
+                                                        <select class="form-control"
+                                                        formControlName="claimTempId"
+                                                        >
+                                                        <option value="">Select</option>
+                                                        <option *ngFor="let headTempList of headTemplateList2"
+                                                            value="{{headTempList.claimTempId}}">{{headTempList.claimTemplateName}}</option>
+        
+                                                    </select>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>

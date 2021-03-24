@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ReimbursementMasterService {
 apiUrl = environment.baseUrl8089;
+reimbursementForm: any;
 
   constructor(private http:HttpClient) { }
 
@@ -30,5 +31,37 @@ getReimbursementAllFrequency(){
   .pipe(map((response:any)=>{
     return response;
   }))
+}
+getRegisterTemplateFields(){
+  return this.http.get(this.apiUrl + 'registration-template/get-all-Templates')
+  .pipe(map((response:any)=>{
+    return response;
+  }));
+}
+getClaimTemplateFields(){
+  return this.http.get(this.apiUrl + 'claim-template/get-all-claim-Templates')
+  .pipe(map((response:any)=>{
+    return response;
+  }));
+}
+getSummaryTemplateFields(){
+  return this.http.get(this.apiUrl + 'summary-template/get-all-Templates')
+  .pipe(map((response:any)=>{
+    return response;
+  }));
+}
+getDeclarationTemplateFields(){
+  return this.http.get(this.apiUrl + 'declaration-message-company/get-all_declaration_template')
+  .pipe(map((response:any)=>{
+    return response;
+  }));
+}
+
+setReimbursementSubmitData(data) {
+  this.reimbursementForm = data.value;
+}
+
+getReimbursementSubmitData() {
+  return this.reimbursementForm;
 }
 }

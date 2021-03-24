@@ -14,8 +14,14 @@ export class RembGeneralComponent implements OnInit {
   public dropdownList = [];
   public selectedItems = [];
   public headtypelist = [];
+  public headTemplateList1 = [];
+  public headTemplateList2 = [];
+  public headTemplateList3 = [];
+  public headTemplateList4 = [];
   public headAllattributes = [];
   public headAllSequency = [];
+  public generalGridDataList: Array<any> = [];
+  public generalAttrSelectElement: Array<any> = [];
   public headOprationShow: boolean = false;
   public headTableOprationShow: boolean = false;
   public headRembType: boolean = true;
@@ -23,8 +29,9 @@ export class RembGeneralComponent implements OnInit {
   public headAttributeTable: boolean = false;
   public headRembType2: boolean = false;
   public generalForm: FormGroup;
- public submitted = false;
- public rembHeadId:number;
+  public submitted = false;
+  public rembHeadId: number;
+  public templateData = [];
   constructor(
     public reimbursementMasterService: ReimbursementMasterService,
     public fb: FormBuilder,
@@ -39,12 +46,12 @@ export class RembGeneralComponent implements OnInit {
       reimbursementMasterGeneralSettingId: new FormControl(''),
       headMasterId: new FormControl(''),
       displayName: new FormControl(''),
-      claimTaxable: new FormControl(''),
+      claimTaxable: new FormControl('1'),
       billSubLimitMethod: new FormControl(''),
       billSubLimitSDMId: new FormControl(''),
-      enableInvestmentDeclaration: new FormControl(''),
+      enableInvestmentDeclaration: new FormControl('1'),
       regTemplateId: new FormControl(''),
-      cyclewiseBalanceTracking: new FormControl(''),
+      cyclewiseBalanceTracking: new FormControl('1'),
       regTemplateMappingId: new FormControl(''),
       maxCountOfRegiOfHead: new FormControl(''),
       regiApprWorkflowId: new FormControl(''),
@@ -69,47 +76,56 @@ export class RembGeneralComponent implements OnInit {
         gapsBetTwoAttributeClaims: new FormControl(''),
         maxCountOfRegiOfAttribute: new FormControl(''),
       }),
-      reimbursementMasterComputationSettingRequestDTO: new FormGroup({
-        reiMasterComputationSettingID: new FormControl(''),
-        nonTaxableMethod: new FormControl(''),
-        nonTaxableSDMId: new FormControl(''),
-        taxableMethodFNF: new FormControl(''),
-        taxableMethodLastCycle: new FormControl(''),
-        taxableMethodIntermediary: new FormControl(''),
-        taxableFrequency: new FormControl(''),
-        taxablePeriodDefination: new FormControl(''),
-        taxableNoOfCycle: new FormControl(''),
-        lapseAccruedEntPayableFNF: new FormControl(''),
-        lapseAccruedEntPayableLastCycle: new FormControl(''),
-        lapseAccruedEntPayableIntermediary: new FormControl(''),
-        lapseAccruedEntPayableFrequency: new FormControl(''),
-        LapseaccrentpayablePeriodDefinition: new FormControl(''),
-        lapseAccruedEntPayableNoOfCycle: new FormControl(''),
-        subBillMethod: new FormControl(''),
-        subBillWithCount: new FormControl(''),
-        billDateNotAllowedMethod: new FormControl(''),
-        billDateNotAllowedCount: new FormControl(''),
-        billLastFinYearClaimedInNextFinYear: new FormControl(''),
-        unPaidBillCarryForward: new FormControl(''),
-        cyclewiseNumLineItemsAllowed: new FormControl(''),
-        gapsBetwTwoHeadClaims: new FormControl(''),
-     })
+      // reimbursementMasterComputationSettingRequestDTO: new FormGroup({
+      //   reiMasterComputationSettingID: new FormControl(''),
+      //   nonTaxableMethod: new FormControl(''),
+      //   nonTaxableSDMId: new FormControl(''),
+      //   taxableMethodFNF: new FormControl(''),
+      //   taxableMethodLastCycle: new FormControl(''),
+      //   taxableMethodIntermediary: new FormControl(''),
+      //   taxableFrequency: new FormControl(''),
+      //   taxablePeriodDefination: new FormControl(''),
+      //   taxableNoOfCycle: new FormControl(''),
+      //   lapseAccruedEntPayableFNF: new FormControl(''),
+      //   lapseAccruedEntPayableLastCycle: new FormControl(''),
+      //   lapseAccruedEntPayableIntermediary: new FormControl(''),
+      //   lapseAccruedEntPayableFrequency: new FormControl(''),
+      //   LapseaccrentpayablePeriodDefinition: new FormControl(''),
+      //   lapseAccruedEntPayableNoOfCycle: new FormControl(''),
+      //   subBillMethod: new FormControl(''),
+      //   subBillWithCount: new FormControl(''),
+      //   billDateNotAllowedMethod: new FormControl(''),
+      //   billDateNotAllowedCount: new FormControl(''),
+      //   billLastFinYearClaimedInNextFinYear: new FormControl(''),
+      //   unPaidBillCarryForward: new FormControl(''),
+      //   cyclewiseNumLineItemsAllowed: new FormControl(''),
+      //   gapsBetwTwoHeadClaims: new FormControl(''),
+      // })
     });
     console.log("swww");
     this.getReimbursementHeadType();
-
     this.getReimbursementAllFrequency();
+
+    this.getRegisterTemplateFields();
+    this.getClaimTemplateFields();
+    this.getSummaryTemplateFields();
+    this.getDeclarationTemplateFields();
   }
 
-get f(){ return this.generalForm.controls; }
+  get f() { return this.generalForm.controls; }
 
-submitGeneralMaster(){
-  this.submitted = true;
-  if(this.generalForm.invalid){
-    return;
+  submitGeneralMaster() {
+    this.submitted = true;
+    if (this.generalForm.invalid) {
+      return;
+    }
+    console.log("this.generalform", this.generalForm.value);
+    let postData = this.generalForm.getRawValue();
+    postData.reimbursementTrackingRequestDTO = this.generalAttrSelectElement;
+    console.log("postdata", postData);
+    this.reimbursementMasterService.setReimbursementSubmitData(this.generalForm);
+
   }
-console.log("this.generalform", this.generalForm.value);
-}
 
   onItemSelect(item: any) {
     console.log(item);
@@ -119,13 +135,13 @@ console.log("this.generalform", this.generalForm.value);
   }
 
 
-// .................Get value from fileds ......................
-headerChangeEvent(eventid){
-console.log("selectbox value", eventid);
-this.rembHeadId = eventid;
-this.getReimbursementAllAttributes();
-}
- 
+  // .................Get value from fileds ......................
+  headerChangeEvent(eventid) {
+    console.log("selectbox value", eventid);
+    this.rembHeadId = eventid;
+    this.getReimbursementAllAttributes();
+  }
+
   // .....................All Get Api Call Here................
 
   getReimbursementHeadType() {
@@ -139,6 +155,7 @@ this.getReimbursementAllAttributes();
     this.reimbursementMasterService.getReimbursementAllAttributes(this.rembHeadId).subscribe((res) => {
       this.headAllattributes = res.data.results[0];
       console.log("res attribute", this.headAllattributes);
+      this.generalAttrSelectElement = this.headAllattributes;
     });
     // this.headAttribute = false;
   }
@@ -147,6 +164,38 @@ this.getReimbursementAllAttributes();
     this.reimbursementMasterService.getReimbursementAllFrequency().subscribe((res) => {
       this.headAllSequency = res.data.results[0];
       console.log("res headAllSequency", this.headAllSequency);
+    })
+  }
+
+  getRegisterTemplateFields() {
+    console.log("ssss");
+    this.reimbursementMasterService.getRegisterTemplateFields().subscribe((res) => {
+      console.log("getRegisterTemplateFields", res);
+      this.headTemplateList1 = res.data.results;
+    })
+  }
+
+  getClaimTemplateFields() {
+    console.log("ssss");
+    this.reimbursementMasterService.getClaimTemplateFields().subscribe((res) => {
+      console.log("getClaimTemplateFields", res);
+      this.headTemplateList2 = res.data.results;
+    })
+  }
+
+  getSummaryTemplateFields() {
+    console.log("ssss");
+    this.reimbursementMasterService.getSummaryTemplateFields().subscribe((res) => {
+      console.log("getSummaryTemplateFields", res);
+      this.headTemplateList3 = res.data.results;
+    })
+  }
+
+  getDeclarationTemplateFields() {
+    console.log("ssss");
+    this.reimbursementMasterService.getDeclarationTemplateFields().subscribe((res) => {
+      console.log("getDeclarationTemplateFields", res);
+      this.headTemplateList4 = res.data.results[0];
     })
   }
   // ...................Event calls methods..................
@@ -178,6 +227,42 @@ this.getReimbursementAllAttributes();
     this.headRembType2 = true;
   }
 
+  // ...................Get Attribute List Events data.....................?
+  amountLimitChange(index, eventAttr, typeValue) {
+    console.log("index,attrsid, evenets", index, eventAttr, typeValue);
+    let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
+   
+    console.log("this.attrData", attrData);
+    console.log("this.generalelement", this.generalAttrSelectElement);
+    this.generalAttrSelectElement[attrData].amountLimit = eventAttr;
 
-  
+  }
+
+  quantityLimitChange(index, eventAttr, typeValue) {
+    console.log("index,attrsid, evenets", index, eventAttr, typeValue);
+    let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
+    this.generalAttrSelectElement[attrData].quantityLimit = eventAttr;
+    console.log("this.generalelement", this.generalAttrSelectElement);
+  }
+
+  onceEveryChange(index, eventAttr, typeValue) {
+    console.log("index,attrsid, evenets", index, eventAttr, typeValue);
+    let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
+    this.generalAttrSelectElement[attrData].onesEvery = eventAttr;
+    console.log("this.generalelement", this.generalAttrSelectElement);
+  }
+
+  frequencyChange(index, eventAttr, typeValue) {
+    console.log("index,attrsid, evenets", index, eventAttr, typeValue);
+    let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
+    this.generalAttrSelectElement[attrData].frequency = eventAttr;
+    console.log("this.generalelement", this.generalAttrSelectElement);
+  }
+
+  claimDaysChange(index, eventAttr, typeValue) {
+    console.log("index,attrsid, evenets", index, eventAttr, typeValue);
+    let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
+    this.generalAttrSelectElement[attrData].gapsBetTwoAttributeClaims = eventAttr;
+    console.log("this.generalelement", this.generalAttrSelectElement);
+  }
 }
