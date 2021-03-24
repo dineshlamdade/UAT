@@ -48,6 +48,7 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Lender Name</label>
                     <input type="text" formControlName="lenderName" class="form-control"
+                    onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                       placeholder="Enter Lender Name "
                       [ngClass]="{ 'is-invalid': submitted && masterForm.lenderName.errors }"  >
                       <div *ngIf="submitted && masterForm.lenderName.errors" class="invalid-feedback">
@@ -57,6 +58,7 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Loan Account No</label>
                     <input type="text" formControlName="loanAccountNumber" class="form-control"
+                    onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                       placeholder="Enter Loan Account No"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }"  >
                       <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">

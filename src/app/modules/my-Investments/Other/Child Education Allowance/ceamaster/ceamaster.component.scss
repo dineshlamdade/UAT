@@ -1,3 +1,7 @@
 p {
     margin-right: 90px;
   }
+  .disable-submit {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+  }

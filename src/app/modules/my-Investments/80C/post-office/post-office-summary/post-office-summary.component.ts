@@ -11,10 +11,7 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-summary.component.scss']
 })
 export class PostOfficeSummaryComponent implements OnInit {
-  @Input() institution: string;
-  @Input() accountNumber: string;
-  @Output() myEvent = new EventEmitter<any>();
-  @Output() accountNo = new EventEmitter<any>();
+  
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -29,6 +26,11 @@ export class PostOfficeSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  @Input() institution: string;
+  @Input() accountNumber: string;
+  @Output() myEvent = new EventEmitter<any>();
+  @Output() accountNo = new EventEmitter<any>();
+
 
   constructor(
     private service: MyInvestmentsService,
@@ -42,14 +44,15 @@ export class PostOfficeSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
-  redirectToDeclarationActual(institution: string, policyNo: string, mode: string) {
+  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
     this.tabIndex = 2;
     const data = {
       institution : institution,
-      policyNo : policyNo,
+      accountNumber : accountNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)};
     this.institution = institution;
+    this.accountNumber = accountNumber;
     // this.policyNo = policyNo;
     this.myEvent.emit(data);
   }
@@ -94,8 +97,7 @@ export class PostOfficeSummaryComponent implements OnInit {
   public addFuturePlan(): void {
 
     const data = {
-      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
-    };
+      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount};
 
     //console.log('addFuturePolicy Data..', data);
     this.postOfficeService
@@ -125,6 +127,7 @@ export class PostOfficeSummaryComponent implements OnInit {
     this.tabIndex = 2;
     this.institution = institution;
     // this.policyNo = policyNo;
+    this.accountNumber = policyNo;
     console.log('institution::', institution);
     console.log('policyNo::', policyNo);
   }

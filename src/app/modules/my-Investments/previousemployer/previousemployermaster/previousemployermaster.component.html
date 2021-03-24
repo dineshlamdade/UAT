@@ -17,7 +17,8 @@
     <div class="row">
        <div class="col-sm-6 col-md-3">
           <label class="form-label"><b>Name</b></label>
-          <input type="text" formControlName="name" class="form-control" placeholder="Enter Name"
+          <input type="text" formControlName="name" class="form-control"
+          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Name"
           [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.name.errors }">
             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.name.errors" class="invalid-feedback">
               <div *ngIf="previousEmployerDetailsMaster.name.errors.required">Name is mandatory</div>
@@ -25,7 +26,8 @@
        </div>
        <div class="col-sm-6 col-md-3">
           <label class="form-label"><b> Address </b></label>
-          <input type="text" formControlName="address" class="form-control" placeholder="Enter Address"
+          <input type="text" formControlName="address" class="form-control" 
+          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Address"
              [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.address.errors }">
           <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.address.errors" class="invalid-feedback">
              <div *ngIf="previousEmployerDetailsMaster.address.errors.required"> Address is mandatory</div>
@@ -34,7 +36,8 @@
        <div class="col-sm-6 col-md-3">
           <label class="form-label"><b> PAN </b></label>
           <input type="text" maxlength="12" minlength="10" formControlName="pan"
-             placeholder="Enter PAN Number" class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
+             placeholder="Enter PAN Number" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+             pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
              [ngClass]="{'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.pan.errors }">
             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.pan.errors" class="invalid-feedback">
                <div *ngIf="previousEmployerDetailsMaster.pan.errors.required">PAN Number is Mandatory</div>
@@ -44,7 +47,8 @@
        <div class="col-sm-6 col-md-3">
           <label class="form-label"><b> TAN </b></label>
           <input type="text" maxlength="12" minlength="10" formControlName="tan"
-             placeholder="Enter TAN Number" class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="TAN"
+             placeholder="Enter TAN Number" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+              pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="TAN"
              [ngClass]="{ 'is-invalid': previousEmployerDetailssubmitted && previousEmployerDetailsMaster.tan.errors }">
             <div *ngIf="previousEmployerDetailssubmitted && previousEmployerDetailsMaster.tan.errors" class="invalid-feedback">
                <div *ngIf="previousEmployerDetailsMaster.tan.errors.required">TAN Number is Mandatory</div>

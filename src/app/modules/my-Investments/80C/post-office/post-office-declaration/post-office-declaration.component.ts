@@ -161,6 +161,8 @@ export class PostOfficeDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
+  public canEdit: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -197,12 +199,15 @@ export class PostOfficeDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
       this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
+      this.globalPolicy =  input.accountNumber;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -772,13 +777,15 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
   onUploadInEditCase(event) {
-    console.log('onUploadInEditCaseevent::', event);
+    console.log('event::', event);
     if (event.target.files.length > 0) {
       for (const file of event.target.files) {
         this.editfilesArray.push(file);
       }
     }
-    console.log('onUploadInEditCase::', this.editfilesArray);
+    // onUploadInEditCaseevent::
+    // console.log('onUploadInEditCase::', this.editfilesArray);
+    console.log(this.editfilesArray);
   }
 
   removeDocument() {
