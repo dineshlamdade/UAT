@@ -414,6 +414,7 @@ export class MasterComponent implements OnInit {
 
 
   onRadioChange(checked) {
+    console.log(checked)
     this.isSaveVisible = true;
     if(checked) {
       this.isSaveVisible = false;

@@ -9,8 +9,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 export class TaxsavingMutualFundComponent implements OnInit {
 
   public tabIndex = 0;
-  public windowScrolled: boolean;
   public accountNo: string;
+  public windowScrolled: boolean;
   public data: any;
 
   constructor() {}
@@ -20,7 +20,7 @@ export class TaxsavingMutualFundComponent implements OnInit {
   changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
-    console.log('data::',this.data);
+    console.log('data::', this.data);
   }
 
   redirectToMaster(event: any) {

@@ -108,8 +108,11 @@ export class LicsummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
       this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-      this.addFuturePolicy();
-      console.log(this.addFuturePolicy)
+      if(this.futureNewPolicyDeclaredAmount != 0){
+        this.addFuturePolicy();
+      }
+
+      // console.log(this.addFuturePolicy)
     }
 
     // keyPressedSpaceNotAllow(event: any) {

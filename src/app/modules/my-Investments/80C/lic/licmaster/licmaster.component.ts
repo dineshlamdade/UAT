@@ -31,7 +31,6 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   templateUrl: './licmaster.component.html',
   styleUrls: ['./licmaster.component.scss'],
 })
-
 export class LicmasterComponent implements OnInit {
   @Input() public policyNumber: any;
 
@@ -69,7 +68,6 @@ export class LicmasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
 
-
   public documentRemark: any;
   public isECS = true;
 
@@ -82,11 +80,11 @@ export class LicmasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
-  public policyMinDate: Date;
+  public policyMinDate: any;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
-  public minFormDate: Date;
-  public maxFromDate: Date;
+  public minFormDate: any = '';
+  public maxFromDate: any = '';
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -112,7 +110,11 @@ export class LicmasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
-  public proofSubmissionId ;
+  public proofSubmissionId;
+  policyToDate: any;
+  paymentDetailsToDate: any;
+  policyMaxDate: any;
+  selectedPolicyFromDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -127,7 +129,6 @@ export class LicmasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
-
     this.form = this.formBuilder.group({
       institutionName: new FormControl(null, Validators.required),
       policyNo: new FormControl(null, Validators.required),
@@ -152,7 +153,7 @@ export class LicmasterComponent implements OnInit {
       ecs: new FormControl('0'),
       licMasterPaymentDetailsId: new FormControl(0),
       licMasterId: new FormControl(0),
-      proofSubmissionId : new FormControl('')
+      proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [
@@ -161,7 +162,6 @@ export class LicmasterComponent implements OnInit {
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
     ];
-
 
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -172,13 +172,11 @@ export class LicmasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-  ngOnChanges()	{
-    console.log('policyNumber',this.policyNumber);
+  ngOnChanges() {
+    console.log('policyNumber', this.policyNumber);
     // this.editMaster(this.policyNumber.policyNo);
   }
   public ngOnInit(): void {
-
-
     this.masterPage();
     console.log('masterPage::', this.policyNumber);
 
@@ -214,8 +212,6 @@ export class LicmasterComponent implements OnInit {
         };
         this.institutionNameList.push(obj);
       });
-
-
     });
 
     //------------------ Get All Previous Employer -----------------------------
@@ -246,7 +242,6 @@ export class LicmasterComponent implements OnInit {
       this.editMaster(input.policyNo);
       console.log('editMaster policyNo', input.policyNo);
     }
-
   }
 
   // ------------------------------------Master----------------------------
@@ -258,7 +253,15 @@ export class LicmasterComponent implements OnInit {
 
   //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
+    this.selectedPolicyFromDate= ''
+    this.policyMinDate = ''
     this.policyMinDate = this.form.value.policyStartDate;
+
+    this.selectedPolicyFromDate =  this.policyMinDate
+
+    this.minFormDate = '';
+    this.maxFromDate = '';
+
     const policyStart = this.datePipe.transform(
       this.form.get('policyStartDate').value,
       'yyyy-MM-dd'
@@ -267,21 +270,33 @@ export class LicmasterComponent implements OnInit {
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
     );
-    this.minFormDate = this.policyMinDate;
+    this.minFormDate = new Date(this.policyMinDate);
+
+    // add a day +1 for todate selection (minimum value)
+    var date = new Date(this.policyMinDate);
+    let policyTo = date.setDate(date.getDate() + 1);
+    this.policyToDate = new Date(policyTo);
+
     if (policyStart > policyEnd) {
       this.form.controls.policyEndDate.reset();
     }
+
     this.form.patchValue({
       fromDate: this.form.value.policyStartDate,
     });
-     console.log('policyMinDate',this.policyMinDate);
-
-
-    this.setPaymentDetailToDate();
+    console.log('this.form.fromDate', this.form.controls['fromDate'].value);
+    this.setPaymentDetailToDate()
   }
 
   //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
+    this.policyMaxDate = ''
+    this.maxFromDate = ''
+
+    this.policyMaxDate = this.form.value.policyEndDate;
+
+    this.maxFromDate = new Date(this.policyMaxDate);
+
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
@@ -290,6 +305,10 @@ export class LicmasterComponent implements OnInit {
       this.financialYearStart,
       'yyyy-MM-dd'
     );
+
+    // this.maxFromDate = new Date( this.form.get('policyEndDate').value)
+
+    // alert(this.maxFromDate)
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
         "Policy End Date can't be earlier that start of the Current Financial Year"
@@ -299,13 +318,22 @@ export class LicmasterComponent implements OnInit {
       this.form.patchValue({
         toDate: this.form.value.policyEndDate,
       });
-      this.maxFromDate = this.form.value.policyEndDate;
+
+      console.log('this.form.toDate', this.form.controls['toDate'].value);
     }
   }
 
   //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
+    this.paymentDetailsToDate = ''
     this.paymentDetailMinDate = this.form.value.fromDate;
+
+    // add a day +1 for todate selection (minimum value)
+    var date = new Date(this.paymentDetailMinDate);
+    let policyTo = date.setDate(date.getDate() + 1);
+    this.paymentDetailsToDate = new Date(policyTo);
+
+
     const from = this.datePipe.transform(
       this.form.get('fromDate').value,
       'yyyy-MM-dd'
@@ -354,19 +382,17 @@ export class LicmasterComponent implements OnInit {
 
   //-------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
-
     this.submitted = true;
 
     if (this.form.invalid) {
       return;
     }
-    console.log("urlArray.length",this.urlArray.length)
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
+    console.log('urlArray.length', this.urlArray.length);
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
-        'LIC Document needed to Create Master.',
-
+        'LIC Document needed to Create Master.'
       );
-      console.log("urlArray.length",this.urlArray.length)
+      console.log('urlArray.length', this.urlArray.length);
       return;
     } else {
       const from = this.datePipe.transform(
@@ -383,11 +409,11 @@ export class LicmasterComponent implements OnInit {
       // }
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
-            data.proofSubmissionId = this.proofSubmissionId;
+      data.proofSubmissionId = this.proofSubmissionId;
 
-            data.fromDate = from;
-            data.toDate = to;
-            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.fromDate = from;
+      data.toDate = to;
+      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
       console.log('LICdata::', data);
 
@@ -428,7 +454,6 @@ export class LicmasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
-
     }
   }
 
@@ -502,30 +527,26 @@ export class LicmasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-      console.log(policyNo)
-      const obj =  this.findByPolicyNo(policyNo,this.masterGridData);
+      console.log(policyNo);
+      const obj = this.findByPolicyNo(policyNo, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.policyNo;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.documentInformationList;
-      this.proofSubmissionId = obj.proofSubmissionId;
-
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.policyNo;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
       }
     });
-
   }
 
-  findByPolicyNo(policyNo,masterGridData){
-    return masterGridData.find(x => x.policyNo === policyNo)
+  findByPolicyNo(policyNo, masterGridData) {
+    return masterGridData.find((x) => x.policyNo === policyNo);
   }
-
 
   //------------ On Edit Cancel ----------------
   cancelEdit() {
@@ -581,10 +602,9 @@ export class LicmasterComponent implements OnInit {
 
   //---------- For Doc Viewer -----------------------
   nextDocViewer() {
-
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
     //   this.urlArray[this.urlIndex]
@@ -592,30 +612,38 @@ export class LicmasterComponent implements OnInit {
   }
 
   previousDocViewer() {
-
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
     //   this.urlArray[this.urlIndex]
     // );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
-    console.log("---in doc viewer--");
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
     this.urlIndex = index;
 
-    console.log("urlArray::", this.urlArray);
+    console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe
-    console.log("urlSafe::",  this.urlSafe);
+    console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
+
+  /** Instituation dropdown selection value */
+  getInstitutionName(institutionname){
+    this.masterfilesArray = [];
+    // this.form.reset();
+    this.form.get('institutionName').setValue(institutionname)
+    // alert(institutionname)
+  }
+
 }

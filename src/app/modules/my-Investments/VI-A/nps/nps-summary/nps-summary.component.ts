@@ -14,17 +14,6 @@ export class NpsSummaryComponent implements OnInit {
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() accountNo = new EventEmitter<any>();
-  onEditSummary(institution: string, accountNumber: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      accountNumber: accountNumber,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.accountNumber = accountNumber;
-    this.myEvent.emit(data);
-  }
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
