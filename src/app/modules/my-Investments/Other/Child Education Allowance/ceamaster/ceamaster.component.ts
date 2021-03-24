@@ -106,6 +106,7 @@ export class CeamasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public disableSave = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -143,6 +144,7 @@ export class CeamasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    console.log(this.disableSave);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     //-------------- Business Financial Year API Call -------------------------------
@@ -285,6 +287,7 @@ export class CeamasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
+    this.disableSave = false;
     this.form.patchValue(this.masterGridData[i]);
     this.Index = i;
     this.showUpdateButton = true;
@@ -300,6 +303,7 @@ export class CeamasterComponent implements OnInit {
 
   //------------------- On Master View functionality -----------------------
   viewMaster(i: number) {
+    this.disableSave = true;
     this.form.patchValue(this.masterGridData[i]);
     this.Index = i;
     this.showUpdateButton = true;
