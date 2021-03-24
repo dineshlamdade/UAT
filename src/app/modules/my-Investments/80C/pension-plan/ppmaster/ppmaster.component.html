@@ -28,8 +28,7 @@
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Account Number</label>
            <input type="text" formControlName="accountNumber" class="form-control"
-           onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
-              placeholder="Enter Policy No."
+              placeholder="Enter Policy No." onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
               [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
            <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
               <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>

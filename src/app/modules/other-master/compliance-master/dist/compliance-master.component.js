@@ -516,6 +516,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
                     _this.showButtonSaveAndReset = true;
                     _this.setPfDefaultValueAfterReset();
                     _this.isPf = false;
+                    _this.isEpsNew = false;
                     _this.isPfNew = false;
                     _this.isEps = false;
                     _this.isEsi = false;
@@ -564,14 +565,14 @@ var ComplianceMasterComponent = /** @class */ (function () {
                 if (res.data.results.length > 0) {
                     console.log(res);
                     _this.alertService.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
-                    _this.form.setControl('pfFormArray', new forms_1.FormArray([]));
-                    _this.form.setControl('epsArray', new forms_1.FormArray([]));
-                    _this.form.setControl('esiArray', new forms_1.FormArray([]));
-                    _this.form.setControl('ptArray', new forms_1.FormArray([]));
-                    _this.form.setControl('lwfArray', new forms_1.FormArray([]));
-                    _this.form.setControl('tdsArray', new forms_1.FormArray([]));
-                    _this.form.setControl('gratuityArray', new forms_1.FormArray([]));
-                    _this.form.setControl('epsArray', new forms_1.FormArray([]));
+                    // this.form.setControl('pfFormArray', new FormArray([]));
+                    // this.form.setControl('epsArray', new FormArray([]));
+                    // this.form.setControl('esiArray', new FormArray([]));
+                    // this.form.setControl('ptArray', new FormArray([]));
+                    // this.form.setControl('lwfArray', new FormArray([]));
+                    // this.form.setControl('tdsArray', new FormArray([]));
+                    // this.form.setControl('gratuityArray', new FormArray([]));
+                    // this.form.setControl('epsArray', new FormArray([]));
                     _this.form.reset();
                     _this.isSaveAndReset = true;
                     _this.showButtonSaveAndReset = true;
@@ -615,7 +616,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -636,7 +637,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -913,6 +914,7 @@ var ComplianceMasterComponent = /** @class */ (function () {
         this.isDefaultContribution = true;
         this.isPf = false;
         this.isEps = false;
+        this.isEpsNew = false;
         this.isEsi = false;
         this.isPt = false;
         this.isLw = false;

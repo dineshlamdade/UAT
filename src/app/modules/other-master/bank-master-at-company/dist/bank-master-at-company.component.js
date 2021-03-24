@@ -28,6 +28,8 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
         this.isGlobalView = true;
         this.masterGridData = [];
         this.countryCode = [];
+        this.reEnterAccountNumber = false;
+        this.accountNumber = false;
         // public contactPersonName: string;
         // public designation: string;
         // public emailId: string;
@@ -35,8 +37,6 @@ var BankMasterAtCompanyComponent = /** @class */ (function () {
         // public isActive:boolean;
         this.groupCompanyDetailsList = [];
         this.companyGroupId = 0;
-        this.accountNumber = 0;
-        this.reEnterAccountNumber = 0;
         this.form = this.formBuilder.group({
             ifscCode: ['', forms_1.Validators.required],
             bankName: [{ value: '', disabled: true }],

@@ -213,7 +213,7 @@ var StatutoryComplianceComponent = /** @class */ (function () {
         console.log(this.summaryHtmlDataList[i].telephoneNumber.split(' '));
         this.form.patchValue({
             headName: this.summaryHtmlDataList[i].headName,
-            country1: this.summaryHtmlDataList[i].country
+            country1: this.summaryHtmlDataList[i].country1
         });
         var isdCodeAndMobileNumberList = this.summaryHtmlDataList[i].telephoneNumber.split(' ');
         if (isdCodeAndMobileNumberList.length == 2) {

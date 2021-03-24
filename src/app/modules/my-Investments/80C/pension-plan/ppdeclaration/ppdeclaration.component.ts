@@ -297,8 +297,16 @@ export class PpdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    this.PensionPlanService
-      .getPensionPlanDeclarationInstitutionListWithPolicyNo()
+
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+
+    this.PensionPlanService.getPensionPlanDeclarationInstitutionListWithPolicyNo()
       .subscribe((res) => {
         console.log('getInstitutionListWithPolicyNo', res);
         this.transactionInstitutionListWithPolicies = res.data.results;

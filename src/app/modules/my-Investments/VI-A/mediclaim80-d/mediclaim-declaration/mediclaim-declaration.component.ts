@@ -375,6 +375,12 @@ export class MediclaimDeclarationComponent implements OnInit {
   }
 
   public getMediclaimList() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.typeOfExpenceList.push(data);
     this.mediclaim80DService
       .getMediclaimPremiumWithInstitutionList()
       .subscribe((res) => {

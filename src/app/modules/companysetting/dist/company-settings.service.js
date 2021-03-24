@@ -78,20 +78,21 @@ var CompanySettingsService = /** @class */ (function () {
     };
     // end of Attribute-Selection
     //get all frequency list
-    CompanySettingsService.prototype.getFrequency = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'frequency-master')
+    CompanySettingsService.prototype.getActiveFrequency = function () {
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'frequency-master/getAllActive')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //get all businessyearlist
     CompanySettingsService.prototype.getAllBusinessYear = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year/getAll-bussiness-year')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year/getAll-Active-bussiness-year')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
-    //get BusinessYearById
+    //get BusinessYearById'
+    // http://localhost:8086/hrms/v1/business-year/27
     CompanySettingsService.prototype.GetBusinessYearById = function (id) {
         return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year/' + id)
             .pipe(operators_1.map(function (res) {
@@ -99,8 +100,9 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     //delete BusinessYear
+    //business-year/soft-delete/10
     CompanySettingsService.prototype.DeleteBusinessYearById = function (id) {
-        return this._HTTP["delete"](environment_1.environment.baseUrl8086 + 'business-year/' + id)
+        return this._HTTP["delete"](environment_1.environment.baseUrl8086 + 'business-year/soft-delete/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -113,8 +115,8 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     //update BusinessYear
-    CompanySettingsService.prototype.UpdateBusinessYear = function (id, data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'business-year/update/' + id, data)
+    CompanySettingsService.prototype.UpdateBusinessYear = function (data) {
+        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'business-year/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -122,8 +124,21 @@ var CompanySettingsService = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CYCLE DEFINITION
     //get all cycle-definition
+    // http://localhost:8086/hrms/v1/business-cycle-definition/getAllActiveNonActive
     CompanySettingsService.prototype.getAllCycleDefinition = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-year/getAll-bussiness-year')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-cycle-definition/getAllActive')
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    CompanySettingsService.prototype.addBusiness_cycle_cycle_definition = function (data) {
+        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'business-cycle/cycle-definition', data)
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    CompanySettingsService.prototype.getAllCycleCreation = function () {
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-cycle/cycle-definition-getAll')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -136,6 +151,7 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     //get cycle-definition ById
+    //  /business-cycle-definition/1
     CompanySettingsService.prototype.GetCycleDefinitionById = function (id) {
         return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-cycle-definition/' + id)
             .pipe(operators_1.map(function (res) {
@@ -157,19 +173,19 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     //update cycle-definition
-    CompanySettingsService.prototype.UpdateCycleDefinition = function (id, data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'business-cycle-definition/update/' + id, data)
+    CompanySettingsService.prototype.UpdateCycleDefinition = function (data) {
+        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'business-cycle-definition/update', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //get all cycle-Creation
-    CompanySettingsService.prototype.getAllCycleCreation = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'business-cycle')
-            .pipe(operators_1.map(function (res) {
-            return res;
-        }));
-    };
+    // getAllCycleCreation() {
+    //   return this._HTTP.get(environment.baseUrl8086 + 'business-cycle-definition/getAllActiveNonActive')
+    //     .pipe(map((res: any) => {
+    //       return res;
+    //     }));
+    // }
     //delete cycle-Creation by id
     CompanySettingsService.prototype.DeleteCycleCreationById = function (businessCycleDefinitionId, BusinessYear) {
         return this._HTTP["delete"](environment_1.environment.baseUrl8086 + 'business-cycle/cycles/' + businessCycleDefinitionId + '/' + BusinessYear)
@@ -214,21 +230,21 @@ var CompanySettingsService = /** @class */ (function () {
     };
     // get All HeadCreation
     CompanySettingsService.prototype.getAllHeadCreation = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'payrollhead-master/global')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'head-creation/get')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //get HeadCreationById
     CompanySettingsService.prototype.GetHeadCreationById = function (id) {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'payrollhead-master/global/' + id)
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'head-creation/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //add new BusinessYear
     CompanySettingsService.prototype.AddHeadCreation = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'payrollhead-master', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'head-creation', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

@@ -28,12 +28,14 @@ import { translocoLoader } from './core/strategies/transloco.loader';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProfileComponent } from './modules/profile/profile.component';
 import { ProfileModule } from './modules/profile/profile.module';
+import { QueryModule } from './modules/query/query.module';
+import { LoanModule } from './modules/loan/loan.module';
 import { SettingsComponent } from './modules/settings/settings.component';
 import { SettingsModule } from './modules/settings/settings.module';
 import { BnNgIdleService } from 'bn-ng-idle';
 
-registerLocaleData(localeFr, 'fr');
-registerLocaleData(localeGb, 'en-GB');
+registerLocaleData( localeFr, 'fr' );
+registerLocaleData( localeGb, 'en-GB' );
 
 import { DemoMaterialModule } from './app.material.module';
 import { AuthGuard } from './modules/auth/auth.guard';
@@ -72,11 +74,12 @@ import { LockModule } from './modules/lock/lock.module';
 import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
+import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 
 
 
 
-@NgModule({
+@NgModule( {
   declarations: [
     AppComponent,
     ProfileComponent,
@@ -104,6 +107,8 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     AccordionModule,
     DashboardModule,
     PayrollModule,
+    QueryModule,
+    LoanModule,
 
     CompanySettingModule,
     MyInvestmentsModule,
@@ -126,12 +131,12 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     NgApexchartsModule,
     NgMultiSelectDropDownModule.forRoot(),
     CountToModule,
-    ToastrModule.forRoot({
-    }),
-    CalendarModule.forRoot({
+    ToastrModule.forRoot( {
+    } ),
+    CalendarModule.forRoot( {
       provide: DateAdapter,
       useFactory: adapterFactory,
-    }),
+    } ),
     CKEditorModule,
     BrowserAnimationsModule,
     TranslocoModule,
@@ -149,7 +154,8 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
     UploadexcelModule,
     EmployeemasterlistpageModule,
 
-    EmailSmsModule
+    EmailSmsModule,
+    LoanMasterModule
 
   ],
 
@@ -168,11 +174,7 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
         prodMode: false,
       } as TranslocoConfig,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptorService,
-      multi: true,
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
     ShortenStringPipe,
   ],
   // schemas: [
@@ -181,5 +183,5 @@ import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 
 
   bootstrap: [AppComponent]
-})
+} )
 export class AppModule { }

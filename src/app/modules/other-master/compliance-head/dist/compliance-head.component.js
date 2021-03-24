@@ -34,7 +34,7 @@ var ComplianceHeadComponent = /** @class */ (function () {
             country: new forms_1.FormControl('', forms_1.Validators.required),
             aplicabilityLevel: new forms_1.FormControl('', forms_1.Validators.required),
             authorityHandling: new forms_1.FormControl(null, forms_1.Validators.required),
-            website: new forms_1.FormControl('', [forms_1.Validators.required, forms_1.Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]),
+            website: new forms_1.FormControl('', [forms_1.Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]),
             // website: new FormControl('', [Validators.required, Validators.pattern('/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/')]),
             remark: new forms_1.FormControl({ value: '', disabled: true }),
             complianceActive: new forms_1.FormControl({ value: true, disabled: true })
@@ -74,6 +74,7 @@ var ComplianceHeadComponent = /** @class */ (function () {
         }
         else {
             var data = this.form.getRawValue();
+            console.log(JSON.stringify(data));
             this.complianceHeadService.postComplianceHead(data).subscribe(function (res) {
                 console.log(res);
                 if (res.data.results.length > 0) {
@@ -86,7 +87,7 @@ var ComplianceHeadComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -164,43 +165,48 @@ var ComplianceHeadComponent = /** @class */ (function () {
     };
     ComplianceHeadComponent.prototype.deactiveActiveCheckBox = function () { };
     ComplianceHeadComponent.prototype.onChangeWebsiteName = function (evt) {
-        var text = evt.split('.');
-        // let index = evt.indexOf('.');
-        // console.log(index);
-        // let index1 = evt.lastIndexOf('.');
-        // console.log(index1);
-        // if only one dot is present
-        var s = evt.lastIndexOf('.') - evt.indexOf('.');
-        console.log(s);
-        // if tow dot presnt and without space
-        if (evt.indexOf('.') == evt.lastIndexOf('.') || s == 1) {
-            this.invalidWebsite = true;
+        if (evt.length !== 0) {
+            var text = evt.split('.');
+            // let index = evt.indexOf('.');
+            // console.log(index);
+            // let index1 = evt.lastIndexOf('.');
+            // console.log(index1);
+            // if only one dot is present
+            var s = evt.lastIndexOf('.') - evt.indexOf('.');
+            console.log(s);
+            // if tow dot presnt and without space
+            if (evt.indexOf('.') == evt.lastIndexOf('.') || s == 1) {
+                this.invalidWebsite = true;
+            }
+            else {
+                this.invalidWebsite = false;
+            }
+            // if (text.length >= 3) {
+            //   this.invalidWebsite = true;
+            // } else {
+            //   this.invalidWebsite = false;
+            // }
+            // for (let i = 0; i < text.length; i++) {
+            //   if (text.length >= 3) {
+            //     if (text[i].length == 0) {
+            //       this.invalidWebsite = true;
+            //       break;
+            //     }
+            //   } else {
+            //     this.invalidWebsite = true;
+            //     break;
+            //   }
+            // }
+            // if (text.length >= 3) {
+            //   this.invalidWebsite = false;
+            // } else {
+            //   this.invalidWebsite = true;
+            // }
+            // console.log(text.length);
         }
         else {
             this.invalidWebsite = false;
         }
-        // if (text.length >= 3) {
-        //   this.invalidWebsite = true;
-        // } else {
-        //   this.invalidWebsite = false;
-        // }
-        // for (let i = 0; i < text.length; i++) {
-        //   if (text.length >= 3) {
-        //     if (text[i].length == 0) {
-        //       this.invalidWebsite = true;
-        //       break;
-        //     }
-        //   } else {
-        //     this.invalidWebsite = true;
-        //     break;
-        //   }
-        // }
-        // if (text.length >= 3) {
-        //   this.invalidWebsite = false;
-        // } else {
-        //   this.invalidWebsite = true;
-        // }
-        // console.log(text.length);
     };
     ComplianceHeadComponent.prototype.deactivateRemark = function () {
         console.log('in deactive remakr');

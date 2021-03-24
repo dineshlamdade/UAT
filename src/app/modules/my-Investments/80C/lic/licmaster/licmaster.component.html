@@ -18,7 +18,7 @@
         </div>
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Policy No.</label>
-           <input type="text" formControlName="policyNo" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+           <input type="text" formControlName="policyNo" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" class="form-control"
               placeholder="Enter Policy No."
               [ngClass]="{ 'is-invalid': submitted && masterForm.policyNo.errors }"  >
            <div *ngIf="submitted && masterForm.policyNo.errors" class="invalid-feedback">
@@ -104,7 +104,7 @@
                        <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency Of Payment is mandatory</div>
                     </div>
                  </div>
-                 
+
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Premium Amount</label>
                     <p-inputNumber   class="form-control align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur) = "calculateAnnualAmount()"
@@ -151,7 +151,7 @@
                           </div>
                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker"
                             data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()"
-                            [minDate]="minFormDate"
+
                             [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
                             [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
                           <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">

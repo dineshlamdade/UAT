@@ -537,8 +537,7 @@
                               <div class="col-sm-12 pull-right">
                                 <button type="submit" id="submitbutton"
                                   onclick="document.getElementById('submitbutton').disabled = true;document.getElementById('submitbutton').style.opacity='0.5';"
-                                  [ngClass]="{'disabled-btn-bg-lightgrey' : form.get('pfFormArray')['controls'][i].invalid,
-                                                                                        'btn-bg-green': !form.get('pfFormArray')['controls'][i].invalid}"
+                                  [ngClass]="form.get('pfFormArray')['controls'][i].invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                                   [disabled]="form.get('pfFormArray')['controls'][i].invalid" tooltip="Update"
                                   (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
@@ -816,7 +815,7 @@
                   <div class="row" *ngIf="isPfNew">
                     <div class="col-md-12">
                       <fieldset>
-                        <legend>Provident Fund (PF) Details 1</legend>
+                        <legend>Provident Fund (PF) Details</legend>
                         <div class="row">
 
                           <div class="col-sm-3">

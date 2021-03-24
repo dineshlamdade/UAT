@@ -328,10 +328,10 @@ export class PreviousemployermasterComponent implements OnInit {
     //this.scrollToTop();
     /*     this.paymentDetailGridData = this.masterSummaryGridData[i].paymentDetails; */
 
-    this.masterSummaryGridData[i].dateOfJoining = this.datePipe.transform(
+   /*  this.masterSummaryGridData[i].dateOfJoining = this.datePipe.transform(
       this.masterSummaryGridData[i].dateOfJoining,
       'dd-mmm-yyyy'
-    ); 
+    );  */
 
     let abc;
     abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
@@ -339,10 +339,10 @@ export class PreviousemployermasterComponent implements OnInit {
 
     console.log("dateOfJoining::",this.masterSummaryGridData[i].dateOfJoining)
  
-    this.masterSummaryGridData[i].dateOfLeaving = this.datePipe.transform(
+    /* this.masterSummaryGridData[i].dateOfLeaving = this.datePipe.transform(
       this.masterSummaryGridData[i].dateOfLeaving,
       'dd-mmm-yyyy'
-    ); 
+    );  */
 
     this.previousEmployerDetailsform.patchValue(this.masterSummaryGridData[i]);
     console.log(this.previousEmployerDetailsform.getRawValue());
@@ -390,7 +390,14 @@ export class PreviousemployermasterComponent implements OnInit {
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+
+  openForm12BModal(template1: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template1,
+      Object.assign({}, { class: 'gray modal-lg' })
     );
   }
 }

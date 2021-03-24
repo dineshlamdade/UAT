@@ -11,18 +11,18 @@ import { NpsService } from '../nps.service';
 })
 export class NpsSummaryComponent implements OnInit {
   @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-
-  onEditSummary(institution: string, policyNo: string) {
+  @Output() accountNo = new EventEmitter<any>();
+  onEditSummary(institution: string, accountNumber: string) {
     this.tabIndex = 2;
     const data = {
       institution: institution,
-      policyNo: policyNo,
+      accountNumber: accountNumber,
       tabIndex: this.tabIndex,
     };
     this.institution = institution;
-    this.policyNo = policyNo;
+    this.accountNumber = accountNumber;
     this.myEvent.emit(data);
   }
 
@@ -55,7 +55,26 @@ export class NpsSummaryComponent implements OnInit {
   public ngOnInit(): void {
     this.summaryPage();
   }
+  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution : institution,
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)};
+    this.institution = institution;
+    this.accountNumber = accountNumber;
+    this.myEvent.emit(data);
+  }
 
+  jumpToMasterPage(accountNumber: string) {
+    this.tabIndex = 1;
+    const accountNo = {
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex,
+    };
+    this.accountNo.emit(accountNo);
+  }
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -102,21 +121,6 @@ export class NpsSummaryComponent implements OnInit {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
     this.onChangeLimit();
     this.addFuturePolicy();
-  }
-
-  jumpToMasterPage(n: number) {
-    //console.log(n);
-    this.tabIndex = 1;
-    //this.editMaster(3);
-  }
-
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.policyNo = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
   }
 
   onChangeLimit() {
