@@ -8,7 +8,8 @@
          <div class="row">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">House Name</label>
-               <input type="text" formControlName="propertyName" class="form-control" placeholder="Enter House Name"
+               <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+               placeholder="Enter House Name"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.propertyName.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.propertyName.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.propertyName.errors.required">House Name is mandatory</div>
@@ -34,7 +35,8 @@
          <div class="row mt-20">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Addrsss 1</label>
-               <input type="text" formControlName="address1" class="form-control" placeholder="Enter Property Name"
+               <input type="text" formControlName="address1" class="form-control" 
+               onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Property Name"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address1.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address1.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.address1.errors.required">Property Name is mandatory</div>
@@ -42,7 +44,8 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Addrsss 2</label>
-               <input type="text" formControlName="address2" class="form-control" placeholder="Enter Property Name"
+               <input type="text" formControlName="address2" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+               placeholder="Enter Property Name"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address2.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address2.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.address2.errors.required">Property Name is mandatory</div>
@@ -50,7 +53,8 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Addrsss 3</label>
-               <input type="text" formControlName="address3" class="form-control" placeholder="Enter Property Name"
+               <input type="text" formControlName="address3" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+               placeholder="Enter Property Name"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address3.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address3.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.address3.errors.required">Property Name is mandatory</div>
@@ -131,6 +135,7 @@
             <div class="col-sm-6 col-md-2">
                <label class="form-label">Landlord Name</label>
                <input type="text" formControlName="name" placeholder="Landlord Name is mandatory" class="form-control"
+               onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                   name="Premium Amount"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.name.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.name.errors" class="invalid-feedback">
@@ -140,6 +145,7 @@
             <div class="col-sm-6 col-md-2">
                <label class="form-label">Address</label>
                <input type="text" formControlName="address" placeholder="Address is mandatory" class="form-control"
+               onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                   name="Premium Amount"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.address.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.address.errors" class="invalid-feedback">

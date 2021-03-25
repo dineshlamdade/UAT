@@ -70,7 +70,7 @@
                                                     setFromDate(summary, i)
                                                   " [disabled]="
                                                     isDisabled || summary.transactionStatus === 'Submitted'
-          
+
                                                             " (bsValueChange)="setFromDateToDate()"
                     [ngModel]="summary.fromDate | date: 'dd-MMM-yyyy'" [minDate]="paymentDetailMinDate"
                     [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker>
@@ -141,6 +141,7 @@
               <td>
                 <div class="custom_icon_badge">
                   <input type="text" formControlName="deductionAmountPerCycle" class="form-control align-right"
+                  onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" 
                     placeholder="" [ngClass]="{
                                             'is-invalid':
                                               submitted && masterForm.deductionAmountPerCycle.errors

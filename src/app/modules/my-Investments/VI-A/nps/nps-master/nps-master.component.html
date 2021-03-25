@@ -4,6 +4,7 @@
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Institution</label>
         <input type="text" formControlName="institution" class="form-control"
+        onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
            placeholder="Enter Institution"
            [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }"  >
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
@@ -13,6 +14,7 @@
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Account No.</label>
            <input type="text" formControlName="accountNumber" class="form-control"
+           onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
               placeholder="Enter Account No.."
               [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
            <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
@@ -116,7 +118,8 @@
                  </div>
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Premium Amount</label>
-                    <input type="text" formControlName="premiumAmount" class="form-control align-right" (change)='calculateAnnualAmount()'
+                    <input type="text" formControlName="premiumAmount" class="form-control align-right"  onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                    (change)='calculateAnnualAmount()'
                       name="Premium Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }">
                     <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                        <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>

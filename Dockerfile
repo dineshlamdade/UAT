@@ -1,4 +1,4 @@
-# Create image based on the official Node 10 image from dockerhub
+#Create image based on the official Node 10 image from dockerhub
 FROM centos as web
 
 
@@ -25,10 +25,10 @@ WORKDIR /app
 COPY . /app/
 
 #CMD ["sudo","npm","install","-g","@angular/cli@9.0.7"]
-RUN npm install -g @angular/cli@9.0.7
+RUN npm install -g @angular/cli@11.0.7
 #RUN npm install
 RUN npm install --no-optional --no-shrinkwrap --no-package-lock
-RUN npm i @angular-devkit/build-angular@0.901.9
+RUN npm i @angular-devkit/build-angular@0.1102.3
 RUN npm i @babel/compat-data@7.8.0
 #RUN npm install
 #RUN npm update

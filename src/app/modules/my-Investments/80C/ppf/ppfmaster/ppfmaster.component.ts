@@ -112,6 +112,8 @@ export class PPFMasterComponent implements OnInit {
     public sanitizer: DomSanitizer) {
       this.form = this.formBuilder.group({
         institution: new FormControl(null, Validators.required),
+        // institution: [Validators.compose([Validators.required, Validators.pattern(new RegExp('^[^*|\\":<>[\\]{}`\\\\()\;@&!$]+$'))])],
+        //institution: ["", Validators.compose([Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9  !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~€£¥₩])(?=.*?[A-Z 0-9]).{8,}$"), Validators.required])],
         accountNumber: new FormControl(null, Validators.required),
         accountHolderName: new FormControl(null, Validators.required),
         relationship: new FormControl({value: null, disabled: true}, Validators.required),
