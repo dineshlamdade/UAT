@@ -9,8 +9,6 @@ exports.__esModule = true;
 exports.AttributeSelectionComponent = exports.SaveAttributeSelection = exports.SaveAttributeCreation = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-//sneha
-var sweetalert2_1 = require("sweetalert2");
 var SaveAttributeCreation = /** @class */ (function () {
     function SaveAttributeCreation() {
     }
@@ -24,10 +22,11 @@ var SaveAttributeSelection = /** @class */ (function () {
 }());
 exports.SaveAttributeSelection = SaveAttributeSelection;
 var AttributeSelectionComponent = /** @class */ (function () {
-    function AttributeSelectionComponent(primengConfig, formBuilder, attributeSelectionService) {
+    function AttributeSelectionComponent(primengConfig, formBuilder, attributeSelectionService, alertService) {
         this.primengConfig = primengConfig;
         this.formBuilder = formBuilder;
         this.attributeSelectionService = attributeSelectionService;
+        this.alertService = alertService;
         this.AttributeSelectionList = [];
         this.NatureList = [];
         this.disabled = true;
@@ -57,7 +56,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
         // get All AttributeCreation
         // getAllAttributeCreation(): void {
         this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
-            debugger;
             _this.sourceProducts = res.data.results;
         });
         //  }
@@ -72,79 +70,18 @@ var AttributeSelectionComponent = /** @class */ (function () {
             attributeNature: new forms_1.FormControl('')
         });
     };
-    AttributeSelectionComponent.prototype.sweetalert7 = function (message) {
-        sweetalert2_1["default"].fire({
-            text: message
-        });
-    };
-    AttributeSelectionComponent.prototype.sweetalertWarning = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            background: '#e68a00',
-            icon: 'warning',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    AttributeSelectionComponent.prototype.sweetalertInfo = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'info',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    AttributeSelectionComponent.prototype.sweetalertMasterSuccess = function (message, text) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            text: text,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'success',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
-    AttributeSelectionComponent.prototype.sweetalertError = function (message) {
-        sweetalert2_1["default"].fire({
-            title: message,
-            showCloseButton: true,
-            showCancelButton: false,
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            icon: 'error',
-            timer: 15000,
-            timerProgressBar: true
-        });
-    };
     AttributeSelectionComponent.prototype.RowSelected = function (u) {
-        debugger;
         this.selectedUser.push(u);
         console.log("selected user", this.selectedUser);
         //this.targetProducts.push(u);
         // declare variable in component.
     };
     AttributeSelectionComponent.prototype.lefttablePusg = function () {
-        var _this = this;
-        debugger;
         // const sss=this.newarray;
         // this.selectedUser.forEach(function(f){
         //  sss.push(f);
         // });
+        var _this = this;
         this.selectedUser.forEach(function (element) {
             _this.targetProducts.push(element);
         });
@@ -176,7 +113,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
     };
     AttributeSelectionComponent.prototype.righttablePusg = function (u) {
         var _this = this;
-        debugger;
         this.selectedUser2.forEach(function (element) {
             _this.sourceProducts.push(element);
         });
@@ -200,7 +136,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.viewCancelButton = false;
         this.hidevalue = false;
         this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
-            debugger;
             _this.sourceProducts = res.data.results;
         });
         this.targetProducts = [];
@@ -215,7 +150,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.viewupdateButton = false;
         this.targetProducts = [];
         this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
-            debugger;
             _this.sourceProducts = res.data.results;
         });
     };
@@ -223,24 +157,21 @@ var AttributeSelectionComponent = /** @class */ (function () {
     AttributeSelectionComponent.prototype.getAllAttributeSelection = function () {
         var _this = this;
         this.attributeSelectionService.getAllAttributeSelection().subscribe(function (res) {
-            debugger;
             _this.AttributeSelectionList = res.data.results;
         });
     };
     AttributeSelectionComponent.prototype.onStatusChange = function (event) {
         var _this = this;
-        debugger;
         this.selectedCopFormAttGrp = event.target.value;
         // GetAttributeOptionList(): void {
         this.attributeSelectionService.GetAttributeOptionListByGroup(this.selectedCopFormAttGrp).subscribe(function (res) {
-            debugger;
             _this.targetProducts = res.data.results[0].attributeMasters;
             _this.targetProducts.forEach(function (element) {
                 var index = _this.targetProducts.indexOf(element);
                 _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.code !== element.code; });
             });
             //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
-            //     debugger
+            //
             //     this.sourceProducts = res.data.results;
             //     });
             // this.targetProducts.forEach(element => {
@@ -252,7 +183,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
     // Get Attribute Selection ById
     AttributeSelectionComponent.prototype.GetAttributeSelectionByIdDisable = function (id) {
         var _this = this;
-        debugger;
+        ;
         // this.CycleupdateFlag=true;
         // this.CycleupdateFlag1=false;
         this.disabled = false;
@@ -260,7 +191,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.viewCancelButton = true;
         this.attributeSelectionService.GetAttributeSelectionById(id)
             .subscribe(function (response) {
-            debugger;
             _this.targetProducts = response.data.results[0].attributeMasters;
             _this.targetProducts.forEach(function (element) {
                 var index = _this.targetProducts.indexOf(element);
@@ -275,7 +205,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
     // Get Attribute Selection ById
     AttributeSelectionComponent.prototype.GetAttributeSelectionById = function (id) {
         var _this = this;
-        debugger;
+        ;
         // this.CycleupdateFlag=true;
         // this.CycleupdateFlag1=false;
         this.disabled = true;
@@ -284,7 +214,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.attributeGroupId = id;
         this.attributeSelectionService.GetAttributeSelectionById(id)
             .subscribe(function (response) {
-            debugger;
             _this.targetProducts = response.data.results[0].attributeMasters;
             console.log("targetProducts", _this.targetProducts);
             console.log("sourceProducts", _this.sourceProducts);
@@ -311,13 +240,12 @@ var AttributeSelectionComponent = /** @class */ (function () {
     //Delete Attribute Selection by id
     AttributeSelectionComponent.prototype.DeleteAttributeSelection = function (id) {
         var _this = this;
-        debugger;
+        ;
         // this.CycleupdateFlag=false;
         // this.CycleupdateFlag1=false;
         this.attributeSelectionService.DeleteAttributeSelection(id)
             .subscribe(function (response) {
-            debugger;
-            _this.sweetalertMasterSuccess("Success..!!", response.status.message);
+            _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllAttributeSelection();
             _this.AttributeCreationForm.reset();
             _this.targetProducts = [];
@@ -326,7 +254,6 @@ var AttributeSelectionComponent = /** @class */ (function () {
     //add new AttributeCreation
     AttributeSelectionComponent.prototype.addAttributeSelection = function () {
         var _this = this;
-        debugger;
         var addAttributeCreation = Object.assign({});
         addAttributeCreation.attributeMasterIdList = [];
         this.targetProducts.forEach(function (f) {
@@ -338,33 +265,29 @@ var AttributeSelectionComponent = /** @class */ (function () {
         // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
         if (addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0) {
             this.attributeSelectionService.AddAttributeSelection(addAttributeCreation).subscribe(function (res) {
-                debugger;
                 addAttributeCreation.attributeMasterIdList = [];
                 _this.targetProducts = [];
-                _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllAttributeSelection();
                 _this.hidevalue = false;
                 _this.AttributeCreationForm.reset();
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
         else {
-            debugger;
             this.attributeSelectionService.UpdateAttributeGroup(addAttributeCreation.attributeGroupDefinitionId, addAttributeCreation).subscribe(function (res) {
-                debugger;
-                _this.sweetalertMasterSuccess("Updated..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllAttributeSelection();
                 _this.AttributeCreationForm.reset();
                 // this.updateFlag=false;
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
     };
     AttributeSelectionComponent.prototype.UpdateAttributeSelection = function () {
         var _this = this;
-        debugger;
         var addAttributeCreation = Object.assign({});
         addAttributeCreation.attributeMasterIdList = [];
         this.targetProducts.forEach(function (f) {
@@ -376,17 +299,16 @@ var AttributeSelectionComponent = /** @class */ (function () {
         // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
         if (addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0) {
             this.attributeSelectionService.UpdateAttributeGroup(this.attributeGroupId, addAttributeCreation).subscribe(function (res) {
-                debugger;
                 addAttributeCreation.attributeMasterIdList = [];
                 _this.targetProducts = [];
                 _this.viewCancelButton = false;
                 _this.viewupdateButton = false;
-                _this.sweetalertMasterSuccess("Success..!!", res.status.message);
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllAttributeSelection();
                 _this.hidevalue = false;
                 _this.AttributeCreationForm.reset();
             }, function (error) {
-                _this.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
     };

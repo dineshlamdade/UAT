@@ -411,7 +411,7 @@ var payrollComponent = /** @class */ (function () {
     payrollComponent.prototype.addBusinessYear = function () {
         var _this = this;
         var addBusinessYear = Object.assign({}, this.BusinessYearform.value);
-        if (addBusinessYear.id == undefined || addBusinessYear.id == 0) {
+        if (addBusinessYear.businessYearDefinitionId == undefined || addBusinessYear.businessYearDefinitionId == 0) {
             addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
             addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
             this.payrollService.AddBusinessYear(addBusinessYear).subscribe(function (res) {
@@ -426,7 +426,7 @@ var payrollComponent = /** @class */ (function () {
             //Update BusinessYear service
             addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
             addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
-            this.payrollService.UpdateBusinessYear(addBusinessYear.id, addBusinessYear).subscribe(function (res) {
+            this.payrollService.UpdateBusinessYear(addBusinessYear.businessYearDefinitionId, addBusinessYear).subscribe(function (res) {
                 _this.sweetalertMasterSuccess("Updated..!!", res.status.message);
                 _this.getAllBusinessyear();
                 _this.BusinessYearform.reset();

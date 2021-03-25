@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Console } from 'console';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { startOfYear } from 'date-fns';
 import { HostListener } from '@angular/core';
 import { TaxAdjustmentsService } from '../tax-adjustments.service';
+import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import {
   FormBuilder,
   FormControl,
@@ -29,7 +31,9 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
   showData = false;
   public taxAdjustmentForm: FormGroup;
   public paymentDetailMinDate: Date;
-  public addRow: number;
+  public fromDate: Date;
+  public toDate: Date;
+   public addRow: number;
   public declarationService: DeclarationService;
   public summarynew: any = {};
   AdditionalTaxList = [];
@@ -49,6 +53,8 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
   Index: number;
   numberFormat: any;
   fileService: any;
+  private policyMinDate: Date;
+  private previousDate: any;
 
   constructor(
     private taxAdjustmentsService: TaxAdjustmentsService,
@@ -92,12 +98,13 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
   taxAdjustmentAmount() {
     this.taxAdjustmentForm = this.formBuilder.group({
       taxAdjustmentType: new FormControl(null, Validators.required),
-      fromDate: new FormControl('', Validators.required),
-      toDate: new FormControl('', Validators.required),
+      cycleDefinition: new FormControl(null, Validators.required),
+      fromDate: new FormControl(null, Validators.required),
+      toDate: new FormControl(null, Validators.required),
       deductionAmountPerCycle: new FormControl(null, Validators.required),
       financialYear: new FormControl(null),
       employeeMasterId: new FormControl(0),
-      cycleDefinition: new FormControl(''),
+      // cycleDefinition: new FormControl(''),
       additionalTaxAdjustmentId: new FormControl(0),
     });
   }
@@ -109,23 +116,80 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
   get masterForm() {
     return this.taxAdjustmentForm.controls;
   }
+  // //-------------------- TO Date Validations with Start Date ---------------
+  // settoDate() {
+  //   this.paymentDetailMinDate = this.form.value.fromDate;
+  //   const fromDate = this.datePipe.transform(
+  //     this.form.get('fromDate').value,
+  //     'yyyy-MM-dd'
+  //   );
+  //   const todate = this.datePipe.transform(
+  //     this.form.get('todate').value,
+  //     'yyyy-MM-dd'
+  //   );
+  //   this.paymentDetailMinDate = this.policyMinDate;
+  //   if (fromDate > todate) {
+  //     this.form.controls.policyEndDate.reset();
+  //   }
+  //   this.form.patchValue({
+  //     fromDate: this.policyMinDate,
+  //   });
+  //
+  //   this.setPaymentDetailToDate();
+  // }
 
-  // Payment Detail To Date Validations with Current Finanacial Year
-  checkFinancialYearStartDateWithPaymentDetailToDate() {}
+// Payment Detail To Date Validations with Current Finanacial Year
+  //------------------- Date of Leaving Validations with Payment Detail ----------------
   setPaymentDetailToDate() {
-    this.paymentDetailMinDate = this.form.value.fromDate;
+    // debugger
+    this.paymentDetailMinDate = this.taxAdjustmentForm.value.fromDate;
     const from = this.datePipe.transform(
-      this.form.get('fromDate').value,
+      this.taxAdjustmentForm.get('fromDate').value,
       'yyyy-MM-dd'
     );
     const to = this.datePipe.transform(
-      this.form.get('toDate').value,
+      this.taxAdjustmentForm.get('toDate').value,
       'yyyy-MM-dd'
     );
     if (from > to) {
-      this.form.controls.toDate.reset();
+      this.taxAdjustmentForm.controls.dateOfLeaving.reset();
     }
   }
+
+  //------------------Date of Joining  Validations with Current Finanacial Year -------------------
+  checkFinancialYearStartDateWithPaymentDetailToDate() {
+    // debugger
+    const Leaving = this.datePipe.transform(
+      this.taxAdjustmentForm.get('fromDate').value,
+      'yyyy-MM-dd'
+    );
+    const financialYearStartDate = this.datePipe.transform(
+      this.previousDate,
+      'yyyy-MM-dd'
+    );
+    if (Leaving > financialYearStartDate) {
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
+      this.alertService.sweetalertWarning(
+        "Date of Joining can't be earlier that start of the Current Financial Year"
+      );
+      this.taxAdjustmentForm.controls.dateOfLeaving.reset();
+    }
+  }
+
+  // setPaymentDetailToDate() {
+  //   this.paymentDetailMinDate = this.form.value.fromDate;
+  //   const from = this.datePipe.transform(
+  //     this.form.get('fromDate').value,
+  //     'yyyy-MM-dd'
+  //   );
+  //   const to = this.datePipe.transform(
+  //     this.form.get('toDate').value,
+  //     'yyyy-MM-dd'
+  //   );
+  //   if (from > to) {
+  //     this.form.controls.toDate.reset();
+  //   }
+  // }
 
   //------------- Post Add Transaction Page Data API call -------------------
   //------------- Post Add Transaction Page Data API call -------------------
@@ -344,4 +408,5 @@ class DeclarationService {
   constructor(obj?: any) {
     Object.assign(this, obj);
   }
+
 }
