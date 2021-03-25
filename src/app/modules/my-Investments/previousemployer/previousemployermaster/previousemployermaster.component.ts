@@ -386,18 +386,23 @@ export class PreviousemployermasterComponent implements OnInit {
       });
   }
   /* ==== */
-
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
-
-  openForm12BModal(template1: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(
-      template1,
       Object.assign({}, { class: 'gray modal-lg' })
     );
   }
+ openForm12BModal(template1: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template1,
+      Object.assign({},{ class: 'gray modal-xl' })
+    );
+  }
+  openFormSign(template2: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template2,
+      Object.assign({}, { class: 'gray modal-lg' })
+    );
+  }
+  
 }

@@ -242,10 +242,10 @@
                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                         data-provide="datepicker" data-date-autoclose="true" class="form-control"
                          placeholder="Start Date" bsDatepicker
-                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors }">
-                     <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
+                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
+                     <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.fromDate.errors.required">Start Date is mandatory</div>
-                     </div>
+                     </div> -->
                      
                   </div>
                </div>
@@ -260,11 +260,11 @@
                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
                         data-provide="datepicker" data-date-autoclose="true" class="form-control" 
                          placeholder="End Date" bsDatepicker
-                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors }">
-                     <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors"
+                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
+                     <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors"
                         class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.toDate.errors.required">From Date is mandatory</div>
-                     </div>
+                     </div> -->
                   </div>
                </div>
             </div>
@@ -280,11 +280,11 @@
                <label class="form-label pl-10">Remark</label>
                <textarea formControlName="remark" [ngClass]="{'form-submitted': formDirective.submitted}"
                   class="form-control ml-10" rows="1"
-                  [ngClass]="{ 'is-invalid': agreementDetailssubmitted && houseAgreementMasterForm.remark.errors }"></textarea>
-               <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.remark.errors"
+                  [ngClass]="{ 'is-invalid': agreementDetailssubmitted}"></textarea>
+               <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.remark.errors"
                   class="invalid-feedback">
                   <div *ngIf="houseAgreementMasterForm.remark.errors.required">Remark is mandatory</div>
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
@@ -350,8 +350,7 @@
                      </div>
                      <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" 
                        data-provide="datepicker"
-                        data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker 
-                        (bsValueChange)="rentDetails()"               
+                        data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker                                 
                         [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.fromDate.errors }">
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.fromDate.errors" class="invalid-feedback">
                         <div *ngIf="landRentDetailForm.fromDate.errors.required">From Date is mandatory</div>
@@ -368,10 +367,11 @@
                      </div>
                      <input [bsConfig]="{ dateInputFormat:'DD-MMM-YYYY' }" formControlName="toDate" 
                          data-provide="datepicker"
-                        data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker
-                        [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }">
+                        data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker                     
+
+                     [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }"  >
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
-                        <div *ngIf="landRentDetailForm.toDate.errors.required">To Date is mandatory</div>
+                        <div *ngIf="landRentDetailForm.toDate.errors.required">Property Name is mandatory</div>
                      </div>
                   </div>
                </div>
@@ -385,6 +385,7 @@
                <div *ngIf="rentDetailsSubmitted && landRentDetailForm.rentAmount.errors" class="invalid-feedback">
                   <div *ngIf="landRentDetailForm.rentAmount.errors.required">Rent Amount is mandatory</div>
                </div>
+
             </div>
             <div class="col-sm-6 col-md-2">
                <div class="custom-controls-stacked ml-15 mt-20">

@@ -376,13 +376,30 @@
 
 <ng-template #template1>
    <div class="modal-header">
-      <h5 class="modal-title" id="jasdjgh">
+     <!--  <h5 class="modal-title" id="jasdjgh">
          Edit 
-       </h5>
-       <h5 class="modal-title" id="UploadedDocumentModalLabel"></h5>
-       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">×</span>
-       </button>
+       </h5> -->
+       <h5 class="modal-title" id="UploadedDocumentModalLabel"></h5>     
+           <div class="row mt-15">
+            <div class="col-12">
+              <div class="float-right mb-15">
+                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="openFormSign(template2)"
+                tooltip="Form 12B"><b></b>Sign & Upload Form 12B</button> &nbsp;
+                
+                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                  tooltip="Print"><b><i class="fa fa-print-o"></i></b>Print</button> &nbsp;
+
+                  <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                  tooltip="Download"><b><i class="fa fa-download -o"></i></b>Download</button> &nbsp;
+
+                <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="modalRef.hide()"
+                  tooltip="Cancel"><b><i class="far fa-remove -o"  ></i></b> Cancel </button>
+              </div>
+            </div>
+           <!--  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">×</span>
+             </button> -->
+          </div>
    </div>
   <hr>
 <span style="text-align:center;"><b>FORM NO. 12B</b></span>
@@ -392,3 +409,31 @@
 <p style="font-weight:bold;margin-left:10px;">3. Residential status............................</p>
 
 </ng-template>
+
+
+<ng-template #template2>
+   <div class="modal-header">
+      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+         aria-hidden="true">×</span></button>
+   </div>
+   <div class="row ml-4">
+      <section class=" col col-8">
+          <label class="input input-file">
+              <span class="button">
+                  <input id="file1" type="file" name="file1" accept="image/*" file-actual="emp.empImagePath" allowed-format="jpg,jpeg,png">Browse
+               </span>
+            </label>
+      </section>
+  </div>
+  OR
+  <div class="row ml-4">
+ <span><h6>Your Signature Please</h6></span>
+  </div>
+  <div class="row ml-4">
+     
+  </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+   </div>
+ </ng-template>

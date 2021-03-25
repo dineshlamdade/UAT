@@ -204,15 +204,16 @@ export class HouserentmasterComponent implements OnInit {
 
       /* agreementDetailList:  new FormArray([]), */
 
-      agreementDetailList: this.formBuilder.group({
+    /*   agreementDetailList: this.formBuilder.group({
         houseRentalAgreementDetailId: new FormControl(0),
         houseRentalMasterId: new FormControl(''),
         fromDate: new FormControl(null, Validators.required),
         toDate: new FormControl(null, Validators.required),
         remark: new FormControl(null, Validators.required),
-      }),
+      }), */
 
       /*   rentDetailList: new FormArray([]) */
+
       rentDetailList: this.formBuilder.group({
         houseRentalRentDetailId: new FormControl(0),
         houseRentalMasterId: new FormControl(''),
@@ -220,7 +221,11 @@ export class HouserentmasterComponent implements OnInit {
         toDate: new FormControl(null, Validators.required),
         rentAmount: new FormControl(null, Validators.required),
       }),
+      agreementDetailList: new FormArray([]),
+    /*   rentDetailList:  new FormArray([]), */
     });
+
+
 
     this.lenderTypeList = [
       { label: 'Financial Institutions', value: 'financial' },
@@ -240,6 +245,8 @@ export class HouserentmasterComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+
+    console.log("houseAgreementMasterForm::",this.houseAgreementMasterForm)
     //S  this.addOwner(0);
     // this.houseRentform.get('country').setValue('India');
     // console.log('Purpose Of Loan' , this.houseRentform.get('housePropertyLoanDetailList').get('purposeOfLoan'))
@@ -300,13 +307,17 @@ export class HouserentmasterComponent implements OnInit {
     return this.houseRentform.controls;
   }
 
-  get houseAgreementMasterForm() {
+ /*  get houseAgreementMasterForm() {
     return this.houseRentform.get('agreementDetailList')['controls'];
-  }
+  } */
+
+  get houseAgreementMasterForm() { return this.houseRentform.get('agreementDetailList') as FormArray; }
 
   get landRentDetailForm() {
     return this.houseRentform.get('rentDetailList')['controls'];
   }
+
+ /*  get rentDetailList() { return this.houseRentform.get('rentDetailList') as FormArray; } */
 
   public addOwner() {
     console.log('event::', this.landLordDetailForm);
@@ -463,7 +474,7 @@ export class HouserentmasterComponent implements OnInit {
  this.loansubmitted =false;
 } */
 
-  public rentDetails() {
+/*   public rentDetails() {
       let abc: any;
       abc = this.houseRentform.get('rentDetailList').value.fromDate
      
@@ -475,9 +486,9 @@ export class HouserentmasterComponent implements OnInit {
         (abc, "DD-MMM-YYYY")
       this.houseRentform.get(['rentDetailList','toDate']).setValue(abc);
   }
-
+ */
   public addOwnerRent() {
-    console.log('event::', this.landRentDetailForm);
+ /*    console.log('event::', this.rentDetailList); */
     this.rentDetailsSubmitted = true;
 
   if (this.houseRentform.get('rentDetailList').invalid) {
@@ -512,6 +523,7 @@ export class HouserentmasterComponent implements OnInit {
           this.houseRentform.get('rentDetailList').value.houseRentalRentDetailId
       );
       console.log(index);
+
       this.RentDetailTableList[index].fromDate = this.houseRentform.get(
         'rentDetailList' ).value.fromDate;
 
@@ -525,7 +537,7 @@ export class HouserentmasterComponent implements OnInit {
     /* this.RentDetailTableList.houseRentalRentDetailId  = this.globalAddRowIndex1;    */
     console.log('RentDetailTableList', this.RentDetailTableList);
     this.houseRentform.get('rentDetailList').reset();
-    this.landlordDetailsSubmitted = false;
+    this.rentDetailsSubmitted = false;
   }
   /* =============================Rent============================= */
   /*   public addOwnerRent(formDirective: FormGroupDirective) {
@@ -686,12 +698,7 @@ export class HouserentmasterComponent implements OnInit {
       return;
     } 
 
-    if (this.houseRentform.get('agreementDetailList').invalid) {
-      this.agreementDetailssubmitted=true;
-      console.log(this.houseRentform.get('agreementDetailList').invalid);
-      return;
-    }
-
+   
 
     if (this.RentDetailTableList.length ===0)
        {
@@ -735,22 +742,54 @@ export class HouserentmasterComponent implements OnInit {
         'Please Upload All Mandatitory Documents'
       );
       return;
-    } else {
+    } 
+    else
+     {
       const data = this.houseRentform.getRawValue();
       /*   data.housePropertyLoanDetailList = this.loanDetailGridData; */
       data.landLordDetailList = this.landLordDetailTableList;
       console.log(this.houseRentform.get('agreementDetailList').value);
-      
-      if (this.houseRentform.get('agreementDetailList').invalid) {
+
+      if (this.houseRentform.get('agreementDetailList').invalid && this.agreementDetailsTableList.length === 0) 
+      {
+        this.agreementDetailssubmitted=true;
         console.log(this.houseRentform.get('agreementDetailList').invalid);
-      } else {
+        return;
+      }
+  
+
+
+     /*  if (this.houseRentform.get('agreementDetailList').invalid) {
+        console.log(this.houseRentform.get('agreementDetailList').invalid);
+      } */ else 
+      {
+        console.log(":agreementDetailList:", this.houseRentform.get('agreementDetailList').value.houseRentalAgreementDetailId)
+        if(this.houseRentform.get('agreementDetailList').value.houseRentalAgreementDetailId >0 )
+        {
+          this.agreementDetailsTableList=[];
+          this.agreementDetailsTableList.push(
+            this.houseRentform.get('agreementDetailList').value
+          );
+          data.agreementDetailList = this.agreementDetailsTableList;
+        }
+        
+      }
+
+       /*  console.log("agreementDetailList value ::",this.houseRentform.get('agreementDetailList').value.houseRentalAgreementDetailId)
+       if(this.houseRentform.get('agreementDetailList').value.houseRentalAgreementDetailId ===0)
+       {
         this.agreementDetailsTableList.push(
           this.houseRentform.get('agreementDetailList').value
         );
       }
+      else
+      {
+
+      } */
       console.log('agreementDetailsTableList', this.agreementDetailsTableList);
       this.houseRentform.get('agreementDetailList').reset();
-      data.agreementDetailList = this.agreementDetailsTableList;
+
+    
       data.rentDetailList = this.RentDetailTableList;
       /*  data.declarationOfLandlordDocument= this.declarationOfLandlordDocument; */
       /*    data.rentAgreementDocument= this.rentAgreementDocument; */
@@ -969,8 +1008,9 @@ export class HouserentmasterComponent implements OnInit {
       'yyyy-MM-dd'
     ); */
     this.houseRentform.get('rentDetailList').patchValue({
-      houseRentalRentDetailId: this.RentDetailTableList[i]
-        .houseRentalRentDetailId,
+     // houseRentalRentDetailId: this.RentDetailTableList[i].houseRentalRentDetailId,      
+      houseRentalRentDetailId: this.RentDetailTableList[i].houseRentalRentDetailId,
+      houseRentalMasterId:  this.RentDetailTableList[i].houseRentalMasterId,
       fromDate: new Date(this.RentDetailTableList[i].fromDate),
       toDate: new Date(this.RentDetailTableList[i].toDate),
       rentAmount: this.RentDetailTableList[i].rentAmount,
@@ -987,6 +1027,8 @@ export class HouserentmasterComponent implements OnInit {
     // this.agreementDetailsTableList=[];
     console.log('agreementDetailsTableList', this.agreementDetailsTableList);
     this.houseRentform.get('agreementDetailList').patchValue({
+      houseRentalAgreementDetailId: this.agreementDetailsTableList[i].houseRentalAgreementDetailId,
+      houseRentalMasterId:  this.agreementDetailsTableList[i].houseRentalMasterId,
       fromDate: new Date(this.agreementDetailsTableList[i].fromDate),
       toDate: new Date(this.agreementDetailsTableList[i].toDate),
       remark: this.agreementDetailsTableList[i].remark,
@@ -999,25 +1041,19 @@ export class HouserentmasterComponent implements OnInit {
     this.declarationOfLandlordDocument = [];
     this.rentAgreementDocument = [];
     this.agreementDetailsTableList = [];
+
     this.declarationOfLandlordDocumentDetail = [];
     this.rentAgreementDocumentDetail = [];
     /*  this.agreementDetailList=[]; */
     /*     if (this.masterGridData[i].frequency === 'As & When') { */
-    console.log(
-      'landLordDetailTableList',
-      this.masterGridData[i].landLordDetailList
-    );
-    console.log(
-      'agreementDetailsTableList',
-      this.masterGridData[i].agreementDetailList
-    );
+    console.log('landLordDetailTableList',this.masterGridData[i].landLordDetailList );
+    console.log('agreementDetailsTableList',this.masterGridData[i].agreementDetailList );
     console.log('RentDetailTableList', this.masterGridData[i].rentDetailList);
     console.log('houseRentMaster', this.masterGridData[i].houseRentMaster);
 
           
     this.houseRentform.get('houseRentMaster').patchValue({
-      houseRentalMasterId: this.masterGridData[i].houseRentMaster
-        .houseRentalMasterId,
+      houseRentalMasterId: this.masterGridData[i].houseRentMaster.houseRentalMasterId,
       propertyName: this.masterGridData[i].houseRentMaster.propertyName,
       copyFrom: this.masterGridData[i].houseRentMaster.copyFrom,
       address1: this.masterGridData[i].houseRentMaster.address1,
@@ -1041,7 +1077,7 @@ export class HouserentmasterComponent implements OnInit {
     this.RentDetailTableList = this.masterGridData[i].rentDetailList;
 
 /* -----------------------validation----------------------- */
-/*     this.houseDetailsRentsubmitted = true;
+  /*   this.houseDetailsRentsubmitted = true;
 
     console.log('Houserentform', this.houseRentform);
 
@@ -1061,27 +1097,32 @@ export class HouserentmasterComponent implements OnInit {
       return;
     } 
 
-    if (this.houseRentform.get('agreementDetailList').invalid) {
+
+    if (this.agreementDetailsTableList.length ===0)
+       {
+        console.log('agreementDetailsTableList', this.agreementDetailsTableList.length);
+        this.alertService.sweetalertWarning(
+          'Please Enter LandLord Detail Table Filed'
+        );
+      return;
+    }  */
+   /*  if (this.houseRentform.get('agreementDetailList').invalid) {
       this.agreementDetailssubmitted=true;
       console.log(this.houseRentform.get('agreementDetailList').invalid);
       return;
-    }
+    } */
 
 
-    if (this.RentDetailTableList.length ===0)
+   /*  if (this.RentDetailTableList.length ===0)
        {
         this.alertService.sweetalertWarning(
           'Please Enter  Rent Details Table Filed'
         );
       return;
-    } */
-    
+    }  */
 
 
-    console.log(
-      'documentInformationList',
-      this.masterGridData[i].documentInformationList
-    );
+    console.log('documentInformationList', this.masterGridData[i].documentInformationList  );
     this.masterGridData[i].documentInformationList.forEach(
       (documentInformation) => {
         console.log(
@@ -1096,10 +1137,7 @@ export class HouserentmasterComponent implements OnInit {
 
           this.rentAgreementDocumentDetail.push(data);
 
-          console.log(
-            'this.rentAgreementDocumentDetail',
-            'rentAgreementDocumentDetail'
-          );
+          console.log('this.rentAgreementDocumentDetail','rentAgreementDocumentDetail' );
           console.log('this.documentInformation', documentInformation);
           //this.rentAgreementDocument.name=documentInformation.documentSubType
           // this.rentAgreementDocument.push(documentInformation);
@@ -1112,14 +1150,8 @@ export class HouserentmasterComponent implements OnInit {
 
           this.declarationOfLandlordDocumentDetail.push(data1);
         }
-        console.log(
-          'this.declarationOfLandlordDocumentDetail',
-          this.declarationOfLandlordDocumentDetail
-        );
-        console.log(
-          'this.documentInformation',
-          this.declarationOfLandlordDocument
-        );
+        console.log('this.declarationOfLandlordDocumentDetail',this.declarationOfLandlordDocumentDetail);
+        console.log('this.documentInformation',this.declarationOfLandlordDocument);
       }
     );
 
