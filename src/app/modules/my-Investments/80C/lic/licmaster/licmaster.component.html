@@ -105,7 +105,7 @@
 
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Premium Amount</label>
-              <p-inputNumber class="form-control align-right" formControlName="premiumAmount" name="Premium Amount"
+              <p-inputNumber  formControlName="premiumAmount" name="Premium Amount"
                 (onBlur)="calculateAnnualAmount()"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN"
                 [minFractionDigits]="2"></p-inputNumber>
@@ -117,7 +117,7 @@
 
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Annual Amount</label>
-              <p-inputNumber class="form-control align-right" formControlName="annualAmount" name="Annual Amount"
+              <p-inputNumber  formControlName="annualAmount" name="Annual Amount"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }" mode="decimal" locale="en-IN"
                 [minFractionDigits]="2"></p-inputNumber>
               <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
@@ -148,17 +148,20 @@
                   </div>
                   <!-- [minDate]="minFormDate" [maxDate]="maxFromDate" -->
                   <!-- [bsValue]="selectedPolicyFromDate" -->
-                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                  <!-- [minDate]="minFormDate" [maxDate]="maxFromDate" -->
+                  <!--  value="{{ selectedPolicyFromDate | date:'dd-MMM-yyyy' }}"  -->
+                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                    value="{{ selectedPolicyFromDate | date:'dd-MMM-yyyy' }}"
-                    (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate"  placeholder="From Date"
-                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }" *ngIf="maxFromDate == ''">
+                    value="{{ selectedPolicyFromDate | date:'dd-MMM-yyyy' }}" (bsValueChange)="setPaymentDetailToDate()"
+                    [minDate]="minFormDate" [maxDate]="maxFromDate" placeholder="From Date"
+                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }" >
 
+                    <!--  *ngIf="maxFromDate == ''"
                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control"
                     value="{{ selectedPolicyFromDate | date:'dd-MMM-yyyy' }}"
                     (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate" [maxDate]="maxFromDate" placeholder="From Date"
-                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }" *ngIf="maxFromDate != ''">
+                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }" *ngIf="maxFromDate != ''"> -->
 
                   <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.fromDate.errors.required">From Date is mandatory</div>
@@ -173,18 +176,17 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                   </div>
-                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
                     (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
-                    [minDate]="paymentDetailsToDate"  value="{{policyMaxDate | date:'dd-MMM-yyyy' }}"
+                    [minDate]="paymentDetailsToDate" [maxDate]="maxFromDate" value="{{policyMaxDate | date:'dd-MMM-yyyy' }}"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
-                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }" *ngIf="maxFromDate == ''">
+                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }" >
 
-                    <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                    <!-- <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
                     [minDate]="paymentDetailsToDate" [maxDate]="maxFromDate"  value="{{policyMaxDate | date:'dd-MMM-yyyy' }}"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
-                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }" *ngIf="maxFromDate != ''">
-
+                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }" > -->
                   <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
                     <div *ngIf="masterForm.toDate.errors.required">To Date is mandatory</div>
                   </div>
@@ -192,6 +194,8 @@
               </div>
             </div>
           </div>
+
+          <!-- *ngIf="maxFromDate == ''" *ngIf="maxFromDate != ''" -->
           <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
             <div class="col-12 col-md-12 col-sm-12">
               <div class="table-responsive Custom_Table ">
