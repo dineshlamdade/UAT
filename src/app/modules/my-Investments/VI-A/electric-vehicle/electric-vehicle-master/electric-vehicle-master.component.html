@@ -9,7 +9,7 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Vehicle Model</label>
                   <input type="text" formControlName="vehicleModel" class="form-control"
-                  onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                  onkeypress="return /[0-9 a-z A-Z ' ]/i.test(event.key)"
                     placeholder="Enter Vehicle Model"
                     [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleModel.errors }"  >
                     <div *ngIf="submitted && masterForm.vehicleModel.errors" class="invalid-feedback">
@@ -19,7 +19,7 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Vehicle Number</label>
                   <input type="text" formControlName="vehicleNumber" class="form-control"
-                  onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                   onkeypress="return /[0-9 a-z A-Z ' ]/i.test(event.key)"
                      placeholder="Enter Vehicle Number"
                      [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleNumber.errors }"  >
                   <div *ngIf="submitted && masterForm.vehicleNumber.errors" class="invalid-feedback">
@@ -29,7 +29,7 @@
                <div class="col-sm-6 col-md-3">
                 <label class="form-label">Lender Name</label>
                 <input type="text" formControlName="lenderName" class="form-control"
-                onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                 onkeypress="return /[0-9 a-z A-Z ' ]/i.test(event.key)"
                   placeholder="Enter Lender Name "
                   [ngClass]="{ 'is-invalid': submitted && masterForm.lenderName.errors }"  >
                   <div *ngIf="submitted && masterForm.lenderName.errors" class="invalid-feedback">
@@ -39,7 +39,7 @@
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Account Holder Name</label>
                 <input type="text" formControlName="accountHolderName" class="form-control"
-                onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                 onkeypress="return /[0-9 a-z A-Z ' ]/i.test(event.key)"
                   placeholder="Enter Account Holder Name"
                   [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }"  >
                   <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
@@ -258,7 +258,7 @@
                             <td class="wd-10"><span tooltip="{{summary.vehicleNumber}}">{{summary.vehicleNumber}}</span>
                             </td>
                             <td class="wd-5">
-                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.vehicleModel)" tooltip="Edit"></i> &nbsp;&nbsp;
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.vehicleNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                             </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">
