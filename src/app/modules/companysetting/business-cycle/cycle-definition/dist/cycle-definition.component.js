@@ -10,11 +10,12 @@ exports.CycleDefinitionComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var CycleDefinitionComponent = /** @class */ (function () {
-    function CycleDefinitionComponent(datepipe, companySetttingService, formBuilder, alertService) {
+    function CycleDefinitionComponent(datepipe, companySetttingService, formBuilder, alertService, modalService) {
         this.datepipe = datepipe;
         this.companySetttingService = companySetttingService;
         this.formBuilder = formBuilder;
         this.alertService = alertService;
+        this.modalService = modalService;
         this.CycleupdateFlag = false;
         this.isViewAddDays = false;
         this.CycleupdateFlag1 = false;
@@ -293,6 +294,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.CycleupdateFlag1 = false;
         this.companySetttingService.DeleteCycleDefinitionById(id)
             .subscribe(function (response) {
+            _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllCycleDefinition();
             //  this.BusinessYearform.reset();
         });
@@ -317,6 +319,12 @@ var CycleDefinitionComponent = /** @class */ (function () {
                 yearDefinition: this.BusinessyearList[index].fullFromDate + ' / ' + this.BusinessyearList[index].fullToDate
             });
         }
+    };
+    CycleDefinitionComponent.prototype.UploadModal1 = function (template) {
+        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
+    };
+    CycleDefinitionComponent.prototype.getCycleName = function (name) {
+        //this.CycleName = name;
     };
     __decorate([
         core_1.ViewChild('multiSelect')

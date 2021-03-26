@@ -54,7 +54,7 @@ a,
   /* box-shadow: 0 0 0 0.2rem #ebf688;
 border-color: #818e0b!important; */
   box-shadow: 0 0 0 0.2rem #c4edca;
-  border-color: #38b449!important;
+  border-color: #38b449 !important;
 }
 
 .card,
@@ -447,19 +447,19 @@ body {
 
 @media only screen and (max-width: 1024px) {
   .auth .auth_left .card {
-      right: -50px
+    right: -50px
   }
 }
 
 @media only screen and (max-width: 992px) {
   .auth .auth_left .card {
-      right: auto
+    right: auto
   }
 }
 
 .top_dark {
   /* background-color: #39374e !important */
-  background: #713f93!important
+  background: #713f93 !important
 }
 
 .sidebar_dark #left-sidebar {
@@ -527,7 +527,7 @@ body {
   overflow: hidden;
   grid-template-rows: 40px 1fr;
   grid-template-columns: 2fr 2fr 2fr;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .tabview input[type="radio"] {
@@ -548,7 +548,7 @@ border-top: 2px solid #38b449; */
   user-select: none;
   transition: background 0.4s, padding-left 0.2s;
   padding-left: 0;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .tabview input[type="radio"]:checked+.tabs+label.nav {
@@ -565,9 +565,9 @@ border-top: 2px solid #38b449; */
 .tabview label.nav span {
   padding-left: 0px;
   position: relative;
-  font-size: 16px!important;
+  font-size: 16px !important;
   font-weight: bold;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .tabs {
@@ -599,15 +599,14 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
   margin: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 
 /* tabview css End here */
 
 
-<<<<<<< HEAD
-=======
+<<<<<<< HEAD=======
 /* tabview css start here */
 
 .apprtabview {
@@ -617,7 +616,7 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
   overflow: hidden;
   grid-template-rows: 40px 1fr;
   grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .apprtabview input[type="radio"] {
@@ -635,7 +634,7 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
   user-select: none;
   transition: background 0.4s, padding-left 0.2s;
   padding-left: 0;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .apprtabview input[type="radio"]:checked+.apprtabs+label.nav {
@@ -652,9 +651,9 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
 .apprtabview label.nav span {
   padding-left: 0px;
   position: relative;
-  font-size: 16px!important;
+  font-size: 16px !important;
   font-weight: bold;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .apprtabs {
@@ -686,30 +685,29 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
   margin: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 
 /* tabview css End here */
 
->>>>>>> 90a6665f027b915bc1891ab460c4187c9ba5e308
-
+>>>>>>>90a6665f027b915bc1891ab460c4187c9ba5e308
 /* Feildset CSS Start*/
 
 legend {
-  padding: 7px!important;
-  margin-left: 0px!important;
-  color: #713f93!important;
+  padding: 7px !important;
+  margin-left: 0px !important;
+  color: #713f93 !important;
   font-weight: bold;
-  border-radius: 5px!important;
-  width: auto!important;
-  font-size: 13px!important;
-  margin-bottom: 8px!important;
-  font-family: Montserrat, sans-serif!important;
+  border-radius: 5px !important;
+  width: auto !important;
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 fieldset {
-  border: 2px solid #dee2e6!important;
+  border: 2px solid #dee2e6 !important;
   padding: 15px;
   border-radius: 6px;
 }
@@ -718,38 +716,38 @@ fieldset {
 /* Feildset CSS End*/
 
 .padding-0 {
-  padding-left: 0px!important;
-  padding-right: 0px!important;
-  padding-top: 0px!important;
-  padding-bottom: 0px!important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }
 
 .pd-5 {
-  padding: 5px!important;
-  border-bottom: 1px solid #ccc!important;
+  padding: 5px !important;
+  border-bottom: 1px solid #ccc !important;
 }
 
 
 /* custom button css Start*/
 
 .bg-teal-400 {
-  background-color: #606060FF!important;
+  background-color: #606060FF !important;
 }
 
 .bg-btn-red {
-  background-color: #cc0000!important;
+  background-color: #cc0000 !important;
 }
 
 .btn-bg-green {
-  background-color: #006666!important;
+  background-color: #006666 !important;
 }
 
 .btn-bg-add {
-  background-color: #2eaaae!important;
+  background-color: #2eaaae !important;
 }
 
 .btn-labeled-left {
-  padding-left: 3.12506rem!important;
+  padding-left: 3.12506rem !important;
 }
 
 .custom_btn {
@@ -769,10 +767,10 @@ fieldset {
   user-select: none;
   background-color: transparent;
   border: 1px solid transparent;
-  padding-right: 9px!important;
-  padding-top: 4px!important;
-  padding-bottom: 6px!important;
-  padding-left: 39px!important;
+  padding-right: 9px !important;
+  padding-top: 4px !important;
+  padding-bottom: 6px !important;
+  padding-left: 39px !important;
   font-size: .8125rem;
   line-height: 26px;
   border-radius: .1875rem;
@@ -791,10 +789,10 @@ fieldset {
   user-select: none;
   background-color: transparent;
   border: 1px solid transparent;
-  padding-right: 9px!important;
-  padding-top: 4px!important;
-  padding-bottom: 6px!important;
-  padding-left: 39px!important;
+  padding-right: 9px !important;
+  padding-top: 4px !important;
+  padding-bottom: 6px !important;
+  padding-left: 39px !important;
   font-size: .8125rem;
   line-height: 26px;
   border-radius: .1875rem;
@@ -898,51 +896,51 @@ strong {
 /* custom text color css Start */
 
 .text-000 {
-  color: #000!important;
+  color: #000 !important;
 }
 
 .text-green {
-  color: #99cc00!important;
+  color: #99cc00 !important;
 }
 
 .text-dark-green {
-  color: #336600!important;
+  color: #336600 !important;
 }
 
 .text-red {
-  color: #cc0000!important;
+  color: #cc0000 !important;
 }
 
 .text-orange {
-  color: #ff6600!important;
+  color: #ff6600 !important;
 }
 
 .text-blue {
-  color: #0066cc!important;
+  color: #0066cc !important;
 }
 
 .text-cyan {
-  color: #006666!important;
+  color: #006666 !important;
 }
 
 .text-purple {
-  color: #713f93!important
+  color: #713f93 !important
 }
 
 .text-white {
-  color: #fff!important;
+  color: #fff !important;
 }
 
 .text-gray {
-  color: #999999!important;
+  color: #999999 !important;
 }
 
 .text-light-green {
-  color: #38b449!important;
+  color: #38b449 !important;
 }
 
 .inline_center {
-  display: inline!important;
+  display: inline !important;
 }
 
 .text-link {
@@ -952,11 +950,11 @@ strong {
 }
 
 .text-center {
-  text-align: center!important;
+  text-align: center !important;
 }
 
 .text-bold {
-  font-weight: bold!important;
+  font-weight: bold !important;
 }
 
 .match-accountNo {
@@ -971,27 +969,27 @@ strong {
 }
 
 .bg-color-purple {
-  background-color: #713f93!important;
-  background: #713f93!important;
+  background-color: #713f93 !important;
+  background: #713f93 !important;
 }
 
 .bg-color-gray {
-  background-color: #4d4d4d!important;
-  color: #fff!important;
+  background-color: #4d4d4d !important;
+  color: #fff !important;
 }
 
 .bg-color-blue {
-  background-color: #0066cc!important;
-  color: #fff!important;
+  background-color: #0066cc !important;
+  color: #fff !important;
 }
 
 .bg-color-white {
-  background-color: #fff!important;
-  color: #0c0d0e!important;
+  background-color: #fff !important;
+  color: #0c0d0e !important;
 }
 
 .bg-color-green {
-  background-color: #336600!important;
+  background-color: #336600 !important;
 }
 
 .bg-color-white {
@@ -999,47 +997,47 @@ strong {
 }
 
 .bg-color-lightgray {
-  background-color: #f2f2f2!important;
-  color: #999!important;
-  border: 1px solid #999!important;
+  background-color: #f2f2f2 !important;
+  color: #999 !important;
+  border: 1px solid #999 !important;
 }
 
 .bg-color-light_gray {
-  background-color: #f2f2f2!important;
-  color: #000!important;
+  background-color: #f2f2f2 !important;
+  color: #000 !important;
 }
 
 .padding-right-2 {
-  padding-right: 2px!important;
+  padding-right: 2px !important;
 }
 
 .padding-right-12 {
-  padding-right: 12px!important;
+  padding-right: 12px !important;
 }
 
 .d-flex {
-  display: flex!important;
+  display: flex !important;
 }
 
 .align-item-center {
-  align-items: center!important;
+  align-items: center !important;
 }
 
 /* Previous Employer */
-.text-center
-{
-  text-align: center!important;
+.text-center {
+  text-align: center !important;
 }
+
 .justify-content-spacearound {
-  justify-content: space-around!important;
+  justify-content: space-around !important;
 }
 
 .justify-content-spacebetween {
-  justify-content: space-between!important;
+  justify-content: space-between !important;
 }
 
 .align-items-center {
-  align-items: center!important;
+  align-items: center !important;
 }
 
 
@@ -1049,144 +1047,144 @@ strong {
 /* Custom Width css Start */
 
 .wd-2 {
-  width: 2%!important;
+  width: 2% !important;
 }
 
 .wd-4 {
-  width: 4%!important;
+  width: 4% !important;
 }
 
 .wd_5 {
-  width: 5.5%!important;
+  width: 5.5% !important;
 }
 
 .wd_7 {
-  width: 7.5%!important;
+  width: 7.5% !important;
 }
 
 .wd-6 {
-  width: 6%!important
+  width: 6% !important
 }
 
 .wd-7 {
-  width: 7%!important;
+  width: 7% !important;
 }
 
 .wd_8 {
-  width: 8.5%!important;
+  width: 8.5% !important;
 }
 
 .wd-8 {
-  width: 8%!important;
+  width: 8% !important;
 }
 
 .wd-9 {
-  width: 9%!important;
+  width: 9% !important;
 }
 
 .wd_9 {
-  width: 9.5%!important;
+  width: 9.5% !important;
 }
 
 .wd-10 {
-  width: 10%!important;
+  width: 10% !important;
 }
 
 .wd-11 {
-  width: 11%!important;
+  width: 11% !important;
 }
 
 .wd_11 {
-  width: 11.5%!important;
+  width: 11.5% !important;
 }
 
 .wd-12 {
-  width: 12%!important;
+  width: 12% !important;
 }
 
 .wd_12 {
-  width: 12.5%!important;
+  width: 12.5% !important;
 }
 
 .wd-13 {
-  width: 13%!important;
+  width: 13% !important;
 }
 
 .wd_13 {
-  width: 13.5%!important;
+  width: 13.5% !important;
 }
 
 .wd-14 {
-  width: 14%!important;
+  width: 14% !important;
 }
 
 .wd_14 {
-  width: 14.5%!important;
+  width: 14.5% !important;
 }
 
 .wd-15 {
-  width: 15%!important;
+  width: 15% !important;
 }
 
 .wd-16 {
-  width: 16%!important;
+  width: 16% !important;
 }
 
 .wd-18 {
-  width: 18%!important;
+  width: 18% !important;
 }
 
 .wd-17 {
-  width: 17%!important;
+  width: 17% !important;
 }
 
 .wd-19 {
-  width: 19%!important;
+  width: 19% !important;
 }
 
 .wd-20 {
-  width: 20%!important;
+  width: 20% !important;
 }
 
 .wd-25 {
-  width: 25%!important;
+  width: 25% !important;
 }
 
 .wd-40 {
-  width: 40%!important;
+  width: 40% !important;
 }
 
 .wd-45 {
-  width: 45%!important;
+  width: 45% !important;
 }
 
 .wd-50 {
-  width: 50%!important;
+  width: 50% !important;
 }
 
 .wd-150 {
-  width: 150px!important;
+  width: 150px !important;
 }
 
 .height-200 {
-  height: 200px!important;
+  height: 200px !important;
 }
 
 .height-756 {
-  height: 756px!important;
+  height: 756px !important;
   overflow-y: auto;
 }
 
 .height-188 {
-  height: 188px!important;
+  height: 188px !important;
 }
 
 .height-137 {
-  height: 137px!important;
+  height: 137px !important;
 }
 
 .wd-27 {
-  width: 27%!important;
+  width: 27% !important;
 }
 
 
@@ -1197,21 +1195,21 @@ strong {
 
 .Custom_Table .table td,
 .table th {
-  padding-top: 7px!important;
-  padding-bottom: 7px!important;
-  padding-left: 5px!important;
-  padding-right: 5px!important;
-  font-size: 12px!important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  font-size: 12px !important;
 }
 
 .Custom_Table .table td,
 .table th {
-  vertical-align: middle!important;
+  vertical-align: middle !important;
   text-align: center;
 }
 
 .Custom_Table .table tbody {
-  border: 2px solid #E8E9E9!important;
+  border: 2px solid #E8E9E9 !important;
 }
 
 .Custom_Table .table .thead-dark th {
@@ -1234,34 +1232,34 @@ strong {
 }
 
 .Custom_Table .table {
-  table-layout: auto!important;
-  margin-bottom: 0px!important;
+  table-layout: auto !important;
+  margin-bottom: 0px !important;
 }
 
 .Custom_Table .table td {
-  white-space: nowrap!important;
-  overflow: hidden!important;
-  text-overflow: ellipsis!important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .table-light-color {
-  background: linear-gradient(-186deg, #f2f2f2, #cccccc)!important;
+  background: linear-gradient(-186deg, #f2f2f2, #cccccc) !important;
 }
 
 .cursor-pointer {
-  cursor: pointer!important;
+  cursor: pointer !important;
 }
 
 .font-bold {
-  font-weight: bold!important;
+  font-weight: bold !important;
 }
 
 .Custom_Table .table th {
-  text-transform: capitalize!important;
+  text-transform: capitalize !important;
 }
 
 .bs-datepicker-container {
-  padding: 0px!important;
+  padding: 0px !important;
 }
 
 .custom_icon_badge {
@@ -1331,8 +1329,8 @@ strong {
 }
 
 .notificationbadge {
-  background-color: #713f93!important;
-  background: #713f93!important;
+  background-color: #713f93 !important;
+  background: #713f93 !important;
   border-radius: 0.8em;
   -moz-border-radius: 0.8em;
   -webkit-border-radius: 50%;
@@ -1358,13 +1356,13 @@ color: green; */
 }
 
 .position_relative {
-  position: relative!important;
+  position: relative !important;
 }
 
 .row-card-color {
-  background: #fff!important;
-  border: 1px solid #ddd!important;
-  box-shadow: 4px 0px 8px 5px #f2f2f2!important;
+  background: #fff !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 4px 0px 8px 5px #f2f2f2 !important;
 }
 
 .copy-btn {
@@ -1384,7 +1382,7 @@ color: green; */
 }
 
 .btn-add-payroll {
-  background-color: #713f93!important;
+  background-color: #713f93 !important;
   color: white;
 }
 
@@ -1393,35 +1391,35 @@ color: green; */
 
 .theme-green .bs-datepicker-head {
   /* background: linear-gradient(-45deg, #6c7709, #818e0b)!important; */
-  background: #006666!important;
+  background: #006666 !important;
 }
 
 .theme-green .bs-datepicker-body table td.week span {
-  color: #cc0000!important;
+  color: #cc0000 !important;
 }
 
 .bs-datepicker .bs-media-container {
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .bs-datepicker-head button.current {
-  font-size: 12px!important;
+  font-size: 12px !important;
 }
 
 .theme-green .bs-datepicker-body table td span.selected,
 .theme-green .bs-datepicker-body table td.selected span,
 .theme-green .bs-datepicker-body table td span[class*="select-"]:after,
 .theme-green .bs-datepicker-body table td[class*="select-"] span:after {
-  background-color: #006666!important;
+  background-color: #006666 !important;
   font-weight: bold;
 }
 
 th .p-dialog .p-dialog-footer {
   border-top: 0 none;
-  background: #f2f2f2!important;
+  background: #f2f2f2 !important;
   color: #495057;
-  border-top: 1px solid #ccc!important;
-  padding: 2%!important;
+  border-top: 1px solid #ccc !important;
+  padding: 2% !important;
   text-align: right;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
@@ -1429,32 +1427,32 @@ th .p-dialog .p-dialog-footer {
 
 .p-dialog .p-dialog-header {
   border-bottom: 0 none;
-  background: #f2f2f2!important;
-  color: #495057!important;
-  border-bottom: 1px solid #ccc!important;
-  padding: 2%!important;
+  background: #f2f2f2 !important;
+  color: #495057 !important;
+  border-bottom: 1px solid #ccc !important;
+  padding: 2% !important;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
 
 .p-fileupload .p-fileupload-row>div {
-  padding: 10px!important;
+  padding: 10px !important;
 }
 
 .p-fileupload-row div:nth-child(2) {
-  width: 70%!important;
+  width: 70% !important;
 }
 
 .p-fileupload-row div:nth-child(3) {
-  width: 20%!important;
+  width: 20% !important;
 }
 
 .p-fileupload-row div:nth-child(4) {
-  width: 10%!important;
+  width: 10% !important;
 }
 
 .p-fileupload-row div:first-child {
-  display: none!important;
+  display: none !important;
 }
 
 .p-fileupload-row {
@@ -1462,57 +1460,57 @@ th .p-dialog .p-dialog-footer {
   align-items: center;
   display: -ms-flexbox;
   display: flex;
-  background: #f3f3f3!important;
-  border: 1px solid #ccc!important;
-  margin-bottom: 5px!important;
+  background: #f3f3f3 !important;
+  border: 1px solid #ccc !important;
+  margin-bottom: 5px !important;
 }
 
 .p-dialog .p-dialog-content {
   background: #ffffff;
   color: #495057;
-  padding: 10px!important;
+  padding: 10px !important;
 }
 
 .p-toast {
-  z-index: 99999!important;
+  z-index: 99999 !important;
 }
 
 .p-fileupload .p-fileupload-buttonbar {
-  padding: 8px!important;
+  padding: 8px !important;
 }
 
 .p-button {
-  padding: 7px!important;
-  font-size: 15px!important;
+  padding: 7px !important;
+  font-size: 15px !important;
 }
 
 .p-fileupload .p-fileupload-content {
   background: #ffffff;
-  padding: 20px!important;
+  padding: 20px !important;
 }
 
 .p-button.p-button-icon-only {
-  width: 35px!important;
-  height: 35px!important;
-  padding: 0.5rem 0!important;
+  width: 35px !important;
+  height: 35px !important;
+  padding: 0.5rem 0 !important;
 }
 
 .box-border {
-  border: 2px dotted #ccc!important;
-  border-radius: 3px!important;
-  background-color: #f2f2f2!important;
+  border: 2px dotted #ccc !important;
+  border-radius: 3px !important;
+  background-color: #f2f2f2 !important;
 }
 
 .box-line-border {
-  border: 1px solid #ccc!important;
-  border-radius: 3px!important;
-  background-color: #f1f1f1!important;
+  border: 1px solid #ccc !important;
+  border-radius: 3px !important;
+  background-color: #f1f1f1 !important;
 }
 
 .card-box-border {
-  border: 1px solid #ccc!important;
-  border-radius: 2px!important;
-  background-color: #fff!important;
+  border: 1px solid #ccc !important;
+  border-radius: 2px !important;
+  background-color: #fff !important;
 }
 
 .disabled_label {
@@ -1521,9 +1519,9 @@ th .p-dialog .p-dialog-footer {
   width: 100%;
   box-sizing: border-box;
   letter-spacing: normal;
-  background-color: #fff!important;
-  cursor: no-drop!important;
-  padding: 3px 14px 3px!important;
+  background-color: #fff !important;
+  cursor: no-drop !important;
+  padding: 3px 14px 3px !important;
   border: 1px solid #ccc;
   transition: 0.4s;
   margin-bottom: 0px;
@@ -1542,43 +1540,43 @@ th .p-dialog .p-dialog-footer {
 .form-control:disabled,
 .form-control[readonly] {
   /* background-color: #f4f4f4!important; */
-  border: 1px solid #ddd!important;
+  border: 1px solid #ddd !important;
   opacity: 1;
-  color: #000!important;
-  background: #f1f1f1!important;
-  cursor: no-drop!important;
+  color: #000 !important;
+  background: #f1f1f1 !important;
+  cursor: no-drop !important;
 }
 
 .custom-control-label {
-  font-size: 12px!important;
-  line-height: 21px!important;
+  font-size: 12px !important;
+  line-height: 21px !important;
 }
 
 .swal2-styled {
   margin: .3125em;
-  padding: 4px 20px 4px 21px!important;
+  padding: 4px 20px 4px 21px !important;
   box-shadow: none;
   font-weight: 500;
-  font-size: 12px!important;
+  font-size: 12px !important;
 }
 
 .swal2-title {
-  color: #fff!important;
+  color: #fff !important;
 }
 
 [class^=swal2] {
   -webkit-tap-highlight-color: transparent;
-  color: #fff!important;
+  color: #fff !important;
 }
 
 .swal2-popup.swal2-toast {
-  border-left: 10px solid #404040!important;
+  border-left: 10px solid #404040 !important;
   /* border: 1px solid #000; */
-  background: #666666!important;
+  background: #666666 !important;
 }
 
 button:focus {
-  outline: none!important;
+  outline: none !important;
 }
 
 .scroll-to-top {
@@ -1598,7 +1596,7 @@ button:focus {
 }
 
 .checkbox-center {
-  padding-left: 28px!important;
+  padding-left: 28px !important;
 }
 
 .country-code {
@@ -1610,11 +1608,11 @@ button:focus {
 }
 
 .form-control.is-invalid {
-  background-image: none!important;
+  background-image: none !important;
 }
 
 .disabled-btn-bg-green {
-  background-color: #94c1c1!important;
+  background-color: #94c1c1 !important;
 }
 
 .field-icon {
@@ -1629,7 +1627,7 @@ button:focus {
 }
 
 .p-inputtext {
-  font-family: "Montserrat", sans-serif!important;
+  font-family: "Montserrat", sans-serif !important;
   font-size: 12px !important;
   color: #495057 !important;
   background: #fff !important;
@@ -1643,7 +1641,7 @@ button:focus {
 }
 
 .p-component {
-  font-family: "Montserrat", sans-serif!important;
+  font-family: "Montserrat", sans-serif !important;
   /* // font-size: 7rem; */
   font-weight: 400 !important;
   width: 100% !important;
@@ -1652,11 +1650,11 @@ button:focus {
 .p-inputtext:disabled,
 .form-control[readonly] {
   /* background-color: #f4f4f4!important; */
-  border: 1px solid #ddd!important;
+  border: 1px solid #ddd !important;
   opacity: 1 !important;
-  color: #000!important;
-  background: #f1f1f1!important;
-  cursor: no-drop!important;
+  color: #000 !important;
+  background: #f1f1f1 !important;
+  cursor: no-drop !important;
 }
 
 .down-arrow-icon {
@@ -1737,7 +1735,7 @@ button:focus {
 }
 
 .disabled-btn-bg-green {
-  background-color: #94c1c1!important;
+  background-color: #94c1c1 !important;
 }
 
 .small-size {
@@ -1745,7 +1743,7 @@ button:focus {
 }
 
 .form-control.is-invalid {
-  background-image: none!important;
+  background-image: none !important;
 }
 
 .primeng-table-header-center {
@@ -1779,7 +1777,7 @@ input {
 }
 
 .form-control {
-  color: #0c0d0e!important;
+  color: #0c0d0e !important;
   font-weight: 420;
 }
 
@@ -1789,9 +1787,9 @@ input {
   background-color: #f2f2f2;
   margin-bottom: 10px;
   width: 100%;
-  white-space: nowrap!important;
-  overflow: hidden!important;
-  text-overflow: ellipsis!important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .fileuploadbox {
@@ -1809,7 +1807,7 @@ input {
   transition: border 300ms ease;
   cursor: pointer;
   padding: 4px;
-  margin-bottom: 0px!important;
+  margin-bottom: 0px !important;
   /* border-bottom: 2px solid #ddd; */
   text-align: left;
 }
@@ -1863,13 +1861,13 @@ border-right: 2px dotted green; */
 }
 
 .Box-Spacing {
-  margin: 20px!important;
+  margin: 20px !important;
   border: 1px solid #ddd;
   border-radius: 5px;
 }
 
 .large-popup-width .modal-content {
-  width: 1000px!important;
+  width: 1000px !important;
 }
 
 .Next_Previous_Btn {
@@ -1881,11 +1879,11 @@ border-right: 2px dotted green; */
 }
 
 .top_dark1 {
-  background: #ddd!important;
+  background: #ddd !important;
 }
 
 .no-border {
-  border: 0!important;
+  border: 0 !important;
 }
 
 .highlightlabel {
@@ -1898,71 +1896,71 @@ border-right: 2px dotted green; */
 
 @-webkit-keyframes color-change {
   0% {
-      color: #38b449;
+    color: #38b449;
   }
 
   50% {
-      color: blue;
+    color: blue;
   }
 
   100% {
-      color: orangered;
+    color: orangered;
   }
 }
 
 @-moz-keyframes color-change {
   0% {
-      color: #38b449;
+    color: #38b449;
   }
 
   50% {
-      color: blue;
+    color: blue;
   }
 
   100% {
-      color: orangered;
+    color: orangered;
   }
 }
 
 @-ms-keyframes color-change {
   0% {
-      color: #38b449;
+    color: #38b449;
   }
 
   50% {
-      color: blue;
+    color: blue;
   }
 
   100% {
-      color: orangered;
+    color: orangered;
   }
 }
 
 @-o-keyframes color-change {
   0% {
-      color: #38b449;
+    color: #38b449;
   }
 
   50% {
-      color: blue;
+    color: blue;
   }
 
   100% {
-      color: orangered;
+    color: orangered;
   }
 }
 
 @keyframes color-change {
   0% {
-      color: #38b449;
+    color: #38b449;
   }
 
   50% {
-      color: blue;
+    color: blue;
   }
 
   100% {
-      color: orangered;
+    color: orangered;
   }
 }
 
@@ -2009,391 +2007,391 @@ border-right: 2px dotted green; */
 
 @-webkit-keyframes anime1 {
   0% {
-      width: 112px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 112px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   12.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   25% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   37.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   50% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   62.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   75% {
-      width: 48px;
-      height: 112px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 112px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   87.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   100% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 }
 
 @keyframes anime1 {
   0% {
-      width: 112px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 112px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   12.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   25% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   37.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   50% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   62.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 
   75% {
-      width: 48px;
-      height: 112px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 112px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   87.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   100% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 }
 
 @-webkit-keyframes anime2 {
   0% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   12.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   25% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   37.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   50% {
-      width: 112px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 112px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   62.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   75% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   87.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   100% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 }
 
 @keyframes anime2 {
   0% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   12.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   25% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   37.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   50% {
-      width: 112px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 0px;
+    width: 112px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 0px;
   }
 
   62.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   75% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   87.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   100% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 }
 
 @-webkit-keyframes anime3 {
   0% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   12.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   25% {
-      width: 48px;
-      height: 112px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 112px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   37.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   50% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   62.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   75% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   87.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   100% {
-      width: 112px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 112px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 }
 
 @keyframes anime3 {
   0% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   12.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   25% {
-      width: 48px;
-      height: 112px;
-      margin-top: 0px;
-      margin-left: 64px;
+    width: 48px;
+    height: 112px;
+    margin-top: 0px;
+    margin-left: 64px;
   }
 
   37.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   50% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   62.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   75% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   87.5% {
-      width: 48px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 64px;
+    width: 48px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 64px;
   }
 
   100% {
-      width: 112px;
-      height: 48px;
-      margin-top: 64px;
-      margin-left: 0px;
+    width: 112px;
+    height: 48px;
+    margin-top: 64px;
+    margin-left: 0px;
   }
 }
 
@@ -2403,16 +2401,16 @@ border-right: 2px dotted green; */
   width: 100%;
   overflow: hidden;
   grid-template-rows: 40px 1fr;
-  grid-template-columns: 2fr 2fr!important;
-  font-family: Montserrat, sans-serif!important;
+  grid-template-columns: 2fr 2fr !important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .flex-directioncol {
-  flex-direction: column!important;
+  flex-direction: column !important;
 }
 
 .mb_5 {
-  margin-bottom: 5px!important;
+  margin-bottom: 5px !important;
 }
 
 
@@ -2465,20 +2463,20 @@ CSS for the main interaction
 
 .tabset>label:hover,
 .tabset>input:focus+label {
-  color: #713f93!important;
+  color: #713f93 !important;
 }
 
 .tabset>label:hover::after,
 .tabset>input:focus+label::after,
 .tabset>input:checked+label::after {
-  background: #713f93!important;
+  background: #713f93 !important;
 }
 
 .tabset>input:checked+label {
   border-color: #ccc;
   border-bottom: 1px solid #fff;
   margin-bottom: -1px;
-  color: #713f93!important;
+  color: #713f93 !important;
 }
 
 .tab-panel {
@@ -2536,20 +2534,20 @@ CSS for the main interaction
 
 .tabset>label:hover,
 .tabset>input:focus+label {
-  color: #713f93!important;
+  color: #713f93 !important;
 }
 
 .tabset>label:hover::after,
 .tabset>input:focus+label::after,
 .tabset>input:checked+label::after {
-  background: #713f93!important;
+  background: #713f93 !important;
 }
 
 .tabset>input:checked+label {
   border-color: #ccc;
   border-bottom: 1px solid #fff;
   margin-bottom: -1px;
-  color: #713f93!important;
+  color: #713f93 !important;
 }
 
 .tab-panel {
@@ -2575,12 +2573,12 @@ CSS for the main interaction
   width: 100%;
   overflow: hidden;
   grid-template-rows: 40px 1fr;
-  grid-template-columns: 2fr 2fr!important;
-  font-family: Montserrat, sans-serif!important;
+  grid-template-columns: 2fr 2fr !important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .d-flex {
-  display: flex!important;
+  display: flex !important;
 }
 
 .toggle-box {
@@ -2683,13 +2681,13 @@ CSS for the main interaction
 }
 
 .selectedfield {
-  font-weight: bold!important;
-  text-decoration: underline!important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
 }
 
 .multiselect-dropdown {
-  font-weight: 500!important;
-  font-size: 12px!important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
 }
 
 .next-previous-disabled {
@@ -2731,15 +2729,15 @@ CSS for the main interaction
 }
 
 legend {
-  padding: 7px!important;
-  margin-left: 0px!important;
-  color: #713f93!important;
+  padding: 7px !important;
+  margin-left: 0px !important;
+  color: #713f93 !important;
   font-weight: bold;
-  border-radius: 5px!important;
-  width: auto!important;
-  font-size: 13px!important;
-  margin-bottom: 8px!important;
-  font-family: Montserrat, sans-serif!important;
+  border-radius: 5px !important;
+  width: auto !important;
+  font-size: 13px !important;
+  margin-bottom: 8px !important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .ProfileCard {
@@ -2784,14 +2782,14 @@ legend {
 }
 
 .empLegand {
-  padding-left: 25px!important;
-  border-radius: 15px!important;
-  padding-right: 25px!important;
-  padding-bottom: 5px!important;
-  padding-top: 5px!important;
+  padding-left: 25px !important;
+  border-radius: 15px !important;
+  padding-right: 25px !important;
+  padding-bottom: 5px !important;
+  padding-top: 5px !important;
   border: 1px solid #ddd;
-  background: #006666!important;
-  color: #fff!important;
+  background: #006666 !important;
+  color: #fff !important;
 }
 
 .educatiotabview {
@@ -2801,7 +2799,7 @@ legend {
   overflow: hidden;
   grid-template-rows: 40px 1fr;
   grid-template-columns: 2fr 2fr 2fr 2fr;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .educatiotabview input[type="radio"] {
@@ -2819,7 +2817,7 @@ legend {
   user-select: none;
   transition: background 0.4s, padding-left 0.2s;
   padding-left: 0;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .educatiotabview input[type="radio"]:checked+.tabs+label.nav {
@@ -2836,9 +2834,9 @@ legend {
 .educatiotabview label.nav span {
   padding-left: 0px;
   position: relative;
-  font-size: 16px!important;
+  font-size: 16px !important;
   font-weight: bold;
-  font-family: Montserrat, sans-serif!important;
+  font-family: Montserrat, sans-serif !important;
 }
 
 .educationtabs {
@@ -2851,7 +2849,7 @@ legend {
 }
 
 .text-center {
-  text-align: cennter!important;
+  text-align: cennter !important;
 }
 
 .progress_Bar_Thick {
@@ -2893,7 +2891,7 @@ legend {
 }
 
 .timeinput {
-  width: 70px!important;
+  width: 70px !important;
 }
 
 .attendance_dropdown {
@@ -3005,15 +3003,20 @@ legend {
 }
 
 .selectedfield {
-  font-weight: bold!important;
-  text-decoration: underline!important;
+  font-weight: bold !important;
+  text-decoration: underline !important;
 }
 
 .multiselect-dropdown {
-  font-weight: 500!important;
-  font-size: 12px!important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
 }
 
 .disabled-button {
-  opacity: 0.7!important;
+  opacity: 0.7 !important;
+}
+
+/* added by anant */
+.selectedMaterialCode {
+  background-color: green;
 }

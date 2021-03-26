@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.headDetailPHG = exports.SaveAttributeAssignment = exports.UpdateflagCycleCreationPHG = exports.SaveAttributeSelection = exports.headDetail = exports.SavePHG = exports.SaveHeadCreation = exports.UpdateflagCycleCreation = exports.flagCycleCreation = exports.saveCycleCreation = exports.saveCycleDefinition = exports.serviceDetails = exports.saveBusinessYear = void 0;
+exports.SaveAttributeCreation = exports.SaveAttributeSelection = exports.headDetailPHG = exports.SaveAttributeAssignment = exports.UpdateflagCycleCreationPHG = exports.headDetail = exports.SavePHG = exports.SaveHeadCreation = exports.UpdateflagCycleCreation = exports.flagCycleCreation = exports.saveCycleCreation = exports.saveCycleDefinition = exports.serviceDetails = exports.saveBusinessYear = void 0;
 var saveBusinessYear = /** @class */ (function () {
     function saveBusinessYear() {
     }
@@ -55,12 +55,6 @@ var headDetail = /** @class */ (function () {
     return headDetail;
 }());
 exports.headDetail = headDetail;
-var SaveAttributeSelection = /** @class */ (function () {
-    function SaveAttributeSelection() {
-    }
-    return SaveAttributeSelection;
-}());
-exports.SaveAttributeSelection = SaveAttributeSelection;
 var UpdateflagCycleCreationPHG = /** @class */ (function () {
     function UpdateflagCycleCreationPHG() {
     }
@@ -79,3 +73,15 @@ var headDetailPHG = /** @class */ (function () {
     return headDetailPHG;
 }());
 exports.headDetailPHG = headDetailPHG;
+var SaveAttributeSelection = /** @class */ (function () {
+    function SaveAttributeSelection() {
+    }
+    return SaveAttributeSelection;
+}());
+exports.SaveAttributeSelection = SaveAttributeSelection;
+var SaveAttributeCreation = /** @class */ (function () {
+    function SaveAttributeCreation() {
+    }
+    return SaveAttributeCreation;
+}());
+exports.SaveAttributeCreation = SaveAttributeCreation;

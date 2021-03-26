@@ -1,10 +1,11 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { CompanySettingsService } from '../../company-settings.service';
 import { saveBusinessYear } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component( {
@@ -13,7 +14,8 @@ import { AlertServiceService } from '../../../../core/services/alert-service.ser
   styleUrls: ['./business-year.component.scss']
 } )
 export class BusinessYearComponent implements OnInit {
-  [x: string]: any;
+  modalRef: BsModalRef;
+
   BusinessYearform: FormGroup;
   editedRecordIndexId: number = 0;
 
@@ -48,7 +50,7 @@ export class BusinessYearComponent implements OnInit {
   updateFlag: boolean;
   BusinessyearList = [];
 
-  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) {
+  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService, private modalService: BsModalService ) {
 
   }
 
@@ -170,5 +172,11 @@ export class BusinessYearComponent implements OnInit {
 
       } );
     this.BusinessYearform.get( 'description' ).disable();
+  }
+  UploadModal1( template: TemplateRef<any> ) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-md' } )
+    );
   }
 }

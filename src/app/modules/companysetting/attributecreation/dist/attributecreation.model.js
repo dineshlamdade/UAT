@@ -1,9 +1,6 @@
-
 // import { AddBenefitComponent } from 'src/app/layout/benefits/add-benefit/add-benefit.component';
 // import { MaterialModule }
 // import { NgModule ,Pipe,PipeTransform} from '@angular/core';
-
-
 // const routes = [
 //     {
 //         path        : '',
@@ -17,18 +14,13 @@
 //         path        : 'add-benefit/edit/:BenefiteID',
 //         component   :  AddBenefitComponent,
 //     }
-
 // ];
-
 // @NgModule({
 //     imports: [
-
 //         MaterialModule,
-
 //        // ProgressSpinnerModule
 //     ],
 //     declarations: [
-
 //     ],
 //     entryComponents: [],
 //     providers:[],
@@ -41,8 +33,6 @@
 //   numberOfOption: string;
 //   options: any[];
 // }
-
-
 // {
 //     "code": "attTest",
 //     "attributeNature": "atttest1",

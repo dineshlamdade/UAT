@@ -49,7 +49,6 @@ export class SaveHeadCreation {
   category?: string;
   type?: string;
   displayName?: string;
-  statutory: boolean;
 }
 
 
@@ -73,16 +72,7 @@ export class headDetail {
 }
 
 
-export class SaveAttributeSelection {
-  attributeGroupDefinitionId: number;
-  // id:number;
-  name; string;
-  description: string;
-  //createdBy:string;
-  // attributeNature:string;
-  // numberOfOption:string;
-  attributeMasterIdList: any[];
-}
+
 export class UpdateflagCycleCreationPHG {
   mappingGroupRequest: SaveAttributeAssignment[];
 
@@ -106,6 +96,30 @@ export class SaveAttributeAssignment {
 
 export class headDetailPHG {
   headMasterId: number;
+}
+
+
+
+
+export class SaveAttributeSelection {
+  attributeGroupDefinitionId: number;
+  // id:number;
+  name: string;
+  description: string;
+  //createdBy:string;
+  // attributeNature:string;
+  // numberOfOption:string;
+  attributeMasterIdList: any[];
+}
+
+export class SaveAttributeCreation {
+  globalAttributeMasterId: number;
+  code: string;
+  description: string;
+  attributeNature: string;
+  numberOfOption: string;
+  options: any[];
+
 }
 
 

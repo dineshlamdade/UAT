@@ -40,7 +40,7 @@
                     <label class="form-label">Attribute Group</label>
                     <select (change)="onStatusChange($event);"
                       [ngClass]="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}"
-                      name="beast" id="Institution2" class="form-control custom-select"
+                      name="attributeNature" id="attributeNature" class="form-control  "
                       formControlName="attributeNature">
                       <option *ngFor="let by of AttributeSelectionList" [value]="by.name">
                         {{by.name}}
@@ -89,8 +89,7 @@
 
                         <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                           <label class="form-label">Copy From</label>
-                          <select (change)="getPHGname($event);" name="beast" id="Institution2"
-                            class="form-control custom-select">
+                          <select (change)="getPHGname($event);" name="beast" id="Institution2" class="form-control  ">
                             <!-- formControlName="attributeNature1" -->
                             <option>--select----</option>
                             <option *ngFor="let by of PayrollHeadGroupList" [value]="by.headGroupDefinitionName">
@@ -253,7 +252,7 @@
                         <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                           <label class="form-label">Copy From</label>
                           <select (change)="onStatusChange23($event);" name="beast" id="Institution2"
-                            class="form-control custom-select">
+                            class="form-control  ">
                             <option>Not Selected </option>
                             <option *ngFor="let by of HeadNameList" [value]="by.headGroupId">
                               {{by.standardName}}
@@ -338,7 +337,7 @@
                                         <!-- <input type="text" [(ngModel)]="summary.value"
                                                                                 class="form-control"
                                                                                 placeholder="Enter Value"> -->
-                                        <select name="beast" id="Institution2" class="form-control custom-select"
+                                        <select name="beast" id="Institution2" class="form-control  "
                                           [(ngModel)]="summary.value">
                                           <option>Not Selected</option>
                                           <option *ngFor="let by of FormulaArray" [value]="by.formulaName">
@@ -349,7 +348,7 @@
 
 
                                       <td class="wd-10" *ngIf="summary.attributeNature=='List'">
-                                        <select name="beast" id="Institution2" class="form-control custom-select"
+                                        <select name="beast" id="Institution2" class="form-control  "
                                           [(ngModel)]="summary.value">
                                           <option *ngFor="let by of summary.options" [value]="by.attributeOptionValue">
                                             {{by.attributeOptionValue}}
@@ -360,7 +359,7 @@
                                       <!-- <td class="wd-10" *ngIf="summary.attributeNature=='SDM'">
                                                                                 <select
                                                                                 name="beast" id="Institution2"
-                                                                                class="form-control custom-select"
+                                                                                class="form-control  "
                                                                                 [(ngModel)]="summary.value"
                                                                                >
                                                                                 <option *ngFor="let by of SDMArray" [value]="by.attributeOptionValue">

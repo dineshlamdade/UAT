@@ -1,10 +1,11 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { CompanySettingsService } from '../../company-settings.service';
 import { saveCycleDefinition } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component( {
   selector: 'app-cycle-definition',
@@ -12,6 +13,7 @@ import { AlertServiceService } from '../../../../core/services/alert-service.ser
   styleUrls: ['./cycle-definition.component.scss']
 } )
 export class CycleDefinitionComponent implements OnInit {
+  modalRef: BsModalRef;
   CycleupdateFlag: boolean = false;
   isViewAddDays: boolean = false;
   CycleupdateFlag1: boolean = false;
@@ -29,7 +31,7 @@ export class CycleDefinitionComponent implements OnInit {
   updateFlag: boolean = false;
   sortedFrequencyList = [];
 
-  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService ) { }
+  constructor( private datepipe: DatePipe, private companySetttingService: CompanySettingsService, private formBuilder: FormBuilder, private alertService: AlertServiceService, private modalService: BsModalService ) { }
 
   ngOnInit(): void {
 
@@ -373,6 +375,7 @@ export class CycleDefinitionComponent implements OnInit {
     this.CycleupdateFlag1 = false;
     this.companySetttingService.DeleteCycleDefinitionById( id )
       .subscribe( response => { //: saveBusinessYear[]
+        this.alertService.sweetalertMasterSuccess( response.status.message, '' );
 
         this.getAllCycleDefinition();
         //  this.BusinessYearform.reset();
@@ -399,6 +402,16 @@ export class CycleDefinitionComponent implements OnInit {
     }
 
   }
+  UploadModal1( template: TemplateRef<any> ) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-md' } )
+    );
+  }
+  getCycleName( name ): void {
+    //this.CycleName = name;
+  }
+
 
 
 

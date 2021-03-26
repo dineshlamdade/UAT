@@ -40,7 +40,7 @@
                     <label class="form-label">Nature</label>
                     <select (change)="onStatusChange($event);"
                       [ngClass]="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}"
-                      name="attributeNature" id="attributeNature" class="form-control custom-select"
+                      name="attributeNature" id="attributeNature" class="form-control"
                       formControlName="attributeNature">
                       <option selected value=''>Select </option>
                       <option *ngFor="let by of NatureList" [value]="by.value">
@@ -53,17 +53,16 @@
                   <div class="col-sm-6 col-md-3" *ngIf="hidevalue">
                     <label class="form-label">Value</label>
                     <div class="input-group">
-                      <input type="text"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('optionList').status == 'INVALID'}"
-                        [readonly]="!disabled" (change)="onChangeEvent($event.target.value)"
-                        formControlName="optionList" class="form-control" placeholder="Description">
+                      <input type="text" [readonly]="!disabled" [ngClass]="{'is-invalid' :validOptionList}"
+                        formControlName="optionList" class="form-control" placeholder="Enter Value">
                     </div>
                   </div>
 
 
                   <div style="margin-top: 23px" *ngIf="hidevalue">
                     <!-- <button mat-mini-fab class="btnadd" (click)="addBenefit()" matTooltip="Add Benefit"> -->
-                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addOptionList()"></i>
+                    <i class="fa fa-plus-circle font-20" tooltip="Add"
+                      (click)="addOptionList(AttributeCreationForm.get('optionList').value)"></i>
                     <!-- <span tooltip="Add Row">Add</span>&nbsp;&nbsp; -->
                     <!-- </button> -->
                   </div>
@@ -85,16 +84,104 @@
                                 </div> -->
                 </div>
 
+                <div class="row mt-20" *ngIf="summaryHtmlDataList?.length">
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="mb-0">
+                        <h3 class="font-14 text-purple font-bold">Summary</h3>
+                      </div>
+                      <!-- <div class=""> -->
+                      <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-hover table-bordered m-b-0">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th scope="col" class="wd-8">Sr. No.</th>
+                              <th scope="col" class="wd-10">List Name</th>
+                              <th scope="col" class="wd-10" *ngIf="!viewCancelButton">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let summary of summaryHtmlDataList; let i = index">
+                              <td class="wd-8"><span tooltip="{{i+1}}">{{i+1}}</span>
+                              </td>
+
+                              <td class="wd-10"><span tooltip="summary">{{summary.name}}</span>
+                              </td>
+
+
+                              <td class="wd-10" *ngIf="!viewCancelButton">
+
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                                  (click)="editNameMaster(summary.id,summary.name)" tooltip="Edit"></i>
+
+                                <button type="button"
+                                  (click)="UploadModal1(template12);deleteNameByName(summary.name,summary.id)"
+                                  data-toggle="modal" data-target="#UploadModal"
+                                  class="btn btn-icon font-16 js-sweetalert" title="Delete" data-type="confirm"><i
+                                    class="fa fa-trash-o"></i></button>
+
+                              </td>
+                            </tr>
+                            <tr *ngIf="!summaryHtmlDataList?.length">
+                              <td colspan="10">
+                                <span class="font-14 font500 align-center text-red">No Data Available</span>
+                              </td>
+                            </tr>
+
+                            <ng-template #template12>
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="UploadModalLabel">Delete
+                                  Business Year Definition</h5>
+                                <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
+                                  aria-label="Close"><span aria-hidden="true">×</span></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <div class="row clearfix">
+                                      <div class="col-md-12">
+                                        <label class="form-label">Are
+                                          you sure want to
+                                          delete Business
+                                          Year Definition
+                                          from-</label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-primary"
+                                  (click)="deleteName();modalRef.hide()">Yes</button>
+                                <button type="button" class="btn btn-secondary bg-btn-red"
+                                  (click)="modalRef.hide()">No</button>
+                              </div>
+                            </ng-template>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
 
                 <div class="row mt-15">
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForminvalid"
-                        [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid && validOptionList == false}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
                         Save</button>
-                      <!--     [disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
+
+                      <!-- <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForm.invalid"
+                        class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save" (click)="save()"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid, 'btn-bg-green': !AttributeCreationForm.invalid  && validOptionList == false}">
+                        <b><i class="fa fa-floppy-o"></i></b> Save</button> -->
+
 
                       <button type="button" (click)="CancelAttributeCreation()" *ngIf="viewCancelButton"
                         class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
@@ -140,7 +227,7 @@
                                                         <td></td>
                                                     </tr> -->
 
-                            <tr *ngFor="let summary of AttributeCreationList; let i = index">
+                            <tr *ngFor="let summary of attributeCreationSummaryList; let i = index">
                               <td class="align-center wd-10">
                                 <span>{{i+1}}</span>
                               </td>
@@ -151,15 +238,13 @@
                                 <span>{{summary.description}}</span>
                               </td>
                               <td class="wd-10">
-                                <span>{{summary.attributeNature}}</span>
+                                <span>{{summary.attributeNatureLongForm}}</span>
                               </td>
                               <!-- <td class="wd-10">
                                                             <span>{{summary.businessCycleDefinition.businessYearDefinition.fromDate}}</span>
                                                         </td> -->
                               <td class="wd-10">
-                                <span *ngFor="let value of summary.optionList">
-                                  {{value.optionValue}},
-                                </span>
+                                <span>{{summary.optionValue}}</span>
 
                                 <!-- <span *ngIf="summary.optionList.length-1>summary.optionList.length">,</span> -->
 
@@ -202,22 +287,9 @@
                   </div>
                 </div>
               </div>
-
-
-
-
-
-
-
-
             </div>
           </div>
-
-
-
         </div>
-
-
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ import { AlertServiceService } from '../../../core/services/alert-service.servic
 
 export class SaveAttributeCreation {
   globalAttributeMasterId: number;
-  code; string;
+  code: string;
   description: string;
   attributeNature: string;
   numberOfOption: string;
@@ -18,12 +18,8 @@ export class SaveAttributeCreation {
 
 export class SaveAttributeSelection {
   attributeGroupDefinitionId: number;
-  // id:number;
-  name; string;
+  name: string;
   description: string;
-  //createdBy:string;
-  // attributeNature:string;
-  // numberOfOption:string;
   attributeMasterIdList: any[];
 }
 
@@ -48,18 +44,20 @@ export class AttributeSelectionComponent implements OnInit {
   selectedNature: string;
   viewupdateButton: boolean = false;
   attributeGroupId: number;
-  selectedCopFormAttGrp: string;
+  //selectedCopFormAttGrp: string;
 
   sourceProducts: Array<any> = [];
   targetProducts: Array<any> = [];
+  originalSourceProductList: Array<any> = [];
 
   selectedUser: Array<any> = [];
   selectedUser2: Array<any> = [];
+  selectedMaterialCode: any;
 
 
   newarray: Array<any> = [];
 
-  cities: any[];
+
 
   selectedCity: any;
 
@@ -69,13 +67,7 @@ export class AttributeSelectionComponent implements OnInit {
     private attributeSelectionService: CompanySettingsService,
     private alertService: AlertServiceService
   ) {
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-    ];
+
   }
 
   ngOnInit(): void {
@@ -83,7 +75,7 @@ export class AttributeSelectionComponent implements OnInit {
     // get All AttributeCreation
     // getAllAttributeCreation(): void {
     this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
-
+      this.originalSourceProductList = res.data.results;
       this.sourceProducts = res.data.results;
     } );
     //  }
@@ -109,7 +101,22 @@ export class AttributeSelectionComponent implements OnInit {
 
   RowSelected( u: any ) {
 
-    this.selectedUser.push( u );
+    this.selectedMaterialCode = u.code;
+    let index = this.selectedUser.findIndex( o => o.code == u.code );
+
+
+    let isContain = this.selectedUser.some( o => o.code == u.code );
+    console.log( isContain, index );
+    if ( isContain == true ) {
+      this.selectedUser.splice( index, 1 );
+    } else {
+      this.selectedUser.push( u );
+    }
+
+
+    console.log( 'selected row is', u );
+
+
     console.log( "selected user", this.selectedUser );
     //this.targetProducts.push(u);
     // declare variable in component.
@@ -156,6 +163,9 @@ export class AttributeSelectionComponent implements OnInit {
   }
   RowSelectedtargetProducts( u: any ): void {
     this.selectedUser2.push( u );
+
+
+
   }
   righttablePusg( u: any ): void {
 
@@ -180,16 +190,19 @@ export class AttributeSelectionComponent implements OnInit {
     // }
   }
   resetAttributeSelection(): void {
+    console.log( 'in reset' );
+    console.log( ' this.originalSourceProductList;', this.originalSourceProductList );
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
     this.hidevalue = false;
+    this.sourceProducts = [];
+    //this.sourceProducts = this.originalSourceProductList;
+    this.targetProducts = [];
 
     this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
-
+      this.originalSourceProductList = res.data.results;
       this.sourceProducts = res.data.results;
     } );
-
-    this.targetProducts = [];
   }
   CancelAttributeCreation(): void {
     this.summons = [];
@@ -199,17 +212,15 @@ export class AttributeSelectionComponent implements OnInit {
     this.viewCancelButton = false;
     this.viewupdateButton = false;
     this.targetProducts = [];
+    this.sourceProducts = [];
+    this.sourceProducts = this.originalSourceProductList;
 
-    this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
-
-      this.sourceProducts = res.data.results;
-    } );
 
   }
 
   // get All Attribute Selection
   getAllAttributeSelection(): void {
-    this.attributeSelectionService.getAllAttributeSelection().subscribe( res => {
+    this.attributeSelectionService.getAttributeGroup().subscribe( res => {
 
       this.AttributeSelectionList = res.data.results;
     } );
@@ -217,12 +228,17 @@ export class AttributeSelectionComponent implements OnInit {
 
   onStatusChange( event ) {
 
-    this.selectedCopFormAttGrp = event.target.value;
+    this.sourceProducts = [];
+    this.sourceProducts = this.originalSourceProductList;
+
+    //this.selectedCopFormAttGrp = event.target.value;
 
     // GetAttributeOptionList(): void {
-    this.attributeSelectionService.GetAttributeOptionListByGroup( this.selectedCopFormAttGrp ).subscribe( res => {
+    this.attributeSelectionService.GetAttributeOptionListByGroup( event.target.value ).subscribe( res => {
+      console.log( 'res is', res );
 
       this.targetProducts = res.data.results[0].attributeMasters;
+      console.log( 'target prod', this.targetProducts );
 
       this.targetProducts.forEach( element => {
         var index = this.targetProducts.indexOf( element )
@@ -244,7 +260,7 @@ export class AttributeSelectionComponent implements OnInit {
 
   // Get Attribute Selection ById
   GetAttributeSelectionByIdDisable( id ): void {
-    ;
+
     // this.CycleupdateFlag=true;
     // this.CycleupdateFlag1=false;
     this.disabled = false;
@@ -339,6 +355,7 @@ export class AttributeSelectionComponent implements OnInit {
     //addAttributeCreation.createdBy="nisha";
     // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
     if ( addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0 ) {
+      console.log( JSON.stringify( addAttributeCreation ) );
 
       this.attributeSelectionService.AddAttributeSelection( addAttributeCreation ).subscribe( ( res: any ) => {
 
@@ -355,6 +372,8 @@ export class AttributeSelectionComponent implements OnInit {
     }
     else {
 
+      console.log( JSON.stringify( addAttributeCreation.attributeGroupDefinitionId ) );
+      console.log( JSON.stringify( addAttributeCreation ) );
       this.attributeSelectionService.UpdateAttributeGroup( addAttributeCreation.attributeGroupDefinitionId, addAttributeCreation ).subscribe( ( res: any ) => {
 
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
@@ -379,7 +398,11 @@ export class AttributeSelectionComponent implements OnInit {
     addAttributeCreation.description = this.AttributeCreationForm.value.description;
     //addAttributeCreation.createdBy="nisha";
     // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
+    console.log( JSON.stringify( this.attributeGroupId ) );
+    console.log( JSON.stringify( addAttributeCreation ) );
+
     if ( addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0 ) {
+
 
       this.attributeSelectionService.UpdateAttributeGroup( this.attributeGroupId, addAttributeCreation ).subscribe( ( res: any ) => {
 
@@ -399,8 +422,22 @@ export class AttributeSelectionComponent implements OnInit {
 
 
   }
+  abc() {
+    console.log( 'in abc' );
+  }
+  onClickMaterialCode( evt: any ) {
+    console.log( evt );
+    console.log( evt.target.innerHTML.trim() );
 
 
+
+
+
+  }
+  HighlightRow: number;
+  ClickedRow( index ) {
+    this.HighlightRow = index;
+  }
 
 }
 export interface Product {
@@ -408,11 +445,5 @@ export interface Product {
   code: string;
   attributeNature: string;
   description: string;
-  // price?:number;
-  // quantity?:number;
-  // inventoryStatus?:string;
-  // category?:string;
-  // image?:string;
-  // rating?:number;
 }
 
