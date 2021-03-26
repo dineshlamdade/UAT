@@ -469,8 +469,11 @@ export class NpsDeclarationComponent implements OnInit {
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
-    if (this.uploadGridData.length) {
+    if (this.uploadGridData.length > 0) {
       this.enableFileUpload = true;
+    }
+    else{
+      this.enableFileUpload = false;
     }
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);

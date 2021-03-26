@@ -1,12 +1,6 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import {
-  Component,
-  Inject,
-  Input,
-  OnInit,
-  TemplateRef,
-} from '@angular/core';
+import { Component, Inject, Input, OnInit, TemplateRef } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -23,14 +17,13 @@ import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { NpsService } from '../nps.service';
 
-
 @Component({
   selector: 'app-nps-master',
   templateUrl: './nps-master.component.html',
   styleUrls: ['./nps-master.component.scss'],
 })
 export class NpsMasterComponent implements OnInit {
-  @Input() public accountNo :any;
+  @Input() public accountNo: any;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -106,7 +99,7 @@ export class NpsMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
-  public proofSubmissionId ;
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -164,8 +157,6 @@ export class NpsMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
-
-
   }
 
   // initiate Reactive Master Form
@@ -178,7 +169,10 @@ export class NpsMasterComponent implements OnInit {
         Validators.required
       ),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl({value: null, disabled: true},Validators.required),
+      accountHolderName: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       relationship: new FormControl(
         { value: null, disabled: true },
         Validators.required
@@ -196,10 +190,11 @@ export class NpsMasterComponent implements OnInit {
       ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
-      ecs: new FormControl(0),
+      ecs: new FormControl('0'),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
+      proofSubmissionId: new FormControl(''),
     });
   }
 
@@ -208,8 +203,6 @@ export class NpsMasterComponent implements OnInit {
     this.myInvestmentsService.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
-
-
   }
 
   // Family Member List API call
@@ -375,7 +368,7 @@ export class NpsMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'National Pension Scheme Document needed to Create Master.'
       );
@@ -427,18 +420,17 @@ export class NpsMasterComponent implements OnInit {
           }
         });
 
-        this.Index = -1;
-        formDirective.resetForm();
-        this.form.reset();
-        this.form.get('active').setValue(true);
-        this.form.get('ecs').setValue(0);
-        this.showUpdateButton = false;
-        this.paymentDetailGridData = [];
-        this.masterfilesArray = [];
-        this.urlArray = [];
-        this.submitted = false;
-        this.documentRemark = '';
-
+      this.Index = -1;
+      formDirective.resetForm();
+      this.form.reset();
+      this.form.get('active').setValue(true);
+      this.form.get('ecs').setValue(0);
+      this.showUpdateButton = false;
+      this.paymentDetailGridData = [];
+      this.masterfilesArray = [];
+      this.urlArray = [];
+      this.submitted = false;
+      this.documentRemark = '';
     }
     this.form.patchValue({
       accountType: 'Tier_1',
@@ -464,35 +456,21 @@ export class NpsMasterComponent implements OnInit {
   }
 
   // Calculate annual amount on basis of premium and frquency
-  calculateAnnualAmount() {
-    if (
-      this.form.value.premiumAmount != null &&
-      this.form.value.frequencyOfPayment != null
-    ) {
-      let installment = this.form.value.premiumAmount;
-
-      installment = installment.toString().replace(',', '');
-
-      // console.log(installment);
-      if (!this.form.value.frequencyOfPayment) {
-        installment = 0;
-      }
-      if (this.form.value.frequencyOfPayment === 'Monthly') {
-        installment = installment * 12;
-      } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
-        installment = installment * 4;
-      } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
-        installment = installment * 2;
-      } else {
-        installment = installment * 1;
-      }
-      const formatedPremiumAmount = this.numberFormat.transform(
-        this.form.value.premiumAmount
-      );
-      // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-      this.form.get('annualAmount').setValue(installment);
+  public calculateAnnualAmount() {
+    let installment = this.form.value.premiumAmount;
+    if (!this.form.value.frequencyOfPayment) {
+      installment = 0;
     }
+    if (this.form.value.frequencyOfPayment === 'Monthly') {
+      installment = installment * 12;
+    } else if (this.form.value.frequencyOfPayment === 'Quarterly') {
+      installment = installment * 4;
+    } else if (this.form.value.frequencyOfPayment === 'Halfyearly') {
+      installment = installment * 2;
+    } else {
+      installment = installment * 1;
+    }
+    this.form.get('annualAmount').setValue(installment);
   }
 
   // Family relationship shown on Policyholder selection
@@ -520,7 +498,7 @@ export class NpsMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-    //this.scrollToTop();
+    this.scrollToTop();
     this.npsService.getNpsMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -530,41 +508,49 @@ export class NpsMasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-      console.log(accountNumber)
-      const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
+      console.log(accountNumber);
+      const obj = this.findByaccountNumber(accountNumber, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.accountNumber;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.documentInformationList;
-      this.proofSubmissionId = obj.proofSubmissionId;
-
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
       }
     });
-
   }
 
-  findByaccountNumber(accountNumber,masterGridData){
-    return masterGridData.find(x => x.accountNumber === accountNumber)
+  findByaccountNumber(accountNumber, masterGridData) {
+    return masterGridData.find((x) => x.accountNumber === accountNumber);
   }
 
- //---------- On View Cancel -------------------
- resetView() {
-  this.form.reset();
-  this.form.get('active').setValue(true);
-  this.form.get('ecs').setValue(0);
-  this.showUpdateButton = false;
-  this.paymentDetailGridData = [];
-  this.masterfilesArray = [];
-  this.urlArray = [];
-  this.isCancel = false;
-}
+  // scrollToTop Fuctionality
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
+  //---------- On View Cancel -------------------
+  resetView() {
+    this.form.reset();
+    this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.urlArray = [];
+    this.isCancel = false;
+  }
 
   // On View Cancel
   cancelView() {
@@ -579,6 +565,36 @@ export class NpsMasterComponent implements OnInit {
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+  // ---------- For Doc Viewer -----------------------
+  public nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 }
