@@ -1,39 +1,13 @@
 <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm"
   method="post" novalidate>
   <div class="tabview-contents">
-     <div class="row">
-        <!-- <div class="col-sm-6 col-md-3">
-           <label class="form-label">Institution</label>
-           <select name="beast" id="Institution" class="form-control custom-select"
-                formControlName="institutionName"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.institutionName.errors }">
-              <option *ngFor="let institutionName of institutionNameList"
-                [value]="institutionName.value">
-                {{institutionName.label}}
-              </option>
-           </select>
-           <div *ngIf="submitted && masterForm.institutionName.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.institutionName.errors.required">Institution is mandatory</div>
-           </div>
-        </div> -->
-        <div class="col-sm-6 col-md-3">
-          <label class="form-label">Institution</label>
-          <input type="text" formControlName="institution" class="form-control"
-          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
-             placeholder="Enter institution"
-             [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }"  >
-          <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
-             <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
-          </div>
-       </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label">Account Number</label>
-           <input type="text" formControlName="accountNumber" class="form-control"
-              placeholder="Enter Policy No." onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
-              [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
-           <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
-           </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Institution</label>
+        <input type="text" formControlName="institution"  onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" class="form-control" placeholder="Enter institution"
+          [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
+        <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
+          <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
         </div>
       </div>
       <div class="col-sm-6 col-md-3">
@@ -388,7 +362,7 @@
         </div>
       </div>
     </div>
-
+  </div>
 </form>
 <ng-template #template>
   <div class="modal-header">
