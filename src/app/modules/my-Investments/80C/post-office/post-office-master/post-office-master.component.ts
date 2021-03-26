@@ -143,7 +143,7 @@ export class PostOfficeMasterComponent implements OnInit {
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
-      investmentGroup1MasterPaymentDetailId: new FormControl(0),
+      // investmentGroup1MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId : new FormControl('')
     });
@@ -569,8 +569,9 @@ export class PostOfficeMasterComponent implements OnInit {
     this.form.get('ecs').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
-    this.isClear = false;
     this.masterfilesArray = [];
+    this.urlArray = [];
+    this.isCancel = false;
   }
 
   // On Master Edit functionality
@@ -601,6 +602,38 @@ export class PostOfficeMasterComponent implements OnInit {
     this.modalRef = this.modalService.show(
       template,
       Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
+
+   //---------- For Doc Viewer -----------------------
+   nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>,index:any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log("urlSafe::",  this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
   }
 }

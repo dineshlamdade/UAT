@@ -15,7 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class EducationalLoanComponent implements OnInit {
 
   public tabIndex = 0;
-  public loanAccountNumber: string;
+  public loanAccountNo: string;
   public windowScrolled: boolean;
   public data: any;
 
@@ -32,14 +32,17 @@ export class EducationalLoanComponent implements OnInit {
 
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
-    this.loanAccountNumber = event;
+    this.loanAccountNo = event;
   }
-
 
   changeTabIndex(index: number)
   {
+    console.log(this.loanAccountNo)
     if(index !== 2) {
       this.data = undefined;
+    }
+    if(index !== 1) {
+      this.loanAccountNo = undefined;
     }
     this.tabIndex = index;
   }

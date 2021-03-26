@@ -1,6 +1,20 @@
 {
+
+"workbench.colorCustomizations": {
+  "editorUnnecessaryCode.border": "#dd7aab"
+},
+
+
+
+
+
+"workbench.colorCustomizations": {
+  "editorUnnecessaryCode.foreground": "#dd7aab"
+}
+
     "compile-hero.disable-compile-files-on-did-save-code": false,
     "cSpell.words": [
         "Datepicker"
     ]
 }
+

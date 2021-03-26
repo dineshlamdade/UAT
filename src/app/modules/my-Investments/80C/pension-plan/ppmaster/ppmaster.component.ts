@@ -241,9 +241,6 @@ export class PpmasterComponent implements OnInit {
 
     if (this.accountNo != undefined || this.accountNo != null) {
       const input = this.accountNo;
-      // console.log("edit", input)
-      // this.editMaster(input);
-      // console.log('editMaster accountNumber', input);
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
@@ -425,6 +422,7 @@ export class PpmasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
+      this.documentRemark = '';
 
     }
   }

@@ -18,7 +18,9 @@
                   [checked]="tabIndex == 0"
                 />
                 <div class="tabs about-page">
-                  <app-summary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-summary>
+                  <app-summary *ngIf="tabIndex == 0"
+                    (myEvent)="changeTabIndexForRedirect($event)"
+                    (disabilityTypeName)="redirectToMaster($event)"></app-summary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>
@@ -33,7 +35,7 @@
                   [checked]="tabIndex == 1"
                 />
                 <div class="tabs about-page">
-                  <app-master *ngIf="tabIndex == 1"> </app-master>
+                  <app-master *ngIf="tabIndex == 1"  [disabilityTypeName]="disabilityTypeName" > </app-master>
                 </div>
                 <label class="nav" for="Master">
                   <span> Master </span>
@@ -48,9 +50,8 @@
                   [checked]="tabIndex == 2"
                 />
                 <div class="tabs about-page">
-                  <app-declaration-and-actual #licdeclaration
+                  <app-declaration-and-actual
                   [data] =  "data"
-
                   *ngIf="tabIndex == 2"
                   ></app-declaration-and-actual>
                 </div>

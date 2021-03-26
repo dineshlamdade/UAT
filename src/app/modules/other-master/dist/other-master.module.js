@@ -24,7 +24,6 @@ var progressbar_1 = require("ngx-bootstrap/progressbar");
 var tooltip_1 = require("ngx-bootstrap/tooltip");
 var ngx_toastr_1 = require("ngx-toastr");
 var sharedlayout_module_1 = require("../sharedlayout/sharedlayout.module");
-var slider_1 = require("@angular/material/slider");
 var company_group_master_component_1 = require("./company-group-master/company-group-master.component");
 var company_master_component_1 = require("./company-master/company-master.component");
 var company_registration_details_component_1 = require("./company-registration-details/company-registration-details.component");
@@ -35,12 +34,10 @@ var compliance_master_component_1 = require("./compliance-master/compliance-mast
 var ng_multiselect_dropdown_1 = require("ng-multiselect-dropdown");
 var bank_master_at_group_component_1 = require("./bank-master-at-group/bank-master-at-group.component");
 var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
-var button_1 = require("@angular/material/button");
-var icon_1 = require("@angular/material/icon");
-var form_field_1 = require("@angular/material/form-field");
 var app_primeNG_module_1 = require("src/app/app.primeNG.module");
 var job_master_component_1 = require("./job-master/job-master.component");
 var compliance_mapping_component_1 = require("./compliance-mapping/compliance-mapping.component");
+// import { UserGroupComponent } from './user-group/user-group.component';
 var OtherMasterModule = /** @class */ (function () {
     function OtherMasterModule() {
     }
@@ -57,29 +54,24 @@ var OtherMasterModule = /** @class */ (function () {
                 bank_master_at_group_component_1.BankMasterAtGroupComponent,
                 bank_master_at_company_component_1.BankMasterAtCompanyComponent,
                 job_master_component_1.JobMasterComponent,
-                compliance_mapping_component_1.ComplianceMappingComponent,
+                compliance_mapping_component_1.ComplianceMappingComponent
+                //  UserGroupComponent
             ],
             imports: [
-                button_1.MatButtonModule,
-                icon_1.MatIconModule,
-                form_field_1.MatFormFieldModule,
                 datepicker_1.BsDatepickerModule,
+                datepicker_1.BsDatepickerModule.forRoot(),
                 common_1.CommonModule,
                 forms_1.ReactiveFormsModule,
                 forms_1.FormsModule,
                 ng_multiselect_dropdown_1.NgMultiSelectDropDownModule,
-                slider_1.MatSliderModule,
                 tooltip_1.TooltipModule.forRoot(),
-                datepicker_1.BsDatepickerModule.forRoot(),
                 collapse_1.CollapseModule.forRoot(),
                 accordion_1.AccordionModule.forRoot(),
-                tooltip_1.TooltipModule.forRoot(),
                 popover_1.PopoverModule.forRoot(),
                 alert_1.AlertModule.forRoot(),
                 dropdown_1.BsDropdownModule.forRoot(),
                 modal_1.ModalModule.forRoot(),
                 progressbar_1.ProgressbarModule.forRoot(),
-                carousel_1.CarouselModule.forRoot(),
                 carousel_1.CarouselModule.forRoot(),
                 ngx_toastr_1.ToastrModule.forRoot({
                     positionClass: 'toast-top-center'

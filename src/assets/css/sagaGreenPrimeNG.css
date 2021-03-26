@@ -55,7 +55,7 @@
 .p-link:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #b7e0b8;
+    /* box-shadow: 0 0 0 0.2rem #b7e0b8; */
 }
 
 .p-autocomplete .p-autocomplete-loader {
@@ -2268,6 +2268,10 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     border-radius: 0;
 }
 
+.p-datatable {
+    overflow: auto!important;
+}
+
 .p-datatable .p-datatable-header {
     background: #f8f9fa;
     color: #495057;
@@ -2290,8 +2294,10 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     border: 1px solid #e9ecef;
     color: #fff;
     transition: box-shadow 0.2s;
-    padding-top: 7px!important;
-    padding-bottom: 7px!important;
+    /* padding-top: 7px!important;
+    padding-bottom: 7px!important; */
+    padding-top: 3px!important;
+    padding-bottom: 3px!important;
     padding-left: 5px!important;
     padding-right: 5px!important;
     font-size: 12px!important;
@@ -5660,13 +5666,15 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
-.p-column-filter-menu-button:hover {
+
+/* .p-column-filter-menu-button:hover {
     color: #495057;
     border-color: transparent;
     background: #e9ecef;
-}
+} */
 
-.p-column-filter-menu-button.p-column-filter-menu-button-open,
+
+/* .p-column-filter-menu-button.p-column-filter-menu-button-open,
 .p-column-filter-menu-button.p-column-filter-menu-button-open:hover {
     background: #e9ecef;
     color: #495057;
@@ -5676,7 +5684,7 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 .p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
     background: #E8F5E9;
     color: #495057;
-}
+} */
 
 .p-column-filter-menu-button:focus {
     /* outline: 0 none;
@@ -5819,4 +5827,37 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-column-filter-buttonbar .p-button {
     width: auto!important;
+}
+
+.p-datatable-scrollable-footer,
+.p-datatable-scrollable-header {
+    overflow: visible!important;
+}
+
+.p-datatable-scrollable-wrapper {
+    overflow: auto!important;
+}
+
+.Sort_Filter_Position {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.p-sortable-column-icon {
+    font-size: 12px!important;
+}
+
+.pi-filter-icon {
+    font-size: 12px!important;
+}
+
+.p-column-filter-menu-button {
+    width: auto!important;
+    height: auto!important;
+    color: #fff;
+    border: 0 none;
+    background: transparent;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }

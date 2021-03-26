@@ -12,6 +12,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { fakeAsync } from '@angular/core/testing';
 import {
   FormBuilder,
   FormControl,
@@ -55,6 +56,7 @@ export class LicdeclarationComponent implements OnInit {
   public frequencyOfPaymentList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
+
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
@@ -322,6 +324,14 @@ export class LicdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+
     this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -990,11 +1000,48 @@ export class LicdeclarationComponent implements OnInit {
           innerElement.dueDate,
           'yyyy-MM-dd',
         );
-
         innerElement.dateOfPayment = dateOfPaymnet;
         innerElement.dueDate = dueDate;
       });
     });
+
+    for (let i = 0; i < this.transactionDetail.length; i++) {
+      const transactionId = this.uploadGridData;
+      this.transactionDetail[0].lictransactionList.forEach(element => {
+        if (element.licTransactionId == transactionId[i]) {
+          if (element.previousEmployerId == 'Select Previous Emp.' ) {
+            this.alertService.sweetalertError(
+              'Please make sure that you have selected previous employer for all selected lines',
+            );
+            return false;
+          }
+          if (element.dateOfPayment == null) {
+            this.alertService.sweetalertError(
+              'Please make sure that you have selected date of payment for all selected lines',
+            );
+            return false;
+          }
+          if (element.dueDate == null) {
+            this.alertService.sweetalertError(
+              'Please make sure that you have selected due date for all selected lines',
+            );
+            return false;
+          }
+          if (element.declaredAmount == null) {
+            this.alertService.sweetalertError(
+              'Please make sure that you have selected declared amount for all selected lines',
+            );
+            return false;
+          }
+          if (element.actualAmount == null) {
+            this.alertService.sweetalertError(
+              'Please make sure that you have selected actual amount for all selected lines',
+            );
+            return false;
+          }
+        }
+      });
+    }
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
@@ -1075,12 +1122,16 @@ export class LicdeclarationComponent implements OnInit {
       this.alertService.sweetalertError(
         'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
       );
+      this.receiptAmount = '0.00';
+      return false;
     } else if (receiptAmount_ > globalSelectedAmount_) {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
         'Receipt Amount is greater than Selected line Actual Amount',
       );
+      this.receiptAmount = '0.00';
+      return false;
     }
       this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }

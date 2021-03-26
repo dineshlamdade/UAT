@@ -574,7 +574,7 @@ export class payrollComponent implements OnInit {
   addBusinessYear(): void {
 
     const addBusinessYear: saveBusinessYear = Object.assign({}, this.BusinessYearform.value);
-    if (addBusinessYear.id == undefined || addBusinessYear.id == 0) {
+    if (addBusinessYear.businessYearDefinitionId == undefined || addBusinessYear.businessYearDefinitionId == 0) {
       addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
       addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
       this.payrollService.AddBusinessYear(addBusinessYear).subscribe((res: any) => {
@@ -593,7 +593,7 @@ export class payrollComponent implements OnInit {
       //Update BusinessYear service
       addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
       addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
-      this.payrollService.UpdateBusinessYear(addBusinessYear.id, addBusinessYear).subscribe((res: any) => {
+      this.payrollService.UpdateBusinessYear(addBusinessYear.businessYearDefinitionId, addBusinessYear).subscribe((res: any) => {
 
         this.sweetalertMasterSuccess("Updated..!!", res.status.message);
         this.getAllBusinessyear();

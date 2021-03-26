@@ -293,6 +293,13 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
     this.Service.getPPFDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
         console.log('getinstitution' , res);
@@ -895,6 +902,7 @@ export class PPFDeclarationComponent implements OnInit {
       });
     this.receiptAmount = '0.00';
     this.filesArray = [];
+    console.log("filesArray empty",this.filesArray);
     this.globalSelectedAmount = '0.00';
   }
 

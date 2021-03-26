@@ -12,22 +12,10 @@ import { InterestOnTtbService } from '../interest-on-ttb.service';
 })
 export class InterestOnTtbSummaryComponent implements OnInit {
 
-  @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() bankName: string;
+  @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-
-
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      policyNo: policyNo,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.policyNo = policyNo;
-    this.myEvent.emit(data);
-  }
+  @Output() accountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -40,7 +28,7 @@ export class InterestOnTtbSummaryComponent implements OnInit {
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
-  public selectedInstitution: string;
+  public selectedbankName: string;
 
   // public previousEmployerB: string;
   public limit : number;
@@ -49,8 +37,6 @@ export class InterestOnTtbSummaryComponent implements OnInit {
   public DeclaredAmountBenefit : number;
   public ActualAmountBenefit : number;
 
-
-
   constructor(
     private service: MyInvestmentsService,
     private interestOnTtbService: InterestOnTtbService,
@@ -58,8 +44,29 @@ export class InterestOnTtbSummaryComponent implements OnInit {
     private alertService: AlertServiceService
   ) {  }
 
+
   public ngOnInit(): void {
     this.summaryPage();
+  }
+  redirectToDeclarationActual(bankName: string, accountNumber: string, mode: string) {
+    this.tabIndex = 2;
+    const data = {
+      bankName : bankName,
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex,
+      canEdit: (mode == 'edit' ? true : false)};
+    this.bankName = bankName;
+    this.accountNumber = accountNumber;
+    this.myEvent.emit(data);
+  }
+
+  jumpToMasterPage(accountNumber: string) {
+    this.tabIndex = 1;
+    const accountNo = {
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex,
+    };
+    this.accountNo.emit(accountNo);
   }
 
   // ---------------------Summary ----------------------
@@ -74,21 +81,6 @@ export class InterestOnTtbSummaryComponent implements OnInit {
       this.benefitDeclaredAmount = res.data.results[0].benefitDeclaredAmount;
       this.onChangeLimit();
     });
-  }
-
-  jumpToMasterPage(n: number) {
-    //console.log(n);
-    this.tabIndex = 1;
-    //this.editMaster(3);
-  }
-
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.policyNo = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
   }
 
   onChangeLimit() {

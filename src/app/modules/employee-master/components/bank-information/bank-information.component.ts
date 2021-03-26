@@ -14,17 +14,17 @@ import { MustMatch } from './password-match.validator';
 import { SharedInformationService } from './../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
 
-@Component({
+@Component( {
   selector: 'app-bank-information',
   templateUrl: './bank-information.component.html',
   styleUrls: ['./bank-information.component.scss'],
   encapsulation: ViewEncapsulation.None
-})
+} )
 export class BankInformationComponent implements OnInit {
 
   bankInfoForm: FormGroup;
   GridBankInfoForm: FormGroup;
-  BankInformationModel = new BankInformationModel('', '', '', '', '', '', '', '', '')
+  BankInformationModel = new BankInformationModel( '', '', '', '', '', '', '', '', '' )
   BankInformationArray: Array<any> = [];
   shareCountryDataSubcription: Subscription;
   countryList: Array<any> = [];
@@ -73,57 +73,57 @@ export class BankInformationComponent implements OnInit {
   saveNextBoolean: boolean = false;
   accountNo: boolean;
   confirmAccountNo1: boolean;
-  isAccountNoValid:boolean;
+  isAccountNoValid: boolean;
   public maxNumber: any;
 
 
 
-  constructor(private formBuilder: FormBuilder, private EventEmitterService: EventEmitterService,
+  constructor( private formBuilder: FormBuilder, private EventEmitterService: EventEmitterService,
     public datepipe: DatePipe, private BankInformationService: BankInformationService,
-    private CommonDataService: SharedInformationService, private router: Router,) { }
+    private CommonDataService: SharedInformationService, private router: Router, ) { }
 
   ngOnInit(): void {
 
-    this.bankInfoForm = this.formBuilder.group({
+    this.bankInfoForm = this.formBuilder.group( {
       country: [''],
       state: [''],
       bankIFSC: [{ value: '', disabled: true }],
       bankName: [''],
       branchName: [''],
       branchAddress: [''],
-      nameAsPerBank: ['', Validators.compose([Validators.pattern(/^(?=.*[a-zA-Z0-9•	)(.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	)(.ÄäËëÏïÖöÜüŸÿ' ]+$/)])],
+      nameAsPerBank: ['', Validators.compose( [Validators.pattern( /^(?=.*[a-zA-Z0-9•	)(.ÄäËëÏïÖöÜüŸÿ' ])[a-zA-Z0-9•	)(.ÄäËëÏïÖöÜüŸÿ' ]+$/ )] )],
       accountNumber: [''],
       confirmAccountNo: ['']
     },
       {
-        validator: MustMatch('accountNumber', 'confirmAccountNo')
-      });
-    this.bankInfoForm.get('confirmAccountNo').setValue('');
-    const empId = localStorage.getItem('employeeMasterId')
-    this.employeeMasterId = Number(empId);
+        validator: MustMatch( 'accountNumber', 'confirmAccountNo' )
+      } );
+    this.bankInfoForm.get( 'confirmAccountNo' ).setValue( '' );
+    const empId = localStorage.getItem( 'employeeMasterId' )
+    this.employeeMasterId = Number( empId );
 
     this.getBankAccounts();
 
-    this.CommonDataService.getLocationInformation().subscribe(res => {
+    this.CommonDataService.getLocationInformation().subscribe( res => {
 
       this.countryList = res.data.results;
-    })
+    } )
 
-    this.shareCountryDataSubcription = this.EventEmitterService.setCountryData().subscribe(res => {
-      if (res) {
+    this.shareCountryDataSubcription = this.EventEmitterService.setCountryData().subscribe( res => {
+      if ( res ) {
         this.countryList = res.countryList;
       }
-    })
+    } )
 
   }
 
   // Selection of country based validation for IFSC and other fields
   selectCountry() {
 
-    if (this.BankInformationModel.country == 'India') {
-      this.bankInfoForm.get('bankIFSC').enable();
+    if ( this.BankInformationModel.country == 'India' ) {
+      this.bankInfoForm.get( 'bankIFSC' ).enable();
     } else {
-      this.bankInfoForm.get('bankIFSC').disable();
+      this.bankInfoForm.get( 'bankIFSC' ).disable();
       this.BankInformationModel.bankIFSC = '';
       this.BankInformationModel.bankName = '';
       this.BankInformationModel.branchName = '';
@@ -137,18 +137,18 @@ export class BankInformationComponent implements OnInit {
 
   // Get API method of bank accounts
   getBankAccounts() {
-    this.BankInformationService.getBankInformation(this.employeeMasterId).subscribe(res => {
+    this.BankInformationService.getBankInformation( this.employeeMasterId ).subscribe( res => {
 
       this.bankSummaryGridData = res.data.results[0];
       // this.employeeBankInfoId = res.data.results[0][0].employeeBankInfoId;
-    });
+    } );
   }
 
 
   // Get IFSC Details
-  getDataFromIFSC(bankIFSC) {
+  getDataFromIFSC( bankIFSC ) {
 
-    if (bankIFSC.length < 11) {
+    if ( bankIFSC.length < 11 ) {
       this.BankInformationModel.bankName = '';
       this.BankInformationModel.branchName = '';
       this.BankInformationModel.branchAddress = '';
@@ -157,25 +157,25 @@ export class BankInformationComponent implements OnInit {
       this.BankInformationModel.nameAsPerBank = '';
       this.maxAccNumber = null;
     }
-    if (bankIFSC.length == 11) {
-      this.IFSCDetails(bankIFSC);
+    if ( bankIFSC.length == 11 ) {
+      this.IFSCDetails( bankIFSC );
     }
   }
 
-  IFSCDetails(bankIFSC) {
+  IFSCDetails( bankIFSC ) {
 
-    this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
+    this.BankInformationService.getDataFromIFSC( bankIFSC ).subscribe( res => {
 
       this.maxAccNumber = res.data.results[0].limit
-      this.maxNumber=this.maxAccNumber;
-      if (this.maxAccNumber == 0) {
+      this.maxNumber = this.maxAccNumber;
+      if ( this.maxAccNumber == 0 ) {
         this.maxAccNumber = null;
       }
       this.BankInformationModel.bankName = res.data.results[0].bankName;
       this.BankInformationModel.branchName = res.data.results[0].branchName;
       this.BankInformationModel.branchAddress = res.data.results[0].address;
       this.addButton = true;
-    });
+    } );
   }
 
   clearData() {
@@ -189,66 +189,66 @@ export class BankInformationComponent implements OnInit {
   }
 
   // Save&Next Submit Method
-  BankSaveNextSubmit(BankInformationModel) {
+  BankSaveNextSubmit( BankInformationModel ) {
     this.saveNextBoolean = true;
-    this.maxAccNumber=this.maxAccNumber;
-    this.postBankInfoForm(BankInformationModel);
+    this.maxAccNumber = this.maxAccNumber;
+    this.postBankInfoForm( BankInformationModel );
   }
 
   // Bank Form save Post Function
-  postBankInfoForm(BankInformationModel) {
+  postBankInfoForm( BankInformationModel ) {
 
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
     BankInformationModel.state = this.stateModel;
-    this.BankInformationService.postBankInfoForm(BankInformationModel).subscribe(res => {
+    this.BankInformationService.postBankInfoForm( BankInformationModel ).subscribe( res => {
 
       this.getBankAccounts();
-      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.CommonDataService.sweetalertMasterSuccess( "Success..!!", res.status.messsage );
       this.resetForm();
       this.confirmAccountNumber = '';
-      this.bankInfoForm.get('confirmAccountNo').setValue('');
+      this.bankInfoForm.get( 'confirmAccountNo' ).setValue( '' );
       this.bankInfoForm.markAsUntouched();
-      this.bankInfoForm.get('bankIFSC').disable();
+      this.bankInfoForm.get( 'bankIFSC' ).disable();
       this.accountNoMatched = false;
-      if (this.saveNextBoolean == true) {
+      if ( this.saveNextBoolean == true ) {
         this.saveNextBoolean = false;
-        this.router.navigate(['/employee-master/payroll-area-information']);
+        this.router.navigate( ['/employee-master/payroll-area-information'] );
       }
-    }, (error: any) => {
-      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-    })
+    }, ( error: any ) => {
+      this.CommonDataService.sweetalertError( error["error"]["status"]["messsage"] );
+    } )
   }
 
   // Bank Form save Put Function
-  updateBankGridRow(BankInformationModel) {
+  updateBankGridRow( BankInformationModel ) {
 
     BankInformationModel.employeeMasterId = this.employeeMasterId;
     delete BankInformationModel.confirmAccountNo;
     BankInformationModel.state = this.stateModel;
-    this.BankInformationService.putBankInfoForm(BankInformationModel).subscribe(res => {
+    this.BankInformationService.putBankInfoForm( BankInformationModel ).subscribe( res => {
 
       this.getBankAccounts();
-      this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      this.CommonDataService.sweetalertMasterSuccess( "Success..!!", res.status.messsage );
       this.resetForm();
       this.confirmAccountNumber = '';
       this.bankInfoForm.markAsUntouched();
-      this.bankInfoForm.get('confirmAccountNo').setValue('');
+      this.bankInfoForm.get( 'confirmAccountNo' ).setValue( '' );
       this.accountNoMatched = false;
-    }, (error: any) => {
-      this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-    })
+    }, ( error: any ) => {
+      this.CommonDataService.sweetalertError( error["error"]["status"]["messsage"] );
+    } )
   }
 
   // Edit grid row method
-  editBankGridRow(bank) {
+  editBankGridRow( bank ) {
 
     this.viewBankForm = false;
-   this.maxAccNumber = this.maxNumber;
+    this.maxAccNumber = this.maxNumber;
     this.addButton = true;
     this.accountNumberCountError = '';
     this.confirmAccountNumberCountError = '';
-    this.bankInfoForm.get('bankIFSC').enable();
+    this.bankInfoForm.get( 'bankIFSC' ).enable();
     this.BankInformationModel.country = bank.country;
     this.BankInformationModel.bankIFSC = bank.bankIFSC;
     this.BankInformationModel.bankName = bank.bankName;
@@ -257,34 +257,34 @@ export class BankInformationComponent implements OnInit {
     this.BankInformationModel.nameAsPerBank = bank.nameAsPerBank;
     this.BankInformationModel.accountNo = bank.accountNo;
     this.confirmAccountNumber = bank.accountNo;
-    this.bankInfoForm.get('confirmAccountNo').setValue(bank.accountNo);
+    this.bankInfoForm.get( 'confirmAccountNo' ).setValue( bank.accountNo );
     this.accountNoMatched = true;
     this.BankInformationModel.employeeBankInfoId = bank.employeeBankInfoId
     this.stateModel = bank.state;
     // this.confirmAccountNumber = '';
     // this.bankInfoForm.get('confirmAccountNo').setValue('');
-    const temp1 = this.bankInfoForm.get('country');
+    const temp1 = this.bankInfoForm.get( 'country' );
     temp1.enable();
-    const temp2 = this.bankInfoForm.get('state');
+    const temp2 = this.bankInfoForm.get( 'state' );
     temp2.enable();
-    const temp3 = this.bankInfoForm.get('bankIFSC');
+    const temp3 = this.bankInfoForm.get( 'bankIFSC' );
     temp3.enable();
-    const temp4 = this.bankInfoForm.get('bankName');
+    const temp4 = this.bankInfoForm.get( 'bankName' );
     temp4.enable();
-    const temp5 = this.bankInfoForm.get('branchName');
+    const temp5 = this.bankInfoForm.get( 'branchName' );
     temp5.enable();
-    const temp6 = this.bankInfoForm.get('branchAddress');
+    const temp6 = this.bankInfoForm.get( 'branchAddress' );
     temp6.enable();
-    const temp7 = this.bankInfoForm.get('nameAsPerBank');
+    const temp7 = this.bankInfoForm.get( 'nameAsPerBank' );
     temp7.enable();
-    const temp8 = this.bankInfoForm.get('accountNumber');
+    const temp8 = this.bankInfoForm.get( 'accountNumber' );
     temp8.enable();
-    const temp9 = this.bankInfoForm.get('confirmAccountNo');
+    const temp9 = this.bankInfoForm.get( 'confirmAccountNo' );
     temp9.enable();
   }
 
   // View grid row method
-  viewBankGridRow(bank) {
+  viewBankGridRow( bank ) {
     this.viewBankForm = true;
     this.accountNumberCountError = '';
     this.confirmAccountNumberCountError = '';
@@ -297,51 +297,51 @@ export class BankInformationComponent implements OnInit {
     this.BankInformationModel.accountNo = bank.accountNo;
     this.BankInformationModel.employeeBankInfoId = bank.employeeBankInfoId
     this.stateModel = bank.state;
-    const temp1 = this.bankInfoForm.get('country');
+    const temp1 = this.bankInfoForm.get( 'country' );
     temp1.disable();
-    const temp2 = this.bankInfoForm.get('state');
+    const temp2 = this.bankInfoForm.get( 'state' );
     temp2.disable();
-    const temp3 = this.bankInfoForm.get('bankIFSC');
+    const temp3 = this.bankInfoForm.get( 'bankIFSC' );
     temp3.disable();
-    const temp4 = this.bankInfoForm.get('bankName');
+    const temp4 = this.bankInfoForm.get( 'bankName' );
     temp4.disable();
-    const temp5 = this.bankInfoForm.get('branchName');
+    const temp5 = this.bankInfoForm.get( 'branchName' );
     temp5.disable();
-    const temp6 = this.bankInfoForm.get('branchAddress');
+    const temp6 = this.bankInfoForm.get( 'branchAddress' );
     temp6.disable();
-    const temp7 = this.bankInfoForm.get('nameAsPerBank');
+    const temp7 = this.bankInfoForm.get( 'nameAsPerBank' );
     temp7.disable();
-    const temp8 = this.bankInfoForm.get('accountNumber');
+    const temp8 = this.bankInfoForm.get( 'accountNumber' );
     temp8.disable();
-    const temp9 = this.bankInfoForm.get('confirmAccountNo');
+    const temp9 = this.bankInfoForm.get( 'confirmAccountNo' );
     temp9.disable();
   }
 
   // close Edit and view method
-  closeBankGridRow(BankInformationModel) {
+  closeBankGridRow( BankInformationModel ) {
     this.viewBankForm = false;
     this.resetForm();
     this.confirmAccountNumber = '';
     this.accountNoMatched = false;
     this.addButton = false;
-    this.bankInfoForm.get('confirmAccountNo').setValue('');
-    const temp1 = this.bankInfoForm.get('country');
+    this.bankInfoForm.get( 'confirmAccountNo' ).setValue( '' );
+    const temp1 = this.bankInfoForm.get( 'country' );
     temp1.enable();
-    const temp2 = this.bankInfoForm.get('state');
+    const temp2 = this.bankInfoForm.get( 'state' );
     temp2.enable();
     // const temp3 = this.bankInfoForm.get('bankIFSC');
     // temp3.enable();
-    const temp4 = this.bankInfoForm.get('bankName');
+    const temp4 = this.bankInfoForm.get( 'bankName' );
     temp4.enable();
-    const temp5 = this.bankInfoForm.get('branchName');
+    const temp5 = this.bankInfoForm.get( 'branchName' );
     temp5.enable();
-    const temp6 = this.bankInfoForm.get('branchAddress');
+    const temp6 = this.bankInfoForm.get( 'branchAddress' );
     temp6.enable();
-    const temp7 = this.bankInfoForm.get('nameAsPerBank');
+    const temp7 = this.bankInfoForm.get( 'nameAsPerBank' );
     temp7.enable();
-    const temp8 = this.bankInfoForm.get('accountNumber');
+    const temp8 = this.bankInfoForm.get( 'accountNumber' );
     temp8.enable();
-    const temp9 = this.bankInfoForm.get('confirmAccountNo');
+    const temp9 = this.bankInfoForm.get( 'confirmAccountNo' );
     temp9.enable();
   }
 
@@ -354,21 +354,21 @@ export class BankInformationComponent implements OnInit {
     this.accountNumberCountError = '';
     this.confirmAccountNumberCountError = '';
     this.BankInformationModel.country = '';
-    this.bankInfoForm.get('country').setValue('');
-    this.bankInfoForm.get('bankIFSC').disable();
+    this.bankInfoForm.get( 'country' ).setValue( '' );
+    this.bankInfoForm.get( 'bankIFSC' ).disable();
     this.confirmAccountNumber = '';
-    this.bankInfoForm.get('confirmAccountNo').setValue('');
+    this.bankInfoForm.get( 'confirmAccountNo' ).setValue( '' );
     this.stateModel = '';
-    this.bankInfoForm.get('state').setValue('');
+    this.bankInfoForm.get( 'state' ).setValue( '' );
   }
 
   // Account number verification API
-  confirmMatchAccountNo(confirmPassword) {
+  confirmMatchAccountNo( confirmPassword ) {
 
-    if (confirmPassword == this.BankInformationModel.accountNo) {
+    if ( confirmPassword == this.BankInformationModel.accountNo ) {
       this.accountNoMatched = true;
 
-      this.BankInformationService.accountNoVerification(confirmPassword, 0).subscribe(res => {
+      this.BankInformationService.accountNoVerification( confirmPassword, 0 ).subscribe( res => {
         // DelayNode
 
         // this.CommonDataService.sweetalertMasterSuccess(res.status.messsage, res.status.result);
@@ -376,10 +376,10 @@ export class BankInformationComponent implements OnInit {
         //   this.BankInformationModel.accountNo = '';
         //   this.confirmAccountNumber = '';
         // }
-      }, (error: any) => {
+      }, ( error: any ) => {
 
-        this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
-      })
+        this.CommonDataService.sweetalertError( error["error"]["status"]["messsage"] );
+      } )
 
     } else {
       this.accountNoMatched = false;
@@ -387,21 +387,21 @@ export class BankInformationComponent implements OnInit {
   }
 
   // Account number validation method
-  validateAccountNo(accountNo) {
-    this.formTouch(this.bankInfoForm)
-    if (this.maxAccNumber) {
-     if (accountNo.length != this.maxAccNumber)
-     // if (accountNo.length < this.maxAccNumber || accountNo.length > this.maxAccNumber) 
+  validateAccountNo( accountNo ) {
+    this.formTouch( this.bankInfoForm )
+    if ( this.maxAccNumber ) {
+      if ( accountNo.length != this.maxAccNumber )
+      // if (accountNo.length < this.maxAccNumber || accountNo.length > this.maxAccNumber)
       {
         this.accountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
-        this.isAccountNoValid=false;
+        this.isAccountNoValid = false;
       } else {
         this.accountNumberCountError = '';
-        this.isAccountNoValid=true;
-      
+        this.isAccountNoValid = true;
+
       }
     }
-    if (accountNo == 0) {
+    if ( accountNo == 0 ) {
       this.confirmAccountNumber = '';
       // this.gridEditConfirmAccountNumber = ''
     }
@@ -417,12 +417,12 @@ export class BankInformationComponent implements OnInit {
     this.BankInformationModel.employeeBankInfoId = '';
   }
 
-  keyPress(event: any) {
+  keyPress( event: any ) {
 
     const pattern = /[0-9]/;
 
-    let inputChar = String.fromCharCode(event.charCode);
-    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+    let inputChar = String.fromCharCode( event.charCode );
+    if ( event.keyCode != 8 && !pattern.test( inputChar ) ) {
       event.preventDefault();
     }
   }
@@ -433,20 +433,19 @@ export class BankInformationComponent implements OnInit {
 
   accountNoMatchValidation() {
 
-    if (this.bankInfoForm.controls['confirmAccountNo'].value == this.BankInformationModel.accountNo
-      && this.BankInformationModel.accountNo.length > 0) {
+    if ( this.bankInfoForm.controls['confirmAccountNo'].value == this.BankInformationModel.accountNo
+      && this.BankInformationModel.accountNo.length > 0 ) {
       this.accountNoMatched = true;
-      this.CommonDataService.sweetalertMasterSuccess("Success..!!", 'Account Number Matched');
+      this.CommonDataService.sweetalertMasterSuccess( "Success..!!", 'Account Number Matched' );
     } else {
       this.accountNoMatched = false;
     }
   }
 
-  validateConfirmAccountNo(confirmAccountNumber) {
-    this.formTouch(this.bankInfoForm)
-    if (this.maxAccNumber) {
-      if (confirmAccountNumber.length < this.maxAccNumber || confirmAccountNumber.length > this.maxAccNumber)
-       {
+  validateConfirmAccountNo( confirmAccountNumber ) {
+    this.formTouch( this.bankInfoForm )
+    if ( this.maxAccNumber ) {
+      if ( confirmAccountNumber.length < this.maxAccNumber || confirmAccountNumber.length > this.maxAccNumber ) {
         this.confirmAccountNumberCountError = 'Account Number Should be ' + this.maxAccNumber + ' digits';
       } else {
         this.confirmAccountNumberCountError = '';
@@ -454,51 +453,51 @@ export class BankInformationComponent implements OnInit {
     }
   }
 
-  hideAccountNo(accountNo) {
+  hideAccountNo( accountNo ) {
 
-    if (accountNo == true) {
-      setTimeout(() => {
+    if ( accountNo == true ) {
+      setTimeout( () => {
         this.accountNo = false;
-      }, 3000)
+      }, 3000 )
     }
   }
 
-  hideConfirmAccountNo(confirmAccountNo1) {
+  hideConfirmAccountNo( confirmAccountNo1 ) {
 
-    if (confirmAccountNo1 == true) {
-      setTimeout(() => {
+    if ( confirmAccountNo1 == true ) {
+      setTimeout( () => {
         this.confirmAccountNo1 = false;
-      }, 3000)
+      }, 3000 )
     }
   }
 
-  getHideAccountNo(accountNo) {
+  getHideAccountNo( accountNo ) {
 
-    if (accountNo.length > 0) {
+    if ( accountNo.length > 0 ) {
       this.accountNo = true
-      setTimeout(() => {
+      setTimeout( () => {
         this.accountNo = false;
-      }, 1000)
+      }, 1000 )
     }
   }
 
-  getHideconfirmAccountNo(confirmAccountNumber) {
-    if (confirmAccountNumber.length > 0) {
+  getHideconfirmAccountNo( confirmAccountNumber ) {
+    if ( confirmAccountNumber.length > 0 ) {
       this.confirmAccountNo1 = true
-      setTimeout(() => {
+      setTimeout( () => {
         this.confirmAccountNo1 = false;
-      }, 1000)
+      }, 1000 )
     }
   }
 
-  formTouch(bankInfoForm: FormGroup) {
+  formTouch( bankInfoForm: FormGroup ) {
 
-    (<any>Object).values(bankInfoForm.controls).forEach(control => {
+    ( <any>Object ).values( bankInfoForm.controls ).forEach( control => {
       control.markAsTouched();
 
-      if (control.controls) {
-        this.formTouch(control);
+      if ( control.controls ) {
+        this.formTouch( control );
       }
-    });
+    } );
   }
 }

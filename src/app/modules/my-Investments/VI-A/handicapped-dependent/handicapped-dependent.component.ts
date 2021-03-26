@@ -10,27 +10,36 @@ export class HandicappedDependentComponent implements OnInit {
   public tabIndex = 0;
   public windowScrolled: boolean;
   public data: any;
+  public disabilityTypeName: string;
+  public modalRef: BsModalRef;
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
   changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
     console.log('data::',this.data);
   }
 
+  redirectToMaster(event: any) {
+    this.tabIndex = event.tabIndex;
+    this.disabilityTypeName = event;
+  }
+
+
   changeTabIndex(index: number)
   {
+    console.log(this.disabilityTypeName)
     if(index !== 2) {
       this.data = undefined;
     }
+    if(index !== 1) {
+      this.disabilityTypeName = undefined;
+    }
     this.tabIndex = index;
   }
-
-  public modalRef: BsModalRef;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

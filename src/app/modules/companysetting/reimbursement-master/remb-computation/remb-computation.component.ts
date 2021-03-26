@@ -27,8 +27,7 @@ export class RembComputationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    console.log(this.service.getReimbursementSubmitData());
+console.log(this.service.getReimbursementSubmitData());
     this.computationForm = this.fb.group({
       reiMasterComputationSettingID: new FormControl(''),
       nonTaxableMethod: new FormControl('', Validators.required),
@@ -80,13 +79,21 @@ export class RembComputationComponent implements OnInit {
 
   submitComputationMaster() {
     this.submitted = true;
-    if (this.computationForm.invalid) {
-      return;
-    }
-    console.log("this.generalform", this.computationForm.value);
+    // if (this.computationForm.invalid) {
+    //   return;
+    // }
+   // console.log("this.generalform", this.computationForm.value);
     let postData = this.computationForm.getRawValue();
     // postData.reimbursementTrackingRequestDTO = this.computationForm;
+    console.log('general Form',this.service.getReimbursementSubmitData());
     console.log("postdata", postData);
+    let data : any;
+    data = this.service.getReimbursementSubmitData();
+    data.reimbursementMasterComputationSettingRequestDTO = this.computationForm.getRawValue();
+    console.log(data);
+    this.service.postReimbursementSubmitData(data).subscribe((res)=> {
+      console.log(res);
+    })
 
   }
 
@@ -233,4 +240,6 @@ export class RembComputationComponent implements OnInit {
       this.lapseView = true;
     }
   }
+
+  
 }

@@ -131,7 +131,7 @@ export class ComplianceMappingComponent implements OnInit {
         }
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 
@@ -154,7 +154,7 @@ export class ComplianceMappingComponent implements OnInit {
         }
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 

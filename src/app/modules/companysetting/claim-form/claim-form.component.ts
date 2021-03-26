@@ -36,10 +36,11 @@ export class ClaimFormComponent implements OnInit {
       claimTempId: new FormControl(''),
       claimTemplateName: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      groupCompanyId: new FormControl(''),
-      active: new FormControl(true),
+      groupCompanyId: new FormControl(1),
+      active: new FormControl(1),
       remark: new FormControl({ value: '', disabled: true }),
       claimTemplateDetailsRequestDTO: new FormGroup({
+        claimTempDetailsId: new FormControl(''),
         claimTempStandardFieldMasterId: new FormControl(''),
         fieldName: new FormControl(''),
         displayName: new FormControl(''),
@@ -49,7 +50,8 @@ export class ClaimFormComponent implements OnInit {
         sequence: new FormControl(''),
         active: new FormControl(),
         nature: new FormControl(''),
-
+        createdBy: new FormControl('sdf'),
+        lastModifiedBy: new FormControl('sdfsdf'),
       })
     });
     this.getAllFields();
@@ -77,7 +79,7 @@ export class ClaimFormComponent implements OnInit {
           element.dropDownValues = [];
         }
       })
-      postData.claimTemplateDetailsRequestDTO = this.selectedListElement;
+      postData.claimTemplateDetailsRequestDTO = this.claimGridDataList;
       console.log("postData", postData);
       this.claimService.editClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
@@ -95,7 +97,7 @@ export class ClaimFormComponent implements OnInit {
       }
       console.log(this.claimForm.value);
       let postData = this.claimForm.getRawValue();
-      postData.claimTemplateDetailsRequestDTO = this.selectedListElement;
+      postData.claimTemplateDetailsRequestDTO = this.claimGridDataList  ;
       console.log("postData", postData);
       this.claimService.postClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
@@ -157,7 +159,8 @@ export class ClaimFormComponent implements OnInit {
       console.log("this.selectedListElement", this.selectedListElement)
       for (let i = 0; i < response.data.results[0].claimTemplateDetailsResponseDTO.length; i++) {
         const myobj = {
-          regTempStandardFieldId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,
+          claimTempStandardFieldMasterId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,
+          claimTempDetailsId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempDetailsId,
           fieldName: response.data.results[0].claimTemplateDetailsResponseDTO[i].fieldName,
           displayName: response.data.results[0].claimTemplateDetailsResponseDTO[i].displayName,
           enable: response.data.results[0].claimTemplateDetailsResponseDTO[i].enable,
@@ -167,8 +170,8 @@ export class ClaimFormComponent implements OnInit {
           mandatory: response.data.results[0].claimTemplateDetailsResponseDTO[i].mandatory,
           nature: response.data.results[0].claimTemplateDetailsResponseDTO[i].nature,
           remark: response.data.results[0].claimTemplateDetailsResponseDTO[i].remark,
-          // isActive: response.data.results[0].claimTemplateDetailsResponseDTO[i].isActive,
-          isActive: 1,
+          active: response.data.results[0].claimTemplateDetailsResponseDTO[i].active,
+          // active: 1,
         };
         let s = this.claimGridDataList.findIndex(o=>o.fieldName == response.data.results[0].claimTemplateDetailsResponseDTO[i].fieldName);
        this.claimGridDataList[s]=myobj;
@@ -209,6 +212,7 @@ export class ClaimFormComponent implements OnInit {
       this.selectedListElement.splice(indexValue, 1);
     }
     console.log("selected value", this.selectedListElement);
+    console.log("claimGridDataList value", this.claimGridDataList);
   }
 
   // .................... Change Event Pass Value............

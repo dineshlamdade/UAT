@@ -297,6 +297,13 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   public getLenderNameList() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.lenderNameList.push(data);
+    this.transactionPolicyList.push(data);
     this.electricVehicleService
       // .getElectricVehicleDeclarationLenderName()
       .getElectricVehicleLenderNameList()

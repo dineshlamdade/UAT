@@ -35,6 +35,7 @@ export class RembGeneralComponent implements OnInit {
   constructor(
     public reimbursementMasterService: ReimbursementMasterService,
     public fb: FormBuilder,
+    public router: Router,
 
   ) {
 
@@ -123,7 +124,7 @@ export class RembGeneralComponent implements OnInit {
     let postData = this.generalForm.getRawValue();
     postData.reimbursementTrackingRequestDTO = this.generalAttrSelectElement;
     console.log("postdata", postData);
-    this.reimbursementMasterService.setReimbursementSubmitData(this.generalForm);
+    this.reimbursementMasterService.setReimbursementSubmitData(postData);
 
   }
 
@@ -198,6 +199,24 @@ export class RembGeneralComponent implements OnInit {
       this.headTemplateList4 = res.data.results[0];
     })
   }
+
+
+// ...............navigation link...........................
+registerNavigate(){
+  this.router.navigate(['/registerForm']);
+}
+summaryNavigate(){
+  this.router.navigate(['/summaryForm']);
+}
+claimNavigate(){
+  this.router.navigate(['/claimForm']);
+}
+declarationNavigate(){
+  this.router.navigate(['/declarationForm']);
+}
+
+
+
   // ...................Event calls methods..................
   headOprationShowClick() {
     this.headOprationShow = true;

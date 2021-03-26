@@ -12,7 +12,7 @@
       </div>
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Account No.</label>
-        <input type="text" formControlName="accountNumber" class="form-control" placeholder="Enter Account No."
+        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" class="form-control" placeholder="Enter Account No."
           [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
         <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
           <div *ngIf="masterForm.accountNumber.errors.required">Account No is mandatory</div>
@@ -23,6 +23,7 @@
         <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
           formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
           [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
+          <option [ngValue]="null">Select</option>
           <option *ngFor="let familyMember of familyMemberName" [value]="familyMember.value">
             {{familyMember.label}}
           </option>
@@ -67,7 +68,9 @@
               <select name="Frequency_of_Payment" id="FrequencyofPayment" placeholder="Select Frequency"
                 (change)='calculateAnnualAmount()' formControlName="frequencyOfPayment"
                 class="form-control custom-select"
-                [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }" #FrequencyofPayment><option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }" #FrequencyofPayment>
+                <option [ngValue]="null">Select</option>
+                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
                 [value]="frequencyOfPayment.value">
                 {{frequencyOfPayment.label}}
               </option>

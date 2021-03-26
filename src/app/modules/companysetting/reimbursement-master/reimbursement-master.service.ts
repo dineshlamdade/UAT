@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -58,10 +58,17 @@ getDeclarationTemplateFields(){
 }
 
 setReimbursementSubmitData(data) {
-  this.reimbursementForm = data.value;
+  this.reimbursementForm = data;
 }
 
 getReimbursementSubmitData() {
   return this.reimbursementForm;
+}
+
+postReimbursementSubmitData(data) {
+  return this.http.post(this.apiUrl + 'reimbursement-general-setting/save-reimbursement-setting',data)
+    .pipe(map((res: any) => {
+      return res;
+    }));
 }
 }
