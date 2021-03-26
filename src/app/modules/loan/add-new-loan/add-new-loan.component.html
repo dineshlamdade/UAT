@@ -15,30 +15,27 @@
                   <div class="col-md-3">
                     <label class="form-label">Loan Type</label>
                     <select
-                      class="form-control custom-select"
-                      formControlName="loantype"
-                      placeholder="Select" disabled
-                    >
+                      class="form-control"
+                      formControlName="loanType"
+                      placeholder="Select">
                       <option [ngValue]="null" selected>Select</option>
-                      <option>Personal Loan</option>
-                      <option>Education Loan</option>
-                      <option>Car Loan</option>
-                      <option>Two wheeler Loan</option>
+                      <option value="{{module.applicationModuleId}}" *ngFor="let module of loanTypeData " >{{module.applicationModuleName}}</option>
+
                     </select>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Repayment Type</label>
-                    <input type="text" class="form-control" disabled />
+                    <input type="text" class="form-control" formControlName="repaymentType" disabled />
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Underline Asset Value</label>
-                    <input type="text" class="form-control" disabled/>
+                    <input type="text" class="form-control" />
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Car Type/Institution</label>
                     <select
                       class="form-control custom-select"
-                      formControlName="loantype"
+                      formControlName="carOrInstitutionType"
                       placeholder="Select" disabled
                     >
                       <option [ngValue]="null" selected>Select</option>
@@ -53,18 +50,18 @@
                 <div class="row">
                   <div class="col-md-3">
                     <label class="form-label">Interrst rate (%)</label>
-                    <input type="text" class="form-control" disabled/>
+                    <input type="text" class="form-control" formControlName="interestRate" disabled/>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Loan Amount</label>
-                    <input type="text" class="form-control" /><label
+                    <input type="text" class="form-control" formControlName="loanAmount" /><label
                       class="form-label"
                       >Per Annum</label
                     >
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">No of Installment</label>
-                    <input type="text" class="form-control" disabled/>
+                    <input type="text" class="form-control" formControlName="noOfInstallment" disabled/>
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Installment Amount</label>
@@ -75,26 +72,122 @@
                 <div class="row">
                   <div class="col-md-3">
                     <label class="form-label">End Date</label>
-                    <input type="text" class="form-control" disabled />
+                    <input type="text" class="form-control" formControlName="endDate" disabled />
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Remark</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" formControlName="remark" />
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">External Referance No</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" formControlName="externalReferenceNumber"/>
                   </div>
                 </div>
                 <br />
                 <div class="float-right">
-                  <button type="button" class="btn btn-danger">
+                  <button type="button" class="btn btn-danger" (click)="schedule(template)" data-target="#UploadModal">
                     <i class="fa fa-clock-o" aria-hidden="true"> </i
                     >&nbsp;Schedule
                   </button>
                 </div>
                 <br />
                 <br />
+
+                <ng-template #template >
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="UploadModalLabel">Schedule</h5>
+                     <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                  </div>
+              <div class="modal-body" style="height: 100%; width: 100%;">
+                <div class="cards">
+                    <div class="card-bodys">
+                        <div class="row clearfix">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                          <div class="row ">
+
+                                                <div class="col-md-3">
+                                                  <label class="form-label">Loan No.</label>
+                                                  <input type="text"  class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <label class="form-label">Repayment Type</label>
+                                                  <input type="text"  class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <label class="form-label">End Date</label>
+                                                  <input type="text"  class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <label class="form-label">Installment Amount</label>
+                                                  <input type="text"  class="form-control" disabled>
+                                                </div>
+                                              <div class="row">
+                                                <div class="col-md-3">
+                                                  <label class="form-label">Pending Installment</label>
+                                                  <input type="text"  class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <label class="form-label">Pending Balance</label>
+                                                  <input type="text"  class="form-control" disabled>
+                                                </div>
+                                              </div>
+                                             </div>
+                                            <div class="table-responsive Custom_Table ">
+                                                <table
+                                                    class="table table-striped table-hover table-bordered m-b-0">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Opening Balance</th>
+                                                            <th>Rate of Interrst - PA</th>
+                                                            <th>No Of days Interrst Chargeble</th>
+                                                            <th>Total Days</th>
+                                                            <th>Interrst Amount Charged</th>
+                                                            <th>Amount Disbursed</th>
+                                                            <th>Prinncipal Recovery</th>
+                                                            <th>Closing Balance</th>
+                                                            <th>Perquisite Rate - PA</th>
+                                                            <th>Perquisite Amount</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1/3/2021</td>
+                                                            <td>10%</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+                                                            <td>10</td>
+
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+                  </div>
+               </ng-template>
+
+
                 <div class="row">
                   <div class="tabview-contents col-md-5">
 
@@ -217,20 +310,7 @@
                     </div>
 
                   </div>
-                  <!-- <div class="row float-right" style="margin: 10px">
-                    <button type="button"  class="btn btn-danger" style="background-color:darkmagenta;">
-                      <i class="fa fa-floppy-o" aria-hidden="true"></i
-                      >&nbsp;&nbsp;Save</button
-                    >&nbsp;
-                    <button type="button"  class="btn btn-dark" style="background-color:dimgrey;">
-                      <i class="fa fa-refresh" aria-hidden="true"></i
-                      >&nbsp;&nbsp;Reset</button
-                    >&nbsp;
-                    <button type="button"  class="btn btn-dark" style="background-color:red;">
-                      <i class="fa fa-times" aria-hidden="true"></i
-                      >&nbsp;&nbsp;Cancel</button
-                    >&nbsp;
-                  </div> -->
+
                   <ng-container class="float-right">
                     <div class="row float-right" style="margin: 10px" >
                       <button type="submit"   class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -243,11 +323,7 @@
                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
                       >&nbsp;
 
-                      <!-- <button type="submit" tooltip="Update"   class="custom_button custom_btn btn-labeled btn-labeled-left"
-                     [disabled]="!AddLoanForm.valid"
-                       [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
-                       <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
-                      >&nbsp; -->
+
 
                       <button type="button" tooltip="Cancel"  class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
                        <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>

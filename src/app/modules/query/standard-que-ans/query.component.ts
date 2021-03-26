@@ -3,6 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ToastrService } from 'ngx-toastr';
 import { QueryService } from '../query.service';
+// import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+// declare global { interface Window { editor: any; } }
 
 @Component({
   selector: 'app-query',
@@ -19,11 +21,27 @@ export class QueryComponent implements OnInit {
   hideRemarkDiv:boolean = false;
   isVisible:boolean=false;
   isShown: boolean= true;
-
   p: number = 1;
   moduleListData: any;
 
-  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService) {
+  editorConfig = {
+    toolbar: [
+      { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+      { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
+      { name: 'document', items: ['Source'] }
+    ],
+    allowedContent: true,
+    fullPage: true,
+    startupMode: 'source',
+  };
+
+  keyword:any = [];
+  fieldMap: any;
+  mappingData: any = [];
+  emailSmsData: any;
+
+  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService)
+  {
 
     this.queryForm = this.formBuilder.group({
       "createdBy": new FormControl(''),
@@ -42,14 +60,85 @@ export class QueryComponent implements OnInit {
       "active": new FormControl(true,[Validators.required]),
 
     });
+
+    this.keyword = [
+      {
+        'name':'Employee Code',
+        'id': 1,
+        'description': 'Employee Code'
+    },
+    {
+        'name':'Employee Full Name',
+        'id': 2,
+        'description': 'Employee Full Name'
+    },
+    {
+        'name':'Employee Email',
+        'id': 3,
+        'description': 'Employee Email'
+    },
+    {
+        'name':'Employee Contact',
+        'id': 4,
+        'description': 'Employee Contact'
+    },
+    {
+        'name':'Employee Gender',
+        'id': 5,
+        'description': 'Employee Gender'
+    },
+    {
+        'name':'Employee Gread',
+        'id': 6,
+        'description': 'Employee Gread'
+    },
+    {
+      'name':'Employee Company',
+      'id': 7,
+      'description': 'Employee Company'
+  },
+  {
+    'name':'Date',
+    'id': 8,
+    'description': 'Date'
+},
+
+    ]
+
+    this.keyword.forEach( element => {
+      this.mappingData.push(
+        [element.id.toString() , '[' + element.description +']' ]
+      )
+    })
+
+    this.fieldMap = new Map<string, string>(this.mappingData);
+
   }
   ngOnInit(): void {
+
     this.getAllData();
     this.getModuleName();
+
+
+    // DecoupledEditor
+    // .create( '<h2>Hello world!</h2>', {
+    //     toolbarContainer: document.querySelector( '.toolbar-container' ),
+    //     editableContainer: document.querySelector( '.editable-container' )
+
+    // } )
+    // .then( editor => {
+    //     window.editor = editor;
+    // } )
+    // .catch( err => {
+    //     console.error( err.stack );
+    // } );
   }
+
+
   get f(){
     return this.queryForm.controls;
   }
+
   queryFormSubmit()
   {
     if(!this.editflag){
@@ -117,17 +206,46 @@ getModuleName()
   })
 }
 changeEvent($event) {
-  alert(this.hideRemarkDiv)
+  // alert(this.hideRemarkDiv)
   if ($event.target.checked) {
       this.hideRemarkDiv = false;
-      this.queryForm.controls['active'].setValue(true);
+      // this.queryForm.controls['active'].setValue(true);
   }
   else {
       this.hideRemarkDiv = true;
-      this.queryForm.controls['active'].setValue(false);
+      // this.queryForm.controls['active'].setValue(false);
 
   }
 
 }
+
+/*** CKeditor Drag and Drop */
+
+allowDrop(ev): void {
+  ev.preventDefault();
+}
+drag(ev): void {
+  ev.dataTransfer.setData('text', ev.target.id);
+}
+drop(ev): void {
+  ev.preventDefault();
+  const data = ev.dataTransfer.getData('text');
+  const dataValue = this.fieldMap.get(data);
+
+  console.log("data value after drop: "+ dataValue)
+  const startPos = ev.target.selectionStart;
+  const endPos = ev.target.selectionEnd;
+
+  console.log( ev.target.value)
+
+  ev.target.value = ev.target.value.substring(0, startPos)
+    + dataValue
+    + ev.target.value.substring(endPos, ev.target.value.length);
+
+  let bodyValue = ev.target.value.substring(0, startPos)
+    + '[' + data + ']'
+    console.log(bodyValue)
+}
+
 
 }

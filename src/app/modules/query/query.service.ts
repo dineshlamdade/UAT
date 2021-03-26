@@ -9,7 +9,7 @@ export class QueryService {
 
 public apiUrl = environment.baseUrl8091;
 public apiUrl1 = environment.baseUrl8083;
-  constructor(private http : HttpClient ) { }
+constructor(private http : HttpClient ) { }
 
 public getAll()
 {

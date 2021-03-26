@@ -34,10 +34,9 @@
                       <div class="col-sm-6 col-md-4">
                         <label class="form-label">Module Name</label>
                         <select
-                          class="form-control custom-select"
+                          class="form-control"
                           formControlName="moduleId"
-                          placeholder="Select" [ngClass]="{'is-invalid' : queryForm.get('moduleId').status == 'INVALID'}"
-                        >
+                         [ngClass]="{'is-invalid' : queryForm.get('moduleId').status == 'INVALID'}">
                           <option [ngValue]="null" selected >Select</option>
                           <option value="{{module.applicationModuleId}}" *ngFor="let module of moduleListData " >{{module.applicationModuleName}}</option>
 
@@ -46,60 +45,19 @@
                     </div>
                   </div>
                       <div class="row tabview-contents">
-                        <fieldset class="col-md-4" style="height:fit-content;">
+                        <fieldset class="col-md-4" style="height: 250px;">
                           <legend>Keywords</legend>
-
-                          <div class="card" >
-                            <div class="card-body box-border">
-                              <div id="page">
-                                <div>
-                                  <input class="toggle-box" id="identifier-1" type="checkbox" value=true />
-                                  <label for="identifier-1">Employee</label>
-                                  <div class="ml-30">
-                                    <a class="p-0 d-flex">
-                                      <label class="custom-control custom-checkbox ">
-                                        <ul>
-                                        <li>Employee Name</li>
-                                        <li>Employee Email</li>
-                                        <li>Employee Phone Number</li>
-                                        <li>Employee Gender</li>
-                                        <li>Employee Gread</li>
-                                      </ul>
-                                      </label>
-                                    </a>
-                                  </div>
-                                </div>
-                                <div>
-                                  <input class="toggle-box" id="identifier-2" type="checkbox" value=true />
-                                  <label for="identifier-2" class="mt-10">Company</label>
-                                  <div class="ml-30">
-                                    <a class="p-0 position_relative">
-                                      <label class="custom-control custom-checkbox mr-15">
-                                        <ul>
-                                          <li>Company Name</li>
-                                        </ul>
-                                      </label>
-                                    </a>
-                                  </div>
-                                </div>
-                                <div >
-                                  <input class="toggle-box" id="identifier-3" type="checkbox" value=true />
-                                  <label for="identifier-3" class="mt-10">Date</label>
-                                  <div class="ml-30">
-                                    <a class="p-0 position_relative">
-                                      <label class="custom-control custom-checkbox mr-15">
-                                        <ul>
-                                          <li>Date</li>
-                                        </ul>
-                                      </label>
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          <div class="row">
+                                <ul style="height: 100px; width: 200px;">
+                                    <div *ngFor="let key of keyword">
+                                        <li id="{{key.name}}" draggable="true"
+                                            (dragstart)="drag($event)">
+                                            {{key.description}}
+                                        </li>
+                                    </div>
+                                </ul>
+                        </div>
                         </fieldset>
-
                         <div class="col-md-7">
                           <div class="col-md-12">
                             <h6  style="color:darkmagenta;">Question</h6>
@@ -143,15 +101,12 @@
                       <label class="form-label">Remark</label>
                       <textarea formControlName="remark"
                         autocomplete="off"
-                        [ngClass]="{'is-invalid' : queryForm.get('remark').status == 'INVALID', 'form-submitted': formDirective.submitted}"
+
                         class="form-control" rows="2" placeholder="Enter Remark"
                         [required]="hideRemarkDiv"></textarea>
                     </div>
                   </div>
                 </ng-container>
-
-
-
                 <ng-container class="float-right">
                 <div class="row float-right" style="margin: 10px" >
                   <button type="submit"  *ngIf="isShown" class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -210,12 +165,13 @@
                             <tr></tr>
                           </tbody>
                         </table>
-                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <div style=" margin-top: 20px; float: right;">
+                        <pagination-controls (pageChange)="p = $event">
+                        </pagination-controls></div>
                       </div>
                     </div>
                   </div>
-
-              </div>
+               </div>
               </form>
             </div>
           </div>
