@@ -4,7 +4,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <form>
+                        <form [formGroup]="recoveryLoanForm">
                             <fieldset>
                                 <fieldset>
                                     <legend>Interest Charge</legend>
@@ -12,36 +12,57 @@
                                         <div class="row">
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Rate (%) Per Annum</label>
-                                                <input type="text" class="form-control align-right">
+                                                <select class="form-control" formControlName="intRate">
+                                                    <option value="">Select</option>
+                                                    <option>SDM</option>
+                                                </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Method of Computation</label>
-                                                <input type="text" class="form-control align-right">
+                                                <select class="form-control" formControlName="methodOfComputation">
+                                                    <option value="">Select</option>
+                                                    <option>Day Basis</option>
+                                                    <option>Month Basis</option>
+                                                </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Date of Transactions</label>
-                                                <input type="text" class="form-control align-right">
+                                                <select class="form-control" formControlName="intDateOfTransactions">
+                                                    <option value="">Select</option>
+                                                    <option>Chargeable</option>
+                                                    <option>Non-Chargeable</option>
+                                                </select>    
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Cycle of Disbursement</label>
-                                                <input type="text" class="form-control align-right">
+                                                <select class="form-control" formControlName="intCycleOfDisbursement">
+                                                    <option value="">Select</option>
+                                                    <option>Full Period</option>
+                                                    <option>Outstanding Days</option>
+                                                </select>    
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Cycle of last Installment</label>
-                                                <select class="form-control align-right">
+                                                <select class="form-control" formControlName="cycleOfLastInstallment">
                                                     <option value="">Select</option>
+                                                    <option>Full Period</option>
+                                                    <option>Outstanding Days</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Cycle of Adhoc Payments</label>
-                                                <select class="form-control align-right">
+                                                <select class="form-control" formControlName="intAdhocPayments">
                                                     <option value="">Select</option>
+                                                    <option>From Same Cycle</option>
+                                                    <option>Next Cycle</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Before Principal Repayment Starts</label>
-                                                <select class="form-control align-right">
+                                                <select class="form-control" formControlName="intBeforePriRepaymentStarts">
                                                     <option value="">Select</option>
+                                                    <option>Add in the Loan Amount</option>
+                                                    <option>Recover in each of the Cycle</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -53,32 +74,43 @@
                                         <div class="row">
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">No of Installments</label>
-                                                <select class="form-control align-right">
+                                                <select class="form-control" formControlName="recoveryNoOfInstallments">
                                                     <option value="">Select</option>
+                                                    <option>SDM1</option>
+                                                    <option>SDM2</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Method</label>
-                                                <select class="form-control align-right">
+                                                <select class="form-control" formControlName="recoveryMethod">
                                                     <option value="">Select</option>
+                                                    <option>EMI</option>
+                                                    <option>Reducing balance</option>
+                                                    <option>Flat Interest</option>
+                                                    <option>Perpetual</option>
+                                                    <option>Principal First & then Interest</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-3 col-md-3 mt-10">
+                                            <div class="col-sm-3 col-md-3 mt-10" *ngIf="recoveryLoanForm.controls.recoveryMethod.value == 'Principal First & then Interest'">
                                                 <label class="form-label">No.of installments for Interest Recovery</label>
-                                                <select class="form-control align-right">
+                                                <select class="form-control" formControlName="firstPriThanIntNoOfInstallmentForIntRecovery">
                                                     <option value="">Select</option>
+                                                    <option>SDM1</option>
+                                                    <option>SDM2</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Recovery Starts</label> 
                                                 <div class="row">
                                                     <div class ="col-sm-6">
-                                                        <input class="form-control align-right">
+                                                        <input class="form-control" formControlName="recoveryToStartSalaryCycles">
                                                         Month
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <select class="form-control align-right">
+                                                        <select class="form-control" formControlName="recoveryToStartDisbursements">
                                                             <option value="">Select</option>
+                                                            <option>First Disbursement</option>
+                                                            <option>Full Disbursement</option>
                                                         </select>
                                                     </div>
                                                 </div>                       
@@ -86,6 +118,13 @@
                                         </div>
                                     </div>
                                 </fieldset>
+
+                                <div class="row text-right" style="margin: 10px; float:right;">
+                                    <button type="button" class="btn btn-success" (click)="submitRecoveryForm()">
+                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Next</button>&nbsp;
+                                    <button type="button" class="btn btn-dark" (click)="resetRecoveryForm()">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
+                                </div>
                             </fieldset>
                         </form>
                     </div>

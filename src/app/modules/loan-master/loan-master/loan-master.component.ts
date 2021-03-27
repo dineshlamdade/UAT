@@ -14,6 +14,9 @@ export class LoanMasterComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    // if(localStorage.getItem('generalForm') != null){
+    //   this.tabIndex = 2
+    // }
   }
 
 

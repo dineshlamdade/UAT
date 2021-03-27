@@ -20,24 +20,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>PA-staff</td>
-                                            <td>Payroll</td>
-                                            <td>Company Payroll</td>
-                                            <td></td>
-                                            <td><i class="fa fa-eye" aria-hidden="true" style="color:darkcyan"></i
-                                                >&nbsp;
-                                                <i
-                                                  class="fa fa-pencil"
-                                                  aria-hidden="true"
-                                                ></i
-                                                >&nbsp;
-                                                <i
-                                                  class="fa fa-trash"
-                                                  aria-hidden="true"
-                                                ></i
-                                                >&nbsp;</td>
+                                        <tr *ngFor="let loandata of loanSummaryData; let index = index;">
+                                            <td>{{loandata.loanCode}}</td>
+                                            <td>{{loandata.loanDescription}}</td>
+                                            <td>{{loandata.recoveryMethod}}</td>
+                                            <td>{{loandata.intRate}}</td>
+                                            <td>{{loandata.recoveryNoOfInstallments}}</td>
+                                            <td>
+                                                <i class="fa fa-eye" aria-hidden="true" style="color:darkcyan"></i>&nbsp;
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

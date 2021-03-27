@@ -8,6 +8,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { GeneralComponent } from './general/general.component';
 import { RecoveryComponent } from './recovery/recovery.component';
 import { PaymentComponent } from './payment/payment.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -16,6 +17,8 @@ import { PaymentComponent } from './payment/payment.component';
     CommonModule,
     LoanMasterRoutingModule,
     SharedlayoutModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class LoanMasterModule { }

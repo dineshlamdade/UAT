@@ -14,61 +14,51 @@ export class TokenInterceptorService implements HttpInterceptor {
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private authService: AuthService,
-              private alertService: AlertServiceService,
-              private router: Router ) { }
+    private alertService: AlertServiceService,
+    private router: Router) { }
 
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     if (this.authService.getJwtToken()) {
       request = this.addToken(request, this.authService.getJwtToken());
-    //   const cloned = request.clone({
-    //     setHeaders: {
-    //       'Content-Type' : 'application/json',
-    //       'Accept'       : '*',
-    //       'X-Authorization': this.authService.getJwtToken(),
-    //       'Access-Control-Max-Age': '600',
-    //     },
-    // });
-
-    // return next.handle(cloned);
     }
 
     return next.handle(request).pipe(catchError((error) => {
       const type = error.status;
-      console.log(error.status);
-      console.log(error.error);
+      // console.log(error.status);
+      // console.log(error.error);
       switch (type) {
-        case  401 : {
+        case 401: {
           this.authService.logout();
-          this.alertService.sweetalertError( 'Session Has Expired !!');
+          this.alertService.sweetalertError('Session Has Expired !!');
           break;
-         }
-
-      //    case  0 : {
-      //     console.log(type)
-      //     this.authService.logout();
-      //     this.alertService.alert( 'Session Has Expired !!', 'warning', 'login');
-      //     break;
-      //  }
-      case  401 : {
-        this.alertService.sweetalertError('Invalid Token Please, Please Try Again !!!!', );
-        break;
-     }
-       case  404 : {
-        this.alertService.sweetalertError('Data not found !!', );
-        break;
-     }
-     case  500 : {
-      this.alertService.sweetalertError('Failed To load Resource,  Please Try Again !!', );
-      break;
-   }
-//      default : {
-//       console.log('default error');
-//       this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
-//       break;
-//  }
-
         }
+
+        //    case  0 : {
+        //     console.log(type)
+        //     this.authService.logout();
+        //     this.alertService.alert( 'Session Has Expired !!', 'warning', 'login');
+        //     break;
+        //  }
+        case 401: {
+          this.alertService.sweetalertError('Invalid Token Please, Please Try Again !!!!',);
+          break;
+        }
+        case 404: {
+          this.alertService.sweetalertError('Data not found !!',);
+          break;
+        }
+        case 500: {
+          this.alertService.sweetalertError('Failed To load Resource,  Please Try Again !!',);
+          break;
+        }
+        //      default : {
+        //       console.log('default error');
+        //       this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
+        //       break;
+        //  }
+
+      }
 
       //console.log('my error status', error.status);
 
@@ -102,8 +92,8 @@ export class TokenInterceptorService implements HttpInterceptor {
     //console.log('My token ',token);
     return request.clone({
       setHeaders: {
-        'Content-Type' : 'application/json',
-        'Accept'       : 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json, text/plain, */*',
         'X-Authorization': token,
         'Access-Control-Max-Age': '600',
       },
