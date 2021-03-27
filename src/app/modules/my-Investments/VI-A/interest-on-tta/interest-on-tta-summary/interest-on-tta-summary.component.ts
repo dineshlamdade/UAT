@@ -10,13 +10,10 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
   styleUrls: ['./interest-on-tta-summary.component.scss']
 })
 export class InterestOnTtaSummaryComponent implements OnInit {
-
   @Input() bankName: string;
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
-  @Output() policyNumber = new EventEmitter<any>();
-
-
+  @Output() accountNo = new EventEmitter<any>();
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: number = 0;
@@ -29,15 +26,11 @@ export class InterestOnTtaSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-
-  // public previousEmployerB: string;
   public limit : number;
   public benefitActualAmount : number;
   public benefitDeclaredAmount : number;
   public DeclaredAmountBenefit : number;
   public ActualAmountBenefit : number;
-
-
 
   constructor(
     private interestOnTtaService: InterestOnTtaService   ,
@@ -56,13 +49,20 @@ export class InterestOnTtaSummaryComponent implements OnInit {
       bankName : bankName,
       accountNumber : accountNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)
-    };
+      canEdit: (mode == 'edit' ? true : false)};
     this.bankName = bankName;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
   }
 
+  jumpToMasterPage(accountNumber: string) {
+    this.tabIndex = 1;
+    const accountNo = {
+      accountNumber : accountNumber,
+      tabIndex : this.tabIndex
+    };;
+    this.accountNo.emit(accountNo);
+  }
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -77,14 +77,6 @@ export class InterestOnTtaSummaryComponent implements OnInit {
     });
   }
 
-  jumpToMasterPage(accountNumber: string) {
-    this.tabIndex = 1;
-    const data = {
-      number : accountNumber,
-      tabIndex : this.tabIndex
-    };;
-    this.policyNumber.emit(data);
-  }
 
   onChangeLimit() {
     this.benefitDeclaredAmount = Math.min(this.totalDeclaredAmount, this.limit);

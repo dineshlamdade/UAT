@@ -162,7 +162,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
         else {
@@ -191,7 +191,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                     _this.alertService.sweetalertWarning(res.status.messsage);
                 }
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };
@@ -277,7 +277,7 @@ var EstablishmentMasterComponent = /** @class */ (function () {
                 _this.form.get('state').setValue(res.data.results[0].state);
                 _this.form.get('city').setValue(res.data.results[0].city);
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+                // this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
             });
         }
     };

@@ -12,6 +12,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { fakeAsync } from '@angular/core/testing';
 import {
   FormBuilder,
   FormControl,
@@ -55,6 +56,7 @@ export class LicdeclarationComponent implements OnInit {
   public frequencyOfPaymentList: Array<any> = [];
   public institutionNameList: Array<any> = [];
   public transactionDetail: Array<any> = [];
+
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
@@ -172,6 +174,7 @@ export class LicdeclarationComponent implements OnInit {
 
   public testnumber1: number =5000;
   public testnumber2: number =5000;
+  licDeclarationData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -322,6 +325,14 @@ export class LicdeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
+
+    // this.transactionInstitutionNames.push(data);
+    // this.transactionPolicyList.push(data);
+
     this.Service.getEightyCDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
         this.transactionInstitutionListWithPolicies = res.data.results;
@@ -347,6 +358,8 @@ export class LicdeclarationComponent implements OnInit {
 
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
+    this.filesArray = [];
+    this.transactionDetail = [];
     this.globalInstitution = institutionName;
     this.getTransactionFilterData(this.globalInstitution, null, null);
     this.globalSelectedAmount = this.numberFormat.transform(0);
@@ -416,6 +429,8 @@ export class LicdeclarationComponent implements OnInit {
     j: number,
   ) {
     const checked = event.target.checked;
+
+    this.licDeclarationData = data
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -492,8 +507,11 @@ export class LicdeclarationComponent implements OnInit {
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
-    if (this.uploadGridData.length) {
+    if (this.uploadGridData.length > 0) {
       this.enableFileUpload = true;
+    }
+    else{
+      this.enableFileUpload = false;
     }
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
@@ -957,6 +975,10 @@ export class LicdeclarationComponent implements OnInit {
 
   upload() {
 
+    console.log(JSON.stringify(this.licDeclarationData))
+
+
+
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement',
@@ -990,11 +1012,53 @@ export class LicdeclarationComponent implements OnInit {
           innerElement.dueDate,
           'yyyy-MM-dd',
         );
-
         innerElement.dateOfPayment = dateOfPaymnet;
         innerElement.dueDate = dueDate;
       });
     });
+
+    // for (let i = 0; i < this.transactionDetail.length; i++) {
+    //   const transactionId = this.uploadGridData;
+    //   this.transactionDetail[0].lictransactionList.forEach(element => {
+        // if (element.licTransactionId == transactionId[i]) {
+          if(this.licDeclarationData.previousEmployerId == 0){
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected previous employer for all selected lines',
+              'Please Select Previous Employer',
+            );
+            return false;
+          }
+          if (this.licDeclarationData.dateOfPayment == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected date of payment for all selected lines',
+              'Please Select Date Of Payment',
+            );
+            return false;
+          }
+          if (this.licDeclarationData.dueDate == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected due date for all selected lines',
+              'Please Select Date Of DueDate',
+            );
+            return false;
+          }
+          if (this.licDeclarationData.declaredAmount == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected declared amount for all selected lines',
+              'Please Select Date Of Declared Amount',
+            );
+            return false;
+          }
+          if (this.licDeclarationData.actualAmount == null) {
+            this.alertService.sweetalertError(
+              // 'Please make sure that you have selected actual amount for all selected lines',
+              'Please Select Date Of Actual Amount',
+            );
+            return false;
+          }
+    //     }
+    //   });
+    // }
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
@@ -1075,12 +1139,16 @@ export class LicdeclarationComponent implements OnInit {
       this.alertService.sweetalertError(
         'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
       );
+      this.receiptAmount = '0.00';
+      return false;
     } else if (receiptAmount_ > globalSelectedAmount_) {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
       this.alertService.sweetalertWarning(
         'Receipt Amount is greater than Selected line Actual Amount',
       );
+      // this.receiptAmount = '0.00';
+      // return false;
     }
       this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
@@ -1424,6 +1492,8 @@ export class LicdeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' }),
     );
   }
+
+
 
 }
 

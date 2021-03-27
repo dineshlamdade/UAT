@@ -600,6 +600,7 @@ export class ComplianceMasterComponent implements OnInit {
           this.showButtonSaveAndReset = true;
           this.setPfDefaultValueAfterReset();
           this.isPf = false;
+          this.isEpsNew = false;
           this.isPfNew = false;
           this.isEps = false;
           this.isEsi = false;
@@ -654,14 +655,14 @@ export class ComplianceMasterComponent implements OnInit {
           console.log(res);
           this.alertService.sweetalertMasterSuccess('Compliance Master Details Saved Successfully.', '');
 
-          this.form.setControl('pfFormArray', new FormArray([]));
-          this.form.setControl('epsArray', new FormArray([]));
-          this.form.setControl('esiArray', new FormArray([]));
-          this.form.setControl('ptArray', new FormArray([]));
-          this.form.setControl('lwfArray', new FormArray([]));
-          this.form.setControl('tdsArray', new FormArray([]));
-          this.form.setControl('gratuityArray', new FormArray([]));
-          this.form.setControl('epsArray', new FormArray([]));
+          // this.form.setControl('pfFormArray', new FormArray([]));
+          // this.form.setControl('epsArray', new FormArray([]));
+          // this.form.setControl('esiArray', new FormArray([]));
+          // this.form.setControl('ptArray', new FormArray([]));
+          // this.form.setControl('lwfArray', new FormArray([]));
+          // this.form.setControl('tdsArray', new FormArray([]));
+          // this.form.setControl('gratuityArray', new FormArray([]));
+          // this.form.setControl('epsArray', new FormArray([]));
           this.form.reset();
           this.isSaveAndReset = true;
           this.showButtonSaveAndReset = true;
@@ -707,7 +708,7 @@ export class ComplianceMasterComponent implements OnInit {
         }
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 
@@ -730,7 +731,7 @@ export class ComplianceMasterComponent implements OnInit {
         }
 
       }, (error: any) => {
-        this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+        //this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
 
       });
 
@@ -1041,6 +1042,7 @@ export class ComplianceMasterComponent implements OnInit {
     this.isDefaultContribution = true;
     this.isPf = false;
     this.isEps = false;
+    this.isEpsNew = false;
     this.isEsi = false;
     this.isPt = false;
     this.isLw = false;

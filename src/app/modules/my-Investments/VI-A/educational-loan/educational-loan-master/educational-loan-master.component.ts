@@ -29,8 +29,8 @@ import { EducationalLoanServiceService } from '../educational-loan-service.servi
   styleUrls: ['./educational-loan-master.component.scss']
 })
 export class EducationalLoanMasterComponent implements OnInit {
-
-  @Input() public loanAccountNumber: string;
+  @Input() public loanAccountNo: any;
+  @Input() public : string;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -112,6 +112,7 @@ export class EducationalLoanMasterComponent implements OnInit {
   public disability : string;
   public severity : string;
   public fullTimeCourse: boolean = true;
+  public proofSubmissionId ;
 
 
   constructor(
@@ -144,8 +145,6 @@ export class EducationalLoanMasterComponent implements OnInit {
     this.initiateMasterForm();
     this.getFinacialYear();
     this.getMasterFamilyInfo();
-    // this.getIdentityInformation();
-    // this.getInstitutesFromGlobal();
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
     this.getPreviousEmployer();
@@ -159,6 +158,16 @@ export class EducationalLoanMasterComponent implements OnInit {
     const splitYear = this.financialYear.split('-', 2);
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
     this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.loanAccountNo != undefined || this.loanAccountNo != null) {
+      const input = this.loanAccountNo;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster loanAccountNumber', input);
+      this.editMaster(input.loanAccountNumber);
+      console.log('editMaster loanAccountNumber', input.loanAccountNumber);
+    }
+
   }
 
   // initiate Reactive Master Form
@@ -172,7 +181,7 @@ export class EducationalLoanMasterComponent implements OnInit {
       loanEndDate: new FormControl(null, Validators.required),
       educationalLoanMasterId: new FormControl(0),
       familyMemberInfoId: new FormControl(0),
-      proofSubmissionId:new FormControl(null),
+      proofSubmissionId:new FormControl(''),
         });
   }
 
@@ -199,23 +208,6 @@ export class EducationalLoanMasterComponent implements OnInit {
   });
 }
 
-  // // Family Member List API call
-  // getMasterFamilyInfo() {
-  //   this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
-  //     console.log('getFamilyInfo', res);
-  //     this.familyMemberGroup = res.data.results;
-  //     res.data.results.forEach((element) => {
-  //       const obj = {
-  //         label: element.familyMemberName,
-  //         value: element.familyMemberName,
-  //       };
-  //       if (element.relation !== 'Self') {
-  //         this.familyMemberName.push(obj);
-  //       }
-  //     });
-  //   });
-  // }
-
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
@@ -225,16 +217,6 @@ export class EducationalLoanMasterComponent implements OnInit {
     // this.form.get('familyMemberName').setValue(toSelect.familyMemberName);
     this.form.get('relationship').setValue(toSelect.relation);
   }
-
-  // Identity Information API Call
-  // getIdentityInformation() {
-  //   this.handicappedDependentService.getIdentityInformation().subscribe((res) => {
-  //     console.log('get Identity Information', res);
-  //     this.form.patchValue({
-  //       pran: res.data.results[0].employeePersonalInfoResponseDTO.pran,
-  //     });
-  //   });
-  // }
 
   // Get All Institutes From Global Table
   getInstitutesFromGlobal() {
@@ -270,17 +252,9 @@ export class EducationalLoanMasterComponent implements OnInit {
     this.educationalLoanServiceService.getEducationalLoanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
-      // this.disability = res.data.results[0].disability;
-      // this.severity = res.data.results[0].severity;
       this.masterGridData.forEach((element) => {
-        element.policyStartDate = new Date(element.policyStartDate);
-        element.policyEndDate = new Date(element.policyEndDate);
-        element.fromDate = new Date(element.fromDate);
         element.loanEndDate = new Date(element.loanEndDate);
       });
-      if (this.loanAccountNumber !== undefined || this.loanAccountNumber !== null) {
-        this.getInstituteDetails(this.loanAccountNumber)
-      }
     });
   }
 
@@ -292,8 +266,8 @@ export class EducationalLoanMasterComponent implements OnInit {
       return;
 
     }
-
-    if (this.masterfilesArray.length === 0) {
+    console.log("urlArray.length",this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
       this.alertService.sweetalertWarning(
         'Educational Loan Document needed to Create Master.'
       );
@@ -301,9 +275,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     } else {
 
       const data = this.form.getRawValue();
-      // {
-      //   handicappedDependantDetail : this.form.getRawValue()
-      // };
+      data.proofSubmissionId = this.proofSubmissionId;
 
       console.log('Educational Loan ::', data);
 
@@ -314,13 +286,8 @@ export class EducationalLoanMasterComponent implements OnInit {
           if (res) {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
-              // console.log('masterPostData::', res);
-              // this.masterGridData = res.data.results[0].documentInformationList;
               this.masterGridData.forEach((element) => {
-                // element.policyStartDate = new Date(element.policyStartDate);
-                // element.policyEndDate = new Date(element.policyEndDate);
-                // element.fromDate = new Date(element.fromDate);
-                // element.loanEndDate = new Date(element.loanEndDate);
+                element.loanEndDate = new Date(element.loanEndDate);
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
@@ -341,19 +308,14 @@ export class EducationalLoanMasterComponent implements OnInit {
 
       this.Index = -1;
       formDirective.resetForm();
+      this.form.get('fullTimeCourse').setValue(0);
       this.form.reset();
-      // this.form.get('active').setValue(true);
-      // this.form.get('fullTimeCourse').setValue(0);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
       this.submitted = false;
 
     }
-    // this.form.patchValue({
-    //   accountType: 'Tier_1',
-    // });
-    // this.getIdentityInformation();
   }
 
   onMasterUpload(event: { target: { files: string | any[] } }) {
@@ -373,24 +335,6 @@ export class EducationalLoanMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-
-    // On Master Edit functionality
-  editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    // const formatedPremiumAmount = this.numberFormat.transform(
-    //   this.masterGridData[i].premiumAmount
-    // );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isClear = true;
-    this.masterfilesArray = this.masterGridData[i].documentInformationList
-
-  }
 
     // Payment Detail To Date Validations with Current Finanacial Year
     checkFinancialYearStartDateWithPaymentDetailToDate() {
@@ -417,36 +361,45 @@ export class EducationalLoanMasterComponent implements OnInit {
     console.log('this.filesArray::', this.masterfilesArray);
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
-  // On Edit Cancel
-  cancelEdit() {
-    this.form.reset();
-    this.form.get('active').setValue(true);
-    this.form.get('fullTimeCourse').setValue(0);
-    this.showUpdateButton = false;
-    this.paymentDetailGridData = [];
-    this.isClear = false;
+
+   //------------- On Master Edit functionality --------------------
+   editMaster(loanAccountNumber) {
+    //this.scrollToTop();
+    this.educationalLoanServiceService.getEducationalLoanMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.loanEndDate = new Date(element.loanEndDate);
+      });
+      console.log(loanAccountNumber)
+      const obj =  this.findByloanAccountNumber(loanAccountNumber,this.masterGridData);
+
+      // Object.assign({}, { class: 'gray modal-md' }),
+      console.log("Edit Master",obj);
+      if (obj!= 'undefined'){
+
+      this.paymentDetailGridData = obj.paymentDetails;
+      this.form.patchValue(obj);
+      this.Index = obj.loanAccountNumber;
+      this.showUpdateButton = true;
+      this.isClear = true;
+      this.urlArray = obj.loanSanctionLetter;
+      this.proofSubmissionId = obj.proofSubmissionId;
+
+      }
+    });
+
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    // const formatedPremiumAmount = this.numberFormat.transform(
-    //   this.masterGridData[i].premiumAmount
-    // );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
+  //Find method
+  findByloanAccountNumber(loanAccountNumber,masterGridData){
+    return masterGridData.find(x => x.loanAccountNumber === loanAccountNumber)
   }
 
   // On View Cancel
   cancelView() {
     this.form.reset();
-    this.form.get('active').setValue(true);
+    // this.form.get('active').setValue(true);
     this.form.get('fullTimeCourse').setValue(0);
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
@@ -459,8 +412,15 @@ export class EducationalLoanMasterComponent implements OnInit {
     );
   }
 
-  resetForm() {
+   //---------- On View Cancel -------------------
+   resetView() {
     this.form.reset();
+    this.form.get('fullTimeCourse').setValue(0);
+    this.showUpdateButton = false;
+    this.paymentDetailGridData = [];
+    this.masterfilesArray = [];
+    this.urlArray = [];
+    this.isCancel = false;
   }
 
   getInstituteDetails(loanAccountNumber) {
@@ -468,6 +428,45 @@ export class EducationalLoanMasterComponent implements OnInit {
       (element) => element.loanAccountNumber === loanAccountNumber.number
     );
     this.form.patchValue(educationalLoan);
+  }
+   //---------- For Doc Viewer -----------------------
+   nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  docViewer(template3: TemplateRef<any>,index:any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+    //this.urlSafe
+    console.log("urlSafe::",  this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
   }
 
 }

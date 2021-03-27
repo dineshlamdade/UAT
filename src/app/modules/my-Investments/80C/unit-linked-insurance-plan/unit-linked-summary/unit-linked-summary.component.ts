@@ -58,7 +58,6 @@ export class UnitLinkedSummaryComponent implements OnInit {
     this.myEvent.emit(data);
   }
 
-
   jumpToMasterPage(accountNumber: string) {
     this.tabIndex = 1;
     const accountNo = {

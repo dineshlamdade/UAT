@@ -605,9 +605,9 @@
                           <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="receiptAmount" onblur="changeReceiptAmountFormat()"
                           mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
                           <input
-                          type="text"
+                          type="text" onkeypress="return /[0-9]/i.test(event.key)"
                           class="form-control align-right"
-                          (change)="changeReceiptAmountFormat()"
+                          (blur)="changeReceiptAmountFormat()"
                           [(ngModel)]="receiptAmount"
                         />
                       </span>
@@ -1562,11 +1562,7 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe class="imagecover"
-
-          [src]="urlSafe"
-          provider="google"
-        ></iframe>
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
       </div>
       <div class="col-md-1">
         <button

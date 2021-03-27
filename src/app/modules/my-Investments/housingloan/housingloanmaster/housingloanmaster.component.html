@@ -7,6 +7,7 @@
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Property Name</label>
            <input type="text" formControlName="propertyName" class="form-control"
+           onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
               placeholder="Enter Property Name"
               [ngClass]="{ 'is-invalid': submitted && masterForm.propertyName.errors }"  >
            <div *ngIf="submitted && masterForm.propertyName.errors" class="invalid-feedback">
@@ -51,6 +52,7 @@
     <div class="col-sm-6 col-md-3">
        <label class="form-label">Address 1</label>
        <input type="text" formControlName="address1" class="form-control"
+       onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
           placeholder="Enter Property Name"
           [ngClass]="{ 'is-invalid': submitted && masterForm.address1.errors }"  >
        <div *ngIf="submitted && masterForm.address1.errors" class="invalid-feedback">
@@ -60,6 +62,7 @@
     <div class="col-sm-6 col-md-3">
       <label class="form-label">Address 2</label>
       <input type="text" formControlName="address2" class="form-control"
+      onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
          placeholder="Enter Property Name"
          [ngClass]="{ 'is-invalid': submitted && masterForm.address2.errors }"  >
       <div *ngIf="submitted && masterForm.address2.errors" class="invalid-feedback">
@@ -69,6 +72,7 @@
    <div class="col-sm-6 col-md-3">
     <label class="form-label">Address 3</label>
     <input type="text" formControlName="address3" class="form-control"
+    onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
        placeholder="Enter Property Name"
        [ngClass]="{ 'is-invalid': submitted && masterForm.address3.errors }"  >
     <div *ngIf="submitted && masterForm.address3.errors" class="invalid-feedback">
@@ -190,6 +194,7 @@
           <div class="col-sm-6 col-md-3">
             <label class="form-label">Name Of Owner/s{{i}}</label>
             <input type="text" formControlName="ownerName"  class="form-control"
+            onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                placeholder="Enter Owner Name"
              >
              <!-- <div *ngIf="submitted && masterForm.ownerName.errors" class="invalid-feedback">
@@ -346,6 +351,7 @@
                  <div class="col-sm-6 col-md-3">
                     <label class="form-label">Lender Name</label>
                     <input type="text" formControlName="lenderName" placeholder="Lender Name" class="form-control"
+                    onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                       name="Premium Amount" [ngClass]="{ 'is-invalid': loansubmitted && loanForm.lenderName.errors }">
                     <div *ngIf="loansubmitted && loanForm.lenderName.errors" class="invalid-feedback">
                        <div *ngIf="loanForm.lenderName.errors.required">Lender Name is mandatory</div>
@@ -387,6 +393,7 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Account No.</label>
                   <input type="text" formControlName="loanAccountNumber" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                      [ngClass]="{ 'is-invalid': loansubmitted && loanForm.loanAccountNumber.errors }">
                   <div *ngIf="loansubmitted && loanForm.loanAccountNumber.errors" class="invalid-feedback">
                      <div *ngIf="loanForm.loanAccountNumber.errors.required">Account No. is mandatory</div>
@@ -398,7 +405,8 @@
                 class="form-control align-right"
                   [ngClass]="{ 'is-invalid': submitted && masterForm.loanAmount.errors }"> -->
 
-                  <p-inputNumber   class="form-control align-right" formControlName="loanAmount"
+                  <p-inputNumber   class="form-control align-right"   onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+                  formControlName="loanAmount"
 
                   mode="decimal" locale="en-IN" [minFractionDigits]="2"
                   [ngClass]="{ 'is-invalid': loansubmitted && loanForm.loanAmount.errors }"></p-inputNumber>

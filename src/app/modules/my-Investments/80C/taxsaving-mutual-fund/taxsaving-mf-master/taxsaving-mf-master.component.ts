@@ -483,7 +483,7 @@ export class TaxsavingMfMasterComponent implements OnInit {
 
   //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
   editMaster(accountNumber) {
-    //this.scrollToTop();
+    this.scrollToTop();
     this.Service.getELSSMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -517,6 +517,16 @@ export class TaxsavingMfMasterComponent implements OnInit {
     return masterGridData.find(x => x.accountNumber === accountNumber)
   }
 
+ // scrollToTop Fuctionality
+ public scrollToTop() {
+  (function smoothscroll() {
+    var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    if (currentScroll > 0) {
+      window.requestAnimationFrame(smoothscroll);
+      window.scrollTo(0, currentScroll - (currentScroll / 8));
+    }
+  })();
+}
 
   // On Edit Cancel
   cancelEdit() {

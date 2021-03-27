@@ -22,10 +22,10 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
 })
 export class PPFDeclarationComponent implements OnInit {
 
-  @Input() institution: string;
-  @Input() policyNo: string;
-  @Input() data: any;
-  @Input() public policyNumber: string;
+  @Input() public institution: string;
+  @Input() public policyNo: string;
+  @Input() public data: any;
+
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -194,11 +194,10 @@ export class PPFDeclarationComponent implements OnInit {
       this.canEdit = true;
     } else {
       const input = this.data;
-      console.log('else view', input);
       this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
+      this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
       this.isDisabled = false;
       this.canEdit = input.canEdit;
     }
@@ -293,6 +292,13 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
     this.Service.getPPFDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
         console.log('getinstitution' , res);
@@ -1026,13 +1032,13 @@ export class PPFDeclarationComponent implements OnInit {
   // Common Function for filter to call API
   getTransactionFilterData(
     institution: String,
-    policyNo: String,
+    accountNumber: String,
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.Service.getPPFTransactionFilterData(
       institution,
-      policyNo,
+      accountNumber,
       transactionStatus
     ).subscribe((res) => {
       console.log(res);

@@ -8,7 +8,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form class="card" role="form" formGroup="HeadCreationForm" (ngSubmit)="addHeadCreation()" method="post"
+              <form class="card" role="form" [formGroup]="HeadCreationForm" (ngSubmit)="addHeadCreation()" method="post"
                 novalidate>
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
@@ -16,7 +16,7 @@
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" (change)="onChangeEvent($event)"
                         formControlName="standardName" class="form-control" placeholder="Enter Code"
-                        ngClass="{'is-invalid' : HeadCreationForm.get('standardName').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : HeadCreationForm.get('standardName').status == 'INVALID'}">
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
@@ -24,7 +24,7 @@
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
                         placeholder="Description"
-                        ngClass="{'is-invalid' : HeadCreationForm.get('description').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : HeadCreationForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
@@ -32,47 +32,63 @@
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="shortName" class="form-control"
                         placeholder="Short Name"
-                        ngClass="{'is-invalid' : HeadCreationForm.get('shortName').status == 'INVALID'}">
+                        [ngClass]="{'is-invalid' : HeadCreationForm.get('shortName').status == 'INVALID'}">
                     </div>
                   </div>
 
-                  <div class="col-sm-6 col-md-3" ngClass="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Nature</label>
-                    <select ngClass="{'is-invalid' : HeadCreationForm.get('headNature').status == 'INVALID'}"
-                      name="beast" id="Institution2" class="form-control custom-select" formControlName="headNature">
-                      <option *ngFor="let by of NatureList" [value]="by.value">
-                        {{by.label}}
+                    <select [ngClass]="{'is-invalid' : HeadCreationForm.get('headNature').status == 'INVALID'}"
+                      name="headNature" id="headNature" class="form-control custom-select" formControlName="headNature">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let natureList of NatureList" [value]="natureList.value">
+                        {{natureList.label}}
                       </option>
                     </select>
                   </div>
-                  <!-- ngClass="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
+                  <!-- [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
                   <br><br><br>
 
-                  <div class="col-sm-6 col-md-3" ngClass="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Type</label>
-                    <select name="beast" id="Institution2" class="form-control custom-select" formControlName="type">
-                      <option *ngFor="let by of TypeList" [value]="by.value">
-                        {{by.label}}
+
+                    <select name="type" id="type" class="form-control custom-select" formControlName="type">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let typeList of TypeList" [value]="typeList.value">
+                        {{typeList.label}}
                       </option>
                     </select>
                   </div>
-                  <!-- ngClass="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
-
-                  <div class="col-sm-6 col-md-3" ngClass="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                  <!-- [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
+                  <!-- changed radio button to dropdown on 20-03-2021 -->
+                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Is Statutory</label>
                     <div>
                       <label class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" name="isStatutory"
-                          formControlName="isStatutory" value=1>
+                        <input type="radio" class="custom-control-input" name="statutory" formControlName="statutory"
+                          value='true'>
                         <span class="custom-control-label">Yes</span>
                       </label>
                       <label class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" name="isStatutory"
-                          formControlName="isStatutory" value=0>
+                        <input type="radio" class="custom-control-input" name="statutory" formControlName="statutory"
+                          value='false'>
                         <span class="custom-control-label">No</span>
                       </label>
                     </div>
                   </div>
+
+
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Category</label>
+                    <select name="category" id="category" class="form-control custom-select" formControlName="category">
+                      <option selected value=''>Select </option>
+                      <option *ngFor="let category of categoryList" [value]="category.value">
+                        {{category.label}}
+                      </option>
+                    </select>
+                  </div>
+
+
                   <!-- <div class="col-lg-2 col-md-4 col-sm-6">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Date">
@@ -89,12 +105,12 @@
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button type="submit" *ngIf="!viewCancelButton" [disabled]="HeadCreationForm.invalid"
-                        ngClass="{'disabled-btn-bg-green' : HeadCreationForm.invalid,'btn-bg-green': !HeadCreationForm.invalid}"
+                        [ngClass]="{'disabled-btn-bg-green' : HeadCreationForm.invalid,'btn-bg-green': !HeadCreationForm.invalid}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
                         Save</button>
 
-                      <!--[disabled]="CycleDefinationForm.invalid" ngClass="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
+                      <!--[disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
 
 
                       <button type="button" (click)="CancelHeadCreation()" *ngIf="viewCancelButton"
@@ -130,6 +146,7 @@
                               <th scope="col" class="font700 wd-12">Short Name</th>
                               <th scope="col" class="font700 wd-12">Nature</th>
                               <th scope="col" class="font700 wd-20">Type</th>
+                              <th scope="col" class="font700 wd-20">Category</th>
                               <th scope="col" class="font700 wd-8">Action</th>
                             </tr>
                           </thead>
@@ -163,7 +180,9 @@
                               <td class="wd-10">
                                 <span>{{summary.type}}</span>
                               </td>
-
+                              <td class="wd-10">
+                                <span>{{summary.category}}</span>
+                              </td>
                               <td>
                                 <!-- <button type="button"
                                                                 class="btn btn-icon" title="Extend">
@@ -180,7 +199,7 @@
                                                                 <i class="fa fa-edit"></i></button> -->
 
                                 <button type="button" class="btn btn-icon" title="View"
-                                  (click)="GetHeadCreationbyIdDisable(summary.globalHeadMasterId)">
+                                  (click)="GetHeadCreationbyIdDisable(summary.headMasterId)">
                                   <i class="fa fa-eye"></i></button>
 
                                 <!-- <button type="button"

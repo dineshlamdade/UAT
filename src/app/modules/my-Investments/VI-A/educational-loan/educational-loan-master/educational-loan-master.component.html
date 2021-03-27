@@ -22,7 +22,7 @@
                   </div>
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Student Name</label>
-                    <select name="family_Member_Name"  formControlName="studentName" (change)='OnSelectionfamilyMemberGroup()'
+                    <select name="family_Member_Name"  formControlName="studentName" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" (change)='OnSelectionfamilyMemberGroup()'
                       class="form-control custom-select"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.studentName.errors }">
                       <option [ngValue]="null">Select</option>
@@ -48,6 +48,7 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Lender Name</label>
                     <input type="text" formControlName="lenderName" class="form-control"
+                    onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                       placeholder="Enter Lender Name "
                       [ngClass]="{ 'is-invalid': submitted && masterForm.lenderName.errors }"  >
                       <div *ngIf="submitted && masterForm.lenderName.errors" class="invalid-feedback">
@@ -57,6 +58,7 @@
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Loan Account No</label>
                     <input type="text" formControlName="loanAccountNumber" class="form-control"
+                    onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
                       placeholder="Enter Loan Account No"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.loanAccountNumber.errors }"  >
                       <div *ngIf="submitted && masterForm.loanAccountNumber.errors" class="invalid-feedback">
@@ -106,7 +108,7 @@
                               </td>
                               <td class="wd-14">
                                  <span tooltip="{{summary.fullTimeCourse==true?'Yes':'No'}}">
-                                 {{summary.fullTimeCourse==1?'Yes':'No'}}
+                                 {{summary.fullTimeCourse==true?'Yes':'No'}}
                                  </span>
                               </td>
                               <td class="wd-14">
@@ -173,17 +175,25 @@
                              </tr>
                           </thead>
                           <tbody>
-                             <tr>
-                                <th scope="row"><span tooltip="1">1</span></th>
-                                <td><span tooltip="Premium Receipt/ Premium Statement"></span>Loan Sanction Letter</td>
-                                <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
-                                   class="fa fa-paperclip"
-                                   aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
-                                <td>
-                                   <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
-                                    data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                </td>
-                             </tr>
+                                <tr>
+                                  <th scope="row"><span tooltip="1">1</span></th>
+                                  <td><span tooltip="Premium Receipt/ Premium Statement"></span>Loan Sanction Letter</td>
+                                  <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
+                                     class="fa fa-paperclip"
+                                     aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                     <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                                      <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                                        <i class="fa fa-paperclip text-orange"
+                                        (click)="docViewer(template3,i)"></i> &nbsp;
+                                        {{ doc.fileName }}
+                                      </div>
+                                    </div>
+                                    </td>
+                                  <td>
+                                     <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
+                                      data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
+                                  </td>
+                               </tr>
                           </tbody>
                        </table>
                     </div>
@@ -193,13 +203,16 @@
         </div>
      </div>
      <div class="row mt-15">
-        <div class="col-12">
-           <div class="float-right mb-15">
-              <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
-                <i class="fa fa-floppy-o"></i></b> Save</button>
-           </div>
-        </div>
-     </div>
+      <div class="col-12">
+         <div class="float-right mb-15">
+          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+        <button type="button"  (click)="resetView()"
+          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+          <i class="fa fa-floppy-o"></i></b> Reset</button>
+         </div>
+      </div>
+   </div>
      <div class="row mt-20">
       <div class="col-12">
          <div class="card">
@@ -224,7 +237,9 @@
                   <tbody>
                       <tr *ngFor="let summary of masterGridData; let i = index">
                           <td>{{i + 1}}</td>
-                          <td class="align-left wd-15"><span tooltip="{{summary.studentName}}">{{summary.studentName}}</span>
+                          <td class="wd-10"><span tooltip="{{summary.studentName}}">{{summary.studentName}}</span>
+                          </td>
+                          <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
                           </td>
                           <td class="wd-10"><span tooltip="{{summary.lenderName}}">{{summary.lenderName}}</span>
                           </td>
@@ -232,12 +247,12 @@
                           </td>
                           <td class="wd-10"><span tooltip="{{summary.loanEndDate | date :'dd-MMM-yyyy' }}">{{summary.loanEndDate | date :"dd-MMM-yyyy"}}</span>
                           </td>
-                          <td class="wd-10"><span tooltip="Submitted">Submitted</span>
+                          <td class="wd-10"><span tooltip="{{summary.fullTimeCourse==true?'Yes':'No'}}">{{summary.fullTimeCourse==true?'Yes':'No'}}</span>
                           </td>
-                          <td class="wd-10"><span tooltip="{{summary.remark}}">{{summary.remark}}</span>
-                          </td>
+                          <!-- <td class="wd-10"><span tooltip="Submitted">Submitted</span>
+                          </td> -->
                           <td class="wd-5">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(i)" tooltip="Edit"></i> &nbsp;&nbsp;
+                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.loanAccountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                           </td>
                       </tr>
                       <tr *ngIf="!masterGridData?.length">
@@ -309,3 +324,57 @@
        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
     </div>
  </ng-template>
+
+<!-- For Doc Viewer  -->
+<ng-template #template3>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button
+          type="button"
+          class="btn active Next_Previous_Btn"
+          tooltip="Previous Document"
+          (click)="previousDocViewer()"
+          [disabled]="urlIndex == 0"
+        >
+          <i class="fa fa-angle-left text-white font-30 p-10"></i>
+        </button>
+      </div>
+      <div class="col-md-10">
+        <iframe
+          style="height: 100vh; width: 100%; display: block"
+          [src]="urlSafe"
+          provider="google"
+        ></iframe>
+      </div>
+      <div class="col-md-1">
+        <button
+          type="button"
+          class="btn active Next_Previous_Btn"
+          tooltip="Next Document"
+          (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1"
+        >
+          <i class="fa fa-angle-right text-white font-30 p-10"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+      Ok
+    </button>
+  </div>
+</ng-template>

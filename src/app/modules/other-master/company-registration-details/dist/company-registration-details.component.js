@@ -55,7 +55,8 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                 var obj = {
                     code: element.code,
                     companyGroupName: element.companyGroupName,
-                    companyMasterId: element.companyMasterId
+                    companyMasterId: element.companyMasterId,
+                    companyName: element.companyName
                 };
                 _this.companyRegistrationIdList.push(obj);
             });
@@ -108,7 +109,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
                 // console.log(this.summaryHtmlDataList);
             });
         }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
+            //  this.alertService.sweetalertError(error["error"]["status"]["messsage"]);
         }, function () { });
         //  this.companyRegistrationIdList.filter((v,i,a)=>a.findIndex(t=>t.companyMasterId === v.companyMasterId) == i);
     };
@@ -200,6 +201,7 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
             var temp = this.tempObjForCompanyRegistration.find(function (o) { return o.code == _this.form.get('companyRegistrationId').value; });
             this.companyMasterId = temp.companyMasterId;
             console.log(temp.companyMasterId);
+            console.log(temp.companyGroupName);
             this.companyMasterId = temp.companyMasterId;
             this.form.patchValue({
                 companyName: temp.companyName,
@@ -265,7 +267,6 @@ var CompanyRegistrationDetailsComponent = /** @class */ (function () {
         var _this = this;
         console.log(evt);
         if (evt.length == 10) {
-            debugger;
             console.log(this.form.get('companyRegistrationId').value);
             console.log(this.tempObjForCompanyRegistration);
             var index1 = this.tempObjForCompanyRegistration.findIndex(function (o) { return o.code == _this.form.get('companyRegistrationId').value; });

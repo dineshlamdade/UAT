@@ -9,7 +9,7 @@
           <div class="card">
             <div class="card-body">
 
-              <form class="card" role="form" formGroup="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
+              <form class="card" role="form" [formGroup]="AttributeCreationForm" (ngSubmit)="addAttributeCreation()"
                 method="post" novalidate>
 
                 <div class="row">
@@ -40,7 +40,7 @@
                     <label class="form-label">Nature</label>
                     <select (change)="onStatusChange($event);"
                       ngClass="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}"
-                      name="beast" id="Institution2" class="form-control custom-select"
+                      name="attributeNature" id="attributeNature" class="form-control custom-select"
                       formControlName="attributeNature">
                       <option *ngFor="let by of NatureList" [value]="by.value">
                         {{by.label}}
