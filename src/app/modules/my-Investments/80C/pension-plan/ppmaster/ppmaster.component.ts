@@ -82,11 +82,11 @@ export class PpmasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
-  public policyMinDate: Date;
+  public policyMinDate: any;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
-  public minFormDate: Date;
-  public maxFromDate: Date;
+  public minFormDate: any = '';
+  public maxFromDate: any = '';
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -113,6 +113,10 @@ export class PpmasterComponent implements OnInit {
   public globalSelectedAmount: string;
 
   public proofSubmissionId ;
+  policyToDate: any;
+  paymentDetailsToDate: any;
+  policyMaxDate: any;
+  selectedPolicyFromDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -256,7 +260,15 @@ export class PpmasterComponent implements OnInit {
 
   //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
+    
+    this.selectedPolicyFromDate= ''
+    this.policyMinDate = ''
     this.policyMinDate = this.form.value.policyStartDate;
+    this.selectedPolicyFromDate =  this.policyMinDate
+    
+    this.minFormDate = '';
+    this.maxFromDate = '';
+    // this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
       this.form.get('policyStartDate').value,
       'yyyy-MM-dd'
@@ -265,19 +277,34 @@ export class PpmasterComponent implements OnInit {
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
     );
-    this.minFormDate = this.policyMinDate;
+
+    this.minFormDate = new Date(this.policyMinDate);
+// add a day +1 for todate selection (minimum value)
+var date = new Date(this.policyMinDate);
+let policyTo = date.setDate(date.getDate() + 1);
+this.policyToDate = new Date(policyTo);
+
+
+    // this.minFormDate = this.policyMinDate;
     if (policyStart > policyEnd) {
       this.form.controls.policyEndDate.reset();
     }
     this.form.patchValue({
       fromDate: this.policyMinDate,
     });
-
+    console.log('this.form.fromDate', this.form.controls['fromDate'].value);
     this.setPaymentDetailToDate();
   }
 
   //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
+
+    this.policyMaxDate = ''
+    this.maxFromDate = ''
+
+    this.policyMaxDate = this.form.value.policyEndDate;
+    this.maxFromDate = new Date(this.policyMaxDate);
+
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
@@ -295,13 +322,23 @@ export class PpmasterComponent implements OnInit {
       this.form.patchValue({
         toDate: this.form.value.policyEndDate,
       });
-      this.maxFromDate = this.form.value.policyEndDate;
+      // this.maxFromDate = this.form.value.policyEndDate;
+      console.log('this.form.toDate', this.form.controls['toDate'].value);
     }
   }
 
   //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
+    // this.paymentDetailMinDate = this.form.value.fromDate;
+    this.paymentDetailsToDate = ''
     this.paymentDetailMinDate = this.form.value.fromDate;
+
+    // add a day +1 for todate selection (minimum value)
+    var date = new Date(this.paymentDetailMinDate);
+    let policyTo = date.setDate(date.getDate() + 1);
+    this.paymentDetailsToDate = new Date(policyTo);
+
+
     const from = this.datePipe.transform(
       this.form.get('fromDate').value,
       'yyyy-MM-dd'
@@ -462,7 +499,7 @@ export class PpmasterComponent implements OnInit {
     this.form.get('annualAmount').setValue(installment);
   }
 
-  //----------- Family relationship shown on Policyholder selection ---------------
+  //----------- Family relationship shown on Accountholder selection ---------------
   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
@@ -488,6 +525,7 @@ export class PpmasterComponent implements OnInit {
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
     //this.scrollToTop();
+    this.scrollToTop();
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -518,7 +556,17 @@ export class PpmasterComponent implements OnInit {
   }
 
   findByaccountNumber(accountNumber,masterGridData){
-    return masterGridData.find(x => x.accountNumber === accountNumber)
+    return masterGridData.find(x => x.accountNumber === accountNumber);
+  }
+  //scrollToTop Fuctionality
+  scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - (currentScroll / 8));
+      }
+    })();
   }
 
       // this.masterfilesArray = this.masterGridData[institude.accountNumber].documentInformationList;
