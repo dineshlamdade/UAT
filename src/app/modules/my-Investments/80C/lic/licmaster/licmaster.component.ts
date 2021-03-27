@@ -31,7 +31,6 @@ import { MyInvestmentsService } from '../../../my-Investments.service';
   templateUrl: './licmaster.component.html',
   styleUrls: ['./licmaster.component.scss'],
 })
-
 export class LicmasterComponent implements OnInit {
   @Input() public policyNumber: any;
 

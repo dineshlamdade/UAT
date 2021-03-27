@@ -10,6 +10,10 @@ import { PensionPlanService } from '../pension-plan.service';
   styleUrls: ['./ppsummary.component.scss'],
 })
 export class PpsummaryComponent implements OnInit {
+  @Input() institution: string;
+  @Input() accountNumber: string;
+  @Output() myEvent = new EventEmitter<any>();
+  @Output() accountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -24,10 +28,7 @@ export class PpsummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-  @Input() institution: string;
-  @Input() accountNumber: string;
-  @Output() myEvent = new EventEmitter<any>();
-  @Output() accountNo = new EventEmitter<any>();
+
 
   constructor(
     private service: MyInvestmentsService,
@@ -59,21 +60,6 @@ export class PpsummaryComponent implements OnInit {
       tabIndex : this.tabIndex,
     };
     this.accountNo.emit(accountNo);
-  }
-
-
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      policyNo: policyNo,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.accountNumber = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
-    this.myEvent.emit(data);
   }
 
   // ---------------------Summary ----------------------
@@ -118,15 +104,4 @@ export class PpsummaryComponent implements OnInit {
     this.addFuturePolicy();
   }
 
-
-
-
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.accountNumber = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
-  }
 }

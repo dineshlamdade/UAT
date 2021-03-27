@@ -166,6 +166,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public selectedMasterId: string;
+  public canEdit : boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -203,12 +204,15 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
       this.globalBank = input.bankName;
       this.getBankNameList();
       this.getTransactionFilterData(input.bankName);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);

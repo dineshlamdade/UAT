@@ -1,17 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ElementRef,
+} from '@angular/core';
 import { NumberFormatPatternService } from '../../../../..//core/services/number-format-pattern.service';
 import { Renderer2 } from '@angular/core';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 
-
 @Component({
   selector: 'app-licsummary',
   templateUrl: './licsummary.component.html',
-  styleUrls: ['./licsummary.component.scss']
+  styleUrls: ['./licsummary.component.scss'],
 })
-
 export class LicsummaryComponent implements OnInit {
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;

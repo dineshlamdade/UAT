@@ -69,7 +69,6 @@ export class PpmasterComponent implements OnInit {
   public radioSelected: string;
   public familyRelationSame: boolean;
 
-
   public documentRemark: any;
   public isECS = true;
 
@@ -82,11 +81,11 @@ export class PpmasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
-  public policyMinDate: any;
+  public policyMinDate: Date;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
-  public minFormDate: any = '';
-  public maxFromDate: any = '';
+  public minFormDate: Date;
+  public maxFromDate: Date;
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -112,11 +111,7 @@ export class PpmasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
-  public proofSubmissionId ;
-  policyToDate: any;
-  paymentDetailsToDate: any;
-  policyMaxDate: any;
-  selectedPolicyFromDate: any;
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -132,7 +127,6 @@ export class PpmasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
-
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
@@ -150,14 +144,15 @@ export class PpmasterComponent implements OnInit {
       premiumAmount: new FormControl(null, Validators.required),
       annualAmount: new FormControl(
         { value: null, disabled: true },
-        Validators.required ),
+        Validators.required
+      ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl('0'),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
-      proofSubmissionId : new FormControl('')
+      proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [
@@ -166,7 +161,6 @@ export class PpmasterComponent implements OnInit {
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
     ];
-
 
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -177,13 +171,11 @@ export class PpmasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-  ngOnChanges()	{
-    console.log('accountNo',this.accountNo);
+  ngOnChanges() {
+    console.log('accountNo', this.accountNo);
     // this.editMaster(this.accountNo.accountNumber);
   }
   public ngOnInit(): void {
-
-
     this.masterPage();
     console.log('masterPage::', this.accountNo);
 
@@ -220,7 +212,6 @@ export class PpmasterComponent implements OnInit {
     //     this.institutionNameList.push(obj);
     //   });
 
-
     // });
 
     //------------------ Get All Previous Employer -----------------------------
@@ -248,7 +239,6 @@ export class PpmasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
-
   }
 
   // ------------------------------------Master----------------------------
@@ -260,15 +250,7 @@ export class PpmasterComponent implements OnInit {
 
   //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
-    
-    this.selectedPolicyFromDate= ''
-    this.policyMinDate = ''
     this.policyMinDate = this.form.value.policyStartDate;
-    this.selectedPolicyFromDate =  this.policyMinDate
-    
-    this.minFormDate = '';
-    this.maxFromDate = '';
-    // this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
       this.form.get('policyStartDate').value,
       'yyyy-MM-dd'
@@ -277,34 +259,19 @@ export class PpmasterComponent implements OnInit {
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
     );
-
-    this.minFormDate = new Date(this.policyMinDate);
-// add a day +1 for todate selection (minimum value)
-var date = new Date(this.policyMinDate);
-let policyTo = date.setDate(date.getDate() + 1);
-this.policyToDate = new Date(policyTo);
-
-
-    // this.minFormDate = this.policyMinDate;
+    this.minFormDate = this.policyMinDate;
     if (policyStart > policyEnd) {
       this.form.controls.policyEndDate.reset();
     }
     this.form.patchValue({
       fromDate: this.policyMinDate,
     });
-    console.log('this.form.fromDate', this.form.controls['fromDate'].value);
+
     this.setPaymentDetailToDate();
   }
 
   //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
-
-    this.policyMaxDate = ''
-    this.maxFromDate = ''
-
-    this.policyMaxDate = this.form.value.policyEndDate;
-    this.maxFromDate = new Date(this.policyMaxDate);
-
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
@@ -322,23 +289,13 @@ this.policyToDate = new Date(policyTo);
       this.form.patchValue({
         toDate: this.form.value.policyEndDate,
       });
-      // this.maxFromDate = this.form.value.policyEndDate;
-      console.log('this.form.toDate', this.form.controls['toDate'].value);
+      this.maxFromDate = this.form.value.policyEndDate;
     }
   }
 
   //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
-    // this.paymentDetailMinDate = this.form.value.fromDate;
-    this.paymentDetailsToDate = ''
     this.paymentDetailMinDate = this.form.value.fromDate;
-
-    // add a day +1 for todate selection (minimum value)
-    var date = new Date(this.paymentDetailMinDate);
-    let policyTo = date.setDate(date.getDate() + 1);
-    this.paymentDetailsToDate = new Date(policyTo);
-
-
     const from = this.datePipe.transform(
       this.form.get('fromDate').value,
       'yyyy-MM-dd'
@@ -387,14 +344,13 @@ this.policyToDate = new Date(policyTo);
 
   //-------------- Post Master Page Data API call -------------------
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
-
     this.submitted = true;
 
     if (this.form.invalid) {
       return;
     }
-    console.log("urlArray.length",this.urlArray.length)
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
+    console.log('urlArray.length', this.urlArray.length);
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Pension Plan Document needed to Create Master.'
       );
@@ -414,11 +370,11 @@ this.policyToDate = new Date(policyTo);
       // }
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
-            data.proofSubmissionId = this.proofSubmissionId;
+      data.proofSubmissionId = this.proofSubmissionId;
 
-            data.fromDate = from;
-            data.toDate = to;
-            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.fromDate = from;
+      data.toDate = to;
+      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
       console.log('Pension Plan::', data);
 
@@ -460,7 +416,6 @@ this.policyToDate = new Date(policyTo);
       this.urlArray = [];
       this.submitted = false;
       this.documentRemark = '';
-
     }
   }
 
@@ -499,7 +454,7 @@ this.policyToDate = new Date(policyTo);
     this.form.get('annualAmount').setValue(installment);
   }
 
-  //----------- Family relationship shown on Accountholder selection ---------------
+  //----------- Family relationship shown on Policyholder selection ---------------
   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
@@ -524,7 +479,6 @@ this.policyToDate = new Date(policyTo);
 
   //------------- On Master Edit functionality --------------------
   editMaster(accountNumber) {
-    //this.scrollToTop();
     this.scrollToTop();
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
       console.log('masterGridData::', res);
@@ -535,42 +489,42 @@ this.policyToDate = new Date(policyTo);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-      console.log(accountNumber)
-      const obj =  this.findByaccountNumber(accountNumber,this.masterGridData);
+      console.log(accountNumber);
+      const obj = this.findByaccountNumber(accountNumber, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.accountNumber;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.documentInformationList;
-      this.proofSubmissionId = obj.proofSubmissionId;
-
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
       }
     });
-
   }
 
-  findByaccountNumber(accountNumber,masterGridData){
-    return masterGridData.find(x => x.accountNumber === accountNumber);
+  // find account Number Functionality
+  findByaccountNumber(accountNumber, masterGridData) {
+    return masterGridData.find((x) => x.accountNumber === accountNumber);
   }
-  //scrollToTop Fuctionality
-  scrollToTop() {
+
+  // scrollToTop Fuctionality
+  public scrollToTop() {
     (function smoothscroll() {
-      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
       if (currentScroll > 0) {
         window.requestAnimationFrame(smoothscroll);
-        window.scrollTo(0, currentScroll - (currentScroll / 8));
+        window.scrollTo(0, currentScroll - currentScroll / 8);
       }
     })();
   }
 
-      // this.masterfilesArray = this.masterGridData[institude.accountNumber].documentInformationList;
-      // this.masterfilesArray = institude.masterGridData[institude.accountNumber].documentInformationList
+  // this.masterfilesArray = this.masterGridData[institude.accountNumber].documentInformationList;
+  // this.masterfilesArray = institude.masterGridData[institude.accountNumber].documentInformationList
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.form.reset();
@@ -623,10 +577,9 @@ this.policyToDate = new Date(policyTo);
   }
   //---------- For Doc Viewer -----------------------
   nextDocViewer() {
-
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
     //   this.urlArray[this.urlIndex]
@@ -634,31 +587,29 @@ this.policyToDate = new Date(policyTo);
   }
 
   previousDocViewer() {
-
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
     //   this.urlArray[this.urlIndex]
     // );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
-    console.log("---in doc viewer--");
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
     this.urlIndex = index;
 
-    console.log("urlArray::", this.urlArray);
+    console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe
-    console.log("urlSafe::",  this.urlSafe);
+    console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
-
 }

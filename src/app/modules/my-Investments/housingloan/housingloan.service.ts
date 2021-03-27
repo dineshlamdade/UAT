@@ -48,6 +48,14 @@ export class HousingloanService {
       });
   }
 
+  getHousingLoanummary() {
+    return this._HTTP.get(this.apiUrl + 'housingLoanMaster/housingLoanSummary')
+    .pipe(map((res: any) => {
+      return res;
+    }
+    ));
+  }
+
   public getHousingLoanMaster(): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'housingLoanMaster')
     .pipe(map((res: any) => {

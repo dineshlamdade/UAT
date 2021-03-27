@@ -1147,8 +1147,8 @@ export class LicdeclarationComponent implements OnInit {
       this.alertService.sweetalertWarning(
         'Receipt Amount is greater than Selected line Actual Amount',
       );
-      this.receiptAmount = '0.00';
-      return false;
+      // this.receiptAmount = '0.00';
+      // return false;
     }
       this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
   }
