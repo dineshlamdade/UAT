@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AnyAaaaRecord } from 'node:dns';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
@@ -19,7 +20,6 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -28,6 +28,9 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  public futureNewPolicyDeclaredAmount: any;
+  public tempFlag : boolean;
+
 
   constructor(
     private service: MyInvestmentsService,
@@ -109,12 +112,18 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
     this.addFuturePolicy();
   }
 
-  // // On onEditSummary
-  // onEditSummary1(institution: string, policyNo: string) {
-  //   this.tabIndex = 2;
-  //   this.institution = institution;
-  //   this.policyNo = policyNo;
-  //   console.log('institution::', institution);
-  //   console.log('policyNo::', policyNo);
-  // }
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
+
+    if (!pattern.test(inputChar)) {
+      this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
+  }
 }

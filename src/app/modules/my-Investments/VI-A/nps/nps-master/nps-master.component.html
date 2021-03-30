@@ -5,7 +5,7 @@
       <div class="col-sm-6 col-md-3">
         <!-- onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" -->
         <label class="form-label">Institution</label>
-        <input type="text" formControlName="institution" class="form-control"
+        <input type="text" formControlName="institution" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" class="form-control"
            placeholder="Enter Institution"
           [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
