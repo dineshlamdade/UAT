@@ -80,11 +80,11 @@ export class PostOfficeMasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
-  public policyMinDate: Date;
+  public policyMinDate: any;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
-  public minFormDate: Date;
-  public maxFromDate: Date;
+  public minFormDate: any = '';
+  public maxFromDate: any = '';
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -101,7 +101,7 @@ export class PostOfficeMasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-  public proofSubmissionId ;
+ 
   public transactionStatustList: any;
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
@@ -109,7 +109,12 @@ export class PostOfficeMasterComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
-
+ 
+  public proofSubmissionId ;
+  policyToDate: any;
+  paymentDetailsToDate: any;
+  policyMaxDate: any;
+  selectedPolicyFromDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
