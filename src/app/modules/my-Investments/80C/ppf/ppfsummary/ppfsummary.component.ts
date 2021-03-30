@@ -47,12 +47,12 @@ export class PPFSummaryComponent implements OnInit {
       institution : institution,
       accountNumber : accountNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)
-    };
+      canEdit: (mode == 'edit' ? true : false)};
     this.institution = institution;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
   }
+
 
   jumpToMasterPage(accountNumber: string) {
     this.tabIndex = 1;

@@ -14,6 +14,7 @@
                  </tr>
               </thead>
               <tbody>
+                <!-- <pre>{{summaryGridData | json}}</pre> -->
                  <tr *ngFor="let summary of summaryGridData; let i = index">
                     <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.policyNo)">
                        <span tooltip="{{summary.institutionName}}">{{summary.institutionName}}</span>
@@ -67,9 +68,7 @@
                        <span class="Letterbadge">B</span>
                     </td>
                     <td>
-                      <p-inputNumber   class="form-control align- right"
-                      [(ngModel)]="futureNewPolicyDeclaredAmount" (onFocus) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()"
-                       mode="decimal"  min="0" locale="en-IN" [minFractionDigits]="2" [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber>
+                      <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber>
                      </td>
                     <td></td>
                     <td></td>

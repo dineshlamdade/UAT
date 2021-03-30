@@ -7,10 +7,9 @@ import { NscService } from '../nsc.service';
 @Component({
   selector: 'app-national-seving-certificate-summary',
   templateUrl: './national-seving-certificate-summary.component.html',
-  styleUrls: ['./national-seving-certificate-summary.component.scss']
+  styleUrls: ['./national-seving-certificate-summary.component.scss'],
 })
 export class NationalSevingCertificateSummaryComponent implements OnInit {
-
   @Input() institution: string;
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -32,7 +31,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
 
   constructor(
     private service: MyInvestmentsService,
-    private nscService : NscService,
+    private nscService: NscService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -42,13 +41,18 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
-  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
+  redirectToDeclarationActual(
+    institution: string,
+    accountNumber: string,
+    mode: string
+  ) {
     this.tabIndex = 2;
     const data = {
-      institution : institution,
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      institution: institution,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
+      canEdit: mode == 'edit' ? true : false,
+    };
     this.institution = institution;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
@@ -57,12 +61,11 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   jumpToMasterPage(accountNumber: string) {
     this.tabIndex = 1;
     const accountNo = {
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
     };
     this.accountNo.emit(accountNo);
   }
-
 
   // ---------------------Summary ----------------------
   // Summary get Call
@@ -71,7 +74,8 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount =
+        res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -81,35 +85,29 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-
     const data = {
       futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.nscService
-      .getNSCSummaryFuturePlan(data)
-      .subscribe((res) => {
-        //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].transactionDetailList;
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
-        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-
-      });
-
+    this.nscService.getNSCSummaryFuturePlan(data).subscribe((res) => {
+      //console.log('addFuturePolicy Res..', res);
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount =
+        res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.grandTotalDeclaredAmount =
+        res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+    });
   }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
     this.addFuturePolicy();
   }
-
 
   // // On onEditSummary
   // onEditSummary1(institution: string, policyNo: string) {
@@ -120,4 +118,3 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   //   console.log('policyNo::', policyNo);
   // }
 }
-
