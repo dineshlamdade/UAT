@@ -3,7 +3,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { CompanySettingsService } from '../../company-settings.service';
-import { saveBusinessYear } from '../../model/business-cycle-model';
+import { SaveBusinessYear } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -67,7 +67,7 @@ export class BusinessYearComponent implements OnInit {
   //add & update new BusinessYear
   addBusinessYear(): void {
 
-    let addBusinessYear: saveBusinessYear = Object.assign( {}, this.BusinessYearform.value );
+    let addBusinessYear: SaveBusinessYear = Object.assign( {}, this.BusinessYearform.value );
     if ( this.editedRecordIndexId == 0 ) {
       delete addBusinessYear.id;
       addBusinessYear.fromDate = this.datepipe.transform( addBusinessYear.fromDate, 'dd-MMM' );

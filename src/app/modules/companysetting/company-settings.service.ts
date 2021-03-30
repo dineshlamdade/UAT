@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from './../../../environments/environment';
-import { UpdateflagCycleCreation } from '../companysetting/payrollheadgroupcreation/payrollheadgroupcreation.model';
-import { SaveAttributeSelection, saveBusinessYear, saveCycleDefinition, SaveHeadCreation, SavePHG } from './model/business-cycle-model';
-import { SaveAttributeCreation } from './attribute-selection/attribute-selection.component';
+import { SaveAttributeCreation, SaveAttributeSelection, SaveBusinessYear, SaveCycleDefinition, SaveHeadCreation, SavePHG, UpdateflagCycleCreation } from './model/business-cycle-model';
 
 @Injectable( {
   providedIn: 'root'
@@ -39,7 +37,6 @@ export class CompanySettingsService {
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
-
   }
 
   getAllAttributeCreation() {
@@ -100,7 +97,7 @@ export class CompanySettingsService {
       } ) );
   }
 
-  GetAttributeOptionListByGroup( groupname: string ) {//: Observable<saveBusinessYear | {}> {
+  GetAttributeOptionListByGroup( groupname: string ) {
 
     return this._HTTP.get( environment.baseUrl8084 + 'attribute-group/getGroupByName/' + groupname )
       .pipe( map( ( res: any ) => {
@@ -117,7 +114,7 @@ export class CompanySettingsService {
   }
 
   DeleteAttributeSelection( id: number ) {
-    return this._HTTP.delete( environment.baseUrl8086 + 'attribute-group/delete/' + id )
+    return this._HTTP.delete( environment.baseUrl8084 + 'attribute-group/delete/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -163,7 +160,7 @@ export class CompanySettingsService {
   }
 
   //add new BusinessYear
-  AddBusinessYear( data: saveBusinessYear ): Observable<number | {}> {
+  AddBusinessYear( data: SaveBusinessYear ): Observable<number | {}> {
 
     return this._HTTP.post( environment.baseUrl8086 + 'business-year', data )
       .pipe( map( ( res: any ) => {
@@ -172,7 +169,7 @@ export class CompanySettingsService {
   }
 
   //update BusinessYear
-  UpdateBusinessYear( data: saveBusinessYear ) {
+  UpdateBusinessYear( data: SaveBusinessYear ) {
 
     return this._HTTP.put( environment.baseUrl8086 + 'business-year/update', data )
       .pipe( map( ( res: any ) => {
@@ -238,7 +235,7 @@ export class CompanySettingsService {
   }
 
   //add new cycle-definition
-  AddCycleDefinition( data: saveCycleDefinition ): Observable<number | {}> {
+  AddCycleDefinition( data: SaveCycleDefinition ): Observable<number | {}> {
 
     return this._HTTP.post( environment.baseUrl8086 + 'business-cycle-definition', data )
       .pipe( map( ( res: any ) => {

@@ -40,6 +40,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         this.dropdownList = [];
         this.ServicesList = [];
         this.Multiselectflag = false;
+        //headGroupIdforattributeList: number;
         this.showflag = false;
         this.HeadNameList = [];
         this.selectedheadName = [];
@@ -72,7 +73,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         //   itemsShowLimit: 2,
         //   allowSearchFilter: true
         // };
-        this.AttributeCreationForm = this.formBuilder.group({
+        this.payrollHeadGroupCreationForm = this.formBuilder.group({
             attributeGroupDefinitionId: new forms_1.FormControl(null),
             headGroupDefinitionName: new forms_1.FormControl('', forms_1.Validators.required),
             description: new forms_1.FormControl('', forms_1.Validators.required),
@@ -110,7 +111,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         this.ServicesList = [];
     };
     PayrollHeadGroupCreationComponent.prototype.resetAttributeSelection = function () {
-        this.AttributeCreationForm.reset();
+        this.payrollHeadGroupCreationForm.reset();
         this.viewCancelButton = false;
         this.hidevalue = false;
         this.viewupdateButton = false;
@@ -191,9 +192,9 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
                 _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.standardName !== element.standardName; });
             });
             //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-            _this.AttributeCreationForm.patchValue({ headGroupDefinitionName: response.data.results[0].headGroupDefinitionName });
-            _this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
-            _this.AttributeCreationForm.patchValue({ attributeNature: response.data.results[0].attributeGroupName });
+            _this.payrollHeadGroupCreationForm.patchValue({ headGroupDefinitionName: response.data.results[0].headGroupDefinitionName });
+            _this.payrollHeadGroupCreationForm.patchValue({ description: response.data.results[0].description });
+            _this.payrollHeadGroupCreationForm.patchValue({ attributeNature: response.data.results[0].attributeGroupName });
             _this.PHGName = response.data.results[0].headGroupDefinitionName;
             _this.AttGrpName = response.data.results[0].attributeGroupName;
             // this.dropdownList=this.HeadNameList;
@@ -218,7 +219,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             .subscribe(function (response) {
             _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllPayrollHeadGroup();
-            _this.AttributeCreationForm.reset();
+            _this.payrollHeadGroupCreationForm.reset();
             // this.targetProducts=[];
         });
     };
@@ -279,7 +280,6 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
     };
     PayrollHeadGroupCreationComponent.prototype.RowSelectedtargetProducts = function (u) {
         var _this = this;
-        /////////////////////////////////////////////////////
         this.selectedheadName.push(u);
         this.HeadNameList = this.targetProducts;
         this.selectedheadName.forEach(function (element) {
@@ -345,7 +345,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         //       this.sweetalertError( error["error"]["status"]["message"] );
         //     } );
         // this.ServicesList = [];
-        // this.AttributeCreationForm.reset();
+        // this.payrollHeadGroupCreationForm.reset();
         // this.AttGroupList = [];
         // // const cycledata1:SaveAttributeAssignment=Object.assign({});
         // //////////////////////////////Save one end////////////////////////////////////////////
@@ -497,10 +497,10 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             addAttributeCreation.headMasters.push(headDetail);
             //addAttributeCreation.headMasters.push(   f.globalHeadMasterId  );
         });
-        addAttributeCreation.headGroupDefinitionName = this.AttributeCreationForm.value.headGroupDefinitionName;
-        addAttributeCreation.description = this.AttributeCreationForm.value.description;
+        addAttributeCreation.headGroupDefinitionName = this.payrollHeadGroupCreationForm.value.headGroupDefinitionName;
+        addAttributeCreation.description = this.payrollHeadGroupCreationForm.value.description;
         //addAttributeCreation.createdBy="nisha";
-        addAttributeCreation.attributeGroupName = this.AttributeCreationForm.value.attributeNature;
+        addAttributeCreation.attributeGroupName = this.payrollHeadGroupCreationForm.value.attributeNature;
         if (addAttributeCreation.headGroupDefinitionId == undefined || addAttributeCreation.headGroupDefinitionId == 0) {
             this.companySettingsService.UpdatePHGById(this.headGroupDefinitionId, addAttributeCreation).subscribe(function (res) {
                 addAttributeCreation.headMasters = [];
@@ -510,22 +510,22 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllPayrollHeadGroup();
                 _this.hidevalue = false;
-                _this.AttributeCreationForm.reset();
+                _this.payrollHeadGroupCreationForm.reset();
             }, function (error) {
                 _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
     };
-    PayrollHeadGroupCreationComponent.prototype.onStatusChange23 = function (event) {
+    PayrollHeadGroupCreationComponent.prototype.copyFrommPayrollHeadGroup = function (event) {
         var _this = this;
         this.showflag = true;
         this.AttGroupList = [];
-        this.headGroupIdforattributeList = event.target.value;
+        //this.headGroupIdforattributeList = ;
         // this. companySettingsService.GetAttributeOptionListByHeadGroupId( this.headGroupIdforattributeList).subscribe(res => {
         //
         //   this.AttGroupList =res.data.results[0];//[0].attributeMasters;
         // });
-        this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById(this.headGroupIdforattributeList).subscribe(function (res) {
+        this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById(event.target.value).subscribe(function (res) {
             _this.AttGroupList = res.data.results[0]; //[0].attributeMasters;
             _this.AttGroupList.forEach(function (element) {
                 element.toDate = _this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
@@ -622,7 +622,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         //   this.sweetalertError(error["error"]["status"]["message"]);
         // });
         // this.ServicesList=[];
-        // this.AttributeCreationForm.reset();
+        // this.payrollHeadGroupCreationForm.reset();
         // this.AttGroupList=[];
         // const cycledata1:SaveAttributeAssignment=Object.assign({});
         var addData = Object.assign({});
@@ -676,7 +676,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
         this.ServicesList = [];
-        this.AttributeCreationForm.reset();
+        this.payrollHeadGroupCreationForm.reset();
         this.AttGroupList = [];
         //element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
         // cycledata1.headGroupId=this.headGroupId;
@@ -738,7 +738,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             //       this.sweetalertError( error["error"]["status"]["message"] );
             //     } );
             // this.ServicesList = [];
-            // this.AttributeCreationForm.reset();
+            // this.payrollHeadGroupCreationForm.reset();
             // this.AttGroupList = [];
             //element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
             // cycledata1.headGroupId=this.headGroupId;
@@ -781,12 +781,13 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             //addAttributeCreation.headMasters.push(   f.globalHeadMasterId  );
         });
         addAttributeCreation.headGroupDefinitionName = this.PHGName;
-        addAttributeCreation.description = this.AttributeCreationForm.value.description;
-        addAttributeCreation.attributeGroupName = this.AttributeCreationForm.value.attributeNature;
+        addAttributeCreation.description = this.payrollHeadGroupCreationForm.value.description;
+        addAttributeCreation.attributeGroupName = this.payrollHeadGroupCreationForm.value.attributeNature;
         addAttributeCreation.countryId = 1;
         addAttributeCreation.createdBy = "nisha";
         addAttributeCreation.isActive = true;
-        // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
+        // addAttributeCreation.attributeNature=this.payrollHeadGroupCreationForm.value.attributeNature;
+        console.log(JSON.stringify(addAttributeCreation));
         if (addAttributeCreation.headGroupDefinitionId == undefined || addAttributeCreation.headGroupDefinitionId == 0) {
             this.companySettingsService.AddPayrollHeadGroup(addAttributeCreation).subscribe(function (res) {
                 addAttributeCreation.headMasters = [];
@@ -795,23 +796,21 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
                 _this.getAllPayrollHeadGroup();
                 _this.getAllHeadCreation();
                 //this.hidevalue=false;
-                _this.AttributeCreationForm.reset();
+                _this.payrollHeadGroupCreationForm.reset();
             }, function (error) {
                 _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
         else {
-            //
-            //   this.attributeSelectionService.UpdateBusinessYear(addAttributeCreation.attributeGroupDefinitionId,addAttributeCreation).subscribe((res:any )=> {
-            //
-            //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
+            // this.companySettingsService.UpdateBusinessYear( addAttributeCreation.attributeGroupDefinitionId, addAttributeCreation ).subscribe( ( res: any ) => {
+            //   this.alertService.sweetalertMasterSuccess( res.status.message, '' );
             //   this.getAllAttributeSelection();
-            //   this.AttributeCreationForm.reset();
-            //  // this.updateFlag=false;
-            //   },
-            //   (error: any) => {
-            //      this.sweetalertError(error["error"]["status"]["message"]);
-            //    });
+            //   this.payrollHeadGroupCreationForm.reset();
+            //   // this.updateFlag=false;
+            // },
+            //   ( error: any ) => {
+            //     this.alertService.sweetalertError( error["error"]["status"]["message"] );
+            //   } );
         }
     };
     PayrollHeadGroupCreationComponent.prototype.getPHGname = function (event) {
@@ -863,7 +862,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
                 _this.getAllAttributeListByAttGroup();
                 _this.viewSaveButton = true;
             }
-            // this.sweetalertError(error["error"]["status"]["message"]);
+            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
         });
         //});
         // if(this.AttGroupList.length==0)

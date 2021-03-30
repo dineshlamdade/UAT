@@ -95,7 +95,7 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     CompanySettingsService.prototype.DeleteAttributeSelection = function (id) {
-        return this._HTTP["delete"](environment_1.environment.baseUrl8086 + 'attribute-group/delete/' + id)
+        return this._HTTP["delete"](environment_1.environment.baseUrl8084 + 'attribute-group/delete/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

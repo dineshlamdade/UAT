@@ -17,7 +17,7 @@
                     <label class="form-label">Code</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="code" class="form-control"
-                        placeholder="Code"
+                        placeholder="Enter Code"
                         [ngClass]="{'is-invalid' : AttributeCreationForm.get('code').status == 'INVALID'}">
                     </div>
                   </div>
@@ -25,7 +25,7 @@
                     <label class="form-label">Description</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
-                        placeholder="Description"
+                        placeholder="Enter Description"
                         [ngClass]="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
@@ -48,7 +48,7 @@
                       </option>
                     </select>
                   </div>
-                  <!-- [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
+
                   <br><br><br>
                   <div class="col-sm-6 col-md-3" *ngIf="hidevalue">
                     <label class="form-label">Value</label>

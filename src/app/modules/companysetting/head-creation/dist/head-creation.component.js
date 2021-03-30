@@ -93,6 +93,7 @@ var HeadCreationComponent = /** @class */ (function () {
             //  this.HeadCreationForm.patchValue( { statutory: ( response.data.results[0].statutory ).toString() } );
             _this.HeadCreationForm.patchValue({ category: response.data.results[0].category });
         });
+        this.HeadCreationForm.disable();
     };
     HeadCreationComponent.prototype.addHeadCreation = function () {
         var _this = this;
@@ -104,7 +105,7 @@ var HeadCreationComponent = /** @class */ (function () {
             this.headCreationService.AddHeadCreation(addHeadCreation).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllHeadCreation();
-                _this.HeadCreationForm.reset();
+                _this.CancelHeadCreation();
                 // this.HeadCreationForm.patchValue( { statutory: '0' } );
             }, function (error) {
                 _this.alertService.sweetalertError(error["error"]["status"]["message"]);
@@ -112,6 +113,7 @@ var HeadCreationComponent = /** @class */ (function () {
         }
     };
     HeadCreationComponent.prototype.CancelHeadCreation = function () {
+        this.HeadCreationForm.enable();
         this.disabled = true;
         this.HeadCreationForm.reset();
         this.viewCancelButton = false;

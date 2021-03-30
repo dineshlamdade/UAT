@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.OtherMasterRoutingModule = void 0;
-var compliance_mapping_component_1 = require("./compliance-mapping/compliance-mapping.component");
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-master-at-company.component");
@@ -20,6 +19,7 @@ var compliance_master_component_1 = require("./compliance-master/compliance-mast
 var establishment_master_component_1 = require("./establishment-master/establishment-master.component");
 var job_master_component_1 = require("./job-master/job-master.component");
 var statutory_compliance_component_1 = require("./statutory-compliance/statutory-compliance.component");
+var compliance_mapping_component_1 = require("./compliance-mapping/compliance-mapping.component");
 var routes = [
     {
         path: 'companyGroupMaster',

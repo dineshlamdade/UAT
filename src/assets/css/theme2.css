@@ -3012,11 +3012,19 @@ legend {
   font-size: 12px !important;
 }
 
+
+
+/* added by anant */
+
 .disabled-button {
   opacity: 0.7 !important;
 }
 
-/* added by anant */
-.selectedMaterialCode {
-  background-color: green;
+.selectedMaterialCode1 {
+  background-color:#63ff6199;
 }
+.boldRow {
+  font-weight: bold;
+  background-color: rgb(255, 255, 155);
+}
+/* end here */

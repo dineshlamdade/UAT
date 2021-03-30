@@ -1,6 +1,3 @@
-<p>payrollheadgroupcreation works!</p>
-
-
 <app-leftmenu></app-leftmenu>
 <!-- Main body part  -->
 <div class="page">
@@ -13,15 +10,15 @@
             <div class="card-body">
 
               <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                [formGroup]="AttributeCreationForm" method="post" novalidate>
+                [formGroup]="payrollHeadGroupCreationForm" method="post" novalidate>
                 <!-- (ngSubmit)="addAttributeSelection()" -->
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Name</label>
                     <div class="input-group">
                       <input type="text" (change)="onChangeEvent($event)" formControlName="headGroupDefinitionName"
-                        class="form-control" placeholder="Name"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('headGroupDefinitionName').status == 'INVALID'}">
+                        class="form-control" placeholder="Enter Name"
+                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('headGroupDefinitionName').status == 'INVALID'}">
                     </div>
                     <!-- [readonly]="!disabled" -->
                   </div>
@@ -29,8 +26,9 @@
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Description</label>
                     <div class="input-group">
-                      <input type="text" formControlName="description" class="form-control" placeholder="Description"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID'}">
+                      <input type="text" formControlName="description" class="form-control"
+                        placeholder="Enter Description"
+                        [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('description').status == 'INVALID'}">
                     </div>
                     <!-- [readonly]="!disabled" -->
                   </div>
@@ -39,9 +37,10 @@
                   <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Attribute Group</label>
                     <select (change)="onStatusChange($event);"
-                      [ngClass]="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}"
+                      [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('attributeNature').status == 'INVALID'}"
                       name="attributeNature" id="attributeNature" class="form-control  "
                       formControlName="attributeNature">
+                      <option selected value=''>Select </option>
                       <option *ngFor="let by of AttributeSelectionList" [value]="by.name">
                         {{by.name}}
                       </option>
@@ -66,7 +65,7 @@
                     <div class="card-body">
 
                       <!-- <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                                            [formGroup]="AttributeCreationForm" (ngSubmit)="addAttributeSelection()"
+                                            [formGroup]="payrollHeadGroupCreationForm" (ngSubmit)="addAttributeSelection()"
                                             #formDirective="ngForm" method="post" novalidate> -->
 
                       <div class="row">
@@ -74,7 +73,7 @@
                           <label class="form-label">Payroll Head Group Name <span class="textcolor"> {{PHGName}}</span>
                           </label>
                           <!-- <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div> -->
                         </div>
 
@@ -82,7 +81,7 @@
                           <label class="form-label">Attribute Group <span class="textcolor"> {{AttGrpName}}
                             </span></label>
                           <!-- <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div> -->
                         </div>
 
@@ -101,7 +100,7 @@
                         <!-- <div class="col-sm-6 col-md-4">
                                                     <label class="form-label">Attribute Group</label>
                                                     <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div>
                                                 </div> -->
 
@@ -225,33 +224,33 @@
                     <div class="card-body">
 
                       <!-- <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                                            [formGroup]="AttributeCreationForm" (ngSubmit)="addAttributeSelection()"
+                                            [formGroup]="payrollHeadGroupCreationForm" (ngSubmit)="addAttributeSelection()"
                                             #formDirective="ngForm" method="post" novalidate> -->
 
                       <div class="row">
                         <div class="col-sm-6 col-md-4">
                           <label class="form-label">Head Name=> <span class="textcolor">{{HeadName}}</span> </label>
                           <!-- <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div> -->
                         </div>
                         <div class="col-sm-6 col-md-4">
                           <label class="form-label">Nature=> <span class="textcolor">{{Nature}}</span> </label>
                           <!-- <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div> -->
                         </div>
                         <div class="col-sm-6 col-md-4">
                           <label class="form-label">Payroll Head Group Name=> <span
                               class="textcolor">{{PHGName}}</span></label>
                           <!-- <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div> -->
                         </div>
                         <br>
                         <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                           <label class="form-label">Copy From</label>
-                          <select (change)="onStatusChange23($event);" name="beast" id="Institution2"
+                          <select (change)="copyFrommPayrollHeadGroup($event);" name="beast" id="Institution2"
                             class="form-control  ">
                             <option>Not Selected </option>
                             <option *ngFor="let by of HeadNameList" [value]="by.headGroupId">
@@ -273,7 +272,7 @@
                         <!-- <div class="col-sm-6 col-md-4">
                                                     <label class="form-label">Attribute Group</label>
                                                     <div class="input-group">
-                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                                                        <input type="text" [readonly]="!disabled" formControlName="name" class="form-control" placeholder="Code" [ngClass]="{'is-invalid' : payrollHeadGroupCreationForm.get('name').status == 'INVALID'}">
                                                     </div>
                                                 </div> -->
 
@@ -484,7 +483,7 @@
                     Update</button>
 
                   <!-- *ngIf="!viewCancelButton"
-                                            [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}" -->
+                                            [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}" -->
 
 
                   <button type="button" *ngIf="viewSaveButton && HeadNameList.length>0"
@@ -506,14 +505,14 @@
                 <div class="col-12">
                   <div class="float-right mb-15">
                     <button type="button" (click)="UploadModalYesNo(template1244);" *ngIf="!viewupdateButton"
-                      data-toggle="modal" data-target="#UploadModal" [disabled]="AttributeCreationForm.invalid"
-                      [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
+                      data-toggle="modal" data-target="#UploadModal" [disabled]="payrollHeadGroupCreationForm.invalid"
+                      [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                           class="fa fa-floppy-o"></i></b>
                       Create Payroll Head Group(PHG)</button>
 
                     <!-- *ngIf="!viewCancelButton"
-                [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}" -->
+                [ngClass]="{'disabled-btn-bg-green' : payrollHeadGroupCreationForm.invalid,'btn-bg-green': !payrollHeadGroupCreationForm.invalid}" -->
 
 
                     <button type="button" *ngIf="viewupdateButton" (click)="UploadModalYesNo(template1244);"

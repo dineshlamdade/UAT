@@ -99,6 +99,7 @@ export class HeadCreationComponent implements OnInit {
         //  this.HeadCreationForm.patchValue( { statutory: ( response.data.results[0].statutory ).toString() } );
         this.HeadCreationForm.patchValue( { category: response.data.results[0].category } );
       } );
+    this.HeadCreationForm.disable();
   }
 
   addHeadCreation(): void {
@@ -111,7 +112,7 @@ export class HeadCreationComponent implements OnInit {
       this.headCreationService.AddHeadCreation( addHeadCreation ).subscribe( ( res: any ) => {
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllHeadCreation();
-        this.HeadCreationForm.reset();
+        this.CancelHeadCreation();
         // this.HeadCreationForm.patchValue( { statutory: '0' } );
       },
         ( error: any ) => {
@@ -120,6 +121,7 @@ export class HeadCreationComponent implements OnInit {
     }
   }
   CancelHeadCreation(): void {
+    this.HeadCreationForm.enable();
     this.disabled = true;
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;

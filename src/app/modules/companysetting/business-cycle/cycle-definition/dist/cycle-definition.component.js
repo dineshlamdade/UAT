@@ -10,9 +10,8 @@ exports.CycleDefinitionComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var CycleDefinitionComponent = /** @class */ (function () {
-    function CycleDefinitionComponent(datepipe, companySetttingService, formBuilder, alertService, modalService) {
-        this.datepipe = datepipe;
-        this.companySetttingService = companySetttingService;
+    function CycleDefinitionComponent(companySettings, formBuilder, alertService, modalService) {
+        this.companySettings = companySettings;
         this.formBuilder = formBuilder;
         this.alertService = alertService;
         this.modalService = modalService;
@@ -32,7 +31,6 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.sortedFrequencyList = [];
     }
     CycleDefinitionComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.cycleDefinitionForm = this.formBuilder.group({
             id: new forms_1.FormControl(null),
             cycleName: new forms_1.FormControl('', forms_1.Validators.required),
@@ -53,22 +51,38 @@ var CycleDefinitionComponent = /** @class */ (function () {
             itemsShowLimit: 2,
             allowSearchFilter: true
         };
-        this.companySetttingService.getAllServicesName().subscribe(function (res) {
-            _this.serviceNameDropDownList = [];
-            _this.serviceNameDropDownList = res.data.results;
-            console.log('dropdown list multiselec is', _this.serviceNameDropDownList);
-        });
-        //get all Businessyear
-        this.companySetttingService.getAllBusinessYear().subscribe(function (res) {
-            _this.BusinessyearList = res.data.results;
-        });
         this.getAllCycleDefinition();
         this.getActiveFrequency();
+        this.getAllBusinessYear();
+        this.getAllServiceName();
     };
-    //get all  activeFrequencyList
+    CycleDefinitionComponent.prototype.getAllServiceName = function () {
+        var _this = this;
+        this.serviceNameDropDownList = [];
+        this.companySettings.getAllServicesName().subscribe(function (res) {
+            _this.serviceNameDropDownList = res.data.results;
+        });
+    };
+    CycleDefinitionComponent.prototype.getAllBusinessYear = function () {
+        var _this = this;
+        this.BusinessyearList = [];
+        this.companySettings.getAllBusinessYear().subscribe(function (res) {
+            _this.BusinessyearList = res.data.results;
+        });
+    };
+    CycleDefinitionComponent.prototype.getAllCycleDefinition = function () {
+        var _this = this;
+        this.CycleDefinitionList = [];
+        this.companySettings.getAllCycleDefinition().subscribe(function (res) {
+            _this.CycleDefinitionList = res.data.results;
+            console.log('cycle creation res', _this.CycleDefinitionList);
+        });
+    };
+    // get all  activeFrequencyList
     CycleDefinitionComponent.prototype.getActiveFrequency = function () {
         var _this = this;
-        this.companySetttingService.getActiveFrequency().subscribe(function (res) {
+        this.activeFrequencyList = [];
+        this.companySettings.getActiveFrequency().subscribe(function (res) {
             _this.activeFrequencyList = res.data.results;
         }, function (error) {
         }, function () {
@@ -113,7 +127,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
             console.log(' this.sortedFrequencyList', _this.sortedFrequencyList);
         });
     };
-    //add new cycle-definition & update
+    // add new cycle-definition & update
     CycleDefinitionComponent.prototype.addCycleDefinition = function () {
         var _this = this;
         console.log('in addCycleDefinition');
@@ -127,14 +141,14 @@ var CycleDefinitionComponent = /** @class */ (function () {
                 addCycleDefinition.serviceName.push(f);
             });
             console.log(JSON.stringify(addCycleDefinition));
-            this.companySetttingService.AddCycleDefinition(addCycleDefinition).subscribe(function (res) {
+            this.companySettings.AddCycleDefinition(addCycleDefinition).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllCycleDefinition();
                 _this.CancelBusiness();
                 _this.resetCycledefinition();
             }, function (error) {
                 //  this.sweetalertError(error["error"]["status"]["message"]);
-                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error['error']['status']['message']);
             });
             this.ServicesList = [];
             this.serviceName = [];
@@ -151,14 +165,14 @@ var CycleDefinitionComponent = /** @class */ (function () {
             // this.serviceName.push( this.cycleDefinitionForm.get( 'services' ).value );
             addCycleDefinition.serviceName = this.serviceName;
             console.log('json', JSON.stringify(addCycleDefinition));
-            this.companySetttingService.UpdateCycleDefinition(addCycleDefinition).subscribe(function (res) {
+            this.companySettings.UpdateCycleDefinition(addCycleDefinition).subscribe(function (res) {
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllCycleDefinition();
                 _this.cycleDefinitionForm.reset();
                 _this.CycleupdateFlag = false;
                 _this.CycleupdateFlag1 = false;
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+                _this.alertService.sweetalertError(error['error']['status']['message']);
             });
         }
     };
@@ -167,7 +181,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         // console.log(this.selectedFrequency);
         var findIndex = this.activeFrequencyList.findIndex(function (o) { return o.id == event; });
         console.log('s', findIndex);
-        if (this.activeFrequencyList[findIndex].name == 'Adhoc') {
+        if (this.activeFrequencyList[findIndex].name.toLowerCase() == 'adhoc') {
             console.log('i');
             this.isViewAddDays = true;
             // this.cycleDefinitionForm.controls['addDays'].setValidators([Validators.required]);
@@ -176,20 +190,12 @@ var CycleDefinitionComponent = /** @class */ (function () {
             console.log('i3');
             this.isViewAddDays = false;
             //
-            //this.cycleDefinitionForm.patchValue:[{' addDays': null, disabled: true }],
+            // this.cycleDefinitionForm.patchValue:[{' addDays': null, disabled: true }],
             //     const control = new FormControl('Nancy');
             this.cycleDefinitionForm.patchValue({ addDays: null });
             this.cycleDefinitionForm.get('addDays').clearValidators();
             this.cycleDefinitionForm.get('addDays').updateValueAndValidity();
         }
-    };
-    CycleDefinitionComponent.prototype.getAllCycleDefinition = function () {
-        var _this = this;
-        this.CycleDefinitionList = [];
-        this.companySetttingService.getAllCycleDefinition().subscribe(function (res) {
-            _this.CycleDefinitionList = res.data.results;
-            console.log('cycle creation res', _this.CycleDefinitionList);
-        });
     };
     CycleDefinitionComponent.prototype.CancelBusiness = function () {
         this.cycleDefinitionForm;
@@ -207,15 +213,15 @@ var CycleDefinitionComponent = /** @class */ (function () {
             addDays: '',
             services: ''
         });
-        this.cycleDefinitionForm.controls['multiselectServices'].setValidators(forms_1.Validators.required);
-        this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
+        this.cycleDefinitionForm.controls.multiselectServices.setValidators(forms_1.Validators.required);
+        this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
     };
     CycleDefinitionComponent.prototype.GetCycleDefinitionbyIdDisable = function (id) {
         var _this = this;
         this.CycleupdateFlag = true;
         this.CycleupdateFlag1 = false;
         this.disabled = false;
-        this.companySetttingService.GetCycleDefinitionById(id)
+        this.companySettings.GetCycleDefinitionById(id)
             .subscribe(function (response) {
             _this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
             _this.cycleDefinitionForm.patchValue({ cycleName: response.data.results[0].cycleName.split('_')[0] });
@@ -227,8 +233,8 @@ var CycleDefinitionComponent = /** @class */ (function () {
             _this.cycleDefinitionForm.patchValue({
                 yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate
             });
-            _this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
-            _this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
+            _this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
+            _this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
             _this.cycleDefinitionForm.disable();
         });
         // this.cycleDefinitionForm.patchValue( { businessYearDefinitionId: response.data.results[0].businessYearDefinition.businessYearDefinitionId } );
@@ -238,7 +244,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         var _this = this;
         this.CycleupdateFlag = true;
         this.CycleupdateFlag1 = true;
-        this.companySetttingService.GetCycleDefinitionById(id)
+        this.companySettings.GetCycleDefinitionById(id)
             .subscribe(function (response) {
             console.log('xx');
             _this.cycleDefinitionForm.patchValue({ id: response.data.results[0].id });
@@ -250,8 +256,8 @@ var CycleDefinitionComponent = /** @class */ (function () {
             _this.cycleDefinitionForm.patchValue({
                 yearDefinition: response.data.results[0].businessYearDefinition.fullFromDate + ' / ' + response.data.results[0].businessYearDefinition.fullToDate
             });
-            _this.cycleDefinitionForm.controls['multiselectServices'].clearValidators();
-            _this.cycleDefinitionForm.controls['multiselectServices'].updateValueAndValidity();
+            _this.cycleDefinitionForm.controls.multiselectServices.clearValidators();
+            _this.cycleDefinitionForm.controls.multiselectServices.updateValueAndValidity();
         });
     };
     CycleDefinitionComponent.prototype.resetCycledefinition = function () {
@@ -267,8 +273,6 @@ var CycleDefinitionComponent = /** @class */ (function () {
         console.log(item);
     };
     CycleDefinitionComponent.prototype.onItemDeSelect = function (item) {
-        // this.cycleDefinitionForm.controls.serviceName.push(item.serviceName)
-        // this.ServicesList = [];
         var index = this.ServicesList.indexOf(item.serviceName);
         if (index != -1) {
             this.ServicesList.splice(index, 1);
@@ -277,14 +281,13 @@ var CycleDefinitionComponent = /** @class */ (function () {
     CycleDefinitionComponent.prototype.onSelectAll = function (item) {
         var _this = this;
         this.ServicesList = [];
-        this.serviceNameDropDownList.forEach(function (f) {
-            console.log('f', f);
-            //  this.ServiceList.push( f );
-        });
+        // this.serviceNameDropDownList.forEach( function ( f ) {
+        //   console.log( 'f', f );
+        //   //  this.ServiceList.push( f );
+        // } );
         item.forEach(function (element) {
             _this.ServicesList.push(element.serviceName);
         });
-        //this.ServicesList.push(items.serviceName)
         console.log(item);
     };
     CycleDefinitionComponent.prototype.DeleteCycleDefinitionById = function (id) {
@@ -292,7 +295,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         console.log('deleted id is', id);
         this.CycleupdateFlag = false;
         this.CycleupdateFlag1 = false;
-        this.companySetttingService.DeleteCycleDefinitionById(id)
+        this.companySettings.DeleteCycleDefinitionById(id)
             .subscribe(function (response) {
             _this.alertService.sweetalertMasterSuccess(response.status.message, '');
             _this.getAllCycleDefinition();
@@ -324,7 +327,7 @@ var CycleDefinitionComponent = /** @class */ (function () {
         this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
     };
     CycleDefinitionComponent.prototype.getCycleName = function (name) {
-        //this.CycleName = name;
+        // this.CycleName = name;
     };
     __decorate([
         core_1.ViewChild('multiSelect')

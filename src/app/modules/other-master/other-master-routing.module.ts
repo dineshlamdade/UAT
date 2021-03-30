@@ -1,6 +1,3 @@
-import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
-
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-master-at-company.component';
@@ -13,8 +10,7 @@ import { ComplianceMasterComponent } from './compliance-master/compliance-master
 import { EstablishmentMasterComponent } from './establishment-master/establishment-master.component';
 import { JobMasterComponent } from './job-master/job-master.component';
 import { StatutoryComplianceComponent } from './statutory-compliance/statutory-compliance.component';
-
-
+import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
 
 const routes: Routes = [
   {

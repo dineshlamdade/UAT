@@ -1,6 +1,4 @@
-
-
-export class saveBusinessYear {
+export class SaveBusinessYear {
   businessYearDefinitionId: number;
   description: string;
   fromDate: string;
@@ -8,11 +6,11 @@ export class saveBusinessYear {
   businessYear: string;
   id?: number;
 }
-export class serviceDetails {
+export class ServiceDetails {
   serviceName: string;
 }
 
-export class saveCycleDefinition {
+export class SaveCycleDefinition {
   businessCycleDefinitionId?: number;
   businessYearDefinitionId: number;
   frequencyMasterId: number;
@@ -23,12 +21,12 @@ export class saveCycleDefinition {
   id?: number;
 }
 
-export class saveCycleCreation {
+export class SaveCycleCreation {
   businessCycleDefinitionId: number;
   businessYear: number;
 }
 
-export class flagCycleCreation {
+export class FlagCycleCreation {
   adjustedToNextCycle: boolean;
   businessCycleList: any[];
 }
@@ -38,21 +36,16 @@ export class UpdateflagCycleCreation {
   mappingGroupRequest: any;
 }
 
-
-
 export class SaveHeadCreation {
   id: number;
   shortName: string;
   headNature: string;
   standardName: string;
   description: string;
-  category?: string;
-  type?: string;
+  category: string;
+  type: string;
   displayName?: string;
 }
-
-
-
 
 export class SavePHG {
   headGroupDefinitionId: number;
@@ -71,8 +64,6 @@ export class headDetail {
   headMasterId: number;
 }
 
-
-
 export class UpdateflagCycleCreationPHG {
   mappingGroupRequest: SaveAttributeAssignment[];
 
@@ -85,31 +76,10 @@ export class SaveAttributeAssignment {
   fromDate: string;
   toDate: string;
   payrollHeadGroupMappingId: number;
-  //createdBy:string;
-  //createdBy:string;
-  // "createdBy":"nisha",
-  //  "createDate":"1990/11/11 00:00:00",
-  //  "isActive":"true",
-  //  "lastModifiedBy":"nisha",
-  //  "lastModifiedDateTime":"1990/11/11 00:00:00"
 }
 
-export class headDetailPHG {
+export class HeadDetailPHG {
   headMasterId: number;
-}
-
-
-
-
-export class SaveAttributeSelection {
-  attributeGroupDefinitionId: number;
-  // id:number;
-  name: string;
-  description: string;
-  //createdBy:string;
-  // attributeNature:string;
-  // numberOfOption:string;
-  attributeMasterIdList: any[];
 }
 
 export class SaveAttributeCreation {
@@ -122,4 +92,26 @@ export class SaveAttributeCreation {
 
 }
 
+export class SaveAttributeSelection {
+  attributeGroupDefinitionId: number;
+  name: string;
+  description: string;
+  attributeMasterIdList: any[];
+  removedAttributeGroupIdList: any[];
+}
+
+
+// export class UpdateflagCycleCreation {
+//   mappingGroupRequest: SaveAttributeAssignment[];
+
+// }
+// export class SaveAttributeAssignment {
+//   headGroupId: number;
+//   attributeGroupId: number;
+//   value: string;
+//   dependentOn: string;
+//   fromDate: string;
+//   toDate: string;
+//   payrollHeadGroupMappingId: number;
+// }
 
