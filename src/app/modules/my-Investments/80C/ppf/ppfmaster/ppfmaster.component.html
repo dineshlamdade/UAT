@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Institution</label>
-        <input type="text" formControlName="institution" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+        <input type="text" formControlName="institution" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
         placeholder="Enter Institution"
           [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
@@ -13,7 +13,7 @@
       </div>
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Account No.</label>
-        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
+        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)"
           class="form-control" placeholder="Enter Account No."
           [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
         <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
