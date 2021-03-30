@@ -125,8 +125,6 @@ export class LicsummaryComponent implements OnInit {
     if (this.futureNewPolicyDeclaredAmount != 0) {
       this.addFuturePolicy();
     }
-
-    // console.log(this.addFuturePolicy)
   }
   keyPressedSpaceNotAllow(event: any) {
     console.log('HI ');

@@ -328,13 +328,13 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     this.globalInstitution = lenderName;
     this.getTransactionFilterData(this.globalInstitution);
     this.globalSelectedAmount = this.numberFormat.transform(0);
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.transactionPolicyList = [];
-    this.transactionPolicyList.push(data);
+    // this.transactionPolicyList = [];
+    // this.transactionPolicyList.push(data);
 
     this.transactionWithLenderName.forEach((element) => {
       if (lenderName === element.lender) {
@@ -407,7 +407,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
     if (checked) {
       if (this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].isECS === 1) {
         this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount =
-          data.actualAmount;
+          data.declaredAmount;
         this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[
           i
         ].dateOfPayment = new Date(data.dueDate);
@@ -421,7 +421,7 @@ export class ElectricVehicleDeclarationComponent implements OnInit {
         );
       } else {
         this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount =
-          data.actualAmount;
+          data.declaredAmount;
       }
 
       formatedActualAmount = Number(
