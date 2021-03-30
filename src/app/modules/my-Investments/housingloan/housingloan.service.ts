@@ -56,6 +56,22 @@ export class HousingloanService {
     ));
   }
 
+  postFuturePolicyPurchasesInvestment(data){
+    return this._HTTP.post(this.apiUrl + 'housingLoanMaster/housingLoanSummaryFuturePurchaseInvestment', data )
+  .pipe(map((res: any) =>{
+    return res;
+  }))
+  }
+
+  postFuturePolicyPurchasesPrincipal(data){
+    return this._HTTP.post(this.apiUrl + 'housingLoanMaster/housingLoanSummaryFuturePurchasePrincipal', data )
+  .pipe(map((res: any) =>{
+    return res;
+  }))
+  }
+
+
+
   public getHousingLoanMaster(): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'housingLoanMaster')
     .pipe(map((res: any) => {

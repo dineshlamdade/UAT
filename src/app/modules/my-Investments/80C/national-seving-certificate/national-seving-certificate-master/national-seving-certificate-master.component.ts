@@ -163,8 +163,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
 
     this.issueTypeOfList = [
-      { label: 'VIII th Issue', value: 'VIII th Issue' },
-      { label: 'IX th Issue', value: 'IX th Issue' },
+      { label: 'VIII th Issue', value: 'VIII' },
+      { label: 'IX th Issue', value: 'IX' },
     ];
 
     this.masterPage();
