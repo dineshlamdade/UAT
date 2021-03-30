@@ -5861,3 +5861,8 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     border-radius: 50%;
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
+
+/* added  by Komal */
+.p-inputright .p-inputnumber-input {
+  text-align: right!important;
+}

@@ -18,38 +18,46 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                          <td rowspan="2" class="text-link">ABC</td>
-                          <td>Self-Occupied</td>
-                          <td>01-Apr-2020</td>
-                          <td>31-July-2020</td>
-                          <td></td>
-                          <td></td>
+                    <tr *ngFor="let summary of summaryGridData.housePropertySummaryDetails; let i = index">
+                      <td rowspan="1" class="text-link">{{summary.houseDescription}}</td>
+
+                      <td class="padding-0" >
+                        <div class="pd-5"
+                          *ngFor="let usageType of summary.housePropertyUsageTypeList"
+                          tooltip="{{ usageType.usageType }}"
+                        >
+                          <div colspan="1">
+                            {{usageType.usageType }}
+                          </div>
+                        </div>
+                      </td>
+                      <td class="padding-0" >
+                        <div class="pd-5"
+                          *ngFor="let usageType of summary.housePropertyUsageTypeList" tooltip="{{ usageType.fromDate }}">
+                          <div colspan="1">
+                            <!-- <div *ngFor="let summary of usageType.mediclaimBenefeciaryDetailList; let i = index"> -->
+                              {{usageType.fromDate | date :'dd-MMM-yyyy'}}
+                            <!-- </div> -->
+                          </div>
+                        </div>
+                      </td>
+                      <td class="padding-0" >
+                        <div class="pd-5"
+                          *ngFor="let usageType of summary.housePropertyUsageTypeList"
+                          tooltip="{{ usageType.toDate }}"
+                        >
+                          <div colspan="1">
+                            {{ usageType.toDate | date :'dd-MMM-yyyy' }}
+                          </div>
+                        </div>
+                      </td>
+                      <td rowspan="1" class="text-link">{{summary.declaredAmount}}</td>
+                      <td rowspan="1" class="text-link">{{summary.actualAmount}}</td>
                           <td><i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;
                               <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
                           </td>
                       </tr>
-                      <tr>
-                          <td>Let-out</td>
-                          <td>01-Aug-2020</td>
-                          <td>31-Dec-2020</td>
-                          <td></td>
-                          <td></td>
-                          <td><i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;
-                              <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td class="text-link">PQR</td>
-                          <td>Self-Occupied</td>
-                          <td>01-Apr-2020</td>
-                          <td>31-July-2020</td>
-                          <td></td>
-                          <td></td>
-                          <td><i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;
-                              <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
-                          </td>
-                      </tr>
+
                       <tr class="bg-color-white">
                           <td colspan="7">
                               <span class="font-14 font500 align-center text-red">No Data

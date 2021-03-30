@@ -116,10 +116,10 @@
                   count as c
                 ">
                 <td scope="row">
-                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
+                  <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled "
                     tooltip="Select bankName for proof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
-                      [disabled]="isDisabled || summary.proofSubmissionId" (change)="
+                      [disabled]="canEdit && isDisabled || summary.proofSubmissionId" (change)="
                         onSelectCheckBox(summary, $event, i, j);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.interestOnSavingDeposit80TTTransactionId }}" />
@@ -197,7 +197,7 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
+              <tr *ngIf="!isDisabled && canEdit">
                 <td *ngIf="previousEmployeeList?.length" colspan="10"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j,item.interestOnSavingDeposit80TTMasterId)"></i>
@@ -249,7 +249,7 @@
     <hr />
   </div>
 
-  <div class="row mt-15" *ngIf="transactionDetail?.length">
+  <div class="row mt-15" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="table-responsive Custom_Table">
         <table class="table table-striped table-hover table-bordered m-b-0" *ngIf="previousEmployeeList?.length">

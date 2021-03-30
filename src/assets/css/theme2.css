@@ -606,8 +606,6 @@ input[type="radio"]:checked+.tabs .tabview-contents>* {
 /* tabview css End here */
 
 
-<<<<<<< HEAD
-=======
 /* tabview css start here */
 
 .apprtabview {
@@ -692,7 +690,6 @@ input[type="radio"]:checked+.apprtabs .tabview-contents>* {
 
 /* tabview css End here */
 
->>>>>>> 90a6665f027b915bc1891ab460c4187c9ba5e308
 
 /* Feildset CSS Start*/
 
@@ -3017,3 +3014,7 @@ legend {
 .disabled-button {
   opacity: 0.7!important;
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 7fc67d4106e3348cca20bf7266b8553de757ff1d
