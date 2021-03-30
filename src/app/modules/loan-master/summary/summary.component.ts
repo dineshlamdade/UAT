@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoanMasterService } from '../loan-master.service';
 
 @Component({
@@ -9,7 +10,9 @@ import { LoanMasterService } from '../loan-master.service';
 export class SummaryComponent implements OnInit {
   loanSummaryData: any;
 
-  constructor(private loanMasterService: LoanMasterService) { }
+  constructor(private loanMasterService: LoanMasterService,private router: Router) { 
+    localStorage.clear()
+  }
 
   ngOnInit(): void {
     this.getAllLoanSummary()
@@ -22,5 +25,17 @@ export class SummaryComponent implements OnInit {
         //  console.log(res.data.results[0])
       }
     )
+  }
+
+  viewLoanData(loandata){
+    localStorage.clear();
+    localStorage.setItem('viewData',JSON.stringify(loandata))
+    this.router.navigate(['/loan-master/general'])
+  }
+
+  editLoanData(loandata){
+    localStorage.clear();
+    localStorage.setItem('editData',JSON.stringify(loandata))
+    this.router.navigate(['/loan-master/general'])
   }
 }

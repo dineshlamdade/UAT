@@ -1,9 +1,10 @@
-<div class="section-body mt-3">
+<app-loan-master></app-loan-master>
+<div class="section-body">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 0px 77px !important;">
                         <form [formGroup]="generalLoanForm">
                             <fieldset>
                                 <fieldset>
@@ -12,8 +13,7 @@
                                         <div class="row">
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Code</label>
-                                                <input type="text" class="form-control "
-                                                    formControlName="loanCode">
+                                                <input type="text" class="form-control " formControlName="loanCode">
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Description</label>
@@ -22,10 +22,11 @@
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Minimum Net Pay (MNP) - Loan Head</label>
-                                                <select class="form-control" (change)="minimumNetPay($event.target.value)">
+                                                <select class="form-control"
+                                                    (change)="minimumNetPay($event.target.value)" [disabled]="loandata != ''">
                                                     <option value="">Select</option>
-                                                    <option>Yes</option>
-                                                    <option>No</option>
+                                                    <option [selected]="minimumNetPayValue == 'Yes'">Yes</option>
+                                                    <option [selected]="minimumNetPayValue == 'No'">No</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-3 col-md-3 mt-10">
@@ -106,7 +107,8 @@
                                             <div class="col-sm-3 col-md-3 mt-10">
                                                 <label class="form-label">Gap - End of Earlier Loan & Loan Application
                                                     (Months)</label>
-                                                <select class="form-control " formControlName="gapEndOfEarlierLoanAndNewLoanApp">
+                                                <select class="form-control "
+                                                    formControlName="gapEndOfEarlierLoanAndNewLoanApp">
                                                     <option value="">Select</option>
                                                     <option>SDM1</option>
                                                     <option>SDM2</option>
@@ -123,17 +125,25 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
+                                                            <tr *ngFor="let instance of Instances;">
                                                                 <td>
-                                                                    <input class="form-control " (focusout)="getInstanceNoLoan($event.target.value)"> IN
+                                                                    <input class="form-control "
+                                                                        (focusout)="getInstanceNoLoan($event.target.value)"
+                                                                        value="{{instance.noOfLoan}}"
+                                                                        [disabled]="loandata != ''">
+                                                                    IN
                                                                 </td>
                                                                 <td>
-                                                                    <input class="form-control " (focusout)="getInstanceMonth($event.target.value)">
+                                                                    <input class="form-control "
+                                                                        (focusout)="getInstanceMonth($event.target.value)"
+                                                                        value="{{instance.month}}"
+                                                                        [disabled]="loandata != ''">
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td></td>
-                                                                <td><i class="fa fa-plus-circle" aria-hidden="true" (click)="setInstanceData()"></i></td>
+                                                                <td><i class="fa fa-plus-circle" aria-hidden="true"
+                                                                        (click)="setInstanceData()"></i></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -145,7 +155,8 @@
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Loan Application</label>
-                                                        <select class="form-control " formControlName="minRemainingServiceLoanApplication">
+                                                        <select class="form-control "
+                                                            formControlName="minRemainingServiceLoanApplication">
                                                             <option value="">Select</option>
                                                             <option>SDM1</option>
                                                             <option>SDM2</option>
@@ -153,7 +164,8 @@
                                                     </div>
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Loan Completion</label>
-                                                        <select class="form-control " formControlName="minRemainingServiceLoanCompletion">
+                                                        <select class="form-control "
+                                                            formControlName="minRemainingServiceLoanCompletion">
                                                             <option value="">Select</option>
                                                             <option>SDM1</option>
                                                             <option>SDM2</option>
@@ -168,7 +180,7 @@
                                 <div class="row text-right" style="margin: 10px; float:right;">
                                     <button type="button" class="btn btn-success" (click)="submitGenralForm()">
                                         <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Next</button>&nbsp;
-                                    <button type="button" class="btn btn-dark" (click)="resetGeneralForm()">
+                                    <button type="button" class="btn btn-dark" (click)="resetGeneralForm()" [disabled]="loandata != '' || editloandata != '' ">
                                         <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
                                 </div>
                             </fieldset>
@@ -179,3 +191,4 @@
         </div>
     </div>
 </div>
+<app-footer></app-footer>

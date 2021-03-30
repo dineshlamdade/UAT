@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recovery',
@@ -10,7 +11,7 @@ export class RecoveryComponent implements OnInit {
 
   recoveryLoanForm: FormGroup;
 
-  constructor() { 
+  constructor(private router: Router) {
 
     this.recoveryLoanForm = new FormGroup({
 
@@ -27,23 +28,40 @@ export class RecoveryComponent implements OnInit {
       recoveryToStartDisbursements: new FormControl(""),
       recoveryToStartSalaryCycles: new FormControl(""),
     })
+
+    if (localStorage.getItem('viewData') != null) {
+      let loandata = JSON.parse(localStorage.getItem('viewData'))
+      this.recoveryLoanForm.patchValue(loandata)
+      this.recoveryLoanForm.disable()
+    }
+
+    if (localStorage.getItem('editData') != null) {
+      let loandata = JSON.parse(localStorage.getItem('editData'))
+      this.recoveryLoanForm.patchValue(loandata)
+      this.recoveryLoanForm.enable()
+    }
   }
 
   ngOnInit(): void {
-    if(localStorage.getItem('recoveryForm') != null){
+    if (localStorage.getItem('recoveryForm') != null) {
       let recoveryFormValue = JSON.parse(localStorage.getItem('recoveryForm'))
       this.recoveryLoanForm.patchValue(recoveryFormValue)
     }
   }
 
-
-  /** Submit recovery form */
-  submitRecoveryForm(){
+  /** Submit recovery form and navigate next tab (payment)*/
+  submitRecoveryForm() {
     localStorage.setItem('recoveryForm', JSON.stringify(this.recoveryLoanForm.value))
+    this.router.navigate(['/loan-master/payment'])
+  }
+
+  previousTab(){
+    localStorage.setItem('recoveryForm', JSON.stringify(this.recoveryLoanForm.value))
+    this.router.navigate(['/loan-master/general'])
   }
 
   /** Reset form */
-  resetRecoveryForm(){
+  resetRecoveryForm() {
     this.recoveryLoanForm.reset()
     localStorage.removeItem('recoveryForm')
   }

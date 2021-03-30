@@ -1,9 +1,10 @@
-<div class="section-body mt-3">
+<app-loan-master></app-loan-master>
+<!-- <div class="section-body">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12"> -->
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 0px 77px !important;">
                         <form [formGroup]="paymentLoanForm">
                             <fieldset>
                                 <fieldset>
@@ -14,7 +15,8 @@
                                                 <label class="form-label">Adhoc Payments</label>
                                                 <div class="col-sm-6 col-md-6 mt-10">
                                                     <label class="form-label">Treatment</label>
-                                                    <select class="form-control " formControlName="adhocPaymentsTreatment">
+                                                    <select class="form-control "
+                                                        formControlName="adhocPaymentsTreatment">
                                                         <option value="">Select</option>
                                                         <option>Reduce Installment</option>
                                                         <option>Reduce Tenure</option>
@@ -22,22 +24,25 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-md-6 mt-10">
-                                                <label class="form-label">Skipped payments - Recovery in next cycle</label>
+                                                <label class="form-label">Skipped payments - Recovery in next
+                                                    cycle</label>
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Pricipal</label>
-                                                        <select class="form-control" (click)="paymentRecoveryInNextCyclePri($event.target.value)" >
+                                                        <select class="form-control"
+                                                            (click)="paymentRecoveryInNextCyclePri($event.target.value)">
                                                             <option value="">Select</option>
-                                                            <option>Yes</option>
-                                                            <option>No</option>
+                                                            <option [selected]="paymentRecoveryInNextCyclePriVal == 'Yes'">Yes</option>
+                                                            <option [selected]="paymentRecoveryInNextCyclePriVal == 'No'">No</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Interest</label>
-                                                        <select class="form-control " (click)="paymentRecoveryInNextCycleInt($event.target.value)" >
+                                                        <select class="form-control "
+                                                            (click)="paymentRecoveryInNextCycleInt($event.target.value)">
                                                             <option value="">Select</option>
-                                                            <option>Yes</option>
-                                                            <option>No</option>
+                                                            <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">Yes</option>
+                                                            <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">No</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -54,16 +59,20 @@
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Interest</label>
-                                                        <select class="form-control " formControlName="assignmentsIntHead">
+                                                        <select class="form-control "
+                                                            formControlName="assignmentsIntHead">
                                                             <option value="">Select</option>
-                                                            <option *ngFor="let head of deductionHeadData"> {{head.standardName}}</option>
+                                                            <option *ngFor="let head of deductionHeadData">
+                                                                {{head.standardName}}</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Principal</label>
-                                                        <select class="form-control " formControlName="assignmentsPriHead">
+                                                        <select class="form-control "
+                                                            formControlName="assignmentsPriHead">
                                                             <option value="">Select</option>
-                                                            <option *ngFor="let head of deductionHeadData"> {{head.standardName}}</option>
+                                                            <option *ngFor="let head of deductionHeadData">
+                                                                {{head.standardName}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -73,9 +82,11 @@
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-6 mt-10">
                                                         <label class="form-label">Loan Payment</label>
-                                                        <select class="form-control " formControlName="assignmentsLoanPayment">
+                                                        <select class="form-control "
+                                                            formControlName="assignmentsLoanPayment">
                                                             <option value="">Select</option>
-                                                            <option *ngFor="let head of earningHeadData"> {{head.standardName}}</option>
+                                                            <option *ngFor="let head of earningHeadData">
+                                                                {{head.standardName}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -89,14 +100,16 @@
                                                 <div class="row">
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">Head</label>
-                                                        <select class="form-control " formControlName="taxSettingPerquisiteHead">
+                                                        <select class="form-control "
+                                                            formControlName="taxSettingPerquisiteHead">
                                                             <option value="">Select</option>
                                                             <option>Head Master</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">Loan Category</label>
-                                                        <select class="form-control " formControlName="taxSettingPerquisiteLoanCategory">
+                                                        <select class="form-control "
+                                                            formControlName="taxSettingPerquisiteLoanCategory">
                                                             <option value="">Select</option>
                                                             <option>Education Loan</option>
                                                             <option>Housing Loan</option>
@@ -106,7 +119,8 @@
                                                     </div>
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">Loan Sub-Category</label>
-                                                        <select class="form-control " formControlName="taxSettingPerquisiteSubCategory">
+                                                        <select class="form-control "
+                                                            formControlName="taxSettingPerquisiteSubCategory">
                                                             <option value="">Select</option>
                                                             <option>First Hand</option>
                                                             <option>Second Hand</option>
@@ -114,7 +128,8 @@
                                                     </div>
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">Calculation on</label>
-                                                        <select class="form-control " formControlName="taxSettingCalculatePerquisiteOn">
+                                                        <select class="form-control "
+                                                            formControlName="taxSettingCalculatePerquisiteOn">
                                                             <option value="">Select</option>
                                                             <option>Opening Balance</option>
                                                             <option>Closing Balance</option>
@@ -156,7 +171,7 @@
                                                 <tbody>
                                                     <tr *ngFor="let doc of filesArray;">
                                                         <td>
-                                                            <input class="form-control" value="{{doc.documentName}}"> 
+                                                            <input class="form-control" value="{{doc.documentName}}">
                                                         </td>
                                                         <td>
                                                             <input class="form-control" value="{{doc.documentRemark}}">
@@ -165,81 +180,71 @@
                                                     <tr>
                                                         <td></td>
                                                         <td><a (click)="UploadModal(template4)">
-                                                            <i class=" fa fa-plus-circle"></i>
-                                                        </a></td>
+                                                                <i class=" fa fa-plus-circle"></i>
+                                                            </a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-                              
+
                                 <div class="row text-right" style="margin: 10px; float:right;">
+                                    <button type="button" class="btn btn-success" (click)="previousTab()">
+                                        <i class="fa fa-floppy-o"
+                                            aria-hidden="true"></i>&nbsp;&nbsp;Previous</button>&nbsp;
                                     <button type="button" class="btn btn-success" (click)="submitPaymentForm()">
-                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp;
-                                    <button type="button" class="btn btn-dark" (click)="resetPaymentForm()">
+                                        <i class="fa fa-floppy-o"
+                                            aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp;
+                                    <button type="button" class="btn btn-dark" (click)="resetPaymentForm()" 
+                                    [disabled]="loandata != '' || editloandata != '' ">
                                         <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
                                 </div>
                             </fieldset>
                         </form>
                     </div>
                 </div>
-            </div>
+            <!-- </div>
         </div>
     </div>
-</div>
+</div> -->
+<app-footer></app-footer>
 
 
 <ng-template #template4>
     <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-      <button
-        type="button"
-        (click)="modalRef.hide()"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">×</span>
-      </button>
+        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
     </div>
     <div class="modal-body">
-      <div class="card">
-        <div class="card-body">
-          <div class="row clearfix">
-            <div class="col-md-12">
-              <div class="fileuploadbox bg-color-lightgray">
-                <label class="filelabel">
-                  <i class="fa fa-upload"> </i>
-                  <span class="title"> Choose file </span>
-                  <input
-                    class="FileUpload1"
-                    class="dropify"
-                    (change)="onUpload($event)"
-                    accept=".jpg , .jpeg, .pdf , .png"
-                    id="FileInput"
-                    type="file"
-                  />
-                </label>
-              </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <div class="col-md-12">
+                        <div class="fileuploadbox bg-color-lightgray">
+                            <label class="filelabel">
+                                <i class="fa fa-upload"> </i>
+                                <span class="title"> Choose file </span>
+                                <input class="FileUpload1" class="dropify" (change)="onUpload($event)"
+                                    accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" />
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-10">
+                        <label class="form-label">Remark</label>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-12 mt-10">
-              <label class="form-label">Remark</label>
-            </div>
-            <div class="col-md-12">
-              <textarea
-                class="form-control"
-                [(ngModel)]="documentRemark"
-                rows="2"
-              ></textarea>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="documentSubmit();modalRef.hide()">
-        Ok
-      </button>
+        <button type="button" class="btn btn-secondary" (click)="documentSubmit();modalRef.hide()">
+            Ok
+        </button>
     </div>
-  </ng-template>
+</ng-template>

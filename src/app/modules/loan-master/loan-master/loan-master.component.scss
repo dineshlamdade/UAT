@@ -9,3 +9,14 @@
 .tabs {
   grid-column-end: span 4 !important;
 }
+
+.checked{
+  background: #38b449 !important;
+    color: #ffffff !important;
+    padding-left: 0px !important;
+}
+
+
+.page .section-light, .page .section-dark, .page .section-white, .page .section-gray, .page .section-body {
+  padding: 0 0 !important;
+}
