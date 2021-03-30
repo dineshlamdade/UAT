@@ -14,8 +14,6 @@
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.propertyName.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.propertyName.errors.required">House Name is mandatory</div>
                </div>
-
-
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label"><b> Address</b> (Copy From)</label>
@@ -202,7 +200,6 @@
                      <tr *ngFor="let loanDetail of landLordDetailTableList ;  let i = index">
                         <td>
                            <span>
-                                  
                                    {{loanDetail.name}}
                            </span>
                         </td>
@@ -529,8 +526,11 @@
             <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                tooltip="Save"><b>
                   <i class="fa fa-floppy-o"></i></b> Save</button> &nbsp;
-                  <button type="reset" onclick="resetForm()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+                <!--   <button type="reset" onclick="resetForm()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                   tooltip="Reset"><b>
+                     <i class="fa fa-floppy-o"></i></b> Reset</button> -->
+                     <button type="button"  (click)="resetView()"
+                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
                      <i class="fa fa-floppy-o"></i></b> Reset</button>
          </div>
         
