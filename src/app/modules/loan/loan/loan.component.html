@@ -7,9 +7,13 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
+              
+              <app-emi-calculator></app-emi-calculator>
+              <br><br>
+
               <form [formGroup]="LoanForm" (ngSubmit)="loanFormSubmit()">
-            <button class="btn btn-success" (click)="nextPage()">
-              Add new Loan</button>
+                <button class="btn btn-success" (click)="nextPage()">
+                  Add new Loan</button>
               </form>
             </div>
           </div>
@@ -19,6 +23,3 @@
     <app-footer></app-footer>
   </div>
 </div>
-
-
-

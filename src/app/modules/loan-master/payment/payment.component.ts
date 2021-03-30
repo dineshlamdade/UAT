@@ -179,6 +179,79 @@ export class PaymentComponent implements OnInit {
 
       this.paymentLoanForm.enable()
     }
+
+
+  //   let res = {
+  //     "data":{
+  //        "results":[
+  //           {
+  //              "rolePrivilegeMatrixId":3,
+  //              "globalCompanyMasterId":1,
+  //              "companyName":"WhiteHedge",
+  //              "userRoleDetail":{
+  //                 "createdBy":"TestUser",
+  //                 "lastModifiedBy":null,
+  //                 "createdDateTime":"05-Mar-2021",
+  //                 "lastModifiedDateTime":"05-Mar-2021",
+  //                 "userRoleId":12,
+  //                 "userGroupId":6080,
+  //                 "roleName":"HR Head",
+  //                 "roleDescription":"Head of HR Dept",
+  //                 "remark":null,
+  //                 "groupName":"HR Admin",
+  //                 "default":false,
+  //                 "active":true
+  //              },
+  //              "accessibleMenuDetail":{
+  //                 "applicationMenuId":1,
+  //                 "parentMenuId":0,
+  //                 "menuName":"Employee Master",
+  //                 "menuDescription":"Employee",
+  //                 "isActive":true,
+  //                 "createdBy":"MayurG",
+  //                 "createdDateTime":"01-Jan-2020",
+  //                 "lastModifiedBy":null,
+  //                 "lastModifiedDateTime":null
+  //              },
+  //              "readAccess":1,
+  //              "writeAccess":1,
+  //              "modifyAccess":1,
+  //              "deleteAccess":1,
+  //              "isActive":1,
+  //              "createdBy":"preeti",
+  //              "createdDateTime":"26-Mar-2021",
+  //              "lastModifiedBy":"preeti",
+  //              "lastModifiedDateTime":"26-Mar-2021"
+  //           }
+  //        ]
+  //     },
+  //     "meta":{
+  //        "timestamp":1616758252298,
+  //        "path":"",
+  //        "user":""
+  //     },
+  //     "status":{
+  //        "code":"200",
+  //        "result":"Success",
+  //        "message":"Role wise Menu details found Successfully"
+  //     }
+  //  }
+
+
+  //  let loandata = res.data.results;
+  //  let masterSummaryData = []
+  //  loandata.forEach(element => {
+  //   masterSummaryData.push({
+  //     'companyName': element.companyName,
+  //     'roleName': element.userRoleDetail.roleName,
+  //     'groupName': element.userRoleDetail.groupName
+  //   })
+  //  });
+
+
+  //  console.log(masterSummaryData)
+
+
   }
 
   ngOnInit(): void {
