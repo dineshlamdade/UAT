@@ -28,7 +28,8 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-  public futureNewPolicyDeclaredAmount: any;
+  public futureNewPolicyDeclaredAmount: 0;
+  public futureGlobalPolicyDeclaredAmount : 0;
   public tempFlag : boolean;
 
 
@@ -77,8 +78,8 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount =
-        res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -98,8 +99,8 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount =
-        res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -109,7 +110,12 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+    if (this.futureNewPolicyDeclaredAmount > 0) {
     this.addFuturePolicy();
+  }else if(this.futureNewPolicyDeclaredAmount <0) {
+    this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+  }
   }
 
   keyPressedSpaceNotAllow(event: any) {
