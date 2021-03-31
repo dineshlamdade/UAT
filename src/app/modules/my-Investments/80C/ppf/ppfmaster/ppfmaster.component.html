@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Institution</label>
-        <input type="text" formControlName="institution" class="form-control" onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+        <input type="text" formControlName="institution" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
         placeholder="Enter Institution"
           [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
@@ -13,7 +13,7 @@
       </div>
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Account No.</label>
-        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
+        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)"
           class="form-control" placeholder="Enter Account No."
           [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
         <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
@@ -99,7 +99,7 @@
                 <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
+            <div class="col-sm-6 col-md-3">
               <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
@@ -113,14 +113,15 @@
               </div>
             </div>
           </div>
-          <div class="row mt-4 mb-10" *ngIf="FrequencyofPayment.value !== 'As & When'">
+          <div class="row mt-4 mb-10">
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">From Date</label>
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                  </div>
+               <label class="form-label">From Date</label>
+               <div class="form-group">
+                  <div class="input-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i
+                           class="fa fa-calendar"></i></span>
+                     </div>
                   <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control"
                     (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate" [maxDate]="maxFromDate"
@@ -132,13 +133,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
+            <div class="col-sm-6 col-md-3">
               <label class="form-label">To Date</label>
               <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                  </div>
+                 <div class="input-group">
+                    <div class="input-group-prepend">
+                       <span class="input-group-text"><i
+                          class="fa fa-calendar"></i></span>
+                    </div>
                   <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
                     [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate"
