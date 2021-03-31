@@ -469,9 +469,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       if (this.form.value.frequencyOfPayment === 'One Time') {
         installment = installment * 1;
       }
-      const formatedPremiumAmount = this.form.value.premiumAmount;
+      // const formatedPremiumAmount = this.form.value.premiumAmount;
       // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+      // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
       this.form.get('annualAmount').setValue(installment);
     }
   }
