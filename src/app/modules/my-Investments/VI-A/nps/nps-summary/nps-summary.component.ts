@@ -27,30 +27,36 @@ export class NpsSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-
+  public tempFlag: boolean;
+  public futureNewPolicyDeclaredAmount = 0;
   // public previousEmployerB: string;
-  public futureNewPolicyDeclaredAmount: string;
-  public limitD : number = 150000;
-  public deductionE : number;
-  public eligibleForDeductionF : number;
+  // public futureNewPolicyDeclaredAmount: string;
+  public limitD: number = 150000;
+  public deductionE: number;
+  public eligibleForDeductionF: number;
 
   constructor(
     private service: MyInvestmentsService,
     private npsService: NpsService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
-  ) {  }
+  ) {}
 
   public ngOnInit(): void {
     this.summaryPage();
   }
-  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
+  redirectToDeclarationActual(
+    institution: string,
+    accountNumber: string,
+    mode: string
+  ) {
     this.tabIndex = 2;
     const data = {
-      institution : institution,
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      institution: institution,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
+      canEdit: mode == 'edit' ? true : false,
+    };
     this.institution = institution;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
@@ -59,8 +65,8 @@ export class NpsSummaryComponent implements OnInit {
   jumpToMasterPage(accountNumber: string) {
     this.tabIndex = 1;
     const accountNo = {
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
     };
     this.accountNo.emit(accountNo);
   }
@@ -68,52 +74,65 @@ export class NpsSummaryComponent implements OnInit {
   // Summary get Call
   summaryPage() {
     this.npsService.getNpsSummary().subscribe((res) => {
+      if(res.data.results.length > 0){
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount =  res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount =
+        res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.onChangeLimit();
+    }
     });
   }
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
     const data = {
-      futureNewPolicyDeclaredAmount: this. futureNewPolicyDeclaredAmount,
+      futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
     };
 
-    //console.log('addFuturePolicy Data..', data);
-    this.npsService
-      .getNpsSummaryFuturePlan(data)
-      .subscribe((res) => {
-        //console.log('addFuturePolicy Res..', res);
-        if (res.data.length > 0 ) {
-        this.summaryGridData = res.data.results[0].transactionDetailList;
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-        this.grandTotalDeclaredAmount =
+    this.npsService.getNpsSummaryFuturePlan(data).subscribe((res) => {
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount =
+        res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount =
-        res.data.results[0].grandTotalActualAmount;
-        }
-        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-      });
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+    });
   }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-    this.onChangeLimit();
-    this.addFuturePolicy();
+    if (this.futureNewPolicyDeclaredAmount != 0) {
+      this.addFuturePolicy();
+    }
+  }
+
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
+
+    if (!pattern.test(inputChar)) {
+      this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
   }
 
   onChangeLimit() {
     this.deductionE = Math.min(this.grandTotalDeclaredAmount, this.limitD);
-    this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.deductionE;
+    this.eligibleForDeductionF =
+      this.grandTotalDeclaredAmount - this.deductionE;
   }
 }

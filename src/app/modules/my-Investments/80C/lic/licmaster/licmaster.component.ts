@@ -251,16 +251,9 @@ export class LicmasterComponent implements OnInit {
     return this.form.controls;
   }
 
-  // -------------------- Policy End Date Validations with Policy Start Date ---------------
+  //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
-    this.selectedPolicyFromDate= ''
-    // this.policyMinDate = ''
     this.policyMinDate = this.form.value.policyStartDate;
-    this.selectedPolicyFromDate =  this.policyMinDate
-    this.minFormDate = this.policyMinDate;
-    // console.log("policyMinDate", this.policyMinDate);
-    this.maxFromDate = '';
-
     const policyStart = this.datePipe.transform(
       this.form.get('policyStartDate').value,
       'yyyy-MM-dd'
@@ -269,32 +262,19 @@ export class LicmasterComponent implements OnInit {
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
     );
-    this.minFormDate = new Date(this.policyMinDate);
-
-    // add a day +1 for todate selection (minimum value)
-    var date = new Date(this.policyMinDate);
-    let policyTo = date.setDate(date.getDate() + 1);
-    this.policyToDate = new Date(policyTo);
-
+    this.minFormDate = this.policyMinDate;
     if (policyStart > policyEnd) {
       this.form.controls.policyEndDate.reset();
     }
-
     this.form.patchValue({
-      fromDate: this.form.value.policyStartDate,
+      fromDate: this.policyMinDate,
     });
-    console.log('this.form.fromDate', this.form.controls['fromDate'].value);
-    this.setPaymentDetailToDate()
+
+    this.setPaymentDetailToDate();
   }
 
-  // ------------------ Policy End Date Validations with Current Finanacial Year -------------------
+  //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
-    this.policyMaxDate = ''
-    this.maxFromDate = '12-31-9999'
-
-    this.policyMaxDate = this.form.value.policyEndDate;
-    this.maxFromDate = new Date(this.policyMaxDate);
-
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
       'yyyy-MM-dd'
@@ -303,10 +283,6 @@ export class LicmasterComponent implements OnInit {
       this.financialYearStart,
       'yyyy-MM-dd'
     );
-
-    // this.maxFromDate = new Date( this.form.get('policyEndDate').value)
-
-    // alert(this.maxFromDate)
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
         "Policy End Date can't be earlier that start of the Current Financial Year"
@@ -316,22 +292,13 @@ export class LicmasterComponent implements OnInit {
       this.form.patchValue({
         toDate: this.form.value.policyEndDate,
       });
-
-      console.log('this.form.toDate', this.form.controls['toDate'].value);
+      this.maxFromDate = this.form.value.policyEndDate;
     }
   }
 
-  // ------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
+  //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
-    this.paymentDetailsToDate = ''
     this.paymentDetailMinDate = this.form.value.fromDate;
-
-    // add a day +1 for todate selection (minimum value)
-    var date = new Date(this.paymentDetailMinDate);
-    let policyTo = date.setDate(date.getDate() + 1);
-    this.paymentDetailsToDate = new Date(policyTo);
-
-
     const from = this.datePipe.transform(
       this.form.get('fromDate').value,
       'yyyy-MM-dd'
@@ -345,7 +312,7 @@ export class LicmasterComponent implements OnInit {
     }
   }
 
-  // -------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
+  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
@@ -356,7 +323,7 @@ export class LicmasterComponent implements OnInit {
       'yyyy-MM-dd'
     );
     if (to < financialYearStartDate) {
-      // this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
       this.alertService.sweetalertWarning(
         "Policy End Date can't be earlier that start of the Current Financial Year"
       );
