@@ -88,6 +88,21 @@ export class GeneralComponent implements OnInit {
     if (localStorage.getItem('generalForm') != null) {
       let generalFormValue = JSON.parse(localStorage.getItem('generalForm'))
       this.generalLoanForm.patchValue(generalFormValue)
+      this.Instances = []
+      generalFormValue.instances.forEach(element => {
+        this.Instances.push(
+          {
+            "month": element.month,
+            "noOfLoan": element.noOfLoan
+          } 
+        )
+      });
+      this.generalLoanForm.controls['instances'].setValue(this.Instances)
+      if (this.editloandata.minimumNetPayLoan == true) {
+        this.minimumNetPayValue = 'Yes'
+      } else {
+        this.minimumNetPayValue = 'No'
+      }
     }
   }
 
@@ -117,6 +132,8 @@ export class GeneralComponent implements OnInit {
       "month": parseInt(this.monthValue),
       "noOfLoan": parseInt(this.loanValue)
     })
+    this.monthValue = ''
+    this.loanValue = ''
   }
 
   /** Submit general form */

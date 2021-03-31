@@ -25,6 +25,7 @@ export class PaymentComponent implements OnInit {
   editloandata: any;
   paymentRecoveryInNextCyclePriVal: string = '';
   paymentRecoveryInNextCycleIntVal: string = '';
+  documentName: any;
 
   constructor(private loanmasterService: LoanMasterService, 
     private modalService: BsModalService, 
@@ -179,85 +180,21 @@ export class PaymentComponent implements OnInit {
 
       this.paymentLoanForm.enable()
     }
-
-
-  //   let res = {
-  //     "data":{
-  //        "results":[
-  //           {
-  //              "rolePrivilegeMatrixId":3,
-  //              "globalCompanyMasterId":1,
-  //              "companyName":"WhiteHedge",
-  //              "userRoleDetail":{
-  //                 "createdBy":"TestUser",
-  //                 "lastModifiedBy":null,
-  //                 "createdDateTime":"05-Mar-2021",
-  //                 "lastModifiedDateTime":"05-Mar-2021",
-  //                 "userRoleId":12,
-  //                 "userGroupId":6080,
-  //                 "roleName":"HR Head",
-  //                 "roleDescription":"Head of HR Dept",
-  //                 "remark":null,
-  //                 "groupName":"HR Admin",
-  //                 "default":false,
-  //                 "active":true
-  //              },
-  //              "accessibleMenuDetail":{
-  //                 "applicationMenuId":1,
-  //                 "parentMenuId":0,
-  //                 "menuName":"Employee Master",
-  //                 "menuDescription":"Employee",
-  //                 "isActive":true,
-  //                 "createdBy":"MayurG",
-  //                 "createdDateTime":"01-Jan-2020",
-  //                 "lastModifiedBy":null,
-  //                 "lastModifiedDateTime":null
-  //              },
-  //              "readAccess":1,
-  //              "writeAccess":1,
-  //              "modifyAccess":1,
-  //              "deleteAccess":1,
-  //              "isActive":1,
-  //              "createdBy":"preeti",
-  //              "createdDateTime":"26-Mar-2021",
-  //              "lastModifiedBy":"preeti",
-  //              "lastModifiedDateTime":"26-Mar-2021"
-  //           }
-  //        ]
-  //     },
-  //     "meta":{
-  //        "timestamp":1616758252298,
-  //        "path":"",
-  //        "user":""
-  //     },
-  //     "status":{
-  //        "code":"200",
-  //        "result":"Success",
-  //        "message":"Role wise Menu details found Successfully"
-  //     }
-  //  }
-
-
-  //  let loandata = res.data.results;
-  //  let masterSummaryData = []
-  //  loandata.forEach(element => {
-  //   masterSummaryData.push({
-  //     'companyName': element.companyName,
-  //     'roleName': element.userRoleDetail.roleName,
-  //     'groupName': element.userRoleDetail.groupName
-  //   })
-  //  });
-
-
-  //  console.log(masterSummaryData)
-
-
   }
 
   ngOnInit(): void {
     if (localStorage.getItem('generalForm') != null) {
       let generalFormValue = JSON.parse(localStorage.getItem('generalForm'))
       this.loanMasterForm.patchValue(generalFormValue)
+      this.Instances = []
+      generalFormValue.instances.forEach(element => {
+        this.Instances.push(
+          {
+            "month": element.month,
+            "noOfLoan": element.noOfLoan
+          } 
+        )
+      });
     }
     if (localStorage.getItem('recoveryForm') != null) {
       let recoveryFormValue = JSON.parse(localStorage.getItem('recoveryForm'))
@@ -267,6 +204,34 @@ export class PaymentComponent implements OnInit {
       let paymentLoanForm = JSON.parse(localStorage.getItem('paymentLoanForm'))
       this.paymentLoanForm.patchValue(paymentLoanForm)
       this.loanMasterForm.patchValue(paymentLoanForm)
+
+     
+
+      this.filesArray = []
+      paymentLoanForm.document.forEach(element => {
+        this.filesArray.push(
+          {
+            "documentName": element.documentName,
+            "documentRemark": element.documentRemark
+          } 
+        )
+      });
+
+      this.paymentLoanForm.controls['document'].setValue(this.filesArray)
+      this.loanMasterForm.controls['document'].setValue(this.filesArray)
+
+
+      if (this.loandata.paymentRecoveryInNextCyclePri == true) {
+        this.paymentRecoveryInNextCyclePriVal = 'Yes'
+      } else {
+        this.paymentRecoveryInNextCyclePriVal = 'No'
+      }
+
+      if (this.loandata.paymentRecoveryInNextCycleInt == true) {
+        this.paymentRecoveryInNextCycleIntVal = 'Yes'
+      } else {
+        this.paymentRecoveryInNextCycleIntVal = 'No'
+      }
     }
 
     this.getDeductionHead();
@@ -356,10 +321,13 @@ export class PaymentComponent implements OnInit {
   documentSubmit() {
     this.filesArray.push(
       {
-        "documentName": this.fileName,
+        "documentName": this.documentName,
         "documentRemark": this.documentRemark
       });
-    // console.log(this.filesArray);
+
+      this.documentName = null;
+      this.documentRemark = null;
+    console.log(this.filesArray);
   }
 
 }

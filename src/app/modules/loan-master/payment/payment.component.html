@@ -3,208 +3,214 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12"> -->
-                <div class="card">
-                    <div class="card-body" style="padding: 0px 77px !important;">
-                        <form [formGroup]="paymentLoanForm">
-                            <fieldset>
+                <div class="card" style="width: 1274px !important; margin-left: 72px !important;">
+                    <div class="card-body">
+                        <div class="tabs about-page">
+                            <form [formGroup]="paymentLoanForm">
                                 <fieldset>
-                                    <legend>Payment</legend>
-                                    <div class="tabview-contents">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6 mt-10">
-                                                <label class="form-label">Adhoc Payments</label>
+                                    <fieldset>
+                                        <legend>Payment</legend>
+                                        <div class="tabview-contents">
+                                            <div class="row">
                                                 <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Treatment</label>
-                                                    <select class="form-control "
-                                                        formControlName="adhocPaymentsTreatment">
+                                                    <label class="form-label">Adhoc Payments</label>
+                                                    <div class="col-sm-6 col-md-6 mt-10">
+                                                        <label class="form-label">Treatment</label>
+                                                        <select class="form-control " formControlName="adhocPaymentsTreatment">
+                                                            <option value="">Select</option>
+                                                            <option>Reduce Installment</option>
+                                                            <option>Reduce Tenure</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6 mt-10">
+                                                    <label class="form-label">Skipped payments - Recovery in next
+                                                        cycle</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-6 mt-10">
+                                                            <label class="form-label">Pricipal</label>
+                                                            <select class="form-control"
+                                                                (click)="paymentRecoveryInNextCyclePri($event.target.value)">
+                                                                <option value="">Select</option>
+                                                                <option [selected]="paymentRecoveryInNextCyclePriVal == 'Yes'">Yes
+                                                                </option>
+                                                                <option [selected]="paymentRecoveryInNextCyclePriVal == 'No'">No
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 mt-10">
+                                                            <label class="form-label">Interest</label>
+                                                            <select class="form-control "
+                                                                (click)="paymentRecoveryInNextCycleInt($event.target.value)">
+                                                                <option value="">Select</option>
+                                                                <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">Yes
+                                                                </option>
+                                                                <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">No</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Assignment</legend>
+                                        <div class="tabview-contents">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6 mt-10">
+                                                    <label class="form-label">Deduction Heads</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-6 mt-10">
+                                                            <label class="form-label">Interest</label>
+                                                            <select class="form-control " formControlName="assignmentsIntHead">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let head of deductionHeadData">
+                                                                    {{head.standardName}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 mt-10">
+                                                            <label class="form-label">Principal</label>
+                                                            <select class="form-control " formControlName="assignmentsPriHead">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let head of deductionHeadData">
+                                                                    {{head.standardName}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6 mt-10">
+                                                    <label class="form-label">Earning Head</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-6 mt-10">
+                                                            <label class="form-label">Loan Payment</label>
+                                                            <select class="form-control " formControlName="assignmentsLoanPayment">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let head of earningHeadData">
+                                                                    {{head.standardName}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tabview-contents">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12 mt-10">
+                                                    <label class="form-label">Tax settings - Perquisites</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3 col-md-3 mt-10">
+                                                            <label class="form-label">Head</label>
+                                                            <select class="form-control " formControlName="taxSettingPerquisiteHead">
+                                                                <option value="">Select</option>
+                                                                <option>Head Master</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-3 col-md-3 mt-10">
+                                                            <label class="form-label">Loan Category</label>
+                                                            <select class="form-control "
+                                                                formControlName="taxSettingPerquisiteLoanCategory">
+                                                                <option value="">Select</option>
+                                                                <option>Education Loan</option>
+                                                                <option>Housing Loan</option>
+                                                                <option>Two Wheeler</option>
+                                                                <option>Other Loan</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-3 col-md-3 mt-10">
+                                                            <label class="form-label">Loan Sub-Category</label>
+                                                            <select class="form-control "
+                                                                formControlName="taxSettingPerquisiteSubCategory">
+                                                                <option value="">Select</option>
+                                                                <option>First Hand</option>
+                                                                <option>Second Hand</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-3 col-md-3 mt-10">
+                                                            <label class="form-label">Calculation on</label>
+                                                            <select class="form-control "
+                                                                formControlName="taxSettingCalculatePerquisiteOn">
+                                                                <option value="">Select</option>
+                                                                <option>Opening Balance</option>
+                                                                <option>Closing Balance</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset>
+                                        <legend>Guarantor Details</legend>
+                                        <div class="tabview-contents">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6 mt-10">
+                                                    <label class="form-label">No. of Guarantor</label>
+                                                    <select class="form-control " formControlName="noOfGuarantor">
                                                         <option value="">Select</option>
-                                                        <option>Reduce Installment</option>
-                                                        <option>Reduce Tenure</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 col-md-6 mt-10">
-                                                <label class="form-label">Skipped payments - Recovery in next
-                                                    cycle</label>
-                                                <div class="row">
-                                                    <div class="col-sm-6 col-md-6 mt-10">
-                                                        <label class="form-label">Pricipal</label>
-                                                        <select class="form-control"
-                                                            (click)="paymentRecoveryInNextCyclePri($event.target.value)">
-                                                            <option value="">Select</option>
-                                                            <option [selected]="paymentRecoveryInNextCyclePriVal == 'Yes'">Yes</option>
-                                                            <option [selected]="paymentRecoveryInNextCyclePriVal == 'No'">No</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-6 col-md-6 mt-10">
-                                                        <label class="form-label">Interest</label>
-                                                        <select class="form-control "
-                                                            (click)="paymentRecoveryInNextCycleInt($event.target.value)">
-                                                            <option value="">Select</option>
-                                                            <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">Yes</option>
-                                                            <option [selected]="paymentRecoveryInNextCycleIntVal=='Yes'">No</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 mt-10">
+                                            <label class="form-label">Document Required</label>
+                                            <div class="table-responsive Custom_Table">
+                                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>Document Name</th>
+                                                            <th>Remark</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <input class="form-control" [(ngModel)]="documentName" name="documentName" [ngModelOptions]="{standalone: true}">
+                                                            </td>
+                                                            <td>
+                                                                <input class="form-control" [(ngModel)]="documentRemark" name="documentRemark" [ngModelOptions]="{standalone: true}">
+                                                            </td>
+                                                        </tr>
+                                                        <tr *ngFor="let doc of filesArray;">
+                                                            <td>
+                                                                <input class="form-control" value="{{doc.documentName}}">
+                                                            </td>
+                                                            <td>
+                                                                <input class="form-control" value="{{doc.documentRemark}}">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><a (click)="documentSubmit()">
+                                                                    <i class=" fa fa-plus-circle"></i>
+                                                                </a></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="row text-right" style="margin: 10px; float:right;">
+                                        <button type="button" class="btn btn-success" (click)="previousTab()">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Previous</button>&nbsp;
+                                        <button type="button" class="btn btn-success" (click)="submitPaymentForm()">
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp;
+                                        <button type="button" class="btn btn-dark" (click)="resetPaymentForm()"
+                                            [disabled]="loandata != '' || editloandata != '' ">
+                                            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
                                     </div>
                                 </fieldset>
-                                <fieldset>
-                                    <legend>Assignment</legend>
-                                    <div class="tabview-contents">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6 mt-10">
-                                                <label class="form-label">Deduction Heads</label>
-                                                <div class="row">
-                                                    <div class="col-sm-6 col-md-6 mt-10">
-                                                        <label class="form-label">Interest</label>
-                                                        <select class="form-control "
-                                                            formControlName="assignmentsIntHead">
-                                                            <option value="">Select</option>
-                                                            <option *ngFor="let head of deductionHeadData">
-                                                                {{head.standardName}}</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-6 col-md-6 mt-10">
-                                                        <label class="form-label">Principal</label>
-                                                        <select class="form-control "
-                                                            formControlName="assignmentsPriHead">
-                                                            <option value="">Select</option>
-                                                            <option *ngFor="let head of deductionHeadData">
-                                                                {{head.standardName}}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 mt-10">
-                                                <label class="form-label">Earning Head</label>
-                                                <div class="row">
-                                                    <div class="col-sm-6 col-md-6 mt-10">
-                                                        <label class="form-label">Loan Payment</label>
-                                                        <select class="form-control "
-                                                            formControlName="assignmentsLoanPayment">
-                                                            <option value="">Select</option>
-                                                            <option *ngFor="let head of earningHeadData">
-                                                                {{head.standardName}}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tabview-contents">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-12 mt-10">
-                                                <label class="form-label">Tax settings - Perquisites</label>
-                                                <div class="row">
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">Head</label>
-                                                        <select class="form-control "
-                                                            formControlName="taxSettingPerquisiteHead">
-                                                            <option value="">Select</option>
-                                                            <option>Head Master</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">Loan Category</label>
-                                                        <select class="form-control "
-                                                            formControlName="taxSettingPerquisiteLoanCategory">
-                                                            <option value="">Select</option>
-                                                            <option>Education Loan</option>
-                                                            <option>Housing Loan</option>
-                                                            <option>Two Wheeler</option>
-                                                            <option>Other Loan</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">Loan Sub-Category</label>
-                                                        <select class="form-control "
-                                                            formControlName="taxSettingPerquisiteSubCategory">
-                                                            <option value="">Select</option>
-                                                            <option>First Hand</option>
-                                                            <option>Second Hand</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">Calculation on</label>
-                                                        <select class="form-control "
-                                                            formControlName="taxSettingCalculatePerquisiteOn">
-                                                            <option value="">Select</option>
-                                                            <option>Opening Balance</option>
-                                                            <option>Closing Balance</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </fieldset>
-                                <fieldset>
-                                    <legend>Guarantor Details</legend>
-                                    <div class="tabview-contents">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6 mt-10">
-                                                <label class="form-label">No. of Guarantor</label>
-                                                <select class="form-control " formControlName="noOfGuarantor">
-                                                    <option value="">Select</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-
-                                <div class="row">
-                                    <div class="col-sm-6 col-md-6 mt-10">
-                                        <label class="form-label">Document Required</label>
-                                        <div class="table-responsive Custom_Table">
-                                            <table class="table table-striped table-hover table-bordered m-b-0">
-                                                <thead class="thead-dark">
-                                                    <tr>
-                                                        <th>Document Name</th>
-                                                        <th>Remark</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngFor="let doc of filesArray;">
-                                                        <td>
-                                                            <input class="form-control" value="{{doc.documentName}}">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" value="{{doc.documentRemark}}">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><a (click)="UploadModal(template4)">
-                                                                <i class=" fa fa-plus-circle"></i>
-                                                            </a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row text-right" style="margin: 10px; float:right;">
-                                    <button type="button" class="btn btn-success" (click)="previousTab()">
-                                        <i class="fa fa-floppy-o"
-                                            aria-hidden="true"></i>&nbsp;&nbsp;Previous</button>&nbsp;
-                                    <button type="button" class="btn btn-success" (click)="submitPaymentForm()">
-                                        <i class="fa fa-floppy-o"
-                                            aria-hidden="true"></i>&nbsp;&nbsp;Submit</button>&nbsp;
-                                    <button type="button" class="btn btn-dark" (click)="resetPaymentForm()" 
-                                    [disabled]="loandata != '' || editloandata != '' ">
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
-                                </div>
-                            </fieldset>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            <!-- </div>
+<!-- </div>
         </div>
     </div>
 </div> -->
