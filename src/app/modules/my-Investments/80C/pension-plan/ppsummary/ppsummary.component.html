@@ -72,9 +72,14 @@
                   class="form-control width120 inline_center align-right">
               </td> -->
               <td>
-                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  mode="decimal" locale="en-IN" min="0" [minFractionDigits]="2"
-                [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber>
+                <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  mode="decimal" locale="en-IN" 
+                min="0" [minFractionDigits]="2"
+                [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber> -->
+                <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" 
+                (onBlur)="keyPressedSpaceNotAllow()" 
+                mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
+             
               </td>
               <td></td>
               <td></td>

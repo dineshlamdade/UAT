@@ -10,7 +10,7 @@
     <!-- <div class="col-12 mr-0 pr-0" *ngIf="isDisabled">
       </div> -->
     <div class="ml-2 pl-1 pr-0">
-      <label class="form-label mt-2">Institution <span class="text-red">*</span></label>
+      <label class="form-label mt-2">Institution <span class="text-red"></span></label>
     </div>
     <div class="col-md-3 pr-0">
       <select name="Institution" class="form-control custom-select"
@@ -47,7 +47,7 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No.</label>
+        <label class="form-label mt-1">Institution & Account No. :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -56,7 +56,7 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Account Holder Name</label>
+        <label class="form-label mt-1 pl-10">Account Holder Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -65,7 +65,7 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Frequency</label>
+        <label class="form-label mt-1">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label class="font-12 text-ellipsis mt-1" placement="left" [adaptivePosition]="false"
@@ -408,7 +408,9 @@
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
+                        <input type="text" onkeypress="return /[0-9]/i.test(event.key)"
+                        class="form-control align-right"
+                         (change)="changeReceiptAmountFormat()"
                           [(ngModel)]="receiptAmount" />
                       </span>
                     </td>
@@ -543,14 +545,21 @@
                   </td>
                   <td>
                     <i
-                      class="fa fa-eye font-16 text-blue cursor-pointer"
-                      tooltip="View"
+                    class="fa fa-eye font-16 text-blue cursor-pointer"
+                    (click)="
+                      declarationEditUpload(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewDocumentDetail = false
+                    "
+                    tooltip="View"
                     ></i
                     >&nbsp;&nbsp;
-                    <i
+                    <!-- <i
                       class="fa fa-download font-16 text-blue cursor-pointer"
                       tooltip="Download"
-                    ></i>
+                    ></i> -->
                     <div *ngFor="let doc of urlArray" hidden>
                       <iframe
                         style="height: 100vh; width: 100%; display: block"
