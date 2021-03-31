@@ -456,6 +456,9 @@ export class PpmasterComponent implements OnInit {
 
   //----------- Family relationship shown on Policyholder selection ---------------
   OnSelectionfamilyMemberGroup() {
+    if(this.form.get('accountHolderName').value == null ){
+      this.form.get('relationship').setValue(null);
+    }
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
     );

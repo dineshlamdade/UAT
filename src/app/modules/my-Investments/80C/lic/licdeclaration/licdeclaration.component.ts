@@ -118,7 +118,9 @@ export class LicdeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
+  public viewTransactionDetail = true;
   public viewDocumentDetail = true;
+
   public masterUploadFlag = true;
 
   public dateOfPaymentGlobal: Date;
@@ -1197,7 +1199,7 @@ export class LicdeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string,
   ) {
