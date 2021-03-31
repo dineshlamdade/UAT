@@ -437,8 +437,8 @@
 
                         <ng-template #newDeb>
 
-                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : companyMasterform.invalid,
-                        'btn-bg-green': !companyMasterform.invalid}"
+                          <button type="submit"
+                            [ngClass]="companyMasterform.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                             (click)="saveCompanyMaster(employeeMasterRequestDTO)"
                             [disabled]="companyMasterform.invalid"><b><i class="fa fa-floppy-o"></i></b>

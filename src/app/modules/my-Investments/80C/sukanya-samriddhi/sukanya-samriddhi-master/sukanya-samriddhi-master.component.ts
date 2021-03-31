@@ -27,11 +27,10 @@ import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { SukanyaSamriddhiService } from '../sukanya-samriddhi.service';
 
-
 @Component({
   selector: 'app-sukanya-samriddhi-master',
   templateUrl: './sukanya-samriddhi-master.component.html',
-  styleUrls: ['./sukanya-samriddhi-master.component.scss']
+  styleUrls: ['./sukanya-samriddhi-master.component.scss'],
 })
 export class SukanyaSamriddhiMasterComponent implements OnInit {
   @Input() public accountNo: any;
@@ -117,7 +116,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private sukanyaSamriddhiService : SukanyaSamriddhiService,
+    private sukanyaSamriddhiService: SukanyaSamriddhiService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -132,7 +131,10 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(null, Validators.required),
-      relationship: new FormControl({ value: null, disabled: true },Validators.required),
+      relationship: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
@@ -140,14 +142,17 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl({ value: null, disabled: true },Validators.required),
+      annualAmount: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       ecs: new FormControl(0),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup1MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
-      proofSubmissionId : new FormControl('')
+      proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [
@@ -177,17 +182,16 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
-      console.log("getFamilyInfo", res);
+      console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
       res.data.results.forEach((element) => {
         const obj = {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if(element.relation ==='Daughter'){
+        if (element.relation === 'Daughter') {
           this.familyMemberName.push(obj);
         }
-
       });
     });
 
@@ -232,10 +236,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       // console.log("edit", input)
       // this.editMaster(input);
       // console.log('editMaster policyNo', input);
-      this.editFromSummary(input.accountNumber);
+      this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
-
   }
 
   // convenience getter for easy access to form fields
@@ -326,16 +329,18 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
 
   // Get Master Page Data API call
   masterPage() {
-    this.sukanyaSamriddhiService.getSukanyaSamriddhiMaster().subscribe((res) => {
-      console.log('masterGridData::', res);
-      this.masterGridData = res.data.results;
-      this.masterGridData.forEach((element) => {
-        element.policyStartDate = new Date(element.policyStartDate);
-        element.policyEndDate = new Date(element.policyEndDate);
-        element.fromDate = new Date(element.fromDate);
-        element.toDate = new Date(element.toDate);
+    this.sukanyaSamriddhiService
+      .getSukanyaSamriddhiMaster()
+      .subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+        this.masterGridData.forEach((element) => {
+          element.policyStartDate = new Date(element.policyStartDate);
+          element.policyEndDate = new Date(element.policyEndDate);
+          element.fromDate = new Date(element.fromDate);
+          element.toDate = new Date(element.toDate);
+        });
       });
-    });
   }
 
   // Post Master Page Data API call
@@ -346,8 +351,8 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       return;
     }
 
-    console.log("urlArray.length",this.urlArray.length)
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ){
+    console.log('urlArray.length', this.urlArray.length);
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Sukanya Samriddhi Document needed to Create Master.'
       );
@@ -364,7 +369,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       // const data = this.form.getRawValue();
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
-            data.proofSubmissionId = this.proofSubmissionId;
+      data.proofSubmissionId = this.proofSubmissionId;
 
       data.fromDate = from;
       data.toDate = to;
@@ -373,7 +378,10 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       console.log('Sukanya Samriddhi Scheme data::', data);
 
       this.sukanyaSamriddhiService
-        .uploadMultipleSukanyaSamriddhiSchemeMasterFiles(this.masterfilesArray, data)
+        .uploadMultipleSukanyaSamriddhiSchemeMasterFiles(
+          this.masterfilesArray,
+          data
+        )
         .subscribe((res) => {
           console.log(res);
           if (res) {
@@ -390,7 +398,9 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
                 'Go to "Declaration & Actual" Page to see Schedule.'
               );
             } else {
-              this.alertService.sweetalertError('This Policy Holder Already Added');
+              this.alertService.sweetalertError(
+                'This Policy Holder Already Added'
+              );
             }
           } else {
             this.alertService.sweetalertError(
@@ -409,7 +419,7 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
       this.masterfilesArray = [];
       this.urlArray = [];
       this.submitted = false;
-       this.documentRemark = '';
+      this.documentRemark = '';
     }
   }
 
@@ -471,10 +481,12 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     }
   }
 
-    // On Master Edit functionality
-    editFromSummary(accountNumber) {
-      //this.scrollToTop();
-      this.sukanyaSamriddhiService.getSukanyaSamriddhiMaster().subscribe((res) => {
+  // On Master Edit functionality
+  editMaster(accountNumber) {
+    this.scrollToTop();
+    this.sukanyaSamriddhiService
+      .getSukanyaSamriddhiMaster()
+      .subscribe((res) => {
         console.log('masterGridData::', res);
         this.masterGridData = res.data.results;
         this.masterGridData.forEach((element) => {
@@ -484,40 +496,38 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
           element.toDate = new Date(element.toDate);
         });
 
-      // console.log(accountNo)
-      const obj = this.findByPolicyNo(accountNumber,this.masterGridData);
+        // console.log(accountNo)
+        const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
 
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-        this.paymentDetailGridData = obj.paymentDetails;
-        this.form.patchValue(obj);
-        this.Index = obj.accountNumber;
-        this.showUpdateButton = true;
-        this.isClear = true;
-        this.urlArray = obj.documentInformationList;
-        this.proofSubmissionId = obj.proofSubmissionId;
-      }
-    });
-    }
-
-    findByPolicyNo(accountNumber,masterGridData){
-      return masterGridData.find(x => x.accountNumber === accountNumber)
-    }
-
-  // On Master Edit functionality
-  editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    // this.form.get('premiumAmount').setValue();
-    this.isClear = true;
+        console.log('Edit Master', obj);
+        if (obj != 'undefined') {
+          this.paymentDetailGridData = obj.paymentDetails;
+          this.form.patchValue(obj);
+          this.Index = obj.accountNumber;
+          this.showUpdateButton = true;
+          this.isClear = true;
+          this.urlArray = obj.documentInformationList;
+          this.proofSubmissionId = obj.proofSubmissionId;
+        }
+      });
   }
+
+  // findByPolicyNo Fuctionality
+  findByPolicyNo(accountNumber, masterGridData) {
+    return masterGridData.find((x) => x.accountNumber === accountNumber);
+  }
+
+// scrollToTop Fuctionality
+public scrollToTop() {
+  (function smoothscroll() {
+    var currentScroll =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (currentScroll > 0) {
+      window.requestAnimationFrame(smoothscroll);
+      window.scrollTo(0, currentScroll - currentScroll / 8);
+    }
+  })();
+}
 
   // On Edit Cancel
   cancelEdit() {
@@ -529,21 +539,21 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     this.isClear = false;
   }
 
-  // On Master Edit functionality
-  viewMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-    this.form.patchValue(this.masterGridData[i]);
-    // console.log(this.form.getRawValue());
-    this.Index = i;
-    this.showUpdateButton = true;
-    const formatedPremiumAmount = this.numberFormat.transform(
-      this.masterGridData[i].premiumAmount
-    );
-    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-    this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-    this.isCancel = true;
-  }
+  // // On Master Edit functionality
+  // viewMaster(i: number) {
+  //   //this.scrollToTop();
+  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.form.patchValue(this.masterGridData[i]);
+  //   // console.log(this.form.getRawValue());
+  //   this.Index = i;
+  //   this.showUpdateButton = true;
+  //   const formatedPremiumAmount = this.numberFormat.transform(
+  //     this.masterGridData[i].premiumAmount
+  //   );
+  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+  //   this.isCancel = true;
+  // }
 
   // On View Cancel
   resetView() {
@@ -561,43 +571,33 @@ export class SukanyaSamriddhiMasterComponent implements OnInit {
     );
   }
 
-    //---------- For Doc Viewer -----------------------
-    nextDocViewer() {
+  //---------- For Doc Viewer -----------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
 
-      this.urlIndex = this.urlIndex + 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      //   this.urlArray[this.urlIndex]
-      // );
-    }
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
 
-    previousDocViewer() {
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
 
-      this.urlIndex = this.urlIndex - 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      //   this.urlArray[this.urlIndex]
-      // );
-    }
-
-    docViewer(template3: TemplateRef<any>,index:any) {
-      console.log("---in doc viewer--");
-      this.urlIndex = index;
-
-      console.log("urlArray::", this.urlArray);
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
-      //this.urlSafe
-      console.log("urlSafe::",  this.urlSafe);
-      this.modalRef = this.modalService.show(
-        template3,
-        Object.assign({}, { class: 'gray modal-xl' }),
-      );
-    }
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 }

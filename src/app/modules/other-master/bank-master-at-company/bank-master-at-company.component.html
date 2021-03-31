@@ -51,9 +51,12 @@
                         <input [type]="accountNumber ? 'number' : 'password'" formControlName="accountNumber"
                           class="form-control" name="accountNumber"
                           [ngClass]="{'is-invalid' : form.get('accountNumber').status == 'INVALID'}">
-                        <mat-icon matSuffix (click)="accountNumber = !accountNumber" class="field-icon"
+                        <i class="field-icon" [ngClass]="accountNumber? 'fa fa-eye':'fa fa-eye-slash'"
+                          style="position: relative;right: 3px;font-size: 16px;top: 2px;"
+                          (click)="accountNumber = !accountNumber"></i>
+                        <!-- <mat-icon matSuffix (click)="accountNumber = !accountNumber" class="field-icon"
                           style="position: relative;right: 3px;font-size: 16px;top: 2px;">
-                          {{accountNumber ? 'visibility' : 'visibility_off'}}</mat-icon>
+                          {{accountNumber ? 'visibility' : 'visibility_off'}}</mat-icon> -->
                       </div>
 
                       <!-- <div class="col-sm-3">
@@ -71,9 +74,12 @@
                           formControlName="reEnterAccountNumber" class="form-control"
                           [ngClass]="{'is-invalid' : form.get('reEnterAccountNumber').status == 'INVALID'}"
                           name="reEnterAccountNumber">
-                        <mat-icon matSuffix (click)="reEnterAccountNumber = !reEnterAccountNumber" class="field-icon"
+                        <i class="field-icon" [ngClass]="reEnterAccountNumber? 'fa fa-eye':'fa fa-eye-slash'"
+                          style="position: relative;right: 3px;font-size: 16px;top: 2px;"
+                          (click)="reEnterAccountNumber = !reEnterAccountNumber"></i>
+                        <!-- <mat-icon matSuffix (click)="reEnterAccountNumber = !reEnterAccountNumber" class="field-icon"
                           style="position: relative;right: 3px;font-size: 16px;top: 2px;">
-                          {{reEnterAccountNumber ? 'visibility' : 'visibility_off'}}</mat-icon>
+                          {{reEnterAccountNumber ? 'visibility' : 'visibility_off'}}</mat-icon> -->
                       </div>
 
                       <!-- <div style="display: flex;">
@@ -151,18 +157,18 @@
                           <td scope="row">
 
 
-                            <select class="form-control selectpicker custom-select" placeholder="Select ISD" formControlName="isdCode">
+                            <select class="form-control selectpicker custom-select" placeholder="Select ISD"
+                              formControlName="isdCode">
                               <option value='' data-hidden="true">Select</option>
-                              <option *ngFor="let code of countryCode"
-                                  [value]="code">
-                                  {{code}}
+                              <option *ngFor="let code of countryCode" [value]="code">
+                                {{code}}
                               </option>
-                          </select>
+                            </select>
                           </td>
                           <td>
-                            <input type="text" formControlName="contactNumber" class="form-control" maxlength="10" minLength="10"
-                            pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$"
-                            [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('contactNumber').status == 'INVALID'}" />
+                            <input type="text" formControlName="contactNumber" class="form-control" maxlength="10"
+                              minLength="10" pattern="^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$"
+                              [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('contactNumber').status == 'INVALID'}" />
                           </td>
 
                           <td scope="row" *ngIf="isEditMode==true">
@@ -170,10 +176,11 @@
                           </td>
                           <td scope="row" *ngIf="isEditMode == false">
                             <!-- <input type="number" [(ngModel)]="summary.contactNumber" /> -->
-                            <i   style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer" tooltip="Add Row" (click)="addRow()"></i><span
-                              tooltip="Add Row" (click)="addRow()">&nbsp;Add</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <i style="font-size: 12;" class="fa fa-trash-o  font-12 text-red cursor-pointer" tooltip="Delete Row"
-                              (click)="deleteRow(i)" *ngIf="i!==0">&nbsp;Delete</i>
+                            <i style="font-size: 12;" class="fa fa-plus-circle font-12 cursor-pointer" tooltip="Add Row"
+                              (click)="addRow()"></i><span tooltip="Add Row"
+                              (click)="addRow()">&nbsp;Add</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i style="font-size: 12;" class="fa fa-trash-o  font-12 text-red cursor-pointer"
+                              tooltip="Delete Row" (click)="deleteRow(i)" *ngIf="i!==0">&nbsp;Delete</i>
                           </td>
                         </tr>
                         <!-- <tr>
@@ -342,8 +349,7 @@
                   </ng-container>
 
                   <ng-template #newDeb>
-                    <button type="submit"
-                      [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid, 'btn-bg-green': !form.invalid}"
+                    <button type="submit" [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                       (click)="save()" [disabled]="form.invalid">
                       <b><i class="fa fa-floppy-o"></i></b>Update</button>
@@ -406,7 +412,8 @@
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.accountType}}">{{summary.accountType}}</span>
                         </td>
-                        <td class="wd-10"><span tooltip="{{summary.contactPersonName}}">{{summary.contactPersonName}}</span>
+                        <td class="wd-10"><span
+                            tooltip="{{summary.contactPersonName}}">{{summary.contactPersonName}}</span>
                         </td>
                         <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
                         </td>
@@ -439,22 +446,7 @@
               </div>
             </div>
           </div>
-
         </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       </div>
     </div>
     <app-footer></app-footer>

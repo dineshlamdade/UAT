@@ -49,8 +49,7 @@ export class InterestOnTtaSummaryComponent implements OnInit {
       bankName : bankName,
       accountNumber : accountNumber,
       tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)
-    };
+      canEdit: (mode == 'edit' ? true : false)};
     this.bankName = bankName;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);

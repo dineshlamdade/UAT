@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { QueryTypeMasterComponent } from './query-type-master/query-type-master.component';
 import { QueryComponent } from './standard-que-ans/query.component';
 
+
 const routes :Routes =[
   {
     path:'',

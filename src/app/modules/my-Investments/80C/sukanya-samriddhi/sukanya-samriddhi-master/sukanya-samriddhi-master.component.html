@@ -4,7 +4,9 @@
     <div class="row">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Institution</label>
-        <input type="text" formControlName="institution" class="form-control" placeholder="Enter Institution"
+        <input type="text" formControlName="institution" class="form-control"
+        onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+        placeholder="Enter Institution"
           [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
           <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
@@ -12,7 +14,8 @@
       </div>
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Account No.</label>
-        <input type="text" formControlName="accountNumber" class="form-control" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Account No.."
+        <input type="text" formControlName="accountNumber" class="form-control"
+          onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Account No.."
           [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
         <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
           <div *ngIf="masterForm.accountNumber.errors.required">Account No is mandatory</div>
@@ -345,7 +348,7 @@
                     </td>
                     <td class="wd-5">
                       <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                        (click)="editFromSummary(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                        (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                     </td>
                   </tr>
                   <tr *ngIf="!masterGridData?.length">

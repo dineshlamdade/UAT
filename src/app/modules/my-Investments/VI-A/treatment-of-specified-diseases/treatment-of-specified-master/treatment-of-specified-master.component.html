@@ -8,13 +8,13 @@
               <div class="row">
                  <div class="col-sm-6 col-md-3">
                   <label class="form-label">Patient Name</label>
-                  <select name="Policy_Holder_Name" id="patientName" class="form-control custom-select"
+                  <select name="patientName" id="patientName" class="form-control custom-select"
                        formControlName="patientName" (change)='OnSelectionfamilyMemberGroup()'
                        [ngClass]="{ 'is-invalid': submitted && masterForm.patientName.errors }">
                        <option [ngValue]="null">Select</option>
-                       <option *ngFor="let familyMember of familyMemberName"
-                       [value]="familyMember.value">
-                       {{familyMember.label}}
+                       <option *ngFor="let patientName of familyMemberName"
+                       [value]="patientName.value">
+                       {{patientName.label}}
                      </option>
                   </select>
                   <div *ngIf="submitted && masterForm.patientName.errors" class="invalid-feedback">
@@ -31,7 +31,7 @@
                  </div>
                  <div class="col-sm-6 col-md-3">
                   <label class="form-label">Disease Name</label>
-                  <select name="Frequency_of_Payment" id="specifiedDiseaseName"
+                  <select id="specifiedDiseaseName"
                      formControlName="specifiedDiseaseName" class="form-control custom-select"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.specifiedDiseaseName.errors }">
                       <option [ngValue]="null">Select</option>
@@ -46,7 +46,7 @@
                  </div>
                  <div class="col-sm-6 col-md-3">
                   <label class="form-label">Neurological Disease</label>
-                  <select name="Frequency_of_Payment" id="neurologicalDiseaseName"
+                  <select  id="neurologicalDiseaseName"
                       formControlName="neurologicalDiseaseName" class="form-control custom-select"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.neurologicalDiseaseName.errors }">
                       <option [ngValue]="null">Select</option>

@@ -29,8 +29,8 @@ import { DemoMaterialModule } from './../../app.material.module';
 import { PreviousEmploymentInformationComponent } from './components/previous-employment-information/previous-employment-information.component';
 import { BankInformationComponent } from './components/bank-information/bank-information.component';
 
-registerLocaleData(localeFr, 'fr');
-registerLocaleData(localeGb, 'en-GB');
+registerLocaleData( localeFr, 'fr' );
+registerLocaleData( localeGb, 'en-GB' );
 import { PrimeNGModule } from './../../app.primeNG.module';
 // import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
@@ -66,89 +66,89 @@ import { JobSummaryComponent } from './components/job-information/job-summary/jo
 import { LandingPageComponent } from './../../modules/employee-master/components/landing-page/landing-page.component';
 import { BlockCopyPasteDirective } from './../../core/utility/directives/appBlockCopyPasteDirective';
 
-@NgModule({
-    declarations: [
-        PersonalInformationComponent,
-        ConfirmationModalComponent,
-        ContactInformationComponent,
-        IdentityInformationComponent,
-        PreviousEmploymentInformationComponent,
-        BankInformationComponent,
-        PayrollAreaInformationComponent,
-        FamilyInformationComponent,
-        FamilyDetailsComponent,
-        NominationDetailsComponent,
-        BankDetailsComponent,
-        EducationSkillsInformationComponent,
-        EducationDetailComponent,
-        LanguageDetailComponent,
-        SkillsDetailComponent,
-        CertificationDetailComponent,
-        JobInformationComponent,
-        OrganizationDetailComponent,
-        PositionDetailComponent,
-        ProjectDetailComponent,
-        DeputationDetailComponent,
-        ComplianceInformationComponent,
-        InputComplianceInformationComponent,
-        ComplianceTypeInformationComponent,
-        SubComplianceTypeInformationComponent,
-        MinimumWagesDetailComponent,
-        EmploymentInformationComponent,
-        JoiningInformationComponent,
-        ReJoiningInformationComponent,
-        TransferInformationComponent,
-        ExitInformationComponent,
-        EmployeeSummaryComponent,
-        EmploymentSummaryComponent,
-        ComplianceSummaryComponent,
-        JobSummaryComponent,
-        LandingPageComponent,
-        BlockCopyPasteDirective
-    ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        FormsModule,
-        MatSliderModule,
-        TooltipModule.forRoot(),
-        BsDatepickerModule.forRoot(),
-        CollapseModule.forRoot(),
-        AccordionModule.forRoot(),
-        TooltipModule.forRoot(),
-        PopoverModule.forRoot(),
-        AlertModule.forRoot(),
-        BsDropdownModule.forRoot(),
-        ModalModule.forRoot(),
-        ProgressbarModule.forRoot(),
-        CarouselModule.forRoot(),
-        BsDatepickerModule.forRoot(),
-        CarouselModule.forRoot(),
-        ToastrModule.forRoot({
-            positionClass: 'toast-top-center',
-        }),
-        SharedlayoutModule,
-        EmployeeMasterRoutingModule,
-        TranslocoModule,
-        DemoMaterialModule,
-        PrimeNGModule,
-    ],
+@NgModule( {
+  declarations: [
+    PersonalInformationComponent,
+    ConfirmationModalComponent,
+    ContactInformationComponent,
+    IdentityInformationComponent,
+    PreviousEmploymentInformationComponent,
+    // BankInformationComponent,
+    PayrollAreaInformationComponent,
+    FamilyInformationComponent,
+    FamilyDetailsComponent,
+    NominationDetailsComponent,
+    BankDetailsComponent,
+    EducationSkillsInformationComponent,
+    EducationDetailComponent,
+    LanguageDetailComponent,
+    SkillsDetailComponent,
+    CertificationDetailComponent,
+    JobInformationComponent,
+    OrganizationDetailComponent,
+    PositionDetailComponent,
+    ProjectDetailComponent,
+    DeputationDetailComponent,
+    ComplianceInformationComponent,
+    InputComplianceInformationComponent,
+    ComplianceTypeInformationComponent,
+    SubComplianceTypeInformationComponent,
+    MinimumWagesDetailComponent,
+    EmploymentInformationComponent,
+    JoiningInformationComponent,
+    ReJoiningInformationComponent,
+    TransferInformationComponent,
+    ExitInformationComponent,
+    EmployeeSummaryComponent,
+    EmploymentSummaryComponent,
+    ComplianceSummaryComponent,
+    JobSummaryComponent,
+    LandingPageComponent,
+    BlockCopyPasteDirective
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatSliderModule,
+    TooltipModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    CollapseModule.forRoot(),
+    AccordionModule.forRoot(),
+    TooltipModule.forRoot(),
+    PopoverModule.forRoot(),
+    AlertModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
+    ProgressbarModule.forRoot(),
+    CarouselModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    CarouselModule.forRoot(),
+    ToastrModule.forRoot( {
+      positionClass: 'toast-top-center',
+    } ),
+    SharedlayoutModule,
+    EmployeeMasterRoutingModule,
+    TranslocoModule,
+    DemoMaterialModule,
+    PrimeNGModule,
+  ],
 
-    providers: [DatePipe, NumberFormatPipe,
-        translocoLoader, {
-            provide: TRANSLOCO_CONFIG,
-            useValue: {
-                availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
-                listenToLangChange: true,
-                reRenderOnLangChange: true,
-                defaultLang: 'en',
-                fallbackLang: 'fr',
+  providers: [DatePipe, NumberFormatPipe,
+    translocoLoader, {
+      provide: TRANSLOCO_CONFIG,
+      useValue: {
+        availableLangs: [{ id: 'en', label: 'English' }, { id: 'fr', label: 'French' }, { id: 'hi', label: 'Hindi' }],
+        listenToLangChange: true,
+        reRenderOnLangChange: true,
+        defaultLang: 'en',
+        fallbackLang: 'fr',
 
-                prodMode: false
-            } as TranslocoConfig
-        }
-    ],
-    entryComponents: [ConfirmationModalComponent],
+        prodMode: false
+      } as TranslocoConfig
+    }
+  ],
+  entryComponents: [ConfirmationModalComponent],
 
-})
+} )
 export class EmployeeMasterModule { }

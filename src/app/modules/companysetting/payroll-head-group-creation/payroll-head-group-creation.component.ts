@@ -1,94 +1,27 @@
 import { CompanySettingsService } from './../company-settings.service';
-import { PrimeNGConfig } from 'primeng/api';
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef, Inject, HostListener, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { FormArray, AbstractControl } from '@angular/forms';
-import { DatePipe, DOCUMENT } from '@angular/common';
-import { MyInvestmentsService } from './../../my-Investments/my-Investments.service';
+import { Component, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
-import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-import { FileService } from '../../my-Investments/file.service';
-
-import { NumberFormatPipe } from './../../../core/utility/pipes/NumberFormatPipe';
-import { from } from 'rxjs';
-//import { SavePHG, headDetail, SaveAttributeSelection, SaveAttributeAssignment, UpdateflagCycleCreation } from './payrollheadgroupcreation.model';
-
-//sneha
 import Swal from 'sweetalert2';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-/////////////////bharati
-//import { SaveAttributeCreation} from './attributecreation.model';
-import { BsDatepickerConfig, BsDatepickerViewMode } from 'ngx-bootstrap/datepicker';
-import { de } from 'date-fns/locale';
-import { element } from 'protractor';
-import { DropdownModule } from 'primeng/dropdown';
-//import { PrimeIcons} from 'primeng/api';
-import { Variable } from '@angular/compiler/src/render3/r3_ast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
+import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
 
-export class SavePHG {
-  headGroupDefinitionId: number;
-  headGroupDefinitionName: string;
-  attributeGroupName: string;
-  description: string;
-  //  headMasters:any[];
-  countryId: number;
-  headMasters: headDetail[];
-  removedHeadGroupIdList: any[];
-  createdBy: string;
-  isActive: boolean;
-}
+
+
+import { headDetailPHG, SaveAttributeAssignment, SavePHG, UpdateflagCycleCreation, UpdateflagCycleCreationPHG } from '../model/business-cycle-model';
 
 export class headDetail {
   headMasterId: number;
 }
 
 
-export class headDetail1 {
-  constructor() {
-
-  }
-
-  headMasterId: number;
-}
-export class SaveAttributeSelection {
-  attributeGroupDefinitionId: number;
-  // id:number;
-  name; string;
-  description: string;
-  //createdBy:string;
-  // attributeNature:string;
-  // numberOfOption:string;
-  attributeMasterIdList: any[];
-}
-export class UpdateflagCycleCreation {
-  mappingGroupRequest: SaveAttributeAssignment[];
-
-}
-export class SaveAttributeAssignment {
-  headGroupId: number;
-  attributeGroupId: number
-  value: string;
-  dependentOn: string;
-  fromDate: string;
-  toDate: string;
-  payrollHeadGroupMappingId: number;
-  //createdBy:string;
-  //createdBy:string;
-  // "createdBy":"nisha",
-  //  "createDate":"1990/11/11 00:00:00",
-  //  "isActive":"true",
-  //  "lastModifiedBy":"nisha",
-  //  "lastModifiedDateTime":"1990/11/11 00:00:00"
-}
-
-
-@Component({
+@Component( {
   selector: 'app-payroll-head-group-creation',
   templateUrl: './payroll-head-group-creation.component.html',
   styleUrls: ['./payroll-head-group-creation.component.scss'],
   encapsulation: ViewEncapsulation.None
-})
+} )
 export class PayrollHeadGroupCreationComponent implements OnInit {
 
   AttributeCreationForm: FormGroup;
@@ -144,7 +77,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     private modalService: BsModalService,
     private datepipe: DatePipe,
     private formBuilder: FormBuilder,
-    private payrollheadgroupcreationService: CompanySettingsService,
+    private companySettingsService: CompanySettingsService,
+    private alertService: AlertServiceService,
   ) { }
 
 
@@ -163,8 +97,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // get All HeadCreation
     //getAllHeadCreation(): void {
 
-    // this.payrollheadgroupcreationService.getAllHeadCreation().subscribe(res => {
-    //     debugger
+    // this. companySettingsService.getAllHeadCreation().subscribe(res => {
+    //
     //         this.dropdownList = res.data.results;
     //         });
     //      // }
@@ -180,119 +114,56 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // };
 
 
-    this.AttributeCreationForm = this.formBuilder.group({
-      attributeGroupDefinitionId: new FormControl(null,),
-      headGroupDefinitionName: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      attributeNature: new FormControl('', Validators.required),
+    this.AttributeCreationForm = this.formBuilder.group( {
+      attributeGroupDefinitionId: new FormControl( null, ),
+      headGroupDefinitionName: new FormControl( '', Validators.required ),
+      description: new FormControl( '', Validators.required ),
+      attributeNature: new FormControl( '', Validators.required ),
       //  optionList: new FormControl('',Validators.required),
       // optionList: this.formBuilder.array([]),
       // type: new FormControl('', ),
       // isStatutory: new FormControl('0'),
-    });
+    } );
   }
 
 
-  onItemSelect(item: any) {
-    debugger
+  onItemSelect( item: any ) {
+
     this.Multiselectflag = true;
     // this.CycleDefinationForm.controls.serviceName.push(item.serviceName)
     // this.ServicesList=[];
-    this.ServicesList.push(item.headGroupId)
-    console.log(item);
+    this.ServicesList.push( item.headGroupId )
+    console.log( item );
   }
-  onItemDeSelect(item: any) {
-    debugger
+  onItemDeSelect( item: any ) {
+
     // this.CycleDefinationForm.controls.serviceName.push(item.serviceName)
     // this.ServicesList=[];
-    var index = this.ServicesList.indexOf(item.headGroupId)
-    if (index > -1) {
-      this.ServicesList.splice(index, 1)
+    var index = this.ServicesList.indexOf( item.headGroupId )
+    if ( index > -1 ) {
+      this.ServicesList.splice( index, 1 )
     }
-    console.log(item);
+    console.log( item );
   }
 
-  onSelectAll(items: any) {
-    debugger
+  onSelectAll( items: any ) {
+
     // this.ServicesList.forEach(function(f){
     //   addCycleDefinition.serviceName.push(f);
     // });
 
-    items.forEach(element => {
-      this.ServicesList.push(element.headGroupId)
-    });
+    items.forEach( element => {
+      this.ServicesList.push( element.headGroupId )
+    } );
     //this.ServicesList.push(items.serviceName)
-    debugger
-    console.log(items);
+
+    console.log( items );
   }
-  onDeSelectAll(items: any) {
+  onDeSelectAll( items: any ) {
     this.ServicesList = [];
   }
 
 
-  sweetalert7(message: any) {
-    Swal.fire({
-      text: message,
-    })
-  }
-
-  sweetalertWarning(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      background: '#e68a00',
-      icon: 'warning',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
-
-  sweetalertInfo(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'info',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
-
-  sweetalertMasterSuccess(message: any, text: any) {
-    Swal.fire({
-      title: message,
-      text: text,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'success',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
-
-  sweetalertError(message: any) {
-    Swal.fire({
-      title: message,
-      showCloseButton: true,
-      showCancelButton: false,
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      icon: 'error',
-      timer: 15000,
-      timerProgressBar: true,
-    })
-  }
 
   resetAttributeSelection(): void {
     this.AttributeCreationForm.reset();
@@ -301,7 +172,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.viewupdateButton = false;
 
     // this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
-    //   debugger
+    //
     //   this.sourceProducts = res.data.results;
     //   });
 
@@ -311,24 +182,24 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
   // get All Attribute Selection(Attribute Group)
   getAllAttributeSelection(): void {
-    this.payrollheadgroupcreationService.getAllAttributeSelection().subscribe(res => {
-      debugger
+    this.companySettingsService.getAllAttributeSelection().subscribe( res => {
+
       this.AttributeSelectionList = res.data.results;
       //this.attributeGroupId=
-    });
+    } );
   }
   // get All  Payroll HeadGroup
   getAllPayrollHeadGroup(): void {
-    this.payrollheadgroupcreationService.getAllPayrollHeadGroup().subscribe(res => {
-      debugger
+    this.companySettingsService.getAllPayrollHeadGroup().subscribe( res => {
+
       this.PayrollHeadGroupList = res.data.results;
-    });
+    } );
   }
 
   // get All  Payroll HeadGroup
   getAllFormulaList(): void {
-    this.payrollheadgroupcreationService.getFromulaForFormulaMaster().subscribe(res => {
-      debugger
+    this.companySettingsService.getFromulaForFormulaMaster().subscribe( res => {
+
       this.FormulaArray = res.data.results;
       this.Formula = res.data.results[0].originalFormula;
 
@@ -344,54 +215,54 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       //   //   }
       //    });
 
-    });
+    } );
   }
 
   //        // get All  Payroll HeadGroup
   // getAllSDMList(): void {
-  //   this.payrollheadgroupcreationService.getSDMFormula().subscribe(res => {
-  //       debugger
+  //   this. companySettingsService.getSDMFormula().subscribe(res => {
+  //
   //       this.SDMArray = res.data.results[0].originalFormula;
   //       });
   //     }
 
   // get All HeadCreation
   getAllHeadCreation(): void {
-    this.payrollheadgroupcreationService.getAllHeadCreation().subscribe(res => {
-      debugger
+    this.companySettingsService.getAllHeadCreation().subscribe( res => {
+
       this.sourceProducts = res.data.results;
-    });
+    } );
   }
 
   // Get PHG ById
-  GetPHGByIdDisable(id): void {
-    debugger;
+  GetPHGByIdDisable( id ): void {
+
     // this.disabled= false;
     this.viewupdateButton = true;
     // this.viewCancelButton= true;
     this.headGroupDefinitionId = id;
     this.targetProducts = [];  //added new
     //this.getAllHeadCreation();
-    this.payrollheadgroupcreationService.GetPHGById(id)
-      .subscribe(response => {
-        debugger
-        response.data.results[0].headMasters.forEach(element => {
-          this.NewTargetArray.push(element);
-        });
+    this.companySettingsService.GetPHGById( id )
+      .subscribe( response => {
+
+        response.data.results[0].headMasters.forEach( element => {
+          this.NewTargetArray.push( element );
+        } );
 
         //this.getAllHeadCreation();
         this.targetProducts = response.data.results[0].headMasters;
         //this.NewTargetArray=response.data.results[0].headMasters;
 
 
-        this.targetProducts.forEach(element => {
-          var index = this.targetProducts.indexOf(element)
-          this.sourceProducts = this.sourceProducts.filter(e => e.standardName !== element.standardName);
-        });
+        this.targetProducts.forEach( element => {
+          var index = this.targetProducts.indexOf( element )
+          this.sourceProducts = this.sourceProducts.filter( e => e.standardName !== element.standardName );
+        } );
         //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-        this.AttributeCreationForm.patchValue({ headGroupDefinitionName: response.data.results[0].headGroupDefinitionName });
-        this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
-        this.AttributeCreationForm.patchValue({ attributeNature: response.data.results[0].attributeGroupName });
+        this.AttributeCreationForm.patchValue( { headGroupDefinitionName: response.data.results[0].headGroupDefinitionName } );
+        this.AttributeCreationForm.patchValue( { description: response.data.results[0].description } );
+        this.AttributeCreationForm.patchValue( { attributeNature: response.data.results[0].attributeGroupName } );
         this.PHGName = response.data.results[0].headGroupDefinitionName;
         this.AttGrpName = response.data.results[0].attributeGroupName;
         // this.dropdownList=this.HeadNameList;
@@ -404,68 +275,68 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         //   itemsShowLimit: 2,
         //   allowSearchFilter: true
         // };
-      });
+      } );
     // this.getAllHeadCreation();
   }
 
 
 
   //Delete Payroll HeadGroup by id
-  DeletePayrollHeadGroup(id): void {
-    debugger;
+  DeletePayrollHeadGroup( id ): void {
+
     // this.CycleupdateFlag=false;
     // this.CycleupdateFlag1=false;
-    this.payrollheadgroupcreationService.DeletePayrollHeadGroup(id)
-      .subscribe(response => { //: saveBusinessYear[]
-        debugger
-        this.sweetalertMasterSuccess("Success..!!", response.status.message)
+    this.companySettingsService.DeletePayrollHeadGroup( id )
+      .subscribe( response => { //: saveBusinessYear[]
+
+        this.alertService.sweetalertMasterSuccess( response.status.message, '' )
         this.getAllPayrollHeadGroup();
         this.AttributeCreationForm.reset();
         // this.targetProducts=[];
-      });
+      } );
   }
 
-  onChangeEvent(event: any): void {
-    debugger;
+  onChangeEvent( event: any ): void {
+
     this.PHGName = event.target.value;
   }
-  onStatusChange(event) {
-    debugger
+  onStatusChange( event ) {
+
     this.AttGrpName = event.target.value;
     this.attributeGroupId = event.target.value;
   }
-  onChangeDropDown(event) {
-    debugger
+  onChangeDropDown( event ) {
+
     this.AttGrpName = event.target.value;
     this.attributeGroupId = event.target.value;
   }
 
-  inputChanged(element: HTMLElement) {
-    debugger
-    alert(element.getAttribute('attributeNature')) // item_name
+  inputChanged( element: HTMLElement ) {
+
+    alert( element.getAttribute( 'attributeNature' ) ) // item_name
   }
 
   selected() {
-    alert(this.selectedLevel.name)
+    alert( this.selectedLevel.name )
   }
 
-  RowSelected(u: any) {
-    debugger
-    this.selectedUser.push(u);
-    console.log("selected user", this.selectedUser);
+  RowSelected( u: any ) {
+
+    this.selectedUser.push( u );
+    console.log( "selected user", this.selectedUser );
     //this.targetProducts.push(u);
     // declare variable in component.
   }
   lefttablePusg(): void {
-    debugger
+
     // const sss=this.newarray;
     // this.selectedUser.forEach(function(f){
     //  sss.push(f);
     // });
 
-    this.selectedUser.forEach(element => {
-      this.targetProducts.push(element);
-    });
+    this.selectedUser.forEach( element => {
+      this.targetProducts.push( element );
+    } );
 
     var v = this.selectedUser;
 
@@ -478,13 +349,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // this.targetProducts.push(v[0]);
     // }
 
-    this.selectedUser.forEach(element => {
-      var index = this.sourceProducts.indexOf(element)
+    this.selectedUser.forEach( element => {
+      var index = this.sourceProducts.indexOf( element )
       this.selectedUser = [];
-      if (index > -1) {
-        this.sourceProducts.splice(index, 1)
+      if ( index > -1 ) {
+        this.sourceProducts.splice( index, 1 )
       }
-    });
+    } );
 
 
     // var index=this.sourceProducts.indexOf(this.selectedUser[0])
@@ -496,16 +367,16 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // }
     // this.sourceProducts.splice(this.selectedUser.indexOf(0))
   }
-  RowSelectedtargetProducts(u: any): void {
-    debugger
+  RowSelectedtargetProducts( u: any ): void {
+
     /////////////////////////////////////////////////////
-    this.selectedheadName.push(u);
+    this.selectedheadName.push( u );
     this.HeadNameList = this.targetProducts;
 
-    this.selectedheadName.forEach(element => {
-      var index = this.targetProducts.indexOf(element)
-      this.HeadNameList = this.HeadNameList.filter(e => e.standardName !== element.standardName);
-    });
+    this.selectedheadName.forEach( element => {
+      var index = this.targetProducts.indexOf( element )
+      this.HeadNameList = this.HeadNameList.filter( e => e.standardName !== element.standardName );
+    } );
 
     this.dropdownList = this.HeadNameList;
 
@@ -526,10 +397,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     this.Nature = u.headNature;
     // this.getAllAttributeListByAttGroup();
     //if(this.selectedUser2.includes)
-    this.selectedUser2.push(u);
+    this.selectedUser2.push( u );
 
-    //   this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
-    //     debugger
+    //   this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
+    //
     //     this.AttGroupList =res.data.results[0];//[0].attributeMasters;
     //    // callBack('template12445');
     //  //  this.UploadModal2('template12445');
@@ -546,108 +417,108 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
   // AttributeAssignmentClick(u:any): void
   // {
-  //   debugger
+  //
   //   this.headGroupIdList=u;
   // }
-  SaveNext(AttGroupList): void {
-    debugger;
+  SaveNext( AttGroupList ): void {
+
     //////////////////////////////Save one headgroup////////////////////////////////////////////
-    const addData: UpdateflagCycleCreation = Object.assign({});
-    addData.mappingGroupRequest = [];
-    this.AttributeSelectionArray = AttGroupList;
-    this.AttributeSelectionArray.forEach(element => {
-      const cycledata1: SaveAttributeAssignment = Object.assign({});
+    // const addData: UpdateflagCycleCreationPHG = Object.assign( {} );
+    // addData.mappingGroupRequest = [];
+    // this.AttributeSelectionArray = AttGroupList;
+    // this.AttributeSelectionArray.forEach( element => {
+    //   const cycledata1: SaveAttributeAssignment = Object.assign( {} );
 
-      cycledata1.headGroupId = this.headGroupId;
+    //   cycledata1.headGroupId = this.headGroupId;
 
-      cycledata1.attributeGroupId = element.attributeGroupId;
-      cycledata1.fromDate = this.datepipe.transform(element.fromDate, "yyyy-MM-dd");
-      cycledata1.toDate = this.datepipe.transform(element.toDate, "yyyy-MM-dd");
-      cycledata1.dependentOn = element.dependentOn;
-      cycledata1.value = element.value;
-      cycledata1.payrollHeadGroupMappingId = element.payrollHeadGroupMappingId;
+    //   cycledata1.attributeGroupId = element.attributeGroupId;
+    //   cycledata1.fromDate = this.datepipe.transform( element.fromDate, "yyyy-MM-dd" );
+    //   cycledata1.toDate = this.datepipe.transform( element.toDate, "yyyy-MM-dd" );
+    //   cycledata1.dependentOn = element.dependentOn;
+    //   cycledata1.value = element.value;
+    //   cycledata1.payrollHeadGroupMappingId = element.payrollHeadGroupMappingId;
 
-      debugger;
-      addData.mappingGroupRequest.push(cycledata1);
-    });
 
-    this.payrollheadgroupcreationService.UpdateattributeListById(addData)
-      .subscribe((res: any) => {
-        debugger
-        this.sweetalertMasterSuccess("Success..!!", res.status.message);
+    //   addData.mappingGroupRequest.push( cycledata1 );
+    // } );
 
-      },
-        (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);
-        });
-    this.ServicesList = [];
-    this.AttributeCreationForm.reset();
-    this.AttGroupList = [];
+    // this.companySettingsService.UpdateattributeListById( addData )
+    //   .subscribe( ( res: any ) => {
+    //     debugger
+    //     this.sweetalertMasterSuccess( "Success..!!", res.status.message );
 
-    // const cycledata1:SaveAttributeAssignment=Object.assign({});
-    //////////////////////////////Save one end////////////////////////////////////////////
-    this.NextheadGroupId = this.HeadNameList[0].headGroupId;
-    this.headGroupId = this.NextheadGroupId;
-    this.HeadName = this.HeadNameList[0].standardName;
+    //   },
+    //     ( error: any ) => {
+    //       this.sweetalertError( error["error"]["status"]["message"] );
+    //     } );
+    // this.ServicesList = [];
+    // this.AttributeCreationForm.reset();
+    // this.AttGroupList = [];
 
-    this.HeadNameList.forEach(element => {
-      //  this.NextheadGroupId=element.headGroupId;
-      this.HeadNameList = this.HeadNameList.filter(e => e.headGroupId !== this.NextheadGroupId);
-    });
-    this.AttGroupList = [];
+    // // const cycledata1:SaveAttributeAssignment=Object.assign({});
+    // //////////////////////////////Save one end////////////////////////////////////////////
+    // this.NextheadGroupId = this.HeadNameList[0].headGroupId;
+    // this.headGroupId = this.NextheadGroupId;
+    // this.HeadName = this.HeadNameList[0].standardName;
 
-    this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById(this.NextheadGroupId).subscribe((res: any) => {
-      debugger
-      this.AttGroupList = res.data.results[0];//[0].attributeMasters;
-      this.AttGroupList.forEach(element => {
-        element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
-        element.fromDate = this.datepipe.transform(element.fromDate, "dd-MMM-yyyy");
-      });
+    // this.HeadNameList.forEach( element => {
+    //   //  this.NextheadGroupId=element.headGroupId;
+    //   this.HeadNameList = this.HeadNameList.filter( e => e.headGroupId !== this.NextheadGroupId );
+    // } );
+    // this.AttGroupList = [];
 
-      if (this.AttGroupList[0].attributeMaster.code != null) {
-        this.AttGroupList.forEach(element => {
-          element["code"] = element.attributeMaster.code;
+    // this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.NextheadGroupId ).subscribe( ( res: any ) => {
+    //   debugger
+    //   this.AttGroupList = res.data.results[0];//[0].attributeMasters;
+    //   this.AttGroupList.forEach( element => {
+    //     element.toDate = this.datepipe.transform( element.toDate, "dd-MMM-yyyy" );
+    //     element.fromDate = this.datepipe.transform( element.fromDate, "dd-MMM-yyyy" );
+    //   } );
 
-        });
-      }
-    },
-      (error: any) => {
-        if (error.status == 404) {
-          this.getAllAttributeListByAttGroup();
-          //this.viewSaveButton=true;
-        }
-        // this.sweetalertError(error["error"]["status"]["message"]);
-      }
-    );
+    //   if ( this.AttGroupList[0].attributeMaster.code != null ) {
+    //     this.AttGroupList.forEach( element => {
+    //       element["code"] = element.attributeMaster.code;
+
+    //     } );
+    //   }
+    // },
+    //   ( error: any ) => {
+    //     if ( error.status == 404 ) {
+    //       this.getAllAttributeListByAttGroup();
+    //       //this.viewSaveButton=true;
+    //     }
+    //     // this.sweetalertError(error["error"]["status"]["message"]);
+    //   }
+    // );
   }
 
   Next(): void {
-    debugger;
+
     this.NextheadGroupId = this.HeadNameList[0].headGroupId;
     this.HeadName = this.HeadNameList[0].standardName;
 
-    this.HeadNameList.forEach(element => {
+    this.HeadNameList.forEach( element => {
       //  this.NextheadGroupId=element.headGroupId;
-      this.HeadNameList = this.HeadNameList.filter(e => e.headGroupId !== this.NextheadGroupId);
-    });
+      this.HeadNameList = this.HeadNameList.filter( e => e.headGroupId !== this.NextheadGroupId );
+    } );
     this.AttGroupList = [];
-    this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById(this.NextheadGroupId).subscribe((res: any) => {
-      debugger
-      this.AttGroupList = res.data.results[0];//[0].attributeMasters;
-      this.AttGroupList.forEach(element => {
-        element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
-        element.fromDate = this.datepipe.transform(element.fromDate, "dd-MMM-yyyy");
-      });
+    this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.NextheadGroupId ).subscribe( ( res: any ) => {
 
-      if (this.AttGroupList[0].attributeMaster.code != null) {
-        this.AttGroupList.forEach(element => {
+      this.AttGroupList = res.data.results[0];//[0].attributeMasters;
+      this.AttGroupList.forEach( element => {
+        element.toDate = this.datepipe.transform( element.toDate, "dd-MMM-yyyy" );
+        element.fromDate = this.datepipe.transform( element.fromDate, "dd-MMM-yyyy" );
+      } );
+
+      if ( this.AttGroupList[0].attributeMaster.code != null ) {
+        this.AttGroupList.forEach( element => {
           element["code"] = element.attributeMaster.code;
 
-        });
+        } );
       }
     },
-      (error: any) => {
-        if (error.status == 404) {
+      ( error: any ) => {
+        if ( error.status == 404 ) {
           this.getAllAttributeListByAttGroup();
           //this.viewSaveButton=true;
         }
@@ -657,16 +528,16 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   }
 
 
-  RowSelectedtargetProducts2(u: any): void {
-    debugger
+  RowSelectedtargetProducts2( u: any ): void {
+
     /////////////////////////////////////////////////////
-    this.selectedheadName.push(u);
+    this.selectedheadName.push( u );
     this.HeadNameList = this.targetProducts;
 
-    this.selectedheadName.forEach(element => {
-      var index = this.targetProducts.indexOf(element)
-      this.HeadNameList = this.HeadNameList.filter(e => e.standardName !== element.standardName);
-    });
+    this.selectedheadName.forEach( element => {
+      var index = this.targetProducts.indexOf( element )
+      this.HeadNameList = this.HeadNameList.filter( e => e.standardName !== element.standardName );
+    } );
 
     this.dropdownList = this.HeadNameList;
 
@@ -689,8 +560,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
     // this.selectedUser2.push(u);
 
-    //   this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
-    //     debugger
+    //   this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
+    //
     //     this.AttGroupList =res.data.results[0];//[0].attributeMasters;
     //    // callBack('template12445');
     //  //  this.UploadModal2('template12445');
@@ -705,20 +576,20 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
   }
 
-  righttablePusg(u: any): void {
-    debugger
-    this.selectedUser2.forEach(element => {
-      this.sourceProducts.push(element);
-    });
+  righttablePusg( u: any ): void {
+
+    this.selectedUser2.forEach( element => {
+      this.sourceProducts.push( element );
+    } );
     var v = this.selectedUser;
 
-    this.selectedUser2.forEach(element => {
-      var index = this.targetProducts.indexOf(element)
+    this.selectedUser2.forEach( element => {
+      var index = this.targetProducts.indexOf( element )
       this.selectedUser2 = [];
-      if (index > -1) {
-        this.targetProducts.splice(index, 1)
+      if ( index > -1 ) {
+        this.targetProducts.splice( index, 1 )
       }
-    });
+    } );
 
     //   var index=this.targetProducts.indexOf(this.selectedUser2[0])
     //   this.selectedUser2=[];
@@ -730,8 +601,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   // onStatusChange2(event):void{
   //   this.AttGroupList=[];
   //   this.AttGrpName1=event.target.value;
-  //   this.payrollheadgroupcreationService.GetAttributeOptionListByGroup( this.AttGrpName1).subscribe(res => {
-  //     debugger
+  //   this. companySettingsService.GetAttributeOptionListByGroup( this.AttGrpName1).subscribe(res => {
+  //
   //     this.AttGroupList =res.data.results[0].attributeMasters;
   //   });
 
@@ -739,14 +610,14 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
 
   UpdatePHGById(): void {
-    debugger
-    const addAttributeCreation: SavePHG = Object.assign({});
+
+    const addAttributeCreation: SavePHG = Object.assign( {} );
     addAttributeCreation.headMasters = [];
     //////////////////////////////////////////////////////
-    this.NewTargetArray.forEach(element => {
-      var index = this.targetProducts.indexOf(element)
-      this.targetProducts = this.targetProducts.filter(e => e.standardName !== element.standardName);
-    });
+    this.NewTargetArray.forEach( element => {
+      var index = this.targetProducts.indexOf( element )
+      this.targetProducts = this.targetProducts.filter( e => e.standardName !== element.standardName );
+    } );
 
     // this.targetProducts.forEach(element => {
     //   var index=this.targetProducts.indexOf(element)
@@ -763,60 +634,60 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     /////////////////////////////////////////////////////////////
 
 
-    this.targetProducts.forEach(function (f) {
-      const headDetail: headDetail = Object.assign({});
+    this.targetProducts.forEach( function ( f ) {
+      const headDetail: headDetailPHG = Object.assign( {} );
       headDetail.headMasterId = f.headMasterId;
-      addAttributeCreation.headMasters.push(headDetail);
+      addAttributeCreation.headMasters.push( headDetail );
       //addAttributeCreation.headMasters.push(   f.globalHeadMasterId  );
-    });
+    } );
     addAttributeCreation.headGroupDefinitionName = this.AttributeCreationForm.value.headGroupDefinitionName;
     addAttributeCreation.description = this.AttributeCreationForm.value.description;
     //addAttributeCreation.createdBy="nisha";
     addAttributeCreation.attributeGroupName = this.AttributeCreationForm.value.attributeNature;
-    if (addAttributeCreation.headGroupDefinitionId == undefined || addAttributeCreation.headGroupDefinitionId == 0) {
+    if ( addAttributeCreation.headGroupDefinitionId == undefined || addAttributeCreation.headGroupDefinitionId == 0 ) {
 
-      this.payrollheadgroupcreationService.UpdatePHGById(this.headGroupDefinitionId, addAttributeCreation).subscribe((res: any) => {
-        debugger
+      this.companySettingsService.UpdatePHGById( this.headGroupDefinitionId, addAttributeCreation ).subscribe( ( res: any ) => {
+
         addAttributeCreation.headMasters = [];
         this.targetProducts = [];
         this.viewCancelButton = false;
         this.viewupdateButton = false;
-        this.sweetalertMasterSuccess("Success..!!", res.status.message);
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllPayrollHeadGroup();
         this.hidevalue = false;
         this.AttributeCreationForm.reset();
       },
-        (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);
-        });
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
     }
   }
 
-  onStatusChange23(event): void {
+  onStatusChange23( event ): void {
     this.showflag = true;
-    debugger
+
     this.AttGroupList = [];
     this.headGroupIdforattributeList = event.target.value;
-    // this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupId( this.headGroupIdforattributeList).subscribe(res => {
-    //   debugger
+    // this. companySettingsService.GetAttributeOptionListByHeadGroupId( this.headGroupIdforattributeList).subscribe(res => {
+    //
     //   this.AttGroupList =res.data.results[0];//[0].attributeMasters;
     // });
-    this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById(this.headGroupIdforattributeList).subscribe((res: any) => {
-      debugger
+    this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupIdforattributeList ).subscribe( ( res: any ) => {
+
       this.AttGroupList = res.data.results[0];//[0].attributeMasters;
-      this.AttGroupList.forEach(element => {
-        element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
-        element.fromDate = this.datepipe.transform(element.fromDate, "dd-MMM-yyyy");
-      });
-      if (this.AttGroupList[0].attributeMaster.code != null) {
-        this.AttGroupList.forEach(element => {
+      this.AttGroupList.forEach( element => {
+        element.toDate = this.datepipe.transform( element.toDate, "dd-MMM-yyyy" );
+        element.fromDate = this.datepipe.transform( element.fromDate, "dd-MMM-yyyy" );
+      } );
+      if ( this.AttGroupList[0].attributeMaster.code != null ) {
+        this.AttGroupList.forEach( element => {
           element["code"] = element.attributeMaster.code;
-        });
+        } );
       }
       this.viewSaveButton = false;
     },
-      (error: any) => {
-        if (error.status == 404) {
+      ( error: any ) => {
+        if ( error.status == 404 ) {
           this.getAllAttributeListByAttGroup();
           this.viewSaveButton = true;
         }
@@ -826,12 +697,12 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
 
   getAllAttributeListByAttGroup() {
-    debugger
+
     // this.selectedCopFormAttGrp=event.target.value;
     this.AttGroupList = [];
     // GetAttributeOptionList(): void {
-    this.payrollheadgroupcreationService.GetAttributeOptionListByGroup(this.AttGrpName).subscribe(res => {
-      debugger
+    this.companySettingsService.GetAttributeOptionListByGroup( this.AttGrpName ).subscribe( res => {
+
       this.AttGroupList = res.data.results[0].attributeMasters;
       // this.attributeGroupId=res.data.results[0].attributeMasters.attributeGroupId;
 
@@ -841,13 +712,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       // });
       this.getAllFormulaList();
 
-      // this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
-      //   debugger
+      // this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
+      //
       //   this.AttGroupList =res.data.results[0];//[0].attributeMasters;
       // });
 
       //  this.attributeSelectionService.getAllAttributeCreation().subscribe(res => {
-      //     debugger
+      //
       //     this.sourceProducts = res.data.results;
       //     });
 
@@ -856,17 +727,17 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
       //   this.sourceProducts = this.sourceProducts.filter(e => e.code == element.code);
       // });
 
-    });
+    } );
   }
 
   // save(summary:any):void{
   //   this.AttGroupList=summary;
   //   var tt=summary;
-  //   debugger;
+  //
   // }
 
   // saveAtttibuteAssign1(): void{
-  //   debugger
+  //
   //   const cycledata1:SaveAttributeAssignment=Object.assign({});
   //   cycledata1.headGroupId=this.headGroupId;
 
@@ -876,9 +747,9 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   //   cycledata1.dependentOn=this.AttGroupList.dependentOn;
   //   cycledata1.value=this.AttGroupList.value;
   //   //cycledata1.createdBy="nisha";
-  //   this.payrollheadgroupcreationService.AddAttributeAssignment(cycledata1)
+  //   this. companySettingsService.AddAttributeAssignment(cycledata1)
   //   .subscribe((res:any) => {
-  //       debugger
+  //
   //       this.sweetalertMasterSuccess("Success..!!", res.status.message);
   //      // this.todisabletodate=true;
   //   },
@@ -887,8 +758,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   //   });
 
   // }
-  UpdateAtttibuteAssign(AttGroupList): void {
-    debugger;
+  UpdateAtttibuteAssign( AttGroupList ): void {
+
     //  const addData:UpdateflagCycleCreation=Object.assign({});
     //  addData.mappingGroupRequest=[];
     //  this.AttributeSelectionArray=AttGroupList;
@@ -904,13 +775,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // cycledata1.value=element.value;
     // cycledata1.payrollHeadGroupMappingId=element.payrollHeadGroupMappingId;
 
-    // debugger;
+    //
     // addData.mappingGroupRequest.push(cycledata1);
     // });
 
-    // this.payrollheadgroupcreationService.UpdateattributeListById(addData)
+    // this. companySettingsService.UpdateattributeListById(addData)
     // .subscribe((res:any) => {
-    //     debugger
+    //
     //     this.sweetalertMasterSuccess("Success..!!", res.status.message);
 
     // },
@@ -922,15 +793,15 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // this.AttGroupList=[];
 
     // const cycledata1:SaveAttributeAssignment=Object.assign({});
-    const addData: UpdateflagCycleCreation = Object.assign({});
-    addData.mappingGroupRequest = [];
+    const addData: UpdateflagCycleCreation = Object.assign( {} );
+    //  addData.mappingGroupRequest = [];
     this.AttributeSelectionArray = AttGroupList;
 
-    if (this.ServicesList.length != 0) {
+    if ( this.ServicesList.length != 0 ) {
 
-      this.ServicesList.forEach(element1 => {
-        this.AttributeSelectionArray.forEach(element => {
-          const cycledata1: SaveAttributeAssignment = Object.assign({});
+      this.ServicesList.forEach( element1 => {
+        this.AttributeSelectionArray.forEach( element => {
+          const cycledata1: SaveAttributeAssignment = Object.assign( {} );
           ////////////////////////////////////////////////////////////////////////////////////////////////////
           // // if(this.ServicesList.length!=0)
           // // {
@@ -942,18 +813,18 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
           // cycledata1.headGroupId=this.headGroupId;
 
           cycledata1.attributeGroupId = element.attributeGroupId;
-          cycledata1.fromDate = this.datepipe.transform(element.fromDate, "yyyy-MM-dd");
-          cycledata1.toDate = this.datepipe.transform(element.toDate, "yyyy-MM-dd");
+          cycledata1.fromDate = this.datepipe.transform( element.fromDate, "yyyy-MM-dd" );
+          cycledata1.toDate = this.datepipe.transform( element.toDate, "yyyy-MM-dd" );
           cycledata1.dependentOn = element.dependentOn;
           cycledata1.value = element.value;
-          debugger;
-          addData.mappingGroupRequest.push(cycledata1);
-        });
-      });
+
+          // addData.mappingGroupRequest.push( cycledata1 );
+        } );
+      } );
     }
     else {
-      this.AttributeSelectionArray.forEach(element => {
-        const cycledata1: SaveAttributeAssignment = Object.assign({});
+      this.AttributeSelectionArray.forEach( element => {
+        const cycledata1: SaveAttributeAssignment = Object.assign( {} );
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         // // if(this.ServicesList.length!=0)
         // // {
@@ -965,23 +836,23 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         cycledata1.headGroupId = this.headGroupId;
 
         cycledata1.attributeGroupId = element.attributeGroupId;
-        cycledata1.fromDate = this.datepipe.transform(element.fromDate, "yyyy-MM-dd");
-        cycledata1.toDate = this.datepipe.transform(element.toDate, "yyyy-MM-dd");
+        cycledata1.fromDate = this.datepipe.transform( element.fromDate, "yyyy-MM-dd" );
+        cycledata1.toDate = this.datepipe.transform( element.toDate, "yyyy-MM-dd" );
         cycledata1.dependentOn = element.dependentOn;
         cycledata1.value = element.value;
-        debugger;
-        addData.mappingGroupRequest.push(cycledata1);
-      });
+
+        addData.mappingGroupRequest.push( cycledata1 );
+      } );
     }
-    this.payrollheadgroupcreationService.AddAttributeAssignment(addData)
-      .subscribe((res: any) => {
-        debugger
-        this.sweetalertMasterSuccess("Success..!!", res.status.message);
+    this.companySettingsService.AddAttributeAssignment( addData )
+      .subscribe( ( res: any ) => {
+
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         // this.todisabletodate=true;
       },
-        (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);
-        });
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
     this.ServicesList = [];
     this.AttributeCreationForm.reset();
     this.AttGroupList = [];
@@ -995,18 +866,18 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
   }
 
-  saveAtttibuteAssign(AttGroupList): void {
-    debugger;
+  saveAtttibuteAssign( AttGroupList ): void {
+
     // const cycledata1:SaveAttributeAssignment=Object.assign({});
-    const addData: UpdateflagCycleCreation = Object.assign({});
+    const addData: UpdateflagCycleCreation = Object.assign( {} );
     addData.mappingGroupRequest = [];
     this.AttributeSelectionArray = AttGroupList;
 
-    if (this.ServicesList.length != 0) {
+    if ( this.ServicesList.length != 0 ) {
 
-      this.ServicesList.forEach(element1 => {
-        this.AttributeSelectionArray.forEach(element => {
-          const cycledata1: SaveAttributeAssignment = Object.assign({});
+      this.ServicesList.forEach( element1 => {
+        this.AttributeSelectionArray.forEach( element => {
+          const cycledata1: SaveAttributeAssignment = Object.assign( {} );
           ////////////////////////////////////////////////////////////////////////////////////////////////////
           // // if(this.ServicesList.length!=0)
           // // {
@@ -1018,96 +889,96 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
           // cycledata1.headGroupId=this.headGroupId;
 
           cycledata1.attributeGroupId = element.attributeGroupId;
-          cycledata1.fromDate = this.datepipe.transform(element.fromDate, "yyyy-MM-dd");
-          cycledata1.toDate = this.datepipe.transform(element.toDate, "yyyy-MM-dd");
+          cycledata1.fromDate = this.datepipe.transform( element.fromDate, "yyyy-MM-dd" );
+          cycledata1.toDate = this.datepipe.transform( element.toDate, "yyyy-MM-dd" );
           cycledata1.dependentOn = element.dependentOn;
           cycledata1.value = element.value;
-          debugger;
-          addData.mappingGroupRequest.push(cycledata1);
-        });
-      });
+
+          addData.mappingGroupRequest.push( cycledata1 );
+        } );
+      } );
     }
     else {
-      this.AttributeSelectionArray.forEach(element => {
-        const cycledata1: SaveAttributeAssignment = Object.assign({});
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        // // if(this.ServicesList.length!=0)
-        // // {
-        //       this.ServicesList.forEach(element1=>{
-        //       //  alert(element1.headGroupId);
-        // cycledata1.headGroupId=element1;
+      //   this.AttributeSelectionArray.forEach( element => {
+      //     const cycledata1: SaveAttributeAssignment = Object.assign( {} );
+      //     ////////////////////////////////////////////////////////////////////////////////////////////////////
+      //     // // if(this.ServicesList.length!=0)
+      //     // // {
+      //     //       this.ServicesList.forEach(element1=>{
+      //     //       //  alert(element1.headGroupId);
+      //     // cycledata1.headGroupId=element1;
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        cycledata1.headGroupId = this.headGroupId;
+      //     ////////////////////////////////////////////////////////////////////////////////////////////////////
+      //     cycledata1.headGroupId = this.headGroupId;
 
-        cycledata1.attributeGroupId = element.attributeGroupId;
-        cycledata1.fromDate = this.datepipe.transform(element.fromDate, "yyyy-MM-dd");
-        cycledata1.toDate = this.datepipe.transform(element.toDate, "yyyy-MM-dd");
-        cycledata1.dependentOn = element.dependentOn;
-        cycledata1.value = element.value;
-        debugger;
-        addData.mappingGroupRequest.push(cycledata1);
-      });
+      //     cycledata1.attributeGroupId = element.attributeGroupId;
+      //     cycledata1.fromDate = this.datepipe.transform( element.fromDate, "yyyy-MM-dd" );
+      //     cycledata1.toDate = this.datepipe.transform( element.toDate, "yyyy-MM-dd" );
+      //     cycledata1.dependentOn = element.dependentOn;
+      //     cycledata1.value = element.value;
+
+      //     addData.mappingGroupRequest.push( cycledata1 );
+      //   } );
+      // }
+      // this.companySettingsService.AddAttributeAssignment( addData )
+      //   .subscribe( ( res: any ) => {
+
+      //     this.sweetalertMasterSuccess( "Success..!!", res.status.message );
+      //     // this.todisabletodate=true;
+      //   },
+      //     ( error: any ) => {
+      //       this.sweetalertError( error["error"]["status"]["message"] );
+      //     } );
+      // this.ServicesList = [];
+      // this.AttributeCreationForm.reset();
+      // this.AttGroupList = [];
+      //element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
+
+      // cycledata1.headGroupId=this.headGroupId;
+      // cycledata1.attributeGroupId=this.attributeGroupId;
+      // cycledata1.fromDate
     }
-    this.payrollheadgroupcreationService.AddAttributeAssignment(addData)
-      .subscribe((res: any) => {
-        debugger
-        this.sweetalertMasterSuccess("Success..!!", res.status.message);
-        // this.todisabletodate=true;
-      },
-        (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);
-        });
-    this.ServicesList = [];
-    this.AttributeCreationForm.reset();
-    this.AttGroupList = [];
-    //element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
-
-    // cycledata1.headGroupId=this.headGroupId;
-    // cycledata1.attributeGroupId=this.attributeGroupId;
-    // cycledata1.fromDate
-
   }
 
-  OntoDateChange(event): void {
-    debugger;
-    this.fromDate = this.datepipe.transform(event, "dd-MMM-yyyy");//event.toISOString() ;
+  OntoDateChange( event ): void {
+
+    this.fromDate = this.datepipe.transform( event, "dd-MMM-yyyy" );//event.toISOString() ;
     this.minDate1 = event;//this.datepipe.transform(event, "dd-MMM");//event.toISOString() ;
     //this.minDate1=event.getTime()
-    this.AttGroupList.forEach(element => {
+    this.AttGroupList.forEach( element => {
       element.fromDate = this.fromDate;
-    });
+    } );
     //this.minDate=event.getTime() ;
     //    if ((this.Id == undefined || this.Id == '00000000-0000-0000-0000-000000000000')) {
     //       this.EventDetails.patchValue({ RegistrationClosedDate:this.minDate });
     //     }
   }
 
-  OntoDateChangeEvent(event): void {
-    debugger;
-    this.toDate = this.datepipe.transform(event, "dd-MMM-yyyy");//event.toISOString() ;
-    this.AttGroupList.forEach(element => {
+  OntoDateChangeEvent( event ): void {
+
+    this.toDate = this.datepipe.transform( event, "dd-MMM-yyyy" );//event.toISOString() ;
+    this.AttGroupList.forEach( element => {
       element.toDate = this.toDate;
-    });
+    } );
   }
 
 
 
   //add Payroll HeadGroup
   addPayrollHeadGroup(): void {
-    debugger
-    const addAttributeCreation: SavePHG = Object.assign({});
+
+    const addAttributeCreation: SavePHG = Object.assign( {} );
     addAttributeCreation.headMasters = [];
-    this.targetProducts.forEach(function (f) {
+    this.targetProducts.forEach( function ( f ) {
 
       // var headDetail = new addAttributeCreation.headMasters.headMasterId();
       // headDetail.headMasterId = f.globalHeadMasterId ;
       // addAttributeCreation.headMasters.push( headDetail  );
-      const headDetail: headDetail = Object.assign({});
+      const headDetail: headDetail = Object.assign( {} );
       headDetail.headMasterId = f.headMasterId;
-      addAttributeCreation.headMasters.push(headDetail);
+      addAttributeCreation.headMasters.push( headDetail );
       //addAttributeCreation.headMasters.push(   f.globalHeadMasterId  );
-    });
+    } );
     addAttributeCreation.headGroupDefinitionName = this.PHGName;
     addAttributeCreation.description = this.AttributeCreationForm.value.description;
     addAttributeCreation.attributeGroupName = this.AttributeCreationForm.value.attributeNature;
@@ -1115,26 +986,26 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     addAttributeCreation.createdBy = "nisha";
     addAttributeCreation.isActive = true;
     // addAttributeCreation.attributeNature=this.AttributeCreationForm.value.attributeNature;
-    if (addAttributeCreation.headGroupDefinitionId == undefined || addAttributeCreation.headGroupDefinitionId == 0) {
+    if ( addAttributeCreation.headGroupDefinitionId == undefined || addAttributeCreation.headGroupDefinitionId == 0 ) {
 
-      this.payrollheadgroupcreationService.AddPayrollHeadGroup(addAttributeCreation).subscribe((res: any) => {
-        debugger
+      this.companySettingsService.AddPayrollHeadGroup( addAttributeCreation ).subscribe( ( res: any ) => {
+
         addAttributeCreation.headMasters = [];
         this.targetProducts = [];
-        this.sweetalertMasterSuccess("Success..!!", res.status.message);
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllPayrollHeadGroup();
         this.getAllHeadCreation();
         //this.hidevalue=false;
         this.AttributeCreationForm.reset();
       },
-        (error: any) => {
-          this.sweetalertError(error["error"]["status"]["message"]);
-        });
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
     }
     else {
-      //     debugger
+      //
       //   this.attributeSelectionService.UpdateBusinessYear(addAttributeCreation.attributeGroupDefinitionId,addAttributeCreation).subscribe((res:any )=> {
-      //   debugger
+      //
       //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
       //   this.getAllAttributeSelection();
       //   this.AttributeCreationForm.reset();
@@ -1147,19 +1018,19 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   }
 
 
-  getPHGname(event): void {
-    debugger
+  getPHGname( event ): void {
+
     this.selectedCopFormPHGName = event.target.value;
 
     // GetAttributeOptionList(): void {
-    this.payrollheadgroupcreationService.GetHeadListByPHGname(this.selectedCopFormPHGName).subscribe(res => {
-      debugger
+    this.companySettingsService.GetHeadListByPHGname( this.selectedCopFormPHGName ).subscribe( res => {
+
       this.targetProducts = res.data.results[0].headMasters;
 
-      this.targetProducts.forEach(element => {
-        var index = this.targetProducts.indexOf(element)
-        this.sourceProducts = this.sourceProducts.filter(e => e.standardName !== element.standardName);
-      });
+      this.targetProducts.forEach( element => {
+        var index = this.targetProducts.indexOf( element )
+        this.sourceProducts = this.sourceProducts.filter( e => e.standardName !== element.standardName );
+      } );
 
       // this.targetProducts.forEach(element => {
       //   var index=this.targetProducts.indexOf(element)
@@ -1177,39 +1048,39 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
         allowSearchFilter: true
       };
 
-    });
+    } );
   }
 
 
-  UploadModalYesNo(template: TemplateRef<any>) {
+  UploadModalYesNo( template: TemplateRef<any> ) {
     this.modalRef1 = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-lg' })
+      Object.assign( {}, { class: 'gray modal-lg' } )
     );
   }
-  UploadModal2(template: TemplateRef<any>) {
-    debugger
-    this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById(this.headGroupId).subscribe((res: any) => {
-      debugger
-      this.AttGroupList = res.data.results[0];//[0].attributeMasters;
-      this.AttGroupList.forEach(element => {
-        element.toDate = this.datepipe.transform(element.toDate, "dd-MMM-yyyy");
-        element.fromDate = this.datepipe.transform(element.fromDate, "dd-MMM-yyyy");
-      });
+  UploadModal2( template: TemplateRef<any> ) {
 
-      if (this.AttGroupList[0].attributeMaster.code != null) {
-        this.AttGroupList.forEach(element => {
+    this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId ).subscribe( ( res: any ) => {
+
+      this.AttGroupList = res.data.results[0];//[0].attributeMasters;
+      this.AttGroupList.forEach( element => {
+        element.toDate = this.datepipe.transform( element.toDate, "dd-MMM-yyyy" );
+        element.fromDate = this.datepipe.transform( element.fromDate, "dd-MMM-yyyy" );
+      } );
+
+      if ( this.AttGroupList[0].attributeMaster.code != null ) {
+        this.AttGroupList.forEach( element => {
           element["code"] = element.attributeMaster.code;
 
-        });
+        } );
       }
       // else{
 
       // }
 
     },
-      (error: any) => {
-        if (error.status == 404) {
+      ( error: any ) => {
+        if ( error.status == 404 ) {
           this.getAllAttributeListByAttGroup();
           this.viewSaveButton = true;
         }
@@ -1226,7 +1097,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     //  this.UploadModal2('template12445');
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-xl' })
+      Object.assign( {}, { class: 'gray modal-xl' } )
 
     );
 
@@ -1248,8 +1119,8 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   //   UploadModal22(){
   //   return new Promise((resolve, reject) => {
 
-  //     this.payrollheadgroupcreationService.GetAttributeOptionListByHeadGroupIdGetById(283).subscribe(res => {
-  //       debugger
+  //     this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById(283).subscribe(res => {
+  //
   //       this.AttGroupList =res.data.results[0];//[0].attributeMasters;
 
   //     if (this.AttGroupList.length == 0 )
@@ -1262,6 +1133,73 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   //   });
   // }
 
+
+
   //********* */
+
+
+  // sweetalert7( message: any ) {
+  //   Swal.fire( {
+  //     text: message,
+  //   } )
+  // }
+
+  // sweetalertWarning( message: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     background: '#e68a00',
+  //     icon: 'warning',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
+
+  // sweetalertInfo( message: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'info',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
+
+  // sweetalertMasterSuccess( message: any, text: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     text: text,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'success',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
+
+  // sweetalertError( message: any ) {
+  //   Swal.fire( {
+  //     title: message,
+  //     showCloseButton: true,
+  //     showCancelButton: false,
+  //     toast: true,
+  //     position: 'top-end',
+  //     showConfirmButton: false,
+  //     icon: 'error',
+  //     timer: 15000,
+  //     timerProgressBar: true,
+  //   } )
+  // }
 
 }

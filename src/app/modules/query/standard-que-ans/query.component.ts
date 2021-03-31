@@ -206,14 +206,14 @@ getModuleName()
   })
 }
 changeEvent($event) {
-  // alert(this.hideRemarkDiv)
+
   if ($event.target.checked) {
       this.hideRemarkDiv = false;
-      // this.queryForm.controls['active'].setValue(true);
+
   }
   else {
       this.hideRemarkDiv = true;
-      // this.queryForm.controls['active'].setValue(false);
+
 
   }
 

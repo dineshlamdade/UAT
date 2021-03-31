@@ -504,8 +504,8 @@ export class DeclarationAndActualComponent implements OnInit {
     });
   }
 
-   //Get Family Name List
-   getMasterFamilyInfo() {
+  //Get Family Name List
+  getMasterFamilyInfo() {
     this.handicappedDependentService.getFamilyInfoList().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
@@ -527,6 +527,7 @@ export class DeclarationAndActualComponent implements OnInit {
       });
     });
   }
+
     OnSelectionfamilyMemberGroup(formArrayElement, event) {
 
       if (event.target.value !== '0: null') {

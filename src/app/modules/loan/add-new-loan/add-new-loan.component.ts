@@ -1,9 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoanService } from '../loan.service';
 import { ToastrService } from 'ngx-toastr';
-
 
 @Component({
   selector: 'app-add-new-loan',
@@ -18,67 +17,82 @@ export class AddNewLoanComponent implements OnInit {
   isVisible:boolean=false;
   isShown: boolean= true;
   loanTypeData: any;
+  isAssetValue:boolean=true;
+  loanType: any;
+  scheduleData: any;
+  loanCode: any;
+  noOfInstallment: any;
+  installmentAmount: number = 0;
+  loanCodeName: any;
 
   constructor(public formBuilder : FormBuilder,
     private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ) {
     this.AddLoanForm = this.formBuilder.group(
       {
-        createdBy:new FormControl(''),
-        createDateTime:new FormControl(''),
-        lastModifiedBy:new FormControl(''),
-        lastModifiedDateTime:new FormControl(''),
-        active:new FormControl(true),
-        employeeCode:new FormControl(''),
+        "createdBy":new FormControl(''),
+        "createDateTime":new FormControl(''),
+        "lastModifiedBy":new FormControl(''),
+        "lastModifiedDateTime":new FormControl(''),
+        "active":new FormControl(true),
+        "employeeCode":new FormControl(''),
 
-        loanType: new FormControl(''),
-        repaymentType:new FormControl(''),
-        underlineAssestValue:new FormControl(''),
-        carOrInstitutionType:new FormControl(''),
-        loanAmount:new FormControl(''),
-        interestRate:new FormControl(''),
-        noOfInstallment:new FormControl(''),
-        endDate:new FormControl(''),
-        remark:new FormControl(''),
-        externalReferenceNumber:new FormControl(''),
+        "installmentAmount":new FormControl(''),
+
+        "loanMasterId":new FormControl('',[Validators.required]),
+        "loanCode":new FormControl(''),
+
+        "loanType": new FormControl(''),
+        "repaymentType":new FormControl(''),
+        "underlineAssestValue":new FormControl(''),
+        "carOrInstitutionType":new FormControl(''),
+
+        "loanAmount":new FormControl('',[Validators.required]),
+        "interestRate":new FormControl(''),
+
+        "noOfInstallment":new FormControl(''),
+        "endDate":new FormControl(''),
+        "remark":new FormControl(''),
+        "externalReferenceNumber":new FormControl(''),
+        "loanApplicationNumber": new FormControl(''),
         guarantors : [
           {
-              employeeCode:new FormControl(''),
-              employeeFullName:new FormControl(''),
-              createdBy:new FormControl(''),
-              createDateTime:new FormControl(''),
-              lastModifiedBy:new FormControl(''),
-              lastModifiedDateTime:new FormControl(''),
-              active:new FormControl(true),
+            "employeeCode":new FormControl(''),
+            "employeeFullName":new FormControl(''),
+            "createdBy":new FormControl(''),
+            "createDateTime":new FormControl(''),
+            "lastModifiedBy":new FormControl(''),
+            "lastModifiedDateTime":new FormControl(''),
+            "active":new FormControl(true),
           }
       ],
         deviations: [
         {
-            deviationType:new FormControl(''),
-            userLimit:new FormControl(''),
-            deviationValue:new FormControl(''),
-            reason:new FormControl(''),
-            createdBy:new FormControl(''),
-            createDateTime:new FormControl(''),
-            lastModifiedBy:new FormControl(''),
-            lastModifiedDateTime:new FormControl(''),
-            active:new FormControl(true),
+            "deviationType":new FormControl(''),
+            "userLimit":new FormControl(''),
+            "deviationValue":new FormControl(''),
+            "addloanFormSubmitreason":new FormControl(''),
+            "createdBy":new FormControl(''),
+            "createDateTime":new FormControl(''),
+            "lastModifiedBy":new FormControl(''),
+            "lastModifiedDateTime":new FormControl(''),
+            "active":new FormControl(true),
         }
     ],
-    uploadDocuments: [],
-    approverDetails: [
+    "uploadDocuments": [],
+    "approverDetails": [
       {
-          approverLevel: new FormControl(''),
-          approverCode: new FormControl(''),
-          approverName: new FormControl(''),
-          actionDate: new FormControl(''),
-          action: new FormControl(''),
-          remark:new FormControl(''),
-          status: new FormControl(''),
-          createdBy: new FormControl(''),
-          createDateTime: new FormControl(''),
-          lastModifiedBy:new FormControl(''),
-          lastModifiedDateTime: new FormControl(''),
-          active: new FormControl(true),
+              "approverLevel": new FormControl(''),
+              "approverCode": new FormControl(''),
+              "approverName": new FormControl(''),
+              "actionDate": new FormControl(''),
+              "action": new FormControl(''),
+              "remark":new FormControl(''),
+              "status": new FormControl(''),
+              "createdBy": new FormControl(''),
+              "createDateTime": new FormControl(''),
+              "lastModifiedBy":new FormControl(''),
+              "lastModifiedDateTime": new FormControl(''),
+              "active": new FormControl(true),
       }
      ],
       }
@@ -89,6 +103,10 @@ export class AddNewLoanComponent implements OnInit {
     this.getAllData();
     this.getAllLoanType();
 
+  }
+
+  get f(){
+    return this.AddLoanForm.controls;
   }
   addloanFormSubmit()
   {
@@ -101,10 +119,17 @@ export class AddNewLoanComponent implements OnInit {
       })
     }else
     {
-      // this.updateLoan();
+
+    }
+
+    if (this.AddLoanForm.invalid) {
+      return;
     }
     this.reset();
+
   }
+
+
   updateLoan()
   {
     this.loanservice.updateLoan(this.AddLoanForm.value).subscribe(res =>
@@ -120,7 +145,7 @@ export class AddNewLoanComponent implements OnInit {
     this.AddLoanForm.patchValue(loan);
     this.isVisible =true;
     this.isShown = false;
-    this.AddLoanForm.controls['code'].disable();
+
   }
   viewQuery(loan)
   {
@@ -131,6 +156,11 @@ export class AddNewLoanComponent implements OnInit {
   reset(){
     this.AddLoanForm.enable();
     this.AddLoanForm.reset();
+    this.AddLoanForm.controls['repaymentType'].disable();
+    // this.AddLoanForm.controls['endDate'].disable();
+    this.AddLoanForm.controls['interestRate'].disable();
+    this.AddLoanForm.controls['noOfInstallment'].disable();
+    // this.AddLoanForm.controls['installmentAmount'].disable();
   }
 cancel()
 {
@@ -140,7 +170,7 @@ cancel()
 schedule(template: TemplateRef<any>) {
   this.modalRef = this.modalService.show(
     template,
-    Object.assign({}, { class: 'gray modal-md' })
+    Object.assign({}, { class: 'gray modal-xl' })
   );
 this.allScheduleData();
 
@@ -155,16 +185,68 @@ this.loanservice.getAll().subscribe(res =>
 getAllLoanType()
 {
   this.loanservice.getAllLoanType().subscribe(res => {
-    this.loanTypeData = res.data.results;
+    this.loanTypeData = res.data.results[0];
 
   })
 }
+
+loanAmount:number;
+flatIntrest:number;
 allScheduleData()
 {
-  this.loanservice.allScheduleData(this.AddLoanForm.value).subscribe(res =>
+  let data =
+  {
+    "flatIntrest": this.flatIntrest,
+    "loanAmount": this.loanAmount,
+    "loanCode":this.loanCodeName,
+  }
+  this.loanservice.allScheduleData(data).subscribe(res =>
     {
-      // this.toster.success("",'Loan Updated Successfully');
+      this.scheduleData = res.data.results[0];
     })
+
+}
+
+assetValueShowHide($event)
+{
+this.loanType = $event;
+this.loanTypeData.forEach(element => {
+  if(element.loanMasterId == this.loanType){
+    this.AddLoanForm.controls['underlineAssestValue'].setValue(element.underliningAsset);
+    this.AddLoanForm.controls['interestRate'].setValue(element.intRate);
+    this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
+    this.AddLoanForm.controls['noOfInstallment'].setValue(element.recoveryNoOfInstallments);
+
+    this.noOfInstallment = element.recoveryNoOfInstallments;
+    this.flatIntrest = element.intRate;
+    // this.installmentAmount = this.loanAmount / this.noOfInstallament;
+
+    console.log("**********",element);
+  }
+
+});
+
+this.loanCode = $event;
+this.loanTypeData.forEach(element => {
+  if(element.loanMasterId == this.loanType){
+    this.loanCodeName = element.loanCode;
+  if(element.loanCode == 'Car Loan' || element.loanCode =='Education Loan'){
+
+    this.isAssetValue = false;
+    this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.loanCode);
+  }
+  else{
+    this.isAssetValue = true;
+  }}
+});
+
+}
+calculateInstallmentAmount(value)
+{
+      this.loanAmount = value;
+      this.installmentAmount = this.loanAmount / this.noOfInstallment;
+      this.installmentAmount = Math.round(this.installmentAmount );
+      this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
 }
 
