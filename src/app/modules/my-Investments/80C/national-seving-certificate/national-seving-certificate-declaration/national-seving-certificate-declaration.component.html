@@ -189,9 +189,6 @@
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
-                    <!-- <span class="clone_Icon" tooltip="Copy to Actual"
-                              (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
-                              class=" fa fa-files-o cursor-pointer"></i> </span> -->
                   </div>
                 </td>
                 <td>
