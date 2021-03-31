@@ -385,6 +385,7 @@ export class PPFDeclarationComponent implements OnInit {
     );
   }
 
+
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
     data: any,

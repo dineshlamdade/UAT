@@ -66,15 +66,11 @@
               <td colspan="3" class="align-right font700">Future New Saving Certificate&nbsp;
                 <span class="Letterbadge">B</span>
               </td>
-              <!-- <td>
-                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0"
-               ></p-inputNumber>
-              </td> -->
-
               <td>
-                <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()" (onBlur)="keyPressedSpaceNotAllow()" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber>
-               </td>
+              <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
+              (onBlur)="keyPressedSpaceNotAllow()"
+              mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
+            </td>
               <td></td>
               <td></td>
             </tr>
