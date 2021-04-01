@@ -163,6 +163,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public canEdit : boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -200,11 +201,14 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
-      this.globalInstitution = input.lender;
+      this.globalInstitution = input.lenderName;
       this.getLenderNameList();
-      this.getTransactionFilterData(input.lender);
+      this.getTransactionFilterData(input.lenderName);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
 
@@ -280,13 +284,13 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     this.transactionPolicyList = [];
     this.transactionStatustList = [];
 
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.lenderNameList.push(data);
-    this.transactionPolicyList.push(data);
+    // this.lenderNameList.push(data);
+    // this.transactionPolicyList.push(data);
     this.refreshTransactionStatustList();
 
     this.getLenderNameList();
@@ -332,6 +336,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionLenderName(lenderName: any) {
+    this.filesArray = [];
+    this.transactionDetail = [];
     this.globalInstitution = lenderName;
     this.getTransactionFilterData(this.globalInstitution);
     this.globalSelectedAmount = this.numberFormat.transform(0);
@@ -350,18 +356,18 @@ export class EducationalLoanDeclarationComponent implements OnInit {
             label: policy,
             value: policy,
           };
-          this.transactionPolicyList.push(policyObj);
+          this.lenderNameList.push(policyObj);
         });
       }
-      else if (lenderName === 'All') {
-        element.policies.forEach((policy) => {
-          const policyObj = {
-            label: policy,
-            value: policy,
-          };
-          this.transactionPolicyList.push(policyObj);
-        });
-      }
+      // else if (lenderName === 'All') {
+      //   element.policies.forEach((policy) => {
+      //     const policyObj = {
+      //       label: policy,
+      //       value: policy,
+      //     };
+      //     this.transactionPolicyList.push(policyObj);
+      //   });
+      // }
     });
 
     if (lenderName == 'All') {
