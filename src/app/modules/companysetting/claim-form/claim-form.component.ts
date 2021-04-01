@@ -37,7 +37,7 @@ export class ClaimFormComponent implements OnInit {
       claimTemplateName: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       groupCompanyId: new FormControl(1),
-      active: new FormControl(1),
+      active: new FormControl(true),
       remark: new FormControl({ value: '', disabled: true }),
       claimTemplateDetailsRequestDTO: new FormGroup({
         claimTempDetailsId: new FormControl(''),
@@ -50,8 +50,6 @@ export class ClaimFormComponent implements OnInit {
         sequence: new FormControl(''),
         active: new FormControl(),
         nature: new FormControl(''),
-        createdBy: new FormControl('sdf'),
-        lastModifiedBy: new FormControl('sdfsdf'),
       })
     });
     this.getAllFields();
@@ -68,13 +66,13 @@ export class ClaimFormComponent implements OnInit {
       if (this.claimForm.invalid) {
         return;
       }
-      if(this.selectedListElement.length === 0){
+      if(this.claimGridDataList.length === 0){
         this.alertService.sweetalertWarning('Please select any field list')
         return
       }else{
       console.log(this.claimForm.value);
       let postData = this.claimForm.getRawValue();
-      this.selectedListElement.forEach(element=>{
+      this.claimGridDataList.forEach(element=>{
         if(element.dropDownValues === null){
           element.dropDownValues = [];
         }
@@ -154,9 +152,9 @@ export class ClaimFormComponent implements OnInit {
       console.log(claimTemplateList);
       this.claimForm.patchValue(claimTemplateList);
      // this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
-     this.selectedListElement = response.data.results[0].claimTemplateDetailsResponseDTO;
+    //  this.selectedListElement = response.data.results[0].claimTemplateDetailsResponseDTO;
         this.isEdit = true;
-      console.log("this.selectedListElement", this.selectedListElement)
+      // console.log("this.selectedListElement", this.selectedListElement)
       for (let i = 0; i < response.data.results[0].claimTemplateDetailsResponseDTO.length; i++) {
         const myobj = {
           claimTempStandardFieldMasterId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,

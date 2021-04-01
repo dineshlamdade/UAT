@@ -36,7 +36,8 @@ export class RembGeneralComponent implements OnInit {
     public reimbursementMasterService: ReimbursementMasterService,
     public fb: FormBuilder,
     public router: Router,
-
+    public alertService: AlertServiceService,
+     
   ) {
 
 
@@ -45,37 +46,38 @@ export class RembGeneralComponent implements OnInit {
   ngOnInit(): void {
     this.generalForm = this.fb.group({
       reimbursementMasterGeneralSettingId: new FormControl(''),
-      headMasterId: new FormControl(''),
+      headMasterId: new FormControl('', Validators.required),
       displayName: new FormControl(''),
-      claimTaxable: new FormControl('1'),
+      trakingMethod: new FormControl('Same head'),
+      trackingOnAnotherHeadId: new FormControl(''),
+      claimTaxable: new FormControl('false'),
       billSubLimitMethod: new FormControl(''),
       billSubLimitSDMId: new FormControl(''),
-      enableInvestmentDeclaration: new FormControl('1'),
+      enableInvestmentDeclaration: new FormControl('false'),
       regTemplateId: new FormControl(''),
-      cyclewiseBalanceTracking: new FormControl('1'),
-      regTemplateMappingId: new FormControl(''),
+      cyclewiseBalanceTracking: new FormControl('false'),
       maxCountOfRegiOfHead: new FormControl(''),
       regiApprWorkflowId: new FormControl(''),
       regiApprSDMId: new FormControl(''),
       claimApprWorkflowId: new FormControl(''),
       claimApprSDMId: new FormControl(''),
       reiListSummaryHeadTempId: new FormControl(''),
-      declarationTemplateMappingId: new FormControl(''),
+      declarationMessageId: new FormControl(''),
       formActiveTempid: new FormControl(''),
-      claimTempId: new FormControl(''),
-      ProofOfSubmission: new FormControl(''),
-      isActive: new FormControl(''),
+      claimTempId: new FormControl('', Validators.required),
+      ProofOfSubmission: new FormControl('false'),
+      active: new FormControl('false'),
+      remark: new FormControl('ss'),
       reimbursementTrackingRequestDTO: new FormGroup({
         reimTrackingId: new FormControl(''),
-        method: new FormControl(''),
-        trackingOnAnotherHeadId: new FormControl(''),
         reimAttributeMasterId: new FormControl(''),
         amountLimit: new FormControl(''),
         quantityLimit: new FormControl(''),
         onesEvery: new FormControl(''),
         frequency: new FormControl(''),
         gapsBetTwoAttributeClaims: new FormControl(''),
-        maxCountOfRegiOfAttribute: new FormControl(''),
+        maxCountOfRegiOfAttribute: new FormControl('4'),
+        active: new FormControl('true'),
       }),
       // reimbursementMasterComputationSettingRequestDTO: new FormGroup({
       //   reiMasterComputationSettingID: new FormControl(''),
@@ -120,12 +122,28 @@ export class RembGeneralComponent implements OnInit {
     if (this.generalForm.invalid) {
       return;
     }
+
+    let saveArray = [];
+    for (let i = 0; i < this.generalAttrSelectElement.length; i++) {
+      let obj = {
+        reimAttributeMasterId: this.generalAttrSelectElement[i].reimAttributeMasterId,
+        amountLimit: this.generalAttrSelectElement[i].amountLimit,
+        quantityLimit: this.generalAttrSelectElement[i].quantityLimit,
+        onesEvery: this.generalAttrSelectElement[i].onesEvery,
+        frequency: this.generalAttrSelectElement[i].frequency,
+        gapsBetTwoAttributeClaims: this.generalAttrSelectElement[i].gapsBetTwoAttributeClaims,
+        maxCountOfRegiOfAttribute: this.generalAttrSelectElement[i].maxCountOfRegiOfAttribute,
+        active: this.generalAttrSelectElement[i].active
+      }
+      saveArray.push(obj);
+    }
     console.log("this.generalform", this.generalForm.value);
     let postData = this.generalForm.getRawValue();
-    postData.reimbursementTrackingRequestDTO = this.generalAttrSelectElement;
+    // postData.reimbursementTrackingRequestDTO.method = this.eventHead;
+    postData.reimbursementTrackingRequestDTO = saveArray;
     console.log("postdata", postData);
     this.reimbursementMasterService.setReimbursementSubmitData(postData);
-
+    this.alertService.sweetalertMasterSuccess("General setting form submitted successfully", "");
   }
 
   onItemSelect(item: any) {
@@ -216,22 +234,29 @@ declarationNavigate(){
 }
 
 
-
+public eventHead:'';
   // ...................Event calls methods..................
-  headOprationShowClick() {
+  headOprationShowClick(event) {
+    console.log("eventtable head", event);
+    this.eventHead = event;
+    console.log("eventtable head2", event);
     this.headOprationShow = true;
     this.headTableOprationShow = false;
     this.headAttribute = false;
     this.headRembType = true;
   }
 
-  headTableOprationShowClick() {
+  headTableOprationShowClick(event) {
+    console.log("eventtable ", event);
+    this.eventHead = event;
     this.headTableOprationShow = true;
     this.headOprationShow = false;
     this.headAttribute = true;
 
   }
-  headSameOprationShowClick() {
+  headSameOprationShowClick(event) {
+    console.log("eventtable same", event);
+    this.eventHead = event;
     this.headTableOprationShow = false;
     this.headOprationShow = false;
     this.headAttribute = false;
@@ -248,13 +273,14 @@ declarationNavigate(){
 
   // ...................Get Attribute List Events data.....................?
   amountLimitChange(index, eventAttr, typeValue) {
+    let eventActive = "false";
     console.log("index,attrsid, evenets", index, eventAttr, typeValue);
     let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
    
     console.log("this.attrData", attrData);
     console.log("this.generalelement", this.generalAttrSelectElement);
     this.generalAttrSelectElement[attrData].amountLimit = eventAttr;
-
+    this.generalAttrSelectElement[attrData].active = eventActive;
   }
 
   quantityLimitChange(index, eventAttr, typeValue) {
@@ -282,6 +308,12 @@ declarationNavigate(){
     console.log("index,attrsid, evenets", index, eventAttr, typeValue);
     let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
     this.generalAttrSelectElement[attrData].gapsBetTwoAttributeClaims = eventAttr;
+    console.log("this.generalelement", this.generalAttrSelectElement);
+  }
+  claimDaysChange2(index, eventAttr, typeValue) {
+    console.log("index,attrsid, evenets", index, eventAttr, typeValue);
+    let attrData = this.generalAttrSelectElement.findIndex(getAttrIndex => getAttrIndex.typeValue == typeValue);
+    this.generalAttrSelectElement[attrData].maxCountOfRegiOfAttribute = eventAttr;
     console.log("this.generalelement", this.generalAttrSelectElement);
   }
 }

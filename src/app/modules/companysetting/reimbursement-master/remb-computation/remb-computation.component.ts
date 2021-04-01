@@ -24,6 +24,7 @@ export class RembComputationComponent implements OnInit {
     public fb: FormBuilder,
     private datePipe: DatePipe,
     private service: ReimbursementMasterService,
+    public alertService: AlertServiceService,
   ) { }
 
   ngOnInit(): void {
@@ -44,14 +45,15 @@ console.log(this.service.getReimbursementSubmitData());
       lapseAccruedEntPayableFrequency: new FormControl(''),
       LapseaccrentpayablePeriodDefinition: new FormControl(''),
       lapseAccruedEntPayableNoOfCycle: new FormControl(''),
-      subBillMethod: new FormControl('false'),
+      subBillMethod: new FormControl(''),
       subBillWithCount: new FormControl(''),
-      billDateNotAllowedMethod: new FormControl('false'),
+      billDateNotAllowedMethod: new FormControl(''),
       billDateNotAllowedCount: new FormControl(''),
-      billLastFinYearClaimedInNextFinYear: new FormControl(''),
+      billLastFinYearClaimedInNextFinYear: new FormControl('2015-03-25'),
       unPaidBillCarryForward: new FormControl('false'),
       cyclewiseNumLineItemsAllowed: new FormControl(''),
       gapsBetwTwoHeadClaims: new FormControl(''),
+      active: new FormControl('false'),
     });
     this.dropdownSettings = {
       singleSelection: false,
@@ -92,7 +94,10 @@ console.log(this.service.getReimbursementSubmitData());
     data.reimbursementMasterComputationSettingRequestDTO = this.computationForm.getRawValue();
     console.log(data);
     this.service.postReimbursementSubmitData(data).subscribe((res)=> {
-      console.log(res);
+      console.log("comp result", res);
+      this.alertService.sweetalertMasterSuccess("Computation form submitted successfully", "");
+      
+      // console.log("templateUserId", this.templateUserIdList);
     })
 
   }
@@ -111,13 +116,12 @@ console.log(this.service.getReimbursementSubmitData());
   onItemSelect(event) {
     let myevents = event;
     console.log("onItemSelect", event);
-    console.log("onItemSelect", myevents.label);
+    console.log("onItemSelect", myevents.id);
 
     if (myevents.id == 3) {
       this.taxView = true;
-    } else {
-      this.taxView = false;
     }
+
     if (myevents.id == 1) {
       this.computationForm.controls['taxableMethodFNF'].setValue("true");
     } else if (myevents.id == 2) {
@@ -148,8 +152,8 @@ console.log(this.service.getReimbursementSubmitData());
   onDeSelect(event) {
     let myevents = event;
     console.log("onItemSelect", event);
-    console.log("onItemSelect", myevents.label);
-    if (myevents.label == "Intermediary") {
+    console.log("onItemSelect", myevents.id);
+    if (myevents.id == 3) {
       this.taxView = false;
     }
     if (myevents.id == 1) {
@@ -166,7 +170,7 @@ console.log(this.service.getReimbursementSubmitData());
     console.log("onItemSelect", event);
     console.log("onItemSelect", myevents.label);
 
-    if (myevents.label == "Intermediary") {
+    if (myevents.id == 3) {
       this.taxView = false;
     } else {
       this.taxView = true;
@@ -174,28 +178,26 @@ console.log(this.service.getReimbursementSubmitData());
   }
 
 
-
   
   onItemSelectLapse(event) {
     let myevents = event;
     console.log("onItemSelect", event);
-    console.log("onItemSelect", myevents.label);
+    console.log("onItemSelect", myevents.id);
 
     if (myevents.id == 3) {
       this.lapseView = true;
-    } else {
-      this.lapseView = false;
     }
+
     if (myevents.id == 1) {
-      this.computationForm.controls['lapseAccruedEntPayableFNF'].setValue("true");
+      this.computationForm.controls['taxableMethodFNF'].setValue("true");
     } else if (myevents.id == 2) {
-      this.computationForm.controls['lapseAccruedEntPayableLastCycle'].setValue("true");
+      this.computationForm.controls['taxableMethodLastCycle'].setValue("true");
     } else if (myevents.id == 3) {
-      this.computationForm.controls['lapseAccruedEntPayableIntermediary'].setValue("true");
+      this.computationForm.controls['taxableMethodIntermediary'].setValue("true");
     } else {
-      this.computationForm.controls['lapseAccruedEntPayableFNF'].setValue("false");
-      this.computationForm.controls['lapseAccruedEntPayableLastCycle'].setValue("false");
-      this.computationForm.controls['lapseAccruedEntPayableIntermediary'].setValue("false");
+      this.computationForm.controls['taxableMethodFNF'].setValue("false");
+      this.computationForm.controls['taxableMethodLastCycle'].setValue("false");
+      this.computationForm.controls['taxableMethodIntermediary'].setValue("false");
     }
   }
 
@@ -216,16 +218,16 @@ console.log(this.service.getReimbursementSubmitData());
   onDeSelectLapse(event) {
     let myevents = event;
     console.log("onItemSelect", event);
-    console.log("onItemSelect", myevents.label);
-    if (myevents.label == "Intermediary") {
+    console.log("onItemSelect", myevents.id);
+    if (myevents.id == 3) {
       this.lapseView = false;
     }
     if (myevents.id == 1) {
-      this.computationForm.controls['lapseAccruedEntPayableFNF'].setValue("false");
+      this.computationForm.controls['taxableMethodFNF'].setValue("false");
     } else if (myevents.id == 2) {
-      this.computationForm.controls['lapseAccruedEntPayableLastCycle'].setValue("false");
+      this.computationForm.controls['taxableMethodLastCycle'].setValue("false");
     } else if (myevents.id == 3) {
-      this.computationForm.controls['lapseAccruedEntPayableIntermediary'].setValue("false");
+      this.computationForm.controls['taxableMethodIntermediary'].setValue("false");
     }
   }
 
@@ -234,12 +236,13 @@ console.log(this.service.getReimbursementSubmitData());
     console.log("onItemSelect", event);
     console.log("onItemSelect", myevents.label);
 
-    if (myevents.label == "Intermediary") {
+    if (myevents.id == 3) {
       this.lapseView = false;
     } else {
       this.lapseView = true;
     }
   }
 
+ 
   
 }

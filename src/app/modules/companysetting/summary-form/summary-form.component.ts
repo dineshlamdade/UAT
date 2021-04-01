@@ -37,7 +37,7 @@ export class SummaryFormComponent implements OnInit {
       reiListSummaryHeadTempId: new FormControl(''),
       listSummaryHeadTemplateName: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      groupCompanyId: new FormControl(''),
+      groupCompanyId: new FormControl(1),
       active: new FormControl(true),
       remark: new FormControl({ value: '', disabled: true }),
       reimbursementListSummaryHeadTemplateDetailsRequestDTO: new FormGroup({
@@ -45,6 +45,8 @@ export class SummaryFormComponent implements OnInit {
         fieldName: new FormControl(''),
         displayName: new FormControl(''),
         enable: new FormControl(''),
+        active: new FormControl(''),
+        
       })
     });
     this.getAllFields();
@@ -61,18 +63,18 @@ export class SummaryFormComponent implements OnInit {
       if (this.summaryForm.invalid) {
         return;
       }
-      if(this.selectedListElement.length === 0){
+      if(this.claimGridDataList.length === 0){
         this.alertService.sweetalertWarning('Please select any field list')
         return
       }else{
       console.log(this.summaryForm.value);
       let postData = this.summaryForm.getRawValue();
-      this.selectedListElement.forEach(element=>{
+      this.claimGridDataList.forEach(element=>{
         if(element.dropDownValues === null){
           element.dropDownValues = [];
         }
       })
-      postData.reimbursementListSummaryHeadTemplateDetailsRequestDTO = this.selectedListElement;
+      postData.reimbursementListSummaryHeadTemplateDetailsRequestDTO = this.claimGridDataList;
       console.log("postData", postData);
       this.summaryService.editClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
@@ -90,7 +92,7 @@ export class SummaryFormComponent implements OnInit {
       }
       console.log(this.summaryForm.value);
       let postData = this.summaryForm.getRawValue();
-      postData.reimbursementListSummaryHeadTemplateDetailsRequestDTO = this.selectedListElement;
+      postData.reimbursementListSummaryHeadTemplateDetailsRequestDTO = this.claimGridDataList;
       console.log("postData", postData);
       this.summaryService.postClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
@@ -101,6 +103,7 @@ export class SummaryFormComponent implements OnInit {
       this.resetForm();
     }
   }
+  
   // ....................Active remark disabled....................
   activeRemark(event) {
     if (event == false) {
@@ -147,12 +150,14 @@ export class SummaryFormComponent implements OnInit {
       console.log(claimTemplateList);
       this.summaryForm.patchValue(claimTemplateList);
      // this.claimGridDataList = res.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO;
-     this.selectedListElement = response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO;
+     this.claimGridDataList = response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO;
         this.isEdit = true;
       console.log("this.selectedListElement", this.selectedListElement)
       for (let i = 0; i < response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO.length; i++) {
         const myobj = {
-          regTempStandardFieldId: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,
+          reiListSummaryHeadTempFieldId: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].reiListSummaryHeadTempFieldId,
+          reiListSummaryHeadTempDetailsId: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].reiListSummaryHeadTempDetailsId,
+          reiListSummaryHeadTempId: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].reiListSummaryHeadTempId,
           fieldName: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].fieldName,
           displayName: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].displayName,
           enable: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].enable,
@@ -162,8 +167,8 @@ export class SummaryFormComponent implements OnInit {
           // mandatory: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].mandatory,
           // nature: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].nature,
           // remark: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].remark,
-          // isActive: response.data.results[0].claimTemplateDetailsResponseDTO[i].isActive,
-          isActive: 1,
+          active: response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].active,
+    
         };
         let s = this.claimGridDataList.findIndex(o=>o.fieldName == response.data.results[0].reimbursementListSummaryHeadTemplateDetailsResponseDTO[i].fieldName);
        this.claimGridDataList[s]=myobj;

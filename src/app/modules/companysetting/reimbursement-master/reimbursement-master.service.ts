@@ -66,7 +66,7 @@ getReimbursementSubmitData() {
 }
 
 postReimbursementSubmitData(data) {
-  return this.http.post(this.apiUrl + 'reimbursement-general-setting/save-reimbursement-setting',data)
+  return this.http.post(this.apiUrl + 'reimbursement-general-setting/save-reimbursement-setting', data)
     .pipe(map((res: any) => {
       return res;
     }));
