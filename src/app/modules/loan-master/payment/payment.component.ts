@@ -26,6 +26,7 @@ export class PaymentComponent implements OnInit {
   paymentRecoveryInNextCyclePriVal: string = '';
   paymentRecoveryInNextCycleIntVal: string = '';
   documentName: any;
+  editFlag: boolean = false;
 
   constructor(private loanmasterService: LoanMasterService, 
     private modalService: BsModalService, 
@@ -33,6 +34,7 @@ export class PaymentComponent implements OnInit {
     private router: Router) {
 
     this.loanMasterForm = new FormGroup({
+      loanMasterId: new FormControl(null),
       active: new FormControl(true),
       adhocPaymentsTreatment: new FormControl(""),
       approvalWorkFlow: new FormControl(""),
@@ -96,6 +98,9 @@ export class PaymentComponent implements OnInit {
       noOfGuarantor: new FormControl(""),
     })
 
+    this.getDeductionHead();
+    this.getEarningHead();
+
     if (localStorage.getItem('viewData') != null) {
       this.loandata = JSON.parse(localStorage.getItem('viewData'))
       this.paymentLoanForm.patchValue(this.loandata)
@@ -139,6 +144,7 @@ export class PaymentComponent implements OnInit {
     }
 
     if (localStorage.getItem('editData') != null) {
+      this.editFlag = true;
       this.editloandata = JSON.parse(localStorage.getItem('editData'))
       this.paymentLoanForm.patchValue(this.editloandata)
       this.Instances = []
@@ -205,8 +211,6 @@ export class PaymentComponent implements OnInit {
       this.paymentLoanForm.patchValue(paymentLoanForm)
       this.loanMasterForm.patchValue(paymentLoanForm)
 
-     
-
       this.filesArray = []
       paymentLoanForm.document.forEach(element => {
         this.filesArray.push(
@@ -221,21 +225,20 @@ export class PaymentComponent implements OnInit {
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
 
 
-      if (this.loandata.paymentRecoveryInNextCyclePri == true) {
+      if (paymentLoanForm.paymentRecoveryInNextCyclePri == true) {
         this.paymentRecoveryInNextCyclePriVal = 'Yes'
       } else {
         this.paymentRecoveryInNextCyclePriVal = 'No'
       }
 
-      if (this.loandata.paymentRecoveryInNextCycleInt == true) {
+      if (paymentLoanForm.paymentRecoveryInNextCycleInt == true) {
         this.paymentRecoveryInNextCycleIntVal = 'Yes'
       } else {
         this.paymentRecoveryInNextCycleIntVal = 'No'
       }
     }
 
-    this.getDeductionHead();
-    this.getEarningHead();
+   
   }
 
   getDeductionHead() {
@@ -257,18 +260,34 @@ export class PaymentComponent implements OnInit {
 
   /** Submit Loan Master form */
   submitPaymentForm() {
-    this.paymentLoanForm.controls['document'].setValue(this.filesArray)
-    localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
-    this.loanMasterForm.patchValue(this.paymentLoanForm.value)
-    this.loanMasterForm.controls['document'].setValue(this.filesArray)
-    this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
-    console.log(JSON.stringify(this.loanMasterForm.value))
-
-    this.loanmasterService.saveLoanMasterData(this.loanMasterForm.value).subscribe(
-      res => {
-        this.toaster.success('', 'Loan data Saved Successfully!!')
-      }
-    )
+    if(!this.editFlag){
+      this.paymentLoanForm.controls['document'].setValue(this.filesArray)
+      localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
+      this.loanMasterForm.patchValue(this.paymentLoanForm.value)
+      this.loanMasterForm.controls['document'].setValue(this.filesArray)
+      this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
+      console.log("Add Data: " + JSON.stringify(this.loanMasterForm.value))
+  
+      this.loanmasterService.saveLoanMasterData(this.loanMasterForm.value).subscribe(
+        res => {
+          this.toaster.success('', 'Loan data Saved Successfully!!')
+        }
+      )
+    }else{
+      this.paymentLoanForm.controls['document'].setValue(this.filesArray)
+      localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
+      this.loanMasterForm.patchValue(this.paymentLoanForm.value)
+      this.loanMasterForm.controls['document'].setValue(this.filesArray)
+      this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
+      console.log("Update Data: " + JSON.stringify(this.loanMasterForm.value))
+  
+      this.loanmasterService.updateLoanMasterData(this.loanMasterForm.value).subscribe(
+        res => {
+          this.toaster.success('', 'Loan data Updated Successfully!!')
+        }
+      ) 
+    }
+    
   }
 
   /**navigate to previous tab (recovery) */

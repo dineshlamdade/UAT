@@ -197,17 +197,18 @@
                                                 <tbody>
                                                     <tr *ngFor="let data of emailSmsData; let index = index;">
                                                         <td class="wd-9">{{index + 1}}</td>
-                                                        <td class="wd-14">{{data.applicationModuleId}}</td>
+                                                        <td class="wd-14">{{getModuleName(data.applicationModuleId)}}</td>
                                                         <td class="wd-14">{{data.templateCode}}</td>
                                                         <td class="wd-20">{{data.templateDescription}}</td>
-                                                        <td class="wd-19" *ngIf="data.status == true">Active</td>
-                                                        <td class="wd-19" *ngIf="data.status == false">In Active</td>
+                                                        <td class="wd-19" *ngIf="data.active == true">Active</td>
+                                                        <td class="wd-19" *ngIf="data.active == false">In Active</td>
                                                         <td>
-                                                            <i class="fa fa-eye" aria-hidden="true"
-                                                                (click)="editEmailSms(data)"></i>&nbsp;
                                                             <i class="fa fa-pencil" aria-hidden="true"
+                                                                (click)="editEmailSms(data)"></i>&nbsp;
+                                                            <i class="fa fa-eye" aria-hidden="true"
                                                                 (click)="viewEmailSms(data)"></i>&nbsp;
-                                                            <!-- <i class="fa fa-trash" aria-hidden="true"></i>&nbsp; -->
+                                                            <!-- <i class="fa fa-trash" aria-hidden="true"
+                                                            (click)="deleteEmailSms(data)"></i>&nbsp; -->
                                                         </td>
                                                     </tr>
                                                     <tr></tr>

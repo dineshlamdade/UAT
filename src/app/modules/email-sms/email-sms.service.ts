@@ -26,7 +26,7 @@ export class EmailSmsService {
   }
 
   updateEmailSms(data): Observable<any> {
-    return this.HttpClient.post<any>(this.url + `emailsmstemplate/master/updateDetails`, data);
+    return this.HttpClient.put<any>(this.url + `emailsmstemplate/master/updateDetails`, data);
   }
 
   getModuleList(): Observable<any>{

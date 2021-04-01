@@ -105,6 +105,7 @@ export class EmailSmsComponent implements OnInit {
 
 
     this.emailSmsForm = new FormGroup({
+      "emailSMSTemplateMasterId": new FormControl(),
       "applicationModuleId": new FormControl('', [Validators.required]),
       "templateCode": new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]+$')]),
       "templateDescription": new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]+$')]),
@@ -122,15 +123,35 @@ export class EmailSmsComponent implements OnInit {
   }
 
   getModuleList() {
-    this.emailService.getModuleList().subscribe(res => {
-      this.moduleListData = res.data.results;
+    // this.emailService.getModuleList().subscribe(res => {
+    //   this.moduleListData = res.data.results;
 
-    })
+    // })
+
+    this.moduleListData = [
+      {
+        'applicationModuleId':1,
+        'applicationModuleName':'Payroll'
+      },
+      {
+        'applicationModuleId':2,
+        'applicationModuleName':'Employee Master'
+      },
+      {
+        'applicationModuleId':3,
+        'applicationModuleName':'Investment'
+      }
+    ]
   }
 
   getEmailData() {
+    this.emailSmsData = []
     this.emailService.getEmailSmsmData().subscribe(res => {
-      this.emailSmsData = res.data.results;
+      res.data.results.forEach(element => {
+        if(element.active == true){
+          this.emailSmsData.push(element)
+        }
+      });
     })
   }
 
@@ -147,13 +168,32 @@ export class EmailSmsComponent implements OnInit {
   }
 
   emailSmsSubmit() {
+
+    let moduleId = parseInt(this.emailSmsForm.controls['applicationModuleId'].value)
+    this.emailSmsForm.controls['applicationModuleId'].setValue(moduleId)
+    
+
+    
     if (!this.editFlag) {
-      this.emailService.saveEmailSms(this.emailSmsForm.value).subscribe(
+      this.emailSmsForm.removeControl('emailSMSTemplateMasterId');
+      let data = [
+        this.emailSmsForm.value
+      ]
+      console.log("save data: " + JSON.stringify(data))
+      this.emailService.saveEmailSms(data).subscribe(
         res => {
-          this.toaster.success('', 'Email SMS Template Saved Successfully!!')
-          this.emailSmsForm.reset();
-          this.getEmailData();
-          this.editFlag = false;
+          if(res.status.result == 'Success'){
+            this.toaster.success('', res.status.messsage)
+            this.emailSmsForm.reset();
+            this.getEmailData();
+            this.editFlag = false;
+          }else{
+            this.toaster.error('', res.status.messsage)
+            this.getEmailData();
+            this.editFlag = false;
+          }
+          
+          
         }
       )
     } else {
@@ -182,11 +222,23 @@ export class EmailSmsComponent implements OnInit {
     this.editFlag = false;
   }
 
+
   reset() {
     this.emailSmsForm.reset();
     this.emailSmsForm.enable();
+    this.editFlag = false;
   }
 
+
+  getModuleName(moduleid){
+    let modulename = ''
+   this.moduleListData.forEach(element => {
+     if(element.applicationModuleId == moduleid){
+       modulename = element.applicationModuleName
+     }
+   });
+   return modulename;
+  }
 
   /*** CKeditor Drag and Drop */
 

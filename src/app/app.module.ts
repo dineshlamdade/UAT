@@ -174,7 +174,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
         prodMode: false,
       } as TranslocoConfig,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    // { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
     ShortenStringPipe,
   ],
   // schemas: [
