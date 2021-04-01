@@ -5,6 +5,7 @@ import { LoanComponent } from './loan/loan.component';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddNewLoanComponent } from './add-new-loan/add-new-loan.component';
+import { ExcelService } from '../uploadexcel/uploadexcelhome/excel.service';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { AddNewLoanComponent } from './add-new-loan/add-new-loan.component';
     LoanRoutingModule,
     SharedlayoutModule,
     ReactiveFormsModule,
-
-  ]
+  ],
+  providers: [ExcelService],
+  bootstrap: [LoanComponent]
 })
 export class LoanModule { }

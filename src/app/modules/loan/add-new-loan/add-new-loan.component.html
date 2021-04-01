@@ -157,12 +157,9 @@
                                               </div>
                                               <br><br>
                                               <div class="float-right">
-                                              <span class="ml-10  "
-                                              ><i class="fa fa-file-excel-o font-18 text-dark-red"
-                                                tooltip="Export to PDF" ></i></span>
-                                            <span class="ml-10 mt-7 " ><i class="fa fa-file-excel-o font-18 text-dark-green"
-                                              tooltip="Export to Excel"></i ></span>
-                                              <br>
+                                            <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-red" tooltip="Export to PDF" ></i></span>&nbsp;
+                                            <span class="ml-10"><i class="fa fa-file-excel-o font-18 text-dark-green" (click)="exportAsXLSX()" tooltip="Export to Excel"></i ></span>
+                                              <br><br>
                                         </div>
                                             <div class="table-responsive Custom_Table ">
                                                 <table
@@ -190,7 +187,8 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
+                                                        <tr >
+                                                          <!-- *ngFor="let item of dataOfFootballers" -->
                                                             <td>1/3/2021</td>
                                                             <td>10%</td>
                                                             <td>10</td>

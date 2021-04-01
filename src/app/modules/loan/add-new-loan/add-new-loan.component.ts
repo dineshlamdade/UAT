@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoanService } from '../loan.service';
 import { ToastrService } from 'ngx-toastr';
+import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 
 @Component({
   selector: 'app-add-new-loan',
@@ -24,9 +25,10 @@ export class AddNewLoanComponent implements OnInit {
   noOfInstallment: any;
   installmentAmount: number = 0;
   loanCodeName: any;
+  dataOfFootballers: any[];
 
   constructor(public formBuilder : FormBuilder,
-    private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ) {
+    private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService , private excelservice: ExcelService) {
     this.AddLoanForm = this.formBuilder.group(
       {
         "createdBy":new FormControl(''),
@@ -46,7 +48,7 @@ export class AddNewLoanComponent implements OnInit {
         "underlineAssestValue":new FormControl(''),
         "carOrInstitutionType":new FormControl(''),
 
-        "loanAmount":new FormControl('',[Validators.required]),
+        "loanAmount":new FormControl('',[Validators.required,Validators.pattern(/^-?(0|[1-9]\d*)?$/), Validators.max(500000)]),
         "interestRate":new FormControl(''),
 
         "noOfInstallment":new FormControl(''),
@@ -248,6 +250,9 @@ calculateInstallmentAmount(value)
       this.installmentAmount = Math.round(this.installmentAmount );
       this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
+}
+exportAsXLSX():void {
+  this.excelservice.exportAsExcelFile(this.dataOfFootballers, 'footballer_data');
 }
 
 }

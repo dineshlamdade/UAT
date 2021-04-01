@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { QueryService } from '../query.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,6 +18,8 @@ export class QueryTypeMasterComponent implements OnInit {
   isShown: boolean= true;
   ishidden:boolean=false;
   priorityRequiredFlag:boolean=false;
+  housePropertyUsageTypeList: any;
+  showOwner: boolean;
 
   constructor(public formBuilder : FormBuilder,public queryService :QueryService ,public toster : ToastrService) {
     this.querytypeForm = this. formBuilder.group(
@@ -36,6 +38,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "answerDescription": new FormControl(null),
         "remark": new FormControl(null),
         "active": new FormControl(true,[Validators.required]),
+        "assign":new FormControl(''),
 
       }
     )
@@ -43,7 +46,32 @@ export class QueryTypeMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.  getModuleName();
+
   }
+
+  // public addUsageType(i: number) {
+  //   console.log('addowner Index' , i);
+  //   this.housePropertyUsageTypeList.push(this.formBuilder.group({
+  //     housePropertyUsageTypeId : [0],
+  //     code: [''],
+  //     description: [''],
+  //     assign : [''],
+  //   }));
+
+  //   console.log('addowner Index' , this.housePropertyUsageTypeList.value);
+  // }
+
+  // public removeUsageType(i: number) {
+  //   if (i > 0) {
+  //     this.housePropertyUsageTypeList.removeAt(i);
+
+  //   } else {
+
+  //     this.showOwner = false;
+  //     console.log('else', this.showOwner);
+
+  //   }
+  // }
   querytypeFormSubmit()
   {
 
