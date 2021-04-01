@@ -339,6 +339,9 @@ var AttributeSelectionComponent = /** @class */ (function () {
         for (var i = 0; i < this.originalSourceProductList.length; i++) {
             _loop_1(i);
         }
+        // for ( let i = 0; i < this.originalTargetList.length; i++ ) {
+        //   addAttributeCreation.removedAttributeGroupIdList.push( this.originalTargetList[i].attributeMasterId );
+        // }
         console.log(JSON.stringify(addAttributeCreation.attributeGroupDefinitionId));
         console.log(JSON.stringify(addAttributeCreation));
         if (addAttributeCreation.attributeGroupDefinitionId == undefined || addAttributeCreation.attributeGroupDefinitionId == 0) {

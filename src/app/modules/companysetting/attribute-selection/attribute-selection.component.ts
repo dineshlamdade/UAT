@@ -316,6 +316,7 @@ export class AttributeSelectionComponent implements OnInit {
         this.AttributeSelectionForm.patchValue( { description: response.data.results[0].description } );
         this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
       } );
+
   }
 
 
@@ -406,12 +407,16 @@ export class AttributeSelectionComponent implements OnInit {
       if ( addAttributeCreation.attributeMasterIdList.some( o => o.attributeMasterId == this.originalSourceProductList[i].attributeMasterId ) ) {
         addAttributeCreation.removedAttributeGroupIdList.push( this.originalSourceProductList[i].attributeMasterId );
 
+
       } else {
 
 
       }
 
     }
+    // for ( let i = 0; i < this.originalTargetList.length; i++ ) {
+    //   addAttributeCreation.removedAttributeGroupIdList.push( this.originalTargetList[i].attributeMasterId );
+    // }
 
     console.log( JSON.stringify( addAttributeCreation.attributeGroupDefinitionId ) );
     console.log( JSON.stringify( addAttributeCreation ) );

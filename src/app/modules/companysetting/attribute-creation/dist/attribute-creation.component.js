@@ -20,17 +20,19 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.alertService = alertService;
         this.modalService = modalService;
         this.document = document;
+        // sort alphabetically
         this.NatureList = [
-            { label: 'List', value: 'L' },
             { label: 'Formula', value: 'F' },
+            { label: 'Garnishment', value: 'G' },
+            { label: 'Head  ', value: 'H' },
+            { label: 'List', value: 'L' },
+            { label: 'Per Employee Input', value: 'PEI' },
+            { label: 'Range Value Per Instance', value: 'Range Value / Instance' },
+            { label: 'Range Value Per Period', value: 'Range Value / Period' },
+            { label: 'Range Of No Of Instances Per Period', value: 'Range Instances / Period' },
             { label: 'Stored Procedure', value: 'SP' },
             { label: 'Source Destination Matrix', value: 'SDM' },
-            { label: 'Per Employee Input', value: 'PEI' },
             { label: 'Work Flow', value: 'WF' },
-            { label: 'Garnishment', value: 'G' },
-            { label: 'Range Value / Instance', value: 'Range Value Per Instance' },
-            { label: 'Range Value / Period', value: 'Range Value Per Period' },
-            { label: 'Range Instances / Period', value: 'Range Of No Of Instances Per Period' },
         ];
         this.isEditMode = false;
         this.optionId = 0;
