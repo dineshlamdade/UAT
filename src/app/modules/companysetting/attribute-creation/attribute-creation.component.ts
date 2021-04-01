@@ -42,6 +42,7 @@ export class AttributeCreationComponent implements OnInit {
   AttributeCreationForm: FormGroup;
   disabled: boolean = true
   viewCancelButton: boolean = false;
+  viewUpdateButton: boolean = false;
   hidevalue: boolean = false;
   summons: Array<any> = [];
   optionList = [];
@@ -108,6 +109,34 @@ export class AttributeCreationComponent implements OnInit {
     } );
   }
 
+
+  editAttributeCreation( id ) {
+    console.log( 'edit' );
+
+
+    this.disabled = false;
+    this.viewCancelButton = false;
+    this.viewUpdateButton = true;
+    this.viewUpdateButton = true;
+    this.hidevalue = true;
+    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == id );
+
+    this.AttributeCreationForm.patchValue( { code: this.attributeCreationSummaryList[index].code } );
+    this.AttributeCreationForm.patchValue( { description: this.attributeCreationSummaryList[index].description } );
+    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNature } );
+    if ( this.attributeCreationSummaryList[index].optionValue.length > 0 ) {
+      let split = this.attributeCreationSummaryList[index].optionValue.split( ',' );
+      this.summaryHtmlDataList = [];
+      console.log( split );
+      for ( let i = 0; i < split.length; i++ ) {
+        this.summaryHtmlDataList.push( { id: i, name: split[i] } );
+      }
+    }
+    this.AttributeCreationForm.get( 'attributeNature' ).disable();
+
+
+  }
+
   // Get Attribute Creation ById
   GetAttributeCreationByIdDisable( id ): void {
 
@@ -131,6 +160,7 @@ export class AttributeCreationComponent implements OnInit {
     this.AttributeCreationForm.disable();
   }
   onStatusChange( event ): void {
+    console.log( 'chceck', event.target.value );
     if ( event.target.value == 'L' ) {
       this.hidevalue = true;
       console.log( 'length is ', this.summaryHtmlDataList );
@@ -141,6 +171,7 @@ export class AttributeCreationComponent implements OnInit {
       }
     }
     else {
+      this.validOptionList = false;
       this.summaryHtmlDataList = [];
       this.summons = [];
       this.hidevalue = false;
@@ -189,40 +220,48 @@ export class AttributeCreationComponent implements OnInit {
 
   //add new AttributeCreation
   addAttributeCreation(): void {
+    if ( this.viewUpdateButton == true ) {
+      console.log( 'add update logic here' );
 
-    const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
-    delete addAttributeCreation.globalAttributeMasterId;
-    addAttributeCreation.options = [];
-    addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
-    addAttributeCreation.code = this.AttributeCreationForm.value.code;
-    addAttributeCreation.description = this.AttributeCreationForm.value.description;
-    addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
+    } else {
 
-    let array = [];
-    for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
-      array.push( this.summaryHtmlDataList[i].name );
+
+      const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
+      delete addAttributeCreation.globalAttributeMasterId;
+      addAttributeCreation.options = [];
+      addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+      addAttributeCreation.code = this.AttributeCreationForm.value.code;
+      addAttributeCreation.description = this.AttributeCreationForm.value.description;
+      addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
+
+      let array = [];
+      for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+        array.push( this.summaryHtmlDataList[i].name );
+      }
+
+      addAttributeCreation.options = array;
+      console.log( JSON.stringify( addAttributeCreation ) );
+
+      this.attributeCreationService.AddAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
+
+        // addAttributeCreation.options = [];
+        this.summons = [];
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        this.getAllAttributeCreation();
+        this.hidevalue = true;
+        this.summaryHtmlDataList = [];
+
+        this.CancelAttributeCreation();
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
+
     }
-
-    addAttributeCreation.options = array;
-    console.log( JSON.stringify( addAttributeCreation ) );
-
-    this.attributeCreationService.AddAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
-
-      // addAttributeCreation.options = [];
-      this.summons = [];
-      this.alertService.sweetalertMasterSuccess( res.status.message, '' );
-      this.getAllAttributeCreation();
-      this.hidevalue = true;
-      this.summaryHtmlDataList = [];
-
-      this.CancelAttributeCreation();
-    },
-      ( error: any ) => {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
-      } );
 
   }
   CancelAttributeCreation(): void {
+    this.viewUpdateButton = false;
     this.AttributeCreationForm.enable();
     this.summaryHtmlDataList = [];
     this.summons = [];
@@ -236,6 +275,7 @@ export class AttributeCreationComponent implements OnInit {
   }
 
   ResetAttributeCreation(): void {
+    this.viewUpdateButton = false;
     this.AttributeCreationForm.enable();
     this.summaryHtmlDataList = [];
     this.AttributeCreationForm.reset();

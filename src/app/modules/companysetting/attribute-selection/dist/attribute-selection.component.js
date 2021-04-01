@@ -15,6 +15,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
         this.attributeSelectionService = attributeSelectionService;
         this.alertService = alertService;
         this.removedAttributeGroupIdList = [];
+        this.summaryList = [];
         this.originalTargetList = [];
         this.AttributeSelectionList = [];
         this.disabled = true;
@@ -56,6 +57,19 @@ var AttributeSelectionComponent = /** @class */ (function () {
         var _this = this;
         this.attributeSelectionService.getAttributeGroup().subscribe(function (res) {
             _this.AttributeSelectionList = res.data.results;
+            res.data.results.forEach(function (element) {
+                var obj = {
+                    code: element.code,
+                    attributeNature: element.attributeNature,
+                    numberOfOption: element.numberOfOption,
+                    description: element.description,
+                    attributeMasterId: element.attributeMasterId,
+                    options: (element.attributeMasters).length,
+                    id: element.id,
+                    name: element.name
+                };
+                _this.summaryList.push(obj);
+            });
         });
     };
     AttributeSelectionComponent.prototype.RowSelected = function (u) {
@@ -77,7 +91,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
         }
         this.sourceProducts = temp;
         console.log('selected row is', u);
-        console.log("selected user", this.selectedUser);
+        console.log('selected user', this.selectedUser);
         this.sourceProducts = [];
         this.sourceProducts = temp;
     };
@@ -239,6 +253,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
             _this.AttributeSelectionForm.patchValue({ description: response.data.results[0].description });
             _this.AttributeSelectionForm.patchValue({ attributeNature: response.data.results[0].name });
         });
+        this.AttributeSelectionForm.disable();
     };
     // Get Attribute Selection ById
     AttributeSelectionComponent.prototype.GetAttributeSelectionById = function (id) {
@@ -293,7 +308,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
             _this.hidevalue = false;
             _this.AttributeSelectionForm.reset();
         }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+            //this.alertService.sweetalertError( error[error][status][message] );
         });
         // }
         // else {
@@ -312,7 +327,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
         //     this.AttributeSelectionForm.reset();
         //   },
         //     ( error: any ) => {
-        //       this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        //       this.alertService.sweetalertError( error[ error ][ status ][ message ] );
         //     } );
         // }
     };
@@ -355,7 +370,7 @@ var AttributeSelectionComponent = /** @class */ (function () {
                 _this.hidevalue = false;
                 _this.AttributeSelectionForm.reset();
             }, function (error) {
-                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+                // this.alertService.sweetalertError( error[error][status][message] );
             });
         }
     };

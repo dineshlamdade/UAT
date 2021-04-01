@@ -33,7 +33,7 @@ export class CompanySettingsService {
       } ) );
   }
   getByHeadMasterByNature( earningordeduction: any ) {
-    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-master/head-nature/' + earningordeduction )
+    return this._HTTP.get( environment.baseUrl8084 + 'attribute-group/headType/' + earningordeduction )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -344,7 +344,7 @@ export class CompanySettingsService {
   // get All PayrollHeadGroup
   getAllPayrollHeadGroup() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'headGroup' )
+    return this._HTTP.get( environment.baseUrl8084 + 'headGroup' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -353,7 +353,7 @@ export class CompanySettingsService {
 
   //delete Payroll Head Group
   DeletePayrollHeadGroup( id: number ) {
-    return this._HTTP.delete( environment.baseUrl8086 + 'headGroup/delete/' + id )
+    return this._HTTP.delete( environment.baseUrl8084 + 'headGroup/delete/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -364,7 +364,7 @@ export class CompanySettingsService {
   //add new PHG
   AddPayrollHeadGroup( data: SavePHG ): Observable<number | {}> {
 
-    return this._HTTP.post( environment.baseUrl8086 + 'headGroup', data )
+    return this._HTTP.post( environment.baseUrl8084 + 'headGroup', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -373,7 +373,7 @@ export class CompanySettingsService {
   //get Attribute Selection By Id
   GetPHGById( id: number ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'headGroup/getPHGById/' + id )
+    return this._HTTP.get( environment.baseUrl8084 + 'headGroup/getPHGById/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -383,7 +383,7 @@ export class CompanySettingsService {
   //update BusinessYear
   UpdatePHGById( id: number, data: SavePHG ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'headGroup/updateById/' + id, data )
+    return this._HTTP.put( environment.baseUrl8084 + 'headGroup/updateById/' + id, data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -392,7 +392,7 @@ export class CompanySettingsService {
   //get Head table list on slection of copy form dropdown
   GetHeadListByPHGname( PHGname: string ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'headGroup/getPHGByName/' + PHGname )
+    return this._HTTP.get( environment.baseUrl8084 + 'headGroup/getPHGByName/' + PHGname )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -429,7 +429,7 @@ export class CompanySettingsService {
   // get formula for formula master
   getFromulaForFormulaMaster() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'formula-master' )
+    return this._HTTP.get( environment.baseUrl8084 + 'formula-master' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -446,7 +446,7 @@ export class CompanySettingsService {
   //update attribute list by id
   UpdateattributeListById( data: UpdateflagCycleCreation ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'payrollhead-attribute-mapping', data )
+    return this._HTTP.put( environment.baseUrl8084 + 'payrollhead-attribute-mapping', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

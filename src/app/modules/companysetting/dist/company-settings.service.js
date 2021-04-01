@@ -33,7 +33,7 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     CompanySettingsService.prototype.getByHeadMasterByNature = function (earningordeduction) {
-        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-master/head-nature/' + earningordeduction)
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'attribute-group/headType/' + earningordeduction)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -275,42 +275,42 @@ var CompanySettingsService = /** @class */ (function () {
     };
     // get All PayrollHeadGroup
     CompanySettingsService.prototype.getAllPayrollHeadGroup = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'headGroup')
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'headGroup')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //delete Payroll Head Group
     CompanySettingsService.prototype.DeletePayrollHeadGroup = function (id) {
-        return this._HTTP["delete"](environment_1.environment.baseUrl8086 + 'headGroup/delete/' + id)
+        return this._HTTP["delete"](environment_1.environment.baseUrl8084 + 'headGroup/delete/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //add new PHG
     CompanySettingsService.prototype.AddPayrollHeadGroup = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'headGroup', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8084 + 'headGroup', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //get Attribute Selection By Id
     CompanySettingsService.prototype.GetPHGById = function (id) {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'headGroup/getPHGById/' + id)
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'headGroup/getPHGById/' + id)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //update BusinessYear
     CompanySettingsService.prototype.UpdatePHGById = function (id, data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'headGroup/updateById/' + id, data)
+        return this._HTTP.put(environment_1.environment.baseUrl8084 + 'headGroup/updateById/' + id, data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //get Head table list on slection of copy form dropdown
     CompanySettingsService.prototype.GetHeadListByPHGname = function (PHGname) {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'headGroup/getPHGByName/' + PHGname)
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'headGroup/getPHGByName/' + PHGname)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -338,7 +338,7 @@ var CompanySettingsService = /** @class */ (function () {
     };
     // get formula for formula master
     CompanySettingsService.prototype.getFromulaForFormulaMaster = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'formula-master')
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'formula-master')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
@@ -351,7 +351,7 @@ var CompanySettingsService = /** @class */ (function () {
     };
     //update attribute list by id
     CompanySettingsService.prototype.UpdateattributeListById = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'payrollhead-attribute-mapping', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-mapping', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

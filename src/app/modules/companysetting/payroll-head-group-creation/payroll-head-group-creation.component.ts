@@ -769,6 +769,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
   getAllAttributeListByAttGroup() {
 
+    console.log( 'attGrpName', this.AttGrpName );
     // this.selectedCopFormAttGrp=event.target.value;
     this.AttGroupList = [];
     // GetAttributeOptionList(): void {

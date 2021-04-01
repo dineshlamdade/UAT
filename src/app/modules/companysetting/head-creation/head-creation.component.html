@@ -56,8 +56,8 @@
                     <select name="type" id="type" class="form-control  " formControlName="type"
                       [ngClass]="{'is-invalid' : HeadCreationForm.get('type').status == 'INVALID'}">
                       <option selected value=''>Select </option>
-                      <option *ngFor="let typeList of TypeList" [value]="typeList.standardName">
-                        {{typeList.standardName}}
+                      <option *ngFor="let typeList of TypeList" [value]="typeList.name">
+                        {{typeList.name}}
                       </option>
                     </select>
                   </div>

@@ -42,6 +42,7 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.summaryHtmlDataList = [];
         this.disabled = true;
         this.viewCancelButton = false;
+        this.viewUpdateButton = false;
         this.hidevalue = false;
         this.summons = [];
         this.optionList = [];
@@ -95,6 +96,27 @@ var AttributeCreationComponent = /** @class */ (function () {
             });
         });
     };
+    AttributeCreationComponent.prototype.editAttributeCreation = function (id) {
+        console.log('edit');
+        this.disabled = false;
+        this.viewCancelButton = false;
+        this.viewUpdateButton = true;
+        this.viewUpdateButton = true;
+        this.hidevalue = true;
+        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == id; });
+        this.AttributeCreationForm.patchValue({ code: this.attributeCreationSummaryList[index].code });
+        this.AttributeCreationForm.patchValue({ description: this.attributeCreationSummaryList[index].description });
+        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNature });
+        if (this.attributeCreationSummaryList[index].optionValue.length > 0) {
+            var split = this.attributeCreationSummaryList[index].optionValue.split(',');
+            this.summaryHtmlDataList = [];
+            console.log(split);
+            for (var i = 0; i < split.length; i++) {
+                this.summaryHtmlDataList.push({ id: i, name: split[i] });
+            }
+        }
+        this.AttributeCreationForm.get('attributeNature').disable();
+    };
     // Get Attribute Creation ById
     AttributeCreationComponent.prototype.GetAttributeCreationByIdDisable = function (id) {
         this.disabled = false;
@@ -116,6 +138,7 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.AttributeCreationForm.disable();
     };
     AttributeCreationComponent.prototype.onStatusChange = function (event) {
+        console.log('chceck', event.target.value);
         if (event.target.value == 'L') {
             this.hidevalue = true;
             console.log('length is ', this.summaryHtmlDataList);
@@ -127,6 +150,7 @@ var AttributeCreationComponent = /** @class */ (function () {
             }
         }
         else {
+            this.validOptionList = false;
             this.summaryHtmlDataList = [];
             this.summons = [];
             this.hidevalue = false;
@@ -180,32 +204,38 @@ var AttributeCreationComponent = /** @class */ (function () {
     //add new AttributeCreation
     AttributeCreationComponent.prototype.addAttributeCreation = function () {
         var _this = this;
-        var addAttributeCreation = Object.assign({});
-        delete addAttributeCreation.globalAttributeMasterId;
-        addAttributeCreation.options = [];
-        addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
-        addAttributeCreation.code = this.AttributeCreationForm.value.code;
-        addAttributeCreation.description = this.AttributeCreationForm.value.description;
-        addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
-        var array = [];
-        for (var i = 0; i < this.summaryHtmlDataList.length; i++) {
-            array.push(this.summaryHtmlDataList[i].name);
+        if (this.viewUpdateButton == true) {
+            console.log('add update logic here');
         }
-        addAttributeCreation.options = array;
-        console.log(JSON.stringify(addAttributeCreation));
-        this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe(function (res) {
-            // addAttributeCreation.options = [];
-            _this.summons = [];
-            _this.alertService.sweetalertMasterSuccess(res.status.message, '');
-            _this.getAllAttributeCreation();
-            _this.hidevalue = true;
-            _this.summaryHtmlDataList = [];
-            _this.CancelAttributeCreation();
-        }, function (error) {
-            _this.alertService.sweetalertError(error["error"]["status"]["message"]);
-        });
+        else {
+            var addAttributeCreation = Object.assign({});
+            delete addAttributeCreation.globalAttributeMasterId;
+            addAttributeCreation.options = [];
+            addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+            addAttributeCreation.code = this.AttributeCreationForm.value.code;
+            addAttributeCreation.description = this.AttributeCreationForm.value.description;
+            addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
+            var array = [];
+            for (var i = 0; i < this.summaryHtmlDataList.length; i++) {
+                array.push(this.summaryHtmlDataList[i].name);
+            }
+            addAttributeCreation.options = array;
+            console.log(JSON.stringify(addAttributeCreation));
+            this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe(function (res) {
+                // addAttributeCreation.options = [];
+                _this.summons = [];
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
+                _this.getAllAttributeCreation();
+                _this.hidevalue = true;
+                _this.summaryHtmlDataList = [];
+                _this.CancelAttributeCreation();
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+            });
+        }
     };
     AttributeCreationComponent.prototype.CancelAttributeCreation = function () {
+        this.viewUpdateButton = false;
         this.AttributeCreationForm.enable();
         this.summaryHtmlDataList = [];
         this.summons = [];
@@ -218,6 +248,7 @@ var AttributeCreationComponent = /** @class */ (function () {
         });
     };
     AttributeCreationComponent.prototype.ResetAttributeCreation = function () {
+        this.viewUpdateButton = false;
         this.AttributeCreationForm.enable();
         this.summaryHtmlDataList = [];
         this.AttributeCreationForm.reset();

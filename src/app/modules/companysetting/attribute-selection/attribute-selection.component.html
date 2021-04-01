@@ -236,6 +236,7 @@
                               <th scope="col" class="font700 wd-8">Sr. No.</th>
                               <th scope="col" class="font700 wd-12">Attribute Group Name</th>
                               <th scope="col" class="font700 wd-20">Description</th>
+                              <th scope="col" class="font700 wd-12">Count</th>
                               <!-- <th scope="col" class="font700 wd-12">Short Name</th> -->
                               <!-- <th scope="col" class="font700 wd-12">Nature</th>
                                                         <th scope="col" class="font700 wd-20">Value</th>                                                                        -->
@@ -250,7 +251,7 @@
                                                         <td></td>
                                                       </tr>  -->
 
-                            <tr *ngFor="let summary of AttributeSelectionList; let i = index">
+                            <tr *ngFor="let summary of summaryList; let i = index">
                               <td class="align-center wd-10">
                                 <span>{{i+1}}</span>
                               </td>
@@ -260,6 +261,10 @@
                               <td class="wd-10">
                                 <span>{{summary.description}}</span>
                               </td>
+                              <td class="wd-10">
+                                <span>{{summary.options}}</span>
+                              </td>
+
 
                               <!-- <td class="wd-10">
                                                             <span>{{summary.attributeNature}}</span>

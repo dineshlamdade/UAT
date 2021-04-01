@@ -587,6 +587,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
     };
     PayrollHeadGroupCreationComponent.prototype.getAllAttributeListByAttGroup = function () {
         var _this = this;
+        console.log('attGrpName', this.AttGrpName);
         // this.selectedCopFormAttGrp=event.target.value;
         this.AttGroupList = [];
         // GetAttributeOptionList(): void {

@@ -1,9 +1,10 @@
+import { NationalSevingCertificateSummaryComponent } from './../../my-Investments/80C/national-seving-certificate/national-seving-certificate-summary/national-seving-certificate-summary.component';
 import { CompanySettingsService } from './../company-settings.service';
 
 import { PrimeNGConfig } from 'primeng/api';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { NgForm } from "@angular/forms";
+import { NgForm } from '@angular/forms';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
 import { SaveAttributeSelection } from '../model/business-cycle-model';
 import { AnyCnameRecord } from 'node:dns';
@@ -18,6 +19,7 @@ import { AnyCnameRecord } from 'node:dns';
 } )
 export class AttributeSelectionComponent implements OnInit {
   removedAttributeGroupIdList = [];
+  summaryList = [];
   originalTargetList = [];
   @ViewChild( 'AttributeSelectionForm' ) form: NgForm;
   AttributeSelectionList: Array<any> = [];
@@ -70,7 +72,22 @@ export class AttributeSelectionComponent implements OnInit {
   getAllAttributeSelection(): void {
     this.attributeSelectionService.getAttributeGroup().subscribe( res => {
       this.AttributeSelectionList = res.data.results;
+
+      res.data.results.forEach( element => {
+        let obj = {
+          code: element.code,
+          attributeNature: element.attributeNature,
+          numberOfOption: element.numberOfOption,
+          description: element.description,
+          attributeMasterId: element.attributeMasterId,
+          options: ( element.attributeMasters ).length,
+          id: element.id,
+          name: element.name,
+        }
+        this.summaryList.push( obj );
+      } );
     } );
+
   }
 
   RowSelected( u: any ) {
@@ -93,7 +110,7 @@ export class AttributeSelectionComponent implements OnInit {
     }
     this.sourceProducts = temp;
     console.log( 'selected row is', u );
-    console.log( "selected user", this.selectedUser );
+    console.log( 'selected user', this.selectedUser );
     this.sourceProducts = [];
     this.sourceProducts = temp;
   }
@@ -294,6 +311,7 @@ export class AttributeSelectionComponent implements OnInit {
         this.AttributeSelectionForm.patchValue( { attributeNature: response.data.results[0].name } );
 
       } );
+    this.AttributeSelectionForm.disable();
   }
 
   // Get Attribute Selection ById
@@ -355,7 +373,7 @@ export class AttributeSelectionComponent implements OnInit {
       this.AttributeSelectionForm.reset();
     },
       ( error: any ) => {
-        this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        //this.alertService.sweetalertError( error[error][status][message] );
       } );
     // }
     // else {
@@ -382,7 +400,7 @@ export class AttributeSelectionComponent implements OnInit {
     //     this.AttributeSelectionForm.reset();
     //   },
     //     ( error: any ) => {
-    //       this.alertService.sweetalertError( error["error"]["status"]["message"] );
+    //       this.alertService.sweetalertError( error[ error ][ status ][ message ] );
     //     } );
     // }
   }
@@ -436,7 +454,7 @@ export class AttributeSelectionComponent implements OnInit {
         this.AttributeSelectionForm.reset();
       },
         ( error: any ) => {
-          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+          // this.alertService.sweetalertError( error[error][status][message] );
         } );
     }
   }

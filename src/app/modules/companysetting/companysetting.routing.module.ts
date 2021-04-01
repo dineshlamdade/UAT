@@ -40,7 +40,7 @@ const routes: Routes = [
     data: { title: ':: Epic :: Company Settings' }
   },
   {
-    path: 'attribute-selection',
+    path: 'attribute-group',
     component: AttributeSelectionComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
