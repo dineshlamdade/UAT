@@ -80,7 +80,9 @@ var ComplianceMappingComponent = /** @class */ (function () {
             complianceApplicabilitySDMId: '',
             statutoryFrequencySDMId: '',
             deductionFrequency: '',
-            complianceHeadName: ''
+            complianceHeadName: '',
+            statutoryFrequency: '',
+            statutoryFreqPeriodsDef: ''
         });
         this.complianceApplicationForm.get('complianceHeadName').disable();
     };

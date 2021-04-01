@@ -39,7 +39,8 @@
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Nature</label>
                     <select [ngClass]="{'is-invalid' : HeadCreationForm.get('headNature').status == 'INVALID'}"
-                      name="beast" id="Institution2" class="form-control custom-select" formControlName="headNature">
+                      name="headNature" id="headNature" class="form-control " formControlName="headNature">
+                      <option selected value=''>Select </option>
                       <option *ngFor="let by of NatureList" [value]="by.value">
                         {{by.label}}
                       </option>
@@ -50,7 +51,8 @@
 
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Type</label>
-                    <select name="beast" id="Institution2" class="form-control custom-select" formControlName="type">
+                    <select name="type" id="type" class="form-control " formControlName="type">
+                      <option selected value=''>Select </option>
                       <option *ngFor="let by of TypeList" [value]="by.value">
                         {{by.label}}
                       </option>

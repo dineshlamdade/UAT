@@ -10,14 +10,10 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-body p-0">
-
-
                   <!-- <div class="row">
                       <div class="col-md-12"> -->
-
                   <fieldset>
                     <legend>Compliance Mapping</legend>
-
                     <div class="row">
 
                       <div class="col-sm-3">
@@ -73,7 +69,7 @@
                           formControlName="statutoryFreqPeriodsDef"
                           [ngClass]="{'is-invalid' : complianceApplicationForm.get('statutoryFreqPeriodsDef').status == 'INVALID'}">
                           <option selected value=''>Select </option>
-                          <option *ngFor="let issuedBy of statutoryFreqPeriodsDefList" [value]="issuedBy.id">
+                          <option *ngFor="let issuedBy of statutoryFreqPeriodsDefList" [value]="issuedBy.itemName">
                             {{issuedBy.itemName}}
                           </option>
                         </select>
@@ -130,12 +126,18 @@
 
                           <ng-template #newDeb>
 
-                            <button type="submit"
+                            <!-- <button type="submit"
                               [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                               class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
                               tooltip="Update" (click)="saveComplianceApplication()"
                               [disabled]="complianceApplicationForm.invalid"><b><i class="fa fa-floppy-o"></i></b>
-                              Update</button>
+                              Update</button> -->
+
+                            <button type="submit"
+                              [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                              class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                              tooltip="Update" (click)="saveComplianceApplication()" [disabled]="form.invalid">
+                              <b><i class="fa fa-floppy-o"></i></b>Update</button>
 
 
                             <button type="button"
