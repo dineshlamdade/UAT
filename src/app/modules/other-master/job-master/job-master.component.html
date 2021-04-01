@@ -28,13 +28,15 @@
 
                     <div class="col-sm-3" *ngIf="hideFormControl">
                       <label class="form-label">Code</label>
-                      <input type="text" formControlName="masterCode" class="form-control" name="code"
-                        autocomplete="off" placeholder="Enter Code">
+                      <input type="text" formControlName="masterCode" class="form-control" name="masterCode"
+                        [ngClass]="{'is-invalid' : form.get('masterCode').status == 'INVALID'} " autocomplete="off"
+                        placeholder="Enter Code">
                     </div>
 
                     <div class="col-md-3" *ngIf="hideFormControl">
                       <label class="form-label">Description</label>
                       <textarea formControlName="masterDescription" class="form-control" rows="2" autocomplete="off"
+                        [ngClass]="{'is-invalid' : form.get('masterDescription').status == 'INVALID'} "
                         placeholder="Enter Remark"></textarea>
                     </div>
 
@@ -51,6 +53,11 @@
                     <div class="col-sm-12 pull-right">
                       <div *ngIf="isEditMode ==false">
 
+                        <!-- <button type="submit" [disabled]="form.invalid"
+                          class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                          (click)="saveMaster()"
+                          [ngClass]="{'disabled-btn-bg-green' : form.invalid, 'btn-bg-green': !form.invalid}">
+                          <b><i class="fa fa-floppy-o"></i></b> Save</button> -->
                         <button type="submit" [disabled]="form.invalid"
                           class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
                           (click)="saveMaster()"
@@ -63,11 +70,17 @@
                       </div>
                       <div *ngIf="isEditMode == true">
 
-                        <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
+                        <!-- <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
                               'btn-bg-green': !form.invalid}"
                           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                           (click)="saveMaster()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
-                          Update</button>
+                          Update</button> -->
+
+                        <button type="submit"
+                          [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                          (click)="saveMaster()" [disabled]="form.invalid">
+                          <b><i class="fa fa-floppy-o"></i></b>Update</button>
 
                         <button type="button"
                           class="mr-2 pull-right custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
@@ -96,7 +109,7 @@
           <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
           <label for="tab1">Master Summary</label>
           <!-- Tab 2 -->
-          <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" (click)="onClickAssignmentSummary()">
+          <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" (click)="getAllOtheMappingDetails()">
           <label for="tab2">Assignment Summary</label>
           <div class="tab-panels">
             <section id="marzen" class="tab-panel">
@@ -116,7 +129,7 @@
                           <tr>
                             <th scope="col" class="wd-10">Sr. No.</th>
                             <th scope="col" class="wd-15"> <input type="checkbox" [(ngModel)]="checks"
-                                (click)="onCheckboxChange($event,-1)" />&nbsp;&nbsp;&nbsp;Select All
+                                (click)="onCheckboxChangeMasterSummary($event,-1)" />&nbsp;&nbsp;&nbsp;Select All
 
                             </th>
                             <th scope="col" class="wd-15">Master Type</th>
@@ -131,12 +144,14 @@
                             <td class="wd-10"><span tooltip="{{summary.SrNo}}">{{summary.SrNo}}</span>
                             </td>
 
-                            <td *ngIf="summary.isActive"><input type="checkbox" [ngModel]="enableCheckAll" [value]="i"
-                                [checked]="uncheckSelectAll ==true" (change)="onCheckboxChange($event,i)"
+                            <td *ngIf="summary.isActive"><input type="checkbox" [ngModel]="summary.isChecked"
+                                [value]="i" [checked]="uncheckSelectAll ==true"
+                                (change)="onCheckboxChangeMasterSummary($event,i,summary.masterType,summary.masterCode)"
                                 [disabled]="summary.isActive ==false"></td>
 
                             <td *ngIf="!summary.isActive"><input type="checkbox" [value]="i"
-                                (change)="onCheckboxChange($event,i)" [disabled]="summary.isActive ==false"></td>
+                                (change)="onCheckboxChangeMasterSummary($event,i,summary.masterType,summary.masterCode)"
+                                [disabled]="summary.isActive ==false"></td>
 
                             <td class="wd-10"><span tooltip="{{summary.masterType}}">{{summary.masterType}}</span>
                             </td>
@@ -146,11 +161,11 @@
                                 tooltip="{{summary.masterDescription}}">{{summary.masterDescription}}</span>
                             </td>
                             <td class="wd-10 align-left">
-                              &nbsp;&nbsp;<span>
+                              <span>
                                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                                   (click)="editMaster(summary.masterId,summary.masterType)" tooltip="Edit"></i>
                               </span> &nbsp;
-                              <span *ngIf="summary.isActive ==1">
+                              <span *ngIf="summary.isActive ==1"> &nbsp;&nbsp;&nbsp;&nbsp;
                                 <i class="fa fa-trash-o font-16 text-red cursor-pointer "
                                   (click)="ConfirmationDialog(confirmdialog, summary.masterId,summary.masterType,'master-summary')"></i>
                                 <!-- (click)="DeleteMaster()" tooltip="Delete"></i> -->
@@ -212,7 +227,7 @@
                                 <!-- <i class="fa fa-eye font-16 text-blue cursor-pointer ml-3" (click)="viewMaster(i)"
                         tooltip="View"></i> &nbsp;&nbsp;&nbsp;&nbsp; -->
                                 <i class="fa fa-trash-o font-16 text-red cursor-pointer"
-                                  (click)="ConfirmationDialog(confirmdialog, summary.complianceHeadId)"
+                                  (click)="ConfirmationDialog(confirmdialog, summary.masterId,summary.masterMappingType,'assignment-summary')"
                                   tooltip="Delete"></i>
                               </span>
                               <!-- (click)="DeleteMasterMapping(summary.masterMappingId,summary.masterMappingType)" -->

@@ -42,7 +42,7 @@
           <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-3 mt-10">
+      <!-- <div class="col-sm-6 col-md-3 mt-10">
         <label class="form-label">Account Start Date</label>
         <div class="form-group">
           <div class="input-group">
@@ -59,7 +59,48 @@
           </div>
         </div>
       </div>
+    </div> -->
+    <div class="col-sm-6 col-md-3 mt-10">
+      <label class="form-label">Account Start Date</label>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          </div>
+          <!-- [maxDate]="today" -->
+          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            (bsValueChange)="setPolicyEndDate()" placeholder="Account Start Date" bsDatepicker
+            [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }">
+          <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
+            <div *ngIf="masterForm.policyStartDate.errors.required">Account Start Date is mandatory</div>
+          </div>
+        </div>
+      </div>
     </div>
+  
+     
+     <div class="col-sm-6 col-md-3 mt-10">
+      <label class="form-label">Account End Date</label>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          </div>
+          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()" [minDate]="policyToDate"
+            placeholder="Account End Date" bsDatepicker
+            [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
+          <div *ngIf="submitted && masterForm.policyEndDate.errors" class="invalid-feedback">
+            <div *ngIf="masterForm.policyEndDate.errors.required">Account End Date is mandatory</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+    
+   
     <div class="row mt-25">
       <div class="col-12">
         <fieldset>
@@ -85,7 +126,7 @@
               <p-inputNumber class="form-control align-right" formControlName="premiumAmount" name="Premium Amount"
                 (onBlur)="calculateAnnualAmount()"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN"
-                [minFractionDigits]="2"></p-inputNumber>
+                [minFractionDigits]="2"  min="0"></p-inputNumber>
               <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
               </div>

@@ -37,7 +37,6 @@ var bank_master_at_company_component_1 = require("./bank-master-at-company/bank-
 var app_primeNG_module_1 = require("src/app/app.primeNG.module");
 var job_master_component_1 = require("./job-master/job-master.component");
 var compliance_mapping_component_1 = require("./compliance-mapping/compliance-mapping.component");
-// import { UserGroupComponent } from './user-group/user-group.component';
 var OtherMasterModule = /** @class */ (function () {
     function OtherMasterModule() {
     }
@@ -55,7 +54,6 @@ var OtherMasterModule = /** @class */ (function () {
                 bank_master_at_company_component_1.BankMasterAtCompanyComponent,
                 job_master_component_1.JobMasterComponent,
                 compliance_mapping_component_1.ComplianceMappingComponent
-                //  UserGroupComponent
             ],
             imports: [
                 datepicker_1.BsDatepickerModule,

@@ -31,9 +31,8 @@ var JobMasterComponent = /** @class */ (function () {
         this.checksCompany = false;
         this.enableCheckAll = false;
         this.enableCompanyCheckAll = false;
-        this.allhtmlTableDataList = [];
         this.tableDataList = [];
-        this.tableDataList1 = [];
+        // public tableDataList1 = [];
         this.selectedCheckBox = [];
         this.selectedCompanyListCheckBox = [];
         this.hideFormControl = true;
@@ -59,13 +58,14 @@ var JobMasterComponent = /** @class */ (function () {
         ];
         this.viewMode = false;
         this.form = this.formBuilder.group({
-            masterType: new forms_1.FormControl(''),
-            masterCode: new forms_1.FormControl(''),
-            masterDescription: new forms_1.FormControl(''),
+            masterType: new forms_1.FormControl('All'),
+            masterCode: new forms_1.FormControl('', forms_1.Validators.required),
+            masterDescription: new forms_1.FormControl('', forms_1.Validators.required),
             isActive: new forms_1.FormControl('')
         });
         this.masterSelected = false;
         this.form.get('isActive').setValue(true);
+        this.hideFormControl = false;
     }
     JobMasterComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -99,9 +99,8 @@ var JobMasterComponent = /** @class */ (function () {
     };
     JobMasterComponent.prototype.refreshHtmlTable = function () {
         var _this = this;
-        this.allhtmlTableDataList = [];
         this.tableDataList = [];
-        this.tableDataList1 = [];
+        // this.tableDataList1 = [];
         this.summaryHtmlDataList = [];
         this.masterGridDataList = [];
         this.jobMasterService.getAllOtherMasterDetails().subscribe(function (res) {
@@ -116,12 +115,11 @@ var JobMasterComponent = /** @class */ (function () {
                     masterDescription: element.masterDescription,
                     masterType: element.masterType,
                     isActive: element.isActive,
-                    isSelected: false
+                    isChecked: false
                 };
                 _this.summaryHtmlDataList.push(obj);
-                _this.allhtmlTableDataList.push(obj);
                 _this.tableDataList.push(obj);
-                _this.tableDataList1.push(obj);
+                // this.tableDataList1.push( obj );
             });
         });
     };
@@ -143,15 +141,18 @@ var JobMasterComponent = /** @class */ (function () {
     //   });
     // }
     JobMasterComponent.prototype.saveMaster = function () {
-        //  let lastIndex = this.tableDataList.findIndex(o=>o.masterType =='Business Area')
         var _this = this;
+        //  let lastIndex = this.tableDataList.findIndex(o=>o.masterType =='Business Area')
+        var a = this.form.get('masterType').value;
+        console.log('a value ', a);
         var len = this.tableDataList.filter(function (item) {
-            return item.masterType == 'Business Area';
+            return item.masterType == a;
         }).length;
         this.checks = false;
         this.enableCheckAll = false;
         this.selectedCheckBox = [];
         var isActive = 0;
+        console.log('isActive value is', this.form.get('isActive').value);
         if (this.form.get('isActive').value == true) {
             isActive = 1;
         }
@@ -182,17 +183,28 @@ var JobMasterComponent = /** @class */ (function () {
                     _this.form.get('masterDescription').setValue(null);
                     _this.form.get('isActive').setValue(true);
                     _this.isEditMode = false;
-                    _this.refreshHtmlTable();
-                    _this.getAllOtheMappingDetails();
-                    _this.onSelectJobMaster('All');
-                    _this.tableDataList = _this.tableDataList.filter(function (o) { return o.masterType === 'All'; });
-                    _this.onSelectJobMaster('Plant');
+                    _this.editedRecordIndex = 0;
+                    var findIndex = _this.tableDataList.findIndex(function (o) { return o.masterId == res.data.results[0].masterId; });
+                    var obj = {
+                        masterType: _this.jobMasterList[selectedIndex].value,
+                        masterId: res.data.results[0].masterId,
+                        masterDescription: res.data.results[0].masterDescription,
+                        masterCode: res.data.results[0].masterCode,
+                        isActive: res.data.results[0].isActive,
+                        SrNo: _this.tableDataList[findIndex].SrNo
+                    };
+                    _this.tableDataList[findIndex] = obj;
+                    //  this.refreshHtmlTable();
+                    // this.getAllOtheMappingDetails();
+                    //  this.onSelectJobMaster( 'All' );
+                    //   this.tableDataList = this.tableDataList.filter( ( o ) => o.masterType === 'All' );
+                    // this.onSelectJobMaster( 'Plant' );
                     _this.form.patchValue({
-                        masterType: 'Plant',
                         masterCode: '',
-                        masterDescription: ''
+                        masterDescription: '',
+                        isActive: true
                     });
-                    _this.tableDataList = _this.tableDataList.filter(function (o) { return o.masterType === 'Plant'; });
+                    //  this.tableDataList = this.tableDataList.filter( ( o ) => o.masterType === 'Plant' );
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
@@ -214,17 +226,25 @@ var JobMasterComponent = /** @class */ (function () {
                 if (res.data.results.length !== 0) {
                     _this.alertService.sweetalertMasterSuccess(res.status.messsage, '');
                     //this.form.reset();
-                    _this.form.get('masterCode').setValue(null);
-                    _this.form.get('masterDescription').setValue(null);
-                    _this.form.get('isActive').setValue(true);
+                    // this.form.get( 'masterCode' ).setValue( null );
+                    // this.form.get( 'masterDescription' ).setValue( null );
+                    // this.form.get( 'isActive' ).setValue( true );
+                    _this.form.patchValue({
+                        masterCode: '',
+                        masterDescription: '',
+                        isActive: true
+                    });
                     var obj = {
-                        masterType: 'Business Area',
+                        masterType: _this.jobMasterList[selectedIndex].value,
                         masterId: res.data.results[0].masterId,
                         masterDescription: res.data.results[0].masterDescription,
                         masterCode: res.data.results[0].masterCode,
                         isActive: res.data.results[0].isActive,
                         SrNo: len + 1
                     };
+                    //  this.summaryHtmlDataList.push( obj );
+                    _this.tableDataList.push(obj);
+                    _this.summaryHtmlDataList.push(obj);
                     //  this.refreshHtmlTable();
                     // this.getAllOtheMappingDetails();
                     // this.onSelectJobMaster('All');
@@ -241,10 +261,11 @@ var JobMasterComponent = /** @class */ (function () {
                     //   masterDescription: '',
                     // });
                     // this.tableDataList = this.tableDataList.filter((o) => o.masterType === 'Plant');
-                    //this.summaryHtmlDataList.push(obj);
-                    // this.allhtmlTableDataList.push(obj);
-                    _this.tableDataList.push(obj);
-                    //this.tableDataList1.push(obj);
+                    // this.allhtmlTableDataList.push( obj );
+                    //   this.summaryHtmlDataList.push( obj );
+                    // this.tableDataList.push( obj );
+                    //  this.masterGridDataList.push( obj );
+                    //  this.tableDataList1.push( obj );
                 }
                 else {
                     _this.alertService.sweetalertWarning(res.status.messsage);
@@ -276,6 +297,7 @@ var JobMasterComponent = /** @class */ (function () {
     // }
     JobMasterComponent.prototype.DeleteMaster = function (masterId, masterType) {
         var _this = this;
+        console.log('in delete master');
         var selectedIndex = this.jobMasterList.findIndex(function (o) { return o.value == masterType; });
         this.jobMasterService["delete"](masterId, this.jobMasterList[selectedIndex].deleteUrl).subscribe(function (res) {
             console.log(res);
@@ -286,45 +308,49 @@ var JobMasterComponent = /** @class */ (function () {
         }, function () { });
     };
     JobMasterComponent.prototype.editMaster = function (masterId, masterType) {
-        console.log(this.masterGridDataList[masterId]);
-        var findIndex = this.masterGridDataList.findIndex(function (o) { return o.masterId == masterId && o.masterType == masterType; });
+        this.onSelectJobMaster(masterType);
+        var findIndex = this.tableDataList.findIndex(function (o) { return o.masterId == masterId && o.masterType == masterType; });
         this.editedRecordIndex = masterId;
         this.isEditMode = true;
         this.viewMode = false;
-        this.form.patchValue(this.masterGridDataList[findIndex]);
+        this.form.patchValue(this.tableDataList[findIndex]);
     };
     JobMasterComponent.prototype.onSelectJobMaster = function (evt) {
         this.selectedMasterTypeDropDownValue = this.form.get('masterType').value;
         this.enableCheckAll = false;
-        this.selectedCheckBox = [];
+        // this.selectedCheckBox = [];
         this.tableDataList = this.summaryHtmlDataList;
         console.log(evt);
         if (evt === 'All') {
             this.hideFormControl = false;
             this.tableDataList = this.summaryHtmlDataList;
-            this.tableDataList1 = this.tableDataList;
+            //  this.tableDataList1 = this.tableDataList;
         }
         else {
             this.hideFormControl = true;
             this.tableDataList = this.tableDataList.filter(function (o) { return o.masterType === evt; });
         }
-        this.tableDataList1 = this.tableDataList;
+        // this.tableDataList1 = this.tableDataList;
         this.checks = false;
         console.log(evt);
     };
     JobMasterComponent.prototype.cancelView = function () {
+        this.summaryHtmlDataList.forEach(function (x) { return x.isChecked = false; });
+        this.tableDataList.forEach(function (x) { return x.isChecked = false; });
+        this.enableCheckAll = false;
+        console.log('in reset');
+        this.checks = false;
         this.editedRecordIndex = 0;
         this.isEditMode = false;
-        this.form.reset();
+        //  this.form.reset();
         this.form.get('isActive').setValue(true);
-        this.onSelectJobMaster('All');
+        //  this.onSelectJobMaster( 'All' );
         this.form.patchValue({
-            masterType: 'All',
             masterCode: '',
             masterDescription: ''
         });
     };
-    JobMasterComponent.prototype.onCheckboxChange = function (evt, id) {
+    JobMasterComponent.prototype.onCheckboxChangeMasterSummary = function (evt, id, masterType, masterCode) {
         // this.enableCheckAll = false;
         // console.log(evt);
         // console.log(evt.target.checked);
@@ -337,29 +363,47 @@ var JobMasterComponent = /** @class */ (function () {
                 this.enableCheckAll = false;
                 this.selectedCheckBox = [];
                 this.enableCheckAll = true;
-                for (var i = 0; i < this.tableDataList1.length; i++) {
-                    if (this.tableDataList1[i].isActive == 1) {
-                        this.selectedCheckBox.push(this.tableDataList1[i]);
+                // this.tableDataList.forEach( x => x.isChecked = true && x.active == false );
+                for (var i = 0; i < this.tableDataList.length; i++) {
+                    if (this.tableDataList[i].isActive == 1) {
+                        this.selectedCheckBox.push(this.tableDataList[i]);
+                        this.tableDataList[i].isChecked = true;
                     }
                 }
             }
             else {
+                for (var i = 0; i < this.tableDataList.length; i++) {
+                    if (this.tableDataList[i].isActive == 1) {
+                        this.tableDataList[i].isChecked = false;
+                    }
+                }
                 this.checks = false;
                 this.enableCheckAll = false;
                 this.selectedCheckBox = [];
             }
         }
         else {
+            var findIndexOfTableDataList = this.tableDataList.findIndex(function (o) { return o.masterType == masterType && o.masterCode == masterCode; });
+            var findIndexOfSummaryHtmlDataListList = this.summaryHtmlDataList.findIndex(function (o) { return o.masterType == masterType && o.masterCode == masterCode; });
+            //console.log( 'indexe find is', findIndex );
             if (evt.target.checked == true) {
+                console.log('xxxxxxxxx');
+                // this.summaryHtmlDataList[findIndex].isChecked = true;
+                this.tableDataList[findIndexOfTableDataList].isChecked = true;
+                this.summaryHtmlDataList[findIndexOfSummaryHtmlDataListList].isChecked = true;
                 this.checks = false;
-                this.selectedCheckBox.push(this.summaryHtmlDataList[id]);
-                console.log('this.summaryHtmlDataList[id]', this.summaryHtmlDataList[id]);
+                console.log('chceck this', this.tableDataList);
+                this.selectedCheckBox.push(this.tableDataList[findIndexOfTableDataList]);
+                console.log('this.tableDataList[findIndex]', this.tableDataList[findIndexOfTableDataList]);
             }
             else if (evt.target.checked === false) {
+                //   this.summaryHtmlDataList[findIndex].isChecked = false;
+                this.tableDataList[findIndexOfTableDataList].isChecked = false;
+                this.summaryHtmlDataList[findIndexOfSummaryHtmlDataListList].isChecked = false;
                 this.checks = false;
                 console.log('in removing section');
-                this.selectedCheckBox.splice(this.summaryHtmlDataList[id], 1);
-                console.log('this.summaryHtmlDataList[id]', this.summaryHtmlDataList[id]);
+                this.selectedCheckBox.splice(this.tableDataList[findIndexOfTableDataList], 1);
+                console.log('this.summaryHtmlDataList[findIndex]', this.tableDataList[findIndexOfTableDataList]);
             }
             else {
                 console.log('something error');
@@ -811,34 +855,37 @@ var JobMasterComponent = /** @class */ (function () {
         this.enableCheckAll = false;
         this.uncheckSelectAll = false;
         this.selectedCheckBox = [];
+        this.uncheckSelectAll = false;
+        this.summaryHtmlDataList.forEach(function (x) { return x.isChecked = false; });
+        this.tableDataList.forEach(function (x) { return x.isChecked = false; });
+        this.enableCheckAll = false;
     };
-    JobMasterComponent.prototype.isAllSelected = function (evt) {
-        if (evt.target.value == false) {
-            this.checkUncheckAll();
-        }
-        else {
-            this.enableCompanyCheckAll = true;
-            this.masterSelected = this.summaryCompanyHtmlDataList.every(function (item) {
-                return item.isSelected == true;
-            });
-            // this.getCheckedItemList();
-        }
-    };
-    JobMasterComponent.prototype.getCheckedItemList = function () {
-        this.checkedList = [];
-        for (var i = 0; i < this.summaryCompanyHtmlDataList.length; i++) {
-            if (this.summaryCompanyHtmlDataList[i].isSelected) {
-                this.checkedList.push(this.summaryCompanyHtmlDataList[i]);
-            }
-        }
-        this.checkedList = JSON.stringify(this.checkedList);
-    };
-    JobMasterComponent.prototype.checkUncheckAll = function () {
-        for (var i = 0; i < this.summaryCompanyHtmlDataList.length; i++) {
-            this.summaryCompanyHtmlDataList[i].isSelected = this.masterSelected;
-        }
-        this.getCheckedItemList();
-    };
+    // isAllSelected( evt: any ) {
+    //   if ( evt.target.value == false ) {
+    //     this.checkUncheckAll();
+    //   } else {
+    //     this.enableCompanyCheckAll = true;
+    //     this.masterSelected = this.summaryCompanyHtmlDataList.every( function ( item: any ) {
+    //       return item.isSelected == true;
+    //     } );
+    //     // this.getCheckedItemList();
+    //   }
+    // }
+    // getCheckedItemList() {
+    //   this.checkedList = [];
+    //   for ( let i = 0; i < this.summaryCompanyHtmlDataList.length; i++ ) {
+    //     if ( this.summaryCompanyHtmlDataList[i].isSelected ) {
+    //       this.checkedList.push( this.summaryCompanyHtmlDataList[i] );
+    //     }
+    //   }
+    //   this.checkedList = JSON.stringify( this.checkedList );
+    // }
+    // checkUncheckAll() {
+    //   for ( let i = 0; i < this.summaryCompanyHtmlDataList.length; i++ ) {
+    //     this.summaryCompanyHtmlDataList[i].isSelected = this.masterSelected;
+    //   }
+    //   this.getCheckedItemList();
+    // }
     JobMasterComponent.prototype.UploadModal = function (template) {
         this.checksCompany = false;
         this.enableCompanyCheckAll = false;
@@ -850,7 +897,6 @@ var JobMasterComponent = /** @class */ (function () {
         this.summaryAllOtherMappingDetailsList = [];
         this.getAllOtherMappingDetailsResponse = {};
         this.jobMasterService.getAllOtheMappingDetails().subscribe(function (res) {
-            console.log('check mi');
             _this.getAllOtherMappingDetailsResponse = res.data.results;
             var i = 1;
             res.data.results.forEach(function (element) {
@@ -872,6 +918,7 @@ var JobMasterComponent = /** @class */ (function () {
     };
     JobMasterComponent.prototype.DeleteMasterMapping = function (masterId, masterType) {
         var _this = this;
+        console.log('in delete master mapping  id', masterId + 'Master type', masterType);
         var selectedIndex = this.jobMasterList.findIndex(function (o) { return o.value === masterType; });
         this.jobMasterService["delete"](masterId, this.jobMasterList[selectedIndex].deleteMapping).subscribe(function (res) {
             console.log(res);
@@ -880,9 +927,6 @@ var JobMasterComponent = /** @class */ (function () {
         }, function (error) {
             _this.alertService.sweetalertError(error.error.status.messsage);
         }, function () { });
-    };
-    JobMasterComponent.prototype.onClickAssignmentSummary = function () {
-        this.getAllOtheMappingDetails();
     };
     JobMasterComponent.prototype.ConfirmationDialog = function (confirmdialog, id, type, summaryType) {
         this.id = id;

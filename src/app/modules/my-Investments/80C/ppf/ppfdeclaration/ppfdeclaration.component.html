@@ -68,7 +68,7 @@
   <div *ngFor="let item of transactionDetail; let j = index">
     <div class="row pt-10 mt-10 bg-color-light_gray d-flex">
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Institution & Account No.</label>
+        <label class="form-label mt-1">Institution & Account No. :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label
@@ -81,7 +81,7 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1 pl-10">Account Holder Name</label>
+        <label class="form-label mt-1 pl-10">Account Holder Name :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label
@@ -94,7 +94,7 @@
         </label>
       </div>
       <div class="ml-2 pl-1 pr-0">
-        <label class="form-label mt-1">Frequency</label>
+        <label class="form-label mt-1">Frequency :</label>
       </div>
       <div class="ml-2 pl-1 pr-0 col-md-2">
         <label
@@ -613,7 +613,7 @@
                     <td>
                       <span>
                         <input
-                          type="text"
+                          type="text" onkeypress="return /[0-9]/i.test(event.key)"
                           class="form-control align-right"
                           (change)="changeReceiptAmountFormat()"
                           [(ngModel)]="receiptAmount"
@@ -707,7 +707,7 @@
                     </span>
                   </td>
                   <td>
-                    {{ documentSummary.institutionName }}
+                    {{ documentSummary.group1MasterList[0].institution }}
                   </td>
                   <td>
                     <span
@@ -720,16 +720,26 @@
                       }}</span
                     >
                   </td>
-                  <td class="padding-0">
-                    <div
-                      class="pd-5"
+                  <td class="padding-0"  *ngIf = "documentSummary.group1MasterList.length > 1">
+                    <div class="pd-5"
                       *ngFor="let policyNo of documentSummary.group1MasterList"
-                      tooltip="{{ policyNo.policyNo }}"
+                      tooltip="{{ policyNo.accountNumber }}"
                     >
                       <div colspan="1">
-                        {{ policyNo.policyNo }}
+                        {{ policyNo.accountNumber }}
                       </div>
                     </div>
+                  </td>
+                  <td class="padding-0"  *ngIf = "documentSummary.group1MasterList.length == 1">
+
+                    <span
+                    tooltip="{{
+                      documentSummary.group1MasterList[0].accountNumber
+                    }}"
+                  >
+                        {{ documentSummary.group1MasterList[0].accountNumber }}
+                    </span>
+
                   </td>
                   <td>
                     <span

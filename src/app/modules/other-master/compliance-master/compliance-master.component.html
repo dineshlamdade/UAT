@@ -130,8 +130,8 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="issueDate"
                                 [ngClass]="{'is-invalid' : form.get('issueDate').status == 'INVALID'}"
                                 (bsValueChange)="onBsValueChangeDateOfSetup()" data-provide="datepicker"
-                                data-date-autoclose="true" class="form-control" placeholder="Enter Issued Date"
-                                bsDatepicker>
+                                placement="center" data-date-autoclose="true" class="form-control"
+                                placeholder="Enter Issued Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -141,8 +141,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="coverageDate"
                                 [ngClass]="{'is-invalid' : form.get('coverageDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="Enter Coverage Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="Enter Coverage Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -347,7 +347,8 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeFromDate"
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('employeeFromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                (bsValueChange)="onChangeEmpFromDate($event, i)" placeholder="From Date" bsDatepicker>
+                                placement="center" (bsValueChange)="onChangeEmpFromDate($event, i)"
+                                placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -356,6 +357,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeToDate"
+                                placement="center"
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('employeeToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
@@ -398,7 +400,7 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyFromDate"
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('companyFromDate').status == 'INVALID'}"
                                 class="form-control" data-provide="datepicker" data-date-autoclose="true"
-                                class="form-control" placeholder="From Date" bsDatepicker>
+                                placement="center" class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -407,6 +409,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyToDate"
+                                placement="center"
                                 [ngClass]="{'is-invalid' :form.get('pfFormArray')['controls'][i].get('companyToDate').status == 'INVALID'}"
                                 class="form-control" data-provide="datepicker" data-date-autoclose="true"
                                 class="form-control" placeholder="To Date" bsDatepicker>
@@ -539,8 +542,8 @@
                                   onclick="document.getElementById('submitbutton').disabled = true;document.getElementById('submitbutton').style.opacity='0.5';"
                                   [ngClass]="form.get('pfFormArray')['controls'][i].invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                                   class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
-                                  [disabled]="form.get('pfFormArray')['controls'][i].invalid" tooltip="Update"
-                                  (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
+                                  [disabled]="form.get('pfFormArray')['controls'][i].invalid || form.invalid"
+                                  tooltip="Update" (click)="updateAll()"><b><i class="fa fa-floppy-o"></i></b>
                                   Update</button>
 
                                 <button type="button"
@@ -613,8 +616,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1FromDate"
                                 [ngClass]="{'is-invalid' :form.get('eps1FromDate').status  == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -623,6 +626,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1ToDate"
+                                placement="center"
                                 [ngClass]="{'is-invalid' : form.get('eps1ToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
@@ -661,8 +665,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
                                 [ngClass]="{'is-invalid' : form.get('esic1FromDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -672,8 +676,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
                                 [ngClass]="{'is-invalid' : form.get('esic1ToDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="To Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -791,8 +795,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityFromDate"
                                 [ngClass]="{'is-invalid' : form.get('gratuityFromDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -802,8 +806,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityToDate"
                                 [ngClass]="{'is-invalid' : form.get('gratuityToDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="To Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
                         </div>
@@ -955,6 +959,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeFromDate"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                                placement="center"
                                 [ngClass]="{'is-invalid' : form.get('employeeFromDate').status == 'INVALID'}"
                                 (bsValueChange)="onChangeEmpFromDate($event, -1)" placeholder="From Date" bsDatepicker>
                             </div>
@@ -966,8 +971,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="employeeToDate"
                                 [ngClass]="{'is-invalid' : form.get('employeeToDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="To Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
                         </div>
@@ -1005,8 +1010,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyFromDate"
                                 [ngClass]="{'is-invalid' : form.get('companyFromDate').status == 'INVALID'}"
-                                class="form-control" data-provide="datepicker" data-date-autoclose="true"
-                                class="form-control" placeholder="From Date" bsDatepicker>
+                                placement="center" class="form-control" data-provide="datepicker"
+                                data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1016,8 +1021,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="companyToDate"
                                 [ngClass]="{'is-invalid' : form.get('companyToDate').status == 'INVALID'}"
-                                class="form-control" data-provide="datepicker" data-date-autoclose="true"
-                                class="form-control" placeholder="To Date" bsDatepicker>
+                                placement="center" class="form-control" data-provide="datepicker"
+                                data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1130,8 +1135,8 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saFromDate"
                                 [ngClass]="{'is-invalid' : form.get('saFromDate').status == 'INVALID'}"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1140,7 +1145,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saToDate"
-                                [ngClass]="{'is-invalid' : form.get('saToDate').status == 'INVALID'}"
+                                [ngClass]="{'is-invalid' : form.get('saToDate').status == 'INVALID'}" placement="center"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
                             </div>
@@ -1207,7 +1212,7 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1FromDate"
                                 [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1FromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1216,6 +1221,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="eps1ToDate"
+                                placement="center"
                                 [ngClass]="{'is-invalid' :form.get('epsArray')['controls'][i].get('eps1ToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
@@ -1295,7 +1301,7 @@
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1FromDate"
                                 [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1FromDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1304,6 +1310,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="esic1ToDate"
+                                placement="center"
                                 [ngClass]="{'is-invalid' :form.get('esiArray')['controls'][i].get('esic1ToDate').status == 'INVALID'}"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                 placeholder="To Date" bsDatepicker>
@@ -1576,7 +1583,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityFromDate"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1586,7 +1593,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gratuityToDate"
                                 data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="To Date" bsDatepicker>
+                                placement="center" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1648,8 +1655,8 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saFromDate"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="From Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placeholder="From Date" bsDatepicker>
                             </div>
                           </div>
 
@@ -1658,8 +1665,8 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="saToDate"
-                                data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                placeholder="To Date" bsDatepicker>
+                                placement="center" data-provide="datepicker" data-date-autoclose="true"
+                                class="form-control" placement="center" placeholder="To Date" bsDatepicker>
                             </div>
                           </div>
 
