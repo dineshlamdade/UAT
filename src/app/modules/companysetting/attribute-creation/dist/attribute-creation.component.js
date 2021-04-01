@@ -9,49 +9,43 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 exports.__esModule = true;
-exports.AttributeCreationComponent = exports.SaveAttributeSelection = exports.SaveAttributeCreation = void 0;
+exports.AttributeCreationComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var SaveAttributeCreation = /** @class */ (function () {
-    function SaveAttributeCreation() {
-    }
-    return SaveAttributeCreation;
-}());
-exports.SaveAttributeCreation = SaveAttributeCreation;
-var SaveAttributeSelection = /** @class */ (function () {
-    function SaveAttributeSelection() {
-    }
-    return SaveAttributeSelection;
-}());
-exports.SaveAttributeSelection = SaveAttributeSelection;
 var AttributeCreationComponent = /** @class */ (function () {
-    // TypeList: Array<any> = [];
-    // HeadCreationList:Array<any> = [];
-    // Name:string;
-    function AttributeCreationComponent(formBuilder, attributeCreationService, alertService, document) {
+    function AttributeCreationComponent(formBuilder, attributeCreationService, alertService, modalService, document) {
         this.formBuilder = formBuilder;
         this.attributeCreationService = attributeCreationService;
         this.alertService = alertService;
+        this.modalService = modalService;
         this.document = document;
+        // sort alphabetically
+        this.NatureList = [
+            { label: 'Formula', value: 'F' },
+            { label: 'Garnishment', value: 'G' },
+            { label: 'Head  ', value: 'H' },
+            { label: 'List', value: 'L' },
+            { label: 'Per Employee Input', value: 'PEI' },
+            { label: 'Range Value Per Instance', value: 'Range Value / Instance' },
+            { label: 'Range Value Per Period', value: 'Range Value / Period' },
+            { label: 'Range Of No Of Instances Per Period', value: 'Range Instances / Period' },
+            { label: 'Stored Procedure', value: 'SP' },
+            { label: 'Source Destination Matrix', value: 'SDM' },
+            { label: 'Work Flow', value: 'WF' },
+        ];
+        this.isEditMode = false;
+        this.optionId = 0;
+        this.validOptionList = false;
         this.AttributeCreationList = [];
-        this.NatureList = [];
+        this.attributeCreationSummaryList = [];
+        this.summaryHtmlDataList = [];
         this.disabled = true;
         this.viewCancelButton = false;
+        this.viewUpdateButton = false;
         this.hidevalue = false;
-        //summons = [];
         this.summons = [];
-        this.newlist = [];
         this.optionList = [];
-        this.NatureList = [
-            { label: 'L', value: 'L' },
-            { label: 'F', value: 'F' },
-            { label: 'SP', value: 'SP' },
-            { label: 'SDM', value: 'SDM' },
-            { label: 'PEI', value: 'PEI' },
-            { label: 'WF', value: 'WF' },
-            { label: 'GM', value: 'GM' },
-        ];
     }
     AttributeCreationComponent.prototype.ngOnInit = function () {
         this.AttributeCreationForm = this.formBuilder.group({
@@ -59,142 +53,235 @@ var AttributeCreationComponent = /** @class */ (function () {
             code: new forms_1.FormControl('', forms_1.Validators.required),
             description: new forms_1.FormControl('', forms_1.Validators.required),
             attributeNature: new forms_1.FormControl('', forms_1.Validators.required),
-            optionList: new forms_1.FormControl('', forms_1.Validators.required)
+            optionList: new forms_1.FormControl('')
         });
         this.getAllAttributeCreation();
     };
     // get All AttributeCreation
     AttributeCreationComponent.prototype.getAllAttributeCreation = function () {
         var _this = this;
-        this.attributeCreationService.getAllAttributeCreation().subscribe(function (res) {
+        this.attributeCreationSummaryList = [];
+        this.AttributeCreationList = [];
+        this.attributeCreationService.getAllGlobalAttributeCreation().subscribe(function (res) {
             _this.AttributeCreationList = res.data.results;
+            res.data.results.forEach(function (element) {
+                var value = '';
+                for (var i = 0; i < element.optionList.length; i++) {
+                    if (i == 0) {
+                        value = element.optionList[i].optionValue;
+                    }
+                    else {
+                        value = value + ', ' + element.optionList[i].optionValue;
+                    }
+                }
+                console.log('value ', value);
+                var label = '';
+                var ind = _this.NatureList.findIndex(function (o) { return o.value == element.attributeNature.trim(); });
+                if (ind != -1) {
+                    label = _this.NatureList[ind].label;
+                }
+                else {
+                    label = '';
+                }
+                var obj = {
+                    globalAttributeMasterId: element.globalAttributeMasterId,
+                    code: element.code,
+                    attributeNatureLongForm: label,
+                    attributeNature: element.attributeNature.trim(),
+                    numberOfOption: element.numberOfOption,
+                    description: element.description,
+                    optionValue: value
+                };
+                _this.attributeCreationSummaryList.push(obj);
+            });
         });
+    };
+    AttributeCreationComponent.prototype.editAttributeCreation = function (id) {
+        console.log('edit');
+        this.disabled = false;
+        this.viewCancelButton = false;
+        this.viewUpdateButton = true;
+        this.viewUpdateButton = true;
+        this.hidevalue = true;
+        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == id; });
+        this.AttributeCreationForm.patchValue({ code: this.attributeCreationSummaryList[index].code });
+        this.AttributeCreationForm.patchValue({ description: this.attributeCreationSummaryList[index].description });
+        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNature });
+        if (this.attributeCreationSummaryList[index].optionValue.length > 0) {
+            var split = this.attributeCreationSummaryList[index].optionValue.split(',');
+            this.summaryHtmlDataList = [];
+            console.log(split);
+            for (var i = 0; i < split.length; i++) {
+                this.summaryHtmlDataList.push({ id: i, name: split[i] });
+            }
+        }
+        this.AttributeCreationForm.get('attributeNature').disable();
     };
     // Get Attribute Creation ById
     AttributeCreationComponent.prototype.GetAttributeCreationByIdDisable = function (id) {
-        var _this = this;
-        // this.CycleupdateFlag=true;
-        // this.CycleupdateFlag1=false;
         this.disabled = false;
         this.viewCancelButton = true;
-        this.attributeCreationService.GetAttributeCreationById(id)
-            .subscribe(function (response) {
-            //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-            _this.AttributeCreationForm.patchValue({ code: response.data.results[0].code });
-            _this.AttributeCreationForm.patchValue({ description: response.data.results[0].description });
-            _this.AttributeCreationForm.patchValue({ attributeNature: response.data.results[0].attributeNature });
-            if (response.data.results[0].attributeNature == "L") {
-                _this.hidevalue = true;
+        this.hidevalue = false;
+        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == id; });
+        this.AttributeCreationForm.patchValue({ code: this.attributeCreationSummaryList[index].code });
+        this.AttributeCreationForm.patchValue({ description: this.attributeCreationSummaryList[index].description });
+        this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNature });
+        if (this.attributeCreationSummaryList[index].optionValue.length > 0) {
+            var split = this.attributeCreationSummaryList[index].optionValue.split(',');
+            this.summaryHtmlDataList = [];
+            this.hidevalue = false;
+            console.log(split);
+            for (var i = 0; i < split.length; i++) {
+                this.summaryHtmlDataList.push({ id: i, name: split[i] });
             }
-            else {
-                _this.hidevalue = false;
-            }
-            _this.summons = [];
-            if (response.data.results[0].optionList.length > 0) {
-                response.data.results[0].optionList.forEach(function (element) {
-                    // const obj = {
-                    //     label: element,
-                    //     value: element,
-                    // };
-                    _this.summons.push(element.optionValue);
-                    // const control = <FormArray>this.AttributeCreationForm.controls['optionList'];
-                    // control.push(element.optionValue)
-                    //this.transactionInstitutionNames.push(obj);
-                    //  this.AttributeCreationForm.patchValue({ optionList: this.summons});
-                });
-                _this.AttributeCreationForm.patchValue({ optionList: _this.summons });
-            }
-        });
-        this.summons = [];
-    };
-    AttributeCreationComponent.prototype.onChangeEvent = function (event) {
-        this.summons.push(event);
-        //this.summons
-        // this.newlist.push(this.summons.values)
-        // if ((this.id == undefined || this.id == '00000000-0000-0000-0000-000000000000')) {
-        //  this.HeadCreationForm.patchValue({ shortName:this.Name });
-        // this.EventDetails.controls["RegistrationClosedDate"].setValue["EventStartDate"];
-        // this.notificationForm.patchValue({ scheduleTime: this.CurrentTime });
-        // }
+        }
+        this.AttributeCreationForm.disable();
     };
     AttributeCreationComponent.prototype.onStatusChange = function (event) {
-        this.selectedNature = event.target.value;
-        if (this.selectedNature == 'L') {
+        console.log('chceck', event.target.value);
+        if (event.target.value == 'L') {
             this.hidevalue = true;
-            this.AttributeCreationForm.controls['optionList'].setValidators([forms_1.Validators.required]);
+            console.log('length is ', this.summaryHtmlDataList);
+            if (this.summaryHtmlDataList.length === 0) {
+                this.validOptionList = true;
+            }
+            else {
+                this.validOptionList = false;
+            }
         }
         else {
+            this.validOptionList = false;
+            this.summaryHtmlDataList = [];
             this.summons = [];
             this.hidevalue = false;
-            this.AttributeCreationForm.patchValue({ addDays: null });
-            this.AttributeCreationForm.get('optionList').clearValidators();
-            this.AttributeCreationForm.get('optionList').updateValueAndValidity();
         }
     };
-    AttributeCreationComponent.prototype.addOptionList = function () {
-        this.AttributeCreationForm.patchValue({ optionList: '' });
+    AttributeCreationComponent.prototype.addOptionList = function (evt) {
+        var _this = this;
+        if (this.isEditMode) {
+            var isContain = this.summaryHtmlDataList.some(function (_a) {
+                var name = _a.name;
+                return name === evt;
+            });
+            console.log('isContain ', isContain);
+            if (isContain == true) {
+                this.alertService.sweetalertWarning('Value already presetnt in Summary table.');
+            }
+            else {
+                var index = this.summaryHtmlDataList.findIndex(function (o) { return o.id == _this.optionId; });
+                this.summaryHtmlDataList[index].name = evt;
+            }
+        }
+        else {
+            console.log(evt);
+            if (evt.length > 0) {
+                var isContain = this.summaryHtmlDataList.some(function (_a) {
+                    var name = _a.name;
+                    return name === evt;
+                });
+                console.log('isContain ', isContain);
+                var id = 0;
+                if (this.summaryHtmlDataList.length !== 0) {
+                    id = this.summaryHtmlDataList[this.summaryHtmlDataList.length - 1].id;
+                    this.validOptionList = false;
+                }
+                else {
+                    id = 0;
+                    this.validOptionList = true;
+                }
+                if (isContain == true) {
+                    this.alertService.sweetalertWarning('Value already presetnt in Summary table.');
+                }
+                else {
+                    this.summaryHtmlDataList.push({ name: evt, id: id + 1 });
+                }
+                this.validOptionList = false;
+            }
+        }
+        this.AttributeCreationForm.get('optionList').setValue('');
+        this.isEditMode = false;
     };
     //add new AttributeCreation
     AttributeCreationComponent.prototype.addAttributeCreation = function () {
         var _this = this;
-        var addAttributeCreation = Object.assign({});
-        //addAttributeCreation.options=this.summons;
-        addAttributeCreation.options = [];
-        this.summons.forEach(function (f) {
-            addAttributeCreation.options.push(f);
-        });
-        addAttributeCreation.numberOfOption = this.summons.length.toString();
-        addAttributeCreation.code = this.AttributeCreationForm.value.code;
-        addAttributeCreation.description = this.AttributeCreationForm.value.description;
-        addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
-        //     code;string;
-        // description:string;
-        // attributeNature:string;
-        if (addAttributeCreation.globalAttributeMasterId == undefined || addAttributeCreation.globalAttributeMasterId == 0) {
+        if (this.viewUpdateButton == true) {
+            console.log('add update logic here');
+        }
+        else {
+            var addAttributeCreation = Object.assign({});
+            delete addAttributeCreation.globalAttributeMasterId;
+            addAttributeCreation.options = [];
+            addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+            addAttributeCreation.code = this.AttributeCreationForm.value.code;
+            addAttributeCreation.description = this.AttributeCreationForm.value.description;
+            addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
+            var array = [];
+            for (var i = 0; i < this.summaryHtmlDataList.length; i++) {
+                array.push(this.summaryHtmlDataList[i].name);
+            }
+            addAttributeCreation.options = array;
+            console.log(JSON.stringify(addAttributeCreation));
             this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe(function (res) {
-                addAttributeCreation.options = [];
+                // addAttributeCreation.options = [];
                 _this.summons = [];
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllAttributeCreation();
-                _this.hidevalue = false;
-                _this.AttributeCreationForm.reset();
-                //  this.AttributeCreationForm.patchValue({ isStatutory:'0' });
+                _this.hidevalue = true;
+                _this.summaryHtmlDataList = [];
+                _this.CancelAttributeCreation();
             }, function (error) {
                 _this.alertService.sweetalertError(error["error"]["status"]["message"]);
             });
         }
-        // else{
-        //
-        //   //Update BusinessYear service
-        //   addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
-        //   addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
-        //   this.payrollService.UpdateBusinessYear(addBusinessYear.id,addBusinessYear).subscribe((res:any )=> {
-        //
-        //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
-        //   this.getAllBusinessyear();
-        //   this.BusinessYearform.reset();
-        //   this.updateFlag=false;
-        //   },
-        //   (error: any) => {
-        //      this.sweetalertError(error["error"]["status"]["message"]);
-        //      // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
-        //    });
-        // }
     };
     AttributeCreationComponent.prototype.CancelAttributeCreation = function () {
+        this.viewUpdateButton = false;
+        this.AttributeCreationForm.enable();
+        this.summaryHtmlDataList = [];
         this.summons = [];
         this.disabled = true;
         this.hidevalue = false;
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
-        //this.HeadCreationForm.patchValue({ isStatutory:'0' });
+        this.AttributeCreationForm.patchValue({
+            attributeNature: ''
+        });
     };
     AttributeCreationComponent.prototype.ResetAttributeCreation = function () {
+        this.viewUpdateButton = false;
+        this.AttributeCreationForm.enable();
+        this.summaryHtmlDataList = [];
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
         this.hidevalue = false;
         this.summons = [];
-        this.AttributeCreationForm.patchValue({ isStatutory: '0' });
+        this.AttributeCreationForm.patchValue({
+            attributeNature: ''
+        });
+    };
+    AttributeCreationComponent.prototype.deleteName = function () {
+        var _this = this;
+        console.log('in del Name', this.optionId);
+        var index = this.summaryHtmlDataList.findIndex(function (o) { return o.id == _this.optionId; });
+        this.summaryHtmlDataList.splice(index, 1);
+        if (this.summaryHtmlDataList.length == 0) {
+            this.validOptionList = true;
+        }
+    };
+    AttributeCreationComponent.prototype.deleteNameByName = function (name, id) {
+        console.log('del by name', name, id);
+        this.optionId = id;
+        //  this.summaryHtmlDataList.splice( id, 1 );
+    };
+    AttributeCreationComponent.prototype.editNameMaster = function (id, name) {
+        this.isEditMode = true;
+        this.optionId = id;
+        this.AttributeCreationForm.patchValue({
+            optionList: name
+        });
+    };
+    AttributeCreationComponent.prototype.UploadModal1 = function (template) {
+        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
     };
     AttributeCreationComponent = __decorate([
         core_1.Component({
@@ -203,7 +290,7 @@ var AttributeCreationComponent = /** @class */ (function () {
             styleUrls: ['./attribute-creation.component.scss'],
             encapsulation: core_1.ViewEncapsulation.None
         }),
-        __param(3, core_1.Inject(common_1.DOCUMENT))
+        __param(4, core_1.Inject(common_1.DOCUMENT))
     ], AttributeCreationComponent);
     return AttributeCreationComponent;
 }());

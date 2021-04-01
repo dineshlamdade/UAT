@@ -18,8 +18,9 @@
             </div>
 
             <input data-provide="datepicker" data-date-autoclose="true" formControlName="fromDate" class="form-control"
-              placeholder="DD-MMM" [ngClass]="{'is-invalid' : BusinessYearform.get('fromDate').status == 'INVALID'}"
-              bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
+              placement="center" placeholder="DD-MMM"
+              [ngClass]="{'is-invalid' : BusinessYearform.get('fromDate').status == 'INVALID'}" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
 
 
           </div>
@@ -35,7 +36,8 @@
             </div>
             <input data-provide="datepicker" data-date-autoclose="true" formControlName="toDate" class="form-control"
               placeholder="DD-MMM" [ngClass]="{'is-invalid' : BusinessYearform.get('toDate').status == 'INVALID'}"
-              bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
+              placement="center" bsDatepicker
+              [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
 
 
           </div>

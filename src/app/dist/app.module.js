@@ -10,8 +10,6 @@ exports.AppModule = void 0;
 var chapterVIA_module_1 = require("./modules/my-Investments/VI-A/chapterVIA.module");
 var other_master_module_1 = require("./modules/other-master/other-master.module");
 var drag_drop_1 = require("@angular/cdk/drag-drop");
-// transloco
-// import your locales
 var common_1 = require("@angular/common");
 var http_1 = require("@angular/common/http");
 var en_GB_1 = require("@angular/common/locales/en-GB");
@@ -37,6 +35,8 @@ var transloco_loader_1 = require("./core/strategies/transloco.loader");
 var auth_module_1 = require("./modules/auth/auth.module");
 var profile_component_1 = require("./modules/profile/profile.component");
 var profile_module_1 = require("./modules/profile/profile.module");
+var query_module_1 = require("./modules/query/query.module");
+var loan_module_1 = require("./modules/loan/loan.module");
 var settings_component_1 = require("./modules/settings/settings.component");
 var settings_module_1 = require("./modules/settings/settings.module");
 var bn_ng_idle_1 = require("bn-ng-idle");
@@ -49,19 +49,20 @@ var dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 var employee_master_module_1 = require("./modules/employee-master/employee-master.module");
 var eighty_c_module_1 = require("./modules/my-Investments/80C/eighty-c.module");
 var my_Investments_module_1 = require("./modules/my-Investments/my-Investments.module");
-var payroll_module_1 = require("./modules/payroll/payroll.module");
+//import { investmentOthersModule } from './modules/my-Investments/others/others.module';
+var payroll_module_1 = require("./modules/companysetting/payroll/payroll.module");
 var admin_approval_module_1 = require("./modules/admin-approval/admin-approval.module");
 var uploadexcel_module_1 = require("./modules/uploadexcel/uploadexcel.module");
 var employeemasterlistpage_module_1 = require("./modules/employeemasterlistpage/employeemasterlistpage.module");
-//////////////////////addaed by bharati////
-//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
-//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
+var payroll_inputs_module_1 = require("./modules/payroll-inputs/payroll-inputs.module");
 var shorten_string_pipe_1 = require("./core/utility/pipes/shorten-string.pipe");
 var companysetting_module_1 = require("./modules/companysetting/companysetting.module");
+var lock_module_1 = require("./modules/lock/lock.module");
 ////////////////////////////////////
 var app_primeNG_module_1 = require("./app.primeNG.module");
 var accordion_1 = require("primeng/accordion");
+var email_sms_module_1 = require("./modules/email-sms/email-sms.module");
+var loan_master_module_1 = require("./modules/loan-master/loan-master.module");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -81,9 +82,14 @@ var AppModule = /** @class */ (function () {
                 accordion_1.AccordionModule,
                 dashboard_module_1.DashboardModule,
                 payroll_module_1.PayrollModule,
+                query_module_1.QueryModule,
+                loan_module_1.LoanModule,
+                companysetting_module_1.CompanySettingModule,
+                my_Investments_module_1.MyInvestmentsModule,
+                payroll_inputs_module_1.PayrollInputsModule,
                 /////////////////
                 //  payrollModule,
-                companysetting_module_1.CompanySettingModule,
+                lock_module_1.LockModule,
                 ////////////////////////////////
                 my_Investments_module_1.MyInvestmentsModule,
                 chapterVIA_module_1.investmentChapterVIAModule,
@@ -110,14 +116,16 @@ var AppModule = /** @class */ (function () {
                 app_routing_module_1.AppRoutingModule,
                 dashboard_module_1.DashboardModule,
                 my_Investments_module_1.MyInvestmentsModule,
-                payroll_module_1.PayrollModule,
                 employee_master_module_1.EmployeeMasterModule,
                 app_primeNG_module_1.PrimeNGModule,
                 accordion_1.AccordionModule,
                 other_master_module_1.OtherMasterModule,
                 admin_approval_module_1.AdminApprovalModule,
+                admin_approval_module_1.AdminApprovalModule,
                 uploadexcel_module_1.UploadexcelModule,
                 employeemasterlistpage_module_1.EmployeemasterlistpageModule,
+                email_sms_module_1.EmailSmsModule,
+                loan_master_module_1.LoanMasterModule
             ],
             providers: [datepicker_1.BsDatepickerModule,
                 bn_ng_idle_1.BnNgIdleService,
@@ -132,12 +140,11 @@ var AppModule = /** @class */ (function () {
                         fallbackLang: 'fr',
                         prodMode: false
                     }
-                }, {
-                    provide: http_1.HTTP_INTERCEPTORS,
-                    useClass: token_interceptor_service_1.TokenInterceptorService,
-                    multi: true
-                },
+                }, { provide: http_1.HTTP_INTERCEPTORS, useClass: token_interceptor_service_1.TokenInterceptorService, multi: true },
                 shorten_string_pipe_1.ShortenStringPipe,],
+            // schemas: [
+            //   CUSTOM_ELEMENTS_SCHEMA
+            // ],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);

@@ -70,7 +70,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfSetup"
                                 (bsValueChange)="onBsValueChangeDateOfSetup()" data-provide="datepicker"
-                                [maxDate]="today" data-date-autoclose="true" class="form-control"
+                                placement="center" [maxDate]="today" data-date-autoclose="true" class="form-control"
                                 placeholder="Date of Setup" bsDatepicker>
                             </div>
                           </div>
@@ -127,7 +127,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="gstIssueDate"
                                 (bsValueChange)="onBsValueChangeDateOfGstIssueDate()" data-provide="datepicker"
-                                data-date-autoclose="true" class="form-control"
+                                data-date-autoclose="true" class="form-control" placement="center"
                                 [ngClass]="{'is-invalid' : form.get('gstIssueDate').status == 'INVALID'}"
                                 placeholder="GST Issued Date" bsDatepicker>
                             </div>
@@ -146,7 +146,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="linIssueDate"
                                 (bsValueChange)="onBsValueChangeLinIssueDate()" data-provide="datepicker"
-                                data-date-autoclose="true" class="form-control"
+                                data-date-autoclose="true" class="form-control" placement="center"
                                 [ngClass]="{'is-invalid' : form.get('linIssueDate').status == 'INVALID'}"
                                 placeholder="LIN Issued Date" bsDatepicker>
                             </div>
@@ -174,7 +174,7 @@
                               <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="stpiIssueDate"
                                 (bsValueChange)="onBsValueChangeStpiIssueDate()" data-provide="datepicker"
-                                data-date-autoclose="true" class="form-control"
+                                data-date-autoclose="true" class="form-control" placement="center"
                                 [ngClass]="{'is-invalid' : form.get('stpiIssueDate').status == 'INVALID'}"
                                 placeholder="STPI Issued Date" bsDatepicker>
                             </div>
@@ -314,11 +314,16 @@
 
                         <ng-template #newDeb>
 
-                          <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
+                          <!-- <button type="submit" [ngClass]="{'disabled-btn-bg-lightgrey' : form.invalid,
                         'btn-bg-green': !form.invalid}"
                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                             (click)="save()" [disabled]="form.invalid"><b><i class="fa fa-floppy-o"></i></b>
-                            Update</button>
+                            Update</button> -->
+                          <button type="submit"
+                            [ngClass]="form.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
+                            class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
+                            (click)="save()" [disabled]="form.invalid">
+                            <b><i class="fa fa-floppy-o"></i></b>Update</button>
 
 
                           <button type="button"

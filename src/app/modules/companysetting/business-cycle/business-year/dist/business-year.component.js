@@ -10,11 +10,12 @@ exports.BusinessYearComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var BusinessYearComponent = /** @class */ (function () {
-    function BusinessYearComponent(datepipe, companySetttingService, formBuilder, alertService) {
+    function BusinessYearComponent(datepipe, companySetttingService, formBuilder, alertService, modalService) {
         this.datepipe = datepipe;
         this.companySetttingService = companySetttingService;
         this.formBuilder = formBuilder;
         this.alertService = alertService;
+        this.modalService = modalService;
         this.editedRecordIndexId = 0;
         this.BusinessYear = [
             { label: '2010', value: '2010' },
@@ -146,6 +147,9 @@ var BusinessYearComponent = /** @class */ (function () {
             _this.BusinessYearform.patchValue({ businessYear: response.data.results[0].businessYear });
         });
         this.BusinessYearform.get('description').disable();
+    };
+    BusinessYearComponent.prototype.UploadModal1 = function (template) {
+        this.modalRef = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-md' }));
     };
     BusinessYearComponent = __decorate([
         core_1.Component({
