@@ -163,8 +163,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
 
     this.issueTypeOfList = [
-      { label: 'VIII th Issue', value: 'VIII th Issue' },
-      { label: 'IX th Issue', value: 'IX th Issue' },
+      { label: 'VIII th Issue', value: 'VIII' },
+      { label: 'IX th Issue', value: 'IX' },
     ];
 
     this.masterPage();
@@ -469,9 +469,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       if (this.form.value.frequencyOfPayment === 'One Time') {
         installment = installment * 1;
       }
-      const formatedPremiumAmount = this.form.value.premiumAmount;
+      // const formatedPremiumAmount = this.form.value.premiumAmount;
       // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+      // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
       this.form.get('annualAmount').setValue(installment);
     }
   }
