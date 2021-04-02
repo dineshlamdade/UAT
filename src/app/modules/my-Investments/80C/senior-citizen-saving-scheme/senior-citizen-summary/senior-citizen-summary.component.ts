@@ -13,6 +13,7 @@ export class SeniorCitizenSummaryComponent implements OnInit {
   @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
+  accountNumber: string;
 
   onEditSummary(institution: string, policyNo: string) {
     this.tabIndex = 2;
@@ -27,12 +28,26 @@ export class SeniorCitizenSummaryComponent implements OnInit {
     //console.log('policyNo::', policyNo);
     this.myEvent.emit(data);
   }
+  onViewSummary(institution: string, accountNumber: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution: institution,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
+    };
+    this.institution = institution;
+    this.accountNumber = accountNumber;
+
+    this.myEvent.emit(data);
+  }
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
+  public futureNewPolicyDeclaredAmount: 0;
+  public futureGlobalPolicyDeclaredAmount : 0;
+  public tempFlag : boolean;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -63,6 +78,7 @@ export class SeniorCitizenSummaryComponent implements OnInit {
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.futureNewPolicyDeclaredAmount =
         res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -86,6 +102,7 @@ export class SeniorCitizenSummaryComponent implements OnInit {
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.futureNewPolicyDeclaredAmount =
           res.data.results[0].futureNewPolicyDeclaredAmount;
+          this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
         this.grandTotalDeclaredAmount =
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =
@@ -96,7 +113,26 @@ export class SeniorCitizenSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+    if (this.futureNewPolicyDeclaredAmount > 0) {
     this.addFuturePolicy();
+  }else if(this.futureNewPolicyDeclaredAmount <0) {
+    this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+  }
+  }
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
+
+    if (!pattern.test(inputChar)) {
+      this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
   }
 
   jumpToMasterPage(n: number) {
@@ -113,4 +149,14 @@ export class SeniorCitizenSummaryComponent implements OnInit {
     console.log('institution::', institution);
     console.log('policyNo::', policyNo);
   }
+   // On onEditSummary
+   onViewSummary1(institution: string, accountNumber: string) {
+    this.tabIndex = 2;
+    this.institution = institution;
+    this.accountNumber = accountNumber;
+    console.log('institution::', institution);
+    console.log('accountNumber::', accountNumber);
+  }
 }
+
+
