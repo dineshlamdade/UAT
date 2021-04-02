@@ -60,6 +60,12 @@ export class EducationDetailComponent implements OnInit {
   saveNextBoolean: boolean = false
   public today = new Date();
   confirmationMsg: string;
+  public degreeNameInvalid :boolean=false;
+  public universityNameInvalid :boolean=false;
+  public countryNameInvalid :boolean=false;
+  public specializationOneNameInvalid :boolean=false;
+  public specializationTwoNameInvalid :boolean=false;
+  
 
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
@@ -541,7 +547,92 @@ export class EducationDetailComponent implements OnInit {
       event.preventDefault();
 
     }
+  }
 
+  isDegreeNameContainsOnlySpecialCharacter() {
+    this.degreeNameInvalid = false
+    var splChars = "*|,\" :<>[]{}`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.EducationInfoForm.get( 'degreeName' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.EducationInfoForm.get( 'degreeName' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.degreeNameInvalid = true;
+      } else {
+        this.degreeNameInvalid = false;
+        break;
+      }
+    }
+    if ( this.degreeNameInvalid == true ) {
+      this.EducationInfoForm.get('degreeName').invalid;
+
+    }
+  }
+
+  isUniversityNameContainsOnlySpecialCharacter() {
+    this.universityNameInvalid = false
+    var splChars = "*|,\" :<>[]{}`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.EducationInfoForm.get( 'instituteUniversityName' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.EducationInfoForm.get( 'instituteUniversityName' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.universityNameInvalid = true;
+      } else {
+        this.universityNameInvalid = false;
+        break;
+      }
+    }
+    if ( this.universityNameInvalid==true) {
+      this.EducationInfoForm.get('instituteUniversityName').invalid;
+    }
+  }
+
+  isCountryNameContainsOnlySpecialCharacter() {
+    this.countryNameInvalid = false
+    var splChars = "*|,\" :<>[]{}`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.EducationInfoForm.get( 'location' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.EducationInfoForm.get( 'location' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.countryNameInvalid = true;
+      } else {
+        this.countryNameInvalid = false;
+        break;
+      }
+    }
+    if ( this.countryNameInvalid==true) {
+      this.EducationInfoForm.get('location').invalid;
+    }
+  }
+
+  isSpecilizationOneNameContainsOnlySpecialCharacter() {
+    this.specializationOneNameInvalid= false
+    var splChars = "*|,\" :<>[]{}`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.EducationInfoForm.get( 'specialization1' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.EducationInfoForm.get( 'specialization1' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.specializationOneNameInvalid = true;
+      } else {
+        this.specializationOneNameInvalid = false;
+        break;
+      }
+    }
+    if ( this.specializationOneNameInvalid==true) {
+      this.EducationInfoForm.get('specialization1').invalid;
+    }
+  }
+
+  isSpecilizationTwoNameContainsOnlySpecialCharacter() {
+    this.specializationTwoNameInvalid= false
+    var splChars = "*|,\" :<>[]{}`\!';()@&$#%1234567890";
+    for ( var i = 0; i < this.EducationInfoForm.get( 'specialization2' ).value.length; i++ ) {
+      if ( splChars.indexOf( this.EducationInfoForm.get( 'specialization2' ).value.charAt( i ) ) != -1 ) {
+        //alert("Illegal characters detected!");
+        this.specializationTwoNameInvalid = true;
+      } else {
+        this.specializationTwoNameInvalid = false;
+        break;
+      }
+    }
+    if ( this.specializationTwoNameInvalid==true) {
+      this.EducationInfoForm.get('specialization2').invalid;
+    }
   }
 
 }

@@ -945,4 +945,6 @@ export class PersonalInformationComponent implements OnInit {
     this.modalRef.hide();
     return;
   }
+
+  
 }

@@ -52,10 +52,11 @@
                                 <th class="primeng-table-header-center wd-10">Name</th>
                                 <th class="primeng-table-header-center wd-10">Provident Fund (PF)</th>
                                 <th class="primeng-table-header-center wd-10">Employee Pension Scheme (EPS)</th>
-                                <th class="primeng-table-header-center wd-10">Salary</th>
+                                
                                 <th class="primeng-table-header-center wd-10">Employee State Insurance (ESI)</th>
                                 <th class="primeng-table-header-center wd-10">Gratuity</th>
                                 <th class="primeng-table-header-center wd-10">Super Annuation</th>
+                                <th class="primeng-table-header-center wd-10">Salary</th>
                                 <th class="primeng-table-header-center wd-10">Life Insurance</th>
                                 <th class="primeng-table-header-center wd-10">Mediclaim Annuation</th>
                                 <th class="primeng-table-header-center wd-10">Personal Accident Annuation</th>
@@ -73,7 +74,7 @@
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.pfPercentage" [ngModelOptions]="{standalone: true}"
-                                            (change)="getTotalPFCost(nomination.pfPercentage)"
+                                           
                                             (change)="nomination.pfPercentage < 0 ? nomination.pfPercentage = 0 : nomination.pfPercentage; nomination.pfPercentage > 100 ? nomination.pfPercentage = 0 : nomination.pfPercentage;">
                                     </span></td>
 
