@@ -65,11 +65,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
   minDate1: Date;
   NextheadGroupId: number;
   value = '';
-
   NewTargetArray: Array<any> = [];
-
-
   getbyid: boolean = false;
+  HighlightRow: any;
+  HighlightRight: any;
 
   constructor(
     private modalService: BsModalService,
@@ -326,7 +325,10 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     alert( this.selectedLevel.name )
   }
 
-  RowSelected( u: any ) {
+  RowSelected( u: any, ind: number ) {
+
+    this.HighlightRow = ind;
+    console.log( 'in row selected ' );
 
     let temp = this.sourceProducts;
     this.sourceProducts = new Array();
@@ -348,6 +350,34 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
 
     this.sourceProducts = temp;
+
+    // this.sourceProducts.forEach( ( element, i ) => {
+    //   if ( i == this.HighlightRow ) {
+    //     if ( isContain == true ) {
+    //       element.isHighlight = false
+    //     }
+    //     else {
+    //       if ( i == this.HighlightRow ) {
+    //         element.isHighlight = true
+    //       }
+    //     }
+    //   }
+    // } )
+
+    this.sourceProducts.forEach( ( element, i ) => {
+      if ( i == this.HighlightRow ) {
+        element.isHighlightright = false;
+        if ( isContain == true ) {
+          element.isHighlight = false
+
+        }
+        else {
+          if ( i == this.HighlightRow ) {
+            element.isHighlight = true
+          }
+        }
+      }
+    } )
 
 
 
@@ -403,11 +433,13 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // }
     // this.sourceProducts.splice(this.selectedUser.indexOf(0))
   }
-  RowSelectedtargetProducts( u: any ): void {
+  RowSelectedtargetProducts( u: any, i: number ): void {
+    debugger;
+    this.HighlightRight = i;
     console.log( 'u', u );
 
-    let temp = this.targetProducts;
-    this.targetProducts = new Array();
+    ///let temp = this.targetProducts;
+    // this.targetProducts = new Array();
     /// let index1 = temp.findIndex( o => o.headMasterId == u.headMasterId );
     let index = this.selectedUser2.findIndex( o => o.headMasterId == u.headMasterId );
     let isContain = this.selectedUser2.some( o => o.headMasterId == u.headMasterId );
@@ -427,8 +459,21 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     // declare variable in component.
 
 
-    this.targetProducts = temp;
-
+    //this.targetProducts = temp;
+    this.targetProducts.forEach( ( element, i ) => {
+      if ( i == this.HighlightRight ) {
+        if ( isContain == true ) {
+          element.isHighlightright = false
+          element.isHighlight = false
+        }
+        else {
+          if ( i == this.HighlightRow ) {
+            element.isHighlightright = false
+            element.isHighlight = false
+          }
+        }
+      }
+    } );
 
 
 

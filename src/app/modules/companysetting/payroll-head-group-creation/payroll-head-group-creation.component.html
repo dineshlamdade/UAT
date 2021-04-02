@@ -112,10 +112,10 @@
                       <div class="row mt-30">
                         <div class="col-5">
                           <div class="card">
-                            <div class=""> Total List: {{sourceProducts.length}} &nbsp;&nbsp;Selected
-                              List:{{selectedUser.length}}
+                            <div class=""><span class="form-label"> Total List: {{sourceProducts.length}}
+                                &nbsp;&nbsp;Selected List:{{selectedUser.length}} </span>
                               <div class="table-responsive Custom_Table">
-                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                <table class="table table-bordered m-b-0">
                                   <thead class="thead-dark">
                                     <tr>
                                       <th scope="col" class="font700 wd-20">Head Name</th>
@@ -125,12 +125,12 @@
 
                                   <tbody>
                                     <tr *ngFor="let product of sourceProducts; let i = index"
-                                      (click)="RowSelected(product);">
+                                      (click)="RowSelected(product,i);" [class.active]="product.isHighlight">
                                       <td class="wd-10">
-                                        <span tooltip="{{product.standardName}}">{{product.standardName}}</span>
+                                        <span tooltip="{{product.standardName}}">{{product.headMasterId}}</span>
                                       </td>
                                       <td class="wd-10">
-                                        <span>{{product.headNature}}</span>
+                                        <span>{{product.isHighlight}}</span>
                                       </td>
                                     </tr>
                                   </tbody>
@@ -157,10 +157,11 @@
 
                         <div class="col-6">
                           <div class="card">
-                            <div class=""> Total List: {{targetProducts.length}} &nbsp;&nbsp;Selected
-                              List:{{selectedUser2.length}}
+                            <div class=""><span class="form-label"> Total List: {{targetProducts.length}}
+                                &nbsp;&nbsp;Selected
+                                List:{{selectedUser2.length}}</span>
                               <div class="table-responsive Custom_Table">
-                                <table class="table table-striped table-hover table-bordered m-b-0">
+                                <table class="table table-bordered m-b-0">
                                   <thead class="thead-dark">
                                     <tr>
                                       <th scope="col" class="font700 wd-12">Head Name</th>
@@ -172,17 +173,18 @@
                                   <tbody>
 
                                     <tr *ngFor="let product of targetProducts; let i = index"
-                                      (click)="RowSelectedtargetProducts(product);">
+                                      (click)="RowSelectedtargetProducts(product,i);"
+                                      [class.activeleft]="product.isHighlightright">
                                       <!-- (click)="RowSelectedtargetProducts(product);" -->
                                       <td class="wd-10">
-                                        <span tooltip="{{product.standardName}}">{{product.standardName}}</span>
+                                        <span tooltip="{{product.standardName}}">{{product.headMasterId}}</span>
                                       </td>
                                       <td class="wd-10">
-                                        <span>{{product.headNature}}</span>
+                                        <span>{{product.isHighlightright}}</span>
                                       </td>
                                       <td class="wd-10">
                                         <span><i class="fa fa-adjust fa-lg" aria-hidden="true"
-                                            (click)="RowSelectedtargetProducts(product);UploadModal2(template12445);modalRef1.hide()"
+                                            (click)="RowSelectedtargetProducts(product,i);UploadModal2(template12445);modalRef1.hide()"
                                             data-toggle="modal" data-target="#UploadModal"></i></span>
                                       </td>
                                       <!-- <td class="wd-10" >

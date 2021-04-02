@@ -243,7 +243,10 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
     PayrollHeadGroupCreationComponent.prototype.selected = function () {
         alert(this.selectedLevel.name);
     };
-    PayrollHeadGroupCreationComponent.prototype.RowSelected = function (u) {
+    PayrollHeadGroupCreationComponent.prototype.RowSelected = function (u, ind) {
+        var _this = this;
+        this.HighlightRow = ind;
+        console.log('in row selected ');
         var temp = this.sourceProducts;
         this.sourceProducts = new Array();
         /// let index1 = temp.findIndex( o => o.code == u.code );
@@ -261,6 +264,31 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         //this.targetProducts.push(u);
         // declare variable in component.
         this.sourceProducts = temp;
+        // this.sourceProducts.forEach( ( element, i ) => {
+        //   if ( i == this.HighlightRow ) {
+        //     if ( isContain == true ) {
+        //       element.isHighlight = false
+        //     }
+        //     else {
+        //       if ( i == this.HighlightRow ) {
+        //         element.isHighlight = true
+        //       }
+        //     }
+        //   }
+        // } )
+        this.sourceProducts.forEach(function (element, i) {
+            if (i == _this.HighlightRow) {
+                element.isHighlightright = false;
+                if (isContain == true) {
+                    element.isHighlight = false;
+                }
+                else {
+                    if (i == _this.HighlightRow) {
+                        element.isHighlight = true;
+                    }
+                }
+            }
+        });
         // this.selectedUser.push( u );
         console.log("selected user", this.selectedUser);
         //this.targetProducts.push(u);
@@ -298,11 +326,13 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         // }
         // this.sourceProducts.splice(this.selectedUser.indexOf(0))
     };
-    PayrollHeadGroupCreationComponent.prototype.RowSelectedtargetProducts = function (u) {
+    PayrollHeadGroupCreationComponent.prototype.RowSelectedtargetProducts = function (u, i) {
         var _this = this;
+        debugger;
+        this.HighlightRight = i;
         console.log('u', u);
-        var temp = this.targetProducts;
-        this.targetProducts = new Array();
+        ///let temp = this.targetProducts;
+        // this.targetProducts = new Array();
         /// let index1 = temp.findIndex( o => o.headMasterId == u.headMasterId );
         var index = this.selectedUser2.findIndex(function (o) { return o.headMasterId == u.headMasterId; });
         var isContain = this.selectedUser2.some(function (o) { return o.headMasterId == u.headMasterId; });
@@ -319,7 +349,21 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         }
         //this.targetProducts.push(u);
         // declare variable in component.
-        this.targetProducts = temp;
+        //this.targetProducts = temp;
+        this.targetProducts.forEach(function (element, i) {
+            if (i == _this.HighlightRight) {
+                if (isContain == true) {
+                    element.isHighlightright = false;
+                    element.isHighlight = false;
+                }
+                else {
+                    if (i == _this.HighlightRow) {
+                        element.isHighlightright = false;
+                        element.isHighlight = false;
+                    }
+                }
+            }
+        });
         // this.selectedheadName.push( u );
         this.HeadNameList = this.targetProducts;
         this.selectedheadName.forEach(function (element) {

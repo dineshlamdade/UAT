@@ -3011,19 +3011,16 @@ legend {
 .disabled-button {
   opacity: 0.7 !important;
 }
-
-.selectedMaterialCode1 {
-  background-color: #63ff6199;
-}
-.boldRow {
-  font-weight: bold;
-  background-color: rgb(255, 255, 155);
+.table tr.active td {
+  background-color: #48da24 !important;
+  color: white;
 }
 
 .table tr.activeleft td {
   background-color: #5aa5bd !important;
   color: white;
 }
+
 
 
 /* end here */

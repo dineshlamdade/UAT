@@ -177,3 +177,12 @@ p-dropdown.ng-invalid.ng-untouched.ui-inputwrapper-focus:not(form)>div {
   line-height: 1.3;
   border-radius: 3px;
 }
+.table tr.active td {
+  background-color: #48da24 !important;
+  color: white;
+}
+
+.table tr.activeleft td {
+  background-color: #5aa5bd !important;
+  color: white;
+}
