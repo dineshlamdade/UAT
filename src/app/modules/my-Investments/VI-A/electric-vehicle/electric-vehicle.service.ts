@@ -57,8 +57,8 @@ export class ElectricVehicleService {
   //   ));
   // }
 
-  getTransactionFilterData(lender:String) {
-    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/' + lender)
+  getTransactionFilterData(lenderName:String) {
+    return this._HTTP.get(this.apiUrl + 'electricVehicleLoanTransaction/' + lenderName)
     .pipe(map((res: any) => {
       return res;
     }));

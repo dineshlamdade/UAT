@@ -24,9 +24,6 @@ var claim_form_component_1 = require("./claim-form/claim-form.component");
 var declaration_form_component_1 = require("./declaration-form/declaration-form.component");
 var routes = [
     {
-        // path: '',
-        // children: [
-        //  {
         path: 'business-cycle',
         component: business_cycle_component_1.BusinessCycleComponent,
         data: { title: ':: Epic :: Company Settings ' }
@@ -42,7 +39,7 @@ var routes = [
         data: { title: ':: Epic :: Company Settings' }
     },
     {
-        path: 'attribute-selection',
+        path: 'attribute-group',
         component: attribute_selection_component_1.AttributeSelectionComponent,
         data: { title: ':: Epic :: Company Settings' }
     },
@@ -51,31 +48,6 @@ var routes = [
         component: payroll_head_group_creation_component_1.PayrollHeadGroupCreationComponent,
         data: { title: ':: Epic :: Company Settings' }
     },
-    // {
-    //     path: 'bc',
-    //     component: payrollComponent,
-    //     data: { title: ':: Epic :: Company Settings' }
-    //   },
-    //   {
-    //     path: 'headcreation',
-    //     component: HeadcreationComponent,
-    //     data: { title: ':: Epic :: Company Settings' }
-    //   },
-    //   {
-    //     path: 'attributecreation',
-    //     component: AttributecreationComponent,
-    //     data: { title: ':: Epic :: Company Settings' }
-    //   },
-    //   {
-    //     path: 'attributeselection',
-    //     component: AttributeselectionComponent,
-    //     data: { title: ':: Epic :: Company Settings' }
-    //   },
-    //   {
-    //     path: 'payrollheadgroupcreation',
-    //     component: PayrollheadgroupcreationComponent,
-    //     data: { title: ':: Epic :: Company Settings' }
-    //   },
     {
         path: 'Garnishment-Master',
         component: garnishment_master_component_1.GarnishmentMasterComponent,
@@ -91,31 +63,6 @@ var routes = [
         component: role_privilege_component_1.RolePrivilegeComponent,
         data: { title: ':: Epic :: Company Settings' }
     },
-    // {
-    //   path: 'bc',
-    //   component: payrollComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'headcreation',
-    //   component: HeadcreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'attributecreation',
-    //   component: AttributecreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'attributeselection',
-    //   component: AttributeselectionComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
-    // {
-    //   path: 'payrollheadgroupcreation',
-    //   component: PayrollheadgroupcreationComponent,
-    //   data: { title: ':: Epic :: Company Settings' }
-    // },
     {
         path: 'reimbursement',
         component: reimbursement_master_component_1.ReimbursementMasterComponent,

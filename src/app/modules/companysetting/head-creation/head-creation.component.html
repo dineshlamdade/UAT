@@ -9,7 +9,7 @@
           <div class="card">
             <div class="card-body">
               <form class="card" role="form" [formGroup]="HeadCreationForm" (ngSubmit)="addHeadCreation()" method="post"
-                novalidate>
+                #formDirective="ngForm" novalidate>
                 <div class="row">
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Code</label>
@@ -23,7 +23,7 @@
                     <label class="form-label">Description</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
-                        placeholder="Description"
+                        placeholder="Enter Description"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
@@ -31,7 +31,7 @@
                     <label class="form-label">Short Name</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="shortName" class="form-control"
-                        placeholder="Short Name"
+                        placeholder="Enter Short Name"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('shortName').status == 'INVALID'}">
                     </div>
                   </div>
@@ -39,7 +39,8 @@
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Nature</label>
                     <select [ngClass]="{'is-invalid' : HeadCreationForm.get('headNature').status == 'INVALID'}"
-                      name="headNature" id="headNature" class="form-control custom-select" formControlName="headNature">
+                      (change)="onChangeNature($event.target.value)" name="headNature" id="headNature"
+                      class="form-control  " formControlName="headNature">
                       <option selected value=''>Select </option>
                       <option *ngFor="let natureList of NatureList" [value]="natureList.value">
                         {{natureList.label}}
@@ -52,16 +53,17 @@
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Type</label>
 
-                    <select name="type" id="type" class="form-control custom-select" formControlName="type">
+                    <select name="type" id="type" class="form-control  " formControlName="type"
+                      [ngClass]="{'is-invalid' : HeadCreationForm.get('type').status == 'INVALID'}">
                       <option selected value=''>Select </option>
-                      <option *ngFor="let typeList of TypeList" [value]="typeList.value">
-                        {{typeList.label}}
+                      <option *ngFor="let typeList of TypeList" [value]="typeList.name">
+                        {{typeList.name}}
                       </option>
                     </select>
                   </div>
                   <!-- [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
                   <!-- changed radio button to dropdown on 20-03-2021 -->
-                  <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
+                  <!-- <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Is Statutory</label>
                     <div>
                       <label class="custom-control custom-radio custom-control-inline">
@@ -75,12 +77,12 @@
                         <span class="custom-control-label">No</span>
                       </label>
                     </div>
-                  </div>
+                  </div> -->
 
 
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Category</label>
-                    <select name="category" id="category" class="form-control custom-select" formControlName="category">
+                    <select name="category" id="category" class="form-control  " formControlName="category">
                       <option selected value=''>Select </option>
                       <option *ngFor="let category of categoryList" [value]="category.value">
                         {{category.label}}
@@ -162,25 +164,25 @@
                                                     </tr> -->
 
                             <tr *ngFor="let summary of HeadCreationList; let i = index">
-                              <td class="align-center wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{i+1}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class=" align-left wd-10">
                                 <span>{{summary.standardName}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.description}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.shortName}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.headNature}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.type}}</span>
                               </td>
-                              <td class="wd-10">
+                              <td class="align-left wd-10">
                                 <span>{{summary.category}}</span>
                               </td>
                               <td>

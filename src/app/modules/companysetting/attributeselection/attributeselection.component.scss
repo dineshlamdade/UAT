@@ -110,9 +110,9 @@ p {
 .disabled-btn-bg-green{
     background-color: #94c1c1!important;
   }
-  
-  
-  
+
+
+
   .form-control.is-invalid {
     background-image: none!important;
   }
@@ -123,7 +123,7 @@ p {
 //     display:none!important;
 //   }
   //The problem with ViewEncapsultaion.None is that all your .css in component affect to all the application. So, better write a .css like
-  
+
   .custom .bs-datepicker-head button:nth-child(3){
     display:none!important;
   }

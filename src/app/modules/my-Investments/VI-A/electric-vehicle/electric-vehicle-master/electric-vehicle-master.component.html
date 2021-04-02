@@ -9,6 +9,7 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Vehicle Model</label>
                   <input type="text" formControlName="vehicleModel" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
                     placeholder="Enter Vehicle Model"
                     [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleModel.errors }"  >
                     <div *ngIf="submitted && masterForm.vehicleModel.errors" class="invalid-feedback">
@@ -18,6 +19,7 @@
                 <div class="col-sm-6 col-md-3">
                   <label class="form-label">Vehicle Number</label>
                   <input type="text" formControlName="vehicleNumber" class="form-control"
+                  onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
                      placeholder="Enter Vehicle Number"
                      [ngClass]="{ 'is-invalid': submitted && masterForm.vehicleNumber.errors }"  >
                   <div *ngIf="submitted && masterForm.vehicleNumber.errors" class="invalid-feedback">
@@ -27,6 +29,7 @@
                <div class="col-sm-6 col-md-3">
                 <label class="form-label">Lender Name</label>
                 <input type="text" formControlName="lenderName" class="form-control"
+                onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
                   placeholder="Enter Lender Name "
                   [ngClass]="{ 'is-invalid': submitted && masterForm.lenderName.errors }"  >
                   <div *ngIf="submitted && masterForm.lenderName.errors" class="invalid-feedback">
@@ -36,6 +39,7 @@
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Account Holder Name</label>
                 <input type="text" formControlName="accountHolderName" class="form-control"
+                onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
                   placeholder="Enter Account Holder Name"
                   [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }"  >
                   <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
@@ -170,6 +174,9 @@
               <div class="mb-10 row">
                  <div class="col-md-6">
                     <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+                    <div class="float-left" *ngIf="submitted && masterfilesArray.length == 0">
+                      <label class="text-red mb-0">Please upload document</label>
+                    </div>
                  </div>
                  <div class="col-md-6">
                     <span class="font-bold text-link float-right"></span>
@@ -188,25 +195,25 @@
                              </tr>
                           </thead>
                           <tbody>
-                             <tr>
+                            <tr>
                               <th scope="row"><span tooltip="1">1</span></th>
-                              <td><span tooltip="RC Book"></span>RC Book</td>
-                              <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
-                                 class="fa fa-paperclip"
-                                 aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                                 <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                              <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                              </td>
+                              <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
+                                    class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
                                   <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                                    <i class="fa fa-paperclip text-orange"
-                                    (click)="docViewer(template3,i)"></i> &nbsp;
+                                    <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp;
                                     {{ doc.fileName }}
                                   </div>
                                 </div>
-                                </td>
-                              <td>
-                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
-                                  data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
                               </td>
-                           </tr>
+                              <td>
+                                <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                                  (click)="UploadModal(template)" data-toggle="modal"
+                                  data-target="#UploadModal"></i>&nbsp;&nbsp;
+                              </td>
+                            </tr>
                           </tbody>
                        </table>
                     </div>
@@ -254,7 +261,7 @@
                             <td class="wd-10"><span tooltip="{{summary.vehicleNumber}}">{{summary.vehicleNumber}}</span>
                             </td>
                             <td class="wd-5">
-                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.vehicleModel)" tooltip="Edit"></i> &nbsp;&nbsp;
+                                <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.vehicleNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                             </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">

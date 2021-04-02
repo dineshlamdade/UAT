@@ -38,7 +38,7 @@ import { NpsService } from '../nps.service';
 export class NpsDeclarationComponent implements OnInit {
 
   @Input() institution: string;
-  @Input() policyNo: string;
+  @Input() accountNumber: string;
   @Input() data: any;
 
   public modalRef: BsModalRef;
@@ -162,7 +162,8 @@ export class NpsDeclarationComponent implements OnInit {
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
-
+  public canEdit : boolean;
+  public licDeclarationData: any;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -198,13 +199,17 @@ export class NpsDeclarationComponent implements OnInit {
   public ngOnInit(): void {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
+
       this.declarationPage();
+      this.canEdit = true;
     } else {
       const input = this.data;
       this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
+      this.globalPolicy = input.accountNumber;
       this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
+      this.getTransactionFilterData(input.institution, input.accountNumber, 'All');
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -278,13 +283,13 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionPolicyList = [];
     this.transactionStatustList = [];
 
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.transactionInstitutionNames.push(data);
-    this.transactionPolicyList.push(data);
+    // this.transactionInstitutionNames.push(data);
+    // this.transactionPolicyList.push(data);
     this.refreshTransactionStatustList();
 
     this.getInstitutionListWithPolicyNo();
@@ -294,6 +299,15 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+
     this.npsService
       .getNpsDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {
@@ -319,6 +333,8 @@ export class NpsDeclarationComponent implements OnInit {
   }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
+    this.filesArray = [];
+    this.transactionDetail = [];
     this.globalInstitution = institutionName;
     this.getTransactionFilterData(this.globalInstitution, null, null);
     this.globalSelectedAmount = this.numberFormat.transform(0);
@@ -388,6 +404,8 @@ export class NpsDeclarationComponent implements OnInit {
     j: number
   ) {
     const checked = event.target.checked;
+
+    this.licDeclarationData = data
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
@@ -464,8 +482,11 @@ export class NpsDeclarationComponent implements OnInit {
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
-    if (this.uploadGridData.length) {
+    if (this.uploadGridData.length > 0) {
       this.enableFileUpload = true;
+    }
+    else{
+      this.enableFileUpload = false;
     }
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
@@ -629,6 +650,7 @@ export class NpsDeclarationComponent implements OnInit {
     // } else {
     //   this.hideRemoveRow  = true;
     // }
+
     this.declarationService = new DeclarationService(summarynew);
     // console.log('declarationService::', this.declarationService);
     this.globalAddRowIndex -= 1;
@@ -829,6 +851,42 @@ export class NpsDeclarationComponent implements OnInit {
       });
     });
 
+    if(this.licDeclarationData.previousEmployerId == 0){
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected previous employer for all selected lines',
+        'Please Select Previous Employer',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.dateOfPayment == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected date of payment for all selected lines',
+        'Please Select Date Of Payment',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.dueDate == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected due date for all selected lines',
+        'Please Select Date Of DueDate',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.declaredAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected declared amount for all selected lines',
+        'Please Select Date Of Declared Amount',
+      );
+      return false;
+    }
+    if (this.licDeclarationData.actualAmount == null) {
+      this.alertService.sweetalertError(
+        // 'Please make sure that you have selected actual amount for all selected lines',
+        'Please Select Date Of Actual Amount',
+      );
+      return false;
+    }
+
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
       investmentGroupTransactionDetail: this.transactionDetail,
@@ -897,6 +955,7 @@ export class NpsDeclarationComponent implements OnInit {
 
 
   changeReceiptAmountFormat() {
+    // tslint:disable-next-line: variable-name
     let receiptAmount_: number;
     let globalSelectedAmount_ : number;
 
@@ -909,15 +968,19 @@ export class NpsDeclarationComponent implements OnInit {
     this.alertService.sweetalertError(
       'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
+    this.receiptAmount = '0.00';
+    return false;
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
       'Receipt Amount is greater than Selected line Actual Amount',
     );
+    // this.receiptAmount = '0.00';
+    // return false;
   }
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
-  }
+}
 
      // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
@@ -1103,7 +1166,7 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1141,41 +1204,17 @@ export class NpsDeclarationComponent implements OnInit {
       });
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
 
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(
     institution: String,
-    policyNo: String,
+    accountNumber: String,
     transactionStatus: String
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.npsService
-      .getTransactionFilterData(institution, policyNo, transactionStatus)
+      .getTransactionFilterData(institution, accountNumber, transactionStatus)
       .subscribe((res) => {
         console.log('getTransactionFilterData', res);
         this.transactionDetail =
@@ -1366,6 +1405,36 @@ export class NpsDeclarationComponent implements OnInit {
       summary.dateOfPayment;
     console.log(this.transactionDetail[j].groupTransactionList[i].dateOfPayment);
   }
+
+    // ---------------- Doc Viewr Code ----------------------------
+    nextDocViewer() {
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    previousDocViewer() {
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+      console.log("documentDetailList::", documentDetailList)
+      this.urlArray = documentDetailList;
+      this.urlIndex = 0;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      console.log(this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
+
 }
 
 class DeclarationService {

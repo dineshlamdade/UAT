@@ -1,47 +1,46 @@
 
 // import { AddBenefitComponent } from 'src/app/layout/benefits/add-benefit/add-benefit.component';
-// import { MaterialModule } 
+// import { MaterialModule }
 // import { NgModule ,Pipe,PipeTransform} from '@angular/core';
 
 
 // const routes = [
 //     {
 //         path        : '',
-//         component   :  BenefitsComponent,       
+//         component   :  BenefitsComponent,
 //     },
 //     {
 //         path        : 'add-benefit/add',
-//         component   :  AddBenefitComponent,       
+//         component   :  AddBenefitComponent,
 //     },
 //     {
 //         path        : 'add-benefit/edit/:BenefiteID',
-//         component   :  AddBenefitComponent,       
+//         component   :  AddBenefitComponent,
 //     }
-    
+
 // ];
 
 // @NgModule({
 //     imports: [
-      
+
 //         MaterialModule,
-    
+
 //        // ProgressSpinnerModule
 //     ],
 //     declarations: [
-      
+
 //     ],
 //     entryComponents: [],
 //     providers:[],
 // })
-export class SaveAttributeCreation
-{
-    globalAttributeMasterId:number;
-    code;string;
-    description:string;
-    attributeNature:string;
-    numberOfOption:string;
-    options:any[];
-}
+// export class SaveAttributeCreation {
+//   globalAttributeMasterId: number;
+//   code: string;
+//   description: string;
+//   attributeNature: string;
+//   numberOfOption: string;
+//   options: any[];
+// }
 
 
 // {

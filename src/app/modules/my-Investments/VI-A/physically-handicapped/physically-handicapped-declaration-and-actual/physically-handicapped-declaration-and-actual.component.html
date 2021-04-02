@@ -62,19 +62,29 @@
                       physicallyHandicappedDetail.physicallyHandicappedDetailId
                     }}" -->
                     <!-- <input  type="text" value="{{ physicallyHandicappedDetail.declaredAmount }}" -->
-                    <input  type="text"
+
+
+                    <!-- <input  type="text"
                       [(ngModel)]=" physicallyHandicappedDetail.declaredAmount "
                       [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0"
                       class="form-control align-right"
-                    />
+                    /> -->
+
+                    <p-inputNumber   class="form-control align-right"  [(ngModel)]=" physicallyHandicappedDetail.declaredAmount "
+                    [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0"></p-inputNumber>
+
                   </div>
                 </td>
                 <td>
-                  <input type="text"
+                  <!-- <input type="text"
                     [(ngModel)]="physicallyHandicappedDetail.actualAmount"
                     [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0"
                     class="form-control align-right"
-                  />
+                  /> -->
+
+                  <p-inputNumber   class="form-control align-right"  [(ngModel)]=" physicallyHandicappedDetail.actualAmount "
+                  [disabled]=" isDisabled || physicallyHandicappedDetail.physicallyHandicappedDetailId > 0"></p-inputNumber>
+
                 </td>
                 <td>
                   <input
