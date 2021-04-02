@@ -446,7 +446,7 @@ export class CompanySettingsService {
   //update attribute list by id
   UpdateattributeListById( data: UpdateflagCycleCreation ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8084 + 'payrollhead-attribute-mapping', data )
+    return this._HTTP.put( environment.baseUrl8086 + 'payrollhead-attribute-mapping', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

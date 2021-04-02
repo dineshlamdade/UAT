@@ -37,6 +37,8 @@ export class AttributeSelectionComponent implements OnInit {
   selectedUser: Array<any> = [];
   selectedUser2: Array<any> = [];
   selectedMaterialCode: any;
+  HighlightRow: any;
+  HighlightRight: any;
 
   constructor(
 
@@ -61,6 +63,9 @@ export class AttributeSelectionComponent implements OnInit {
   getAllAttributeCreation() {
     //this.originalSourceProductList = [];
     // this.sourceProducts = [];
+
+    //  getAllGlobalAttributeCreation
+    /// COMMENTED FUNCTION getAllAttributeCreation
     this.attributeSelectionService.getAllAttributeCreation().subscribe( res => {
       this.originalSourceProductList = res.data.results;
       this.sourceProducts = res.data.results;
@@ -90,12 +95,14 @@ export class AttributeSelectionComponent implements OnInit {
 
   }
 
-  RowSelected( u: any ) {
-    let temp = this.sourceProducts;
-    this.sourceProducts = new Array();
-    this.sourceProducts = [];
+  RowSelected( u: any, ind ) {
+
+    this.HighlightRow = ind;
+    // let temp = this.sourceProducts;
+    // this.sourceProducts = new Array();
+    //  this.sourceProducts = [];
     // let index1 = temp.findIndex( o => o.code == u.code );
-    this.selectedMaterialCode = u.code;
+    // this.selectedMaterialCode = u.code;
     let index = this.selectedUser.findIndex( o => o.code == u.code );
 
 
@@ -106,16 +113,32 @@ export class AttributeSelectionComponent implements OnInit {
       //   temp[index1].dummy = 'List';
     } else {
       //  temp[index1].dummy = 'List123';
+      u.HighlightRow = true;
       this.selectedUser.push( u );
     }
-    this.sourceProducts = temp;
+    // this.sourceProducts = temp;
     console.log( 'selected row is', u );
     console.log( 'selected user', this.selectedUser );
-    this.sourceProducts = [];
-    this.sourceProducts = temp;
+    // this.sourceProducts = [];
+    // this.sourceProducts = temp;
+
+    this.sourceProducts.forEach( ( element, i ) => {
+      console.log( 'i', i );
+      console.log( 'this.highlightrow', this.HighlightRow );
+      if ( i == this.HighlightRow ) {
+        if ( isContain == true ) {
+          element.isHighlight = false
+        } else {
+          if ( i == this.HighlightRow ) {
+            element.isHighlight = true
+          }
+        }
+      }
+    } );
   }
 
-  RowSelectedtargetProducts( u: any ): void {
+  RowSelectedtargetProducts( u: any, i ): void {
+    this.HighlightRight = i;
     let temp = this.targetProducts;
     this.targetProducts = new Array();
     /// let index1 = temp.findIndex( o => o.code == u.code );
@@ -137,6 +160,20 @@ export class AttributeSelectionComponent implements OnInit {
 
     this.targetProducts = temp;
 
+    this.targetProducts.forEach( ( element, i ) => {
+      if ( i == this.HighlightRight ) {
+        if ( isContain == true ) {
+          element.isHighlightright = false
+          element.isHighlight = false
+        }
+        else {
+          //if(i == this.HighlightRow){
+          element.isHighlightright = true
+          element.isHighlight = false
+          //}
+        }
+      }
+    } )
 
 
   }
@@ -460,11 +497,11 @@ export class AttributeSelectionComponent implements OnInit {
   }
 
   doubleClickOnLeftTable( u: any ) {
-    this.RowSelected( u );
+    this.RowSelected( u, -1 );
     this.lefttablePusg();
   }
   doubleClickOnRightTable( u: AnyCnameRecord ) {
-    this.RowSelectedtargetProducts( u );
+    this.RowSelectedtargetProducts( u, -1 );
     this.righttablePusg( u );
 
   }

@@ -351,7 +351,7 @@ var CompanySettingsService = /** @class */ (function () {
     };
     //update attribute list by id
     CompanySettingsService.prototype.UpdateattributeListById = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-mapping', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'payrollhead-attribute-mapping', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

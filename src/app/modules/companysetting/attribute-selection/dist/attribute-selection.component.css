@@ -129,3 +129,8 @@ p-dropdown.ng-invalid.ng-untouched.ui-inputwrapper-focus:not(form) > div {
   background-color: #48da24 !important;
   color: white;
 }
+
+.table tr.activeleft td {
+  background-color: #5aa5bd !important;
+  color: white;
+}

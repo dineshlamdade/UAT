@@ -42,9 +42,11 @@ var AttributeSelectionComponent = /** @class */ (function () {
         });
     };
     AttributeSelectionComponent.prototype.getAllAttributeCreation = function () {
-        var _this = this;
         //this.originalSourceProductList = [];
         // this.sourceProducts = [];
+        var _this = this;
+        //  getAllGlobalAttributeCreation
+        /// COMMENTED FUNCTION getAllAttributeCreation
         this.attributeSelectionService.getAllAttributeCreation().subscribe(function (res) {
             _this.originalSourceProductList = res.data.results;
             _this.sourceProducts = res.data.results;
@@ -72,12 +74,14 @@ var AttributeSelectionComponent = /** @class */ (function () {
             });
         });
     };
-    AttributeSelectionComponent.prototype.RowSelected = function (u) {
-        var temp = this.sourceProducts;
-        this.sourceProducts = new Array();
-        this.sourceProducts = [];
+    AttributeSelectionComponent.prototype.RowSelected = function (u, ind) {
+        var _this = this;
+        this.HighlightRow = ind;
+        // let temp = this.sourceProducts;
+        // this.sourceProducts = new Array();
+        //  this.sourceProducts = [];
         // let index1 = temp.findIndex( o => o.code == u.code );
-        this.selectedMaterialCode = u.code;
+        // this.selectedMaterialCode = u.code;
         var index = this.selectedUser.findIndex(function (o) { return o.code == u.code; });
         var isContain = this.selectedUser.some(function (o) { return o.code == u.code; });
         console.log(isContain, index);
@@ -87,15 +91,32 @@ var AttributeSelectionComponent = /** @class */ (function () {
         }
         else {
             //  temp[index1].dummy = 'List123';
+            u.HighlightRow = true;
             this.selectedUser.push(u);
         }
-        this.sourceProducts = temp;
+        // this.sourceProducts = temp;
         console.log('selected row is', u);
         console.log('selected user', this.selectedUser);
-        this.sourceProducts = [];
-        this.sourceProducts = temp;
+        // this.sourceProducts = [];
+        // this.sourceProducts = temp;
+        this.sourceProducts.forEach(function (element, i) {
+            console.log('i', i);
+            console.log('this.highlightrow', _this.HighlightRow);
+            if (i == _this.HighlightRow) {
+                if (isContain == true) {
+                    element.isHighlight = false;
+                }
+                else {
+                    if (i == _this.HighlightRow) {
+                        element.isHighlight = true;
+                    }
+                }
+            }
+        });
     };
-    AttributeSelectionComponent.prototype.RowSelectedtargetProducts = function (u) {
+    AttributeSelectionComponent.prototype.RowSelectedtargetProducts = function (u, i) {
+        var _this = this;
+        this.HighlightRight = i;
         var temp = this.targetProducts;
         this.targetProducts = new Array();
         /// let index1 = temp.findIndex( o => o.code == u.code );
@@ -113,6 +134,20 @@ var AttributeSelectionComponent = /** @class */ (function () {
         //this.targetProducts.push(u);
         // declare variable in component.
         this.targetProducts = temp;
+        this.targetProducts.forEach(function (element, i) {
+            if (i == _this.HighlightRight) {
+                if (isContain == true) {
+                    element.isHighlightright = false;
+                    element.isHighlight = false;
+                }
+                else {
+                    //if(i == this.HighlightRow){
+                    element.isHighlightright = true;
+                    element.isHighlight = false;
+                    //}
+                }
+            }
+        });
     };
     AttributeSelectionComponent.prototype.lefttablePusg = function () {
         // const sss=this.newarray;
@@ -375,11 +410,11 @@ var AttributeSelectionComponent = /** @class */ (function () {
         }
     };
     AttributeSelectionComponent.prototype.doubleClickOnLeftTable = function (u) {
-        this.RowSelected(u);
+        this.RowSelected(u, -1);
         this.lefttablePusg();
     };
     AttributeSelectionComponent.prototype.doubleClickOnRightTable = function (u) {
-        this.RowSelectedtargetProducts(u);
+        this.RowSelectedtargetProducts(u, -1);
         this.righttablePusg(u);
     };
     AttributeSelectionComponent.prototype.keyPressedSpaceNotAllow = function (event) {

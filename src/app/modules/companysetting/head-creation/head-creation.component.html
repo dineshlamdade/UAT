@@ -82,7 +82,8 @@
 
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Category</label>
-                    <select name="category" id="category" class="form-control  " formControlName="category">
+                    <select name="category" id="category" class="form-control  " formControlName="category"
+                      [ngClass]="{'is-invalid' : HeadCreationForm.get('category').status == 'INVALID'}">
                       <option selected value=''>Select </option>
                       <option *ngFor="let category of categoryList" [value]="category.value">
                         {{category.label}}

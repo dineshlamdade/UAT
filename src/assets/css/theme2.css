@@ -3020,4 +3020,10 @@ legend {
   background-color: rgb(255, 255, 155);
 }
 
+.table tr.activeleft td {
+  background-color: #5aa5bd !important;
+  color: white;
+}
+
+
 /* end here */

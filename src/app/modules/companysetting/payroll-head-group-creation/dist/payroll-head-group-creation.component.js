@@ -123,6 +123,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         //   });
         this.targetProducts = [];
         this.getAllHeadCreation();
+        this.payrollHeadGroupCreationForm.get('attributeNature').setValue('');
     };
     // get All Attribute Selection(Attribute Group)
     PayrollHeadGroupCreationComponent.prototype.getAllAttributeSelection = function () {

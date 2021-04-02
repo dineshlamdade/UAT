@@ -182,6 +182,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
 
     this.targetProducts = [];
     this.getAllHeadCreation();
+    this.payrollHeadGroupCreationForm.get( 'attributeNature' ).setValue( '' );
   }
 
   // get All Attribute Selection(Attribute Group)
@@ -249,6 +250,7 @@ export class PayrollHeadGroupCreationComponent implements OnInit {
     //this.getAllHeadCreation();
     this.companySettingsService.GetPHGById( id )
       .subscribe( response => {
+
 
         response.data.results[0].headMasters.forEach( element => {
           this.NewTargetArray.push( element );
