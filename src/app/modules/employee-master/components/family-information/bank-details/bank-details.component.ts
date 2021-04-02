@@ -49,9 +49,10 @@ export class BankDetailsComponent implements OnInit {
   employeeMasterId: number;
   BankDataSource: MatTableDataSource<any>;
   BankAccountDataSource: Array<any> = [];
+  BankDataToPost:Array<any>=[];
   filteredStates: Array<any> = [];
   accountNo: boolean;
-
+a:any;
 
   constructor(private FamilyInformationService: FamilyInformationService,
     private BankInformationService: BankInformationService,
@@ -63,7 +64,8 @@ export class BankDetailsComponent implements OnInit {
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
 
-    if (this.BankAccountDataSource.length == 0) {
+    if (this.BankAccountDataSource.length == 0)
+     {
       this.FamilyInformationService.getFamilyMemberInfo(this.employeeMasterId).subscribe(res => {
 
         this.familyMemberList = res.data.results[0];
@@ -71,6 +73,9 @@ export class BankDetailsComponent implements OnInit {
         this.FamilyInformationService.getBankDetailsInfo(this.employeeMasterId).subscribe(res => {
 
           this.BankDetailsList = res.data.results[0];
+
+
+       
 
           const newNomination = [];
           this.familyMemberList.filter(element => {
@@ -107,7 +112,7 @@ export class BankDetailsComponent implements OnInit {
 
   }
   saveBankDetails(BankAccountDataSource) {
-
+    //this.BankDataToPost=BankAccountDataSource;
     BankAccountDataSource.forEach(element => {
       delete element.accountNumberCountError;
       delete element.maxAccNumber;
@@ -207,6 +212,7 @@ export class BankDetailsComponent implements OnInit {
     this.BankInformationService.getDataFromIFSC(bankIFSC).subscribe(res => {
 
       bank.maxAccNumber = res.data.results[0].limit
+
       if (bank.maxAccNumber == 0) {
         bank.maxAccNumber = null;
       }
@@ -229,10 +235,21 @@ export class BankDetailsComponent implements OnInit {
     }
   }
 
+  getmaxNumber(bank){
+    this.BankInformationService.getDataFromIFSC(bank.bankIFSC).subscribe(res => {
+
+      bank.maxAccNumber= res.data.results[0].limit;
+      
+      });
+  }
 
   validateAccountNo(accountNumber, bank) {
-
-    if (bank.maxAccNumber) {
+if(!bank.maxAccNumber){
+this.getmaxNumber(bank);  
+}
+//bank.maxAccNumber=this.a;
+    if (bank.maxAccNumber)
+     {
       if (accountNumber.length < bank.maxAccNumber) {
         bank.accountNumberCountError = 'Account Number Should be ' + bank.maxAccNumber + ' digits';
         this.accountNumberCountError = 'Account Number Should be ' + bank.maxAccNumber + ' digits';
