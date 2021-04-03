@@ -268,7 +268,7 @@
                   <div class="custom_icon_badge">
                     <input
                       type="text"
-                      id="declaredAmount{{ summary.licTransactionId }}"
+                      id="declaredAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.licTransactionId }}"
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right"
@@ -303,7 +303,7 @@
                 <td>
                   <input
                     type="text"
-                    id="actualAmount{{ summary.licTransactionId }}"
+                    id="actualAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.licTransactionId }}"
                     [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount"
@@ -983,7 +983,7 @@
                     <div class="custom_icon_badge">
                       <input
                         type="text"
-                        id="declaredAmount{{ summary.licTransactionId }}"
+                        id="declaredAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{ summary.licTransactionId }}"
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
@@ -1011,7 +1011,7 @@
                   <td>
                     <input
                       type="text"
-                      id="actualAmount{{ summary.licTransactionId }}"
+                      id="actualAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.licTransactionId }}"
                       [disabled]="!summary.additionalPayment"
                       [(ngModel)]="summary.actualAmount"

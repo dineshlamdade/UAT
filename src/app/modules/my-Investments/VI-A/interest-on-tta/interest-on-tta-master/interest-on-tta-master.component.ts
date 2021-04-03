@@ -433,6 +433,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
    //------------- On Master Edit functionality --------------------
    editMaster(accountNumber) {
+    this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -460,6 +461,18 @@ export class InterestOnTtaMasterComponent implements OnInit {
   findByaccountNumber(accountNumber,masterGridData){
     return masterGridData.find(x => x.accountNumber === accountNumber)
   }
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
 
 
   // On Edit Cancel

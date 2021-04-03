@@ -149,7 +149,7 @@
                 </td> -->
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="declaredAmount{{ summary.electricVehicleLoanTransactionId }}"
+                    <input type="text" id="declaredAmount{{ summary.electricVehicleLoanTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.electricVehicleLoanTransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChangeCurrentEmp(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" [disabled]="
@@ -160,7 +160,7 @@
 
 
                 <td>
-                  <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
+                  <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" [disabled]="initialArrayIndex[j] > i" [disabled]="
                     isDisabled || summary.transactionStatus === 'Submitted' "
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeCurrent(summary, i, j)"
@@ -261,14 +261,7 @@
                       " class="custom-control-input" value="option{{ summary.electricVehicleLoanTransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
-                  <!-- <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
-                    <input type="checkbox" [ngModel]="enableSelectAll"
-                      (change)="
-                        onSelectCheckBox(summary, $event, i, j);
-                        enableCheckboxFlag = j
-                      " class="custom-control-input" value="option{{ summary.electricVehicleLoanTransactionId }}" />
-                    <span class="custom-control-label"></span>
-                  </label> -->
+
                 </td>
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
@@ -286,7 +279,7 @@
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
+                    <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" [(ngModel)]="summary.actualAmount"
                       class="form-control align-right" (change)="onActualAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" [disabled]="
@@ -319,23 +312,6 @@
                   </span>
                 </td>
               </tr>
-
-              <!-- <tr *ngIf="!isDisabled && canEdit">
-                <td *ngIf="previousEmployeeList?.length" colspan="8"
-                  class="align-right font700 font-16 text-light-green cursor-pointer">
-                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                    (click)="deleteRow(j)"></i>
-                </td>
-                <td *ngIf="!previousEmployeeList?.length" colspan="8"
-                  class="align-right font700 font-16 text-light-green cursor-pointer">
-                  <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                    (click)="deleteRow(j)"></i>
-                </td>
-              </tr> -->
               <tr *ngIf="!isDisabled && canEdit">
                 <td
                   *ngIf="previousEmployeeList?.length"
@@ -716,28 +692,33 @@
                   <tr *ngFor="
                   let summary of item.electricVehicleLoanTransactionList;
                   let i = index;count as c">
-                  <!-- <td scope="row">
-                    <label class="custom-control custom-checkbox checkbox-center"
-                      tooltip="Select Lender Name for proof submission">
-                      <input type="checkbox"  class="custom-control-input"
-                      [disabled]="isDisabled || summary.transactionStatus == 'Submitted'"/>
-                      <span class="custom-control-label"></span>
-                    </label>
-                  </td> -->
+
 
                   <td>
                     <div class="custom_icon_badge">
-                      <input type="text" id="declaredAmount{{ summary.electricVehicleLoanTransactionId }}"
+                      <!-- <input type="text" id="declaredAmount{{ summary.electricVehicleLoanTransactionId }}"
                         name="declaredAmount{{ summary.electricVehicleLoanTransactionId }}" [(ngModel)]="summary.declaredAmount"
-                        class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
-                        [disabled]="initialArrayIndex[j] > i" disabled />
+                        class="form-control align-right" (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
+                        [disabled]="initialArrayIndex[j] > i" disabled /> -->
+
+                        <p-inputNumber id="declaredAmount{{ summary.electricVehicleLoanTransactionId }}" name="declaredAmount{{ summary.electricVehicleLoanTransactionId }}"
+                        [disabled]="initialArrayIndex[j] > i"
+                        [(ngModel)]="summary.declaredAmount" (change)="onDeclaredAmountChangeInEditCase(summary, i, j)" disabled
+                       mode="decimal" locale="en-IN" [disabled]="initialArrayIndex[j] > i" disabled
+                        [minFractionDigits]="2"></p-inputNumber>
                     </div>
                   </td>
+                  <!-- <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
+                  name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" [disabled]="initialArrayIndex[j] > i"
+                  [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCase(summary, i, j)"
+                  class="form-control align-right" disabled/> -->
                   <td>
-                    <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
-                      name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                      [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
-                      class="form-control align-right" disabled/>
+                      <p-inputNumber id="actualAmount{{ summary.electricVehicleLoanTransactionId }}" name="annualAmount{{ summary.electricVehicleLoanTransactionId }}"
+                      [disabled]="initialArrayIndex[j] > i"
+                      [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCase(summary, i, j)" disabled
+                     mode="decimal" locale="en-IN"
+                      [minFractionDigits]="2"></p-inputNumber>
+
                   </td>
 
                     <td>
@@ -822,26 +803,7 @@
                     let i = index;
                     count as c
                   ">
-                  <!-- previousEmpgroupTransactionList  groupTransactionList electricVehicleLoanTransactionPreviousEmployerList-->
-                  <!-- <td scope="row">
-                    <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                      tooltip="Select Lender Name for proof submission">
-                      <input type="checkbox" [ngModel]="enableSelectAll"
-                      (change)="
-                          onSelectCheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        " class="custom-control-input" value="option{{ summary.electricVehicleLoanTransactionId }}" />
-                      <span class="custom-control-label"></span>
-                    </label>
-                    <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
-                      <input type="checkbox" [ngModel]="enableSelectAll"
-                        (change)="
-                          onSelectCheckBox(summary, $event, i, j);
-                          enableCheckboxFlag = j
-                        " class="custom-control-input" value="option{{ summary.electricVehicleLoanTransactionId }}" />
-                      <span class="custom-control-label"></span>
-                    </label>
-                  </td> -->
+
                   <td *ngIf="previousEmployeeList?.length">
                     <select name="Previous Employer Name" class="form-control custom-select"
                       (change)="updatePreviousEmpId($event, i, j)" [disabled]="
@@ -858,12 +820,19 @@
                   </td>
                   <td>
                     <div class="custom_icon_badge">
-                      <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
+                      <!-- <input type="text" id="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
                         name="actualAmount{{ summary.electricVehicleLoanTransactionId }}" [(ngModel)]="summary.actualAmount"
-                        class="form-control align-right" (change)="onActualAmountChange(summary, i, j)"
-                        [disabled]="initialArrayIndex[j] > i" disabled />
+                        class="form-control align-right" (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)"
+                        [disabled]="initialArrayIndex[j] > i" disabled /> -->
+
+                        <p-inputNumber id="actualAmount{{ summary.electricVehicleLoanTransactionId }}" name="actualAmount{{ summary.electricVehicleLoanTransactionId }}"
+                        [disabled]="initialArrayIndex[j] > i"
+                        [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCaseCurrentEmp(summary, i, j)" disabled
+                       mode="decimal" locale="en-IN"
+                        [minFractionDigits]="2"></p-inputNumber>
                     </div>
                   </td>
+
                   <td>
                     <input type="text" [ngModel]="summary.rejectedAmount | number: '1.2-2'"
                       class="form-control align-right" disabled />

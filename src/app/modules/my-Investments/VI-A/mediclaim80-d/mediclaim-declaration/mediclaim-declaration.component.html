@@ -405,22 +405,7 @@
                     </span>
                   </td>
                 </tr>
-                <!-- <tr *ngIf="!isDisabled && canEdit">
-                  <td *ngIf="previousEmployeeList?.length" colspan="11"
-                    class="align-right font700 font-16 text-light-green cursor-pointer">
-                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInListPreventive(declarationService)"></i>
-                    <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                    <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                      (click)="deleteRow()"></i>
-                  </td>
-                  <td *ngIf="!previousEmployeeList?.length" colspan="11"
-                    class="align-right font700 font-16 text-light-green cursor-pointer">
-                    <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInListPreventive(declarationService)"></i>
-                    <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                    <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
-                      (click)="deleteRow()"></i>
-                  </td>
-                </tr> -->
+
                 <tr>
                   <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
@@ -784,7 +769,7 @@
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmount"
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmountPreventive"
                           [disabled]="true" />
                       </span>
                     </td>
