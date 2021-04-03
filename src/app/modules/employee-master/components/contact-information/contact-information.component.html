@@ -198,11 +198,13 @@
                                                             placeholder="Enter Mobile No." minlength="1" maxlength="10"
                                                             formControlName="emergencyContactNumber"
                                                             pattern="^[1-9a-zA-Z][0-9a-zA-Z]*$"
-                                                            (keypress)="keyPress($event)" (keyup)="formTouch()"
-                                                            (change)="validEmergencyCountryCode()"
+                                                            (keypress)="keyPress($event)" (keyup)="formTouch();checkMatchMobileNumber()"
+                                                            (change)="validEmergencyCountryCode();checkMatchMobileNumber()"
                                                             [(ngModel)]="contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber"
                                                             [ngClass]="{'is-invalid' : ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'}">
                                                     </div>
+                                                    <div *ngIf="mobileNumberMatchError==true" class="invalid-error-message">
+                                                       Emergency contact number should be different from personal contact number</div>
                                                     <div class="invalid-mob-error-message"
                                                         *ngIf="ContactInfoForm.get('emergencyContactNumber').status == 'INVALID'">
                                                         Mobile Number must be 10 digit & Should not start with 0

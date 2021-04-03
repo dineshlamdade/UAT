@@ -353,7 +353,11 @@ export class IdentityInformationComponent implements OnInit {
       this.IdentityInformation.employeePersonalInfoRequestDTO.nameAsperElectionCard = '';
     }
   }
+
+  
   updateNPRName(nationalPopulationRegNumber) {
+   
+    
     if (this.IdentityInfoForm.controls.nationalPopulationRegNumber.valid == true
       && this.IdentityInformation.employeePersonalInfoRequestDTO.nprNumber) {
       this.IdentityInformation.employeePersonalInfoRequestDTO.nameAsPerNPR = this.fullName;
