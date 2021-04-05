@@ -283,13 +283,13 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionPolicyList = [];
     this.transactionStatustList = [];
 
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.transactionInstitutionNames.push(data);
-    this.transactionPolicyList.push(data);
+    // this.transactionInstitutionNames.push(data);
+    // this.transactionPolicyList.push(data);
     this.refreshTransactionStatustList();
 
     this.getInstitutionListWithPolicyNo();
@@ -299,6 +299,15 @@ export class NpsDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
+
+    const data = {
+      label: 'All',
+      value: 'All',
+    };
+
+    this.transactionInstitutionNames.push(data);
+    this.transactionPolicyList.push(data);
+
     this.npsService
       .getNpsDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {
@@ -324,6 +333,8 @@ export class NpsDeclarationComponent implements OnInit {
   }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
+    this.filesArray = [];
+    this.transactionDetail = [];
     this.globalInstitution = institutionName;
     this.getTransactionFilterData(this.globalInstitution, null, null);
     this.globalSelectedAmount = this.numberFormat.transform(0);

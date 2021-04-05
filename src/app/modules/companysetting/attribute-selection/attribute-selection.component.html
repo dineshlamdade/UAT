@@ -9,24 +9,24 @@
           <div class="card">
             <div class="card-body">
 
-              <form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)"
-                [formGroup]="AttributeCreationForm" (ngSubmit)="addAttributeSelection()" method="post" novalidate>
+              <form class="card" role="form" [formGroup]="AttributeSelectionForm" (ngSubmit)="addAttributeSelection()"
+                method="post" novalidate>
 
                 <div class="row">
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Attribute Group Name</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="name" class="form-control"
-                        placeholder="Code"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('name').status == 'INVALID'}">
+                        placeholder="Enter Attribute Group Name" (keypress)="keyPressedSpaceNotAllow($event)"
+                        [ngClass]="{'is-invalid' : AttributeSelectionForm.get('name').status == 'INVALID'}">
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-4">
                     <label class="form-label">Description</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
-                        placeholder="Description"
-                        [ngClass]="{'is-invalid' : AttributeCreationForm.get('description').status == 'INVALID'}">
+                        placeholder="Enter Description"
+                        [ngClass]="{'is-invalid' : AttributeSelectionForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
                   <!-- <div class="col-sm-6 col-md-3">
@@ -37,20 +37,21 @@
                                 </div> -->
 
                   <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
-                    <label class="form-label">Copy Form</label>
-                    <select (change)="onStatusChange($event);" name="beast" id="Institution2"
-                      class="form-control custom-select" formControlName="attributeNature">
+                    <label class="form-label">Copy From</label>
+                    <select (change)="onStatusChange($event);" name="attributeNature" id="attributeNature"
+                      class="form-control" formControlName="attributeNature">
+                      <option selected value=''>Select </option>
                       <option *ngFor="let by of AttributeSelectionList" [value]="by.name">
                         {{by.name}}
                       </option>
                     </select>
                   </div>
-                  <!-- [ngClass]="{'is-invalid' : AttributeCreationForm.get('attributeNature').status == 'INVALID'}" -->
+                  <!-- [ngClass]="{'is-invalid' : AttributeSelectionForm.get('attributeNature').status == 'INVALID'}" -->
                   <br><br><br>
                   <!-- <div class="col-sm-6 col-md-3" *ngIf="hidevalue">
                                     <label class="form-label">Value</label>
                                     <div class="input-group">
-                                        <input type="text" [ngClass]="{'is-invalid' : AttributeCreationForm.get('optionList').status == 'INVALID'}" [readonly]="!disabled" (change)="onChangeEvent($event.target.value)" formControlName="optionList" class="form-control" placeholder="Description">
+                                        <input type="text" [ngClass]="{'is-invalid' : AttributeSelectionForm.get('optionList').status == 'INVALID'}" [readonly]="!disabled" (change)="onChangeEvent($event.target.value)" formControlName="optionList" class="form-control" placeholder="Description">
                                     </div>
                                 </div> -->
 
@@ -83,23 +84,24 @@
                 <div class="row mt-30">
                   <div class="col-5">
                     <div class="card">
-                      <div class="">
+                      <div class="">Total List: {{sourceProducts.length}} &nbsp; &nbsp; Selected List:
+                        {{selectedUser.length}}
                         <div class="table-responsive Custom_Table">
-                          <table class="table table-striped table-hover table-bordered m-b-0">
+                          <table class="table  table-bordered m-b-0" id="myTable">
                             <thead class="thead-dark">
                               <tr>
-                                <th scope="col" class="font700 wd-12">code</th>
+                                <th scope="col" class="font700 wd-12">Code</th>
                                 <th scope="col" class="font700 wd-20">Description</th>
-
                                 <th scope="col" class="font700 wd-12">Nature</th>
+                                <!-- <th scope="col" class="font700 wd-12">remove it</th> -->
                               </tr>
                             </thead>
                             <tbody>
-
-                              <tr *ngFor="let product of sourceProducts; let i = index" (click)="RowSelected(product);">
-                                <!-- <td class="align-center wd-10">
-                                                                <span>{{i+1}}</span>
-                                                            </td>  -->
+                              <!-- onclick="this.style.backgroundColor='#63ff6199'" -->
+                              <tr *ngFor=" let product of sourceProducts; let i=index" (click)="RowSelected(product);">
+                                <!-- <td class=" align-center wd-10">
+                                <span>{{i+1}}</span>
+                                </td> -->
 
                                 <td class="wd-10">
                                   <span>{{product.code}}</span>
@@ -110,6 +112,9 @@
                                 <td class="wd-10">
                                   <span>{{product.attributeNature}}</span>
                                 </td>
+                                <!-- <td class="wd-10">
+                                  <span>{{product.dummy}}</span>
+                                </td> -->
 
                               </tr>
                             </tbody>
@@ -122,12 +127,12 @@
                   <div class="col-1">
                     <div class="row">
                       <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="lefttablePusg()"><i class="fa fa-chevron-right
-                                            "></i></button>
+                        <button type="button" class="btn" (click)="lefttablePusg()"><i
+                            class="fa fa-chevron-right"></i></button>
                       </div>
                       <div class="col-md-12 mt-10">
-                        <button type="button" class="btn" (click)="righttablePusg()"><i class="fa fa-chevron-left
-                                            "></i></button>
+                        <button type="button" class="btn" (click)="righttablePusg()"><i
+                            class="fa fa-chevron-left "></i></button>
                       </div>
                     </div>
 
@@ -144,14 +149,14 @@
 
                   <div class="col-5">
                     <div class="card">
-                      <div class="">
+                      <div class=""> Total List: {{targetProducts.length}} &nbsp;&nbsp;Selected
+                        List:{{selectedUser2.length}}
                         <div class="table-responsive Custom_Table">
-                          <table class="table table-striped table-hover table-bordered m-b-0">
+                          <table class="table   table-bordered m-b-0">
                             <thead class="thead-dark">
                               <tr>
-                                <th scope="col" class="font700 wd-12">code</th>
+                                <th scope="col" class="font700 wd-12">Code</th>
                                 <th scope="col" class="font700 wd-20">Description</th>
-
                                 <th scope="col" class="font700 wd-12">Nature</th>
                               </tr>
                             </thead>
@@ -186,8 +191,8 @@
                 <div class="row mt-15">
                   <div class="col-12">
                     <div class="float-right mb-15">
-                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeCreationForm.invalid"
-                        [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid}"
+                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeSelectionForm.invalid"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeSelectionForm.invalid,'btn-bg-green': !AttributeSelectionForm.invalid}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
                         Save</button>
@@ -231,6 +236,7 @@
                               <th scope="col" class="font700 wd-8">Sr. No.</th>
                               <th scope="col" class="font700 wd-12">Attribute Group Name</th>
                               <th scope="col" class="font700 wd-20">Description</th>
+                              <th scope="col" class="font700 wd-12">Count</th>
                               <!-- <th scope="col" class="font700 wd-12">Short Name</th> -->
                               <!-- <th scope="col" class="font700 wd-12">Nature</th>
                                                         <th scope="col" class="font700 wd-20">Value</th>                                                                        -->
@@ -245,7 +251,7 @@
                                                         <td></td>
                                                       </tr>  -->
 
-                            <tr *ngFor="let summary of AttributeSelectionList; let i = index">
+                            <tr *ngFor="let summary of summaryList; let i = index">
                               <td class="align-center wd-10">
                                 <span>{{i+1}}</span>
                               </td>
@@ -255,6 +261,10 @@
                               <td class="wd-10">
                                 <span>{{summary.description}}</span>
                               </td>
+                              <td class="wd-10">
+                                <span>{{summary.options}}</span>
+                              </td>
+
 
                               <!-- <td class="wd-10">
                                                             <span>{{summary.attributeNature}}</span>

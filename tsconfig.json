@@ -2,8 +2,12 @@
   "compileOnSave": false,
   "angularCompilerOptions": {
     "disableTypeScriptVersionCheck": true,
+     "fullTemplateTypeCheck": true,
+
   },
   "compilerOptions": {
+     "strictTemplates": false,
+    "strictInjectionParameters": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

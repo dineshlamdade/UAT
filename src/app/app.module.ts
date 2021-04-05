@@ -42,7 +42,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptorService } from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-  //accordion and accordion tab
+//accordion and accordion tab
 //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
@@ -54,16 +54,8 @@ import { AdminApprovalModule } from './modules/admin-approval/admin-approval.mod
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
 import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.module';
-
-//////////////////////addaed by bharati////
-//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
-
-//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
 import { LockModule } from './modules/lock/lock.module';
 
 
@@ -84,19 +76,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     AppComponent,
     ProfileComponent,
     ShortenStringPipe,
-
     SettingsComponent,
-
-
-
-
-    //////////////////////////
-    // payrollComponent,
-    // HeadcreationComponent,
-    // AttributecreationComponent,
-    // AttributeselectionComponent,
-    // PayrollheadgroupcreationComponent,
-    ///////////////////////////////////////
   ],
 
   exports: [],
@@ -109,13 +89,11 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     PayrollModule,
     QueryModule,
     LoanModule,
-
     CompanySettingModule,
     MyInvestmentsModule,
     PayrollInputsModule,
     /////////////////
     //  payrollModule,
-    CompanySettingModule,
     LockModule,
     ////////////////////////////////
     MyInvestmentsModule,
@@ -149,14 +127,12 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	  AdminApprovalModule,
+    AdminApprovalModule,
     AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
-
     EmailSmsModule,
     LoanMasterModule
-
   ],
 
   providers: [BsDatepickerModule,
@@ -174,7 +150,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
         prodMode: false,
       } as TranslocoConfig,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     ShortenStringPipe,
   ],
   // schemas: [

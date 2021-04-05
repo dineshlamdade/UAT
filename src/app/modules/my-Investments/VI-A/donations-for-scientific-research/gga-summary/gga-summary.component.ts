@@ -14,7 +14,8 @@ export class GgaSummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: any;
+  public futureDonationsDeclaredAmount: 0;
+  public futureGlobalPolicyDeclaredAmount: 0;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -25,6 +26,7 @@ export class GgaSummaryComponent implements OnInit {
   public selectedInstitution: string;
   public benefitAvailableOnActualAmount : number;
   public benefitAvailableOnDeclaredAmount : number;
+  public tempFlag : boolean;
 
    @Input() institution: string;
   @Input() policyNo: string;
@@ -65,10 +67,8 @@ export class GgaSummaryComponent implements OnInit {
           this.summaryGridData = res.data.results[0].donations80GGTransactionList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          // this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureDonationsDeclaredAmount);
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-            res.data.results[0].futureDonationsDeclaredAmount
-          );
+          this.futureDonationsDeclaredAmount = res.data.results[0].futureDonationsDeclaredAmount;
+          this.futureGlobalPolicyDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
           this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
@@ -79,9 +79,8 @@ export class GgaSummaryComponent implements OnInit {
 
     // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
         const data = {
-            futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
+          futureNewPolicyDeclaredAmount : this.futureDonationsDeclaredAmount,
         };
 
         console.log('addFuturePolicy Data..', data);
@@ -91,11 +90,10 @@ export class GgaSummaryComponent implements OnInit {
             this.summaryGridData = res.data.results[0].donations80GGTransactionList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            // this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureDonationsDeclaredAmount);
-
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-              res.data.results[0].futureDonationsDeclaredAmount
-            ); this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+            // this.futureDonationsDeclaredAmount = this.numberFormat.transform(res.data.results[0].futureDonationsDeclaredAmount);
+            this.futureDonationsDeclaredAmount = res.data.results[0].futureDonationsDeclaredAmount;
+            this.futureGlobalPolicyDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+            this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
             this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
             this.benefitAvailableOnActualAmount = res.data.results[0].benefitAvailableOnActualAmount;
@@ -105,11 +103,16 @@ export class GgaSummaryComponent implements OnInit {
         this.alertService.sweetalertMasterSuccess("Future Amount was saved","");
       }
 
-  // On Change Future New Policy Declared Amount with formate
-    onChangeFutureNewPolicyDeclaredAmount() {
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
-      this.addFuturePolicy();
-    }
+      // On Change Future New Policy Declared Amount with formate
+  onChangeFutureNewPolicyDeclaredAmount() {
+    this.futureDonationsDeclaredAmount = this.futureDonationsDeclaredAmount;
+    if (this.futureDonationsDeclaredAmount > 0) {
+    this.addFuturePolicy();
+  }else if(this.futureDonationsDeclaredAmount <0) {
+    this.futureDonationsDeclaredAmount = this.futureDonationsDeclaredAmount;
+  }
+
+}
 
     jumpToMasterPage(policyNo: string) {
       this.tabIndex = 1;
@@ -118,6 +121,21 @@ export class GgaSummaryComponent implements OnInit {
         tabIndex : this.tabIndex
       };;
       this.policyNumber.emit(data);
+    }
+
+    keyPressedSpaceNotAllow(event: any) {
+      console.log('HI ');
+      const pattern = /[0-9\+\-\ ]/;
+      let inputChar = String.fromCharCode(event.key);
+
+      if (!pattern.test(inputChar)) {
+        // this.futureDonationsDeclaredAmount = 0;
+        this.tempFlag = true;
+        // invalid character, prevent input
+        event.preventDefault();
+      } else {
+        this.tempFlag = false;
+      }
     }
 
 

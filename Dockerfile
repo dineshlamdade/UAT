@@ -23,6 +23,7 @@ WORKDIR /app
 
 # Get all the code needed to run the app
 COPY . /app/
+COPY ssl/ /app/ssl/
 
 #CMD ["sudo","npm","install","-g","@angular/cli@9.0.7"]
 RUN npm install -g @angular/cli@11.0.7
@@ -43,4 +44,6 @@ RUN npm run build --prod
 FROM nginx:alpine
 COPY --from=web app/mysite.conf /etc/nginx/conf.d/default.conf
 COPY --from=web app/dist/ /srv/mysite/
+COPY --from=web app/ssl/ /etc/ssl/
 EXPOSE 80
+EXPOSE 443

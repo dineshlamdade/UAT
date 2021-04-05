@@ -498,39 +498,38 @@ export class ElectricVehicleMasterComponent implements OnInit {
     );
     this.form.patchValue(electricVehicle);
   }
-//---------- For Doc Viewer -----------------------
+
  //----------------- Remove  Document -------------
   removeSelectedLicMasterDocument(index: number) {
   this.masterfilesArray.splice(index, 1);
 }
-nextDocViewer() {
-
+// ---------- For Doc Viewer -----------------------
+public nextDocViewer() {
   this.urlIndex = this.urlIndex + 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI,
+    this.urlArray[this.urlIndex].blobURI
   );
 }
 
-previousDocViewer() {
-
+public previousDocViewer() {
   this.urlIndex = this.urlIndex - 1;
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI,
+    this.urlArray[this.urlIndex].blobURI
   );
 }
 
-docViewer(template3: TemplateRef<any>,index:any) {
-  console.log("---in doc viewer--");
+public docViewer(template3: TemplateRef<any>, index: any) {
+  console.log('---in doc viewer--');
   this.urlIndex = index;
 
-  console.log("urlArray::", this.urlArray);
+  console.log('urlArray::', this.urlArray);
   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    this.urlArray[this.urlIndex].blobURI,
+    this.urlArray[this.urlIndex].blobURI
   );
-  console.log("urlSafe::",  this.urlSafe);
+  console.log('urlSafe::', this.urlSafe);
   this.modalRef = this.modalService.show(
     template3,
-    Object.assign({}, { class: 'gray modal-xl' }),
+    Object.assign({}, { class: 'gray modal-xl' })
   );
 }
 
