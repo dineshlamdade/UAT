@@ -166,7 +166,7 @@
               <td class="align-left font700"><span class="Letterbadge">A</span></td>
 
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalExpenditureOfSelfSpouseChildrenWithoutParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalExpenditureOfSelfSpouseChildrenWithoutParents | number:
                   "1.2-2" }}
@@ -174,7 +174,7 @@
               </td>
 
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.totalExpenditureOfSelfSpouseChildrenWithoutParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalExpenditureOfSelfSpouseChildrenWithoutParents| number:
                   "1.2-2" }}
@@ -184,11 +184,11 @@
 
             </tr>
             <tr>
-              <td class="align-left table-light-color table-light-color font700"> Self/ Spouse/ Children Parents</td>
+              <td class="align-left table-light-color table-light-color font700"> Self/ Spouse/ Children & Parents</td>
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">B</span></td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalExpenditureOfSelfSpouseChildrenWithParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalExpenditureOfSelfSpouseChildrenWithParents | number:
                   "1.2-2" }}
@@ -196,7 +196,7 @@
               </td>
 
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.totalExpenditureOfSelfSpouseChildrenWithParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalExpenditureOfSelfSpouseChildrenWithParents| number: "1.2-2"
                   }}
@@ -210,14 +210,15 @@
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">C</span></td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalExpenditureOfOnlyParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalExpenditureOfOnlyParents | number: "1.2-2" }}
                 </span>
               </td>
 
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.totalExpenditureOfOnlyParents | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                tooltip="{{ mediclaimSummaryComputationActual.totalExpenditureOfOnlyParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalExpenditureOfOnlyParents| number: "1.2-2" }}
                 </span>
               </td>
@@ -225,17 +226,17 @@
             </tr>
 
             <tr>
-              <td class="align-left table-light-color table-light-color font700">Total of</td>
+              <td class="align-left table-light-color table-light-color font700">Self/ Spouse/ Children & Parents</td>
               <td class="align-left table-light-color table-light-color font700"> Health Checkup</td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">D</span></td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalExpenditureOfHealthCheckup | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalExpenditureOfHealthCheckup | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.totalExpenditureOfHealthCheckup | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalExpenditureOfHealthCheckup| number: "1.2-2" }}
                 </span>
@@ -249,12 +250,14 @@
                 &nbsp;<span class="Letterbadge">B</span>+ &nbsp;<span class="Letterbadge">C</span>+ &nbsp;<span
                   class="Letterbadge">D</span></td>
               <td class="align-right font700">
-                <span tooltip="{{ mediclaimSummaryComputationDeclared.totalExpenditure | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
+                tooltip="{{ mediclaimSummaryComputationDeclared.totalExpenditure | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalExpenditure | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.totalExpenditure | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                 tooltip="{{ mediclaimSummaryComputationActual.totalExpenditure | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalExpenditure| number: "1.2-2" }}
                 </span>
               </td>
@@ -267,13 +270,13 @@
               <td class="align-left table-light-color font700">Not Senior Citizen</td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">F</span></td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.limitOfSelfSpouseChildrenNonSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.limitOfSelfSpouseChildrenNonSeniorCitizen| number: "1.2-2" }}
                 </span>
@@ -285,13 +288,13 @@
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
               <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">G</span></td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenSeniorCitizen | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.limitOfSelfSpouseChildrenSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.limitOfSelfSpouseChildrenSeniorCitizen| number: "1.2-2" }}
                 </span>
@@ -305,12 +308,14 @@
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
               <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">H</span></td>
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationDeclared.limitOfParentsSeniorCitizen | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
+                tooltip="{{ mediclaimSummaryComputationDeclared.limitOfParentsSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.limitOfParentsSeniorCitizen | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.limitOfParentsSeniorCitizen | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                 tooltip="{{ mediclaimSummaryComputationActual.limitOfParentsSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.limitOfParentsSeniorCitizen| number: "1.2-2" }}
                 </span>
               </td>
@@ -322,13 +327,13 @@
               <td class="align-left table-light-color table-light-color font700">Non Senior Citizen</td>
               <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">I</span></td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.limitOfParentsNonSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.limitOfParentsNonSeniorCitizen | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.limitOfParentsNonSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.limitOfParentsNonSeniorCitizen| number: "1.2-2" }}
                 </span>
@@ -337,16 +342,18 @@
 
 
             <tr>
-              <td class="align-left table-light-color table-light-color font700">Limit Of</td>
+              <td class="align-left table-light-color table-light-color font700">Self/ Spouse/ Children & Parents</td>
               <td class="align-left table-light-color table-light-color font700"> Health Checkup</td>
               <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">J</span></td>
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationDeclared.limitOfHealthCheckup | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
+                tooltip="{{ mediclaimSummaryComputationDeclared.limitOfHealthCheckup | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.limitOfHealthCheckup | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.limitOfHealthCheckup | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                tooltip="{{ mediclaimSummaryComputationActual.limitOfHealthCheckup | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.limitOfHealthCheckup| number: "1.2-2" }}
                 </span>
               </td>
@@ -361,12 +368,14 @@
                   class="Letterbadge">I</span> + &nbsp; <span class="Letterbadge">J</span>
               </td>
               <td class="align-right font700">
-                <span tooltip="{{ mediclaimSummaryComputationDeclared.totalLimit | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
+                tooltip="{{ mediclaimSummaryComputationDeclared.totalLimit | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalLimit | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.totalLimit | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                 tooltip="{{ mediclaimSummaryComputationActual.totalLimit | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalLimit| number: "1.2-2" }}
                 </span>
               </td>
@@ -379,12 +388,14 @@
               <td class="align-left table-light-color table-light-color font700"></td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">L</span></td>
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefitOfOnlyParents | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
+                 tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefitOfOnlyParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalBenefitOfOnlyParents | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.totalBenefitOfOnlyParents | number: '1.2-2' }}">
+                <span  *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                tooltip="{{ mediclaimSummaryComputationActual.totalBenefitOfOnlyParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalBenefitOfOnlyParents| number: "1.2-2" }}
                 </span>
               </td>
@@ -397,14 +408,14 @@
               <td class="align-left font700 table-light-color "><span class="Letterbadge">M</span>= Minimum of <span
                   class="Letterbadge">A</span> & <span class="Letterbadge">F</span> &nbsp;</td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefitOfSelfSpouseChildrenWithoutParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalBenefitOfSelfSpouseChildrenWithoutParents | number:
                   "1.2-2" }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.totalBenefitOfSelfSpouseChildrenWithoutParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalBenefitOfSelfSpouseChildrenWithoutParents| number: "1.2-2"
                   }}
@@ -419,14 +430,14 @@
               <td class="align-left font700 table-light-color"><span class="Letterbadge">N</span>= Minimum of <span
                   class="Letterbadge">H</span> & <span class="Letterbadge">C</span> &nbsp;</td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefitOfSelfSpouseChildrenWithParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalBenefitOfSelfSpouseChildrenWithParents | number: "1.2-2"
                   }}
                 </span>
               </td>
               <td class="align-right table-light-color font700">
-                <span
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.totalBenefitOfSelfSpouseChildrenWithParents | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalBenefitOfSelfSpouseChildrenWithParents| number: "1.2-2" }}
                 </span>
@@ -439,12 +450,14 @@
               <td class="align-left font700"><span class="Letterbadge">O</span> = <span class="Letterbadge">M</span> +
                 &nbsp; <span class="Letterbadge">N</span></td>
               <td class="align-right font700">
-                <span tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefit | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
+                tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefit | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.totalBenefit | number: "1.2-2" }}
                 </span>
               </td>
               <td class="align-right font700">
-                <span tooltip="{{ mediclaimSummaryComputationActual.totalBenefit | number: '1.2-2' }}">
+                <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
+                 tooltip="{{ mediclaimSummaryComputationActual.totalBenefit | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.totalBenefit| number: "1.2-2" }}
                 </span>
               </td>

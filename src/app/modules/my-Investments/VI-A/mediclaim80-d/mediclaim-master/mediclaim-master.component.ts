@@ -125,6 +125,7 @@ export class MediclaimMasterComponent implements OnInit {
   public dropdownList = [];
   public selectedItems = [];
   public selectedEstablishmentMasterId = [];
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -154,11 +155,12 @@ export class MediclaimMasterComponent implements OnInit {
         Validators.required
       ),
       mediclaimBenefeciaryDetailList: new FormControl([], Validators.required),
-      ecs: new FormControl(false),
+      ecs: new FormControl('false'),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       mediclaimMasterId: new FormControl(0),
       mediclaimPaymentDetailId: new FormControl(0),
+      proofSubmissionId: new FormControl(''),
       // depositType: new FormControl("", Validators.required),
     });
     this.typeOfExpenceList = [
@@ -421,7 +423,7 @@ export class MediclaimMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Mediclaim  Document Needed to Create Master.'
       );
@@ -459,7 +461,10 @@ export class MediclaimMasterComponent implements OnInit {
             fromDate: this.masterForm.fromDate.value,
             toDate: this.masterForm.toDate.value,
           },
+
         };
+        data.proofSubmissionId = this.proofSubmissionId;
+
       } else {
         data = {
           mediclaimMasterId: 0,
@@ -470,7 +475,9 @@ export class MediclaimMasterComponent implements OnInit {
           policyEndDate: this.masterForm.policyEndDate.value,
           mediclaimBenefeciaryDetailList: this.masterForm
             .mediclaimBenefeciaryDetailList.value,
+
         };
+        data.proofSubmissionId = this.proofSubmissionId;
       }
       console.log('Mediclaim Master::', data);
 
@@ -542,7 +549,7 @@ export class MediclaimMasterComponent implements OnInit {
       ) {
         let installment = this.form.value.premiumAmount;
 
-        installment = installment.toString().replace(',', '');
+        // installment = installment.toString().replace(',', '');
 
         // console.log(installment);
         if (!this.form.value.frequencyOfPayment) {
@@ -557,11 +564,11 @@ export class MediclaimMasterComponent implements OnInit {
         } else {
           installment = installment * 1;
         }
-        const formatedPremiumAmount = this.numberFormat.transform(
-          this.form.value.premiumAmount
-        );
+        // const formatedPremiumAmount = this.numberFormat.transform(
+        //   this.form.value.premiumAmount
+        // );
         // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-        this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+        // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
         this.form.get('annualAmount').setValue(installment);
       }
     } else {
@@ -588,9 +595,7 @@ export class MediclaimMasterComponent implements OnInit {
   // On Master Edit functionality
   editMaster(i: number) {
     this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[
-      i
-    ].mediclaimPaymentDetailList;
+    this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -601,7 +606,35 @@ export class MediclaimMasterComponent implements OnInit {
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isClear = true;
+    const abc = this.masterGridData[i];
+    this.urlArray = abc.documentInformationList;
+    this.proofSubmissionId = this.proofSubmissionId;
+    // this.proofSubmissionId = obj.proofSubmissionId;
+
   }
+
+  // editMaster(i: number) {
+  // if (obj.frequency === 'frequencyOfPayment') {
+  //   this.form.patchValue({
+  //     institution: obj.institution,
+  //     accountNumber: obj.accountNumber,
+  //     accountHolderName: obj.accountHolderName,
+  //     relationship: obj.relationship,
+  //     policyStartDate: obj.policyStartDate,
+  //     fromDate: obj.fromDate,
+  //     familyMemberInfoId: obj.familyMemberInfoId,
+  //     frequencyOfPayment: obj.frequencyOfPayment,
+  //   });
+  // } else {
+  //   this.paymentDetailGridData = obj.paymentDetails;
+  //   this.form.patchValue(obj);
+  //   this.Index = obj.accountNumber;
+  //   this.showUpdateButton = true;
+  //   this.isClear = true;
+  //   this.urlArray = obj.documentInformationList;
+  //   this.proofSubmissionId = obj.proofSubmissionId;
+  // }
+  // }
 
   // scrollToTop Fuctionality
   public scrollToTop() {
@@ -627,9 +660,7 @@ export class MediclaimMasterComponent implements OnInit {
   // On Master Edit functionality
   viewMaster(i: number) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[
-      i
-    ].mediclaimPaymentDetailList;
+    this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -716,6 +747,47 @@ export class MediclaimMasterComponent implements OnInit {
     this.ServicesList = [];
   }
 
+  // On Edit Cancel
+  resetView() {
+    this.paymentDetailGridData = [];
+    this.form.reset();
+    this.form.get('active').setValue(true);
+    this.form.get('ecs').setValue('0');
+    this.showUpdateButton = false;
+
+    this.masterfilesArray = [];
+    this.urlArray = [];
+    this.isClear = false;
+  }
+   // ---------- For Doc Viewer -----------------------
+   public nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
+
+  public docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
+
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
   // /** Instituation dropdown selection value */
   // public onChangeDeposit(expenseType) {
