@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditorModule } from 'ckeditor4-angular';
 import { ToastrService } from 'ngx-toastr';
 import { QueryService } from '../query.service';
-// import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-// declare global { interface Window { editor: any; } }
+
 
 @Component({
   selector: 'app-query',
@@ -15,7 +15,7 @@ export class QueryComponent implements OnInit {
 
   queryForm: FormGroup;
   ckeConfig: any;
-  public Editor = ClassicEditor;
+  // public Editor = ClassicEditor;
   queryListData: any;
   editflag: boolean = false;
   hideRemarkDiv:boolean = false;
@@ -24,30 +24,31 @@ export class QueryComponent implements OnInit {
   p: number = 1;
   moduleListData: any;
 
-  editorConfig = {
-    toolbar: [
-      { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
-      { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
-      { name: 'document', items: ['Source'] }
-    ],
-    allowedContent: true,
-    fullPage: true,
-    startupMode: 'source',
-  };
+
+  // editorConfig = {
+  //   toolbar: [
+  //     { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+  //     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
+  //     { name: 'document', items: ['Source'] }
+  //   ],
+  //   allowedContent: true,
+  //   fullPage: true,
+  //   startupMode: 'source',
+  // };
 
   keyword:any = [];
   fieldMap: any;
   mappingData: any = [];
-  emailSmsData: any;
+
 
   constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService)
   {
 
     this.queryForm = this.formBuilder.group({
-      "createdBy": new FormControl(''),
-      "updatedBy": new FormControl(''),
-      "createdOn": new FormControl(''),
-      "updatedOn": new FormControl(''),
+      // "createdBy": new FormControl(''),
+      // "updatedBy": new FormControl(''),
+      // "createdOn": new FormControl(''),
+      // "updatedOn": new FormControl(''),
       "queAnsMasterId": new FormControl(0),
       "code": new FormControl(''),
       "description": new FormControl(null, [Validators.required ,Validators.pattern('^[A-Za-z0-9ñÑáéíóúÁÉÍÓÚ ]+$')]),
@@ -88,9 +89,9 @@ export class QueryComponent implements OnInit {
         'description': 'Employee Gender'
     },
     {
-        'name':'Employee Gread',
+        'name':'Employee Grade',
         'id': 6,
-        'description': 'Employee Gread'
+        'description': 'Employee Grade'
     },
     {
       'name':'Employee Company',
@@ -115,32 +116,16 @@ export class QueryComponent implements OnInit {
 
   }
   ngOnInit(): void {
-
-    this.getAllData();
     this.getModuleName();
-
-
-    // DecoupledEditor
-    // .create( '<h2>Hello world!</h2>', {
-    //     toolbarContainer: document.querySelector( '.toolbar-container' ),
-    //     editableContainer: document.querySelector( '.editable-container' )
-
-    // } )
-    // .then( editor => {
-    //     window.editor = editor;
-    // } )
-    // .catch( err => {
-    //     console.error( err.stack );
-    // } );
+    this.getAllData();
   }
-
-
   get f(){
     return this.queryForm.controls;
   }
 
   queryFormSubmit()
   {
+    console.log(JSON.stringify(this.queryForm.value));
     if(!this.editflag){
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {
@@ -213,8 +198,6 @@ changeEvent($event) {
   }
   else {
       this.hideRemarkDiv = true;
-
-
   }
 
 }
@@ -246,6 +229,41 @@ drop(ev): void {
     + '[' + data + ']'
     console.log(bodyValue)
 }
+
+getModuleNamefortable(moduleid){
+  let modulename = ''
+  this.moduleListData.forEach(element => {
+    if(element.applicationModuleId == moduleid){
+      modulename = element.applicationModuleName
+    }
+  });
+
+ return modulename;
+}
+
+editorConfig = {
+  toolbar: [
+    { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'ExportPdf', 'Preview', 'Print', '-', 'Templates' ] },
+  { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+  { name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+  { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+  '/',
+  { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+  { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+  { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+  { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+  '/',
+  { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+  {name: 'colors', items : ['TextColor', 'BGColor']},
+  { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+  { name: 'about', items: [ 'About' ] },
+  { name: 'colors' },
+
+  ],
+  allowedContent: true,
+
+
+};
 
 
 }

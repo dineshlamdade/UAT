@@ -4,6 +4,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { LoanService } from '../loan.service';
 import { ToastrService } from 'ngx-toastr';
 import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-new-loan',
@@ -26,9 +28,19 @@ export class AddNewLoanComponent implements OnInit {
   installmentAmount: number = 0;
   loanCodeName: any;
   dataOfFootballers: any[];
+  documentList: any;
+  guarantorsList: any;
+  getscheduleData: any;
+  // minFractionDigits: number;
+  public masterfilesArray: File[] = [];
+  public urlArray: Array<any> = [];
+  public urlIndex: number;
+  public urlSafe: SafeResourceUrl;
+  approvalData: any;
 
   constructor(public formBuilder : FormBuilder,
-    private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService , private excelservice: ExcelService) {
+    private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ,
+    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
     this.AddLoanForm = this.formBuilder.group(
       {
         "createdBy":new FormControl(''),
@@ -38,17 +50,17 @@ export class AddNewLoanComponent implements OnInit {
         "active":new FormControl(true),
         "employeeCode":new FormControl(''),
 
-        "installmentAmount":new FormControl(''),
+        "installmentAmount":new FormControl('',[Validators.pattern(/^([-+] ?)?[0-9]+(,[0-9]+)?/)]),
 
-        "loanMasterId":new FormControl('',[Validators.required]),
+        "loanMasterId":new FormControl(''),
         "loanCode":new FormControl(''),
 
-        "loanType": new FormControl(''),
+        "loanType": new FormControl(null,[Validators.required]),
         "repaymentType":new FormControl(''),
         "underlineAssestValue":new FormControl(''),
         "carOrInstitutionType":new FormControl(''),
 
-        "loanAmount":new FormControl('',[Validators.required,Validators.pattern(/^-?(0|[1-9]\d*)?$/), Validators.max(500000)]),
+        "loanAmount":new FormControl('',[Validators.required,Validators.pattern(/^([-+] ?)?[0-9]+(,[0-9]+)?/)]),
         "interestRate":new FormControl(''),
 
         "noOfInstallment":new FormControl(''),
@@ -115,9 +127,11 @@ export class AddNewLoanComponent implements OnInit {
     if(!this.editflag){
     this.loanservice.addLoan(this.AddLoanForm.value).subscribe(res =>
       {
+        this.approvalData = res.data.results.approverDetails;
+        console.log("approverDetails*****************",this.approvalData);
         this.toster.success("",'Loan Added Successfully');
         this.getAllData();
-
+        this.reset();
       })
     }else
     {
@@ -160,8 +174,8 @@ export class AddNewLoanComponent implements OnInit {
     this.AddLoanForm.reset();
     this.AddLoanForm.controls['repaymentType'].disable();
     // this.AddLoanForm.controls['endDate'].disable();
-    this.AddLoanForm.controls['interestRate'].disable();
-    this.AddLoanForm.controls['noOfInstallment'].disable();
+    // this.AddLoanForm.controls['interestRate'].disable();
+    // this.AddLoanForm.controls['noOfInstallment'].disable();
     // this.AddLoanForm.controls['installmentAmount'].disable();
   }
 cancel()
@@ -175,6 +189,7 @@ schedule(template: TemplateRef<any>) {
     Object.assign({}, { class: 'gray modal-xl' })
   );
 this.allScheduleData();
+this.reset();
 
 }
 getAllData()
@@ -194,19 +209,34 @@ getAllLoanType()
 
 loanAmount:number;
 flatIntrest:number;
+tempLoanMasterScheduleId:number;
 allScheduleData()
 {
   let data =
   {
+    "tempLoanMasterScheduleId":this.tempLoanMasterScheduleId,
     "flatIntrest": this.flatIntrest,
     "loanAmount": this.loanAmount,
     "loanCode":this.loanCodeName,
   }
+
+  this.tempLoanMasterScheduleId = null;
   this.loanservice.allScheduleData(data).subscribe(res =>
     {
       this.scheduleData = res.data.results[0];
+      this.tempLoanMasterScheduleId = res.data.results[0].tempLoanMasterScheduleId;
+      if(this.tempLoanMasterScheduleId != null){
+        this.getallScheduleData();
+      }
     })
 
+}
+getallScheduleData()
+{
+  this.loanservice.getallScheduleData(this.tempLoanMasterScheduleId).subscribe(res =>
+    {
+      this.getscheduleData = res.data.results[0];
+    })
 }
 
 assetValueShowHide($event)
@@ -214,14 +244,13 @@ assetValueShowHide($event)
 this.loanType = $event;
 this.loanTypeData.forEach(element => {
   if(element.loanMasterId == this.loanType){
-    this.AddLoanForm.controls['underlineAssestValue'].setValue(element.underliningAsset);
+    // this.AddLoanForm.controls['underlineAssestValue'].setValue(element.underliningAsset);
     this.AddLoanForm.controls['interestRate'].setValue(element.intRate);
     this.AddLoanForm.controls['repaymentType'].setValue(element.recoveryMethod);
     this.AddLoanForm.controls['noOfInstallment'].setValue(element.recoveryNoOfInstallments);
-
     this.noOfInstallment = element.recoveryNoOfInstallments;
     this.flatIntrest = element.intRate;
-    // this.installmentAmount = this.loanAmount / this.noOfInstallament;
+    this.documentList = element.document;
 
     console.log("**********",element);
   }
@@ -243,6 +272,7 @@ this.loanTypeData.forEach(element => {
 });
 
 }
+// ................................calculate installment amount............................................
 calculateInstallmentAmount(value)
 {
       this.loanAmount = value;
@@ -251,8 +281,52 @@ calculateInstallmentAmount(value)
       this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
 }
+calculateNoOfInstallment(value)
+{
+  this.noOfInstallment = value;
+  this.installmentAmount = this.loanAmount / this.noOfInstallment;
+  this.installmentAmount = Math.round(this.installmentAmount );
+  this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
+
+}
+
+
+// ....................................excel and pdf code...................................................
 exportAsXLSX():void {
   this.excelservice.exportAsExcelFile(this.dataOfFootballers, 'footballer_data');
+}
+
+// ........................upload Document..............................................................
+public UploadModalDocument(template1: TemplateRef<any>) {
+  this.modalRef = this.modalService.show(
+    template1,
+    Object.assign({}, { class: 'gray modal-md' })
+  );
+}
+
+onMasterUpload(event: { target: { files: string | any[] } }) {
+  if (event.target.files.length > 0) {
+    for (const file of event.target.files) {
+      this.masterfilesArray.push(file);
+    }
+  }
+}
+public removeSelectedLicMasterDocument(index: number) {
+  this.masterfilesArray.splice(index, 1);
+}
+public docViewer(template3: TemplateRef<any>, index: any) {
+  console.log('---in doc viewer--');
+  this.urlIndex = index;
+
+  console.log('urlArray::', this.urlArray);
+  this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    this.urlArray[this.urlIndex].blobURI
+  );
+  console.log('urlSafe::', this.urlSafe);
+  this.modalRef = this.modalService.show(
+    template3,
+    Object.assign({}, { class: 'gray modal-xl' })
+  );
 }
 
 }

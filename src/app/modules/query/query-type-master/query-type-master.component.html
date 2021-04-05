@@ -231,7 +231,7 @@
                                       <th scope="col" class="wd-19">Default</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <!-- <tbody>
                                     <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
                                       <td class="wd-9">{{i+1}}</td>
                                       <td class="wd-14">{{query.moduleId}}</td>
@@ -241,7 +241,7 @@
                                       <td class="wd-19"><input type="checkbox"></td>
                                     </tr>
                                     <tr></tr>
-                                  </tbody>
+                                  </tbody> -->
                                 </table>
                                 <pagination-controls (pageChange)="p = $event"></pagination-controls>
                               </div>

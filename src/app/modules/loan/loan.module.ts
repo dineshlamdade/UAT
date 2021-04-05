@@ -6,6 +6,7 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddNewLoanComponent } from './add-new-loan/add-new-loan.component';
 import { ExcelService } from '../uploadexcel/uploadexcelhome/excel.service';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @NgModule({
@@ -15,6 +16,9 @@ import { ExcelService } from '../uploadexcel/uploadexcelhome/excel.service';
     LoanRoutingModule,
     SharedlayoutModule,
     ReactiveFormsModule,
+    InputNumberModule,
+
+
   ],
   providers: [ExcelService],
   bootstrap: [LoanComponent]

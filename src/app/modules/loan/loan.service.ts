@@ -33,5 +33,9 @@ public allScheduleData(data)
 {
   return this.http.post<any>(this.apiUrl  +'loan-Schedule/addSchedule',data);
 }
+public getallScheduleData(id)
+{
+  return this.http.get<any>(this.apiUrl  +'loan-Schedule/getByTempLoanMasterId/'+id);
+}
 
 }
