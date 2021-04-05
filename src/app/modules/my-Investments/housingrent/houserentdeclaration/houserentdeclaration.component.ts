@@ -258,6 +258,7 @@ export class HouserentdeclarationComponent implements OnInit {
         // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
     });
+*/
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -265,12 +266,12 @@ export class HouserentdeclarationComponent implements OnInit {
     } else {
       this.financialYear =
         this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
-    } */
+    } 
 
-    /*  const splitYear = this.financialYear.split('-', 2);
+  const splitYear = this.financialYear.split('-', 2);
 
     this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]); */
+    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]); 
   }
 
   // Update Previous Employee in Main Page
