@@ -27,17 +27,15 @@ import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormat
 import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { Mediclaim80DService } from '../mediclaim80-d.service';
-import { MultiSelect} from '../../../../../../assets/plugins/multi-select/js/jquery.multi-select.js';
+import { MultiSelect } from '../../../../../../assets/plugins/multi-select/js/jquery.multi-select.js';
 declare var MultiSelect: any;
 
 @Component({
   selector: 'app-mediclaim-master',
   templateUrl: './mediclaim-master.component.html',
-  styleUrls: ['./mediclaim-master.component.scss']
+  styleUrls: ['./mediclaim-master.component.scss'],
 })
-
 export class MediclaimMasterComponent implements OnInit {
-
   // declare MultiSelect: any;
 
   public modalRef: BsModalRef;
@@ -55,8 +53,8 @@ export class MediclaimMasterComponent implements OnInit {
   public paymentDetailGridData: Array<any> = [];
   public declarationGridData: Array<any> = [];
   public familyMemberGroup: Array<any> = [];
-  public depositTypeList : Array<any> =[];
-  public typeOfExpenceList : Array<any> =[];
+  public depositTypeList: Array<any> = [];
+  public typeOfExpenceList: Array<any> = [];
   public frequencyOfPaymentList: Array<any> = [];
   public frequencyOfPaymentListInMediclaim: Array<any> = [];
   public frequencyOfTermDepositPaymentList: Array<any> = [];
@@ -128,11 +126,10 @@ export class MediclaimMasterComponent implements OnInit {
   public selectedItems = [];
   public selectedEstablishmentMasterId = [];
 
-
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private mediclaim80DService : Mediclaim80DService,
+    private mediclaim80DService: Mediclaim80DService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -144,15 +141,18 @@ export class MediclaimMasterComponent implements OnInit {
     public sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
-      expenseType : new FormControl("", Validators.required),
+      expenseType: new FormControl('', Validators.required),
       institution: new FormControl(null, Validators.required),
       policyNumber: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
 
-      frequencyOfPayment: new FormControl("", Validators.required),
+      frequencyOfPayment: new FormControl('', Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl({ value: null, disabled: true },Validators.required),
+      annualAmount: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       mediclaimBenefeciaryDetailList: new FormControl([], Validators.required),
       ecs: new FormControl(false),
       fromDate: new FormControl(null, Validators.required),
@@ -160,12 +160,17 @@ export class MediclaimMasterComponent implements OnInit {
       mediclaimMasterId: new FormControl(0),
       mediclaimPaymentDetailId: new FormControl(0),
       // depositType: new FormControl("", Validators.required),
-
     });
     this.typeOfExpenceList = [
-      {label: 'Mediclaim Premium', value: 'Mediclaim Premium'},
-      {label: 'Preventive Health Check Up', value: 'Preventive Health Check Up'},
-      {label: 'Medical Expenses For Parents(Senior Citizen/S)', value: 'Medical Expenses for Parents'},
+      { label: 'Mediclaim Premium', value: 'Mediclaim Premium' },
+      {
+        label: 'Preventive Health Check Up',
+        value: 'Preventive Health Check Up',
+      },
+      {
+        label: 'Medical Expenses For Parents(Senior Citizen/S)',
+        value: 'Medical Expenses for Parents',
+      },
 
       // {label: 'Term Deposit', value: 'Term Deposit'},
       // {label: 'Recurring Deposit', value: 'Recurring Deposit'},
@@ -190,12 +195,12 @@ export class MediclaimMasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-  abc(){
-    console.log(this.ServicesList)
+  abc() {
+    console.log(this.ServicesList);
   }
   public ngOnInit(): void {
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
-      this.dropdownSettings = {
+    this.dropdownSettings = {
       singleSelection: false,
       idField: 'familyMemberInfoId',
       textField: 'name',
@@ -203,21 +208,21 @@ export class MediclaimMasterComponent implements OnInit {
       allowSearchFilter: true,
     };
 
-  //   this.dropdownSettings = {
-  //     singleSelection: false,
-  //     idField: 'id',
-  //     textField: 'label',
-  //     selectAllText: 'Select All',
-  //     unSelectAllText: 'UnSelect All',
-  //     itemsShowLimit: 2,
-  //     allowSearchFilter: true
-  //  };
+    //   this.dropdownSettings = {
+    //     singleSelection: false,
+    //     idField: 'id',
+    //     textField: 'label',
+    //     selectAllText: 'Select All',
+    //     unSelectAllText: 'UnSelect All',
+    //     itemsShowLimit: 2,
+    //     allowSearchFilter: true
+    //  };
 
-  //  this.dropdownList1 = [
-  //     { id: 1, label: 'ABC' },
-  //     { id: 2, label: 'PQR' },
-  //     { id: 3, label: 'XYZ' },
-  //     { id: 4, label: 'qpb' },]
+    //  this.dropdownList1 = [
+    //     { id: 1, label: 'ABC' },
+    //     { id: 2, label: 'PQR' },
+    //     { id: 3, label: 'XYZ' },
+    //     { id: 4, label: 'qpb' },]
 
     // this.dropdownList.push({familyMemberInfoId:'ab1c', name:1});
     // this.dropdownList.push({familyMemberInfoId:'abc1', name:12});
@@ -235,32 +240,31 @@ export class MediclaimMasterComponent implements OnInit {
       let abc = [];
       res.data.results.forEach((element) => {
         const obj = {
-
-
           // label: element.familyMemberName,
           // value: element.familyMemberInfoId,
 
           familyMemberInfoId: element.familyMemberInfoId,
           familyMemberName: element.name,
           relation: element.relationship,
-
         };
 
-
-        if (element.relation !== 'Brother' || element.relation !== 'Sister' ){
-          let familyNameWithRelation = element.familyMemberName +  "("  + element.relation + ")";
-          abc.push({familyMemberInfoId:element.familyMemberInfoId, name: familyNameWithRelation });
-          console.log("family List", this.dropdownList);
+        if (element.relation !== 'Brother' || element.relation !== 'Sister') {
+          let familyNameWithRelation =
+            element.familyMemberName + '(' + element.relation + ')';
+          abc.push({
+            familyMemberInfoId: element.familyMemberInfoId,
+            name: familyNameWithRelation,
+          });
+          console.log('family List', this.dropdownList);
         }
 
         //   if (element.relation !== 'Brother' || element.relation !== 'Sister' ){
         //   abc.push({label:element.familyMemberName, value:element.familyMemberInfoId});
         //   console.log("family List", this.dropdownList);
         // }
-
       });
       this.dropdownList = abc;
-      console.log('dropdownList::' , this.dropdownList);
+      console.log('dropdownList::', this.dropdownList);
     });
 
     // this.deactivateRemark();
@@ -305,15 +309,14 @@ export class MediclaimMasterComponent implements OnInit {
     return this.form.controls;
   }
 
-   // Family relationship shown on Policyholder selection
-   OnSelectionfamilyMemberGroup() {
+  // Family relationship shown on Policyholder selection
+  OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('policyNumber').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
   }
-
 
   // Policy End Date Validations with Policy Start Date
   setPolicyEndDate() {
@@ -406,7 +409,6 @@ export class MediclaimMasterComponent implements OnInit {
         element.policyEndDate = new Date(element.policyEndDate);
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
-
       });
     });
   }
@@ -414,7 +416,7 @@ export class MediclaimMasterComponent implements OnInit {
   // Post Master Page Data API call
   public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
-    console.log("Add master", this.form.value);
+    console.log('Add master', this.form.value);
     if (this.form.invalid) {
       return;
     }
@@ -435,7 +437,7 @@ export class MediclaimMasterComponent implements OnInit {
       );
 
       let data: any = {};
-      if(this.form.value.expenseType == 'Mediclaim Premium') {
+      if (this.form.value.expenseType == 'Mediclaim Premium') {
         data = {
           mediclaimMasterId: 0,
           expenseType: this.masterForm.expenseType.value,
@@ -443,28 +445,32 @@ export class MediclaimMasterComponent implements OnInit {
           policyNumber: this.masterForm.policyNumber.value,
           policyStartDate: this.masterForm.policyStartDate.value,
           policyEndDate: this.masterForm.policyEndDate.value,
-          mediclaimBenefeciaryDetailList: this.masterForm.mediclaimBenefeciaryDetailList.value,
+          mediclaimBenefeciaryDetailList: this.masterForm
+            .mediclaimBenefeciaryDetailList.value,
 
-          mediclaimPaymentDetail : {
+          mediclaimPaymentDetail: {
             mediclaimPaymentDetailId: 0,
             frequencyOfPayment: this.masterForm.frequencyOfPayment.value,
-            premiumAmount: this.masterForm.premiumAmount.value.toString().replace(',', ''),
+            premiumAmount: this.masterForm.premiumAmount.value
+              .toString()
+              .replace(',', ''),
             annualAmount: this.masterForm.annualAmount.value,
             ecs: this.masterForm.ecs.value,
             fromDate: this.masterForm.fromDate.value,
-            toDate: this.masterForm.toDate.value
-          }
-        }
+            toDate: this.masterForm.toDate.value,
+          },
+        };
       } else {
-          data = {
-            mediclaimMasterId: 0,
-            expenseType: this.masterForm.expenseType.value,
-            institution: this.masterForm.institution.value,
-            policyNumber: this.masterForm.policyNumber.value,
-            policyStartDate: this.masterForm.policyStartDate.value,
-            policyEndDate: this.masterForm.policyEndDate.value,
-            mediclaimBenefeciaryDetailList: this.masterForm.mediclaimBenefeciaryDetailList.value,
-          }
+        data = {
+          mediclaimMasterId: 0,
+          expenseType: this.masterForm.expenseType.value,
+          institution: this.masterForm.institution.value,
+          policyNumber: this.masterForm.policyNumber.value,
+          policyStartDate: this.masterForm.policyStartDate.value,
+          policyEndDate: this.masterForm.policyEndDate.value,
+          mediclaimBenefeciaryDetailList: this.masterForm
+            .mediclaimBenefeciaryDetailList.value,
+        };
       }
       console.log('Mediclaim Master::', data);
 
@@ -480,7 +486,6 @@ export class MediclaimMasterComponent implements OnInit {
                 element.policyEndDate = new Date(element.policyEndDate);
                 element.fromDate = new Date(element.fromDate);
                 element.toDate = new Date(element.toDate);
-
               });
               this.alertService.sweetalertMasterSuccess(
                 'Record saved Successfully.',
@@ -488,7 +493,9 @@ export class MediclaimMasterComponent implements OnInit {
               );
             } else {
               // this.alertService.sweetalertWarning(res.status.messsage);
-              this.alertService.sweetalertError('This Policy Holder Already Added');
+              this.alertService.sweetalertError(
+                'This Policy Holder Already Added'
+              );
             }
           } else {
             this.alertService.sweetalertError(
@@ -528,7 +535,7 @@ export class MediclaimMasterComponent implements OnInit {
 
   // Calculate annual amount on basis of premium and frquency
   calculateAnnualAmount() {
-  if(this.form.value.expenseType == 'Mediclaim Premium') {
+    if (this.form.value.expenseType == 'Mediclaim Premium') {
       if (
         this.form.value.premiumAmount != null &&
         this.form.value.frequencyOfPayment != null
@@ -558,10 +565,11 @@ export class MediclaimMasterComponent implements OnInit {
         this.form.get('annualAmount').setValue(installment);
       }
     } else {
-      this.form.controls.annualAmount.setValue(this.form.get('premiumAmount').value);
+      this.form.controls.annualAmount.setValue(
+        this.form.get('premiumAmount').value
+      );
     }
   }
-
 
   // Deactivate the Remark
   // deactivateRemark() {
@@ -579,8 +587,10 @@ export class MediclaimMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(i: number) {
-    //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
+    this.scrollToTop();
+    this.paymentDetailGridData = this.masterGridData[
+      i
+    ].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -593,6 +603,17 @@ export class MediclaimMasterComponent implements OnInit {
     this.isClear = true;
   }
 
+  // scrollToTop Fuctionality
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
   // On Edit Cancel
   cancelEdit() {
     this.form.reset();
@@ -606,7 +627,9 @@ export class MediclaimMasterComponent implements OnInit {
   // On Master Edit functionality
   viewMaster(i: number) {
     //this.scrollToTop();
-    this.paymentDetailGridData = this.masterGridData[i].mediclaimPaymentDetailList;
+    this.paymentDetailGridData = this.masterGridData[
+      i
+    ].mediclaimPaymentDetailList;
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -636,7 +659,8 @@ export class MediclaimMasterComponent implements OnInit {
   }
 
   onChangeDeposit() {
-    if(this.form.value.expenseType !== 'Mediclaim Premium') {
+    this.masterfilesArray = [];
+    if (this.form.value.expenseType !== 'Mediclaim Premium') {
       this.visibilityFlag = false;
       // this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
       this.form.get('frequencyOfPayment').clearValidators();
@@ -668,12 +692,17 @@ export class MediclaimMasterComponent implements OnInit {
     console.log(event.target.defaultValue);
   }
   onItemSelect(item: any) {
-    console.log(item)
-    this.ServicesList.push({ mediclaimBenefeciaryDetailList: item.mediclaimBenefeciaryDetailList, establishmentCode: item.establishmentCode });
+    console.log(item);
+    this.ServicesList.push({
+      mediclaimBenefeciaryDetailList: item.mediclaimBenefeciaryDetailList,
+      establishmentCode: item.establishmentCode,
+    });
     console.log(item.establishmentCode);
   }
   onItemDeSelect(item: any) {
-    let index = this.ServicesList.findIndex((o) => o.establishmentCode == item.establishmentCode);
+    let index = this.ServicesList.findIndex(
+      (o) => o.establishmentCode == item.establishmentCode
+    );
     this.ServicesList.splice(index, 1);
     console.log(this.ServicesList);
   }
@@ -686,6 +715,17 @@ export class MediclaimMasterComponent implements OnInit {
   onDeselectAll(items: any) {
     this.ServicesList = [];
   }
+
+
+  // /** Instituation dropdown selection value */
+  // public onChangeDeposit(expenseType) {
+  //   this.masterfilesArray = [];
+  //   // this.form.reset();
+  //   this.form.get('expenseType').setValue(expenseType);
+  //   // alert(institutionname)
+  //   // if(this.form.get('institutionName').value == null ){
+  //   //   this.form.get('relationship').setValue(null);
+  //   // }
+  // }
+
 }
-
-

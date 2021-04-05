@@ -4,9 +4,9 @@
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Type Of Expence</label>
               <select name="Deposit_Type" id="expenseType" class="form-control custom-select"
-                   formControlName="expenseType" (change)='onChangeDeposit()'
+                   formControlName="expenseType" (change)='onChangeDeposit($event.target.value)'
                    [ngClass]="{ 'is-invalid': submitted && masterForm.expenseType.errors }">
-                   <option value="" selected>Select</option>
+                   <option [ngValue]="null">Select</option>
                    <option *ngFor="let typeOfExpenceItem of typeOfExpenceList"
                    [value]="typeOfExpenceItem.value">
                    {{typeOfExpenceItem.label}}
@@ -282,17 +282,7 @@
                                     data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
                                 </td>
                              </tr>
-                             <tr>
-                              <th scope="row"><span tooltip="1">1</span></th>
-                              <td><span tooltip="Premium Reciept"></span>Premium Reciept</td>
-                              <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
-                                 class="fa fa-paperclip"
-                                 aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
-                              <td>
-                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
-                                  data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                              </td>
-                           </tr>
+
                           </tbody>
                        </table>
                     </div>

@@ -183,6 +183,7 @@ export class MediclaimDeclarationComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public globalSelectedAmountPreventive: string;
 
   public testnumber1: number =5000;
   public testnumber2: number =5000;
@@ -589,14 +590,16 @@ selectedTransactionInstName(institution: any) {
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
-      formatedActualAmount = Number(
-        this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
-          .toString()
-          .replace(',', ''),
-      );
-      this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[
-        i
-      ].actualAmount = this.numberFormat.transform(0);
+      this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
+
+      // formatedActualAmount = Number(
+      //   this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
+      //     .toString()
+      //     .replace(',', ''),
+      // );
+      // this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[
+      //   i
+      // ].actualAmount = this.numberFormat.transform(0);
       this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
@@ -636,36 +639,35 @@ selectedTransactionInstName(institution: any) {
     const checked = event.target.checked;
 
     const formatedGlobalSelectedValue = Number(
-      this.globalSelectedAmount == '0'
-        ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', ''),
+      this.globalSelectedAmountPreventive == '0'
+        ? this.globalSelectedAmountPreventive
+        : this.globalSelectedAmountPreventive.toString().replace(',', ''),
     );
 
     let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
-    console.log(
-      'in IS ECS::',
-      this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].isECS,
-    );
+
     if (checked) {
-      if (this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].isECS === 1) {
-        this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount =
+      // if (this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].isECS === 1) {
+      //   this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount =
+      //     data.declaredAmount;
+      //   this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[
+      //     i
+      //   ].dateOfPayment = new Date(data.dueDate);
+      //   console.log(
+      //     'in IS actualAmount::',
+      //     this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount,
+      //   );
+      //   console.log(
+      //     'in IS dateOfPayment::',
+      //     this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].dateOfPayment,
+      //   );
+      // } else {
+      //   this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount =
+      //     data.declaredAmount;
+      // }
+      this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[
-          i
-        ].dateOfPayment = new Date(data.dueDate);
-        console.log(
-          'in IS actualAmount::',
-          this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount,
-        );
-        console.log(
-          'in IS dateOfPayment::',
-          this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].dateOfPayment,
-        );
-      } else {
-        this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount =
-          data.declaredAmount;
-      }
 
       formatedActualAmount = Number(
         this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList[i].actualAmount
@@ -699,8 +701,8 @@ selectedTransactionInstName(institution: any) {
       this.uploadGridData.splice(index, 1);
     }
 
-    this.globalSelectedAmount = formatedSelectedAmount;
-    console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+    this.globalSelectedAmountPreventive = formatedSelectedAmount;
+    console.log('this.globalSelectedAmountPreventive::', this.globalSelectedAmountPreventive);
     this.actualTotal = 0;
     this.mediclaimTransactionDetail[j].preventiveHealthCheckupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
@@ -935,7 +937,7 @@ selectedTransactionInstName(institution: any) {
       console.log(this.declarationTotal);
       this.declaredAmount+= element.actualAmount;
     });
-
+    // this.transactionDetail[j].declarationTotal = this.declarationTotal;
     this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].declaredTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.mediclaimTransactionDetail[j].declarationTotal);
   }

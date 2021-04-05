@@ -27,13 +27,18 @@ export class EducationalLoanSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedlenderName: string;
-  public interestOnFutureLoanDeclaredAmount: string;
+  public interestOnFutureLoanDeclaredAmount: 0;
+  public futureGlobalPolicyDeclaredAmount: 0;
   public limit  : number;
   public deductionE : number;
   public DeclaredAmountBenefit : number;
   public ActualAmountBenefit : number;
   public benifitDeclared : number;
   public benifitActual : number;
+  public tempFlag : boolean;
+  public benefitAvailableOnActualAmount :number;
+  public benefitAvailableOnDeclaredAmount : number;
+
   constructor(
     private service: MyInvestmentsService,
     private educationalLoanServiceService: EducationalLoanServiceService,
@@ -46,15 +51,14 @@ export class EducationalLoanSummaryComponent implements OnInit {
   }
 
 
-  redirectToDeclarationActual(lenderName: string, loanAccountNumber: string, mode: string) {
+
+  redirectToDeclarationActual(lenderName: string, mode: string) {
     this.tabIndex = 2;
     const data = {
       lenderName : lenderName,
-      loanAccountNumber : loanAccountNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)};
     this.lenderName = lenderName;
-    this.loanAccountNumber = loanAccountNumber;
     this.myEvent.emit(data);
   }
 
@@ -68,64 +72,81 @@ export class EducationalLoanSummaryComponent implements OnInit {
   }
 
   // ---------------------Summary ----------------------
-  // Summary get Call
-  summaryPage() {
-    this.educationalLoanServiceService.getEducationalLoanSummary().subscribe((res) => {
-      this.summaryGridData = res.data.results[0].educationalSummaryDetails;
-      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-      this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(res.data.results[0].interestOnFutureLoanDeclaredAmount);
-        this.limit = res.data.results[0].limit;
-      this.grandTotalDeclaredAmount =
-        res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-      this.benifitDeclared = res.data.results[0].benefitAvailableOnDeclaredAmount;
-      this.benifitActual = res.data.results[0].benefitAvailableOnActualAmount;
-      this.onChangeLimit();
-    });
-  }
-
-  // Post New Future Policy Data API call
-  public addFuturePolicy(): void {
-    this.interestOnFutureLoanDeclaredAmount = this.interestOnFutureLoanDeclaredAmount.toString().replace(',', '');
-
-    const data = {
-      futureNewPolicyDeclaredAmount: this. interestOnFutureLoanDeclaredAmount,
-    };
-
-    // console.log('addFuturePolicy Data..', data);
-    this.educationalLoanServiceService
-      .getEducationalLoanSummaryFuturePlan(data)
-      .subscribe((res) => {
-        //console.log('addFuturePolicy Res..', res);
-        if (res.data.length > 0 ){
+    // Summary get Call
+    summaryPage() {
+      this.educationalLoanServiceService.getEducationalLoanSummary().subscribe((res) => {
         this.summaryGridData = res.data.results[0].educationalSummaryDetails;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
-          res.data.results[0].interestOnFutureLoanDeclaredAmount);
-      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-      }
-      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-
+        this.interestOnFutureLoanDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+        this.limit = res.data.results[0].limit;
+        this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
+        this.benefitAvailableOnActualAmount = res.data.results[0].benefitAvailableOnActualAmount;
+        this.onChangeLimit();
       });
+    }
+
+     // Post New Future Policy Data API call
+    public addFuturePolicy(): void {
+      const data = {
+        futureNewPolicyDeclaredAmount: this.interestOnFutureLoanDeclaredAmount,
+      };
+
+      console.log('addFuturePolicy Data..', data);
+      this.educationalLoanServiceService
+      .getEducationalLoanSummaryFuturePlan(data)
+      .subscribe((res) => {
+        //console.log('addFuturePolicy Res..', res);
+        // if (res.data.length > 0 ){
+        this.summaryGridData = res.data.results[0].educationalSummaryDetails;
+        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+        this.totalActualAmount = res.data.results[0].totalActualAmount;
+        this.interestOnFutureLoanDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+        this.limit = res.data.results[0].limit;
+      // }
+    });
+    this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
-  // On Change Future New Policy Declared Amount with formate
-  onChangeFutureNewPolicyDeclaredAmount() {
 
-    this.interestOnFutureLoanDeclaredAmount = this.numberFormat.transform(
-      this.interestOnFutureLoanDeclaredAmount
-    );
-    this.onChangeLimit();
-    this.addFuturePolicy();
+      // On Change Future New Policy Declared Amount with formate
+      onChangeFutureNewPolicyDeclaredAmount() {
+        this.interestOnFutureLoanDeclaredAmount = this.interestOnFutureLoanDeclaredAmount;
+        if (this.interestOnFutureLoanDeclaredAmount > 0) {
+        this.addFuturePolicy();
+      }else if(this.interestOnFutureLoanDeclaredAmount <0) {
+        this.interestOnFutureLoanDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+      }
+      this.onChangeLimit();
+    }
+
+
+
+    onChangeLimit() {
+      this.benefitAvailableOnDeclaredAmount = Math.min(this.grandTotalDeclaredAmount, this.limit);
+      this.benefitAvailableOnActualAmount = Math.min(this.grandTotalActualAmount, this.limit);
+      // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitE;
+    }
+
+    keyPressedSpaceNotAllow(event: any) {
+      console.log('HI ');
+      const pattern = /[0-9\+\-\ ]/;
+      let inputChar = String.fromCharCode(event.key);
+
+      if (!pattern.test(inputChar)) {
+        // this.futureNewPolicyDeclaredAmount = 0;
+        this.tempFlag = true;
+        // invalid character, prevent input
+        event.preventDefault();
+      } else {
+        this.tempFlag = false;
+      }
+    }
+
   }
-
-
-  onChangeLimit() {
-    this.DeclaredAmountBenefit = Math.min(this.grandTotalDeclaredAmount, this.limit);
-    this.ActualAmountBenefit = Math.min(this.grandTotalActualAmount, this.limit);
-    // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitE;
-  }
-}

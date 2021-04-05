@@ -110,13 +110,6 @@ export class ElectricVehicleSummaryComponent implements OnInit {
     this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
-  // // On Change Future New Policy Declared Amount with formate
-  // onChangeFutureNewPolicyDeclaredAmount() {
-  //   this.interestOnFutureLoanDeclaredAmount =   this.interestOnFutureLoanDeclaredAmount;
-  //   this.addFuturePolicy();
-  //   this.onChangeLimit();
-
-  // }
 
     // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
@@ -124,7 +117,7 @@ export class ElectricVehicleSummaryComponent implements OnInit {
       if (this.interestOnFutureLoanDeclaredAmount > 0) {
       this.addFuturePolicy();
     }else if(this.interestOnFutureLoanDeclaredAmount <0) {
-      this.interestOnFutureLoanDeclaredAmount = this.interestOnFutureLoanDeclaredAmount;
+      this.interestOnFutureLoanDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
     }
     this.onChangeLimit();
   }

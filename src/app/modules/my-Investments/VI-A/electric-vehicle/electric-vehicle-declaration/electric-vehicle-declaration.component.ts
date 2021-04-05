@@ -355,15 +355,6 @@ selectedTransactionLenderName(lenderName: any) {
         this.lenderNameList.push(policyObj);
       });
     }
-    // else if (lenderName === 'All') {
-    //   element.policies.forEach((policy) => {
-    //     const policyObj = {
-    //       label: policy,
-    //       value: policy,
-    //     };
-    //     this.lenderNameList.push(policyObj);
-    //   });
-    // }
   });
 
   if (lenderName == 'All') {
@@ -377,51 +368,6 @@ selectedTransactionLenderName(lenderName: any) {
   console.log('isdisabled: ', this.isDisabled);
 }
 
-
-  // // --------- On institution selection show all transactions list accordingly all policies--------
-  // selectedTransactionLenderName(lenderName: any) {
-  //   this.globalInstitution = lenderName;
-  //   this.getTransactionFilterData(this.globalInstitution);
-  //   this.globalSelectedAmount = this.numberFormat.transform(0);
-  //   // const data = {
-  //   //   label: 'All',
-  //   //   value: 'All',
-  //   // };
-
-  //   // this.transactionPolicyList = [];
-  //   // this.transactionPolicyList.push(data);
-
-  //   this.transactionWithLenderName.forEach((element) => {
-  //     if (lenderName === element.lenderName) {
-  //       element.policies.forEach((policy) => {
-  //         const policyObj = {
-  //           label: policy,
-  //           value: policy,
-  //         };
-  //         this.transactionPolicyList.push(policyObj);
-  //       });
-  //     } else if (lenderName === 'All') {
-  //       element.policies.forEach((policy) => {
-  //         const policyObj = {
-  //           label: policy,
-  //           value: policy,
-  //         };
-  //         this.transactionPolicyList.push(policyObj);
-  //       });
-  //     }
-  //   });
-
-  //     if (lenderName == 'All') {
-  //     this.grandTabStatus = true;
-  //     this.isDisabled = true;
-  //   } else {
-  //     this.grandTabStatus = false;
-  //     this.isDisabled = false;
-  //   }
-
-  //   this.resetAll();
-  //   console.log('isdisabled: ', this.isDisabled);
-  // }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
   selectedPolicy(policy: any) {
@@ -667,42 +613,6 @@ selectedTransactionLenderName(lenderName: any) {
     // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
   }
 
-  // --------------- ON change of declared Amount in line-------------
-  // onDeclaredAmountChangeCurrentEmp(
-  //   summary: {
-  //     previousEmployerName: any;
-  //     declaredAmount: number;
-  //     dateOfPayment: Date;
-  //     actualAmount: any;
-  //   },
-  //   i: number,
-  //   j: number
-  // ) {
-  //   this.declarationService = new DeclarationService(summary);
-  //   this.transactionDetail[j].electricVehicleLoanTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
-  //   const formatedDeclaredAmount = this.numberFormat.transform(
-  //     this.transactionDetail[j].electricVehicleLoanTransactionList[i].declaredAmount
-  //   );
-  //   // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-  //   this.transactionDetail[j].electricVehicleLoanTransactionList[
-  //     i
-  //   ].declaredAmount = formatedDeclaredAmount;
-
-  //   this.declarationTotal = 0;
-  //   // this.declaredAmount=0;
-
-  //   this.transactionDetail[j].electricVehicleLoanTransactionList.forEach((element) => {
-  //     // console.log(element.declaredAmount.toString().replace(',', ''));
-  //     this.declarationTotal += Number(
-  //       element.declaredAmount.toString().replace(',', '')
-  //     );
-  //     // console.log(this.declarationTotal);
-  //     // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
-  //   });
-
-  //   this.transactionDetail[j].declarationTotal = this.declarationTotal;
-  //   // console.log( 'DeclarATION total==>>' + this.transactionDetail[j].declarationTotal);
-  // }
 
   // --------------- ON change of declared Amount in line-------------
 
@@ -1137,36 +1047,7 @@ selectedTransactionLenderName(lenderName: any) {
         );
       }
     });
-    //Validation on save (all field required)
-    // if(this.declarationData.previousEmployerId == 0){
-    //   this.alertService.sweetalertError(
-    //     // 'Please make sure that you have selected previous employer for all selected lines',
-    //     'Please Select Previous Employer',
-    //   );
-    //   return false;
-    // }
-    // if (this.declarationData.dateOfPayment == null) {
-    //   this.alertService.sweetalertError(
-    //     // 'Please make sure that you have selected date of payment for all selected lines',
-    //     'Please Select Date Of Payment',
-    //   );
-    //   return false;
-    // }
 
-    // if (this.declarationData.declaredAmount == null) {
-    //   this.alertService.sweetalertError(
-    //     // 'Please make sure that you have selected declared amount for all selected lines',
-    //     'Please Select Date Of Declared Amount',
-    //   );
-    //   return false;
-    // }
-    // if (this.declarationData.actualAmount == null) {
-    //   this.alertService.sweetalertError(
-    //     // 'Please make sure that you have selected actual amount for all selected lines',
-    //     'Please Select Date Of Actual Amount',
-    //   );
-    //   return false;
-    // }
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
@@ -1326,18 +1207,18 @@ selectedTransactionLenderName(lenderName: any) {
 
     this.editTransactionUpload[
       j
-    ].electricVehicleLoanTransactionPreviousEmployerList[
+    ].electricVehicleLoanTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.editTransactionUpload[j]
-        .electricVehicleLoanTransactionPreviousEmployerList[i].declaredAmount
+        .electricVehicleLoanTransactionList[i].declaredAmount
     );
     console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
     this.editTransactionUpload[
       j
-    ].electricVehicleLoanTransactionPreviousEmployerList[
+    ].electricVehicleLoanTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
 
@@ -1345,7 +1226,7 @@ selectedTransactionLenderName(lenderName: any) {
 
     this.editTransactionUpload[
       j
-    ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
+    ].electricVehicleLoanTransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
         element.declaredAmount.toString().replace(',', '')
@@ -1380,6 +1261,84 @@ selectedTransactionLenderName(lenderName: any) {
 
   // ------------Actual Amount change Edit Modal-----------
   onActualAmountChangeInEditCase(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      // dateOfPayment: Date;
+      actualAmount: number;
+      dueDate: Date;
+    },
+    i: number,
+    j: number
+  ) {
+    this.declarationService = new DeclarationService(summary);
+    console.log(
+      'onActualAmountChangeInEditCaseActual Amount change::',
+      summary
+    );
+
+    this.editTransactionUpload[
+      j
+    ].electricVehicleLoanTransactionList[
+      i
+    ].actualAmount = this.declarationService.actualAmount;
+    console.log(
+      'Actual Amount changed::',
+      this.editTransactionUpload[j]
+        .electricVehicleLoanTransactionList[i].actualAmount
+    );
+
+    const formatedActualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j]
+        .electricVehicleLoanTransactionList[i].actualAmount
+    );
+    console.log(`formatedActualAmount::`, formatedActualAmount);
+
+    this.editTransactionUpload[
+      j
+    ].electricVehicleLoanTransactionList[
+      i
+    ].actualAmount = formatedActualAmount;
+
+    if (
+      this.editTransactionUpload[j]
+        .electricVehicleLoanTransactionList[i].actualAmount !==
+        Number(0) ||
+      this.editTransactionUpload[j]
+        .electricVehicleLoanTransactionList[i].actualAmount !==
+        null
+    ) {
+      console.log(
+        `in if::`,
+        this.editTransactionUpload[j]
+          .electricVehicleLoanTransactionList[i].actualAmount
+      );
+    } else {
+      console.log(
+        `in else::`,
+        this.editTransactionUpload[j]
+          .electricVehicleLoanTransactionList[i].actualAmount
+      );
+    }
+
+    this.actualTotal = 0;
+    this.actualAmount = 0;
+    this.editTransactionUpload[
+      j
+    ].electricVehicleLoanTransactionList.forEach((element) => {
+      console.log(element.actualAmount.toString().replace(',', ''));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(',', '')
+      );
+      console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+    });
+
+    this.editTransactionUpload[j].actualTotal = this.actualTotal;
+    console.log(this.editTransactionUpload[j].actualTotal);
+  }
+
+  onActualAmountChangeInEditCaseCurrentEmp(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
@@ -1633,19 +1592,19 @@ selectedTransactionLenderName(lenderName: any) {
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-      electricVehicleLoanTransactionList: this.editTransactionUpload[0]
-        .electricVehicleLoanTransactionList,
-      electricVehicleLoanTransactionPreviousEmployerList: this
-        .editTransactionUpload[0]
-        .electricVehicleLoanTransactionPreviousEmployerList,
+      electricVehicleLoanTransactionList: this.editTransactionUpload[0].electricVehicleLoanTransactionList,
+      electricVehicleLoanTransactionPreviousEmployerList: this.editTransactionUpload[0].electricVehicleLoanTransactionPreviousEmployerList,
       electricVehicleLoanTransactionIds: this.uploadGridData,
-      receiptAmount: this.receiptAmount,
+      // receiptAmount: this.receiptAmount,
+      receiptAmount: this.editReceiptAmount,
       // documentRemark: this.documentRemark,
-      proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
-      // proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
-      electricVehicleLoanMasterId: this.editTransactionUpload[0]
-        .electricVehicleLoanMasterId,
+      // proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
+      proofSubmissionId: this.editTransactionUpload[0].editProofSubmissionId,
+      electricVehicleLoanMasterId: this.editTransactionUpload[0].electricVehicleLoanMasterId,
+      // proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
     };
+
+
     console.log('data::', data);
 
     this.electricVehicleService
