@@ -50,6 +50,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         this.value = '';
         this.NewTargetArray = [];
         this.getbyid = false;
+        this.originalSourceProductList = [];
     }
     PayrollHeadGroupCreationComponent.prototype.ngOnInit = function () {
         this.getAllAttributeSelection();
@@ -171,6 +172,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         var _this = this;
         this.companySettingsService.getAllHeadCreation().subscribe(function (res) {
             _this.sourceProducts = res.data.results;
+            _this.originalSourceProductList = res.data.results;
         });
     };
     // Get PHG ById
@@ -301,6 +303,8 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         // });
         var _this = this;
         this.selectedUser.forEach(function (element) {
+            element.isHighlight = false;
+            element.isHighlightright = false;
             _this.targetProducts.push(element);
         });
         var v = this.selectedUser;
@@ -328,76 +332,82 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
     };
     PayrollHeadGroupCreationComponent.prototype.RowSelectedtargetProducts = function (u, i) {
         var _this = this;
-        debugger;
-        this.HighlightRight = i;
-        console.log('u', u);
-        ///let temp = this.targetProducts;
-        // this.targetProducts = new Array();
-        /// let index1 = temp.findIndex( o => o.headMasterId == u.headMasterId );
-        var index = this.selectedUser2.findIndex(function (o) { return o.headMasterId == u.headMasterId; });
-        var isContain = this.selectedUser2.some(function (o) { return o.headMasterId == u.headMasterId; });
-        console.log(isContain, index);
-        if (isContain == true) {
-            this.selectedUser2.splice(index, 1);
-            this.selectedheadName.splice(index, 1);
-            //  temp[index1].attributeNature = 'List';
+        if (u.disabled == true) {
         }
         else {
-            //temp[index1].attributeNature = 'List123';
-            this.selectedUser2.push(u);
-            this.selectedheadName.push(u);
-        }
-        //this.targetProducts.push(u);
-        // declare variable in component.
-        //this.targetProducts = temp;
-        this.targetProducts.forEach(function (element, i) {
-            if (i == _this.HighlightRight) {
-                if (isContain == true) {
-                    element.isHighlightright = false;
-                    element.isHighlight = false;
-                }
-                else {
-                    if (i == _this.HighlightRow) {
-                        element.isHighlightright = false;
-                        element.isHighlight = false;
-                    }
-                }
+            this.HighlightRight = i;
+            console.log('u', u);
+            var indexOfTargetProd = this.targetProducts.findIndex(function (o) { return o.headMasterId == u.headMasterId; });
+            ///let temp = this.targetProducts;
+            // this.targetProducts = new Array();
+            /// let index1 = temp.findIndex( o => o.headMasterId == u.headMasterId );
+            var index = this.selectedUser2.findIndex(function (o) { return o.headMasterId == u.headMasterId; });
+            var isContain = this.selectedUser2.some(function (o) { return o.headMasterId == u.headMasterId; });
+            console.log(isContain, index);
+            if (isContain == true) {
+                this.targetProducts[indexOfTargetProd].isHighlightright = false;
+                this.selectedUser2.splice(index, 1);
+                this.selectedheadName.splice(index, 1);
+                //  temp[index1].attributeNature = 'List';
             }
-        });
-        // this.selectedheadName.push( u );
-        this.HeadNameList = this.targetProducts;
-        this.selectedheadName.forEach(function (element) {
-            var index = _this.targetProducts.indexOf(element);
-            _this.HeadNameList = _this.HeadNameList.filter(function (e) { return e.standardName !== element.standardName; });
-        });
-        this.dropdownList = this.HeadNameList;
-        this.dropdownSettings = {
-            singleSelection: false,
-            idField: 'headMasterId',
-            textField: 'standardName',
-            selectAllText: 'Select All',
-            unSelectAllText: 'UnSelect All',
-            itemsShowLimit: 2,
-            allowSearchFilter: true
-        };
-        ////////////////////////////////////////////////////////////////
-        this.headMasterId = u.headMasterId;
-        //this.attributeGroupId=
-        this.HeadName = u.standardName;
-        this.Nature = u.headNature;
-        // this.getAllAttributeListByAttGroup();
-        //if(this.selectedUser2.includes)
-        // this.selectedUser2.push( u );
-        //   this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
-        //
-        //     this.AttGroupList =res.data.results[0];//[0].attributeMasters;
-        //    // callBack('template12445');
-        //  //  this.UploadModal2('template12445');
-        //   });
-        //   if(this.AttGroupList.length==0)
-        //   {
-        //     this.getAllAttributeListByAttGroup();
-        //   }
+            else {
+                this.targetProducts[indexOfTargetProd].isHighlightright = true;
+                //temp[index1].attributeNature = 'List123';
+                this.selectedUser2.push(u);
+                this.selectedheadName.push(u);
+            }
+            //this.targetProducts.push(u);
+            // declare variable in component.
+            //this.targetProducts = temp;
+            // this.targetProducts.forEach( ( element, i ) => {
+            //   if ( i == this.HighlightRight ) {
+            //     if ( isContain == true ) {
+            //       element.isHighlightright = true
+            //       element.isHighlight = false
+            //     }
+            //     else {
+            //       if ( i == this.HighlightRow ) {
+            //         element.isHighlightright = true;
+            //         element.isHighlight = false;
+            //       }
+            //     }
+            //   }
+            // } );
+            // this.selectedheadName.push( u );
+            this.HeadNameList = this.targetProducts;
+            this.selectedheadName.forEach(function (element) {
+                var index = _this.targetProducts.indexOf(element);
+                _this.HeadNameList = _this.HeadNameList.filter(function (e) { return e.standardName !== element.standardName; });
+            });
+            this.dropdownList = this.HeadNameList;
+            this.dropdownSettings = {
+                singleSelection: false,
+                idField: 'headMasterId',
+                textField: 'standardName',
+                selectAllText: 'Select All',
+                unSelectAllText: 'UnSelect All',
+                itemsShowLimit: 2,
+                allowSearchFilter: true
+            };
+            ////////////////////////////////////////////////////////////////
+            this.headMasterId = u.headMasterId;
+            //this.attributeGroupId=
+            this.HeadName = u.standardName;
+            this.Nature = u.headNature;
+            // this.getAllAttributeListByAttGroup();
+            //if(this.selectedUser2.includes)
+            // this.selectedUser2.push( u );
+            //   this. companySettingsService.GetAttributeOptionListByHeadGroupIdGetById( this.headGroupId).subscribe(res => {
+            //
+            //     this.AttGroupList =res.data.results[0];//[0].attributeMasters;
+            //    // callBack('template12445');
+            //  //  this.UploadModal2('template12445');
+            //   });
+            //   if(this.AttGroupList.length==0)
+            //   {
+            //     this.getAllAttributeListByAttGroup();
+            //   }
+        }
     };
     // AttributeAssignmentClick(u:any): void
     // {
@@ -423,6 +433,7 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
             cycledata1.payrollHeadGroupMappingId = element.payrollHeadGroupMappingId;
             addData.mappingGroupRequest.push(cycledata1);
         });
+        console.log(JSON.stringify(addData));
         // this.companySettingsService.UpdateattributeListById( addData )
         //   .subscribe( ( res: any ) => {
         //     this.alertService.sweetalertMasterSuccess( res.status.message, '' );
@@ -533,6 +544,8 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
         var _this = this;
         console.log('righttablePusg');
         this.selectedUser2.forEach(function (element) {
+            element.isHighlight = false;
+            element.isHighlightright = false;
             _this.sourceProducts.push(element);
         });
         var v = this.selectedUser;
@@ -798,6 +811,8 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
                     addData.mappingGroupRequest.push(cycledata1);
                 });
             });
+            console.log('service list', this.ServicesList);
+            console.log(JSON.stringify(addData));
         }
         else {
             //   this.AttributeSelectionArray.forEach( element => {
@@ -906,35 +921,44 @@ var PayrollHeadGroupCreationComponent = /** @class */ (function () {
     };
     PayrollHeadGroupCreationComponent.prototype.getPHGname = function (event) {
         var _this = this;
-        this.selectedCopFormPHGName = event.target.value;
-        // GetAttributeOptionList(): void {
-        this.companySettingsService.GetHeadListByPHGname(this.selectedCopFormPHGName).subscribe(function (res) {
-            _this.targetProducts = res.data.results[0].headMasters;
-            _this.targetProducts.forEach(function (element) {
-                var index = _this.targetProducts.indexOf(element);
-                _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.standardName !== element.standardName; });
+        this.sourceProducts = [];
+        this.sourceProducts = this.originalSourceProductList;
+        if (event.target.value == '') {
+            this.targetProducts = [];
+        }
+        else {
+            this.selectedCopFormPHGName = event.target.value;
+            // GetAttributeOptionList(): void {
+            this.companySettingsService.GetHeadListByPHGname(this.selectedCopFormPHGName).subscribe(function (res) {
+                _this.targetProducts = res.data.results[0].headMasters;
+                _this.targetProducts.forEach(function (element) {
+                    element.disabled = true;
+                    var index = _this.targetProducts.indexOf(element);
+                    _this.sourceProducts = _this.sourceProducts.filter(function (e) { return e.standardName !== element.standardName; });
+                });
+                // this.targetProducts.forEach(element => {
+                //   var index=this.targetProducts.indexOf(element)
+                //   this.sourceProducts = this.sourceProducts.filter(e => e.code !== element.code);
+                // });
+                _this.dropdownList = _this.HeadNameList;
+                _this.dropdownSettings = {
+                    singleSelection: false,
+                    idField: 'headGroupId',
+                    textField: 'standardName',
+                    selectAllText: 'Select All',
+                    unSelectAllText: 'UnSelect All',
+                    itemsShowLimit: 2,
+                    allowSearchFilter: true
+                };
             });
-            // this.targetProducts.forEach(element => {
-            //   var index=this.targetProducts.indexOf(element)
-            //   this.sourceProducts = this.sourceProducts.filter(e => e.code !== element.code);
-            // });
-            _this.dropdownList = _this.HeadNameList;
-            _this.dropdownSettings = {
-                singleSelection: false,
-                idField: 'headGroupId',
-                textField: 'standardName',
-                selectAllText: 'Select All',
-                unSelectAllText: 'UnSelect All',
-                itemsShowLimit: 2,
-                allowSearchFilter: true
-            };
-        });
+        }
     };
     PayrollHeadGroupCreationComponent.prototype.UploadModalYesNo = function (template) {
         this.modalRef1 = this.modalService.show(template, Object.assign({}, { "class": 'gray modal-lg' }));
     };
     PayrollHeadGroupCreationComponent.prototype.UploadModal2 = function (template) {
         var _this = this;
+        console.log('headmaster id', this.headMasterId);
         this.companySettingsService.GetAttributeOptionListByHeadGroupIdGetById(this.headMasterId).subscribe(function (res) {
             _this.AttGroupList = res.data.results[0]; //[0].attributeMasters;
             _this.AttGroupList.forEach(function (element) {

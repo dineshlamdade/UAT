@@ -110,7 +110,7 @@
                                   <span>{{product.code}}</span>
                                 </td>
                                 <td class="wd-10">
-                                  <span>{{product.description}}</span>
+                                  <span>{{product.description}} </span>
                                 </td>
                                 <td class="wd-10">
                                   <span>{{product.attributeNature}}</span>
@@ -170,12 +170,12 @@
                               <tr *ngFor="let product of targetProducts; let i = index"
                                 (click)="RowSelectedtargetProducts(product, i);"
                                 (dblclick)="doubleClickOnRightTable(product)"
-                                [class.activeleft]="product.isHighlightright">
+                                [class.activeleft]="product.isHighlightright"
+                                [class.bg-color-disable]="product.disabled">
                                 <!-- <td class="align-center wd-10">
                                                                 <span>{{i+1}}</span>
                                                             </td>  -->
                                 <td class="wd-10">
-
                                   <span>{{product.code}}</span>
                                 </td>
                                 <td class="wd-10">
@@ -198,11 +198,17 @@
                 <div class="row mt-15">
                   <div class="col-12">
                     <div class="float-right mb-15">
-                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeSelectionForm.invalid"
-                        [ngClass]="{'disabled-btn-bg-green' : AttributeSelectionForm.invalid,'btn-bg-green': !AttributeSelectionForm.invalid}"
+                      <!-- <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeSelectionForm.invalid"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeSelectionForm.invalid,'btn-bg-green': !AttributeSelectionForm.invalid && userHasSelectedMandatoryFieldOnly == false}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
-                        Save</button>
+                        Save </button> -->
+
+                      <button type="submit" *ngIf="!viewCancelButton" [disabled]="AttributeSelectionForm.invalid"
+                        class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeSelectionForm.invalid, 'btn-bg-green': !AttributeSelectionForm.invalid && userHasSelectedMandatoryFieldOnly == false}">
+                        <b><i class="fa fa-floppy-o"></i></b> Save</button>
+
                       <!--     [disabled]="CycleDefinationForm.invalid" [ngClass]="{'disabled-btn-bg-green' : CycleDefinationForm.invalid,'btn-bg-green': !CycleDefinationForm.invalid}" -->
 
                       <button type="button" *ngIf="viewupdateButton" (click)="UpdateAttributeSelection()"

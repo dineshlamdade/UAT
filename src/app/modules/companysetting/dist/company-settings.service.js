@@ -317,21 +317,21 @@ var CompanySettingsService = /** @class */ (function () {
     };
     //add attribute assignment
     CompanySettingsService.prototype.AddAttributeAssignment = function (data) {
-        return this._HTTP.post(environment_1.environment.baseUrl8086 + 'payrollhead-attribute-mapping', data)
+        return this._HTTP.post(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-mapping', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //Get AttributeOptionList By HeadGroupId
     CompanySettingsService.prototype.GetAttributeOptionListByHeadGroupId = function (HeadGroupId) {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'payrollhead-attribute-mapping/getAttributeMasterListByHeadGroupId/' + HeadGroupId)
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-mapping/getAttributeMasterListByHeadGroupId/' + HeadGroupId)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //Get AttributeOptionList By HeadGroupId
     CompanySettingsService.prototype.GetAttributeOptionListByHeadGroupIdGetById = function (HeadGroupId) {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'payrollhead-attribute-mapping/getByHeadGroupId/' + HeadGroupId)
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-mapping/getByHeadGroupId/' + HeadGroupId)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

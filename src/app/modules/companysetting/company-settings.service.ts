@@ -402,7 +402,7 @@ export class CompanySettingsService {
   //add attribute assignment
   AddAttributeAssignment( data: UpdateflagCycleCreation ): Observable<number | {}> {
 
-    return this._HTTP.post( environment.baseUrl8086 + 'payrollhead-attribute-mapping', data )
+    return this._HTTP.post( environment.baseUrl8084 + 'payrollhead-attribute-mapping', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -411,7 +411,7 @@ export class CompanySettingsService {
   //Get AttributeOptionList By HeadGroupId
   GetAttributeOptionListByHeadGroupId( HeadGroupId: number ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-attribute-mapping/getAttributeMasterListByHeadGroupId/' + HeadGroupId )
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-mapping/getAttributeMasterListByHeadGroupId/' + HeadGroupId )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -420,7 +420,7 @@ export class CompanySettingsService {
   //Get AttributeOptionList By HeadGroupId
   GetAttributeOptionListByHeadGroupIdGetById( HeadGroupId: number ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-attribute-mapping/getByHeadGroupId/' + HeadGroupId )
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-mapping/getByHeadGroupId/' + HeadGroupId )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

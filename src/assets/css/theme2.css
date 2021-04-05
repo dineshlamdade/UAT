@@ -3020,7 +3020,16 @@ legend {
   background-color: #5aa5bd !important;
   color: white;
 }
+.table tr.disableTableRow  {
+  background-color:rgb(168, 139, 139) !important;
+  color: white;
+}
 
 
+.bg-color-disable {
+      background-color: #f2f2f2;
+      color: grey !important;
+
+}
 
 /* end here */

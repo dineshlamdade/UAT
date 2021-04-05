@@ -88,9 +88,9 @@
 
                         <div class="col-sm-6 col-md-4" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                           <label class="form-label">Copy From</label>
-                          <select (change)="getPHGname($event);" name="beast" id="Institution2" class="form-control  ">
+                          <select (change)="getPHGname($event);" class="form-control  ">
                             <!-- formControlName="attributeNature1" -->
-                            <option>--select----</option>
+                            <option selected value=''>Select </option>
                             <option *ngFor="let by of PayrollHeadGroupList" [value]="by.headGroupDefinitionName">
                               {{by.headGroupDefinitionName}}
                             </option>
@@ -113,7 +113,7 @@
                         <div class="col-5">
                           <div class="card">
                             <div class=""><span class="form-label"> Total List: {{sourceProducts.length}}
-                                &nbsp;&nbsp;Selected List:{{selectedUser.length}} </span>
+                                &nbsp;&nbsp;Selected List:&nbsp;{{selectedUser.length}} </span>
                               <div class="table-responsive Custom_Table">
                                 <table class="table table-bordered m-b-0">
                                   <thead class="thead-dark">
@@ -127,10 +127,11 @@
                                     <tr *ngFor="let product of sourceProducts; let i = index"
                                       (click)="RowSelected(product,i);" [class.active]="product.isHighlight">
                                       <td class="wd-10">
-                                        <span tooltip="{{product.standardName}}">{{product.headMasterId}}</span>
+                                        <span tooltip="{{product.standardName}}">{{product.standardName}}</span>
                                       </td>
+
                                       <td class="wd-10">
-                                        <span>{{product.isHighlight}}</span>
+                                        <span tooltip="{{product.headNature}}">{{product.headNature}}</span>
                                       </td>
                                     </tr>
                                   </tbody>
@@ -158,8 +159,7 @@
                         <div class="col-6">
                           <div class="card">
                             <div class=""><span class="form-label"> Total List: {{targetProducts.length}}
-                                &nbsp;&nbsp;Selected
-                                List:{{selectedUser2.length}}</span>
+                                &nbsp;&nbsp;Selected List:&nbsp;{{selectedUser2.length}}</span>
                               <div class="table-responsive Custom_Table">
                                 <table class="table table-bordered m-b-0">
                                   <thead class="thead-dark">
@@ -174,13 +174,13 @@
 
                                     <tr *ngFor="let product of targetProducts; let i = index"
                                       (click)="RowSelectedtargetProducts(product,i);"
-                                      [class.activeleft]="product.isHighlightright">
-                                      <!-- (click)="RowSelectedtargetProducts(product);" -->
+                                      [class.activeleft]="product.isHighlightright"
+                                      [class.bg-color-disable]="product.disabled">
                                       <td class="wd-10">
-                                        <span tooltip="{{product.standardName}}">{{product.headMasterId}}</span>
+                                        <span tooltip="{{product.disabled}}">{{product.standardName}}</span>
                                       </td>
-                                      <td class="wd-10">
-                                        <span>{{product.isHighlightright}}</span>
+                                      <td class="wd-10"> <span
+                                          tooltip="{{product.headNature}}">{{product.headNature}}</span>
                                       </td>
                                       <td class="wd-10">
                                         <span><i class="fa fa-adjust fa-lg" aria-hidden="true"
@@ -217,7 +217,7 @@
               <!-- Second POP up -->
               <ng-template #template12445>
                 <div class="modal-header">
-                  <h5 class="modal-title" id="UploadModalLabel">Payroll Head Group123
+                  <h5 class="modal-title" id="UploadModalLabel">Payroll Head Group
                   </h5>
                   <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -536,7 +536,7 @@
                 </div>
               </div>
 
-              <!-- </form> -->
+
 
 
 
