@@ -143,7 +143,7 @@
                   From Date
                 </th>
                 <th rowspan="2" class="wd-8 font700">
-                  <span tooltip="Electronic Clearing Service">To Date</span>
+                  <span tooltip="To Date">To Date</span>
                 </th>
                 <!-- <th rowspan="2" class="wd-11 font700">Due Date</th> -->
                 <th rowspan="2" class="wd-9 font700">Declared</th>
@@ -229,7 +229,7 @@
                   <div class="custom_icon_badge">
                     <input type="text" id="declaredAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
                       name="declaredAmountPerMonth{{ summary.houseRentalTransactionDetailId }}"
-                      [(ngModel)]="summary.declaredAmountPerMonth" class="form-control align-right"
+                      [(ngModel)]="summary.declaredAmountPerMonth" class="form-control align-right" 
                       (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
                   </div>
                 </td>
@@ -721,7 +721,7 @@
                     From Date
                   </th>
                   <th rowspan="2" class="wd-8 font700">
-                    <span tooltip="Electronic Clearing Service">To Date</span>
+                    <span tooltip="To Date">To Date</span>
                   </th>
                   <!-- <th rowspan="2" class="wd-11 font700">Due Date</th> -->
                   <th rowspan="2" class="wd-9 font700">Declared</th>
@@ -749,7 +749,7 @@
                       <input type="checkbox" [ngModel]="enableSelectAll"
                         [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                            onSelectCheckBox(summary, $event, i, j);
-                           enableCheckboxFlag = j
+                           enableCheckboxFlag = j  
                          " class="custom-control-input" value="option{{ summary.houseRentalTransactionDetailId }}" />
                       <span class="custom-control-label"></span>
                     </label>
