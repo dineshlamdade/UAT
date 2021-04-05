@@ -23,16 +23,34 @@ export class MediclaimSummaryComponent implements OnInit {
   public mediclaimSummaryComputationDeclaed: any;
 
   public tabIndex = 0;
-  public totalDeclaredAmount: any;
-  public totalActualAmount: any;
-  public grandTotalDeclaredAmount: number;
-  public grandTotalActualAmount: number;
+
+  public totalActualAmount: number;
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
   public grandRejectedTotal: number;
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  public totalDeclaredAmount: number;
+  public totalExpenditureOfSelfSpouseChildrenWithoutParents: number;
+  public totalExpenditureOfSelfSpouseChildrenWithParents: number;
+  public totalExpenditureOfHealthCheckup: number;
+  public totalExpenditure: number;
+  public grandTotalDeclaredAmount: number;
+  public limitOfSelfSpouseChildrenNonSeniorCitizen: number;
+  public limitOfSelfSpouseChildrenSeniorCitizen: number;
+  public limitOfParentsNonSeniorCitizen: number;
+  public limitOfParentsSeniorCitizen: number;
+  public limitOfHealthCheckup: number;
+  public totalLimit: number;
+  public totalBenefitOfSelfSpouseChildrenWithoutParents: number;
+  public totalBenefitOfOnlyParents: number;
+  public totalBenefitOfSelfSpouseChildrenWithParents: number;
+  public totalBenefit: number;
+
+  public grandTotalActualAmount: number;
+
+
 
   // public previousEmployerB: string;
   public futureNewPolicyDeclaredAmount: string;
@@ -67,6 +85,7 @@ export class MediclaimSummaryComponent implements OnInit {
   // Summary get Call
   summaryPage() {
     this.mediclaim80DService.getMediclaimSummary().subscribe((res) => {
+      if(res.data.results.length > 0){
       this.summaryGridData = res.data.results[0];
       this.mediclaimPremiumMasterTransactionList =
         res.data.results[0].mediclaimPremiumMasterTransactionList;
@@ -88,9 +107,39 @@ export class MediclaimSummaryComponent implements OnInit {
         res.data.results[0].benefitAvailableOnActualAmount;
       this.mediclaimSummaryComputationDeclared =
         res.data.results[0].mediclaimSummaryComputationDeclared;
-      this.mediclaimSummaryComputationActual =
-        res.data.results[0].mediclaimSummaryComputationActual;
+      this.mediclaimSummaryComputationActual = res.data.results[0].mediclaimSummaryComputationActual;
+      this. totalExpenditureOfSelfSpouseChildrenWithoutParents =
+      res.data.results[0].totalExpenditureOfSelfSpouseChildrenWithoutParents;
+      this. totalExpenditureOfSelfSpouseChildrenWithParents =
+      res.data.results[0]. totalExpenditureOfSelfSpouseChildrenWithParents;
+      this. totalExpenditureOfHealthCheckup =
+      res.data.results[0].totalExpenditureOfHealthCheckup;
+      this. totalExpenditure =
+      res.data.results[0]. totalExpenditure;
+      this. limitOfSelfSpouseChildrenNonSeniorCitizen =
+      res.data.results[0]. limitOfSelfSpouseChildrenNonSeniorCitizen;
+      this. limitOfSelfSpouseChildrenSeniorCitizen =
+      res.data.results[0]. limitOfSelfSpouseChildrenSeniorCitizen;
+      this. limitOfParentsNonSeniorCitizen =
+      res.data.results[0]. limitOfParentsNonSeniorCitizen;
+      this. limitOfParentsSeniorCitizen =
+      res.data.results[0]. limitOfParentsSeniorCitizen;
+      this. limitOfHealthCheckup =
+      res.data.results[0]. limitOfHealthCheckup;
+      this. totalLimit =
+      res.data.results[0]. totalLimit;
+      this. totalBenefitOfSelfSpouseChildrenWithoutParents =
+      res.data.results[0]. totalBenefitOfSelfSpouseChildrenWithoutParents;
+      this. totalBenefitOfOnlyParents =
+      res.data.results[0]. totalBenefitOfOnlyParents;
+      this. totalBenefitOfSelfSpouseChildrenWithParents =
+      res.data.results[0]. totalBenefitOfSelfSpouseChildrenWithParents;
+      this. totalBenefit =
+      res.data.results[0]. totalBenefit;
+
+
       this.onChangeLimit();
+    }
     });
   }
 

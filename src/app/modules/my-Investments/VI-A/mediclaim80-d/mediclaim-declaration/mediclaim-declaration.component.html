@@ -121,23 +121,22 @@
                   </td>
                   <td>
                     <div class="custom_icon_badge">
-                          <!-- <input
+                          <input
                           type="text"
                           id="declaredAmount{{ summary.mediclaimTransactionId }}"
                           name="declaredAmount{{ summary.mediclaimTransactionId }}"
                           [(ngModel)]="summary.declaredAmount"
                           class="form-control align-right"
-                          (change)="onDeclaredAmountChange(summary, i, j)"
-                          [disabled]="summary.transactionStatus === 'Submitted'"
-                        /> -->
+                          (change)="onDeclaredAmountChange(summary, i, j)"  [disabled]="initialArrayIndex[j] > i"
+                          [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
+                        />
 
-                        <p-inputNumber   class="form-control align-right"
+                        <!-- <p-inputNumber   class="form-control align-right"
                         id="declaredAmount{{ summary.mediclaimTransactionId }}"
                          name="declaredAmount{{ summary.mediclaimTransactionId }}"
                         [(ngModel)]="summary.declaredAmount"   class="form-control align-right"
-                        (onBlur)="onDeclaredAmountChange(summary, i, j)"
-                        [disabled]="  isDisabled || summary.transactionStatus === 'Submitted'"></p-inputNumber>
-
+                        (onBlur)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i"
+                        [disabled]="  isDisabled || summary.transactionStatus === 'Submitted'"></p-inputNumber> -->
                     </div>
                   </td>
                   <td>
@@ -147,26 +146,25 @@
                       data-date-autoclose="true" (ngModelChange)="
                         summary.dateOfPayment = $event.toLocaleDateString();
                         setDateOfPayment(summary, i, j)
-                      " [disabled]="
-                        isDisabled ||  summary.transactionStatus === 'Submitted'
-                      " class="form-control" bsDatepicker />
+                      " [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'
+                      " class="form-control" bsDatepicker  [disabled]="initialArrayIndex[j] > i" />
                   </td>
                   <td>
-                    <!-- <input
+                    <input
                     type="text"
                     id="actualAmount{{ summary.mediclaimTransactionId }}"
                     name="actualAmount{{ summary.mediclaimTransactionId }}"
                     [(ngModel)]="summary.actualAmount"
                     (change)="onActualAmountChange(summary, i, j)"
-                    [disabled]="summary.transactionStatus === 'Submitted'"
-                    class="form-control align-right"
-                  /> -->
-                  <p-inputNumber   class="form-control align-right"
+                    [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
+                    class="form-control align-right"  [disabled]="initialArrayIndex[j] > i"
+                  />
+                  <!-- <p-inputNumber   class="form-control align-right"
                   id="actualAmount{{ summary.mediclaimTransactionId }}"
                    name="actualAmount{{ summary.mediclaimTransactionId }}"
                   [(ngModel)]="summary.actualAmount"
                   (onBlur)="onActualAmountChange(summary, i, j)"
-                  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"></p-inputNumber>
+                  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"></p-inputNumber> -->
                   </td>
                   <td>
                     <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -360,11 +358,24 @@
                   </td>
                   <td>
                     <div class="custom_icon_badge">
-                      <input type="text" id="declaredAmount{{ summary.mediclaimTransactionId }}"
+                      <!-- <input type="text" id="declaredAmount{{ summary.mediclaimTransactionId }}"
                         name="declaredAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right" (change)="onPreventiveDeclaredAmountChange(summary, i)"
-                        [disabled]="summary.transactionStatus === 'Submitted'"/>
+                        [disabled]="summary.transactionStatus === 'Submitted'"/> -->
+
+                        <input
+                        type="text"
+                        id="declaredAmount{{ summary.mediclaimTransactionId }}"
+                        name="declaredAmount{{ summary.mediclaimTransactionId }}"
+                        [(ngModel)]="summary.declaredAmount"
+                        class="form-control align-right"
+                        (change)="onPreventiveDeclaredAmountChange(summary, i)"
+                        [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
+                      />
                     </div>
+
+
+
                   </td>
                   <td>
                     <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
@@ -378,7 +389,7 @@
                   <td>
                     <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
                       name="actualAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChange(summary, i)" class="form-control align-right"
+                      (change)="onActualAmountChangePrevi(summary, i)" class="form-control align-right"
                       [disabled]="summary.transactionStatus === 'Submitted'"/>
                   </td>
                   <td>
@@ -607,7 +618,7 @@
                   <td>
                     <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
                       name="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                      [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
+                      [(ngModel)]="summary.actualAmount" (change)="ononExpenseActualAmountChangePrevi(summary, i, j)"
                       [disabled]="summary.transactionStatus === 'Submitted'"
                       class="form-control align-right" />
                   </td>
@@ -804,7 +815,7 @@
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmount"
+                        <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmountExpense"
                           [disabled]="true" />
                       </span>
                     </td>
