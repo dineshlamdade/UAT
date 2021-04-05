@@ -1,8 +1,22 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, HostListener, Inject, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { MatDialog} from '@angular/material/dialog';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnInit,
+  Optional,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -10,24 +24,23 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-educational-loan',
   templateUrl: './educational-loan.component.html',
-  styleUrls: ['./educational-loan.component.scss']
+  styleUrls: ['./educational-loan.component.scss'],
 })
 export class EducationalLoanComponent implements OnInit {
-
   public tabIndex = 0;
   public loanAccountNo: string;
   public windowScrolled: boolean;
   public data: any;
+  public modalRef: BsModalRef;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   changeTabIndexForRedirect(event: any) {
     this.tabIndex = event.tabIndex;
     this.data = event;
-    console.log('data::',this.data);
+    console.log('data::', this.data);
   }
 
   redirectToMaster(event: any) {
@@ -35,36 +48,41 @@ export class EducationalLoanComponent implements OnInit {
     this.loanAccountNo = event;
   }
 
-  changeTabIndex(index: number)
-  {
-    console.log(this.loanAccountNo)
-    if(index !== 2) {
+  changeTabIndex(index: number) {
+    console.log(this.loanAccountNo);
+    if (index !== 2) {
       this.data = undefined;
     }
-    if(index !== 1) {
+    if (index !== 1) {
       this.loanAccountNo = undefined;
     }
     this.tabIndex = index;
   }
 
-  public modalRef: BsModalRef;
-
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    if (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) {
+    if (
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop > 100
+    ) {
       this.windowScrolled = true;
-    } else if (this.windowScrolled && window.pageYOffset || document.documentElement.scrollTop ||
-    document.body.scrollTop < 10) {
+    } else if (
+      (this.windowScrolled && window.pageYOffset) ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop < 10
+    ) {
       this.windowScrolled = false;
     }
   }
 
   scrollToTop() {
     (function smoothscroll() {
-      let currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      let currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
       if (currentScroll > 0) {
-              window.requestAnimationFrame(smoothscroll);
-              window.scrollTo(0, currentScroll - (currentScroll / 8));
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
       }
     })();
   }

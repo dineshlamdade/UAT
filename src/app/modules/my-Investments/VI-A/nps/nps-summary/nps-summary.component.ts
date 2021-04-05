@@ -28,10 +28,11 @@ export class NpsSummaryComponent implements OnInit {
   public grandTabStatus: boolean;
   public selectedInstitution: string;
   public tempFlag: boolean;
-  public futureNewPolicyDeclaredAmount = 0;
+  public futureNewPolicyDeclaredAmount: 0
+  public futureGlobalPolicyDeclaredAmount: 0
   // public previousEmployerB: string;
   // public futureNewPolicyDeclaredAmount: string;
-  public limitD: number = 150000;
+  public limitD: number = 50000;
   public deductionE: number;
   public eligibleForDeductionF: number;
 
@@ -78,8 +79,8 @@ export class NpsSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount =
-        res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -98,8 +99,8 @@ export class NpsSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].transactionDetailList;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount =
-        res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -110,9 +111,11 @@ export class NpsSummaryComponent implements OnInit {
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
     this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
-    if (this.futureNewPolicyDeclaredAmount != 0) {
-      this.addFuturePolicy();
-    }
+    if (this.futureNewPolicyDeclaredAmount > 0) {
+    this.addFuturePolicy();
+  }else if(this.futureNewPolicyDeclaredAmount <0) {
+    this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+  }
   }
 
   keyPressedSpaceNotAllow(event: any) {
@@ -121,7 +124,7 @@ export class NpsSummaryComponent implements OnInit {
     let inputChar = String.fromCharCode(event.key);
 
     if (!pattern.test(inputChar)) {
-      this.futureNewPolicyDeclaredAmount = 0;
+      // this.futureNewPolicyDeclaredAmount = 0;
       this.tempFlag = true;
       // invalid character, prevent input
       event.preventDefault();

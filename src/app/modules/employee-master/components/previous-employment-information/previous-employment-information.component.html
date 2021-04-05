@@ -30,9 +30,9 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="Select Joining Date" bsDatepicker
-                                                    [maxDate]="validationDate" formControlName="joiningDate"
+                                                    [maxDate]="validationDate" formControlName="joiningDate" 
                                                     [(ngModel)]="previousEmploymentInformation.dateOfJoining">
                                             </div>
                                         </div>
@@ -45,10 +45,10 @@
                                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                                    data-provide="datepicker" data-date-autoclose="true"
+                                                    data-provide="datepicker" data-date-autoclose="true" placement="center"
                                                     class="form-control" placeholder="Select Leaving Date" bsDatepicker
                                                     [minDate]="previousEmploymentInformation.dateOfJoining"
-                                                    formControlName="leaveDate" [maxDate]="today"
+                                                    formControlName="leaveDate" [maxDate]="validationDate"
                                                     [(ngModel)]="previousEmploymentInformation.dateOfRelieving">
                                             </div>
                                         </div>
@@ -88,6 +88,7 @@
                                                 <div class="col-sm-3 col-md-5 country-code">
                                                     <select class="form-control selectpicker" placeholder="Select"
                                                         formControlName="currency" (change)="validateCTCperAnum()"
+                                                       
                                                         [(ngModel)]="previousEmploymentInformation.currency">
                                                         <option value="" data-hidden="true">Currency</option>
                                                         <option *ngFor="let currency of currencyArray"
@@ -100,7 +101,7 @@
                                                     <input type="text" class="form-control" placeholder="Enter CTC"
                                                         formControlName="ctsPerAnum"
                                                         [(ngModel)]="previousEmploymentInformation.lastCTCPerAnnum"
-                                                        (keydown)="commaNumberCheck($event)"
+                                                        (keydown)="commaNumberCheck($event)"  (keypress)="keyPress($event)"
                                                         (keyup)="CTCCommaFormatted($event)">
                                                 </div>
                                             </div>

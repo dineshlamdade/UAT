@@ -31,8 +31,8 @@
                             </div>
                         </div>
                     </div>
-                    <p-table [value]="nominationDataSource" [scrollable]="true" [style]="{width:'1000px'}"
-                        scrollHeight="275px" [style]="{'overflow':'auto!important'}">
+                    <p-table [value]="nominationDataSource"  [style]="{width:'1000px'}"
+                         [style]="{'overflow':'auto!important'}">
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
                                 <col class="wd-10">
@@ -52,10 +52,11 @@
                                 <th class="primeng-table-header-center wd-10">Name</th>
                                 <th class="primeng-table-header-center wd-10">Provident Fund (PF)</th>
                                 <th class="primeng-table-header-center wd-10">Employee Pension Scheme (EPS)</th>
-                                <th class="primeng-table-header-center wd-10">Salary</th>
+                                
                                 <th class="primeng-table-header-center wd-10">Employee State Insurance (ESI)</th>
                                 <th class="primeng-table-header-center wd-10">Gratuity</th>
                                 <th class="primeng-table-header-center wd-10">Super Annuation</th>
+                                <th class="primeng-table-header-center wd-10">Salary</th>
                                 <th class="primeng-table-header-center wd-10">Life Insurance</th>
                                 <th class="primeng-table-header-center wd-10">Mediclaim Annuation</th>
                                 <th class="primeng-table-header-center wd-10">Personal Accident Annuation</th>
@@ -73,7 +74,7 @@
                                 <td><span>
                                         <input type="number" class="form-control text-center"
                                             [(ngModel)]="nomination.pfPercentage" [ngModelOptions]="{standalone: true}"
-                                            (change)="getTotalPFCost(nomination.pfPercentage)"
+                                           
                                             (change)="nomination.pfPercentage < 0 ? nomination.pfPercentage = 0 : nomination.pfPercentage; nomination.pfPercentage > 100 ? nomination.pfPercentage = 0 : nomination.pfPercentage;">
                                     </span></td>
 
@@ -240,8 +241,8 @@
                     <br><br>
                     <legend class="nomination-title">Employee State Insurance (ESI) Dispensary</legend>
 
-                    <p-table [value]="esicDataSource" [scrollable]="true" [style]="{width:'600px'}"
-                        scrollHeight="200px">
+                    <p-table [value]="esicDataSource" [style]="{width:'600px'}"
+                        >
                         <ng-template pTemplate="colgroup" let-columns>
                             <colgroup>
                                 <col style="width:200px">

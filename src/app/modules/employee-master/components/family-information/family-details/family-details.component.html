@@ -136,7 +136,7 @@
 
                                                 <div class="col-sm-6 col-md-4 mt-15">
                                                     <label class="form-label">Age Bracket</label>
-                                                    <input type="text" class="form-control" placeholder="Age Bracket"
+                                                    <input type="text" class="form-control" placeholder="Age Bracket" disabled
                                                         formControlName="ageBracket"
                                                         [(ngModel)]="familyMemberInfoRequestDTO.ageBracket"
                                                         (change)="validateIsdependant()"
@@ -157,7 +157,7 @@
                                                         </label>
                                                         <label
                                                             class="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" class="custom-control-input" value="no"
+                                                            <input type="radio" class="custom-control-input" value="no" 
                                                                 (change)="dependentOnEmployeeValidation($event)"
                                                                 formControlName="dependentOnEmployeeToggle"
                                                                 [(ngModel)]="dependentOnEmployee">
@@ -184,7 +184,7 @@
                                                         <label
                                                             class="custom-control custom-radio custom-control-inline">
                                                             <input type="radio" class="custom-control-input" value="no"
-                                                                (change)="companyMediclaimValidation($event)"
+                                                                (change)="companyMediclaimValidation($event)"  
                                                                 formControlName="companyMediclaimToggle"
                                                                 [(ngModel)]="companyMediclaim">
                                                             <span class="custom-control-label">

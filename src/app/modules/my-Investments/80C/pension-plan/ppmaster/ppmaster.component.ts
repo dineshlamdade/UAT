@@ -81,11 +81,11 @@ export class PpmasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
-  public policyMinDate: Date;
+  public policyMinDate: any;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
-  public minFormDate: Date;
-  public maxFromDate: Date;
+  public minFormDate: any = '';
+  public maxFromDate: any = '';
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -112,6 +112,11 @@ export class PpmasterComponent implements OnInit {
   public globalSelectedAmount: string;
 
   public proofSubmissionId;
+  policyToDate: any;
+  paymentDetailsToDate: any;
+  policyMaxDate: any;
+  selectedPolicyFromDate: any;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -247,87 +252,87 @@ export class PpmasterComponent implements OnInit {
   get masterForm() {
     return this.form.controls;
   }
+ //-------------------- Policy End Date Validations with Policy Start Date ---------------
+ setPolicyEndDate() {
+  this.policyMinDate = this.form.value.policyStartDate;
+  const policyStart = this.datePipe.transform(
+    this.form.get('policyStartDate').value,
+    'yyyy-MM-dd'
+  );
+  const policyEnd = this.datePipe.transform(
+    this.form.get('policyEndDate').value,
+    'yyyy-MM-dd'
+  );
+  this.minFormDate = this.policyMinDate;
+  if (policyStart > policyEnd) {
+    this.form.controls.policyEndDate.reset();
+  }
+  this.form.patchValue({
+    fromDate: this.policyMinDate,
+  });
 
-  //-------------------- Policy End Date Validations with Policy Start Date ---------------
-  setPolicyEndDate() {
-    this.policyMinDate = this.form.value.policyStartDate;
-    const policyStart = this.datePipe.transform(
-      this.form.get('policyStartDate').value,
-      'yyyy-MM-dd'
+  this.setPaymentDetailToDate();
+}
+
+//------------------ Policy End Date Validations with Current Finanacial Year -------------------
+checkFinancialYearStartDateWithPolicyEnd() {
+  const policyEnd = this.datePipe.transform(
+    this.form.get('policyEndDate').value,
+    'yyyy-MM-dd'
+  );
+  const financialYearStartDate = this.datePipe.transform(
+    this.financialYearStart,
+    'yyyy-MM-dd'
+  );
+  if (policyEnd < financialYearStartDate) {
+    this.alertService.sweetalertWarning(
+      "Policy End Date can't be earlier that start of the Current Financial Year"
     );
-    const policyEnd = this.datePipe.transform(
-      this.form.get('policyEndDate').value,
-      'yyyy-MM-dd'
-    );
-    this.minFormDate = this.policyMinDate;
-    if (policyStart > policyEnd) {
-      this.form.controls.policyEndDate.reset();
-    }
+    this.form.controls.policyEndDate.reset();
+  } else {
     this.form.patchValue({
-      fromDate: this.policyMinDate,
+      toDate: this.form.value.policyEndDate,
     });
-
-    this.setPaymentDetailToDate();
+    this.maxFromDate = this.form.value.policyEndDate;
   }
+}
 
-  //------------------ Policy End Date Validations with Current Finanacial Year -------------------
-  checkFinancialYearStartDateWithPolicyEnd() {
-    const policyEnd = this.datePipe.transform(
-      this.form.get('policyEndDate').value,
-      'yyyy-MM-dd'
-    );
-    const financialYearStartDate = this.datePipe.transform(
-      this.financialYearStart,
-      'yyyy-MM-dd'
-    );
-    if (policyEnd < financialYearStartDate) {
-      this.alertService.sweetalertWarning(
-        "Policy End Date can't be earlier that start of the Current Financial Year"
-      );
-      this.form.controls.policyEndDate.reset();
-    } else {
-      this.form.patchValue({
-        toDate: this.form.value.policyEndDate,
-      });
-      this.maxFromDate = this.form.value.policyEndDate;
-    }
+//------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
+setPaymentDetailToDate() {
+  this.paymentDetailMinDate = this.form.value.fromDate;
+  const from = this.datePipe.transform(
+    this.form.get('fromDate').value,
+    'yyyy-MM-dd'
+  );
+  const to = this.datePipe.transform(
+    this.form.get('toDate').value,
+    'yyyy-MM-dd'
+  );
+  if (from > to) {
+    this.form.controls.toDate.reset();
   }
+}
 
-  //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
-  setPaymentDetailToDate() {
-    this.paymentDetailMinDate = this.form.value.fromDate;
-    const from = this.datePipe.transform(
-      this.form.get('fromDate').value,
-      'yyyy-MM-dd'
+//-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
+checkFinancialYearStartDateWithPaymentDetailToDate() {
+  const to = this.datePipe.transform(
+    this.form.get('toDate').value,
+    'yyyy-MM-dd'
+  );
+  const financialYearStartDate = this.datePipe.transform(
+    this.financialYearStart,
+    'yyyy-MM-dd'
+  );
+  if (to < financialYearStartDate) {
+    //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
+    this.alertService.sweetalertWarning(
+      "Policy End Date can't be earlier that start of the Current Financial Year"
     );
-    const to = this.datePipe.transform(
-      this.form.get('toDate').value,
-      'yyyy-MM-dd'
-    );
-    if (from > to) {
-      this.form.controls.toDate.reset();
-    }
+    this.form.controls.toDate.reset();
   }
+}
 
-  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
-  checkFinancialYearStartDateWithPaymentDetailToDate() {
-    const to = this.datePipe.transform(
-      this.form.get('toDate').value,
-      'yyyy-MM-dd'
-    );
-    const financialYearStartDate = this.datePipe.transform(
-      this.financialYearStart,
-      'yyyy-MM-dd'
-    );
-    if (to < financialYearStartDate) {
-      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
-      this.alertService.sweetalertWarning(
-        "Policy End Date can't be earlier that start of the Current Financial Year"
-      );
-      this.form.controls.toDate.reset();
-    }
-  }
-
+ 
   //---------------- Get Master Page Data API call -----------------------
   masterPage() {
     this.pensionPlanService.getPensionPlanMaster().subscribe((res) => {
@@ -409,7 +414,7 @@ export class PpmasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      this.form.get('ecs').setValue('0');
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
@@ -456,6 +461,9 @@ export class PpmasterComponent implements OnInit {
 
   //----------- Family relationship shown on Policyholder selection ---------------
   OnSelectionfamilyMemberGroup() {
+    if(this.form.get('accountHolderName').value == null ){
+      this.form.get('relationship').setValue(null);
+    }
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('accountHolderName').value
     );
@@ -510,12 +518,12 @@ export class PpmasterComponent implements OnInit {
   findByaccountNumber(accountNumber, masterGridData) {
     return masterGridData.find((x) => x.accountNumber === accountNumber);
   }
+   //scrollToTop Fuctionality*************************************
+   // scrollToTop Fuctionality
 
-  // scrollToTop Fuctionality
-  public scrollToTop() {
+  public scrollToTop(...args: []) {
     (function smoothscroll() {
-      var currentScroll =
-        document.documentElement.scrollTop || document.body.scrollTop;
+      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
       if (currentScroll > 0) {
         window.requestAnimationFrame(smoothscroll);
         window.scrollTo(0, currentScroll - currentScroll / 8);
@@ -529,7 +537,7 @@ export class PpmasterComponent implements OnInit {
   cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
@@ -555,7 +563,7 @@ export class PpmasterComponent implements OnInit {
   resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.masterfilesArray = [];

@@ -108,7 +108,7 @@
               <p-inputNumber class="form-control align-right" formControlName="premiumAmount" name="Premium Amount"
                 (onBlur)="calculateAnnualAmount()"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN"
-                [minFractionDigits]="2"></p-inputNumber>
+                [minFractionDigits]="2" min="0" ></p-inputNumber>
                 <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
 
               <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
@@ -251,21 +251,8 @@
       <div class="col-12">
         <div class="card">
           <div class="mb-10 row">
-
-            <!-- <div class="row"><div class="col-md-6"><h3 class="text-purple">upload Document</h3>
-            </div>
-            <div class="col-md-6">
-              <div class="float-right">
-                <label class="text-red mb-0">Please upload document</label>
-              </div>
-            </div>
-          </div> -->
-
             <div class="col-md-6">
               <h3 class="font-14 text-purple font-bold">Upload Documents </h3>
-              <!-- <div style="color:red"  *ngIf="submitted && masterfilesArray.length == 0">
-                Please upload document
-              </div> -->
               <div class="float-left" *ngIf="submitted && masterfilesArray.length == 0">
                 <label class="text-red mb-0">Please upload document</label>
               </div>

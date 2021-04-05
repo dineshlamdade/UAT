@@ -119,7 +119,7 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
@@ -260,8 +260,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       remark: new FormControl(null),
       proofSubmissionId: new FormControl(null),
       transactionStatus : new FormControl('Pending'),
-      // donations80GGTransactionId: new FormControl(null),
       donations80GGTransactionId: new FormControl(0),
+      reactiveCheckbox: new FormControl(false),
     });
   }
   //--------- convenience getter for easy access to form fields ---------------
@@ -293,6 +293,55 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     }
   }
 
+  onSelectReactiveCheckbox(event) {
+    const checked = event.target.checked;
+    const formatedGlobalSelectedValue = Number(
+      this.globalSelectedAmount == '0'
+        ? this.globalSelectedAmount
+        : this.globalSelectedAmount.toString().replace(',', '')
+    );
+    let formatedActualAmount: number = 0;
+    let formatedSelectedAmount: string;
+    const declaredAmnt = this.eightyGGAForm.get('declaredAmount').value;
+    if (checked) {
+      this.eightyGGAForm.get('actualAmount').setValue(declaredAmnt);
+      formatedActualAmount = Number(
+        declaredAmnt.toString().replace(',', '')
+      );
+      formatedSelectedAmount = this.numberFormat.transform(
+        formatedGlobalSelectedValue + formatedActualAmount
+      );
+      this.uploadGridData.push(this.eightyGGAForm.get('donations80GGTransactionId').value);
+
+    } else {
+      formatedActualAmount = Number(
+        declaredAmnt.toString().replace(',', '')
+      );
+      this.eightyGGAForm.get('actualAmount').setValue(this.numberFormat.transform(0));
+
+      formatedSelectedAmount = this.numberFormat.transform(
+        formatedGlobalSelectedValue - formatedActualAmount
+      );
+      const index = this.uploadGridData.indexOf(
+        this.eightyGGAForm.get('donations80GGTransactionId').value
+      );
+      this.uploadGridData.splice(index, 1);
+    }
+
+    this.globalSelectedAmount = formatedSelectedAmount;
+    // this.actualTotal = 0;
+    // this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
+    //   this.actualTotal += Number(
+    //     element.actualAmount.toString().replace(',', '')
+    //   );
+    // });
+    // this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    if (this.uploadGridData.length) {
+      this.enableFileUpload = true;
+    }
+  }
+
   //New Row add CheckBox
     onSelectCheckBoxNew(){
       this.uploadGridData.push(0);
@@ -301,25 +350,16 @@ export class GgaDeclarationAndActualComponent implements OnInit {
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
-
-    console.log(
-      'eightyGGAForm::',
-      this.eightyGGAForm
-    );
-    // console.log("formData::", formData);
-
     if (this.eightyGGAForm.invalid) {
       return;
     }
-
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError('Please attach Receipt / Certificate');
       return;
     }
-
-    //else {
     const ggaFormDetail = this.eightyGGAForm.getRawValue();
-
+    // delete  property reactiveCheckbox
+    delete ggaFormDetail.reactiveCheckbox;
     ggaFormDetail.declaredAmount = ggaFormDetail.declaredAmount
       .toString()
       .replace(',', '');
@@ -453,52 +493,6 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     // this.selectedTransactionInstName('All');
   }
 
-
-
-  // --------- On institution selection show all transactions list accordingly all policies--------
-  // selectedTransactionInstName(institutionName: any) {
-  //   this.globalInstitution = institutionName;
-  //   this.getTransactionFilterData(this.globalInstitution, null, null);
-  //   this.globalSelectedAmount = this.numberFormat.transform(0);
-  //   const data = {
-  //     label: 'All',
-  //     value: 'All',
-  //   };
-
-  //   this.transactionPolicyList = [];
-  //   this.transactionPolicyList.push(data);
-
-  //   this.transactionInstitutionListWithPolicies.forEach((element) => {
-  //     if (institutionName === element.institution) {
-  //       element.policies.forEach((policy) => {
-  //         const policyObj = {
-  //           label: policy,
-  //           value: policy,
-  //         };
-  //         this.transactionPolicyList.push(policyObj);
-  //       });
-  //     } else if (institutionName === 'All') {
-  //       element.policies.forEach((policy) => {
-  //         const policyObj = {
-  //           label: policy,
-  //           value: policy,
-  //         };
-  //         this.transactionPolicyList.push(policyObj);
-  //       });
-  //     }
-  //   });
-
-  //   // if (institutionName == 'All') {
-  //   //   this.grandTabStatus = true;
-  //   //   this.isDisabled = true;
-  //   // } else {
-  //   //   this.grandTabStatus = false;
-  //   //   this.isDisabled = false;
-  //   // }
-
-  //   this.resetAll();
-  // }
-
   // -------- On Policy selection show all transactions list accordingly all policies---------
   selectedPolicy(policy: any) {
     this.globalPolicy = policy;
@@ -534,14 +528,6 @@ export class GgaDeclarationAndActualComponent implements OnInit {
         this.transactionDetail[j].donations80GGTransactionList[
           i
         ].dateOfPayment = new Date(data.dueDate);
-        console.log(
-          'in IS actualAmount::',
-          this.transactionDetail[j].donations80GGTransactionList[i].actualAmount
-        );
-        console.log(
-          'in IS dateOfPayment::',
-          this.transactionDetail[j].donations80GGTransactionList[i].dateOfPayment
-        );
       } else {
         this.transactionDetail[j].donations80GGTransactionList[i].actualAmount =
           data.declaredAmount;
@@ -555,11 +541,8 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
-      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.donations80GGTransactionId);
 
-      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-      // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
         this.transactionDetail[j].actualAmount
@@ -572,7 +555,6 @@ export class GgaDeclarationAndActualComponent implements OnInit {
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
-      // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(
         data.donations80GGTransactionId
       );
@@ -583,7 +565,6 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
     this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
@@ -1014,10 +995,11 @@ export class GgaDeclarationAndActualComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    // this.eightyGGAForm.get('reactiveCheckbox').setValue(null);
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1384,32 +1366,6 @@ export class GgaDeclarationAndActualComponent implements OnInit {
 
 
 
-      nextDocViewer() {
-        this.urlIndex = this.urlIndex + 1;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI
-        );
-      }
-
-      previousDocViewer() {
-        this.urlIndex = this.urlIndex - 1;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI
-        );
-      }
-
-      docViewer(template3: TemplateRef<any>) {
-        this.urlIndex = 0;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI
-        );
-        console.log(this.urlSafe);
-        this.modalRef = this.modalService.show(
-          template3,
-          Object.assign({}, { class: 'gray modal-xl' })
-        );
-      }
-
       changeReceiptAmountFormat() {
         let receiptAmount_: number;
         let globalSelectedAmount_ : number;
@@ -1519,6 +1475,35 @@ export class GgaDeclarationAndActualComponent implements OnInit {
           this.transactionDetail[j].dateOfPayment
         );
       }
+
+        // ---------------- Doc Viewr Code ----------------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
 
 
       //   // Family relationship shown on Policyholder selection

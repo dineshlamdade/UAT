@@ -107,7 +107,7 @@ export class FamilyDetailsComponent implements OnInit {
       companyMediclaimApplicable: [''],
       isDependant: [''],
       image: [''],
-      remark: [''],
+      remark: [{value: null, disabled: true}],
       isActive: [{ value: null, disabled: true }],
       companyMediclaimToggle: ['', Validators.required],
       dependentOnEmployeeToggle: ['', Validators.required],
@@ -229,13 +229,17 @@ export class FamilyDetailsComponent implements OnInit {
   activeSetBoolean(event) {
 
     if (event == true) {
+      
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
       this.FamilyDetailsInfoForm.get('remark').clearValidators();
       this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
+   this.FamilyDetailsInfoForm.controls['remark'].disable();
+     
     } else {
       this.familyMemberInfoRequestDTO.isMemberActive = 0;
       this.FamilyDetailsInfoForm.get('remark').setValidators([Validators.required]);
       this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
+     
     }
   }
 
@@ -705,9 +709,11 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   editFamilyMember(family) {
+    window.scrollTo(0, 0);
     this.enableForm();
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-
+      this.FamilyDetailsInfoForm.controls['dateOfBirth'].disable();  
+      this.FamilyDetailsInfoForm.controls['ageBracket'].disable();
       this.updateFormFlag = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
@@ -732,8 +738,11 @@ export class FamilyDetailsComponent implements OnInit {
 
       if (this.familyMemberInfoRequestDTO.isMemberActive == 1) {
         this.IsActive = true;
+   
+        this.activeSetBoolean(true);
       } else {
         this.IsActive = false;
+        this.activeSetBoolean(false);
       }
 
       this.familyAddressDetailRequestDTO = res.data.results[0].familyDetailsGetBean.familyAddressDetail;

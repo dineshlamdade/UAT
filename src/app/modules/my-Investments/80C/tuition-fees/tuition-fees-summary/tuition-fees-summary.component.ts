@@ -28,6 +28,18 @@ export class TuitionFeesSummaryComponent implements OnInit {
 
     this.myEvent.emit(data);
   }
+  onViewSummary(institution: string, childName: string) {
+    this.tabIndex = 2;
+    const data = {
+      institution: institution,
+      childName: childName,
+      tabIndex: this.tabIndex,
+    };
+    this.institution = institution;
+    this.childName = childName;
+
+    this.myEvent.emit(data);
+  }
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
@@ -82,6 +94,14 @@ export class TuitionFeesSummaryComponent implements OnInit {
 
   // On onEditSummary
   onEditSummary1(institution: string, childName: string) {
+    this.tabIndex = 2;
+    this.institution = institution;
+    this.childName = childName;
+    console.log('institution::', institution);
+    console.log('childName::', childName);
+  }
+   // On onEditSummary
+   onViewSummary1(institution: string, childName: string) {
     this.tabIndex = 2;
     this.institution = institution;
     this.childName = childName;

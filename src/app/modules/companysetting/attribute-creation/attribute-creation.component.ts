@@ -1,29 +1,14 @@
 
 import { CompanySettingsService } from './../company-settings.service';
-import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation, TemplateRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
+import { SaveAttributeCreation } from '../model/business-cycle-model';
+import areIntervalsOverlapping from 'date-fns/areIntervalsOverlapping';
+import { ArrayDataSource } from '@angular/cdk/collections';
 
-export class SaveAttributeCreation {
-  globalAttributeMasterId: number;
-  code; string;
-  description: string;
-  attributeNature: string;
-  numberOfOption: string;
-  options: any[];
-}
-
-export class SaveAttributeSelection {
-  attributeGroupDefinitionId: number;
-  // id:number;
-  name; string;
-  description: string;
-  //createdBy:string;
-  // attributeNature:string;
-  // numberOfOption:string;
-  attributeMasterIdList: any[];
-}
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component( {
   selector: 'app-attribute-creation',
@@ -32,40 +17,43 @@ export class SaveAttributeSelection {
   encapsulation: ViewEncapsulation.None
 } )
 export class AttributeCreationComponent implements OnInit {
+  // sort alphabetically
+  NatureList = [
+    { label: 'Formula', value: 'F' },
+    { label: 'Garnishment', value: 'G' },
+    { label: 'Head  ', value: 'H' },
+    { label: 'List', value: 'L' },
+    { label: 'Per Employee Input', value: 'PEI' },
+    { label: 'Range Value Per Instance', value: 'Range Value / Instance' },
+    { label: 'Range Value Per Period', value: 'Range Value / Period' },
+    { label: 'Range Of No Of Instances Per Period', value: 'Range Instances / Period' },
+    { label: 'Stored Procedure', value: 'SP' },
+    { label: 'Source Destination Matrix', value: 'SDM' },
+    { label: 'Work Flow', value: 'WF' },
+
+  ];
+  modalRef: BsModalRef;
+  isEditMode: boolean = false;
+  optionId: number = 0;
+  validOptionList: boolean = false;
   AttributeCreationList: Array<any> = [];
-  NatureList: Array<any> = [];
+  attributeCreationSummaryList = [];
+  summaryHtmlDataList = [];
   AttributeCreationForm: FormGroup;
   disabled: boolean = true
   viewCancelButton: boolean = false;
+  viewUpdateButton: boolean = false;
   hidevalue: boolean = false;
-  //summons = [];
   summons: Array<any> = [];
-  newlist: Array<any> = [];
   optionList = [];
-  selectedNature: string;
-  // TypeList: Array<any> = [];
-  // HeadCreationList:Array<any> = [];
-
-
-  // Name:string;
-
-
-
 
   constructor(
     private formBuilder: FormBuilder,
     private attributeCreationService: CompanySettingsService,
     private alertService: AlertServiceService,
+    private modalService: BsModalService,
     @Inject( DOCUMENT ) private document: Document ) {
-    this.NatureList = [
-      { label: 'L', value: 'L' },
-      { label: 'F', value: 'F' },
-      { label: 'SP', value: 'SP' },
-      { label: 'SDM', value: 'SDM' },
-      { label: 'PEI', value: 'PEI' },
-      { label: 'WF', value: 'WF' },
-      { label: 'GM', value: 'GM' },
-    ];
+
   }
 
   ngOnInit(): void {
@@ -75,165 +63,254 @@ export class AttributeCreationComponent implements OnInit {
       code: new FormControl( '', Validators.required ),
       description: new FormControl( '', Validators.required ),
       attributeNature: new FormControl( '', Validators.required ),
-      optionList: new FormControl( '', Validators.required ),
-      // optionList: this.formBuilder.array([]),
-      // type: new FormControl('', ),
-      // isStatutory: new FormControl('0'),
+      optionList: new FormControl( '' ),
     } );
-
     this.getAllAttributeCreation();
+  }
+  // get All AttributeCreation
+  getAllAttributeCreation(): void {
+    this.attributeCreationSummaryList = [];
+    this.AttributeCreationList = [];
+
+    this.attributeCreationService.getAllGlobalAttributeCreation().subscribe( res => {
+
+      this.AttributeCreationList = res.data.results;
+      res.data.results.forEach( element => {
+        let value: string = '';
+        for ( let i = 0; i < element.optionList.length; i++ ) {
+          if ( i == 0 ) {
+            value = element.optionList[i].optionValue;
+          } else {
+            value = value + ', ' + element.optionList[i].optionValue;
+
+          }
+        }
+        console.log( 'value ', value );
+        let label = '';
+        let ind = this.NatureList.findIndex( o => o.value == element.attributeNature.trim() );
+        if ( ind != -1 ) {
+          label = this.NatureList[ind].label;
+        } else {
+          label = '';
+        }
+
+
+        let obj = {
+          globalAttributeMasterId: element.globalAttributeMasterId,
+          code: element.code,
+          attributeNatureLongForm: label,
+          attributeNature: element.attributeNature.trim(),
+          numberOfOption: element.numberOfOption,
+          description: element.description,
+          optionValue: value,
+        }
+        this.attributeCreationSummaryList.push( obj );
+      } );
+    } );
   }
 
 
+  editAttributeCreation( id ) {
+    console.log( 'edit' );
 
-  // get All AttributeCreation
-  getAllAttributeCreation(): void {
-    this.attributeCreationService.getAllAttributeCreation().subscribe( res => {
 
-      this.AttributeCreationList = res.data.results;
-    } );
+    this.disabled = false;
+    this.viewCancelButton = false;
+    this.viewUpdateButton = true;
+    this.viewUpdateButton = true;
+    this.hidevalue = true;
+    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == id );
+
+    this.AttributeCreationForm.patchValue( { code: this.attributeCreationSummaryList[index].code } );
+    this.AttributeCreationForm.patchValue( { description: this.attributeCreationSummaryList[index].description } );
+    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNature } );
+    if ( this.attributeCreationSummaryList[index].optionValue.length > 0 ) {
+      let split = this.attributeCreationSummaryList[index].optionValue.split( ',' );
+      this.summaryHtmlDataList = [];
+      console.log( split );
+      for ( let i = 0; i < split.length; i++ ) {
+        this.summaryHtmlDataList.push( { id: i, name: split[i] } );
+      }
+    }
+    this.AttributeCreationForm.get( 'attributeNature' ).disable();
+
+
   }
 
   // Get Attribute Creation ById
   GetAttributeCreationByIdDisable( id ): void {
 
-    // this.CycleupdateFlag=true;
-    // this.CycleupdateFlag1=false;
     this.disabled = false;
     this.viewCancelButton = true;
-    this.attributeCreationService.GetAttributeCreationById( id )
-      .subscribe( response => {
+    this.hidevalue = false;
+    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == id );
 
-        //  this.HeadCreationForm.patchValue({ id: response.data.results[0].globalHeadMasterId });
-        this.AttributeCreationForm.patchValue( { code: response.data.results[0].code } );
-        this.AttributeCreationForm.patchValue( { description: response.data.results[0].description } );
-        this.AttributeCreationForm.patchValue( { attributeNature: response.data.results[0].attributeNature } );
-        if ( response.data.results[0].attributeNature == "L" ) {
-          this.hidevalue = true;
-        }
-        else {
-          this.hidevalue = false;
-        }
-        this.summons = [];
-        if ( response.data.results[0].optionList.length > 0 ) {
-          response.data.results[0].optionList.forEach( element => {
-            // const obj = {
-            //     label: element,
-            //     value: element,
-            // };
-
-            this.summons.push( element.optionValue );
-            // const control = <FormArray>this.AttributeCreationForm.controls['optionList'];
-            // control.push(element.optionValue)
-            //this.transactionInstitutionNames.push(obj);
-            //  this.AttributeCreationForm.patchValue({ optionList: this.summons});
-          } );
-
-          this.AttributeCreationForm.patchValue( { optionList: this.summons } );
-        }
-      } );
-
-    this.summons = [];
+    this.AttributeCreationForm.patchValue( { code: this.attributeCreationSummaryList[index].code } );
+    this.AttributeCreationForm.patchValue( { description: this.attributeCreationSummaryList[index].description } );
+    this.AttributeCreationForm.patchValue( { attributeNature: this.attributeCreationSummaryList[index].attributeNature } );
+    if ( this.attributeCreationSummaryList[index].optionValue.length > 0 ) {
+      let split = this.attributeCreationSummaryList[index].optionValue.split( ',' );
+      this.summaryHtmlDataList = [];
+      this.hidevalue = false;
+      console.log( split );
+      for ( let i = 0; i < split.length; i++ ) {
+        this.summaryHtmlDataList.push( { id: i, name: split[i] } );
+      }
+    }
+    this.AttributeCreationForm.disable();
   }
-
-
-  onChangeEvent( event: any ): void {
-
-    this.summons.push( event );
-    //this.summons
-    // this.newlist.push(this.summons.values)
-    // if ((this.id == undefined || this.id == '00000000-0000-0000-0000-000000000000')) {
-    //  this.HeadCreationForm.patchValue({ shortName:this.Name });
-    // this.EventDetails.controls["RegistrationClosedDate"].setValue["EventStartDate"];
-    // this.notificationForm.patchValue({ scheduleTime: this.CurrentTime });
-    // }
-
-  }
-
   onStatusChange( event ): void {
-
-    this.selectedNature = event.target.value;
-    if ( this.selectedNature == 'L' ) {
+    console.log( 'chceck', event.target.value );
+    if ( event.target.value == 'L' ) {
       this.hidevalue = true;
-      this.AttributeCreationForm.controls['optionList'].setValidators( [Validators.required] );
+      console.log( 'length is ', this.summaryHtmlDataList );
+      if ( this.summaryHtmlDataList.length === 0 ) {
+        this.validOptionList = true;
+      } else {
+        this.validOptionList = false;
+      }
     }
     else {
+      this.validOptionList = false;
+      this.summaryHtmlDataList = [];
       this.summons = [];
       this.hidevalue = false;
-      this.AttributeCreationForm.patchValue( { addDays: null } );
-      this.AttributeCreationForm.get( 'optionList' ).clearValidators();
-      this.AttributeCreationForm.get( 'optionList' ).updateValueAndValidity();
     }
   }
-  addOptionList(): void {
-    this.AttributeCreationForm.patchValue( { optionList: '' } );
+  addOptionList( evt: any ): void {
+    if ( this.isEditMode ) {
+      let isContain = this.summaryHtmlDataList.some( ( { name } ) => name === evt );
+      console.log( 'isContain ', isContain );
+      if ( isContain == true ) {
+        this.alertService.sweetalertWarning( 'Value already presetnt in Summary table.' );
+
+      } else {
+
+        let index = this.summaryHtmlDataList.findIndex( o => o.id == this.optionId );
+        this.summaryHtmlDataList[index].name = evt;
+      }
+
+
+    } else {
+      console.log( evt );
+      if ( evt.length > 0 ) {
+        let isContain = this.summaryHtmlDataList.some( ( { name } ) => name === evt );
+        console.log( 'isContain ', isContain );
+        let id = 0;
+        if ( this.summaryHtmlDataList.length !== 0 ) {
+          id = this.summaryHtmlDataList[this.summaryHtmlDataList.length - 1].id;
+          this.validOptionList = false;
+        } else {
+          id = 0;
+          this.validOptionList = true;
+        }
+        if ( isContain == true ) {
+          this.alertService.sweetalertWarning( 'Value already presetnt in Summary table.' );
+        } else {
+          this.summaryHtmlDataList.push( { name: evt, id: id + 1 } );
+        }
+
+        this.validOptionList = false;
+      }
+    }
+    this.AttributeCreationForm.get( 'optionList' ).setValue( '' );
+    this.isEditMode = false;
+
   }
 
   //add new AttributeCreation
   addAttributeCreation(): void {
+    if ( this.viewUpdateButton == true ) {
+      console.log( 'add update logic here' );
 
-    const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
-    //addAttributeCreation.options=this.summons;
-    addAttributeCreation.options = [];
-    this.summons.forEach( function ( f ) {
-      addAttributeCreation.options.push( f );
-    } );
-    addAttributeCreation.numberOfOption = this.summons.length.toString();
-    addAttributeCreation.code = this.AttributeCreationForm.value.code;
-    addAttributeCreation.description = this.AttributeCreationForm.value.description;
-    addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
-    //     code;string;
-    // description:string;
-    // attributeNature:string;
-    if ( addAttributeCreation.globalAttributeMasterId == undefined || addAttributeCreation.globalAttributeMasterId == 0 ) {
+    } else {
+
+
+      const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
+      delete addAttributeCreation.globalAttributeMasterId;
+      addAttributeCreation.options = [];
+      addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+      addAttributeCreation.code = this.AttributeCreationForm.value.code;
+      addAttributeCreation.description = this.AttributeCreationForm.value.description;
+      addAttributeCreation.attributeNature = this.AttributeCreationForm.value.attributeNature;
+
+      let array = [];
+      for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+        array.push( this.summaryHtmlDataList[i].name );
+      }
+
+      addAttributeCreation.options = array;
+      console.log( JSON.stringify( addAttributeCreation ) );
 
       this.attributeCreationService.AddAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
 
-        addAttributeCreation.options = [];
+        // addAttributeCreation.options = [];
         this.summons = [];
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllAttributeCreation();
-        this.hidevalue = false;
-        this.AttributeCreationForm.reset();
-        //  this.AttributeCreationForm.patchValue({ isStatutory:'0' });
+        this.hidevalue = true;
+        this.summaryHtmlDataList = [];
+
+        this.CancelAttributeCreation();
       },
         ( error: any ) => {
           this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
+
     }
-    // else{
-    //
-    //   //Update BusinessYear service
-    //   addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
-    //   addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
-    //   this.payrollService.UpdateBusinessYear(addBusinessYear.id,addBusinessYear).subscribe((res:any )=> {
-    //
-    //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
-    //   this.getAllBusinessyear();
-    //   this.BusinessYearform.reset();
-    //   this.updateFlag=false;
-    //   },
-    //   (error: any) => {
-    //      this.sweetalertError(error["error"]["status"]["message"]);
-    //      // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
-    //    });
-    // }
+
   }
   CancelAttributeCreation(): void {
+    this.viewUpdateButton = false;
+    this.AttributeCreationForm.enable();
+    this.summaryHtmlDataList = [];
     this.summons = [];
     this.disabled = true;
     this.hidevalue = false;
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
-    //this.HeadCreationForm.patchValue({ isStatutory:'0' });
+    this.AttributeCreationForm.patchValue( {
+      attributeNature: ''
+    } );
   }
 
   ResetAttributeCreation(): void {
+    this.viewUpdateButton = false;
+    this.AttributeCreationForm.enable();
+    this.summaryHtmlDataList = [];
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
     this.hidevalue = false;
     this.summons = [];
-    this.AttributeCreationForm.patchValue( { isStatutory: '0' } );
+    this.AttributeCreationForm.patchValue( {
+      attributeNature: ''
+    } );
+  }
+  deleteName() {
+    console.log( 'in del Name', this.optionId );
+    let index = this.summaryHtmlDataList.findIndex( o => o.id == this.optionId );
+    this.summaryHtmlDataList.splice( index, 1 );
+    if ( this.summaryHtmlDataList.length == 0 ) {
+      this.validOptionList = true;
+    }
+  }
+  deleteNameByName( name: string, id: number ) {
+    console.log( 'del by name', name, id );
+    this.optionId = id;
+    //  this.summaryHtmlDataList.splice( id, 1 );
+  }
+  editNameMaster( id: number, name: string ) {
+    this.isEditMode = true;
+    this.optionId = id;
+    this.AttributeCreationForm.patchValue( {
+      optionList: name,
+    } );
+  }
+  UploadModal1( template: TemplateRef<any> ) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign( {}, { class: 'gray modal-md' } )
+    );
   }
 
 }

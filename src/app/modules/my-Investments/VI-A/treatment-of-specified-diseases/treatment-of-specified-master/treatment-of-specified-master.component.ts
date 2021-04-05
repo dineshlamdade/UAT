@@ -138,21 +138,39 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
     (this.specifiedDiseaseNameList = [
       { label: 'Malignant Cancers', value: 'Malignant Cancers' },
-      {label: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',value: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',},
+      {
+        label: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',
+        value: 'Full-Blown Acquired Immuno-Deficiency Syndrome (AIDS)',
+      },
       { label: 'Chronic Renal failure', value: 'Chronic Renal failure' },
-      {label: 'Hematological disorders - Hemophilia', value: 'Hematological disorders - Hemophilia',},  { label: 'Hematological disorders - Thalassaemia', value: 'Hematological disorders - Thalassaemia',},
-      {label:'Neurological diseases with disability level >=40% per cent and above', value:'Neurological diseases with disability level >=40% per cent and above',}    ]),
-
-    this.neurologicalDiseaseNameList = [
-      { label: 'Dementia', value: 'Dementia' },
-      {label: 'Dystonia Musculorum Deformans',value: 'Dystonia Musculorum Deformans', },
-      { label: 'Motor Neuron Disease', value: 'Motor Neuron Disease' },
-      { label: 'Ataxia', value: 'Ataxia' },
-      { label: 'Chorea', value: 'Chorea' },
-      { label: 'Hemiballismus', value: 'Hemiballismus' },
-      { label: 'Aphasia', value: 'Aphasia' },
-      { label: 'Parkinson', value: 'Parkinson' },
-    ];
+      {
+        label: 'Hematological disorders - Hemophilia',
+        value: 'Hematological disorders - Hemophilia',
+      },
+      {
+        label: 'Hematological disorders - Thalassaemia',
+        value: 'Hematological disorders - Thalassaemia',
+      },
+      {
+        label:
+          'Neurological diseases with disability level >=40% per cent and above',
+        value:
+          'Neurological diseases with disability level >=40% per cent and above',
+      },
+    ]),
+      (this.neurologicalDiseaseNameList = [
+        { label: 'Dementia', value: 'Dementia' },
+        {
+          label: 'Dystonia Musculorum Deformans',
+          value: 'Dystonia Musculorum Deformans',
+        },
+        { label: 'Motor Neuron Disease', value: 'Motor Neuron Disease' },
+        { label: 'Ataxia', value: 'Ataxia' },
+        { label: 'Chorea', value: 'Chorea' },
+        { label: 'Hemiballismus', value: 'Hemiballismus' },
+        { label: 'Aphasia', value: 'Aphasia' },
+        { label: 'Parkinson', value: 'Parkinson' },
+      ]);
 
     this.masterPage();
     this.addNewRowId = 0;
@@ -204,7 +222,6 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
       }
     });
-
   }
 
   // ------------------------------------Master----------------------------
@@ -318,7 +335,7 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
 
   //------------- On Master Edit functionality --------------------
   editMaster(i: number) {
-    //this.scrollToTop();
+    this.scrollToTop();
     this.form.patchValue(this.masterGridData[i]);
     // console.log(this.form.getRawValue());
     this.Index = i;
@@ -330,6 +347,18 @@ export class TreatmentOfSpecifiedMasterComponent implements OnInit {
     this.isClear = true;
 
     this.masterfilesArray = this.masterGridData[i].documentInformationList;
+  }
+
+  // scrollToTop Fuctionality
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
   }
 
   //------------ On Edit Cancel ----------------

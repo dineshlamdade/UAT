@@ -14,7 +14,8 @@
                                     <select class="form-control" placeholder="Select" formControlName="education"
                                         [(ngModel)]="employeeEducationRequestModel.education"
                                         (onSelect)="IlliterateValidation()"
-                                        [ngClass]="{'is-invalid' : EducationInfoForm.get('education').status == 'INVALID'}">
+                                        (change)="isDegreeNameContainsOnlySpecialCharacter()"
+                                        [ngClass]="{'is-invalid' : EducationInfoForm.get('education').status == 'INVALID' || degreeNameInvalid==true}">
                                         <option value="" selected disabled>Select</option>
                                         <option *ngFor="let education of highestEducationList" [value]="education">
                                             {{education}}
@@ -33,35 +34,42 @@
                                     <label class="form-label">Degree name</label>
                                     <input type="text" class="form-control" placeholder="Enter Degree Name"
                                         formControlName="degreeName"
-                                        [(ngModel)]="employeeEducationRequestModel.degreeName">
+                                        (change)="isDegreeNameContainsOnlySpecialCharacter()"
+                                        [(ngModel)]="employeeEducationRequestModel.degreeName"
+                                            [ngClass]="{'is-invalid':EducationInfoForm.get('degreeName').status=='INVALID' || degreeNameInvalid==true}">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Institute / University</label>
                                     <input type="text" class="form-control" placeholder="Enter Institute / University"
-                                        formControlName="instituteUniversityName"
-                                        [(ngModel)]="employeeEducationRequestModel.instituteUniversityName">
+                                        formControlName="instituteUniversityName" (change)="isUniversityNameContainsOnlySpecialCharacter()"
+                                        [(ngModel)]="employeeEducationRequestModel.instituteUniversityName"
+                                        [ngClass]="{'is-invalid' : EducationInfoForm.get('instituteUniversityName').status == 'INVALID' || universityNameInvalid==true }">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
                                     <label class="form-label">Location / Country</label>
                                     <input type="text" class="form-control" placeholder="Enter Location / Country"
-                                        formControlName="location" [(ngModel)]="employeeEducationRequestModel.location">
+                                    (change)="isCountryNameContainsOnlySpecialCharacter()"
+                                        formControlName="location" [(ngModel)]="employeeEducationRequestModel.location"
+                                        [ngClass]="{'is-invalid':EducationInfoForm.get('location').status=='INVALID' || countryNameInvalid==true}">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Specialization 1</label>
                                     <input type="text" class="form-control" placeholder="Enter Specialization 1"
-                                        formControlName="specialization1" (change)="comparespecialization()"
-                                        [(ngModel)]="employeeEducationRequestModel.specialisation1">
+                                        formControlName="specialization1" (change)="comparespecialization();isSpecilizationOneNameContainsOnlySpecialCharacter()"
+                                        [(ngModel)]="employeeEducationRequestModel.specialisation1"
+                                        [ngClass]="{'is-invalid':EducationInfoForm.get('specialization1').status=='INVALID'||specializationOneNameInvalid==true}">
                                 </div>
 
 
                                 <div class="col-sm-6 col-md-3 mt-15">
                                     <label class="form-label">Specialization 2</label>
                                     <input type="text" class="form-control" placeholder="Enter Specialization 2"
-                                        formControlName="specialization2" (change)="comparespecialization()"
-                                        [(ngModel)]="employeeEducationRequestModel.specialisation2">
+                                        formControlName="specialization2" (change)="comparespecialization();isSpecilizationTwoNameContainsOnlySpecialCharacter()"
+                                        [(ngModel)]="employeeEducationRequestModel.specialisation2"
+                                        [ngClass]="{'is-invalid':EducationInfoForm.get('specialization2').status=='INVALID'|| specializationTwoNameInvalid==true}">
                                 </div>
 
                                 <div class="col-sm-6 col-md-3 mt-15">

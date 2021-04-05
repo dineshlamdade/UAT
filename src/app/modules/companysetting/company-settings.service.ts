@@ -2,30 +2,53 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { SaveAttributeCreation } from '../companysetting/attributecreation/attributecreation.model';
 import { environment } from './../../../environments/environment';
-/// import { SaveAttributeSelection, SavePHG } from './payroll-head-group-creation/payroll-head-group-creation.component';
-
-import { UpdateflagCycleCreation } from '../companysetting/payrollheadgroupcreation/payrollheadgroupcreation.model';
-import { SaveAttributeSelection, saveBusinessYear, saveCycleDefinition, SaveHeadCreation, SavePHG } from './model/business-cycle-model';
+import { SaveAttributeCreation, SaveAttributeSelection, SaveBusinessYear, SaveCycleDefinition, SaveHeadCreation, SavePHG, UpdateflagCycleCreation } from './model/business-cycle-model';
 
 @Injectable( {
   providedIn: 'root'
 } )
 export class CompanySettingsService {
   constructor( private _HTTP: HttpClient ) { }
-  putBusinessYear
+
+  getAllPayrollheadAttributeMaster() {
+
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master' )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+  getAllGlobalAttributeCreation() {
+
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster' )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+  getAttributeGroup() {
+    return this._HTTP.get( environment.baseUrl8084 + 'attribute-group' )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+  getByHeadMasterByNature( earningordeduction: any ) {
+    return this._HTTP.get( environment.baseUrl8084 + 'attribute-group/headType/' + earningordeduction )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
 
   getAllAttributeCreation() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-attribute-master/global' )
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
 
   GetAttributeCreationById( id: number ) {
-    return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-attribute-master/global/' + id )
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAttMaster/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -34,7 +57,7 @@ export class CompanySettingsService {
 
   AddAttributeCreation( data: SaveAttributeCreation ): Observable<number | {}> {
 
-    return this._HTTP.post( environment.baseUrl8086 + 'payrollhead-attribute-master', data )
+    return this._HTTP.post( environment.baseUrl8084 + 'payrollhead-attribute-master', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -52,7 +75,7 @@ export class CompanySettingsService {
 
   getAllAttributeSelection() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'attribute-group' )
+    return this._HTTP.get( environment.baseUrl8084 + 'attribute-group' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -60,7 +83,7 @@ export class CompanySettingsService {
 
   GetAttributeSelectionById( id: number ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'attribute-group/global/' + id )
+    return this._HTTP.get( environment.baseUrl8084 + 'attribute-group/global/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -68,15 +91,15 @@ export class CompanySettingsService {
 
   UpdateAttributeGroup( id: number, data: SaveAttributeSelection ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'attribute-group/updateById/' + id, data )
+    return this._HTTP.put( environment.baseUrl8084 + 'attribute-group/updateById/' + id, data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
 
-  GetAttributeOptionListByGroup( groupname: string ) {//: Observable<saveBusinessYear | {}> {
+  GetAttributeOptionListByGroup( groupname: string ) {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'attribute-group/getGroupByName/' + groupname )
+    return this._HTTP.get( environment.baseUrl8084 + 'attribute-group/getGroupByName/' + groupname )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -84,14 +107,14 @@ export class CompanySettingsService {
 
   AddAttributeSelection( data: SaveAttributeSelection ): Observable<number | {}> {
 
-    return this._HTTP.post( environment.baseUrl8086 + 'attribute-group', data )
+    return this._HTTP.post( environment.baseUrl8084 + 'attribute-group', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
 
   DeleteAttributeSelection( id: number ) {
-    return this._HTTP.delete( environment.baseUrl8086 + 'attribute-group/delete/' + id )
+    return this._HTTP.delete( environment.baseUrl8084 + 'attribute-group/delete/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -101,7 +124,7 @@ export class CompanySettingsService {
 
 
 
-  //get all frequency list
+  //get all frequency lists
   getActiveFrequency() {
 
     return this._HTTP.get( environment.baseUrl8086 + 'frequency-master/getAllActive' )
@@ -137,7 +160,7 @@ export class CompanySettingsService {
   }
 
   //add new BusinessYear
-  AddBusinessYear( data: saveBusinessYear ): Observable<number | {}> {
+  AddBusinessYear( data: SaveBusinessYear ): Observable<number | {}> {
 
     return this._HTTP.post( environment.baseUrl8086 + 'business-year', data )
       .pipe( map( ( res: any ) => {
@@ -146,7 +169,7 @@ export class CompanySettingsService {
   }
 
   //update BusinessYear
-  UpdateBusinessYear( data: saveBusinessYear ) {
+  UpdateBusinessYear( data: SaveBusinessYear ) {
 
     return this._HTTP.put( environment.baseUrl8086 + 'business-year/update', data )
       .pipe( map( ( res: any ) => {
@@ -205,14 +228,14 @@ export class CompanySettingsService {
 
   //delete cycle-definition
   DeleteCycleDefinitionById( id: number ) {
-    return this._HTTP.delete( environment.baseUrl8086 + '/business-year/' + id )
+    return this._HTTP.delete( environment.baseUrl8086 + 'business-cycle-definition/delete/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
   }
 
   //add new cycle-definition
-  AddCycleDefinition( data: saveCycleDefinition ): Observable<number | {}> {
+  AddCycleDefinition( data: SaveCycleDefinition ): Observable<number | {}> {
 
     return this._HTTP.post( environment.baseUrl8086 + 'business-cycle-definition', data )
       .pipe( map( ( res: any ) => {
@@ -321,7 +344,7 @@ export class CompanySettingsService {
   // get All PayrollHeadGroup
   getAllPayrollHeadGroup() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'headGroup' )
+    return this._HTTP.get( environment.baseUrl8084 + 'headGroup' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -330,7 +353,7 @@ export class CompanySettingsService {
 
   //delete Payroll Head Group
   DeletePayrollHeadGroup( id: number ) {
-    return this._HTTP.delete( environment.baseUrl8086 + 'headGroup/delete/' + id )
+    return this._HTTP.delete( environment.baseUrl8084 + 'headGroup/delete/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -341,7 +364,7 @@ export class CompanySettingsService {
   //add new PHG
   AddPayrollHeadGroup( data: SavePHG ): Observable<number | {}> {
 
-    return this._HTTP.post( environment.baseUrl8086 + 'headGroup', data )
+    return this._HTTP.post( environment.baseUrl8084 + 'headGroup', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -350,7 +373,7 @@ export class CompanySettingsService {
   //get Attribute Selection By Id
   GetPHGById( id: number ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'headGroup/getPHGById/' + id )
+    return this._HTTP.get( environment.baseUrl8084 + 'headGroup/getPHGById/' + id )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -360,7 +383,7 @@ export class CompanySettingsService {
   //update BusinessYear
   UpdatePHGById( id: number, data: SavePHG ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'headGroup/updateById/' + id, data )
+    return this._HTTP.put( environment.baseUrl8084 + 'headGroup/updateById/' + id, data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -369,7 +392,7 @@ export class CompanySettingsService {
   //get Head table list on slection of copy form dropdown
   GetHeadListByPHGname( PHGname: string ) {//: Observable<saveBusinessYear | {}> {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'headGroup/getPHGByName/' + PHGname )
+    return this._HTTP.get( environment.baseUrl8084 + 'headGroup/getPHGByName/' + PHGname )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -406,7 +429,7 @@ export class CompanySettingsService {
   // get formula for formula master
   getFromulaForFormulaMaster() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'formula-master' )
+    return this._HTTP.get( environment.baseUrl8084 + 'formula-master' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -423,7 +446,7 @@ export class CompanySettingsService {
   //update attribute list by id
   UpdateattributeListById( data: UpdateflagCycleCreation ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'payrollhead-attribute-mapping', data )
+    return this._HTTP.put( environment.baseUrl8084 + 'payrollhead-attribute-mapping', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

@@ -57,7 +57,7 @@ export class ContactInformationComponent implements OnInit {
   saveNextBoolean: boolean = false;
   changesLabelArray: Array<any> = [];
   selectedLanguage: any;
-
+  mobileNumberMatchError: any;
 
 
 
@@ -1003,8 +1003,20 @@ export class ContactInformationComponent implements OnInit {
       this.ContactInfoForm.get('emergencyCountryCode').setValidators(Validators.required);
       this.ContactInfoForm.get('emergencyCountryCode').updateValueAndValidity();
     }
+    // if((this.ContactInfoForm.get('officialMobileNumber'))==(this.ContactInfoForm.get('emergencyContactNumber')))
+    //  {
+    //    this.mobileNumberMatchError = 'Emergency Mobile Number Should be different';
+    //  }
+
   }
 
+  checkMatchMobileNumber() {
+    if (this.ContactInfoForm.get('personalmobileNumber').value == this.ContactInfoForm.get('emergencyContactNumber').value) {
+      this.mobileNumberMatchError = true;
+    } else {
+      this.mobileNumberMatchError = false;
+    }
+  }
   validEmergencyCountryCode() {
 
     if (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber && (this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length > 0 && this.contactInformation.employeePersonalInfoRequestDTO.emergencyContactNumber.length == 10) && !this.ngEmergencyCountryCode) {
