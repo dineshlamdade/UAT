@@ -116,12 +116,15 @@ export class JoiningInformationComponent implements OnInit {
       if (res) {
         this.getJoiningFormInformation();
         this.editJoining = res.editJoining;
-      //  if( this.checkexitStatus())       
-      //   {
-      //     this.disableFields();
-      //   }
+        this.employeeExitInfoId=res.employeeExitInfoId;
+       if( this.employeeExitInfoId)       
+        {
+          this.disableFields();
+          this.editJoining =false;
+        }
         if (res.viewJoining == true) {
           this.viewJoining = res.viewJoining;
+          
           this.disableFields();
         }
       }
@@ -258,6 +261,7 @@ export class JoiningInformationComponent implements OnInit {
     this.EmploymentInformationService.getJoiningInformation(this.employeeMasterId).subscribe(res => {
 
       this.employementInfoId = res.data.results[0].employementInfoId;
+     
       localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
       if (res.data.results[0]) {
         this.JoiningInformationModel = res.data.results[0];
@@ -396,11 +400,11 @@ export class JoiningInformationComponent implements OnInit {
   }
 
 
-//   checkexitStatus():boolean{
+//   checkexitStatus(employeeExitInfoId):boolean{
 
 //     this.EmploymentInformationService.getNumber().subscribe(number => {
 // this.employeeExitInfoId = number.text;})
-//     this.EmploymentInformationService.getExitInformation(this.employeeExitInfoId).subscribe(res => {
+//     this.EmploymentInformationService.getExitInformation(employeeExitInfoId).subscribe(res => {
       
 //           this.exitStatus = res.data.results[0].lastWorkingDate;   
 //           console.log(this.exitStatus)   
