@@ -87,12 +87,6 @@ getEducationalLoanSummary() {
     }));
   }
 
-  getAllInstitutesFromGlobal() {
-    return this._HTTP.get(this.apiUrl + 'institution')
-    .pipe(map((res: any) => {
-      return res;
-    }));
-  }
 
   uploadMultipleEducationalLoanMasterFiles(files: File[], data:any): Observable<any> {
     var formData: any = new FormData();

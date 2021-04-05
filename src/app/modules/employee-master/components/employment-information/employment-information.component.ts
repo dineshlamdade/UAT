@@ -67,8 +67,8 @@ export class EmploymentInformationComponent implements OnInit {
       transfer: [''],
       exit: [''],
     });
-    this.new = localStorage.getItem('rejoinee');
-    if (this.new == 'true') {
+    this.new = localStorage.getItem('employeeExitInfoId');  //rejoinee
+    if (this.new) {                                          //if(this.new=='')
       this.rejoiningBoolean = true;
     }
     if (!this.new) {

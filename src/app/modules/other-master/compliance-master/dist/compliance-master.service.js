@@ -137,9 +137,9 @@ var ComplianceMasterService = /** @class */ (function () {
             return res;
         }));
     };
-    // http://localhost:8086/hrms/v1/frequency-master
+    // http://localhost:8086/hrms/v1/frequency-master/getAllActive
     ComplianceMasterService.prototype.getFrequencyMaster = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'frequency-master')
+        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'frequency-master/getAllActive')
             .pipe(operators_1.map(function (res) {
             return res;
         }));

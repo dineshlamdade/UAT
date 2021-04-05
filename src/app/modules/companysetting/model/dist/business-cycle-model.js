@@ -1,36 +1,36 @@
 "use strict";
 exports.__esModule = true;
-exports.headDetailPHG = exports.SaveAttributeAssignment = exports.UpdateflagCycleCreationPHG = exports.SaveAttributeSelection = exports.headDetail = exports.SavePHG = exports.SaveHeadCreation = exports.UpdateflagCycleCreation = exports.flagCycleCreation = exports.saveCycleCreation = exports.saveCycleDefinition = exports.serviceDetails = exports.saveBusinessYear = void 0;
-var saveBusinessYear = /** @class */ (function () {
-    function saveBusinessYear() {
+exports.SaveAttributeSelection = exports.SaveAttributeCreation = exports.HeadDetailPHG = exports.SaveAttributeAssignment = exports.UpdateflagCycleCreationPHG = exports.headDetail = exports.SavePHG = exports.SaveHeadCreation = exports.UpdateflagCycleCreation = exports.FlagCycleCreation = exports.SaveCycleCreation = exports.SaveCycleDefinition = exports.ServiceDetails = exports.SaveBusinessYear = void 0;
+var SaveBusinessYear = /** @class */ (function () {
+    function SaveBusinessYear() {
     }
-    return saveBusinessYear;
+    return SaveBusinessYear;
 }());
-exports.saveBusinessYear = saveBusinessYear;
-var serviceDetails = /** @class */ (function () {
-    function serviceDetails() {
+exports.SaveBusinessYear = SaveBusinessYear;
+var ServiceDetails = /** @class */ (function () {
+    function ServiceDetails() {
     }
-    return serviceDetails;
+    return ServiceDetails;
 }());
-exports.serviceDetails = serviceDetails;
-var saveCycleDefinition = /** @class */ (function () {
-    function saveCycleDefinition() {
+exports.ServiceDetails = ServiceDetails;
+var SaveCycleDefinition = /** @class */ (function () {
+    function SaveCycleDefinition() {
     }
-    return saveCycleDefinition;
+    return SaveCycleDefinition;
 }());
-exports.saveCycleDefinition = saveCycleDefinition;
-var saveCycleCreation = /** @class */ (function () {
-    function saveCycleCreation() {
+exports.SaveCycleDefinition = SaveCycleDefinition;
+var SaveCycleCreation = /** @class */ (function () {
+    function SaveCycleCreation() {
     }
-    return saveCycleCreation;
+    return SaveCycleCreation;
 }());
-exports.saveCycleCreation = saveCycleCreation;
-var flagCycleCreation = /** @class */ (function () {
-    function flagCycleCreation() {
+exports.SaveCycleCreation = SaveCycleCreation;
+var FlagCycleCreation = /** @class */ (function () {
+    function FlagCycleCreation() {
     }
-    return flagCycleCreation;
+    return FlagCycleCreation;
 }());
-exports.flagCycleCreation = flagCycleCreation;
+exports.FlagCycleCreation = FlagCycleCreation;
 var UpdateflagCycleCreation = /** @class */ (function () {
     function UpdateflagCycleCreation() {
     }
@@ -55,12 +55,6 @@ var headDetail = /** @class */ (function () {
     return headDetail;
 }());
 exports.headDetail = headDetail;
-var SaveAttributeSelection = /** @class */ (function () {
-    function SaveAttributeSelection() {
-    }
-    return SaveAttributeSelection;
-}());
-exports.SaveAttributeSelection = SaveAttributeSelection;
 var UpdateflagCycleCreationPHG = /** @class */ (function () {
     function UpdateflagCycleCreationPHG() {
     }
@@ -73,9 +67,33 @@ var SaveAttributeAssignment = /** @class */ (function () {
     return SaveAttributeAssignment;
 }());
 exports.SaveAttributeAssignment = SaveAttributeAssignment;
-var headDetailPHG = /** @class */ (function () {
-    function headDetailPHG() {
+var HeadDetailPHG = /** @class */ (function () {
+    function HeadDetailPHG() {
     }
-    return headDetailPHG;
+    return HeadDetailPHG;
 }());
-exports.headDetailPHG = headDetailPHG;
+exports.HeadDetailPHG = HeadDetailPHG;
+var SaveAttributeCreation = /** @class */ (function () {
+    function SaveAttributeCreation() {
+    }
+    return SaveAttributeCreation;
+}());
+exports.SaveAttributeCreation = SaveAttributeCreation;
+var SaveAttributeSelection = /** @class */ (function () {
+    function SaveAttributeSelection() {
+    }
+    return SaveAttributeSelection;
+}());
+exports.SaveAttributeSelection = SaveAttributeSelection;
+// export class UpdateflagCycleCreation {
+//   mappingGroupRequest: SaveAttributeAssignment[];
+// }
+// export class SaveAttributeAssignment {
+//   headGroupId: number;
+//   attributeGroupId: number;
+//   value: string;
+//   dependentOn: string;
+//   fromDate: string;
+//   toDate: string;
+//   payrollHeadGroupMappingId: number;
+// }

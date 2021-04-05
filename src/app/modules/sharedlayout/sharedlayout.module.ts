@@ -12,13 +12,13 @@ import localeGb from '@angular/common/locales/en-GB';
 import localeFr from '@angular/common/locales/fr';
 import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
-registerLocaleData(localeFr, 'fr');
-registerLocaleData(localeGb, 'en-GB');
+registerLocaleData( localeFr, 'fr' );
+registerLocaleData( localeGb, 'en-GB' );
 import { PrimeNGModule } from './../../app.primeNG.module';
-import { LeftadminmenuComponent} from './leftadminmenu/leftadminmenu';
+import { LeftadminmenuComponent } from './leftadminmenu/leftadminmenu';
 
-@NgModule({
-  declarations: [FooterComponent, HeaderComponent, LeftmenuComponent,LeftadminmenuComponent],
+@NgModule( {
+  declarations: [FooterComponent, HeaderComponent, LeftmenuComponent, LeftadminmenuComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -49,5 +49,5 @@ import { LeftadminmenuComponent} from './leftadminmenu/leftadminmenu';
         prodMode: false
       } as TranslocoConfig
     }],
-})
+} )
 export class SharedlayoutModule { }

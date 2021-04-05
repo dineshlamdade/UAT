@@ -29,7 +29,6 @@ import { BankMasterAtCompanyComponent } from './bank-master-at-company/bank-mast
 import { PrimeNGModule } from 'src/app/app.primeNG.module';
 import { JobMasterComponent } from './job-master/job-master.component';
 import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapping.component';
-// import { UserGroupComponent } from './user-group/user-group.component';
 
 
 @NgModule( {
@@ -45,7 +44,6 @@ import { ComplianceMappingComponent } from './compliance-mapping/compliance-mapp
     BankMasterAtCompanyComponent,
     JobMasterComponent,
     ComplianceMappingComponent
-    //  UserGroupComponent
 
   ],
   imports: [

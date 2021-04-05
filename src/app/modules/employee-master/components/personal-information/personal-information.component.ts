@@ -474,7 +474,7 @@ export class PersonalInformationComponent implements OnInit {
     const body: FormData = new FormData();
     body.append('file', this.selectedImageFile);
 
-    personalInformationModel.employeeMasterRequestDTO.companyId = 1;
+    personalInformationModel.employeeMasterRequestDTO.groupCompanyId = 1;
     if (this.employeeMasterId) {
       personalInformationModel.employeeMasterRequestDTO.employeeMasterId = this.employeeMasterId
     }
@@ -513,7 +513,7 @@ export class PersonalInformationComponent implements OnInit {
         localStorage.setItem('employeeCode', res.data.results[0].employeeMasterResponseDTO.employeeCode)
         this.EventEmitterService.getUpdateEmployeeId(res.data.results[0].employeeMasterId);
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
-
+                                                                      
         if (this.rejoinee == true) {
           this.router.navigate(['/employee-master/employment-information/re-joining-information']);
         }
@@ -945,4 +945,6 @@ export class PersonalInformationComponent implements OnInit {
     this.modalRef.hide();
     return;
   }
+
+  
 }

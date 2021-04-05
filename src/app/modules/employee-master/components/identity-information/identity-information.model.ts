@@ -43,7 +43,7 @@ export class employeePersonalInfoRequestDTO {
  }
  export class employeeESICDTORequestDTO {
     constructor(
-        public eSICCode: any,
+        public esicCode: any,
         public employeeMasterId: any,
         public createdBy: any,
         public lastModifiedBy: any

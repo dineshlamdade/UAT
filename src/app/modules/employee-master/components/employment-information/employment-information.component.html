@@ -30,7 +30,7 @@
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="joining" [class.disabled]="employementJoiningInfoId"
+                                <label class="nav" for="joining" [class.disabled]="joiningTab==false"
                                     (click)="joiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/joining-information']">
                                     <span>
@@ -73,7 +73,7 @@
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="exit" (click)="exitTabValidation()"
+                                <label class="nav" for="exit" (click)="exitTabValidation()" [class.disabled]="exitTab==false"
                                     [routerLink]="['/employee-master/employment-information/exit-information']">
                                     <span>
                                         Exit

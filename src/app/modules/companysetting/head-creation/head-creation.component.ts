@@ -2,13 +2,8 @@ import { CompanySettingsService } from './../company-settings.service';
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-
 import { AlertServiceService } from '../../../../app/core/services/alert-service.service';
 import { SaveHeadCreation } from '../model/business-cycle-model';
-
-
-
-
 
 
 @Component( {
@@ -19,14 +14,14 @@ import { SaveHeadCreation } from '../model/business-cycle-model';
 } )
 export class HeadCreationComponent implements OnInit {
   NatureList: Array<any> = [];
+  headCreationList = [];
   TypeList: Array<any> = [];
   HeadCreationList: Array<any> = [];
   viewCancelButton: boolean = false;
   HeadCreationForm: FormGroup;
   Name: string;
   disabled: boolean = true;
-  categoryList = [{ value: 'Imbursement', label: 'Imbursement' }, { value: 'Stautatory', label: 'Stautatory' }]
-
+  categoryList = [{ value: 'Reimbursement', label: 'Reimbursement' }, { value: 'Statutory', label: 'Statutory' }];
   constructor(
     private formBuilder: FormBuilder, private alertService: AlertServiceService,
     private headCreationService: CompanySettingsService,
@@ -36,13 +31,6 @@ export class HeadCreationComponent implements OnInit {
       { label: 'Deduction', value: 'Deduction' },
       { label: 'Perquisite', value: 'Perquisite' },
     ];
-
-    this.TypeList = [
-      { label: 'House Rental', value: 'House Rental' },
-      { label: 'Basic Salary', value: 'Basic Salary' },
-      { label: 'Dearness Allowance', value: 'Dearness Allowance' }
-    ];
-
   }
 
   ngOnInit(): void {
@@ -54,8 +42,8 @@ export class HeadCreationComponent implements OnInit {
       standardName: new FormControl( '', Validators.required ),
       description: new FormControl( '', Validators.required ),
       category: new FormControl( '' ),
-      statutory: new FormControl( 'false' ),
-      type: new FormControl( '' ),
+      //  statutory: new FormControl( 'false' ),
+      type: new FormControl( '', Validators.required ),
     } );
     this.getAllHeadCreation();
   }
@@ -63,8 +51,33 @@ export class HeadCreationComponent implements OnInit {
   // get All HeadCreation
   getAllHeadCreation(): void {
     this.headCreationService.getAllHeadCreation().subscribe( res => {
-
+      let i = 1;
       this.HeadCreationList = res.data.results;
+      res.data.results.forEach( element => {
+
+        let obj = {
+          SrNo: i++,
+          globalAttributeMasterId: element.globalAttributeMasterId,
+          code: element.code,
+          attributeNature: element.attributeNature,
+          numberOfOption: element.numberOfOption,
+          description: element.description,
+
+        };
+        // let optionList = [];
+        // if ( element.optionList.length !== undefined ) {
+        //   for ( let i = 0; i < element.optionList.length; i++ ) {
+        //     if ( i == 0 ) {
+        //       optionList.push( element.optionList[i].optionValue );
+        //     } else {
+        //       optionList.push( +',' + element.optionList[i].optionValue );
+        //     }
+        //   }
+        // }
+
+        // obj.optionList = optionList;
+        this.headCreationList.push( obj );
+      } );
     } );
   }
 
@@ -83,18 +96,10 @@ export class HeadCreationComponent implements OnInit {
         this.HeadCreationForm.patchValue( { shortName: response.data.results[0].shortName } );
         this.HeadCreationForm.patchValue( { headNature: response.data.results[0].headNature } );
         this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
-        this.HeadCreationForm.patchValue( { statutory: ( response.data.results[0].statutory ).toString() } );
+        //  this.HeadCreationForm.patchValue( { statutory: ( response.data.results[0].statutory ).toString() } );
         this.HeadCreationForm.patchValue( { category: response.data.results[0].category } );
-
-        // if ( response.data.results[0].statutory == 1 ) {
-        //   this.HeadCreationForm.patchValue( { statutory: '1' } );
-        // }
-        // else {
-        //   this.HeadCreationForm.patchValue( { statutory: '0' } );
-        // }
-        // this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
       } );
-
+    this.HeadCreationForm.disable();
   }
 
   addHeadCreation(): void {
@@ -107,42 +112,36 @@ export class HeadCreationComponent implements OnInit {
       this.headCreationService.AddHeadCreation( addHeadCreation ).subscribe( ( res: any ) => {
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllHeadCreation();
-        this.HeadCreationForm.reset();
+        this.CancelHeadCreation();
         // this.HeadCreationForm.patchValue( { statutory: '0' } );
       },
         ( error: any ) => {
           this.alertService.sweetalertError( error["error"]["status"]["message"] );
         } );
     }
-    // else{
-    //
-    //   //Update BusinessYear service
-    //   addBusinessYear.fromDate = this.datepipe.transform(addBusinessYear.fromDate, "dd-MMM");
-    //   addBusinessYear.toDate = this.datepipe.transform(addBusinessYear.toDate, "dd-MMM");
-    //   this.payrollService.UpdateBusinessYear(addBusinessYear.id,addBusinessYear).subscribe((res:any )=> {
-    //
-    //   this.sweetalertMasterSuccess("Updated..!!", res.status.message);
-    //   this.getAllBusinessyear();
-    //   this.BusinessYearform.reset();
-    //   this.updateFlag=false;
-    //   },
-    //   (error: any) => {
-    //      this.sweetalertError(error["error"]["status"]["message"]);
-    //      // this.notifyService.showError(error["error"]["status"]["message"], "Error..!!")
-    //    });
-    // }
   }
   CancelHeadCreation(): void {
+    this.HeadCreationForm.enable();
     this.disabled = true;
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
-    this.HeadCreationForm.patchValue( { statutory: 'false' } );
+    // this.HeadCreationForm.patchValue( { statutory: 'false' } );
+    this.HeadCreationForm.patchValue( {
+      headNature: '',
+      type: '',
+      category: '',
+    } );
   }
 
   ResetHeadCreation(): void {
     this.HeadCreationForm.reset();
     this.viewCancelButton = false;
-    this.HeadCreationForm.patchValue( { statutory: 'false' } );
+    //  this.HeadCreationForm.patchValue( { statutory: 'false' } );
+    this.HeadCreationForm.patchValue( {
+      headNature: '',
+      type: '',
+      category: '',
+    } );
   }
 
 
@@ -155,4 +154,15 @@ export class HeadCreationComponent implements OnInit {
     // }
 
   }
+  onChangeNature( evt: any ) {
+    this.TypeList = [];
+    console.log( evt );
+    this.headCreationService.getByHeadMasterByNature( evt ).subscribe( res => {
+
+      this.TypeList = res.data.results;
+      console.log( this.TypeList );
+    } );
+    this.HeadCreationForm.patchValue( { type: '' } );
+  }
+
 }

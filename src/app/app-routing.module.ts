@@ -2,12 +2,6 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-//////////////////
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-
-
-
-
 
 
 
@@ -55,47 +49,10 @@ const routes: Routes = [
 
   { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
   { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
-
-  // {
-  //   path: 'loan',
-  //   loadChildren: () => import('./modules/loan/loan.module').then(m => m.LoanModule)
-  // },
-
-
-  //////////////////////////////////////////
-
-  // {
-  //   path: 'payroll',
-  //   component: payrollComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'headcreation',
-  //   component: HeadcreationComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'attributecreation',
-  //   component: AttributecreationComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'attributeselection',
-  //   component: AttributeselectionComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'payrollheadgroupcreation',
-  //   component: PayrollheadgroupcreationComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-
-
-  ///////////////////////////////////////////////////
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
+@NgModule( {
+  imports: [RouterModule.forRoot( routes, { preloadingStrategy: PreloadAllModules } )],
   exports: [RouterModule]
-})
+} )
 export class AppRoutingModule { }
