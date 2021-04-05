@@ -55,6 +55,9 @@ export class HouserentmasterComponent implements OnInit {
   public loanTaken = true;
   public stampDutyDateValid = false;
 
+  public rentMinDate: Date;
+  public rentMaxDate: Date;
+
   public isDuplicatpan: Boolean;
   public isDuplicatShareOfTotalRent: Boolean;
 
@@ -219,7 +222,8 @@ export class HouserentmasterComponent implements OnInit {
         houseRentalMasterId: new FormControl(''),
         fromDate: new FormControl(null, Validators.required),
         toDate: new FormControl(null, Validators.required),
-        rentAmount: new FormControl(null, Validators.required),
+        rentAmount: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
+  /*       rentAmount: new FormControl(null, Validators.required), */
       }),
       
       /* agreementDetailList: new FormArray([]), */
@@ -325,6 +329,7 @@ export class HouserentmasterComponent implements OnInit {
       return;
     }
     this.globalAddRowIndex -= 1;
+
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
 
     console.log(
@@ -385,9 +390,8 @@ export class HouserentmasterComponent implements OnInit {
       !this.isDuplicatpan && total <= 100 
     ) 
     {
-      this.houseRentform.get(
-        'landLordDetailList'
-      ).value.houseRentalLandLordDetailId = this.globalAddRowIndex;
+      this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId = this.globalAddRowIndex;
+ 
       this.landLordDetailTableList.push(
         this.houseRentform.get('landLordDetailList').value
       );
@@ -838,6 +842,11 @@ export class HouserentmasterComponent implements OnInit {
       this.houseDetailsRentsubmitted = false;
       this.rentAgreementDocument = [];
       this.houseDetailsRentsubmitted = false;
+      this.agreementDetailsTableList=[];
+      this.landLordDetailTableList =[];
+      this.RentDetailTableList=[];
+      this.declarationOfLandlordDocumentDetail= [];
+      this.rentAgreementDocumentDetail=[];
     }
   }
 
@@ -961,6 +970,19 @@ export class HouserentmasterComponent implements OnInit {
         'Please Enter stampDutyRegistrationDate First to enter Amount : '
       );
     }
+  }
+
+
+  getAgreementRent2From()
+  {
+    console.log(":this.houseAgreementMasterForm.toDate:",this.houseAgreementMasterForm.toDate.value)
+    this.rentMaxDate = this.houseAgreementMasterForm.toDate.value;
+  }
+  getAgreementFrom()
+  {
+    console.log(":this.houseAgreementMasterForm.fromDate:",this.houseAgreementMasterForm.fromDate.value)
+    this.rentMinDate = this.houseAgreementMasterForm.fromDate.value;
+    
   }
   /* ---------------------------editLandlordDetails----------------------- */
   public editLandlordDetails(i: number) {
@@ -1201,16 +1223,7 @@ export class HouserentmasterComponent implements OnInit {
     this.RentDetailTableList = this.masterGridData[i].rentDetailList;
   }
 
-  // On Edit Cancel
-  public cancelEdit() {
-    this.houseRentform.reset();
-    this.houseRentform.get('active').setValue(true);
-    this.houseRentform.get('ecs').setValue(0);
-    this.showUpdateButton = false;
-    this.loanDetailGridData = [];
-    this.isClear = false;
-  }
-
+ 
   // On Master Edit functionality
   public viewMaster(i: number) {
     // this.scrollToTop();

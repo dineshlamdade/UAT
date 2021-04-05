@@ -11,7 +11,7 @@
    #formDirective="ngForm" method="post" novalidate>
    <!-- <div class="tabview-contents"> -->
    <br>
-   <fieldset>
+   <fieldset id="contentToConvert">
     <legend>Previous Employer Details</legend>
  <!--    <div formGroupName="previousEmployerDetailsMaster"[formGroup]="previousEmployerDetailsform" #formDirective_="ngForm"> -->
     <div class="row">
@@ -380,38 +380,128 @@
 
 <ng-template #template1>
    <div class="modal-header">
-     <!--  <h5 class="modal-title" id="jasdjgh">
-         Edit 
-       </h5> -->
-       <h5 class="modal-title" id="UploadedDocumentModalLabel"></h5>     
            <div class="row mt-15">
             <div class="col-12">
               <div class="float-right mb-15">
                 <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"  (click)="openFormSign(template2)"
                 tooltip="Form 12B"><b></b>Sign & Upload Form 12B</button> &nbsp;
                 
-                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                  tooltip="Print"><b><i class="fa fa-print-o"></i></b>Print</button> &nbsp;
-
-                  <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-                  tooltip="Download"><b><i class="fa fa-download -o"></i></b>Download</button> &nbsp;
+                  <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="download()"
+                  tooltip="Download"><b><i class="fa fa-download -o" ></i></b>Download</button> &nbsp;
 
                 <button type="button" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" (click)="modalRef.hide()"
                   tooltip="Cancel"><b><i class="far fa-remove -o"  ></i></b> Cancel </button>
               </div>
             </div>
-           <!--  <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">×</span>
-             </button> -->
           </div>
-   </div>
-  <hr>
-<span style="text-align:center;"><b>FORM NO. 12B</b></span>
-<span style="text-align:center;font-size:10px;"><b>[See rule 26A]</b></span>
-<p style="font-weight:bold; margin-left:10px;">1. Name and address of the employee...................</p>
-<p style="font-weight:bold;margin-left:10px;">2. Permanent Account No...............................</p>
-<p style="font-weight:bold;margin-left:10px;">3. Residential status............................</p>
-
+         </div>
+  <hr><hr>
+  <div  id="htmlData">
+   <span><b>FORM NO. 12B</b></span>
+   <span style="text-align:center;font-size:10px;"><b>[See rule 26A]</b></span>
+   <p style="font-weight:bold; margin-left:10px;">1. Name and address of the employee...................</p>
+   <p style="font-weight:bold;margin-left:10px;">2. Permanent Account No...............................</p>
+   <p style="font-weight:bold;margin-left:10px;">3. Residential status............................</p>
+   <table class="table table-bordered">
+      <tr>
+         <th>Firstname</th>
+         <th>Lastname</th> 
+         <th>Age</th>
+       </tr>
+       <tr>
+         <td>Jill</td>
+         <td>Smith</td>
+         <td>50</td>
+       </tr>
+       <tr>
+         <td>Eve</td>
+         <td>Jackson</td>
+         <td>94</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr><tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr><tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr><tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+   </table>
+</div>
 </ng-template>
 
 
