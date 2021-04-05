@@ -36,9 +36,10 @@ import { EducationalLoanServiceService } from '../educational-loan-service.servi
 })
 export class EducationalLoanDeclarationComponent implements OnInit {
 
-  @Input() lender: string;
-  @Input() policyNo: string;
-  @Input() data: any;
+
+  @Input() public lenderName: string;
+  @Input() public data: any;
+
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -116,7 +117,7 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
@@ -210,7 +211,6 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       this.isDisabled = false;
       this.canEdit = input.canEdit;
     }
-
 
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -322,14 +322,6 @@ export class EducationalLoanDeclarationComponent implements OnInit {
             value: element,
           };
           this.lenderNameList.push(obj);
-
-          // element.policies.forEach((policy) => {
-          //   const policyObj = {
-          //     label: policy,
-          //     value: policy,
-          //   };
-          //   this.transactionPolicyList.push(policyObj);
-          // });
         });
       });
       console.log("lender Name List ", this.lenderNameList)
@@ -359,15 +351,6 @@ export class EducationalLoanDeclarationComponent implements OnInit {
           this.lenderNameList.push(policyObj);
         });
       }
-      // else if (lenderName === 'All') {
-      //   element.policies.forEach((policy) => {
-      //     const policyObj = {
-      //       label: policy,
-      //       value: policy,
-      //     };
-      //     this.transactionPolicyList.push(policyObj);
-      //   });
-      // }
     });
 
     if (lenderName == 'All') {
@@ -377,9 +360,8 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       this.grandTabStatus = false;
       this.isDisabled = false;
     }
-
     this.resetAll();
-    console.log('isdisabled: ' , this.isDisabled);
+    console.log('isdisabled: ', this.isDisabled);
   }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
@@ -397,8 +379,82 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     );
   }
 
-  // -------- ON select to check input boxex--------
-  public onSelectCheckBoxCurrent(
+  // // -------- ON select to check input boxex--------
+  // public onSelectCheckBoxCurrent(
+  //   data: any,
+  //   event: { target: { checked: any } },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   const checked = event.target.checked;
+
+  //   const formatedGlobalSelectedValue = Number(
+  //     this.globalSelectedAmount == '0'
+  //       ? this.globalSelectedAmount
+  //       : this.globalSelectedAmount.toString().replace(',', '')
+  //   );
+
+  //   let formatedActualAmount: number = 0;
+  //   let formatedSelectedAmount: string;
+
+  //   if (checked) {
+  //       this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount =
+  //         data.actualAmount;
+  //         console.log('actual amount', this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount)
+
+  //          formatedActualAmount = Number(
+  //       this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount
+  //         .toString()
+  //         .replace(',', '')
+  //     );
+  //     formatedSelectedAmount = this.numberFormat.transform(
+  //       formatedGlobalSelectedValue + formatedActualAmount
+  //     );
+  //     console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
+  //     this.uploadGridData.push(data.educationLoanTransactionId);
+
+  //     // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
+  //     // this.actualAmountGlobal = Number(data.declaredAmount);
+  //   } else {
+  //     formatedActualAmount = Number(
+  //       this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount
+  //         .toString()
+  //         .replace(',', '')
+  //     );
+  //     this.transactionDetail[j].educationalLoanTransactionList[
+  //       i
+  //     ].actualAmount = this.numberFormat.transform(0);
+  //     this.transactionDetail[j].educationalLoanTransactionList[i].dateOfPayment = null;
+
+  //     formatedSelectedAmount = this.numberFormat.transform(
+  //       formatedGlobalSelectedValue - formatedActualAmount
+  //     );
+  //     // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+  //     const index = this.uploadGridData.indexOf(data.educationLoanTransactionId);
+  //     this.uploadGridData.splice(index, 1);
+  //   }
+
+  //   this.globalSelectedAmount = formatedSelectedAmount;
+  //   console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
+  //   this.actualTotal = 0;
+  //   this.transactionDetail[j].educationalLoanTransactionList.forEach((element) => {
+  //     // console.log(element.actualAmount.toString().replace(',', ""));
+  //     this.actualTotal += Number(
+  //       element.actualAmount.toString().replace(',', '')
+  //     );
+  //   });
+  //   this.transactionDetail[j].actualTotal = this.actualTotal;
+
+  //   if (this.uploadGridData.length) {
+  //     this.enableFileUpload = true;
+  //   }
+  //   console.log(this.uploadGridData);
+  //   console.log(this.uploadGridData.length);
+  // }
+
+
+   // -------- ON select to check input boxex--------
+   public onSelectCheckBoxCurrent(
     data: any,
     event: { target: { checked: any } },
     i: number,
@@ -411,56 +467,56 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         ? this.globalSelectedAmount
         : this.globalSelectedAmount.toString().replace(',', '')
     );
-
-    let formatedActualAmount: number = 0;
+    let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
-
     if (checked) {
-        this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount =
-          data.actualAmount;
-          console.log('actual amount', this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount)
+      this.transactionDetail[j].educationalLoanTransactionList[
+        i
+      ].actualAmount = data.declaredAmount;
 
-           formatedActualAmount = Number(
-        this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount
+
+      formatedActualAmount = Number(
+        this.transactionDetail[j].educationalLoanTransactionList[
+          i
+        ].actualAmount
           .toString()
           .replace(',', '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
       );
-      console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
       this.uploadGridData.push(data.educationLoanTransactionId);
-
-      // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
-      // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
-        this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount
+        this.transactionDetail[j].educationalLoanTransactionList[
+          i
+        ].actualAmount
           .toString()
           .replace(',', '')
       );
       this.transactionDetail[j].educationalLoanTransactionList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-      this.transactionDetail[j].educationalLoanTransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
-      // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(data.educationLoanTransactionId);
+      const index = this.uploadGridData.indexOf(
+        data.educationLoanTransactionId
+      );
       this.uploadGridData.splice(index, 1);
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].educationalLoanTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
-      );
-    });
+    this.transactionDetail[j].educationalLoanTransactionList.forEach(
+      (element) => {
+        this.actualTotal += Number(
+          element.actualAmount.toString().replace(',', '')
+        );
+      }
+    );
     this.transactionDetail[j].actualTotal = this.actualTotal;
 
     if (this.uploadGridData.length) {
@@ -605,46 +661,77 @@ export class EducationalLoanDeclarationComponent implements OnInit {
   }
 
   // --------------- ON change of declared Amount in line-------------
-  onDeclaredAmountChange(
+  // onDeclaredAmountChange(
+  //   summary: {
+  //     previousEmployerName: any;
+  //     declaredAmount: number;
+  //     dateOfPayment: Date;
+  //     actualAmount: any;
+  //     dueDate: Date;
+  //   },
+  //   i: number,
+  //   j: number
+  // ) {
+  //   this.declarationService = new DeclarationService(summary);
+  //   // console.log("Ondeclaration Amount change" + summary.declaredAmount);
+
+  //   this.transactionDetail[j].educationalLoanTransactionList[
+  //     i
+  //   ].declaredAmount = this.declarationService.declaredAmount;
+  //   const formatedDeclaredAmount = this.numberFormat.transform(
+  //     this.transactionDetail[j].educationalLoanTransactionList[i].declaredAmount
+  //   );
+  //   // educationalLoanTransactionPreviousEmployerList
+  //   // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
+  //   this.transactionDetail[j].educationalLoanTransactionList[
+  //     i
+  //   ].declaredAmount = formatedDeclaredAmount;
+
+  //   this.declarationTotal = 0;
+  //   // this.declaredAmount=0;
+
+  //   this.transactionDetail[j].educationalLoanTransactionList.forEach((element) => {
+  //     console.log(element.declaredAmount.toString().replace(',', ""));
+  //     this.declarationTotal += Number(
+  //       element.declaredAmount.toString().replace(',', '')
+  //     );
+  //     console.log(this.declarationTotal);
+  //     // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
+  //   });
+
+  //   this.transactionDetail[j].declarationTotal = this.declarationTotal;
+  //   // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+  // }
+
+  onDeclaredAmountChangeCurrentEmp(
     summary: {
-      previousEmployerName: any;
       declaredAmount: number;
       dateOfPayment: Date;
       actualAmount: any;
-      dueDate: Date;
     },
     i: number,
     j: number
   ) {
     this.declarationService = new DeclarationService(summary);
-    // console.log("Ondeclaration Amount change" + summary.declaredAmount);
-
     this.transactionDetail[j].educationalLoanTransactionList[
       i
     ].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].educationalLoanTransactionList[i].declaredAmount
+      this.transactionDetail[j].educationalLoanTransactionList[i]
+        .declaredAmount
     );
-    // educationalLoanTransactionPreviousEmployerList
-    // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
     this.transactionDetail[j].educationalLoanTransactionList[
       i
     ].declaredAmount = formatedDeclaredAmount;
-
     this.declarationTotal = 0;
-    // this.declaredAmount=0;
-
-    this.transactionDetail[j].educationalLoanTransactionList.forEach((element) => {
-      console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
-      );
-      console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
-    });
-
+    this.transactionDetail[j].educationalLoanTransactionList.forEach(
+      (element) => {
+        this.declarationTotal += Number(
+          element.actualAmount.toString().replace(',', '')
+        );
+      }
+    );
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
   // ------------ ON change of DueDate in line----------
@@ -662,62 +749,58 @@ export class EducationalLoanDeclarationComponent implements OnInit {
     this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList[i].dueDate = summary.dueDate;
   }
 
-  // ------------Actual Amount change-----------
-  onActualAmountChange(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: Date;
-    },
-    i: number,
-    j: number
+ // ------------Actual Amount change-----------
+ onActualAmountChangeCurrent(
+  summary: {
+    declaredAmount: number;
+    dateOfPayment: Date;
+    actualAmount: any;
+  },
+  i: number,
+  j: number
+) {
+  this.declarationService = new DeclarationService(summary);
+
+  this.transactionDetail[j].educationalLoanTransactionList[
+    i
+  ].actualAmount = this.declarationService.actualAmount;
+  const formatedActualAmount = this.numberFormat.transform(
+    this.transactionDetail[j].educationalLoanTransactionList[i]
+      .actualAmount
+  );
+  this.transactionDetail[j].educationalLoanTransactionList[
+    i
+  ].actualAmount = formatedActualAmount;
+
+  if (
+    this.transactionDetail[j].educationalLoanTransactionList[i]
+      .actualAmount !== Number(0) ||
+    this.transactionDetail[j].educationalLoanTransactionList[i]
+      .actualAmount !== null
   ) {
-    this.declarationService = new DeclarationService(summary);
-    // console.log("Actual Amount change::" , summary);
+    this.isDisabled = false;
+  } else {
+    this.isDisabled = true;
+  }
 
-    this.transactionDetail[j].educationalLoanTransactionList[
-      // this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList[
-      i
-    ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList[i].actualAmount);
-    const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount
-    );
-    // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].educationalLoanTransactionList[
-      i
-    ].actualAmount = formatedActualAmount;
-
-    if (
-      this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount !==
-        Number(0) ||
-      this.transactionDetail[j].educationalLoanTransactionList[i].actualAmount !== null
-    ) {
-      // console.log(`in if::`,this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList[i].actualAmount);
-      this.isDisabled = false;
-    } else {
-      // console.log(`in else::`,this.transactionDetail[j].educationalLoanTransactionPreviousEmployerList[i].actualAmount);
-      this.isDisabled = true;
-    }
-
-    this.actualTotal = null;
-    this.actualAmount = null;
-    this.transactionDetail[j].educationalLoanTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
+  this.actualTotal = null;
+  this.actualAmount = null;
+  this.transactionDetail[j].educationalLoanTransactionList.forEach(
+    (element) => {
+      // console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
-    });
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+    }
+  );
 
-    this.transactionDetail[j].actualTotal = this.actualTotal;
-    // this.transactionDetail[j].actualAmount = this.actualAmount;
-    // console.log(this.transactionDetail[j]);
-    // console.log(this.actualTotal);
-  }
+  this.transactionDetail[j].actualTotal = this.actualTotal;
+  // this.transactionDetail[j].actualAmount = this.actualAmount;
+  // console.log(this.transactionDetail[j]);
+  // console.log(this.actualTotal);
+}
 
    // ------------Actual Amount change-----------
    onActualAmountChangePrevious(
@@ -990,13 +1073,14 @@ export class EducationalLoanDeclarationComponent implements OnInit {
         } else {
           innerElement.actualAmount = 0.0;
         }
-        if (innerElement.declaredAmount !== null) {
-          innerElement.declaredAmount = innerElement.declaredAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.declaredAmount = 0.0;
-        }
+        // if (innerElement.declaredAmount !== null) {
+        //   innerElement.declaredAmount = innerElement.declaredAmount
+        //     .toString()
+        //     .replace(',', '');
+        // } else {
+
+        // }
+        innerElement.declaredAmount = 0.0;
       });
     });
 
@@ -1374,9 +1458,9 @@ export class EducationalLoanDeclarationComponent implements OnInit {
       });
   }
 
-  public uploadUpdateTransaction() {
+  public editViewTransaction() {
 
-    console.log('uploadUpdateTransaction editTransactionUpload::',
+    console.log('editViewTransaction editTransactionUpload::',
      this.editTransactionUpload);
 
     //  this.transactionDetail.forEach((element) => {
