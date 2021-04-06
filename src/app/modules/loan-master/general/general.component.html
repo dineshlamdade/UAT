@@ -1,4 +1,5 @@
 <app-loan-master></app-loan-master>
+
 <!-- <div class="section-body">
     <div class="container-fluid">
         <div class="row">
@@ -43,15 +44,47 @@
                                                 </div>
                                                 <div class="col-sm-3 col-md-3 mt-10">
                                                     <label class="form-label">Approval SDM</label>
-                                                    <select class="form-control " formControlName="approvalWorkFlowSDM">
+                                                    <select class="form-control" formControlName="approvalWorkFlowSDM">
                                                         <option value="">Select</option>
                                                         <option>SDM1</option>
                                                         <option>SDM2</option>
                                                     </select>
                                                 </div>
                                             </div>
+                                            
+                                                <div class="col-sm-12 col-md-12 mt-10">
+                                                    <label class="form-label">Deviation Permissible</label>
+                                                    <div class="row">  
+                                                    <div class="col-sm-3 col-md-3 mt-10">
+                                                        <label class="form-label">Loan Amount</label>
+                                                        <select class="form-control" (change)="getdeviationAmount($event.target.value)">
+                                                            <option value="">Select</option>
+                                                            <option *ngIf="deviationAmount =='Yes'">Yes</option>
+                                                            <option *ngIf="deviationAmount =='No'">No</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-3 mt-10">
+                                                        <label class="form-label">Loan Interest</label>
+                                                        <select class="form-control" (change)="getdeviationIntrest($event.target.value)">
+                                                            <option value="">Select</option>
+                                                            <option *ngIf="deviationIntrest =='Yes'">Yes</option>
+                                                            <option *ngIf="deviationIntrest =='No'">No</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-3 mt-10">
+                                                        <label class="form-label">No Of Installment</label>
+                                                        <select class="form-control" (change)="getdeviationNoOfInstallment($event.target.value)">
+                                                            <option value="">Select</option>
+                                                            <option *ngIf="deviationNoOfInstallment =='Yes'">Yes</option>
+                                                            <option *ngIf="deviationNoOfInstallment =='No'">No</option>
+                                                        </select>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                  
                                         </div>
                                     </fieldset>
+                                    
                                     <fieldset>
                                         <legend>Loan Eligibility</legend>
                                         <div class="tabview-contents">

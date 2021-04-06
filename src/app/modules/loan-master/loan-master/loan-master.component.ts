@@ -21,6 +21,7 @@ export class LoanMasterComponent implements OnInit {
       } 
       if(this.url == "/loan-master/general"){
         this.tabIndex = 1
+        // this.tabIndex = 4
       } 
       if(this.url == "/loan-master/recovery"){
         this.tabIndex = 2
@@ -30,21 +31,17 @@ export class LoanMasterComponent implements OnInit {
       }  
    }
 
-  ngOnInit(): void {
-    if(localStorage.getItem('generalNext') != null){
-      this.tabIndex = 2
-    }
-    if(localStorage.getItem('recoveryNext') != null){
-      this.tabIndex = 3
-    }
-  }
+  ngOnInit(): void {}
 
   changeTabIndex(index: number) {
     this.tabIndex = index;
     if(this.tabIndex == 0){
       this.router.navigate(['/loan-master/summary'])
     }
-    if(this.tabIndex == 1){
+    // if(this.tabIndex == 4){
+    //   this.router.navigate(['/loan-master/general'])
+    // }
+    if(this.tabIndex == 1 || this.tabIndex == 4){
       this.router.navigate(['/loan-master/general'])
     }
     if(this.tabIndex == 2){

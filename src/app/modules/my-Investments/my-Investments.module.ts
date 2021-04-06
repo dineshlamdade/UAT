@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -46,6 +46,8 @@ import { CeaComponent } from './Other/Child Education Allowance/cea/cea.componen
 import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
 import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
+import { SignaturePadModule } from 'angular2-signaturepad';
+
 
 @NgModule({
   declarations: [
@@ -106,7 +108,8 @@ import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-
     // BrowserModule,
     // BrowserAnimationsModule,
     InputNumberModule,
-    FormsModule
+    FormsModule,
+    SignaturePadModule 
 
   ],
 

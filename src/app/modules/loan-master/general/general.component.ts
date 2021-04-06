@@ -16,6 +16,12 @@ export class GeneralComponent implements OnInit {
   minimumNetPayValue: string = '';
   loandata: any = '';
   editloandata: any ='';
+  tabIndex: number = 1;
+  url: string;
+  deviationAmount: string = '';
+  deviationIntrest: string = '';
+  deviationNoOfInstallment: string= '';
+
 
   constructor(private router: Router) {
 
@@ -35,7 +41,10 @@ export class GeneralComponent implements OnInit {
       gapEndOfEarlierLoanAndNewLoanApp: new FormControl(""),
       instances: new FormControl(""),
       minRemainingServiceLoanApplication: new FormControl(""),
-      minRemainingServiceLoanCompletion: new FormControl("")
+      minRemainingServiceLoanCompletion: new FormControl(""),
+      deviationAmount:new FormControl(""),
+      deviationIntrest:new FormControl(""),
+      deviationNoOfInstallment:new FormControl(""),
     })
 
     if (localStorage.getItem('viewData') != null) {
@@ -57,6 +66,25 @@ export class GeneralComponent implements OnInit {
       } else {
         this.minimumNetPayValue = 'No'
       }
+
+      if (this.loandata.deviationIntrest == true) {
+        this.deviationIntrest = 'Yes'
+      } else {
+        this.deviationIntrest = 'No'
+      }
+
+      if (this.loandata.deviationAmount == true) {
+        this.deviationAmount = 'Yes'
+      } else {
+        this.deviationAmount = 'No'
+      }
+
+      if (this.loandata.deviationNoOfInstallment == true) {
+        this.deviationNoOfInstallment = 'Yes'
+      } else {
+        this.deviationNoOfInstallment = 'No'
+      }
+
       this.generalLoanForm.disable()
     }
 
@@ -78,12 +106,37 @@ export class GeneralComponent implements OnInit {
       } else {
         this.minimumNetPayValue = 'No'
       }
+
+
+      if (this.editloandata.deviationIntrest == true) {
+        this.deviationIntrest = 'Yes'
+      } else {
+        this.deviationIntrest = 'No'
+      }
+
+      if (this.editloandata.deviationAmount == true) {
+        this.deviationAmount = 'Yes'
+      } else {
+        this.deviationAmount = 'No'
+      }
+
+      if (this.editloandata.deviationNoOfInstallment == true) {
+        this.deviationNoOfInstallment = 'Yes'
+      } else {
+        this.deviationNoOfInstallment = 'No'
+      }
+
       this.generalLoanForm.enable()
     }
 
   }
 
   ngOnInit(): void {
+    this.url = window.location.pathname
+    if(this.url == "/loan-master/general"){
+      this.tabIndex = 1
+      this.changeTabIndex(1)
+    } 
 
     if (localStorage.getItem('generalForm') != null) {
       let generalFormValue = JSON.parse(localStorage.getItem('generalForm'))
@@ -98,10 +151,28 @@ export class GeneralComponent implements OnInit {
         )
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
-      if (this.editloandata.minimumNetPayLoan == true) {
+      if (generalFormValue.minimumNetPayLoan == true) {
         this.minimumNetPayValue = 'Yes'
       } else {
         this.minimumNetPayValue = 'No'
+      }
+
+      if (generalFormValue.deviationIntrest == true) {
+        this.deviationIntrest = 'Yes'
+      } else {
+        this.deviationIntrest = 'No'
+      }
+
+      if (generalFormValue.deviationAmount == true) {
+        this.deviationAmount = 'Yes'
+      } else {
+        this.deviationAmount = 'No'
+      }
+
+      if (generalFormValue.deviationNoOfInstallment == true) {
+        this.deviationNoOfInstallment = 'Yes'
+      } else {
+        this.deviationNoOfInstallment = 'No'
       }
     }
   }
@@ -136,12 +207,37 @@ export class GeneralComponent implements OnInit {
     this.loanValue = ''
   }
 
+
+  getdeviationAmount(value){
+    if( value== 'Yes'){
+      this.generalLoanForm.controls['deviationAmount'].setValue(true)
+    }else{
+      this.generalLoanForm.controls['deviationAmount'].setValue(false)
+    }
+  }
+
+  getdeviationIntrest(value){
+    if( value== 'Yes'){
+      this.generalLoanForm.controls['deviationIntrest'].setValue(true)
+    }else{
+      this.generalLoanForm.controls['deviationIntrest'].setValue(false)
+    }
+  }
+
+  getdeviationNoOfInstallment(value){
+    if( value== 'Yes'){
+      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(true)
+    }else{
+      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(false)
+    }
+  }
+
   /** Submit general form */
   submitGenralForm() {
     if (this.loandata == '') {
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
-      this.generalLoanForm.controls['loanApplicationTemplate'].setValue([null]),
-        localStorage.setItem('generalForm', JSON.stringify(this.generalLoanForm.value))
+      this.generalLoanForm.controls['loanApplicationTemplate'].setValue([null])
+      localStorage.setItem('generalForm', JSON.stringify(this.generalLoanForm.value))
     }
     this.router.navigate(['/loan-master/recovery'])
   }
@@ -151,6 +247,19 @@ export class GeneralComponent implements OnInit {
     this.generalLoanForm.reset()
     localStorage.removeItem('generalForm')
     localStorage.removeItem('generalNext')
+  }
+
+  changeTabIndex(index: number) {
+    this.tabIndex = index;
+    if(this.tabIndex == 1 ){
+      this.router.navigate(['/loan-master/general'])
+    }
+    if(this.tabIndex == 2){
+      this.router.navigate(['/loan-master/recovery'])
+    }
+    if(this.tabIndex == 3){
+      this.router.navigate(['/loan-master/payment'])
+    }
   }
 
 }
