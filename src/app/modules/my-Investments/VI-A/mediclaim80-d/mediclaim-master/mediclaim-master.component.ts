@@ -142,7 +142,7 @@ export class MediclaimMasterComponent implements OnInit {
     public sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
-      expenseType: new FormControl('', Validators.required),
+      expenseType: new FormControl(null, Validators.required),
       institution: new FormControl(null, Validators.required),
       policyNumber: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
@@ -423,7 +423,7 @@ export class MediclaimMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0 &&  this.form.value.expenseType == 'Mediclaim Premium') {
       this.alertService.sweetalertWarning(
         'Mediclaim  Document Needed to Create Master.'
       );
@@ -694,6 +694,12 @@ export class MediclaimMasterComponent implements OnInit {
     if (this.form.value.expenseType !== 'Mediclaim Premium') {
       this.visibilityFlag = false;
       // this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
+      this.form.get('policyNumber').clearValidators();
+      this.form.get('policyNumber').updateValueAndValidity();
+      this.form.get('policyStartDate').clearValidators();
+      this.form.get('policyStartDate').updateValueAndValidity();
+      this.form.get('policyEndDate').clearValidators();
+      this.form.get('policyEndDate').updateValueAndValidity();
       this.form.get('frequencyOfPayment').clearValidators();
       this.form.get('frequencyOfPayment').updateValueAndValidity();
       this.form.get('premiumAmount').clearValidators();
@@ -708,6 +714,12 @@ export class MediclaimMasterComponent implements OnInit {
       // this.frequencyOfPaymentList = this.frequencyOfPaymentListInMediclaim;
       // this.form.controls.premiumAmount.setValue(null);
       // this.form.controls.annualAmount.setValue(null);
+      this.form.get('policyNumber').setValidators([Validators.required]);
+      this.form.get('policyNumber').updateValueAndValidity();
+      this.form.get('policyStartDate').setValidators([Validators.required]);
+      this.form.get('policyStartDate').updateValueAndValidity();
+      this.form.get('policyEndDate').setValidators([Validators.required]);
+      this.form.get('policyEndDate').updateValueAndValidity();
       this.form.get('frequencyOfPayment').setValidators([Validators.required]);
       this.form.get('frequencyOfPayment').updateValueAndValidity();
       this.form.get('premiumAmount').setValidators([Validators.required]);
