@@ -67,12 +67,16 @@ export class EmploymentInformationComponent implements OnInit {
       transfer: [''],
       exit: [''],
     });
-    this.new = localStorage.getItem('employeeExitInfoId');  //rejoinee
-    if (this.new) {                                          //if(this.new=='')
+  
+  
+    this.new = localStorage.getItem('employeeExitInfoId');  
+    if (this.new) {                                          
       this.rejoiningBoolean = true;
+      this.exitTab=false;
     }
-    if (!this.new) {
+    if (!this.new ) {
       this.rejoiningBoolean = false;
+      this.exitTab=true;
     }
     // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
     //   this.rejoiningBoolean = res.data.results[0];
@@ -132,8 +136,20 @@ export class EmploymentInformationComponent implements OnInit {
     this.EmpSummaryTab = true;
     this.joiningTab = false;
     this.reJoiningTab = false;
-    this.transferTab = false;
-    this.exitTab = false;
+    
+
+    this.new = localStorage.getItem('employeeExitInfoId');  
+    if (this.new) {                                         
+      this.rejoiningBoolean = true;     
+      this.exitTab=false;
+      this.transferTab = false;
+    }
+    if (!this.new) {
+      this.rejoiningBoolean = false;      
+      this.exitTab=true;
+      this.transferTab = true;
+    }
+    
     this.tabIndex = 0;
   }
 

@@ -60,7 +60,7 @@
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="transfer" (click)="transferTabValidation()"
+                                <label class="nav" for="transfer" (click)="transferTabValidation()" [class.disabled]="transferTab==false"
                                     [routerLink]="['/employee-master/employment-information/transfer-information']">
                                     <span>
                                         Transfer
