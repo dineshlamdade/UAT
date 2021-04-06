@@ -98,6 +98,7 @@
                     <input
                       type="text"
                       class="form-control"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       [ngModel]="summary.accountNumber"
                       [disabled]="summary.accountNumber"
                     />
@@ -110,6 +111,7 @@
                       id="declaredAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
@@ -124,6 +126,7 @@
                   <input
                     type="text"
                     id="actualAmount{{ summary.investmentGroup3TransactionId }}"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{
                       summary.investmentGroup3TransactionId
                     }}"
@@ -198,7 +201,7 @@
                     <input
                       type="text"
                       formControlName="accountNumber"
-                      class="form-control" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)"
+                      class="form-control" onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Account No."
                       [ngClass]="{
                         'is-invalid':
@@ -212,6 +215,7 @@
                     <input
                       type="text"
                       formControlName="declaredAmount"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control align-right"
                       placeholder="Declared"
                       [ngClass]="{
@@ -226,6 +230,7 @@
                   <input
                     type="text"
                     formControlName="actualAmount"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                     class="form-control align-right"
                     [ngClass]="{
                       'is-invalid': submitted && masterForm.actualAmount.errors
@@ -674,6 +679,7 @@
                       <input
                         type="text"
                         class="form-control"
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         [ngModel]="summary.accountNumber"
 
                       />
@@ -687,6 +693,7 @@
                         id="declaredAmount{{
                           summary.investmentGroup3TransactionId
                         }}"
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{
                           summary.investmentGroup3TransactionId
                         }}"
@@ -702,6 +709,7 @@
                     <input
                       type="text"
                       id="actualAmount{{ summary.investmentGroup3TransactionId }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
