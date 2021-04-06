@@ -142,7 +142,7 @@
               <p-inputNumber formControlName="premiumAmount" class="form-control align-right"
                 (onBlur)="calculateAnnualAmount()" name="Premium Amount" [ngClass]="{
                   'is-invalid': submitted && masterForm.premiumAmount.errors
-                }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+                }" mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0"></p-inputNumber>
               <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.premiumAmount.errors.required">
                   Premium amount is mandatory

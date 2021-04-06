@@ -185,7 +185,7 @@
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
+                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
@@ -206,7 +206,7 @@
                     " class="form-control" bsDatepicker />
                 </td>
                 <td>
-                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
+                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />

@@ -459,10 +459,10 @@ export class LicmasterComponent implements OnInit {
   // ----------- Family relationship shown on Policyholder selection ---------------
   // tslint:disable-next-line: typedef
   OnSelectionfamilyMemberGroup() {
-    if(this.form.get('policyholdername').value == null ){
+    if (this.form.get('policyholdername').value == null) {
       this.form.get('relationship').setValue(null);
     }
-      const toSelect = this.familyMemberGroup.find(
+    const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('policyholdername').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
@@ -503,8 +503,8 @@ export class LicmasterComponent implements OnInit {
         this.form.patchValue(obj);
         this.Index = obj.policyNo;
         this.policyMinDate = this.form.value.policyStartDate;
-        this.setPolicyEndDate()
-        this.checkFinancialYearStartDateWithPolicyEnd()
+        this.setPolicyEndDate();
+        this.checkFinancialYearStartDateWithPolicyEnd();
         this.showUpdateButton = true;
         this.isClear = true;
         this.urlArray = obj.documentInformationList;
@@ -519,15 +519,15 @@ export class LicmasterComponent implements OnInit {
 
   // scrollToTop Fuctionality
   public scrollToTop() {
-      (function smoothscroll() {
-        var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
-        if (currentScroll > 0) {
-          window.requestAnimationFrame(smoothscroll);
-          window.scrollTo(0, currentScroll - (currentScroll / 8));
-        }
-      })();
-    }
-
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
 
   // ------------ On Edit Cancel ----------------
   cancelEdit() {
@@ -596,15 +596,13 @@ export class LicmasterComponent implements OnInit {
   }
 
   /** Instituation dropdown selection value */
-  public getInstitutionName(institutionname){
+  public getInstitutionName(institutionname) {
     this.masterfilesArray = [];
     // this.form.reset();
-    this.form.get('institutionName').setValue(institutionname)
+    this.form.get('institutionName').setValue(institutionname);
     // alert(institutionname)
     // if(this.form.get('institutionName').value == null ){
     //   this.form.get('relationship').setValue(null);
     // }
-
   }
-
 }

@@ -407,7 +407,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
    //------------- On Master Edit functionality --------------------
    editMaster(vehicleNumber) {
-    //this.scrollToTop();
+    this.scrollToTop();
     this.electricVehicleService.getElectricVehicleMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -440,6 +440,18 @@ export class ElectricVehicleMasterComponent implements OnInit {
   findByvehicleNumber(vehicleNumber,masterGridData){
     return masterGridData.find(x => x.vehicleNumber === vehicleNumber)
   }
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
 
   // On Edit Cancel
   cancelEdit() {

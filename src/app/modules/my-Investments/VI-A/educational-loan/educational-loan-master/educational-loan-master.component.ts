@@ -1,12 +1,6 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import {
-  Component,
-  Inject,
-  Input,
-  OnInit,
-  TemplateRef,
-} from '@angular/core';
+import { Component, Inject, Input, OnInit, TemplateRef } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -26,11 +20,11 @@ import { EducationalLoanServiceService } from '../educational-loan-service.servi
 @Component({
   selector: 'app-educational-loan-master',
   templateUrl: './educational-loan-master.component.html',
-  styleUrls: ['./educational-loan-master.component.scss']
+  styleUrls: ['./educational-loan-master.component.scss'],
 })
 export class EducationalLoanMasterComponent implements OnInit {
   @Input() public loanAccountNo: any;
-  @Input() public : string;
+  @Input() public: string;
   public modalRef: BsModalRef;
   public submitted = false;
   public pdfSrc =
@@ -109,11 +103,10 @@ export class EducationalLoanMasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
-  public disability : string;
-  public severity : string;
+  public disability: string;
+  public severity: string;
   public fullTimeCourse: boolean = true;
-  public proofSubmissionId ;
-
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -129,7 +122,6 @@ export class EducationalLoanMasterComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer
   ) {
-
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -141,7 +133,7 @@ export class EducationalLoanMasterComponent implements OnInit {
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
- public ngOnInit(): void {
+  public ngOnInit(): void {
     this.initiateMasterForm();
     this.getFinacialYear();
     this.getMasterFamilyInfo();
@@ -161,28 +153,28 @@ export class EducationalLoanMasterComponent implements OnInit {
 
     if (this.loanAccountNo != undefined || this.loanAccountNo != null) {
       const input = this.loanAccountNo;
-      // console.log("edit", input)
-      // this.editMaster(input);
-      // console.log('editMaster loanAccountNumber', input);
+
       this.editMaster(input.loanAccountNumber);
       console.log('editMaster loanAccountNumber', input.loanAccountNumber);
     }
-
   }
 
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-      fullTimeCourse: new FormControl('0'),
+      fullTimeCourse: new FormControl('false'),
       studentName: new FormControl(null, Validators.required),
-      relationship: new FormControl({value: null, disabled: true },Validators.required),
+      relationship: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       lenderName: new FormControl(null, Validators.required),
       loanAccountNumber: new FormControl(null, Validators.required),
       loanEndDate: new FormControl(null, Validators.required),
       educationalLoanMasterId: new FormControl(0),
       familyMemberInfoId: new FormControl(0),
-      proofSubmissionId:new FormControl(''),
-        });
+      proofSubmissionId: new FormControl(''),
+    });
   }
 
   // Business Financial Year API Call
@@ -191,27 +183,32 @@ export class EducationalLoanMasterComponent implements OnInit {
       this.financialYearStart = res.data.results[0].fromDate;
     });
   }
- // Family Member List API call
- getMasterFamilyInfo() {
-  this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
-    console.log('getFamilyInfo', res);
-    this.familyMemberGroup = res.data.results;
-    res.data.results.forEach((element) => {
-      const obj = {
-        label: element.familyMemberName,
-        value: element.familyMemberName,
-      };
-      if(element.relation ==='Daughter' || element.relation === 'Son') {
-        this.familyMemberName.push(obj);
-      }
+  // Family Member List API call
+  getMasterFamilyInfo() {
+    this.myInvestmentsService.getFamilyInfo().subscribe((res) => {
+      console.log('getFamilyInfo', res);
+      this.familyMemberGroup = res.data.results;
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.familyMemberName,
+          value: element.familyMemberName,
+        };
+        if (element.relation === 'Daughter' || element.relation === 'Son') {
+          this.familyMemberName.push(obj);
+        }
+      });
     });
-  });
-}
+  }
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
+    if (this.form.get('studentName').value == null) {
+      this.form.get('relationship').setValue(null);
+    }
+
     const toSelect = this.familyMemberGroup.find(
-      (element) => element.familyMemberName == this.form.get('studentName').value
+      (element) =>
+        element.familyMemberName == this.form.get('studentName').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     // this.form.get('familyMemberName').setValue(toSelect.familyMemberName);
@@ -246,37 +243,41 @@ export class EducationalLoanMasterComponent implements OnInit {
     return this.form.controls;
   }
 
-
   // Get Master Page Data API call
   masterPage() {
-    this.educationalLoanServiceService.getEducationalLoanMaster().subscribe((res) => {
-      console.log('masterGridData::', res);
-      this.masterGridData = res.data.results;
-      this.masterGridData.forEach((element) => {
-        element.loanEndDate = new Date(element.loanEndDate);
+    this.educationalLoanServiceService
+      .getEducationalLoanMaster()
+      .subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+        this.masterGridData.forEach((element) => {
+          element.loanEndDate = new Date(element.loanEndDate);
+        });
       });
-    });
   }
 
   // Post Master Page Data API call
-  public addMaster(formData: any, formDirective: FormGroupDirective,): void {
+  public addMaster(formData: any, formDirective: FormGroupDirective): void {
     this.submitted = true;
 
     if (this.form.invalid) {
       return;
-
     }
-    console.log("urlArray.length",this.urlArray.length)
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
+    console.log('urlArray.length', this.urlArray.length);
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Educational Loan Document needed to Create Master.'
       );
       return;
     } else {
+      const to = this.datePipe.transform(
+        this.form.get('loanEndDate').value,
+        'yyyy-MM-dd'
+      );
 
       const data = this.form.getRawValue();
       data.proofSubmissionId = this.proofSubmissionId;
-
+      data.loanEndDate = to;
       console.log('Educational Loan ::', data);
 
       this.educationalLoanServiceService
@@ -313,8 +314,8 @@ export class EducationalLoanMasterComponent implements OnInit {
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
+      this.urlArray = [];
       this.submitted = false;
-
     }
   }
 
@@ -335,66 +336,121 @@ export class EducationalLoanMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-
-    // Payment Detail To Date Validations with Current Finanacial Year
-    checkFinancialYearStartDateWithPaymentDetailToDate() {
-      const to = this.datePipe.transform(
-        this.form.get('loanEndDate').value,
-        'yyyy-MM-dd'
+  // Policy End Date Validations with Current Finanacial Year
+  checkFinancialYearStartDateWithPolicyEnd() {
+    const policyEnd = this.datePipe.transform(
+      this.form.get('policyEndDate').value,
+      'yyyy-MM-dd'
+    );
+    const financialYearStartDate = this.datePipe.transform(
+      this.financialYearStart,
+      'yyyy-MM-dd'
+    );
+    if (policyEnd < financialYearStartDate) {
+      this.alertService.sweetalertWarning(
+        'Policy End Date should be greater than or equal to Current Financial Year : ' +
+          this.financialYearStart
       );
-      const financialYearStartDate = this.datePipe.transform(
-        this.financialYearStart,
-        'yyyy-MM-dd'
-      );
-      if (to < financialYearStartDate) {
-        this.alertService.sweetalertWarning(
-          'To Date should be greater than or equal to Current Financial Year : ' +
-            this.financialYearStart
-        );
-        this.form.controls.loanEndDate.reset();
-      }
+      this.form.controls.policyEndDate.reset();
+    } else {
+      this.form.patchValue({
+        loanEndDate: this.form.value.policyEndDate,
+      });
+      this.maxFromDate = this.form.value.policyEndDate;
     }
+  }
 
-     // Remove LicMaster Document
+  // Payment Detail To Date Validations with Payment Detail From Date
+  setPaymentDetailToDate() {
+    this.paymentDetailMinDate = this.form.value.loanStartDate;
+    const from = this.datePipe.transform(
+      this.form.get('loanStartDate').value,
+      'yyyy-MM-dd'
+    );
+    const to = this.datePipe.transform(
+      this.form.get('loanEndDate').value,
+      'yyyy-MM-dd'
+    );
+    if (from > to) {
+      this.form.controls.loanEndDate.reset();
+    }
+  }
+
+  // Payment Detail To Date Validations with Current Finanacial Year
+  checkFinancialYearStartDateWithPaymentDetailToDate() {
+    const to = this.datePipe.transform(
+      this.form.get('loanEndDate').value,
+      'yyyy-MM-dd'
+    );
+    const financialYearStartDate = this.datePipe.transform(
+      this.financialYearStart,
+      'yyyy-MM-dd'
+    );
+    if (to < financialYearStartDate) {
+      this.alertService.sweetalertWarning(
+        'To Date should be greater than or equal to Current Financial Year : ' +
+          this.financialYearStart
+      );
+      this.form.controls.loanEndDate.reset();
+    }
+  }
+
+  // Remove LicMaster Document
   removeSelectedLicMasterDocument(index: number) {
     this.masterfilesArray.splice(index, 1);
     console.log('this.filesArray::', this.masterfilesArray);
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
-   //------------- On Master Edit functionality --------------------
-   editMaster(loanAccountNumber) {
-    //this.scrollToTop();
-    this.educationalLoanServiceService.getEducationalLoanMaster().subscribe((res) => {
-      console.log('masterGridData::', res);
-      this.masterGridData = res.data.results;
-      this.masterGridData.forEach((element) => {
-        element.loanEndDate = new Date(element.loanEndDate);
+  //------------- On Master Edit functionality --------------------
+  editMaster(loanAccountNumber) {
+    this.scrollToTop();
+    this.educationalLoanServiceService
+      .getEducationalLoanMaster()
+      .subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+        this.masterGridData.forEach((element) => {
+          element.loanEndDate = new Date(element.loanEndDate);
+        });
+        console.log(loanAccountNumber);
+        const obj = this.findByloanAccountNumber(
+          loanAccountNumber,
+          this.masterGridData
+        );
+
+        // Object.assign({}, { class: 'gray modal-md' }),
+        console.log('Edit Master', obj);
+        if (obj != 'undefined') {
+          this.paymentDetailGridData = obj.paymentDetails;
+          this.form.patchValue(obj);
+          this.Index = obj.loanAccountNumber;
+          this.showUpdateButton = true;
+          this.isClear = true;
+          this.urlArray = obj.loanSanctionLetter;
+          this.proofSubmissionId = obj.proofSubmissionId;
+        }
       });
-      console.log(loanAccountNumber)
-      const obj =  this.findByloanAccountNumber(loanAccountNumber,this.masterGridData);
-
-      // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.loanAccountNumber;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.loanSanctionLetter;
-      this.proofSubmissionId = obj.proofSubmissionId;
-
-      }
-    });
-
   }
 
   //Find method
-  findByloanAccountNumber(loanAccountNumber,masterGridData){
-    return masterGridData.find(x => x.loanAccountNumber === loanAccountNumber)
+  findByloanAccountNumber(loanAccountNumber, masterGridData) {
+    return masterGridData.find(
+      (x) => x.loanAccountNumber === loanAccountNumber
+    );
   }
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
 
   // On View Cancel
   cancelView() {
@@ -412,8 +468,8 @@ export class EducationalLoanMasterComponent implements OnInit {
     );
   }
 
-   //---------- On View Cancel -------------------
-   resetView() {
+  //---------- On View Cancel -------------------
+  resetView() {
     this.form.reset();
     this.form.get('fullTimeCourse').setValue(0);
     this.showUpdateButton = false;
@@ -429,44 +485,33 @@ export class EducationalLoanMasterComponent implements OnInit {
     );
     this.form.patchValue(educationalLoan);
   }
-   //---------- For Doc Viewer -----------------------
-   nextDocViewer() {
-
+  // ---------- For Doc Viewer -----------------------
+  public nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
-    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //   this.urlArray[this.urlIndex]
-    // );
   }
 
-  previousDocViewer() {
-
+  public previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
-    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //   this.urlArray[this.urlIndex]
-    // );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
-    console.log("---in doc viewer--");
+  public docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
     this.urlIndex = index;
 
-    console.log("urlArray::", this.urlArray);
+    console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
-    //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
-    //this.urlSafe
-    console.log("urlSafe::",  this.urlSafe);
+    console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
-
 }

@@ -181,7 +181,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
-      state:  new FormControl(null),
+      state:  new FormControl(null, Validators.required),
       bankName: new FormControl({value: null, disabled: true },Validators.required),
       branchName: new FormControl({value: null, disabled: true },Validators.required),
       bankAddress: new FormControl({value: null, disabled: true },Validators.required),
@@ -362,7 +362,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Deposit in Saving Account 80TTA Document needed to Create Master.'
       );
@@ -433,6 +433,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
    //------------- On Master Edit functionality --------------------
    editMaster(accountNumber) {
+    this.scrollToTop();
     this.interestOnTtaService.get80TTAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -460,6 +461,18 @@ export class InterestOnTtaMasterComponent implements OnInit {
   findByaccountNumber(accountNumber,masterGridData){
     return masterGridData.find(x => x.accountNumber === accountNumber)
   }
+
+    // scrollToTop Fuctionality
+    public scrollToTop() {
+      (function smoothscroll() {
+        var currentScroll =
+          document.documentElement.scrollTop || document.body.scrollTop;
+        if (currentScroll > 0) {
+          window.requestAnimationFrame(smoothscroll);
+          window.scrollTo(0, currentScroll - currentScroll / 8);
+        }
+      })();
+    }
 
 
   // On Edit Cancel
