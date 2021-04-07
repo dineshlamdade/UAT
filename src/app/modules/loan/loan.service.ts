@@ -37,5 +37,9 @@ public getallScheduleData(id)
 {
   return this.http.get<any>(this.apiUrl  +'loan-Schedule/getByTempLoanMasterId/'+id);
 }
+public getGuarantorData(id)
+{
+  return this.http.get<any>(this.apiUrl  +'employee-Master/getByEmployeeCode/'+id);
+}
 
 }

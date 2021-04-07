@@ -9,7 +9,7 @@ const routes :Routes =[
     path:'',
     children:[
       {
-        path:'',
+        path:'standard-query',
         component:QueryComponent,
         data: { title: ':: DelziaHR :: Standard Question And Answer' },
 
