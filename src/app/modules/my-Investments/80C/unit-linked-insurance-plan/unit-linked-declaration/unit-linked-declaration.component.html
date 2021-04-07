@@ -186,6 +186,7 @@
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" id="declaredAmount{{ summary.investmentGroup2TransactionId }}"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                       [(ngModel)]="summary.declaredAmount" class="form-control align-right"
                       (change)="onDeclaredAmountChange(summary, i, j)" [disabled]="initialArrayIndex[j] > i" />
@@ -207,6 +208,7 @@
                 </td>
                 <td>
                   <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
+                  onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup2TransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
@@ -716,6 +718,7 @@
                   <td>
                     <div class="custom_icon_badge">
                       <input type="text" id="declaredAmount{{ summary.investmentGroup2TransactionId }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{ summary.investmentGroup2TransactionId }}"
                         [(ngModel)]="summary.declaredAmount" class="form-control align-right"
                         (change)="onDeclaredAmountChangeInEditCase(summary, i, j)"
@@ -732,6 +735,7 @@
                   </td>
                   <td>
                     <input type="text" id="actualAmount{{ summary.investmentGroup2TransactionId }}"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.investmentGroup2TransactionId }}"
                       [disabled]="!summary.additionalPayment" [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)" class="form-control align-right" />
