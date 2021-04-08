@@ -52,11 +52,14 @@ import { OtherincomedeclarationComponent } from './Other/Other Income/otherincom
 import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
 import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
 
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
 
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
     HousingloanComponent,
+    SignaturePadComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,
     HousingloandeclarationComponent,
@@ -118,7 +121,8 @@ import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme
     // BrowserModule,
     // BrowserAnimationsModule,
     InputNumberModule,
-    FormsModule
+    FormsModule,
+    SignaturePadModule
 
   ],
 
