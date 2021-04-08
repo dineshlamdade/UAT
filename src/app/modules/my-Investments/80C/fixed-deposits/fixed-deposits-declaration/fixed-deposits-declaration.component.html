@@ -102,6 +102,7 @@
                     <input
                       type="text"
                       class="form-control"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       [ngModel]="summary.accountNumber"
                       [disabled]="summary.accountNumber"
                     />
@@ -114,6 +115,7 @@
                       id="declaredAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
@@ -128,6 +130,7 @@
                   <input
                     type="text"
                     id="actualAmount{{ summary.investmentGroup3TransactionId }}"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{
                       summary.investmentGroup3TransactionId
                     }}"
@@ -218,6 +221,7 @@
                     <input
                       type="text"
                       formControlName="accountNumber"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control"
                       placeholder="Account No."
                       [ngClass]="{
@@ -233,6 +237,7 @@
                       type="text"
                       formControlName="declaredAmount"
                       class="form-control align-right"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       placeholder="Declared"
                       [ngClass]="{
                         'is-invalid':
@@ -994,6 +999,7 @@
                       <input
                         type="text"
                         class="form-control"
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         [ngModel]="summary.accountNumber"
 
                       />
@@ -1007,6 +1013,7 @@
                         id="declaredAmount{{
                           summary.investmentGroup3TransactionId
                         }}"
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{
                           summary.investmentGroup3TransactionId
                         }}"
@@ -1022,6 +1029,7 @@
                     <input
                       type="text"
                       id="actualAmount{{ summary.investmentGroup3TransactionId }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
