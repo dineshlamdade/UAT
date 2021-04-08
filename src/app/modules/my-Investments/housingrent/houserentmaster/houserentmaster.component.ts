@@ -58,6 +58,8 @@ export class HouserentmasterComponent implements OnInit {
   public rentMinDate: Date;
   public rentMaxDate: Date;
 
+  public agreementMinDate :Date;
+
   public isDuplicatpan: Boolean;
   public isDuplicatShareOfTotalRent: Boolean;
 
@@ -110,12 +112,14 @@ export class HouserentmasterComponent implements OnInit {
   public sumDeclared: any;
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
-  public policyMinDate: Date;
+  public AgreementMinDate: Date;
   public policyMaxDatePPF: Date;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
-  /* public minFormDate: Date;
-  public maxFromDate: Date; */
+  public AgreementtoDate:Date;
+  public AgreementtoDate1:Date;
+  public minFormDate: Date;
+  public maxFromDate: Date;
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -132,6 +136,8 @@ export class HouserentmasterComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date; */
   public today = new Date();
+
+  public policyMinDate: any;
 
   //Button Validation
   public landlordDetailsSubmitted = false;
@@ -336,6 +342,7 @@ export class HouserentmasterComponent implements OnInit {
       'houseRentalLandLordDetailId::', this.houseRentform.get('landLordDetailList').value.houseRentalLandLordDetailId
     );
 
+
     this.landLordDetailTableList.forEach((element) => {
       if (
         element.landLordPan === this.houseRentform.get('landLordDetailList').value.landLordPan && 
@@ -355,6 +362,14 @@ export class HouserentmasterComponent implements OnInit {
       this.isDuplicatpan = false;
       return;
     }
+
+  /*    if(this.houseRentform.get('landLordDetailTableList  >= 2').invalid)
+    {
+      this.alertService.sweetalertWarning(
+        'Allowed to Enter only Tow Landlord Details.'
+      );
+    return;
+    } */
     
       /* ======Share Of Total Rent========= */
       let total = 0;
@@ -971,19 +986,23 @@ export class HouserentmasterComponent implements OnInit {
       );
     }
   }
-
-
+/* 
+ .................... Rent Details validation.............................. */
   getAgreementRent2From()
   {
     console.log(":this.houseAgreementMasterForm.toDate:",this.houseAgreementMasterForm.toDate.value)
     this.rentMaxDate = this.houseAgreementMasterForm.toDate.value;
+    this.AgreementtoDate > this.houseAgreementMasterForm.toDate.value;
   }
   getAgreementFrom()
   {
+    
     console.log(":this.houseAgreementMasterForm.fromDate:",this.houseAgreementMasterForm.fromDate.value)
     this.rentMinDate = this.houseAgreementMasterForm.fromDate.value;
-    
+   
   }
+ 
+  
   /* ---------------------------editLandlordDetails----------------------- */
   public editLandlordDetails(i: number) {
     /* this.landLordDetailForm.patchValue(this.landLordDetailTableList[i]); */

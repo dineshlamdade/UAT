@@ -492,10 +492,8 @@ export class HouserentdeclarationComponent implements OnInit {
       this.transactionDetail[j].houseRentalTransactionList[
         i
       ].actualAmountPerMonth = this.numberFormat.transform(0);
-      this.transactionDetail[j].houseRentalTransactionList[
-        i
-      ].paymentDate = null;
-
+      this.transactionDetail[j].houseRentalTransactionList[i].paymentDate = null;
+  /*  this.transactionDetail[j].houseRentalTransactionList[i]; */
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
@@ -524,6 +522,8 @@ export class HouserentdeclarationComponent implements OnInit {
     console.log(this.uploadGridData.length);
   }
 
+
+   
   // ------------ To Check / Uncheck All  Checkboxes-------------
   checkUncheckAll(item: any) {
     // console.log(this.isCheckAll);
@@ -1056,7 +1056,7 @@ export class HouserentdeclarationComponent implements OnInit {
           'yyyy-MM-dd',
         );
 
-        innerElement.paymentDate = dateOfPaymnet;
+        innerElement.paymentDate = paymentDate;
         innerElement.dueDate = dueDate; */
         innerElement.paymentDate = paymentDate;
         innerElement.fromDate = fromDate;
@@ -1355,11 +1355,6 @@ export class HouserentdeclarationComponent implements OnInit {
           innerElement.actualAmountPerMonth = 0.0;
         }
 
-        const paymentDate = this.datePipe.transform(
-          innerElement.paymentDate,
-          'yyyy-MM-dd'
-        );
-
         const fromDate = this.datePipe.transform(
           innerElement.fromDate,
           'yyyy-MM-dd'
@@ -1367,22 +1362,30 @@ export class HouserentdeclarationComponent implements OnInit {
         const toDate = this.datePipe.transform(
           innerElement.toDate,
           'yyyy-MM-dd'
+        );       
+
+        const paymentDate = this.datePipe.transform(
+          innerElement.paymentDate,
+          'yyyy-MM-dd'
         );
 
+       
+        /* innerElement.receiptAmount = receiptAmount; */
         innerElement.paymentDate = paymentDate;
         innerElement.fromDate = fromDate;
         innerElement.toDate = toDate;
+        innerElement.paymentDate = paymentDate;
         this.uploadGridData.push(innerElement.houseRentalTransactionDetailId);
       });
     });
 
     this.editTransactionUpload.forEach((element) => {
       element.houseRentalTransactionList.forEach((innerElement) => {
-        const dateOfPaymnet = this.datePipe.transform(
+        const paymentDate = this.datePipe.transform(
           innerElement.paymentDate,
           'yyyy-MM-dd'
         );
-        innerElement.paymentDate = dateOfPaymnet;
+        innerElement.paymentDate = paymentDate;
       });
     });
 
@@ -1390,13 +1393,19 @@ export class HouserentdeclarationComponent implements OnInit {
     console.log('this.receiptNumber::', this.receiptNumber);
 
     const data = {
-      
+
+      proofSubmissionId: this.editProofSubmissionId,
       houseRentalTransactionDetailList: this.editTransactionUpload,
       houseRentalTransactionIds: this.uploadGridData,
       documentRemark: this.documentRemark,
-      proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
-    /*   proofSubmissionId: this.editProofSubmissionId, */
       receiptAmount: this.editReceiptAmount,
+      //proofSubmissionId: this.editTransactionUpload[0].proofSubmissionId,
+     
+      // documentRemark: this.documentRemark,
+      
+
+    /*   proofSubmissionId: this.editProofSubmissionId, */
+      //receiptAmount: this.receiptAmount,
       /* receiptDate: this.receiptDate,
       receiptNumber: this.receiptNumber, */
        receiptDate: Date,
@@ -1542,13 +1551,13 @@ export class HouserentdeclarationComponent implements OnInit {
   }
 
   // ---- Set Date of Payment On Edit Modal----
-  setDateOfPaymentInEditCase(
+ /*  setDateOfPaymentInEditCase(
     summary: {
-      /*       previousEmployerName: any; */
+      
       declaredAmountPerMonth: number;
       paymentDate: Date;
       actualAmountPerMonth: number;
-      /*       dueDate: any; */
+     
     },
     i: number,
     j: number
@@ -1561,6 +1570,23 @@ export class HouserentdeclarationComponent implements OnInit {
       summary.paymentDate;
     console.log(
       this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate
+    );
+  } */
+  setDateOfPaymentInEditCase(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      paymentDate: Date;
+      actualAmount: number;
+      dueDate: any;
+    },
+    i: number,
+    j: number,
+  ) {
+    this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate =
+      summary.paymentDate;
+    console.log(
+      this.editTransactionUpload[j].houseRentalTransactionList[i].paymentDate,
     );
   }
 }
