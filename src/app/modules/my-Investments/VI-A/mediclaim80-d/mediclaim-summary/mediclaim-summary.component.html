@@ -265,28 +265,28 @@
 
             </tr>
             <tr>
-              <td rowspan="5" class="text-center text-purple font700 table-light-color">Limit</td>
-              <td class="align-left table-light-color font700">Self/ Spouse/ Children</td>
-              <td class="align-left table-light-color font700">Not Senior Citizen</td>
-              <td class="align-left font700 table-light-color"><span class="Letterbadge">F</span></td>
-              <td class="align-right table-light-color font700">
+              <td rowspan="3"  class="text-center text-purple font700 table-light-color">Limit</td>
+              <td *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen > 0"  class="align-left table-light-color font700" >Self/ Spouse/ Children</td>
+              <td *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen > 0" class="align-left table-light-color font700">Not Senior Citizen</td>
+              <td *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen > 0" class="align-left font700 table-light-color"><span class="Letterbadge">F</span></td>
+              <td  *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen > 0" class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen | number: "1.2-2" }}
                 </span>
               </td>
-              <td class="align-right table-light-color font700">
+              <td *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen > 0" class="align-right table-light-color font700" >
                 <span *ngIf = "mediclaimSummaryComputationActual !== undefined"
                   tooltip="{{ mediclaimSummaryComputationActual.limitOfSelfSpouseChildrenNonSeniorCitizen | number: '1.2-2' }}">
                   {{ mediclaimSummaryComputationActual.limitOfSelfSpouseChildrenNonSeniorCitizen| number: "1.2-2" }}
                 </span>
               </td>
-              <td class="align-right table-light-color font700"></td>
+              <td *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenNonSeniorCitizen > 0" class="align-right table-light-color font700"></td>
             </tr>
-            <tr>
+            <tr *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenSeniorCitizen > 0">
               <td class="align-left table-light-color table-light-color font700">Self/ Spouse/ Children</td>
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
-              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">G</span></td>
+              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">F</span></td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.limitOfSelfSpouseChildrenSeniorCitizen | number: '1.2-2' }}">
@@ -303,10 +303,10 @@
 
             </tr>
 
-            <tr>
+            <tr *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfParentsSeniorCitizen">
               <td class="align-left table-light-color table-light-color font700">Parents</td>
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
-              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">H</span></td>
+              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">G</span></td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                 tooltip="{{ mediclaimSummaryComputationDeclared.limitOfParentsSeniorCitizen | number: '1.2-2' }}">
@@ -322,10 +322,10 @@
               <td class="align-right table-light-color font700"></td>
 
             </tr>
-            <tr>
+            <tr  *ngIf = "mediclaimSummaryComputationDeclared !== undefined && mediclaimSummaryComputationDeclared.limitOfParentsNonSeniorCitizen">
               <td class="align-left table-light-color table-light-color font700">Parents</td>
               <td class="align-left table-light-color table-light-color font700">Non Senior Citizen</td>
-              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">I</span></td>
+              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">G</span></td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                   tooltip="{{ mediclaimSummaryComputationDeclared.limitOfParentsNonSeniorCitizen | number: '1.2-2' }}">
@@ -344,7 +344,7 @@
             <tr>
               <td class="align-left table-light-color table-light-color font700">Self/ Spouse/ Children & Parents</td>
               <td class="align-left table-light-color table-light-color font700"> Health Checkup</td>
-              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">J</span></td>
+              <td class="align-left table-light-color font700 table-light-color"><span class="Letterbadge">H</span></td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                 tooltip="{{ mediclaimSummaryComputationDeclared.limitOfHealthCheckup | number: '1.2-2' }}">
@@ -382,9 +382,9 @@
               <td class="align-right font700"></td>
 
             </tr>
-            <tr>
+            <!-- <tr>
               <td rowspan="3" class="text-center text-purple font700 table-light-color">Benefit</td>
-              <td class="align-left table-light-color table-light-color font700">Parents</td>
+              <td class="align-left table-light-color table-light-color font700"></td>
               <td class="align-left table-light-color table-light-color font700"></td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">L</span></td>
               <td class="align-right table-light-color font700">
@@ -401,8 +401,9 @@
               </td>
               <td class="align-right table-light-color font700"></td>
 
-            </tr>
+            </tr> -->
             <tr>
+              <td rowspan="2" class="text-center text-purple font700 table-light-color">Benefit</td>
               <td class="align-left table-light-color font700">Self/ Spouse/ Children</td>
               <td class="align-left table-light-color font700">Not Senior Citizen</td>
               <td class="align-left font700 table-light-color "><span class="Letterbadge">M</span>= Minimum of <span
@@ -425,7 +426,7 @@
 
             </tr>
             <tr>
-              <td class="align-left table-light-color table-light-color font700">Self Spouse Children</td>
+              <td class="align-left table-light-color table-light-color font700">Self/Spouse/Children && Parents</td>
               <td class="align-left table-light-color table-light-color font700">Senior Citizen</td>
               <td class="align-left font700 table-light-color"><span class="Letterbadge">N</span>= Minimum of <span
                   class="Letterbadge">H</span> & <span class="Letterbadge">C</span> &nbsp;</td>

@@ -125,7 +125,7 @@ export class MediclaimMasterComponent implements OnInit {
   public dropdownList = [];
   public selectedItems = [];
   public selectedEstablishmentMasterId = [];
-  public proofSubmissionId;
+  public proofSubmissionId = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -142,7 +142,7 @@ export class MediclaimMasterComponent implements OnInit {
     public sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
-      expenseType: new FormControl('', Validators.required),
+      expenseType: new FormControl(null, Validators.required),
       institution: new FormControl(null, Validators.required),
       policyNumber: new FormControl(null, Validators.required),
       policyStartDate: new FormControl(null, Validators.required),
@@ -210,27 +210,6 @@ export class MediclaimMasterComponent implements OnInit {
       allowSearchFilter: true,
     };
 
-    //   this.dropdownSettings = {
-    //     singleSelection: false,
-    //     idField: 'id',
-    //     textField: 'label',
-    //     selectAllText: 'Select All',
-    //     unSelectAllText: 'UnSelect All',
-    //     itemsShowLimit: 2,
-    //     allowSearchFilter: true
-    //  };
-
-    //  this.dropdownList1 = [
-    //     { id: 1, label: 'ABC' },
-    //     { id: 2, label: 'PQR' },
-    //     { id: 3, label: 'XYZ' },
-    //     { id: 4, label: 'qpb' },]
-
-    // this.dropdownList.push({familyMemberInfoId:'ab1c', name:1});
-    // this.dropdownList.push({familyMemberInfoId:'abc1', name:12});
-    // this.dropdownList.push({familyMemberInfoId:'ab1c', name:134});
-    // this.dropdownList.push({familyMemberInfoId:'abc1', name:155});
-    // this.dropdownList.push({familyMemberInfoId:'abc1', name:166});
     // Business Financial Year API Call
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
@@ -238,37 +217,66 @@ export class MediclaimMasterComponent implements OnInit {
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
-      // this.dropdownList = res.data.results;
       let abc = [];
       res.data.results.forEach((element) => {
         const obj = {
-          // label: element.familyMemberName,
-          // value: element.familyMemberInfoId,
-
           familyMemberInfoId: element.familyMemberInfoId,
           familyMemberName: element.name,
           relation: element.relationship,
         };
 
-        if (element.relation !== 'Brother' || element.relation !== 'Sister') {
-          let familyNameWithRelation =
-            element.familyMemberName + '(' + element.relation + ')';
-          abc.push({
-            familyMemberInfoId: element.familyMemberInfoId,
-            name: familyNameWithRelation,
-          });
-          console.log('family List', this.dropdownList);
-        }
+        if(this.form.value.expenseType == 'Mediclaim Premium' && this.form.value.expenseType == 'Preventive Health Check Up'){
+          if (element.relation !== 'Brother' || element.relation !== 'Sister') {
 
-        //   if (element.relation !== 'Brother' || element.relation !== 'Sister' ){
-        //   abc.push({label:element.familyMemberName, value:element.familyMemberInfoId});
-        //   console.log("family List", this.dropdownList);
-        // }
+            let familyNameWithRelation =
+              element.familyMemberName + '(' + element.relation + ')';
+            abc.push({
+              familyMemberInfoId: element.familyMemberInfoId,
+              name: familyNameWithRelation,
+            });
+            console.log('family List', this.dropdownList);
+          }
+        }
+        if(this.form.value.expenseType == 'Medical Expenses for Parents'){
+              if (element.relation === 'Senior Citizen') {
+
+              let familyNameWithRelation =
+                element.familyMemberName + '(' + element.relation + ')';
+              abc.push({
+                familyMemberInfoId: element.familyMemberInfoId,
+                name: familyNameWithRelation,
+              });
+              console.log('family List', this.dropdownList);
+            }
+      }
       });
       this.dropdownList = abc;
       console.log('dropdownList::', this.dropdownList);
     });
 
+
+     // Family Member List API call
+     this.Service.getFamilyInfo().subscribe((res) => {
+      let abc = [];
+        res.data.results.forEach((element) => {
+          const obj = {
+            familyMemberInfoId: element.familyMemberInfoId,
+            familyMemberName: element.name,
+            relation: element.relationship,
+          };
+          if (element.relation !== 'Brother' || element.relation !== 'Sister') {
+            let familyNameWithRelation =
+              element.familyMemberName + '(' + element.relation + ')';
+            abc.push({
+              familyMemberInfoId: element.familyMemberInfoId,
+              name: familyNameWithRelation,
+            });
+            console.log('family List', this.dropdownList);
+          }
+        });
+        this.dropdownList = abc;
+        console.log('dropdownList::', this.dropdownList);
+      });
     // this.deactivateRemark();
 
     // Get All Institutes From Global Table
@@ -423,7 +431,7 @@ export class MediclaimMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0 &&  this.form.value.expenseType == 'Mediclaim Premium') {
       this.alertService.sweetalertWarning(
         'Mediclaim  Document Needed to Create Master.'
       );
@@ -470,11 +478,10 @@ export class MediclaimMasterComponent implements OnInit {
           mediclaimMasterId: 0,
           expenseType: this.masterForm.expenseType.value,
           institution: this.masterForm.institution.value,
-          policyNumber: this.masterForm.policyNumber.value,
-          policyStartDate: this.masterForm.policyStartDate.value,
-          policyEndDate: this.masterForm.policyEndDate.value,
-          mediclaimBenefeciaryDetailList: this.masterForm
-            .mediclaimBenefeciaryDetailList.value,
+          // policyNumber: this.masterForm.policyNumber.value,
+          // policyStartDate: this.masterForm.policyStartDate.value,
+          // policyEndDate: this.masterForm.policyEndDate.value,
+          mediclaimBenefeciaryDetailList: this.masterForm.mediclaimBenefeciaryDetailList.value,
 
         };
         data.proofSubmissionId = this.proofSubmissionId;
@@ -694,6 +701,12 @@ export class MediclaimMasterComponent implements OnInit {
     if (this.form.value.expenseType !== 'Mediclaim Premium') {
       this.visibilityFlag = false;
       // this.frequencyOfPaymentList = this.frequencyOfTermDepositPaymentList;
+      this.form.get('policyNumber').clearValidators();
+      this.form.get('policyNumber').updateValueAndValidity();
+      this.form.get('policyStartDate').clearValidators();
+      this.form.get('policyStartDate').updateValueAndValidity();
+      this.form.get('policyEndDate').clearValidators();
+      this.form.get('policyEndDate').updateValueAndValidity();
       this.form.get('frequencyOfPayment').clearValidators();
       this.form.get('frequencyOfPayment').updateValueAndValidity();
       this.form.get('premiumAmount').clearValidators();
@@ -708,6 +721,12 @@ export class MediclaimMasterComponent implements OnInit {
       // this.frequencyOfPaymentList = this.frequencyOfPaymentListInMediclaim;
       // this.form.controls.premiumAmount.setValue(null);
       // this.form.controls.annualAmount.setValue(null);
+      this.form.get('policyNumber').setValidators([Validators.required]);
+      this.form.get('policyNumber').updateValueAndValidity();
+      this.form.get('policyStartDate').setValidators([Validators.required]);
+      this.form.get('policyStartDate').updateValueAndValidity();
+      this.form.get('policyEndDate').setValidators([Validators.required]);
+      this.form.get('policyEndDate').updateValueAndValidity();
       this.form.get('frequencyOfPayment').setValidators([Validators.required]);
       this.form.get('frequencyOfPayment').updateValueAndValidity();
       this.form.get('premiumAmount').setValidators([Validators.required]);

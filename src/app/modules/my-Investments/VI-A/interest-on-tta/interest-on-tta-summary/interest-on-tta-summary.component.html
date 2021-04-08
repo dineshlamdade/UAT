@@ -40,9 +40,9 @@
               </td>
               <td class="wd-10">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                (click)="redirectToDeclarationActual(summary.bankName, summary.accountNumber, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                (click)="redirectToDeclarationActual(summary.bankName, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                (click)="redirectToDeclarationActual(summary.bankName, summary.accountNumber, 'view')" tooltip="View"></i>
+                (click)="redirectToDeclarationActual(summary.bankName, 'view')" tooltip="View"></i>
               </td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
