@@ -13,7 +13,6 @@ import { AlertServiceService } from '../../../core/services/alert-service.servic
 export class ClaimFormComponent implements OnInit {
   public claimForm: FormGroup;
   public claimGridDataList: Array<any> = [];
-  public selectedListElement: Array<any> = [];
   public dropdownListData: Array<any> = [];
   public submitted: boolean = false;
   public loading: boolean = false;
@@ -66,7 +65,8 @@ export class ClaimFormComponent implements OnInit {
       if (this.claimForm.invalid) {
         return;
       }
-      if(this.claimGridDataList.length === 0){
+      let isAllSelectField = this.claimGridDataList.every(obj => obj.enable == false);
+      if (isAllSelectField) {
         this.alertService.sweetalertWarning('Please select any field list')
         return
       }else{
@@ -85,6 +85,7 @@ export class ClaimFormComponent implements OnInit {
         this.alertService.sweetalertMasterSuccess("Register form updated successfully", "");
         console.log("templateUserId", this.templateUserIdList);
       })
+      this.dropdownListData = [];
     }
  this.resetForm();
       
@@ -93,6 +94,11 @@ export class ClaimFormComponent implements OnInit {
       if (this.claimForm.invalid) {
         return;
       }
+      let isAllSelectField = this.claimGridDataList.every(obj => obj.enable == false);
+      if (isAllSelectField) {
+        this.alertService.sweetalertWarning('Please select any field list')
+        return
+      }else{
       console.log(this.claimForm.value);
       let postData = this.claimForm.getRawValue();
       postData.claimTemplateDetailsRequestDTO = this.claimGridDataList  ;
@@ -103,6 +109,7 @@ export class ClaimFormComponent implements OnInit {
         this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
         console.log("templateUserId", this.templateUserIdList);
       })
+    }
       this.resetForm();
     }
   }
@@ -136,9 +143,8 @@ export class ClaimFormComponent implements OnInit {
       this.claimForm.disable();
     //  this.claimGridDataList = [];
       this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
-      // this.selectedListElement = res.data.results[0].claimTemplateDetailsResponseDTO;
       this.isView = true;
-      console.log("this.selectedListElement", this.selectedListElement)
+      console.log("this.claimGridDataList", this.claimGridDataList)
 
     })
 
@@ -152,9 +158,9 @@ export class ClaimFormComponent implements OnInit {
       console.log(claimTemplateList);
       this.claimForm.patchValue(claimTemplateList);
      // this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
-    //  this.selectedListElement = response.data.results[0].claimTemplateDetailsResponseDTO;
+    //  this.claimGridDataList = response.data.results[0].claimTemplateDetailsResponseDTO;
         this.isEdit = true;
-      // console.log("this.selectedListElement", this.selectedListElement)
+      // console.log("this.claimGridDataList", this.claimGridDataList)
       for (let i = 0; i < response.data.results[0].claimTemplateDetailsResponseDTO.length; i++) {
         const myobj = {
           claimTempStandardFieldMasterId: response.data.results[0].claimTemplateDetailsResponseDTO[i].claimTempStandardFieldMasterId,
@@ -203,13 +209,14 @@ export class ClaimFormComponent implements OnInit {
       let listData = this.claimGridDataList[index];
       listData.mandatory = false;
       listData.dropDownValues = [];
-      this.selectedListElement.push(listData);
-      console.log("myvalue", this.selectedListElement);
+      this.dropdownListData = [];
+      this.claimGridDataList.push(listData);
+      console.log("myvalue", this.claimGridDataList);
     } else {
-      const indexValue = this.selectedListElement.indexOf(fieldName);
-      this.selectedListElement.splice(indexValue, 1);
+      const indexValue = this.claimGridDataList.indexOf(fieldName);
+      this.claimGridDataList.splice(indexValue, 1);
     }
-    console.log("selected value", this.selectedListElement);
+    console.log("selected value", this.claimGridDataList);
     console.log("claimGridDataList value", this.claimGridDataList);
   }
 
@@ -218,22 +225,22 @@ export class ClaimFormComponent implements OnInit {
     console.log(index, changeValue, fieldName);
     if (changeValue == "") {
       let falseValue = "false";
-      let indexData = this.selectedListElement.findIndex(getIndex => getIndex.fieldName == fieldName);
-      this.selectedListElement[indexData].mandatory = JSON.parse(falseValue.toLowerCase());
-      console.log("mindatory index2", this.selectedListElement);
+      let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
+      this.claimGridDataList[indexData].mandatory = JSON.parse(falseValue.toLowerCase());
+      console.log("mindatory index2", this.claimGridDataList);
     } else {
-      let indexData = this.selectedListElement.findIndex(getIndex => getIndex.fieldName == fieldName);
-      this.selectedListElement[indexData].mandatory = JSON.parse(changeValue.toLowerCase());
-      console.log("mindatory index", this.selectedListElement);
+      let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
+      this.claimGridDataList[indexData].mandatory = JSON.parse(changeValue.toLowerCase());
+      console.log("mindatory index", this.claimGridDataList);
     }
   }
 
 
   displayChangeEvt(index, changeValue, fieldName) {
     console.log(index, changeValue, fieldName);
-    let indexData = this.selectedListElement.findIndex(getIndex => getIndex.fieldName == fieldName);
-    this.selectedListElement[indexData].displayName = changeValue;
-    console.log("Display change", this.selectedListElement);
+    let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
+    this.claimGridDataList[indexData].displayName = changeValue;
+    console.log("Display change", this.claimGridDataList);
   }
 
 
@@ -242,19 +249,19 @@ export class ClaimFormComponent implements OnInit {
     this.dropdownListData.push(dropList);
     console.log("dropdownListData", this.dropdownListData);
     this.dropListModel = '';
-    let indexField = this.selectedListElement.findIndex(getIndex => getIndex.fieldName == dropdownListid)
-    this.selectedListElement[indexField].dropDownValues = this.dropdownListData;
+    let indexField = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
+    this.claimGridDataList[indexField].dropDownValues = this.dropdownListData;
   }
 
   getDropdownListRemove(index, dropdownListid) {
     this.dropdownListData.splice(index, 1);
     console.log(this.dropdownListData);
-    let indexField = this.selectedListElement.findIndex(getIndex => getIndex == dropdownListid)
-    this.selectedListElement[indexField].dropDownValues = this.dropdownListData;
+    let indexField = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
+    this.claimGridDataList[indexField].dropDownValues = this.dropdownListData;
   }
   resetForm(){
     window.scrollTo(0, 0);
-    this.selectedListElement = [];
+    this.claimGridDataList = [];
     this.claimForm.reset({
       active: new FormControl(true),
     });

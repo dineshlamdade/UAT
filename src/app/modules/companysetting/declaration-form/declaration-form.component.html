@@ -39,8 +39,8 @@
                                                             <select name="" class="form-control custom-select"
                                                                 [ngClass]="{'is-invalid' : submitted && f.module.errors}"
                                                                 formControlName="module"
-                                                                (change)="moduleChange($event.target.value)">
-                                                                <option [ngValue]="" disabled>Select
+                                                                 >
+                                                                <option value="" disabled>Select
                                                                 </option>
                                                                 <option *ngFor="let tech of allTechnologies"
                                                                     [ngValue]="tech"> {{tech }}
@@ -63,8 +63,8 @@
                                                             <select name="" class="form-control custom-select"
                                                                 [ngClass]="{'is-invalid' : submitted && f.payRollArea.errors}"
                                                                 formControlName="payRollArea"
-                                                                (change)="companyChange($event.target.value)">
-                                                                <option [ngValue]="" disabled>Select
+                                                                 >
+                                                                <option  value=""  disabled>Select
                                                                 </option>
                                                                 <option *ngFor="let tech of allTechnologies"
                                                                     [ngValue]="tech"> {{tech }}

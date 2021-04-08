@@ -225,7 +225,7 @@
                                                               </div>
                                 
                                                               <input data-provide="datepicker" data-date-autoclose="true" formControlName="billLastFinYearClaimedInNextFinYear"
-                                                                class="form-control" placeholder="DD-MMM" (ngModelChange)="OnDateChange($event)"
+                                                                class="form-control" placeholder="DD-MMM"
                                                                 (bsValueChange)="onChangeFromDate()"
                                                                 ngClass="{'is-invalid' : computationForm.get('billLastFinYearClaimedInNextFinYear').status == 'INVALID'}"
                                                                 bsDatepicker
@@ -322,12 +322,7 @@
 
                 </div>
             </div>
-            <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
-                <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
-                    (click)="scrollToTop()">
-                    <i class="fa fa-angle-double-up text-white font-18"></i>
-                </button>
-            </div>
+          
         </div>
     </div>
 

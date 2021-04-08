@@ -65,6 +65,7 @@ const routes: Routes = [
     //////////////////////////////////////////
     { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
     { path: 'lock', loadChildren: './modules/lock/lock.module#LockModule' },
+    { path: 'reimbursement-master', loadChildren: './modules/reimbursement/reimbursement.module#ReimbursementModule' },
     // {
     //   path: 'payroll',
     //   component: payrollComponent,

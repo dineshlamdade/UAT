@@ -71,4 +71,21 @@ postReimbursementSubmitData(data) {
       return res;
     }));
 }
+
+getAllTemplateList() {
+  return this.http.get(this.apiUrl + 'reimbursement-general-setting/reimbursement-setting-getall')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+}
+
+getGeneralTemplateViewById(headId:string){
+return this.http.get(this.apiUrl + 'reimbursement-general-setting/reimbursement-setting-id/' + headId )
+.pipe(map((response:any)=>{
+return response
+}));
+}
+
+
+
 }

@@ -112,7 +112,7 @@ export class LicmasterComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
 
-  public proofSubmissionId ;
+  public proofSubmissionId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -152,7 +152,7 @@ export class LicmasterComponent implements OnInit {
       ecs: new FormControl('0'),
       licMasterPaymentDetailsId: new FormControl(0),
       licMasterId: new FormControl(0),
-      proofSubmissionId : new FormControl('')
+      proofSubmissionId: new FormControl('')
     });
 
     this.frequencyOfPaymentList = [
@@ -172,13 +172,13 @@ export class LicmasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-  ngOnChanges()	{
-    console.log('policyNumber',this.policyNumber);
+  ngOnChanges() {
+    console.log('policyNumber', this.policyNumber);
     // this.editMaster(this.policyNumber.policyNo);
   }
   public ngOnInit(): void {
 
-
+    console.log('policyNumber', this.policyNumber);
     this.masterPage();
     console.log('masterPage::', this.policyNumber);
 
@@ -274,7 +274,7 @@ export class LicmasterComponent implements OnInit {
     this.form.patchValue({
       fromDate: this.form.value.policyStartDate,
     });
-     console.log('policyMinDate',this.policyMinDate);
+    console.log('policyMinDate', this.policyMinDate);
 
 
     this.setPaymentDetailToDate();
@@ -360,13 +360,13 @@ export class LicmasterComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    console.log("urlArray.length",this.urlArray.length)
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
+    console.log("urlArray.length", this.urlArray.length)
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'LIC Document needed to Create Master.',
 
       );
-      console.log("urlArray.length",this.urlArray.length)
+      console.log("urlArray.length", this.urlArray.length)
       return;
     } else {
       const from = this.datePipe.transform(
@@ -383,11 +383,11 @@ export class LicmasterComponent implements OnInit {
       // }
       console.log('proofSubmissionId::', this.proofSubmissionId);
       const data = this.form.getRawValue();
-            data.proofSubmissionId = this.proofSubmissionId;
+      data.proofSubmissionId = this.proofSubmissionId;
 
-            data.fromDate = from;
-            data.toDate = to;
-            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.fromDate = from;
+      data.toDate = to;
+      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
       console.log('LICdata::', data);
 
@@ -503,26 +503,26 @@ export class LicmasterComponent implements OnInit {
         element.toDate = new Date(element.toDate);
       });
       console.log(policyNo)
-      const obj =  this.findByPolicyNo(policyNo,this.masterGridData);
+      const obj = this.findByPolicyNo(policyNo, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
+      console.log("Edit Master", obj);
+      if (obj != 'undefined') {
 
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.policyNo;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.documentInformationList;
-      this.proofSubmissionId = obj.proofSubmissionId;
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.policyNo;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
 
       }
     });
 
   }
 
-  findByPolicyNo(policyNo,masterGridData){
+  findByPolicyNo(policyNo, masterGridData) {
     return masterGridData.find(x => x.policyNo === policyNo)
   }
 
@@ -602,7 +602,7 @@ export class LicmasterComponent implements OnInit {
     // );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
+  docViewer(template3: TemplateRef<any>, index: any) {
     console.log("---in doc viewer--");
     this.urlIndex = index;
 
@@ -612,7 +612,7 @@ export class LicmasterComponent implements OnInit {
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe
-    console.log("urlSafe::",  this.urlSafe);
+    console.log("urlSafe::", this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
       Object.assign({}, { class: 'gray modal-xl' }),

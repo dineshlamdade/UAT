@@ -77,7 +77,7 @@ import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
-
+import { ReimbursementModule } from './modules/reimbursement/reimbursement.module';
 
 
 
@@ -89,6 +89,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 
     SettingsComponent,
 
+ 
 
 
 
@@ -119,6 +120,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     //  payrollModule,
     CompanySettingModule,
     LockModule,
+    ReimbursementModule,
     ////////////////////////////////
     MyInvestmentsModule,
     investmentChapterVIAModule,
@@ -157,8 +159,7 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     EmployeemasterlistpageModule,
 
     EmailSmsModule,
-    LoanMasterModule
-
+    LoanMasterModule,
   ],
 
   providers: [BsDatepickerModule,

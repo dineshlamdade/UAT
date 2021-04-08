@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // import { TemplateRef } from '@angular/core';
@@ -11,6 +11,7 @@ import { ReimbursementMasterService } from '../../reimbursement-master/reimburse
   styleUrls: ['./remb-general.component.scss']
 })
 export class RembGeneralComponent implements OnInit {
+  @Input() public policyNumber: any;
   public dropdownList = [];
   public selectedItems = [];
   public headtypelist = [];
@@ -32,8 +33,11 @@ export class RembGeneralComponent implements OnInit {
   public submitted = false;
   public rembHeadId: number;
   public templateData = [];
+  public tabIndex = 0;
+  @Input() policyNo: string;
+  @Output() rembsettingid = new EventEmitter<any>();
   constructor(
-    public reimbursementMasterService: ReimbursementMasterService,
+    public service: ReimbursementMasterService,
     public fb: FormBuilder,
     public router: Router,
     public alertService: AlertServiceService,
@@ -42,7 +46,10 @@ export class RembGeneralComponent implements OnInit {
 
 
   }
-
+  ngOnChanges() {
+    console.log('policyNumber', this.policyNumber);
+    // this.editMaster(this.policyNumber.policyNo);
+  }
   ngOnInit(): void {
     this.generalForm = this.fb.group({
       reimbursementMasterGeneralSettingId: new FormControl(''),
@@ -113,11 +120,18 @@ export class RembGeneralComponent implements OnInit {
     this.getClaimTemplateFields();
     this.getSummaryTemplateFields();
     this.getDeclarationTemplateFields();
+
+    if(this.policyNumber != undefined || this.policyNumber != null){
+      const inputData = this.policyNumber;
+      this.getViewgeneralById(inputData.policyNo);
+      console.log("getViewgeneralById", inputData.policyNo);
+    }
   }
 
   get f() { return this.generalForm.controls; }
 
   submitGeneralMaster() {
+    window.scrollTo(0, 0);
     this.submitted = true;
     if (this.generalForm.invalid) {
       return;
@@ -142,9 +156,22 @@ export class RembGeneralComponent implements OnInit {
     // postData.reimbursementTrackingRequestDTO.method = this.eventHead;
     postData.reimbursementTrackingRequestDTO = saveArray;
     console.log("postdata", postData);
-    this.reimbursementMasterService.setReimbursementSubmitData(postData);
+    this.service.setReimbursementSubmitData(postData);
     this.alertService.sweetalertMasterSuccess("General setting form submitted successfully", "");
+    this.jumpToMasterPage();
   }
+
+  getViewgeneralById(policyNo){
+    window.scrollTo(0, 0);
+    this.service.getGeneralTemplateViewById(policyNo).subscribe((res)=>{
+      console.log("results", res);
+      let generalViewData = res.data.results[0];
+      this.generalForm.patchValue(generalViewData);
+      this.generalForm.disable();
+    })
+  }
+
+
 
   onItemSelect(item: any) {
     console.log(item);
@@ -152,6 +179,10 @@ export class RembGeneralComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
+
+
+
+
 
 
   // .................Get value from fileds ......................
@@ -165,13 +196,13 @@ export class RembGeneralComponent implements OnInit {
 
   getReimbursementHeadType() {
     console.log("ssss");
-    this.reimbursementMasterService.getReimbursementHeadType().subscribe((res) => {
+    this.service.getReimbursementHeadType().subscribe((res) => {
       console.log("res master", res);
       this.headtypelist = res.data.results;
     })
   }
   getReimbursementAllAttributes() {
-    this.reimbursementMasterService.getReimbursementAllAttributes(this.rembHeadId).subscribe((res) => {
+    this.service.getReimbursementAllAttributes(this.rembHeadId).subscribe((res) => {
       this.headAllattributes = res.data.results[0];
       console.log("res attribute", this.headAllattributes);
       this.generalAttrSelectElement = this.headAllattributes;
@@ -180,7 +211,7 @@ export class RembGeneralComponent implements OnInit {
   }
 
   getReimbursementAllFrequency() {
-    this.reimbursementMasterService.getReimbursementAllFrequency().subscribe((res) => {
+    this.service.getReimbursementAllFrequency().subscribe((res) => {
       this.headAllSequency = res.data.results[0];
       console.log("res headAllSequency", this.headAllSequency);
     })
@@ -188,7 +219,7 @@ export class RembGeneralComponent implements OnInit {
 
   getRegisterTemplateFields() {
     console.log("ssss");
-    this.reimbursementMasterService.getRegisterTemplateFields().subscribe((res) => {
+    this.service.getRegisterTemplateFields().subscribe((res) => {
       console.log("getRegisterTemplateFields", res);
       this.headTemplateList1 = res.data.results;
     })
@@ -196,7 +227,7 @@ export class RembGeneralComponent implements OnInit {
 
   getClaimTemplateFields() {
     console.log("ssss");
-    this.reimbursementMasterService.getClaimTemplateFields().subscribe((res) => {
+    this.service.getClaimTemplateFields().subscribe((res) => {
       console.log("getClaimTemplateFields", res);
       this.headTemplateList2 = res.data.results;
     })
@@ -204,7 +235,7 @@ export class RembGeneralComponent implements OnInit {
 
   getSummaryTemplateFields() {
     console.log("ssss");
-    this.reimbursementMasterService.getSummaryTemplateFields().subscribe((res) => {
+    this.service.getSummaryTemplateFields().subscribe((res) => {
       console.log("getSummaryTemplateFields", res);
       this.headTemplateList3 = res.data.results;
     })
@@ -212,7 +243,7 @@ export class RembGeneralComponent implements OnInit {
 
   getDeclarationTemplateFields() {
     console.log("ssss");
-    this.reimbursementMasterService.getDeclarationTemplateFields().subscribe((res) => {
+    this.service.getDeclarationTemplateFields().subscribe((res) => {
       console.log("getDeclarationTemplateFields", res);
       this.headTemplateList4 = res.data.results[0];
     })
@@ -232,7 +263,14 @@ claimNavigate(){
 declarationNavigate(){
   this.router.navigate(['/declarationForm']);
 }
-
+jumpToMasterPage() {
+  this.tabIndex = 2;
+  const rembsettingid = {
+    policyNo : 2,
+    tabIndex : this.tabIndex,
+  };
+     this.rembsettingid.emit(rembsettingid);
+}
 
 public eventHead:'';
   // ...................Event calls methods..................
@@ -270,6 +308,8 @@ public eventHead:'';
     this.headAttributeTable = false;
     this.headRembType2 = true;
   }
+
+ 
 
   // ...................Get Attribute List Events data.....................?
   amountLimitChange(index, eventAttr, typeValue) {

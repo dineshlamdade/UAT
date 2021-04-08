@@ -45,11 +45,11 @@ console.log(this.service.getReimbursementSubmitData());
       lapseAccruedEntPayableFrequency: new FormControl(''),
       LapseaccrentpayablePeriodDefinition: new FormControl(''),
       lapseAccruedEntPayableNoOfCycle: new FormControl(''),
-      subBillMethod: new FormControl(''),
+      subBillMethod: new FormControl('Cycle'),
       subBillWithCount: new FormControl(''),
-      billDateNotAllowedMethod: new FormControl(''),
+      billDateNotAllowedMethod: new FormControl('Cycle'),
       billDateNotAllowedCount: new FormControl(''),
-      billLastFinYearClaimedInNextFinYear: new FormControl('2015-03-25'),
+      billLastFinYearClaimedInNextFinYear: new FormControl(''),
       unPaidBillCarryForward: new FormControl('false'),
       cyclewiseNumLineItemsAllowed: new FormControl(''),
       gapsBetwTwoHeadClaims: new FormControl(''),
@@ -80,10 +80,11 @@ console.log(this.service.getReimbursementSubmitData());
   get f() { return this.computationForm.controls; }
 
   submitComputationMaster() {
+    window.scrollTo(0, 0);
     this.submitted = true;
-    // if (this.computationForm.invalid) {
-    //   return;
-    // }
+    if (this.computationForm.invalid) {
+      return;
+    }
    // console.log("this.generalform", this.computationForm.value);
     let postData = this.computationForm.getRawValue();
     // postData.reimbursementTrackingRequestDTO = this.computationForm;
@@ -105,10 +106,11 @@ console.log(this.service.getReimbursementSubmitData());
  
 
   onChangeFromDate() {
-    const from = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'yyyy-MM-dd');
-    console.log(from);
-    this.today = new Date(from);
-
+    const yearDate = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
+    console.log("form", yearDate);
+    this.today = new Date(yearDate);
+    console.log("yearDate", this.today);
+    this.computationForm.controls['billLastFinYearClaimedInNextFinYear'].setValue(yearDate);
   }
 // ...........................  Select box dropdown items events............
 
