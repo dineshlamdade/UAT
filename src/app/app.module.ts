@@ -60,6 +60,15 @@ import { LockModule } from './modules/lock/lock.module';
 
 
 
+
+
+/* import {SignaturePadModule} from 'angular2-signaturepad'; */
+
+/* import { SignaturePadModule } from './modules/@ng-plus/signature-pad'; */
+/* import { } from '@ng-plus/signature-pad' */
+
+
+
 ////////////////////////////////////
 
 
@@ -67,6 +76,8 @@ import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
+import { from } from 'rxjs';
+import { SignaturePadModule } from 'angular2-signaturepad';
 
 
 
@@ -132,7 +143,9 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     UploadexcelModule,
     EmployeemasterlistpageModule,
     EmailSmsModule,
-    LoanMasterModule
+    LoanMasterModule,
+    SignaturePadModule
+  
   ],
 
   providers: [BsDatepickerModule,

@@ -153,7 +153,7 @@
             <div class="col-sm-6 col-md-2">
                <label class="custom-switch">
                   <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                  <span class="custom-switch-indicator"></span>&nbsp;
+                  <!-- <span class="custom-switch-indicator"></span>&nbsp; -->
                   <span class="form-label">Landlord PAN</span>
                </label>
                <input type="text" maxlength="12" minlength="10" formControlName="landLordPan"
@@ -242,12 +242,11 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
-                    
-                        data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                         placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()"
-                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
-                     <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
+                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"                    
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control" 
+                         placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()" 
+                          [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
+                          <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.fromDate.errors.required">Start Date is mandatory</div>
                      </div> -->
                      
@@ -261,10 +260,10 @@
                      <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                      </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate"
-                        data-provide="datepicker" data-date-autoclose="true" class="form-control" 
-                         placeholder="End Date" bsDatepicker  (bsValueChange)="getAgreementRent2From()"
-                        [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
+                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" 
+                        data-provide="datepicker" data-date-autoclose="true" class="form-control"   [maxDate]="AgreementtoDate" 
+                         placeholder="End Date" bsDatepicker  (bsValueChange)="getAgreementRent2From()"  [minDate]="rentMinDate"
+                         [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
                      <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors"
                         class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.toDate.errors.required">From Date is mandatory</div>
@@ -373,7 +372,7 @@
                      <input [bsConfig]="{ dateInputFormat:'DD-MMM-YYYY' }" formControlName="toDate" 
                          data-provide="datepicker"
                         data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker                     
-                        [maxDate]="rentMaxDate"   
+                        [maxDate]="rentMaxDate"  
                      [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }"  >
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
                         <div *ngIf="landRentDetailForm.toDate.errors.required">Property Name is mandatory</div>
