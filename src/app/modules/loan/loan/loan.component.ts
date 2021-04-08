@@ -28,5 +28,6 @@ export class LoanComponent implements OnInit {
   {
     this.router.navigate(['/loan/add-new-loan']);
   }
-
+  download(){}
+  exportAsXLSX(){}
 }

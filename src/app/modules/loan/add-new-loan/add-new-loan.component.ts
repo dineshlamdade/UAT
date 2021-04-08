@@ -215,58 +215,8 @@ getGuarantorData()
 this.loanservice.getGuarantorData(this.empCode).subscribe(res =>
   {
     this.guarantorDataForTable = res.data.results;
-    // console.log("@@@@@@",this.guarantorDataForTable);
-    if(this.empCode == '1004'){
-      this.fullName = 'Mayur Kardile'
-     let data = [
-      {
-                  "employeeCode": this.empCode,
-                  "employeeFullName":this.fullName,
-                  "createdBy":null,
-                  "createDateTime":null,
-                  "lastModifiedBy":null,
-                  "lastModifiedDateTime":null,
-                  "active": true,
-                }
-              ]
+    console.log("@@@@@@",this.guarantorDataForTable);
 
-      this.AddLoanForm.controls['guarantors'].setValue(data);
-    }
-    else if(this.empCode == '1002'){
-      this.fullName = 'Pankaj Joshi'
-      let data = [
-        {
-                    "employeeCode": this.empCode,
-                    "employeeFullName":this.fullName,
-                    "createdBy":'ajay',
-                    "createDateTime":null,
-                    "lastModifiedBy":null,
-                    "lastModifiedDateTime":null,
-                    "active": true,
-                  }
-                ]
-
-        this.AddLoanForm.controls['guarantors'].setValue(data);
-
-
-    }else{
-      this.fullName = ''
-
-      let data = [
-        {
-                    "employeeCode": this.empCode,
-                    "employeeFullName":this.fullName,
-                    "createdBy":null,
-                    "createDateTime":null,
-                    "lastModifiedBy":null,
-                    "lastModifiedDateTime":null,
-                    "active": true,
-                  }
-                ]
-
-        this.AddLoanForm.controls['guarantors'].setValue(data);
-
-    }
   })
   let deviation = [
     {
