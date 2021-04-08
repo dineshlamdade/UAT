@@ -215,6 +215,7 @@ getGuarantorData()
 this.loanservice.getGuarantorData(this.empCode).subscribe(res =>
   {
     this.guarantorDataForTable = res.data.results;
+
     console.log("@@@@@@",this.guarantorDataForTable);
 
   })
