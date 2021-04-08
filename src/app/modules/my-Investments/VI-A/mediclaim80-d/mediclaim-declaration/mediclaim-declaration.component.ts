@@ -191,6 +191,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   public testnumber2: number =5000;
   public expenseType: string = 'All';
   mediclaimTransactionList: any;
+  mediclaimTransList = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -1543,15 +1544,46 @@ selectedTransactionInstName(institution: any) {
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
 
     let data: any = {};
-    if (this.expenseType == 'Mediclaim Premium') {
-      data.mediclaimTransactionList = this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList.mediclaimTransactionList;
-      // data.mediclaimTransactionList = this.mediclaimPremiumTransactionList;
-    }
-    if (this.expenseType == 'Preventive Health Check Up') {
-      data.mediclaimTransactionList = this.preventiveHealthCheckupTransactionDetail;
-    }
-    if (this.expenseType == 'Medical Expenses for Parents') {
-      data.mediclaimTransactionList = this.medicalExpenseTransactionDetail;
+    if (this.uploadGridData.length > 0) {
+      for (let i = 0; i < this.uploadGridData.length; i++) {
+        // to check with medical premium
+        if (this.expenseType == 'Mediclaim Premium') {
+          const medPremTransList = this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList;
+          for (let k = 0; k < medPremTransList.length; k++) {
+            if (this.globalPolicy == medPremTransList[k].institution){
+              const medTransList = this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[k].mediclaimTransactionList;
+              for (let j = 0; j < medTransList.length; j++) {
+                if (this.uploadGridData[i] == medTransList[j].mediclaimTransactionId) {
+                  this.mediclaimTransList.push(medTransList[j]);
+                }
+              }
+              data.mediclaimTransactionList = this.mediclaimTransList;
+            }
+          }
+        }
+
+        // to check with Preventive Health Check Up
+        if (this.expenseType == 'Preventive Health Check Up') {
+          const prevHealthCheckupTransList = this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList;
+          for (let j = 0; j < prevHealthCheckupTransList.length; j++) {
+            if (this.uploadGridData[i] == prevHealthCheckupTransList[j].mediclaimTransactionId) {
+              this.mediclaimTransList.push(prevHealthCheckupTransList[j]);
+            }
+          }
+          data.mediclaimTransactionList = this.mediclaimTransList;
+        }
+
+        // to check with Medical Expenses for Parents
+        if (this.expenseType == 'Medical Expenses for Parents') {
+          const medExpTransList = this.medicalExpenseTransactionDetail.medicalExpenseTransactionList;
+          for (let j = 0; j < medExpTransList.length; j++) {
+            if (this.uploadGridData[i] == medExpTransList[j].mediclaimTransactionId) {
+              this.mediclaimTransList.push(medExpTransList[j]);
+            }
+          }
+          data.mediclaimTransactionList = this.mediclaimTransList;
+        }
+      }
     }
     data.mediclaimTransactionIds = this.uploadGridData;
     data.receiptAmount = this.receiptAmount;

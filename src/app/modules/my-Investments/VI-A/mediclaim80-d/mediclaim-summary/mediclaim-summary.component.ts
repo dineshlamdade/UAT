@@ -108,33 +108,33 @@ export class MediclaimSummaryComponent implements OnInit {
       this.mediclaimSummaryComputationDeclared =
         res.data.results[0].mediclaimSummaryComputationDeclared;
       this.mediclaimSummaryComputationActual = res.data.results[0].mediclaimSummaryComputationActual;
-      this. totalExpenditureOfSelfSpouseChildrenWithoutParents =
+      this.totalExpenditureOfSelfSpouseChildrenWithoutParents =
       res.data.results[0].totalExpenditureOfSelfSpouseChildrenWithoutParents;
-      this. totalExpenditureOfSelfSpouseChildrenWithParents =
+      this.totalExpenditureOfSelfSpouseChildrenWithParents =
       res.data.results[0]. totalExpenditureOfSelfSpouseChildrenWithParents;
-      this. totalExpenditureOfHealthCheckup =
+      this.totalExpenditureOfHealthCheckup =
       res.data.results[0].totalExpenditureOfHealthCheckup;
-      this. totalExpenditure =
+      this.totalExpenditure =
       res.data.results[0]. totalExpenditure;
-      this. limitOfSelfSpouseChildrenNonSeniorCitizen =
+      this.limitOfSelfSpouseChildrenNonSeniorCitizen =
       res.data.results[0]. limitOfSelfSpouseChildrenNonSeniorCitizen;
-      this. limitOfSelfSpouseChildrenSeniorCitizen =
+      this.limitOfSelfSpouseChildrenSeniorCitizen =
       res.data.results[0]. limitOfSelfSpouseChildrenSeniorCitizen;
-      this. limitOfParentsNonSeniorCitizen =
+      this.limitOfParentsNonSeniorCitizen =
       res.data.results[0]. limitOfParentsNonSeniorCitizen;
-      this. limitOfParentsSeniorCitizen =
+      this.limitOfParentsSeniorCitizen =
       res.data.results[0]. limitOfParentsSeniorCitizen;
-      this. limitOfHealthCheckup =
+      this.limitOfHealthCheckup =
       res.data.results[0]. limitOfHealthCheckup;
-      this. totalLimit =
+      this.totalLimit =
       res.data.results[0]. totalLimit;
-      this. totalBenefitOfSelfSpouseChildrenWithoutParents =
+      this.totalBenefitOfSelfSpouseChildrenWithoutParents =
       res.data.results[0]. totalBenefitOfSelfSpouseChildrenWithoutParents;
-      this. totalBenefitOfOnlyParents =
+      this.totalBenefitOfOnlyParents =
       res.data.results[0]. totalBenefitOfOnlyParents;
-      this. totalBenefitOfSelfSpouseChildrenWithParents =
+      this.totalBenefitOfSelfSpouseChildrenWithParents =
       res.data.results[0]. totalBenefitOfSelfSpouseChildrenWithParents;
-      this. totalBenefit =
+      this.totalBenefit =
       res.data.results[0]. totalBenefit;
 
 
