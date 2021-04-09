@@ -20,6 +20,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./tax-adjustments-amount.component.scss'],
 })
 export class TaxAdjustmentsAmountComponent implements OnInit {
+  row = [];
   public submitted = false;
   public modalRef: BsModalRef;
   public tabIndex = 0;
@@ -92,6 +93,22 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
       });
       console.log('response', this.AdditionalTaxList);
     });
+  }
+  addTable() {
+    const obj = {
+      additionalTaxAdjustmentId: '',
+      employeeMasterId: '',
+      taxAdjustmentType: '',
+      toDate: Date,
+      fromDate: Date,
+      deductionAmountPerCycle: '',
+      financialYear: Date,
+      cycleDefinition: '',
+    };
+    this.row.push(obj);
+  }
+  deleteRows(x){
+    this.row.splice(x, 1 );
   }
 
   // ---------------- Fixed Deposit Transaction Form -----------------
