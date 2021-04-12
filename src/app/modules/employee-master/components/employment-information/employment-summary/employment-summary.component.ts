@@ -60,7 +60,7 @@ export class EmploymentSummaryComponent implements OnInit {
     this.EmploymentInformationService.getEmploymentInformationGridSummary(this.employeeMasterId).subscribe(res => {
       
       this.EmploymentInformationSumarry = res.data.results;
-      console.log(this.EmploymentInformationSumarry);
+     // console.log(this.EmploymentInformationSumarry);
       this.joiningDate = res.data.results[0].joiningDate;
       if (res.data.results[0].joiningDate) {
         localStorage.setItem('joiningDate', res.data.results[0].joiningDate);
@@ -167,7 +167,8 @@ export class EmploymentSummaryComponent implements OnInit {
       }, 500)
     }
     if (element.transaction == 'Joining') {
-      element.editJoining = true;
+      element.editJoining = true;         
+      element.employeeExitInfoId= this.employeeExitInfoId ;
       element.startdate = '2020-10-10';
       setTimeout(() => {
         this.EventEmitterService.getJoiningInitiate(element);

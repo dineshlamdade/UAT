@@ -12,7 +12,7 @@ import { ElectricVehicleService } from '../electric-vehicle.service';
 })
 export class ElectricVehicleSummaryComponent implements OnInit {
 
-  @Input() institution: string;
+  @Input() lenderName: string;
   @Input() vehicleNumber: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() vehicleNo = new EventEmitter<any>();
@@ -29,10 +29,12 @@ export class ElectricVehicleSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-  public futureNewPolicyDeclaredAmount: string;
+  public interestOnFutureLoanDeclaredAmount: 0;
   public limit : number;
   public benefitAvailableOnActualAmount :number;
   public benefitAvailableOnDeclaredAmount : number;
+  public tempFlag :boolean;
+  public futureGlobalPolicyDeclaredAmount : 0;
 
   constructor(
     private service: MyInvestmentsService,
@@ -47,15 +49,15 @@ export class ElectricVehicleSummaryComponent implements OnInit {
   }
 
 
-  redirectToDeclarationActual(institution: string, vehicleNumber: string, mode: string) {
+  redirectToDeclarationActual(lenderName: string, mode: string) {
     this.tabIndex = 2;
     const data = {
-      institution : institution,
-      vehicleNumber : vehicleNumber,
+      lenderName : lenderName,
+      // vehicleNumber : vehicleNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)};
-    this.institution = institution;
-    this.vehicleNumber = vehicleNumber;
+    this.lenderName = lenderName;
+    // this.vehicleNumber = vehicleNumber;
     this.myEvent.emit(data);
   }
 
@@ -75,7 +77,8 @@ export class ElectricVehicleSummaryComponent implements OnInit {
       this.summaryGridData = res.data.results[0].electricVehicleSummaryDetails;
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
-      this.futureNewPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+      this.interestOnFutureLoanDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.limit = res.data.results[0].limit;
@@ -85,41 +88,61 @@ export class ElectricVehicleSummaryComponent implements OnInit {
     });
   }
 
-  // Post New Future Policy Data API call
+   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
     const data = {
-      futureNewPolicyDeclaredAmount: this. futureNewPolicyDeclaredAmount,
+      futureNewPolicyDeclaredAmount: this.interestOnFutureLoanDeclaredAmount,
     };
 
-    //console.log('addFuturePolicy Data..', data);
+    console.log('addFuturePolicy Data..', data);
     this.electricVehicleService
       .postElectricVehicleFuturePlan(data)
       .subscribe((res) => {
-        console.log('addFuturePolicy Res..', res);
-        if (res.data.length > 0 ) {
-        this.summaryGridData = res.data.results[0];
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
-        this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
-        this.limit = res.data.results[0].limit;
-      }
+      this.summaryGridData = res.data.results[0].electricVehicleSummaryDetails;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.interestOnFutureLoanDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].interestOnFutureLoanDeclaredAmount;
+      this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.limit = res.data.results[0].limit;
     });
     this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
   }
 
-  // On Change Future New Policy Declared Amount with formate
-  onChangeFutureNewPolicyDeclaredAmount() {
-    this.futureNewPolicyDeclaredAmount =   this.futureNewPolicyDeclaredAmount;
-    this.addFuturePolicy();
-    this.onChangeLimit();
 
+    // On Change Future New Policy Declared Amount with formate
+    onChangeFutureNewPolicyDeclaredAmount() {
+      this.interestOnFutureLoanDeclaredAmount = this.interestOnFutureLoanDeclaredAmount;
+      if (this.interestOnFutureLoanDeclaredAmount > 0) {
+      this.addFuturePolicy();
+    }else if(this.interestOnFutureLoanDeclaredAmount <0) {
+      this.interestOnFutureLoanDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+    }
+    this.onChangeLimit();
   }
+
+
 
   onChangeLimit() {
     this.benefitAvailableOnDeclaredAmount = Math.min(this.grandTotalDeclaredAmount, this.limit);
     this.benefitAvailableOnActualAmount = Math.min(this.grandTotalActualAmount, this.limit);
     // this.eligibleForDeductionF = this.grandTotalDeclaredAmount - this.benefitE;
   }
+
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
+
+    if (!pattern.test(inputChar)) {
+      // this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
+  }
+
 }

@@ -46,13 +46,20 @@ import { CeaComponent } from './Other/Child Education Allowance/cea/cea.componen
 import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
 import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
-import { SignaturePadModule } from 'angular2-signaturepad';
+// import { OtherincomeSummaryComponent } from './Other/Other Income/otherincome-summary/otherincome-summary.component';
+import { OtherincomesummaryComponent } from './Other/Other Income/otherincome_summary/otherincomesummary/otherincomesummary.component';
+import { OtherincomedeclarationComponent } from './Other/Other Income/otherincome_declaration&actual/otherincomedeclaration/otherincomedeclaration.component';
+import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
+import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
 
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
 
 @NgModule({
   declarations: [
     MyInvestmentsComponent,
     HousingloanComponent,
+    SignaturePadComponent,
     HousingloanmasterComponent,
     HousingloansummaryComponent,
     HousingloandeclarationComponent,
@@ -77,6 +84,12 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     ChamasterComponent,
     ChapterVIASummaryComponent,
     PrincipalRepaymentOnHousingLoanComponent,
+    // OtherincomeSummaryComponent,
+    OtherincomesummaryComponent,
+    OtherincomedeclarationComponent,
+    OtherincomeComponent,
+    EmployeeNPS80CCDComponent,
+  
 
    
 
@@ -109,7 +122,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     // BrowserAnimationsModule,
     InputNumberModule,
     FormsModule,
-    SignaturePadModule 
+    SignaturePadModule
 
   ],
 

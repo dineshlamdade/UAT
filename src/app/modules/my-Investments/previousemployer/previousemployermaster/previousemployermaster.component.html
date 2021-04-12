@@ -429,78 +429,54 @@
           <td>80</td>
         </tr>
         <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr><tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr><tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr><tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>Doe</td>
-          <td>80</td>
-        </tr>
+         <td>Jill</td>
+         <td>Smith</td>
+         <td>50</td>
+       </tr>
+       <tr>
+         <td>Eve</td>
+         <td>Jackson</td>
+         <td>94</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>Jill</td>
+         <td>Smith</td>
+         <td>50</td>
+       </tr>
+       <tr>
+         <td>Eve</td>
+         <td>Jackson</td>
+         <td>94</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
+       <tr>
+         <td>John</td>
+         <td>Doe</td>
+         <td>80</td>
+       </tr>
     </table>
+
+    <div class="preview" *ngIf="imgFile">
+      <img [src]="imgFile" style="width:200px; height:200px">
+    </div>
+
+    <div class="preview" *ngIf="imageFile">
+      <img [src]="imageFile" style="width:200px; height:200px">
+    </div>
  </div>
  </ng-template>
  
@@ -515,7 +491,8 @@
        <section class=" col col-8">
            <label class="input input-file">
                <span class="button">
-                   <input id="file1" type="file" name="file1" accept="image/*" file-actual="emp.empImagePath" allowed-format="jpg,jpeg,png">Browse
+                   <input id="file1" type="file" name="file1" accept="image/*" file-actual="emp.empImagePath" 
+                   allowed-format="jpg,jpeg,png" (change)="onImageChange($event)">Browse
                 </span>
              </label>
        </section>
@@ -527,8 +504,16 @@
     <div class="row ml-4">
      
 
-      <signature-pad #signatureCanvas [options] = "signaturePadOptions" id = "signatureCanvas" (onBeginEvent) = "drawStart ()" (onEndEvent) = "drawComplete ()"> </signature-pad>
+      <!-- <signature-pad #signatureCanvas [options] ="signaturePadOptions" id ="signatureCanvas" (onBeginEvent) ="drawStart()" 
+      (onEndEvent) ="drawComplete()"> </signature-pad> -->
 
+      <app-signature-pad [imagefile]=imagefile (imageFile)="getImageFile($event)"></app-signature-pad>
+
+      <!-- <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"></signature-pad>' -->
+  
+      <!-- <div class="preview" *ngIf="imgFile">
+         <img [src]="imgFile" style="width:400px; height:250px">
+       </div> -->
 
    </div>
     <div class="modal-footer">

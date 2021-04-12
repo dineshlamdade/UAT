@@ -18,9 +18,12 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let summary of summaryGridData; let i = index">
-                            <td>
+                            <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.propertyName)">
                                 <span tooltip="{{summary.propertyName}}">{{summary.propertyName}}</span>
-                            </td>
+                             </td>
+                          <!--   <td>
+                                <span tooltip="{{summary.propertyName}}">{{summary.propertyName}}</span>
+                            </td> -->
                             <td>
                                 <span tooltip="{{ summary.toDate | date :'dd-MMM-yyyy' }}">{{summary.toDate
                                     | date :"dd-MMM-yyyy"}}</span>

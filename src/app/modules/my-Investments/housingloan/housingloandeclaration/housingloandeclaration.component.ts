@@ -78,9 +78,9 @@ export class HousingloandeclarationComponent implements OnInit {
   public previousEmployeeList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
-  public totalDeclaredAmount: any;
-  public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
+  public totaldeclaredAmount: any;
+  public totalactualAmount: any;
+  public futureNewPolicydeclaredAmount: string;
 
   public grandDeclarationTotal: number;
   public grandActualTotal: number;
@@ -107,7 +107,7 @@ export class HousingloandeclarationComponent implements OnInit {
   public PreviousEmployeeService: PreviousEmployeeService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
 
   public dateOfPaymentGlobal: Date;
@@ -150,7 +150,7 @@ export class HousingloandeclarationComponent implements OnInit {
   public financialYearStartDate: Date;
   public financialYearEndDate: Date;
   public today = new Date();
-
+  public proofSubmissionId : '';
   public transactionStatustList: any;
   public allPropertyNames: String = 'ALL';
   public globalPolicy: String = 'ALL';
@@ -158,6 +158,8 @@ export class HousingloandeclarationComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  public globalSelectedAmountRental: string;
+  public globalSelectedAmountMunicipal: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -189,6 +191,9 @@ export class HousingloandeclarationComponent implements OnInit {
     this.receiptAmount = this.numberFormat.transform(0);
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.globalSelectedAmountRental = this.numberFormat.transform(0);
+    this.globalSelectedAmountMunicipal = this.numberFormat.transform(0);
+
 
     this.previousEmpParticularList = [
       { label: 'House Loan Benefit', value: 'houseLoanBenefit' },
@@ -257,11 +262,11 @@ export class HousingloandeclarationComponent implements OnInit {
 
   public updatePreviousEmpId(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].groupTransactionList[i].previousEmployerId =
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].groupTransactionList[i].previousEmployerId
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId
     );
   }
   // ----------------------------------------------- Declaration --------------------------------------
@@ -319,6 +324,9 @@ export class HousingloandeclarationComponent implements OnInit {
     this.allPropertyNames = propertyName;
     this.getTransactionFilterData(this.allPropertyNames);
     this.globalSelectedAmount = this.numberFormat.transform(0);
+    this.globalSelectedAmountRental = this.numberFormat.transform(0);
+    this.globalSelectedAmountMunicipal = this.numberFormat.transform(0);
+
     const data = {
       label: 'All',
       value: 'All',
@@ -377,81 +385,62 @@ export class HousingloandeclarationComponent implements OnInit {
     j: number
   ) {
     const checked = event.target.checked;
+    console.log("onSelectCheckBox", i, j);
 
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount === '0'
         ? this.globalSelectedAmount
         : this.globalSelectedAmount.toString().replace(',', '')
     );
-
-    let formatedActualAmount = 0;
+    let formatedactualAmount = 0;
     let formatedSelectedAmount: string;
-    console.log(
-      'in IS ECS::',
-      this.transactionDetail[j].groupTransactionList[i].isECS
-    );
     if (checked) {
       // console.log('item' ,item);
-      if (this.transactionDetail[j].frequency !== 'As & When') {
-        if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
-          this.transactionDetail[j].groupTransactionList[i].actualAmount =
-            data.declaredAmount;
-          this.transactionDetail[j].groupTransactionList[
-            i
-          ].dateOfPayment = new Date(data.dueDate);
-          console.log(
-            'in IS actualAmount::',
-            this.transactionDetail[j].groupTransactionList[i].actualAmount
-          );
-          console.log(
-            'in IS dateOfPayment::',
-            this.transactionDetail[j].groupTransactionList[i].dateOfPayment
-          );
-        } else {
-          console.log('in else actualamount');
-          this.transactionDetail[j].groupTransactionList[i].actualAmount =
-            data.declaredAmount;
-        }
-      }
 
-      formatedActualAmount = Number(
-        this.transactionDetail[j].groupTransactionList[i].actualAmount
+          console.log('actualAmount' );
+       this.transactionDetail[j].housePropertyTransactionList[i].actualAmount =
+            data.declaredAmount;
+
+      formatedactualAmount = Number(
+        this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue + formatedActualAmount
+        formatedGlobalSelectedValue + formatedactualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.investmentGroup1TransactionId);
+      this.uploadGridData.push(data.housePropertyTransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
-      formatedActualAmount = Number(
-        this.transactionDetail[j].groupTransactionList[i].actualAmount
+      formatedactualAmount = Number(
+        this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
           .toString()
           .replace(',', '')
       );
-      this.transactionDetail[j].groupTransactionList[
+      this.transactionDetail[j].housePropertyTransactionList[
         i
       ].actualAmount = this.numberFormat.transform(0);
-      this.transactionDetail[j].groupTransactionList[i].dateOfPayment = null;
+      // this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
-        formatedGlobalSelectedValue - formatedActualAmount
+        formatedGlobalSelectedValue - formatedactualAmount
       );
       console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
       const index = this.uploadGridData.indexOf(
-        data.investmentGroup1TransactionId
+        data.housePropertyTransactionId
       );
       this.uploadGridData.splice(index, 1);
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
+    this.globalSelectedAmountRental = formatedSelectedAmount;
+    this.globalSelectedAmountMunicipal = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
     this.actualTotal = 0;
-    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    this.transactionDetail[j].housePropertyTransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -465,6 +454,7 @@ export class HousingloandeclarationComponent implements OnInit {
     console.log(this.uploadGridData);
     console.log(this.uploadGridData.length);
   }
+
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
   public checkUncheckAll(item: any) {
@@ -480,8 +470,8 @@ export class HousingloandeclarationComponent implements OnInit {
       this.isCheckAll = true;
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
-      item.groupTransactionList.forEach((element) => {
-        this.uploadGridData.push(element.investmentGroup1TransactionId);
+      item.housePropertyTransactionList.forEach((element) => {
+        this.uploadGridData.push(element.housePropertyTransactionId);
       });
       this.enableFileUpload = true;
     }
@@ -489,14 +479,94 @@ export class HousingloandeclarationComponent implements OnInit {
     // console.log('uploadGridData...',  this.uploadGridData);
   }
 
+  // -------- ON select to check input boxex--------
+  public onSelectCheckBoxPrevious(
+    data: any,
+    event: { target: { checked: any } },
+    i: number,
+    j: number,
+  ) {
+    const checked = event.target.checked;
+    console.log("onSelectCheckBox", i, j);
+
+    const formatedGlobalSelectedValue = Number(
+      this.globalSelectedAmount === '0'
+        ? this.globalSelectedAmount
+        : this.globalSelectedAmount.toString().replace(',', '')
+    );
+    let formatedactualAmount = 0;
+    let formatedSelectedAmount: string;
+
+        this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount =
+          data.declaredAmount;
+
+
+          if (checked) {
+            // console.log('item' ,item);
+
+                console.log('actualAmount' );
+             this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount =
+                  data.actualAmount;
+
+            formatedactualAmount = Number(
+              this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
+                .toString()
+                .replace(',', '')
+            );
+            formatedSelectedAmount = this.numberFormat.transform(
+              formatedGlobalSelectedValue + formatedactualAmount
+            );
+            console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
+            this.uploadGridData.push(data.housePropertyTransactionId);
+
+            // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
+            // this.actualAmountGlobal = Number(data.declaredAmount);
+          } else {
+            formatedactualAmount = Number(
+              this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
+                .toString()
+                .replace(',', '')
+            );
+            this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+              i
+            ].actualAmount = this.numberFormat.transform(0);
+            // this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].dateOfPayment = null;
+
+            formatedSelectedAmount = this.numberFormat.transform(
+              formatedGlobalSelectedValue - formatedactualAmount
+            );
+            console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
+            const index = this.uploadGridData.indexOf(
+              data.housePropertyTransactionId
+            );
+            this.uploadGridData.splice(index, 1);
+          }
+
+          this.globalSelectedAmount = formatedSelectedAmount;
+          console.log('this.globalSelectedAmountPrev::', this.globalSelectedAmount);
+          this.actualTotal = 0;
+          this.transactionDetail[j].housePropertyTransactionPreviousEmployerList.forEach((element) => {
+            console.log(element.actualAmount.toString().replace(',', ''));
+            this.actualTotal += Number(
+              element.actualAmount.toString().replace(',', '')
+            );
+          });
+          this.transactionDetail[j].actualTotal = this.actualTotal;
+
+          if (this.uploadGridData.length) {
+            this.enableFileUpload = true;
+          }
+
+  }
+
   // --------------- ON change of declared Amount in line-------------
-  public onDeclaredAmountChange(
+  public ondeclaredAmountChange(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      // dateOfPayment: Date;
       actualAmount: any;
-      dueDate: Date;
+      // dueDate: Date;
     },
     i: number,
     j: number
@@ -504,21 +574,21 @@ export class HousingloandeclarationComponent implements OnInit {
     this.PreviousEmployeeService = new PreviousEmployeeService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].groupTransactionList[
+    this.transactionDetail[j].housePropertyTransactionList[
       i
     ].declaredAmount = this.PreviousEmployeeService.declaredAmount;
-    const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].groupTransactionList[i].declaredAmount
+    const formateddeclaredAmount = this.numberFormat.transform(
+      this.transactionDetail[j].housePropertyTransactionList[i].declaredAmount
     );
-    // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].groupTransactionList[
+    // console.log(`formateddeclaredAmount::`,formateddeclaredAmount);
+    this.transactionDetail[j].housePropertyTransactionList[
       i
-    ].declaredAmount = formatedDeclaredAmount;
+    ].declaredAmount = formateddeclaredAmount;
 
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
-    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    this.transactionDetail[j].housePropertyTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
         element.declaredAmount.toString().replace(',', '')
@@ -543,17 +613,17 @@ export class HousingloandeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].groupTransactionList[i].dueDate = summary.dueDate;
+    this.transactionDetail[j].housePropertyTransactionList[i].dueDate = summary.dueDate;
   }
 
   // ------------Actual Amount change-----------
-  public onActualAmountChange(
+  public onactualAmountChange(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
-      dateOfPayment: Date;
+      // dateOfPayment: Date;
       actualAmount: number;
-      dueDate: Date;
+      // dueDate: Date;
     },
     i: number,
     j: number
@@ -561,33 +631,33 @@ export class HousingloandeclarationComponent implements OnInit {
     this.PreviousEmployeeService = new PreviousEmployeeService(summary);
     // console.log("Actual Amount change::" , summary);
 
-    this.transactionDetail[j].groupTransactionList[
+    this.transactionDetail[j].housePropertyTransactionList[
       i
     ].actualAmount = this.PreviousEmployeeService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].groupTransactionList[i].actualAmount);
-    const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].groupTransactionList[i].actualAmount
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].housePropertyTransactionList[i].actualAmount);
+    const formatedactualAmount = this.numberFormat.transform(
+      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
     );
-    // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].groupTransactionList[
+    // console.log(`formatedactualAmount::`,formatedactualAmount);
+    this.transactionDetail[j].housePropertyTransactionList[
       i
-    ].actualAmount = formatedActualAmount;
+    ].actualAmount = formatedactualAmount;
 
     if (
-      this.transactionDetail[j].groupTransactionList[i].actualAmount !==
+      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount !==
         Number(0) ||
-      this.transactionDetail[j].groupTransactionList[i].actualAmount !== null
+      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount !== null
     ) {
-      // console.log(`in if::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+      // console.log(`in if::`,this.transactionDetail[j].housePropertyTransactionList[i].actualAmount);
       this.isDisabled = false;
     } else {
-      // console.log(`in else::`,this.transactionDetail[j].groupTransactionList[i].actualAmount);
+      // console.log(`in else::`,this.transactionDetail[j].housePropertyTransactionList[i].actualAmount);
       this.isDisabled = true;
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.transactionDetail[j].groupTransactionList.forEach((element) => {
+    this.transactionDetail[j].housePropertyTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -602,19 +672,74 @@ export class HousingloandeclarationComponent implements OnInit {
     // console.log(this.actualTotal);
   }
 
+
+
+  // ------------Actual Amount change-----------
+  public onActualAmountChangePre(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      // dateOfPayment: Date;
+      actualAmount: number;
+      // dueDate: Date;
+    },
+    i: number,
+    j: number
+  ) {
+    this.PreviousEmployeeService = new PreviousEmployeeService(summary);
+    // console.log("Actual Amount change::" , summary);
+
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+      i
+    ].actualAmount = this.PreviousEmployeeService.actualAmount;
+    // console.log("Actual Amount changed::" , this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount);
+    const formatedactualAmount = this.numberFormat.transform(
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
+    );
+    // console.log(`formatedactualAmount::`,formatedactualAmount);
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
+      i
+    ].actualAmount = formatedactualAmount;
+
+    if (
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount !==
+        Number(0) ||
+      this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount !== null
+    ) {
+      // console.log(`in if::`,this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount);
+      this.isDisabled = false;
+    } else {
+      // console.log(`in else::`,this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[i].actualAmount);
+      this.isDisabled = true;
+    }
+
+    this.actualTotal = 0;
+    this.actualAmount = 0;
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(',', '')
+      );
+      // console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.transactionDetail[j].actualTotal = this.actualTotal;
+  }
+
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
   //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
   public addRowInList(
     summarynew: {
-      investmentGroup1TransactionId: number;
-      licMasterPaymentDetailsId: number;
+      housePropertyTransactionId: number;
+      // licMasterPaymentDetailsId: number;
       previousEmployerId: number;
-      dueDate: Date;
-      declaredAmount: any;
+      particulars : string;
+      // declaredAmount: any;
       dateOfPayment: Date;
       actualAmount: any;
-      isECS: number;
+      // isECS: number;
     },
     j: number
   ) {
@@ -629,22 +754,22 @@ export class HousingloandeclarationComponent implements OnInit {
     this.globalAddRowIndex -= 1;
     console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
-    this.PreviousEmployeeService.investmentGroup1TransactionId = this.globalAddRowIndex;
-    this.PreviousEmployeeService.declaredAmount = null;
-    this.PreviousEmployeeService.dueDate = null;
+    this.PreviousEmployeeService.housePropertyTransactionId = this.globalAddRowIndex;
+    // this.PreviousEmployeeService.declaredAmount = null;
+    this.PreviousEmployeeService.particulars = null;
     this.PreviousEmployeeService.actualAmount = null;
-    this.PreviousEmployeeService.dateOfPayment = null;
-    this.PreviousEmployeeService.isECS = 0;
+    // this.PreviousEmployeeService.dateOfPayment = null;
+    // this.PreviousEmployeeService.isECS = 0;
     this.PreviousEmployeeService.transactionStatus = 'Pending';
-    this.PreviousEmployeeService.amountRejected = 0.0;
-    this.PreviousEmployeeService.amountApproved = 0.0;
-    this.PreviousEmployeeService.licMasterPaymentDetailsId = this.transactionDetail[
-      j
-    ].groupTransactionList[0].licMasterPaymentDetailsId;
-    this.transactionDetail[j].groupTransactionList.push(
+    this.PreviousEmployeeService.rejectedAmount = 0.0;
+    this.PreviousEmployeeService.approvedAmount = 0.0;
+    // this.PreviousEmployeeService.licMasterPaymentDetailsId = this.transactionDetail[
+    //   j
+    // ].housePropertyTransactionList[0].licMasterPaymentDetailsId;
+    this.transactionDetail[j].housePropertyTransactionPreviousEmployerList.push(
       this.PreviousEmployeeService
     );
-    console.log('addRow::', this.transactionDetail[j].groupTransactionList);
+    console.log('addRow::', this.transactionDetail[j].housePropertyTransactionPreviousEmployerList);
   }
 
   public sweetalertWarning(msg: string) {
@@ -657,13 +782,13 @@ export class HousingloandeclarationComponent implements OnInit {
 
   // -------- Delete Row--------------
   public deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].groupTransactionList.length - 1;
+    const rowCount = this.transactionDetail[j].housePropertyTransactionList.length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].groupTransactionList.length === 1) {
+    if (this.transactionDetail[j].housePropertyTransactionList.length === 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].groupTransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].housePropertyTransactionList.splice(rowCount, 1);
       return true;
     }
   }
@@ -686,8 +811,8 @@ export class HousingloandeclarationComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.PreviousEmployeeService.actualAmount -
-      this.transactionDetail[j].groupTransactionList[i].actualAmount;
-    this.transactionDetail[j].groupTransactionList[
+      this.transactionDetail[j].housePropertyTransactionList[i].actualAmount;
+    this.transactionDetail[j].housePropertyTransactionList[
       i
     ] = this.PreviousEmployeeService;
     this.PreviousEmployeeService = new PreviousEmployeeService();
@@ -705,7 +830,7 @@ export class HousingloandeclarationComponent implements OnInit {
     ].actualTotal += this.PreviousEmployeeService.actualAmount;
     this.grandActualTotal += this.PreviousEmployeeService.actualAmount;
     this.grandDeclarationTotal += this.PreviousEmployeeService.declaredAmount;
-    this.transactionDetail[j].groupTransactionList.push(
+    this.transactionDetail[j].housePropertyTransactionList.push(
       this.PreviousEmployeeService
     );
     this.PreviousEmployeeService = new PreviousEmployeeService();
@@ -716,7 +841,7 @@ export class HousingloandeclarationComponent implements OnInit {
     console.log(this.transactionDetail);
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
-      element.groupTransactionList.forEach((element) => {
+      element.housePropertyTransactionList.forEach((element) => {
         element.dateOfPayment = this.datePipe.transform(
           element.dateOfPayment,
           'yyyy-MM-dd'
@@ -733,7 +858,7 @@ export class HousingloandeclarationComponent implements OnInit {
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
       this.transactionDetail.forEach((element) => {
-        element.groupTransactionList.forEach((element) => {
+        element.housePropertyTransactionList.forEach((element) => {
           element.dateOfPayment = new Date(element.dateOfPayment);
         });
       });
@@ -794,28 +919,22 @@ export class HousingloandeclarationComponent implements OnInit {
   }
 
   public upload() {
-    // this.currentFileUpload = this.selectedFiles.item(0);
-    // const data = {
-    //     licTransactionIDs: this.uploadGridData,
-    //     receiptNumber: this.receiptNumber,
-    //     globalSelectedAmount: this.receiptAmount,
-    //     receiptDate: this.receiptDate,
-    // };
-    // this.uploadGridData = [3,4]
-    if (this.filesArray.length === 0) {
-      this.alertService.sweetalertError(
-        'Please attach Premium Receipt / Premium Statement'
-      );
-      return;
-    }
+    //comment by komal
+    // if (this.filesArray.length === 0) {
+    //   this.alertService.sweetalertError(
+    //     'Please attach Premium Receipt / Premium Statement'
+    //   );
+    //   return;
+    // }
     console.log('this.transactionDetail::', this.transactionDetail);
 
     this.transactionDetail.forEach((element) => {
-      element.groupTransactionList.forEach((innerElement) => {
+      element.housePropertyTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
             .replace(',', '');
+            console.log("innerElement.declaredAmount", innerElement.declaredAmount);
         } else {
           innerElement.declaredAmount = 0.0;
         }
@@ -823,66 +942,38 @@ export class HousingloandeclarationComponent implements OnInit {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
             .replace(',', '');
+            console.log("innerElement.actualAmount", innerElement.actualAmount)
         } else {
           innerElement.actualAmount = 0.0;
         }
-
-        const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-        const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd'
-        );
-
-        innerElement.dateOfPayment = dateOfPaymnet;
-        innerElement.dueDate = dueDate;
       });
     });
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-      investmentGroupTransactionDetail: this.transactionDetail,
-      groupTransactionIDs: this.uploadGridData,
+      housePropertyMasterId: this.transactionDetail[0].housePropertyMasterId,
+      // proofSubmissionId: this.transactionDetail[0].proofSubmissionId,
+      housePropertyTransactionIds: this.uploadGridData,
+      housePropertyTransactionList: this.transactionDetail[0].housePropertyTransactionList,
+      housePropertyTransactionPreviousEmployerList: this.transactionDetail[0].housePropertyTransactionPreviousEmployerList,
       receiptAmount: this.receiptAmount,
-      documentRemark: this.documentRemark,
+      receiptNumber: '',
+      receiptDate: '',
+      // documentRemark: this.documentRemark,
+      proofSubmissionId : '',
     };
     console.log('data::', data);
-
-    // this.fileService.uploadSingleFile(this.currentFileUpload, data)
-    // .pipe(tap(event => {
-    //     if (event.type === HttpEventType.UploadProgress) {
-    //         this.loaded = Math.round(100 * event.loaded / event.total);
-    //     }
-    // }))
-    this.Service.uploadPPFTransactionwithDocument(
+    this.HousingLoanService.uploadTransactionWithMultipleFiles(
       this.filesArray,
       data
     ).subscribe((res) => {
       console.log(res);
       if (res.data.results.length > 0) {
-        this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
-        this.documentDetailList = res.data.results[0].documentInformation;
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        this.transactionDetail.forEach((element) => {
-          element.groupTransactionList.forEach((innerElement) => {
-            if (innerElement.dateOfPayment !== null) {
-              innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-            }
-            if (this.employeeJoiningDate < innerElement.dueDate) {
-              innerElement.active = false;
-            }
-            innerElement.declaredAmount = this.numberFormat.transform(
-              innerElement.declaredAmount
-            );
-            // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
-          });
-        });
+        this.transactionDetail = res.data.results[0].housePropertyTransactionDetailList;
+        this.documentDetailList = res.data.results[0].housePropertyTransactionDocumentDetailList;
+         console.log('transactionDetail', this.transactionDetail);
+         this.initialArrayIndex = [];
+
         this.alertService.sweetalertMasterSuccess(
           'Transaction Saved Successfully.',
           ''
@@ -894,7 +985,12 @@ export class HousingloandeclarationComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
+    this.globalSelectedAmountRental = '0.00';
+    this.globalSelectedAmountMunicipal = '0.00';
   }
+
+
+
 
   public changeReceiptAmountFormat() {
     let receiptAmount_: number;
@@ -914,6 +1010,56 @@ export class HousingloandeclarationComponent implements OnInit {
     } else if (receiptAmount_ > globalSelectedAmount_) {
       console.log(receiptAmount_);
       console.log(globalSelectedAmount_);
+      this.alertService.sweetalertWarning(
+        'Receipt Amount is greater than Selected line Actual Amount'
+      );
+    }
+    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
+  }
+
+  public changeReceiptAmountFormatRental() {
+    let receiptAmount_: number;
+    let globalSelectedAmountRental: number;
+
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmountRental = parseFloat(
+      this.globalSelectedAmountRental.replace(/,/g, '')
+    );
+
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmountRental);
+    if (receiptAmount_ < globalSelectedAmountRental) {
+      this.alertService.sweetalertError(
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+      );
+    } else if (receiptAmount_ > globalSelectedAmountRental) {
+      console.log(receiptAmount_);
+      console.log(globalSelectedAmountRental);
+      this.alertService.sweetalertWarning(
+        'Receipt Amount is greater than Selected line Actual Amount'
+      );
+    }
+    this.receiptAmount = this.numberFormat.transform(this.receiptAmount);
+  }
+
+  public changeReceiptAmountFormatMunicipal() {
+    let receiptAmount_: number;
+    let globalSelectedAmountMunicipal: number;
+
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmountMunicipal = parseFloat(
+      this.globalSelectedAmountMunicipal.replace(/,/g, '')
+    );
+
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmountMunicipal);
+    if (receiptAmount_ < globalSelectedAmountMunicipal) {
+      this.alertService.sweetalertError(
+        'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+      );
+    } else if (receiptAmount_ > globalSelectedAmountMunicipal) {
+      console.log(receiptAmount_);
+      console.log(globalSelectedAmountMunicipal);
       this.alertService.sweetalertWarning(
         'Receipt Amount is greater than Selected line Actual Amount'
       );
@@ -955,20 +1101,20 @@ export class HousingloandeclarationComponent implements OnInit {
       this.hideCopytoActualDate = false;
     }
   }
-  public copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
-    dueDate = new Date(dueDate);
-    // item.groupTransactionList.dateOfPayment = dueDate;
-    this.transactionDetail[0].groupTransactionList[i].dateOfPayment = dueDate;
-    this.PreviousEmployeeService.dateOfPayment = this.transactionDetail[0].groupTransactionList[
-      i
-    ].dateOfPayment;
-    // this.dateOfPayment = dueDate;
-    alert('hiiii');
-    console.log('Date OF PAyment' + this.PreviousEmployeeService.dateOfPayment);
-  }
+  // public copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
+  //   dueDate = new Date(dueDate);
+  //   // item.housePropertyTransactionList.dateOfPayment = dueDate;
+  //   this.transactionDetail[0].housePropertyTransactionList[i].dateOfPayment = dueDate;
+  //   this.PreviousEmployeeService.dateOfPayment = this.transactionDetail[0].housePropertyTransactionList[
+  //     i
+  //   ].dateOfPayment;
+  //   // this.dateOfPayment = dueDate;
+  //   alert('hiiii');
+  //   console.log('Date OF PAyment' + this.PreviousEmployeeService.dateOfPayment);
+  // }
 
   // When Edit of Document Details
-  public declarationEditUpload(
+  public editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1050,53 +1196,20 @@ export class HousingloandeclarationComponent implements OnInit {
         console.log('getHousePropertyFilterData', res);
         this.transactionDetail =
           res.data.results[0].housePropertyTransactionDetailList;
-        this.documentDetailList =
-          res.data.results[0].housePropertyTransactionDocumentDetailList;
-        // this.previousEmployeeList =  this.transactionDetail.;
-        // this.grandActualTotal = res.data.results[0].grandActualTotal;
-        // this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        // this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].groupTransactionList.length;
-        console.log('transactionDetail', this.transactionDetail);
+        this.documentDetailList = res.data.results[0].housePropertyTransactionDocumentDetailList;
+               console.log('transactionDetail', this.transactionDetail);
         this.initialArrayIndex = [];
-
-        /*   this.transactionDetail.forEach((element) => {
-        this.initialArrayIndex.push(element.groupTransactionList.length);
-
-        element.groupTransactionList.forEach((innerElement) => {
-          if (innerElement.dateOfPayment !== null) {
-            innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
-          }
-
-          // if(this.employeeJoiningDate < innerElement.dueDate) {
-          //   innerElement.active = false;
-          // }
-          if (innerElement.isECS === 0) {
-            this.glbalECS === 0;
-          } else if (innerElement.isECS === 1) {
-            this.glbalECS === 1;
-          } else {
-            this.glbalECS === 0;
-          }
-          innerElement.declaredAmount = this.numberFormat.transform(
-            innerElement.declaredAmount,
-          );
-          innerElement.actualAmount = this.numberFormat.transform(
-            innerElement.actualAmount,
-          );
-        });
-      }); */
-      }
+         }
     );
   }
 
   // tslint:disable-next-line: typedef
   public uploadUpdateTransaction() {
     // this.editTransactionUpload.forEach((element) => {
-    //   this.uploadGridData.push(element.investmentGroup1TransactionId);
+    //   this.uploadGridData.push(element.housePropertyTransactionId);
     // });
     this.editTransactionUpload.forEach((element) => {
-      element.groupTransactionList.forEach((innerElement) => {
+      element.housePropertyTransactionList.forEach((innerElement) => {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -1123,12 +1236,12 @@ export class HousingloandeclarationComponent implements OnInit {
 
         innerElement.dateOfPayment = dateOfPaymnet;
         innerElement.dueDate = dueDate;
-        this.uploadGridData.push(innerElement.investmentGroup1TransactionId);
+        this.uploadGridData.push(innerElement.housePropertyTransactionId);
       });
     });
     console.log('Group transaction', this.uploadGridData);
     this.editTransactionUpload.forEach((element) => {
-      element.groupTransactionList.forEach((innerElement) => {
+      element.housePropertyTransactionList.forEach((innerElement) => {
         const dateOfPaymnet = this.datePipe.transform(
           innerElement.dateOfPayment,
           'yyyy-MM-dd'
@@ -1165,9 +1278,9 @@ export class HousingloandeclarationComponent implements OnInit {
         this.initialArrayIndex = [];
 
         this.transactionDetail.forEach((element) => {
-          this.initialArrayIndex.push(element.groupTransactionList.length);
+          this.initialArrayIndex.push(element.housePropertyTransactionList.length);
 
-          element.groupTransactionList.forEach((innerElement) => {
+          element.housePropertyTransactionList.forEach((innerElement) => {
             if (innerElement.dateOfPayment !== null) {
               innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
             }
@@ -1223,26 +1336,27 @@ export class HousingloandeclarationComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.transactionDetail[j].groupTransactionList[i].dateOfPayment =
+    this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(
-      this.transactionDetail[j].groupTransactionList[i].dateOfPayment
+      this.transactionDetail[j].housePropertyTransactionList[i].dateOfPayment
     );
   }
 }
 
 class PreviousEmployeeService {
-  public investmentGroup1TransactionId = 0;
-  public licMasterPaymentDetailsId: number;
+  public housePropertyTransactionId = 0;
   public previousEmployerId = 0;
-  public dueDate: Date;
+  public particulars: string;
   public declaredAmount: number;
-  public dateOfPayment: Date;
   public actualAmount: number;
-  public isECS: 0;
+  public rejectedAmount: number;
+  public approvedAmount: number;
   public transactionStatus: 'Pending';
-  public amountRejected: number;
-  public amountApproved: number;
+  // public isECS: 0;
+  // public dateOfPayment: Date;
+  // public dueDate: Date;
+  // public licMasterPaymentDetailsId: number;
   constructor(obj?: any) {
     Object.assign(this, obj);
   }

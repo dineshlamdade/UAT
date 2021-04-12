@@ -1,0 +1,43 @@
+<!-- <p>otherincome works!</p> -->
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="tabview tabview_fixed_deposit">
+                <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
+                  [checked]="tabIndex == 0" />
+                <div class="tabs about-page">
+                  <app-otherincomesummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)">
+                  </app-otherincomesummary>
+                </div>
+                <label class="nav" for="summary">
+                  <span> Summary </span>
+                </label>
+                <input name="nav" type="radio" class="about-radio" id="Declaration & Actual" (change)="changeTabIndex(2)"
+                  [checked]="tabIndex == 1" />
+                <div class="tabs about-page">
+                  <app-otherincomedeclaration [data]="data" *ngIf="tabIndex == 2"> </app-otherincomedeclaration>
+                </div>
+                <label class="nav" for="Declaration & Actual">
+                  <span> Declaration & Actual </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-to-top" [ngClass]="{ 'show-scrollTop': windowScrolled }">
+          <button type="button" class="btn active" data-toggle="button" aria-pressed="true" tooltip="Top"
+            (click)="scrollToTop()">
+            <i class="fa fa-angle-double-up text-white font-18"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

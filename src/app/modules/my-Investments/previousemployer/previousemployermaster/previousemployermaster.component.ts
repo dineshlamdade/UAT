@@ -6,7 +6,10 @@ import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
 const html2canvas: any = _html2canvas;
 
+<<<<<<< HEAD
 import { SignaturePad } from 'angular2-signaturepad';
+=======
+>>>>>>> 591550c68a4b7f1fc963673e8f339aa32ccd3db5
 
 import {
   Component,
@@ -16,7 +19,14 @@ import {
   Optional,
   TemplateRef,
   ViewChild,
+<<<<<<< HEAD
   ElementRef
+=======
+  ElementRef,
+  AfterViewInit,
+  Output,
+  EventEmitter
+>>>>>>> 591550c68a4b7f1fc963673e8f339aa32ccd3db5
 } from '@angular/core';
 import {
   FormBuilder,
@@ -143,7 +153,9 @@ export class PreviousemployermasterComponent implements OnInit {
 
   public masterSummaryGridData: Array<any> = [];
 
-
+  imgFile: any = '';
+  imageFile: any;
+ 
 
 
   constructor(
@@ -461,36 +473,23 @@ export class PreviousemployermasterComponent implements OnInit {
     );
   }
 
-
-
-  /** Signature canvas */
-  @ViewChild ('signatureCanvas', {static: true}) signaturePad: SignaturePad;
-
-  ngAfterViewInit() {
-    // this.signaturePad is now available
-    this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
-    this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
+  onImageChange(e) {
+    const reader = new FileReader();
+    
+    if(e.target.files && e.target.files.length) {
+      const [file] = e.target.files;
+      reader.readAsDataURL(file);
+    
+      reader.onload = () => {
+        this.imgFile = reader.result as string;
+        
+   
+      };
+    }
   }
 
-  
 
-  private signaturePadOptions: Object = { // passed through to szimek/signature_pad constructor
-    'minWidth': 5,
-    'canvasWidth': 500,
-    'canvasHeight': 300
-  };
-
-
-  drawComplete(event) {
-    // console.log("event: "+ event)
-    // will be notified of szimek/signature_pad's onEnd event
-    console.log(this.signaturePad.toDataURL());
-
+  getImageFile(imagefile : any){
+      this.imageFile = imagefile;
   }
-
-  drawStart() {
-    // will be notified of szimek/signature_pad's onBegin event
-    console.log('begin drawing');
-  }
-
 }
