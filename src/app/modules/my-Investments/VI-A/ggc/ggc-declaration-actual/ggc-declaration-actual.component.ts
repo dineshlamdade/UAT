@@ -61,7 +61,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
 
-  public eightyGGAForm: FormGroup;
+  public eightyGGCForm: FormGroup;
 
   public editTransactionUpload: Array<any> = [];
   public editProofSubmissionId: any;
@@ -118,7 +118,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
@@ -247,7 +247,7 @@ export class GgcDeclarationActualComponent implements OnInit {
 
   // Initiate Tuition-Fees Form
   initiate80GGAForm() {
-    this.eightyGGAForm = this.formBuilder.group({
+    this.eightyGGCForm = this.formBuilder.group({
       previousEmployerId: new FormControl(null, Validators.required),
       donee: new FormControl(null, Validators.required),
       purpose: new FormControl(null, Validators.required),
@@ -261,11 +261,12 @@ export class GgcDeclarationActualComponent implements OnInit {
       transactionStatus : new FormControl('Pending'),
       // donations80GGTransactionId: new FormControl(null),
       donations80GGTransactionId: new FormControl(0),
+      reactiveCheckbox: new FormControl(false),
     });
   }
   //--------- convenience getter for easy access to form fields ---------------
   get masterForm() {
-    return this.eightyGGAForm.controls;
+    return this.eightyGGCForm.controls;
   }
 
   //--------- Setting Actual amount ---------------
@@ -284,41 +285,83 @@ export class GgcDeclarationActualComponent implements OnInit {
         declaredAmountFormatted
       );
       console.log('formatedDeclaredAmount::', formatedDeclaredAmount);
-      this.eightyGGAForm
+      this.eightyGGCForm
         .get('declaredAmount')
         .setValue(formatedDeclaredAmount);
-      this.eightyGGAForm.get('actualAmount').setValue(formatedDeclaredAmount);
+      this.eightyGGCForm.get('actualAmount').setValue(formatedDeclaredAmount);
       this.globalSelectedAmount = formatedDeclaredAmount;
     }
   }
 
   //New Row add CheckBox
-    onSelectCheckBoxNew(){
-      this.uploadGridData.push(0);
+    // onSelectCheckBoxNew(){
+    //   this.uploadGridData.push(0);
+    // }
+
+    onSelectReactiveCheckbox(event) {
+      const checked = event.target.checked;
+      const formatedGlobalSelectedValue = Number(
+        this.globalSelectedAmount == '0'
+          ? this.globalSelectedAmount
+          : this.globalSelectedAmount.toString().replace(',', '')
+      );
+      let formatedActualAmount: number = 0;
+      let formatedSelectedAmount: string;
+      const declaredAmnt = this.eightyGGCForm.get('declaredAmount').value;
+      if (checked) {
+        this.eightyGGCForm.get('actualAmount').setValue(declaredAmnt);
+        formatedActualAmount = Number(
+          declaredAmnt.toString().replace(',', '')
+        );
+        formatedSelectedAmount = this.numberFormat.transform(
+          formatedGlobalSelectedValue + formatedActualAmount
+        );
+        this.uploadGridData.push(this.eightyGGCForm.get('donations80GGTransactionId').value);
+
+      } else {
+        formatedActualAmount = Number(
+          declaredAmnt.toString().replace(',', '')
+        );
+        this.eightyGGCForm.get('actualAmount').setValue(this.numberFormat.transform(0));
+
+        formatedSelectedAmount = this.numberFormat.transform(
+          formatedGlobalSelectedValue - formatedActualAmount
+        );
+        const index = this.uploadGridData.indexOf(
+          this.eightyGGCForm.get('donations80GGTransactionId').value
+        );
+        this.uploadGridData.splice(index, 1);
+      }
+
+      this.globalSelectedAmount = formatedSelectedAmount;
+      // this.actualTotal = 0;
+      // this.transactionDetail[j].donations80GGTransactionList.forEach((element) => {
+      //   this.actualTotal += Number(
+      //     element.actualAmount.toString().replace(',', '')
+      //   );
+      // });
+      // this.transactionDetail[j].actualTotal = this.actualTotal;
+
+      if (this.uploadGridData.length) {
+        this.enableFileUpload = true;
+      }
     }
+
+
 
   //------------- Post Add Transaction Page Data API call -------------------
   public saveTransaction(formDirective: FormGroupDirective): void {
     this.submitted = true;
-
-    console.log(
-      'eightyGGAForm::',
-      this.eightyGGAForm
-    );
-    // console.log("formData::", formData);
-
-    if (this.eightyGGAForm.invalid) {
+    if (this.eightyGGCForm.invalid) {
       return;
     }
-
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError('Please attach Receipt / Certificate');
       return;
     }
-
-    //else {
-    const ggaFormDetail = this.eightyGGAForm.getRawValue();
-
+    const ggaFormDetail = this.eightyGGCForm.getRawValue();
+    // delete  property reactiveCheckbox
+    delete ggaFormDetail.reactiveCheckbox;
     ggaFormDetail.declaredAmount = ggaFormDetail.declaredAmount
       .toString()
       .replace(',', '');
@@ -327,6 +370,7 @@ export class GgcDeclarationActualComponent implements OnInit {
       .replace(',', '');
     this.donations80GGTransactionListNewRow.push(ggaFormDetail);
     console.log('GGA',this.donations80GGTransactionListNewRow);
+
 
 
     const data = {
@@ -378,7 +422,7 @@ export class GgcDeclarationActualComponent implements OnInit {
 
     this.Index = -1;
     formDirective.resetForm();
-    this.eightyGGAForm.reset();
+    this.eightyGGCForm.reset();
     this.filesArray = [];
     this.submitted = false;
     this.receiptAmount = '0.00';
@@ -1016,7 +1060,7 @@ export class GgcDeclarationActualComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {
@@ -1380,31 +1424,6 @@ export class GgcDeclarationActualComponent implements OnInit {
 
 
 
-      nextDocViewer() {
-        this.urlIndex = this.urlIndex + 1;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI
-        );
-      }
-
-      previousDocViewer() {
-        this.urlIndex = this.urlIndex - 1;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI
-        );
-      }
-
-      docViewer(template3: TemplateRef<any>) {
-        this.urlIndex = 0;
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlArray[this.urlIndex].blobURI
-        );
-        console.log(this.urlSafe);
-        this.modalRef = this.modalService.show(
-          template3,
-          Object.assign({}, { class: 'gray modal-xl' })
-        );
-      }
 
       changeReceiptAmountFormat() {
         let receiptAmount_: number;
@@ -1515,15 +1534,43 @@ export class GgcDeclarationActualComponent implements OnInit {
           this.transactionDetail[j].dateOfPayment
         );
       }
+      // ---------------- Doc Viewr Code ----------------------------
+      nextDocViewer() {
+        this.urlIndex = this.urlIndex + 1;
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+          this.urlArray[this.urlIndex].blobURI,
+        );
+      }
+
+      previousDocViewer() {
+        this.urlIndex = this.urlIndex - 1;
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+          this.urlArray[this.urlIndex].blobURI,
+        );
+      }
+
+      docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+        console.log("documentDetailList::", documentDetailList)
+        this.urlArray = documentDetailList;
+        this.urlIndex = 0;
+        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+          this.urlArray[this.urlIndex].blobURI,
+        );
+        console.log(this.urlSafe);
+        this.modalRef = this.modalService.show(
+          template3,
+          Object.assign({}, { class: 'gray modal-xl' }),
+        );
+      }
 
 
       //   // Family relationship shown on Policyholder selection
       //  OnSelectionfamilyMemberGroup() {
       //   const toSelect = this.familyMemberGroup.find(
-      //     (element) => element.familyMemberName === this.eightyGGAForm.get('childName').value
+      //     (element) => element.familyMemberName === this.eightyGGCForm.get('childName').value
       //   );
-      //   this.eightyGGAForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-      //   this.eightyGGAForm.get('relationship').setValue(toSelect.relation);
+      //   this.eightyGGCForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+      //   this.eightyGGCForm.get('relationship').setValue(toSelect.relation);
       // }
 
     }

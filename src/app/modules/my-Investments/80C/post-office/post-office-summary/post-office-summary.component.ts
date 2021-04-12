@@ -11,13 +11,14 @@ import { PostOfficeService } from '../post-office.service';
   styleUrls: ['./post-office-summary.component.scss']
 })
 export class PostOfficeSummaryComponent implements OnInit {
-  
+
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
+  public futureNewPolicyDeclaredAmount: 0
+  public futureGlobalPolicyDeclaredAmount: 0
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -26,6 +27,7 @@ export class PostOfficeSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  public tempFlag: boolean;
   @Input() institution: string;
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -87,6 +89,7 @@ export class PostOfficeSummaryComponent implements OnInit {
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       console.log(res);
@@ -99,15 +102,14 @@ export class PostOfficeSummaryComponent implements OnInit {
     const data = {
       futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount};
 
-    //console.log('addFuturePolicy Data..', data);
-    this.postOfficeService
-      .getPostOfficeSummaryFuturePlan(data)
-      .subscribe((res) => {
+    console.log('addFuturePlan Data..', data);
+    this.postOfficeService.getPostOfficeSummaryFuturePlan(data).subscribe((res) => {
         //console.log('addFuturePolicy Res..', res);
         this.summaryGridData = res.data.results[0].transactionDetailList;
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
         this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
@@ -118,10 +120,28 @@ export class PostOfficeSummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPlanDeclaredAmount() {
-    this.addFuturePlan();
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+      if (this.futureNewPolicyDeclaredAmount > 0) {
+      this.addFuturePlan();
+    }else if(this.futureNewPolicyDeclaredAmount <0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+    }
   }
 
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
 
+    if (!pattern.test(inputChar)) {
+      // this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
+  }
   // On onEditSummary
   onEditSummary1(institution: string, policyNo: string) {
     this.tabIndex = 2;

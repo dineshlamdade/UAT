@@ -31,7 +31,7 @@
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="onViewSummary(summary.institution, summary.accountNumber)" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="5">
@@ -49,7 +49,9 @@
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
                   {{totalActualAmount | number:'1.2-2'}}
-                </span>
+                </span>  <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
+                (onBlur)="keyPressedSpaceNotAllow()"
+                mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
               </td>
               <td></td>
             </tr>
@@ -59,9 +61,10 @@
               </td>
               <td>
 
-                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
                 (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  min="0" mode="decimal" locale="en-IN" [minFractionDigits]="2"
-                [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber>
+                [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber> -->
+              
 
               </td>
               <td></td>

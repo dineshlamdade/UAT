@@ -192,7 +192,7 @@
               <tr
                 role="form"
                 (ngSubmit)="saveTransaction(formDirective)"
-                [formGroup]="eightyGGAForm"
+                [formGroup]="eightyGGCForm"
                 #formDirective="ngForm"
                 method="post"
                 novalidate
@@ -200,13 +200,12 @@
               <td>
                 <label class="custom-control custom-checkbox checkbox-center"
                   tooltip="Select donee for proof submission">
-                  <input type="checkbox"
-                  (change)="
-                  onSelectCheckBoxNew();
-                "
+                  <input type="checkbox" formControlName="reactiveCheckbox"
+                  (change)="onSelectReactiveCheckbox($event)"
                   class="custom-control-input" />
                   <span class="custom-control-label"></span>
                 </label>
+                <!-- onSelectCheckBoxNew(); -->
               </td>
 
               <td *ngIf="previousEmployeeList?.length">
@@ -225,7 +224,7 @@
                     type="text"
                     formControlName="donee"
                     class="form-control"
-                    placeholder="Enter donee Name"
+                    placeholder="Enter donee Name" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
                     [ngClass]="{
                       'is-invalid': submitted && masterForm.donee.errors
                     }"
@@ -252,15 +251,16 @@
                   <div class="custom_icon_badge">
                     <input
                       type="text"
-                      formControlName="declaredAmount"
+                      formControlName="declaredAmount" onkeypress="return /[0-9 ']/i.test(event.key)"
                       class="form-control"
                       placeholder="Enter Declared Amount"
                       [ngClass]="{
                         'is-invalid':
                           submitted && masterForm.declaredAmount.errors
                       }"
-                      (change)="setActualAmout($event)"
+
                     />
+                    <!-- (change)="setActualAmout($event)" -->
                   </div>
                 </td>
                 <td>
@@ -390,16 +390,29 @@
                         {{ item.name }},
                       </span>
                     </td>
-                    <td>
+                    <!-- <td>
                       <span>
                         <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmount"
                           [disabled]="true" />
                       </span>
-                    </td>
+                    </td> -->
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
-                          [(ngModel)]="receiptAmount" />
+                          <input
+                          type="text" onkeypress="return /[0-9]/i.test(event.key)"
+                          class="form-control align-right" [(ngModel)]="globalSelectedAmount"  [disabled]="true"
+                        />
+                      </span>
+                    </td>
+
+                    <td>
+                      <span>
+                          <input
+                          type="text" onkeypress="return /[0-9]/i.test(event.key)"
+                          class="form-control align-right"
+                          (blur)="changeReceiptAmountFormat()"
+                          [(ngModel)]="receiptAmount"
+                        />
                       </span>
                     </td>
                     <!-- <td>
@@ -500,13 +513,13 @@
                     {{ documentSummary.receiptAmount | number: "1.2-2" }}
                   </span>
                 </td>
+
                 <td>
                   <div class="custom_Label_badge">
                     <button
                       class="btn bg-color-lightgray text-000"
-                      (click)="
-                        UploadedDocumentModal1(template1, documentIndex)
-                      "
+                      (click)="docViewer(template3, documentSummary.documentDetailList)"
+
                     >
                       Documents
                     </button>
@@ -516,31 +529,26 @@
                   </div>
                 </td>
                 <td>
-                  <i
-                    class="fa fa-eye font-16 text-blue cursor-pointer"
-                    tooltip="View"
-                  ></i
-                  >&nbsp;&nbsp;
-                  <i
-                    class="fa fa-download font-16 text-blue cursor-pointer"
-                    tooltip="Download"
-                  ></i>
-                  <div *ngFor="let doc of urlArray" hidden>
-                    <iframe
-                      style="height: 100vh; width: 100%; display: block"
-                      [src]="doc.blobURI"
-                      provider="google"
-                    ></iframe>
-                  </div>
+                  <i *ngIf="canEdit"
+                  class="fa fa-eye font-16 text-blue cursor-pointer"
+                  (click)="
+                  editViewTransaction(
+                      template2,
+                      documentSummary.proofSubmissionId
+                    );
+                    viewTransactionDetail = false
+                  "
+                  tooltip="view"
+                ></i>
                   &nbsp;&nbsp;
-                  <i
+                  <i *ngIf="canEdit"
                     class="fa fa-edit font-16 text-dark-green cursor-pointer"
                     (click)="
-                      declarationEditUpload(
+                    editViewTransaction(
                         template2,
                         documentSummary.proofSubmissionId
                       );
-                      viewDocumentDetail = true
+                      viewTransactionDetail = true
                     "
                     tooltip="Edit"
                   ></i>
@@ -602,10 +610,10 @@
 
 <ng-template #template2>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh" *ngIf="viewDocumentDetail">
+    <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
       Edit Document Details
     </h5>
-    <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
+    <h5 class="modal-title" id="jasdjgh" *ngIf="!viewTransactionDetail">
       View Document Details
     </h5>
     <button
@@ -678,7 +686,9 @@
                     (change)="updatePreviousEmpId($event, i)"
                     [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
-                    "
+                    "  [disabled]="
+                    isDisabled || summary.transactionStatus === 'Submitted'
+                  "
                   >
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option
@@ -696,7 +706,9 @@
                   <input
                     type="text"
                     class="form-control"
-                    [ngModel]="summary.donee"
+                    [ngModel]="summary.donee" [disabled]="
+                    isDisabled || summary.transactionStatus === 'Submitted'
+                  "
 
                   />
                   <!-- [disabled]="summary.donee" -->
@@ -706,7 +718,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      [ngModel]="summary.policyNo"
+                      [ngModel]="summary.policyNo" [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    "
 
                     />
                     <!-- [disabled]="summary.accountNumber" -->
@@ -724,7 +738,9 @@
                         }}"
                         [(ngModel)]="summary.declaredAmount"
                         (change)="setActualAmoutInEditModal($event)"
-                        class="form-control align-right"
+                        class="form-control align-right" [disabled]="
+                        isDisabled || summary.transactionStatus === 'Submitted'
+                      "
                       />
                       <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
                     </div>
@@ -739,7 +755,9 @@
                       }}"
                       [(ngModel)]="summary.actualAmount"
 
-                      class="form-control align-right"
+                      class="form-control align-right" [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    "
                     />
                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                   </td>
@@ -816,14 +834,14 @@
     </div>
 
     <hr />
-    <div class="row" *ngIf="viewDocumentDetail">
+    <div class="row" *ngIf="viewTransactionDetail">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
           Upload Documents
         </h3>
       </div>
     </div>
-    <div class="row clearfix mt-10" *ngIf="viewDocumentDetail">
+    <div class="row clearfix mt-10" *ngIf="viewTransactionDetail">
       <div class="col-md-12">
         <div class="row clearfix">
           <div class="col-md-3">
@@ -910,7 +928,7 @@
     </button>
     &nbsp;&nbsp;
     <button
-      *ngIf="viewDocumentDetail"
+      *ngIf="viewTransactionDetail"
       type="button"
       tooltip="View Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"

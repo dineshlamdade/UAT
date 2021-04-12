@@ -43,15 +43,15 @@ export class InterestOnTtaSummaryComponent implements OnInit {
   }
 
   // redirect to declarartion page
-  redirectToDeclarationActual(bankName: string, accountNumber: string, mode: string) {
+  redirectToDeclarationActual(bankName: string, mode: string) {
     this.tabIndex = 2;
     const data = {
       bankName : bankName,
-      accountNumber : accountNumber,
+      // accountNumber : accountNumber,
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)};
     this.bankName = bankName;
-    this.accountNumber = accountNumber;
+    // this.accountNumber = accountNumber;
     this.myEvent.emit(data);
   }
 

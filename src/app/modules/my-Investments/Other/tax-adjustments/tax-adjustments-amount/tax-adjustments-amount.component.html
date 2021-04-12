@@ -49,9 +49,7 @@
                     {{types.label}}
                   </option>
                 </select>
-
-
-              </td>
+                     </td>
               <td>
                 <select name="taxAdjustmentType" id="taxAdjustmentType" class="form-control custom-select"
                   [ngClass]="{ 'is-invalid': submitted && masterForm.taxAdjustmentType.errors }">
@@ -75,7 +73,6 @@
                     [ngModel]="summary.fromDate | date: 'dd-MMM-yyyy'" [minDate]="paymentDetailMinDate"
                     [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker>
                 </span>
-
               </td>
               <td class="wd-15 align-right-center">
                 <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i>
@@ -101,7 +98,7 @@
             </tr>
 
             <tr role="form" (ngSubmit)="saveTransaction(formDirective)" [formGroup]="taxAdjustmentForm"
-              #formDirective="ngForm" method="post" novalidate>
+              #formDirective="ngForm" method="post" novalidate *ngFor="let item of row; let i = index">
               <td>
                 <select name="cycleDefinition" formControlName="cycleDefinition" class="form-control custom-select"
                   [ngClass]="{ 'is-invalid': submitted && masterForm.cycleDefinition.errors }">
@@ -149,6 +146,18 @@
                 </div>
               </td>
             </tr>
+            <tr>
+              <td colspan="5"  class="align-right font700 font-16 text-light-green cursor-pointer"><i
+              class="fa fa-plus-circle font-20 font-color-green"
+              tooltip="Add"
+              (click)="addTable()"
+            ></i>
+              <span tooltip="Add Row">Add Row</span>&nbsp;&nbsp;
+              <i
+                class="fa fa-times font-16 text-red cursor-pointer"
+                tooltip="Cancel"
+                (click)="deleteRows(i)"
+              ></i></td></tr>
           </tbody>
         </table>
       </div>
@@ -164,8 +173,7 @@
         </button> &nbsp; &nbsp;
         <button type="button" (click)="resetView()"
           class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="reset"><b>
-            <i class="fa fa-floppy-o"></i></b> Cancel </button> &nbsp;
-
+            <i class="fa fa-floppy-o"></i></b> Reset </button> &nbsp;
       </div>
     </div>
   </div>
