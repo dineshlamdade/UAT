@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Options, LabelType } from '@angular-slider/ngx-slider';
+import { ChartType } from "chart.js";
+import { Color, Label } from "ng2-charts";
+import { LoanService } from '../../loan.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-emi-calculator',
@@ -8,21 +12,42 @@ import { Options, LabelType } from '@angular-slider/ngx-slider';
 })
 export class EmiCalculatorComponent {
 
+  @ViewChild("myCanvas", { static: true }) canvas: ElementRef;
+
+  @Input() applyLoanData: any;
+
+  // Doughnut
+  public doughnutChartLabels: Label[] = ['Principal Amount', 'Total Interest'];
+  // public doughnutChartData: MultiDataSet = [
+  //     [300000, 141225]
+  // ];
+  public doughnutChartData = [500000, 96000];
+  public doughnutChartType: ChartType = 'doughnut';
+  public doughnutChartColors: Color[] = [
+    {
+      backgroundColor: ["#3AC8DC", "#F3A55B"],
+      borderColor: ["#5B6BC0", "#FB6589"]
+    }
+  ];
+  loanType: any;
+
+  /**************************************************************************** */
+
   filters: any;
-  pemi = {
-    value: "25"
+  pemi: any = {
+    value: "5"
   }
-  remi = {
-    value: "8.5"
+  remi: any = {
+    value: "6"
   }
-  temi = {
-    value: "20"
+  temi: any = {
+    value: "6"
   }
-  memi = {
+  memi: any = {
     value: "240"
   }
 
-  query = {
+  query: any = {
     amount: "",
     interest: "",
     tenureYr: "",
@@ -37,8 +62,10 @@ export class EmiCalculatorComponent {
   yrToggel: boolean;
   poptions: Options = {
     floor: 1,
-    ceil: 200,
-    translate: (value: number, label: LabelType): string => {
+    ceil: 6,
+    showTicks: true,
+    tickStep: 1,
+    translate: (value: any, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
           return value + '<b>L</b>';
@@ -51,7 +78,9 @@ export class EmiCalculatorComponent {
   };
   roptions: Options = {
     floor: 5,
-    ceil: 20,
+    ceil: 15,
+    showTicks: true,
+    tickStep: 1,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -65,7 +94,9 @@ export class EmiCalculatorComponent {
   };
   toptions: Options = {
     floor: 1,
-    ceil: 30,
+    ceil: 15,
+    // showTicks: true,
+    // tickStep: 5,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -78,8 +109,10 @@ export class EmiCalculatorComponent {
     }
   };
   moptions: Options = {
-    floor: 1,
-    ceil: 360,
+    floor: 5,
+    ceil: 40,
+    showTicks: true,
+    tickStep: 10,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -91,16 +124,25 @@ export class EmiCalculatorComponent {
       }
     }
   };
+  loanTypeData: any;
+  noOfInstallment: any;
+  flatIntrest: any;
+  loanApplyData: { loanType: any; loanAmount: any; interestRate: any; noOfInstallment: any; installmentAmount: string; };
 
-  constructor() {
+  constructor(public loanservice: LoanService,private router: Router) {
     this.yrToggel = true;
   }
+
+  ngOnInit() {
+    this.getAllLoanType();
+  }
+ 
 
   ngAfterViewInit() {
     this.update();
   }
 
-  tbupdate(id) {
+  tbupdate(id: any) {
     if (id == 0) {
       this.pemi.value = (Number(this.query.amount) / 100000).toString();
     }
@@ -144,5 +186,53 @@ export class EmiCalculatorComponent {
     var loanAmount_str = loanAmount.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     this.result.total = full.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     this.result.interest = interest.toFixed(0).toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    this.doughnutChartData = [
+      this.query.amount, interest.toFixed(0)
+    ];
+    console.log(this.doughnutChartData)
+  }
+  // .......................loan type ................................................................
+  getAllLoanType() {
+    this.loanservice.getAllLoanType().subscribe(res => {
+      this.loanTypeData = res.data.results[0];
+
+    })
+  }
+  getLoanType(value) {
+    let y;
+    this.loanType = value;
+    this.loanTypeData.forEach(element => {
+      if (element.loanCode == this.loanType) {
+        this.noOfInstallment = element.recoveryNoOfInstallments;
+        this.flatIntrest = element.intRate;
+        this.remi.value = parseInt(this.flatIntrest)
+        // this.yrToggel = false;
+        this.query.interest = this.flatIntrest;
+        this.query.tenureMo = parseInt(this.noOfInstallment);
+        this.memi.value = parseInt(this.noOfInstallment)
+        y = Math.floor(parseInt(this.noOfInstallment) / 12)
+        this.query.tenureYr = y;
+        this.temi.value = y
+        this.update();
+      }
+    })
+  }
+
+  applyLoan(){
+
+
+    const data = {
+      loanType: this.loanType,
+      loanAmount: this.query.amount,
+      interestRate: this.query.interest,
+      noOfInstallment: this.remi.value,
+      installmentAmount: this.result.emi
+    };
+    this.applyLoanData = data;
+    localStorage.setItem('loanApplyData',JSON.stringify(data))
+    console.log("evn: "+JSON.stringify(data))
+    this.router.navigate(['/loan/add-new-loan'])
+    // [routerLink]="['/loan/add-new-loan']"
   }
 }

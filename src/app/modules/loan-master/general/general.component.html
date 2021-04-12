@@ -1,5 +1,17 @@
 <app-loan-master></app-loan-master>
 
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- <div class="section-body">
     <div class="container-fluid">
         <div class="row">
@@ -7,6 +19,7 @@
                 <div class="card" style="width: 1274px !important; margin-left: 72px !important;">
                     <div class="card-body">
                         <div class="tabs about-page">
+
                             <form [formGroup]="generalLoanForm">
                                 <fieldset>
                                     <fieldset>
@@ -57,27 +70,30 @@
                                                     <div class="row">  
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">Loan Amount</label>
-                                                        <select class="form-control" (change)="getdeviationAmount($event.target.value)">
+                                                        <!-- <select class="form-control" (change)="getdeviationAmount($event.target.value)">
                                                             <option value="">Select</option>
-                                                            <option *ngIf="deviationAmount =='Yes'">Yes</option>
-                                                            <option *ngIf="deviationAmount =='No'">No</option>
-                                                        </select>
+                                                            <option [selected]="deviationAmount =='Yes'">Yes</option>
+                                                            <option [selected]="deviationAmount =='No'">No</option>
+                                                        </select> -->
+                                                        <input type="text" class="form-control " formControlName="deviationAmount">
                                                     </div>
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">Loan Interest</label>
-                                                        <select class="form-control" (change)="getdeviationIntrest($event.target.value)">
+                                                        <!-- <select class="form-control" (change)="getdeviationIntrest($event.target.value)">
                                                             <option value="">Select</option>
-                                                            <option *ngIf="deviationIntrest =='Yes'">Yes</option>
-                                                            <option *ngIf="deviationIntrest =='No'">No</option>
-                                                        </select>
+                                                            <option [selected]="deviationIntrest =='Yes'">Yes</option>
+                                                            <option [selected]="deviationIntrest =='No'">No</option>
+                                                        </select> -->
+                                                        <input type="text" class="form-control " formControlName="deviationIntrest">
                                                     </div>
                                                     <div class="col-sm-3 col-md-3 mt-10">
                                                         <label class="form-label">No Of Installment</label>
-                                                        <select class="form-control" (change)="getdeviationNoOfInstallment($event.target.value)">
+                                                        <!-- <select class="form-control" (change)="getdeviationNoOfInstallment($event.target.value)">
                                                             <option value="">Select</option>
-                                                            <option *ngIf="deviationNoOfInstallment =='Yes'">Yes</option>
-                                                            <option *ngIf="deviationNoOfInstallment =='No'">No</option>
-                                                        </select>
+                                                            <option [selected]="deviationNoOfInstallment =='Yes'">Yes</option>
+                                                            <option [selected]="deviationNoOfInstallment =='No'">No</option>
+                                                        </select> -->
+                                                        <input type="text" class="form-control " formControlName="deviationNoOfInstallment">
                                                     </div>
                                                     </div>
                                                 </div>
@@ -236,6 +252,7 @@
                                     </div>
                                 </fieldset>
                             </form>
+                            
                         </div>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LoanMasterRoutingModule,
     SharedlayoutModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class LoanMasterModule { }

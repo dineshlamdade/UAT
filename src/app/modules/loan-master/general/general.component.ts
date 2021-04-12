@@ -61,19 +61,19 @@ export class GeneralComponent implements OnInit {
         )
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
-      if (this.loandata.minimumNetPayLoan == true) {
+      if (this.loandata.minimumNetPayLoan == 1) {
         this.minimumNetPayValue = 'Yes'
       } else {
         this.minimumNetPayValue = 'No'
       }
 
-      if (this.loandata.deviationIntrest == true) {
+      if (this.loandata.deviationIntrest == 1) {
         this.deviationIntrest = 'Yes'
       } else {
         this.deviationIntrest = 'No'
       }
 
-      if (this.loandata.deviationAmount == true) {
+      if (this.loandata.deviationAmount == 1) {
         this.deviationAmount = 'Yes'
       } else {
         this.deviationAmount = 'No'
@@ -108,19 +108,19 @@ export class GeneralComponent implements OnInit {
       }
 
 
-      if (this.editloandata.deviationIntrest == true) {
+      if (this.editloandata.deviationIntrest == 1) {
         this.deviationIntrest = 'Yes'
       } else {
         this.deviationIntrest = 'No'
       }
 
-      if (this.editloandata.deviationAmount == true) {
+      if (this.editloandata.deviationAmount == 1) {
         this.deviationAmount = 'Yes'
       } else {
         this.deviationAmount = 'No'
       }
 
-      if (this.editloandata.deviationNoOfInstallment == true) {
+      if (this.editloandata.deviationNoOfInstallment == 1) {
         this.deviationNoOfInstallment = 'Yes'
       } else {
         this.deviationNoOfInstallment = 'No'
@@ -157,19 +157,19 @@ export class GeneralComponent implements OnInit {
         this.minimumNetPayValue = 'No'
       }
 
-      if (generalFormValue.deviationIntrest == true) {
+      if (generalFormValue.deviationIntrest == 1) {
         this.deviationIntrest = 'Yes'
       } else {
         this.deviationIntrest = 'No'
       }
 
-      if (generalFormValue.deviationAmount == true) {
+      if (generalFormValue.deviationAmount == 1) {
         this.deviationAmount = 'Yes'
       } else {
         this.deviationAmount = 'No'
       }
 
-      if (generalFormValue.deviationNoOfInstallment == true) {
+      if (generalFormValue.deviationNoOfInstallment == 1) {
         this.deviationNoOfInstallment = 'Yes'
       } else {
         this.deviationNoOfInstallment = 'No'
@@ -210,25 +210,25 @@ export class GeneralComponent implements OnInit {
 
   getdeviationAmount(value){
     if( value== 'Yes'){
-      this.generalLoanForm.controls['deviationAmount'].setValue(true)
+      this.generalLoanForm.controls['deviationAmount'].setValue(1)
     }else{
-      this.generalLoanForm.controls['deviationAmount'].setValue(false)
+      this.generalLoanForm.controls['deviationAmount'].setValue(0)
     }
   }
 
   getdeviationIntrest(value){
     if( value== 'Yes'){
-      this.generalLoanForm.controls['deviationIntrest'].setValue(true)
+      this.generalLoanForm.controls['deviationIntrest'].setValue(1)
     }else{
-      this.generalLoanForm.controls['deviationIntrest'].setValue(false)
+      this.generalLoanForm.controls['deviationIntrest'].setValue(0)
     }
   }
 
   getdeviationNoOfInstallment(value){
     if( value== 'Yes'){
-      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(true)
+      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(1)
     }else{
-      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(false)
+      this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(0)
     }
   }
 
@@ -261,5 +261,5 @@ export class GeneralComponent implements OnInit {
       this.router.navigate(['/loan-master/payment'])
     }
   }
-
+  
 }

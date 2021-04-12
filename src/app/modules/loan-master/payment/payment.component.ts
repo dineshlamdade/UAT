@@ -46,7 +46,6 @@ export class PaymentComponent implements OnInit {
       createDateTime: new FormControl(new Date()),
       createdBy: new FormControl("Ajay"),
       cycleOfLastInstallment: new FormControl(""),
-      deviation: new FormControl(true),
       document: new FormControl(""),
       firstPriThanIntNoOfInstallmentForIntRecovery: new FormControl(""),
       gapBetTwoLoanApp: new FormControl(""),
@@ -81,6 +80,9 @@ export class PaymentComponent implements OnInit {
       taxSettingPerquisiteLoanCategory: new FormControl(""),
       taxSettingPerquisiteSubCategory: new FormControl(""),
       underliningAsset: new FormControl(""),
+      deviationAmount:new FormControl(""),
+      deviationIntrest:new FormControl(""),
+      deviationNoOfInstallment:new FormControl(""),
     })
 
     this.paymentLoanForm = new FormGroup({

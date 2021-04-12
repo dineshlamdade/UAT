@@ -7,33 +7,13 @@
     font-size: 16px !important;
     font-weight: 600!important ;
 }
-h5,h6{
-    color: gray !important;
-}
+
 .active{
     background-color: lightgray !important;
 }
 
-h1{
-    font-size: 35px !important;
-    color: gray !important;
-}
-@media only screen and (max-width: 768px) {
-    h1{
-        font-size: 15px !important;
-        color: gray !important;
-    }
-   
-}
-@media only screen and (min-width: 992px) {
-    h1{
-        font-size: 35px !important;
-        margin-bottom: -20px !important;   
-    }
-}
-
 .well{
-    width: 600px !important;
+    width: 80% !important;
 }
 
 .ngx-slider .ngx-slider-bar {
@@ -51,3 +31,46 @@ h1{
     border-color: #6c757d;
 }
 
+.left-content-wrap .loan-content {
+    width: 50% !important;
+    float: left !important;
+    margin: 0 !important;
+}
+
+
+.pie-content {
+    height: 100% !important;
+    padding: 0 !important;
+}
+
+.pie-content .pie-icon.pie-principal {
+    background: linear-gradient(#3AC8DC, #5B6BC0) !important;
+}
+
+.pie-content .pie-icon.pie-interest {
+    background: linear-gradient(#F3A55B, #FB6589) !important;
+}
+
+.pie-content .pie-icon {
+    height: 21px !important;
+    width: 21px !important;
+    display: inline-block !important;
+    border-radius: 10px !important;
+    margin: 0 14px 0 0 !important;
+    vertical-align: text-top !important;
+}
+
+.pie-content h5 {
+    font-size: 18px !important;
+    font-family: "Roboto" !important;
+    font-weight: 500 !important;
+    color: #2b2424 !important;
+    // padding: 5px 0 10px !important;
+    // text-align: center !important;
+}
+
+.emi-content .emi-footer {
+    font-size: 18px !important;
+    color: #2b2424 !important;
+    // text-align: center !important;
+}
