@@ -32,6 +32,7 @@ export class AttributeCreationComponent implements OnInit {
     { label: 'Work Flow', value: 'WF' },
 
   ];
+  globalAttributeMasterId: number = 0;
   modalRef: BsModalRef;
   isEditMode: boolean = false;
   optionId: number = 0;
@@ -44,7 +45,6 @@ export class AttributeCreationComponent implements OnInit {
   viewCancelButton: boolean = false;
   viewUpdateButton: boolean = false;
   hidevalue: boolean = false;
-  summons: Array<any> = [];
   optionList = [];
 
   constructor(
@@ -110,7 +110,7 @@ export class AttributeCreationComponent implements OnInit {
   }
 
 
-  editAttributeCreation( id ) {
+  editAttributeCreation( globalAttributeMasterId ) {
     console.log( 'edit' );
 
 
@@ -119,7 +119,8 @@ export class AttributeCreationComponent implements OnInit {
     this.viewUpdateButton = true;
     this.viewUpdateButton = true;
     this.hidevalue = true;
-    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == id );
+    this.globalAttributeMasterId = globalAttributeMasterId;
+    let index = this.attributeCreationSummaryList.findIndex( o => o.globalAttributeMasterId == globalAttributeMasterId );
 
     this.AttributeCreationForm.patchValue( { code: this.attributeCreationSummaryList[index].code } );
     this.AttributeCreationForm.patchValue( { description: this.attributeCreationSummaryList[index].description } );
@@ -173,7 +174,6 @@ export class AttributeCreationComponent implements OnInit {
     else {
       this.validOptionList = false;
       this.summaryHtmlDataList = [];
-      this.summons = [];
       this.hidevalue = false;
     }
   }
@@ -205,7 +205,7 @@ export class AttributeCreationComponent implements OnInit {
           this.validOptionList = true;
         }
         if ( isContain == true ) {
-          this.alertService.sweetalertWarning( 'Value already presetnt in Summary table.' );
+          this.alertService.sweetalertWarning( 'Value already present in Summary table.' );
         } else {
           this.summaryHtmlDataList.push( { name: evt, id: id + 1 } );
         }
@@ -220,8 +220,40 @@ export class AttributeCreationComponent implements OnInit {
 
   //add new AttributeCreation
   addAttributeCreation(): void {
+    debugger;
     if ( this.viewUpdateButton == true ) {
       console.log( 'add update logic here' );
+      const addAttributeCreation: SaveAttributeCreation = Object.assign( {} );
+
+      addAttributeCreation.options = [];
+      addAttributeCreation.attributeNature = 'L';
+      addAttributeCreation.globalAttributeMasterId = this.globalAttributeMasterId;
+      addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+      addAttributeCreation.code = this.AttributeCreationForm.value.code;
+      addAttributeCreation.description = this.AttributeCreationForm.value.description;
+
+
+      let array = [];
+      for ( let i = 0; i < this.summaryHtmlDataList.length; i++ ) {
+        array.push( this.summaryHtmlDataList[i].name );
+      }
+
+      addAttributeCreation.options = array;
+      console.log( JSON.stringify( addAttributeCreation ) );
+
+
+      this.attributeCreationService.UpdateAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
+
+
+        this.alertService.sweetalertMasterSuccess( res.status.message, '' );
+        this.getAllAttributeCreation();
+        this.hidevalue = true;
+        this.summaryHtmlDataList = [];
+        this.CancelAttributeCreation();
+      },
+        ( error: any ) => {
+          this.alertService.sweetalertError( error["error"]["status"]["message"] );
+        } );
 
     } else {
 
@@ -245,7 +277,6 @@ export class AttributeCreationComponent implements OnInit {
       this.attributeCreationService.AddAttributeCreation( addAttributeCreation ).subscribe( ( res: any ) => {
 
         // addAttributeCreation.options = [];
-        this.summons = [];
         this.alertService.sweetalertMasterSuccess( res.status.message, '' );
         this.getAllAttributeCreation();
         this.hidevalue = true;
@@ -264,11 +295,11 @@ export class AttributeCreationComponent implements OnInit {
     this.viewUpdateButton = false;
     this.AttributeCreationForm.enable();
     this.summaryHtmlDataList = [];
-    this.summons = [];
     this.disabled = true;
     this.hidevalue = false;
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
+    this.viewUpdateButton = false;
     this.AttributeCreationForm.patchValue( {
       attributeNature: ''
     } );
@@ -281,7 +312,6 @@ export class AttributeCreationComponent implements OnInit {
     this.AttributeCreationForm.reset();
     this.viewCancelButton = false;
     this.hidevalue = false;
-    this.summons = [];
     this.AttributeCreationForm.patchValue( {
       attributeNature: ''
     } );

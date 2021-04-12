@@ -15,16 +15,9 @@
                     <label class="form-label">Code</label>
                     <div class="input-group">
                       <input type="text" [readonly]="!disabled" (change)="onChangeEvent($event)"
-                        formControlName="standardName" class="form-control" placeholder="Enter Code"
+                        (keypress)="keyPressedSpaceNotAllow($event)" formControlName="standardName" class="form-control"
+                        placeholder="Enter Code"
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('standardName').status == 'INVALID'}">
-                    </div>
-                  </div>
-                  <div class="col-sm-6 col-md-3">
-                    <label class="form-label">Description</label>
-                    <div class="input-group">
-                      <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
-                        placeholder="Enter Description"
-                        [ngClass]="{'is-invalid' : HeadCreationForm.get('description').status == 'INVALID'}">
                     </div>
                   </div>
                   <div class="col-sm-6 col-md-3">
@@ -35,11 +28,27 @@
                         [ngClass]="{'is-invalid' : HeadCreationForm.get('shortName').status == 'INVALID'}">
                     </div>
                   </div>
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Display Name</label>
+                    <div class="input-group">
+                      <input type="text" formControlName="displayName" class="form-control"
+                        placeholder="Enter Display Name">
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Description</label>
+                    <div class="input-group">
+                      <input type="text" [readonly]="!disabled" formControlName="description" class="form-control"
+                        placeholder="Enter Description">
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-15">
+
 
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Nature</label>
-                    <select [ngClass]="{'is-invalid' : HeadCreationForm.get('headNature').status == 'INVALID'}"
-                      (change)="onChangeNature($event.target.value)" name="headNature" id="headNature"
+                    <select (change)="onChangeNature($event.target.value)" name="headNature" id="headNature"
                       class="form-control  " formControlName="headNature">
                       <option selected value=''>Select </option>
                       <option *ngFor="let natureList of NatureList" [value]="natureList.value">
@@ -48,7 +57,7 @@
                     </select>
                   </div>
                   <!-- [ngClass]="{'is-invalid' : CycleCreationForm1.get('businessYear').status == 'INVALID'}" -->
-                  <br><br><br>
+
 
                   <div class="col-sm-6 col-md-3" [ngClass]="[disabled ? 'searchclosebutton2' : 'disableDiv']">
                     <label class="form-label">Type</label>

@@ -34,6 +34,7 @@ var AttributeCreationComponent = /** @class */ (function () {
             { label: 'Source Destination Matrix', value: 'SDM' },
             { label: 'Work Flow', value: 'WF' },
         ];
+        this.globalAttributeMasterId = 0;
         this.isEditMode = false;
         this.optionId = 0;
         this.validOptionList = false;
@@ -44,7 +45,6 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.viewCancelButton = false;
         this.viewUpdateButton = false;
         this.hidevalue = false;
-        this.summons = [];
         this.optionList = [];
     }
     AttributeCreationComponent.prototype.ngOnInit = function () {
@@ -96,14 +96,15 @@ var AttributeCreationComponent = /** @class */ (function () {
             });
         });
     };
-    AttributeCreationComponent.prototype.editAttributeCreation = function (id) {
+    AttributeCreationComponent.prototype.editAttributeCreation = function (globalAttributeMasterId) {
         console.log('edit');
         this.disabled = false;
         this.viewCancelButton = false;
         this.viewUpdateButton = true;
         this.viewUpdateButton = true;
         this.hidevalue = true;
-        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == id; });
+        this.globalAttributeMasterId = globalAttributeMasterId;
+        var index = this.attributeCreationSummaryList.findIndex(function (o) { return o.globalAttributeMasterId == globalAttributeMasterId; });
         this.AttributeCreationForm.patchValue({ code: this.attributeCreationSummaryList[index].code });
         this.AttributeCreationForm.patchValue({ description: this.attributeCreationSummaryList[index].description });
         this.AttributeCreationForm.patchValue({ attributeNature: this.attributeCreationSummaryList[index].attributeNature });
@@ -152,7 +153,6 @@ var AttributeCreationComponent = /** @class */ (function () {
         else {
             this.validOptionList = false;
             this.summaryHtmlDataList = [];
-            this.summons = [];
             this.hidevalue = false;
         }
     };
@@ -190,7 +190,7 @@ var AttributeCreationComponent = /** @class */ (function () {
                     this.validOptionList = true;
                 }
                 if (isContain == true) {
-                    this.alertService.sweetalertWarning('Value already presetnt in Summary table.');
+                    this.alertService.sweetalertWarning('Value already present in Summary table.');
                 }
                 else {
                     this.summaryHtmlDataList.push({ name: evt, id: id + 1 });
@@ -204,8 +204,31 @@ var AttributeCreationComponent = /** @class */ (function () {
     //add new AttributeCreation
     AttributeCreationComponent.prototype.addAttributeCreation = function () {
         var _this = this;
+        debugger;
         if (this.viewUpdateButton == true) {
             console.log('add update logic here');
+            var addAttributeCreation = Object.assign({});
+            addAttributeCreation.options = [];
+            addAttributeCreation.attributeNature = 'L';
+            addAttributeCreation.globalAttributeMasterId = this.globalAttributeMasterId;
+            addAttributeCreation.numberOfOption = this.summaryHtmlDataList.length.toString();
+            addAttributeCreation.code = this.AttributeCreationForm.value.code;
+            addAttributeCreation.description = this.AttributeCreationForm.value.description;
+            var array = [];
+            for (var i = 0; i < this.summaryHtmlDataList.length; i++) {
+                array.push(this.summaryHtmlDataList[i].name);
+            }
+            addAttributeCreation.options = array;
+            console.log(JSON.stringify(addAttributeCreation));
+            this.attributeCreationService.UpdateAttributeCreation(addAttributeCreation).subscribe(function (res) {
+                _this.alertService.sweetalertMasterSuccess(res.status.message, '');
+                _this.getAllAttributeCreation();
+                _this.hidevalue = true;
+                _this.summaryHtmlDataList = [];
+                _this.CancelAttributeCreation();
+            }, function (error) {
+                _this.alertService.sweetalertError(error["error"]["status"]["message"]);
+            });
         }
         else {
             var addAttributeCreation = Object.assign({});
@@ -223,7 +246,6 @@ var AttributeCreationComponent = /** @class */ (function () {
             console.log(JSON.stringify(addAttributeCreation));
             this.attributeCreationService.AddAttributeCreation(addAttributeCreation).subscribe(function (res) {
                 // addAttributeCreation.options = [];
-                _this.summons = [];
                 _this.alertService.sweetalertMasterSuccess(res.status.message, '');
                 _this.getAllAttributeCreation();
                 _this.hidevalue = true;
@@ -238,11 +260,11 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.viewUpdateButton = false;
         this.AttributeCreationForm.enable();
         this.summaryHtmlDataList = [];
-        this.summons = [];
         this.disabled = true;
         this.hidevalue = false;
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
+        this.viewUpdateButton = false;
         this.AttributeCreationForm.patchValue({
             attributeNature: ''
         });
@@ -254,7 +276,6 @@ var AttributeCreationComponent = /** @class */ (function () {
         this.AttributeCreationForm.reset();
         this.viewCancelButton = false;
         this.hidevalue = false;
-        this.summons = [];
         this.AttributeCreationForm.patchValue({
             attributeNature: ''
         });

@@ -22,6 +22,7 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var claim_form_component_1 = require("./claim-form/claim-form.component");
 var declaration_form_component_1 = require("./declaration-form/declaration-form.component");
+var attribute_global_component_1 = require("./attribute-global/attribute-global.component");
 var routes = [
     {
         path: 'business-cycle',
@@ -87,6 +88,11 @@ var routes = [
         path: 'declarationForm',
         component: declaration_form_component_1.DeclarationFormComponent,
         data: { title: 'Declaration-Message :: Company Setting' }
+    },
+    {
+        path: 'attribute-global',
+        component: attribute_global_component_1.AttributeGlobalComponent,
+        data: { title: ':: Epic :: Company Setting' }
     },
 ];
 var CompanySettingRoutingModule = /** @class */ (function () {

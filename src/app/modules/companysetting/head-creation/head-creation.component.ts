@@ -33,11 +33,12 @@ export class HeadCreationComponent implements OnInit {
     this.HeadCreationForm = this.formBuilder.group( {
       id: new FormControl( null ),
       shortName: new FormControl( '', Validators.required ),
-      headNature: new FormControl( '', Validators.required ),
+      displayName: new FormControl( '' ),
+      headNature: new FormControl( '' ),
       standardName: new FormControl( '', Validators.required ),
-      description: new FormControl( '', Validators.required ),
-      category: new FormControl( '', Validators.required ),
-      type: new FormControl( '', Validators.required ),
+      description: new FormControl( '' ),
+      category: new FormControl( '' ),
+      type: new FormControl( '' ),
     } );
     this.getAllHeadCreation();
   }
@@ -64,6 +65,7 @@ export class HeadCreationComponent implements OnInit {
         this.onChangeNature( response.data.results[0].headNature );
         this.HeadCreationForm.patchValue( { type: response.data.results[0].type } );
         this.HeadCreationForm.patchValue( { category: response.data.results[0].category } );
+        this.HeadCreationForm.patchValue( { displayName: response.data.results[0].displayName } );
       } );
     this.HeadCreationForm.disable();
   }
@@ -109,11 +111,26 @@ export class HeadCreationComponent implements OnInit {
     this.HeadCreationForm.patchValue( { shortName: event.target.value } );
   }
   onChangeNature( evt: any ) {
-    this.TypeList = [];
-    this.headCreationService.getByHeadMasterByNature( evt ).subscribe( res => {
-      this.TypeList = res.data.results;
-    } );
+    if ( evt == '' ) {
+      this.TypeList = [];
+
+    } else {
+      this.TypeList = [];
+      this.headCreationService.getByHeadMasterByNature( evt ).subscribe( res => {
+        this.TypeList = res.data.results;
+      } );
+
+    }
+
+
     this.HeadCreationForm.patchValue( { type: '' } );
+  }
+  keyPressedSpaceNotAllow( event: any ) {
+    const pattern = /[ ]/;
+    let inputChar = String.fromCharCode( event.charCode );
+    if ( pattern.test( inputChar ) ) {
+      event.preventDefault();
+    }
   }
 
 }

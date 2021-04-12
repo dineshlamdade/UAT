@@ -57,6 +57,7 @@
                             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                           </div>
                           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' ,'customTodayClass': 'today'}"
+                            [ngClass]="{'is-invalid' : form.get('startDate').status == 'INVALID'} "
                             data-provide="datepicker" class="form-control" placeholder="Select End Date" bsDatepicker
                             [maxDate]="today" formControlName="startDate" placement="center">
                         </div>

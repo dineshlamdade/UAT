@@ -31,11 +31,12 @@ var HeadCreationComponent = /** @class */ (function () {
         this.HeadCreationForm = this.formBuilder.group({
             id: new forms_1.FormControl(null),
             shortName: new forms_1.FormControl('', forms_1.Validators.required),
-            headNature: new forms_1.FormControl('', forms_1.Validators.required),
+            displayName: new forms_1.FormControl(''),
+            headNature: new forms_1.FormControl(''),
             standardName: new forms_1.FormControl('', forms_1.Validators.required),
-            description: new forms_1.FormControl('', forms_1.Validators.required),
-            category: new forms_1.FormControl('', forms_1.Validators.required),
-            type: new forms_1.FormControl('', forms_1.Validators.required)
+            description: new forms_1.FormControl(''),
+            category: new forms_1.FormControl(''),
+            type: new forms_1.FormControl('')
         });
         this.getAllHeadCreation();
     };
@@ -62,6 +63,7 @@ var HeadCreationComponent = /** @class */ (function () {
             _this.onChangeNature(response.data.results[0].headNature);
             _this.HeadCreationForm.patchValue({ type: response.data.results[0].type });
             _this.HeadCreationForm.patchValue({ category: response.data.results[0].category });
+            _this.HeadCreationForm.patchValue({ displayName: response.data.results[0].displayName });
         });
         this.HeadCreationForm.disable();
     };
@@ -102,11 +104,23 @@ var HeadCreationComponent = /** @class */ (function () {
     };
     HeadCreationComponent.prototype.onChangeNature = function (evt) {
         var _this = this;
-        this.TypeList = [];
-        this.headCreationService.getByHeadMasterByNature(evt).subscribe(function (res) {
-            _this.TypeList = res.data.results;
-        });
+        if (evt == '') {
+            this.TypeList = [];
+        }
+        else {
+            this.TypeList = [];
+            this.headCreationService.getByHeadMasterByNature(evt).subscribe(function (res) {
+                _this.TypeList = res.data.results;
+            });
+        }
         this.HeadCreationForm.patchValue({ type: '' });
+    };
+    HeadCreationComponent.prototype.keyPressedSpaceNotAllow = function (event) {
+        var pattern = /[ ]/;
+        var inputChar = String.fromCharCode(event.charCode);
+        if (pattern.test(inputChar)) {
+            event.preventDefault();
+        }
     };
     HeadCreationComponent = __decorate([
         core_1.Component({

@@ -20,7 +20,14 @@ var CompanySettingsService = /** @class */ (function () {
             return res;
         }));
     };
-    CompanySettingsService.prototype.getAllGlobalAttributeCreation = function () {
+    // getAllGlobalAttributeMastter() {
+    //   return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster' )
+    //     .pipe( map( ( res: any ) => {
+    //       return res;
+    //     } ) );
+    // }
+    // get data from  [GlobalAttributeMaster]
+    CompanySettingsService.prototype.getAllGlobalAttributeMaster = function () {
         return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster')
             .pipe(operators_1.map(function (res) {
             return res;
@@ -38,6 +45,13 @@ var CompanySettingsService = /** @class */ (function () {
             return res;
         }));
     };
+    // getAll GlobalAttributeMaster
+    CompanySettingsService.prototype.getAllGlobalAttributeCreation = function () {
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster')
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
     CompanySettingsService.prototype.getAllAttributeCreation = function () {
         return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-master')
             .pipe(operators_1.map(function (res) {
@@ -50,20 +64,27 @@ var CompanySettingsService = /** @class */ (function () {
             return res;
         }));
     };
+    // added at globally [GlobalAttributeMaster]
     CompanySettingsService.prototype.AddAttributeCreation = function (data) {
         return this._HTTP.post(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-master', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
-    // end of Services List Attribute-Creation Service
-    // getAllAttributeCreation() {
-    //
-    //   return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-attribute-master')
-    //     .pipe(map((res: any) => {
-    //       return res;
-    //     }));
-    // }
+    // added at globally  GlobalAttributeMaster GlobalAttributeOption
+    CompanySettingsService.prototype.UpdateAttributeCreation = function (data) {
+        return this._HTTP.put(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-master', data)
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
+    // added at globally  GlobalAttributeMaster GlobalAttributeOption
+    CompanySettingsService.prototype.getAllPayrollHeadAttributeMaster = function () {
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-master')
+            .pipe(operators_1.map(function (res) {
+            return res;
+        }));
+    };
     CompanySettingsService.prototype.getAllAttributeSelection = function () {
         return this._HTTP.get(environment_1.environment.baseUrl8084 + 'attribute-group')
             .pipe(operators_1.map(function (res) {
@@ -88,6 +109,7 @@ var CompanySettingsService = /** @class */ (function () {
             return res;
         }));
     };
+    // this willl save into [AttributeGroupDefinition] of group level
     CompanySettingsService.prototype.AddAttributeSelection = function (data) {
         return this._HTTP.post(environment_1.environment.baseUrl8084 + 'attribute-group', data)
             .pipe(operators_1.map(function (res) {
@@ -344,14 +366,14 @@ var CompanySettingsService = /** @class */ (function () {
         }));
     };
     CompanySettingsService.prototype.getSDMFormula = function () {
-        return this._HTTP.get(environment_1.environment.baseUrl8086 + 'companySDMForm')
+        return this._HTTP.get(environment_1.environment.baseUrl8084 + 'companySDMForm')
             .pipe(operators_1.map(function (res) {
             return res;
         }));
     };
     //update attribute list by id
     CompanySettingsService.prototype.UpdateattributeListById = function (data) {
-        return this._HTTP.put(environment_1.environment.baseUrl8086 + 'payrollhead-attribute-mapping', data)
+        return this._HTTP.put(environment_1.environment.baseUrl8084 + 'payrollhead-attribute-mapping', data)
             .pipe(operators_1.map(function (res) {
             return res;
         }));

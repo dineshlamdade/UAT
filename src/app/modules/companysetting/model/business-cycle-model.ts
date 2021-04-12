@@ -44,7 +44,7 @@ export class SaveHeadCreation {
   description: string;
   category: string;
   type: string;
-  displayName?: string;
+  displayName: string;
 }
 
 export class SavePHG {
@@ -72,7 +72,6 @@ export class SaveAttributeAssignment {
   headGroupId: number;
   attributeGroupId: number
   value: string;
-  dependentOn: string;
   fromDate: string;
   toDate: string;
   payrollHeadGroupMappingId: number;
@@ -89,6 +88,7 @@ export class SaveAttributeCreation {
   attributeNature: string;
   numberOfOption: string;
   options: any[];
+  removedAttributeGroupIdList?: [];
 
 }
 

@@ -19,8 +19,16 @@ export class CompanySettingsService {
       } ) );
   }
 
-  getAllGlobalAttributeCreation() {
 
+  // getAllGlobalAttributeMastter() {
+
+  //   return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster' )
+  //     .pipe( map( ( res: any ) => {
+  //       return res;
+  //     } ) );
+  // }
+  // get data from  [GlobalAttributeMaster]
+  getAllGlobalAttributeMaster() {
     return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster' )
       .pipe( map( ( res: any ) => {
         return res;
@@ -39,6 +47,16 @@ export class CompanySettingsService {
       } ) );
   }
 
+  // getAll GlobalAttributeMaster
+  getAllGlobalAttributeCreation() {
+
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master/getAllGlobalAttributeMaster' )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+
   getAllAttributeCreation() {
 
     return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master' )
@@ -54,7 +72,7 @@ export class CompanySettingsService {
       } ) );
   }
 
-
+  // added at globally [GlobalAttributeMaster]
   AddAttributeCreation( data: SaveAttributeCreation ): Observable<number | {}> {
 
     return this._HTTP.post( environment.baseUrl8084 + 'payrollhead-attribute-master', data )
@@ -63,15 +81,24 @@ export class CompanySettingsService {
       } ) );
   }
 
-  // end of Services List Attribute-Creation Service
+  // added at globally  GlobalAttributeMaster GlobalAttributeOption
+  UpdateAttributeCreation( data: SaveAttributeCreation ) {
 
-  // getAllAttributeCreation() {
-  //
-  //   return this._HTTP.get( environment.baseUrl8086 + 'payrollhead-attribute-master')
-  //     .pipe(map((res: any) => {
-  //       return res;
-  //     }));
-  // }
+    return this._HTTP.put( environment.baseUrl8084 + 'payrollhead-attribute-master', data )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
+
+  // added at globally  GlobalAttributeMaster GlobalAttributeOption
+
+  getAllPayrollHeadAttributeMaster() {
+
+    return this._HTTP.get( environment.baseUrl8084 + 'payrollhead-attribute-master' )
+      .pipe( map( ( res: any ) => {
+        return res;
+      } ) );
+  }
 
   getAllAttributeSelection() {
 
@@ -105,6 +132,7 @@ export class CompanySettingsService {
       } ) );
   }
 
+  // this willl save into [AttributeGroupDefinition] of group level
   AddAttributeSelection( data: SaveAttributeSelection ): Observable<number | {}> {
 
     return this._HTTP.post( environment.baseUrl8084 + 'attribute-group', data )
@@ -437,7 +465,7 @@ export class CompanySettingsService {
 
   getSDMFormula() {
 
-    return this._HTTP.get( environment.baseUrl8086 + 'companySDMForm' )
+    return this._HTTP.get( environment.baseUrl8084 + 'companySDMForm' )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );
@@ -446,7 +474,7 @@ export class CompanySettingsService {
   //update attribute list by id
   UpdateattributeListById( data: UpdateflagCycleCreation ): Observable<number | {}> {
 
-    return this._HTTP.put( environment.baseUrl8086 + 'payrollhead-attribute-mapping', data )
+    return this._HTTP.put( environment.baseUrl8084 + 'payrollhead-attribute-mapping', data )
       .pipe( map( ( res: any ) => {
         return res;
       } ) );

@@ -131,8 +131,7 @@
 
                             <ng-template #template12>
                               <div class="modal-header">
-                                <h5 class="modal-title" id="UploadModalLabel">Delete
-                                  Business Year Definition</h5>
+                                <h5 class="modal-title" id="UploadModalLabel">Delete List From Attribute Creation</h5>
                                 <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
                                   aria-label="Close"><span aria-hidden="true">×</span></button>
                               </div>
@@ -143,9 +142,7 @@
                                       <div class="col-md-12">
                                         <label class="form-label">Are
                                           you sure want to
-                                          delete Business
-                                          Year Definition
-                                          from-</label>
+                                          delete list</label>
                                       </div>
                                     </div>
                                   </div>
@@ -172,7 +169,7 @@
                   <div class="col-12">
                     <div class="float-right mb-15">
                       <button type="submit" *ngIf="!viewCancelButton && !viewUpdateButton"
-                        [disabled]="AttributeCreationForminvalid"
+                        [disabled]="AttributeCreationForm.invalid"
                         [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid && validOptionList == false}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Save"><b><i
                             class="fa fa-floppy-o"></i></b>
@@ -188,6 +185,7 @@
                       <button type="submit"
                         [ngClass]="AttributeCreationForm.invalid ? 'disabled-button' + ' btn-bg-green': 'btn-bg-green'"
                         *ngIf="viewUpdateButton"
+                        [ngClass]="{'disabled-btn-bg-green' : AttributeCreationForm.invalid,'btn-bg-green': !AttributeCreationForm.invalid && validOptionList == false}"
                         class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left" tooltip="Update"
                         [disabled]="AttributeCreationForm.invalid">
                         <b><i class="fa fa-floppy-o"></i></b>Update</button>

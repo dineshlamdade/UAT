@@ -7,7 +7,6 @@ import { BusinessCycleComponent } from './business-cycle/business-cycle.componen
 import { HeadCreationComponent } from './head-creation/head-creation.component';
 import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
 import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
-import { PayrollComponent } from '../payroll/payroll.component';
 
 import { UserRolesandPermissionComponent } from './user-rolesand-permission/user-rolesand-permission.component';
 import { RolePrivilegeComponent } from './user-rolesand-permission/role-privilege/role-privilege.component';
@@ -20,6 +19,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClaimFormComponent } from './claim-form/claim-form.component';
 import { DeclarationFormComponent } from './declaration-form/declaration-form.component';
+import { AttributeGlobalComponent } from './attribute-global/attribute-global.component';
 
 const routes: Routes = [
 
@@ -91,6 +91,11 @@ const routes: Routes = [
     path: 'declarationForm',
     component: DeclarationFormComponent,
     data: { title: 'Declaration-Message :: Company Setting' }
+  },
+  {
+    path: 'attribute-global',
+    component: AttributeGlobalComponent,
+    data: { title: ':: Epic :: Company Setting' }
   },
 ];
 
