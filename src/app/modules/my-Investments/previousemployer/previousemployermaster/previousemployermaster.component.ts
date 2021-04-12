@@ -6,10 +6,6 @@ import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
 const html2canvas: any = _html2canvas;
 
-<<<<<<< HEAD
-import { SignaturePad } from 'angular2-signaturepad';
-=======
->>>>>>> 591550c68a4b7f1fc963673e8f339aa32ccd3db5
 
 import {
   Component,
@@ -19,14 +15,10 @@ import {
   Optional,
   TemplateRef,
   ViewChild,
-<<<<<<< HEAD
-  ElementRef
-=======
   ElementRef,
   AfterViewInit,
   Output,
   EventEmitter
->>>>>>> 591550c68a4b7f1fc963673e8f339aa32ccd3db5
 } from '@angular/core';
 import {
   FormBuilder,
