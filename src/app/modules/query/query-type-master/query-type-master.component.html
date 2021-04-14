@@ -85,13 +85,15 @@
 
                     <fieldset>
                       <legend>Sub Query</legend>
-                      <div class="row">
+                      <div formArrayName="queryArray">
+                        <div *ngFor="let contact of queryTypeFormGroup.controls; let i = index;">
+                          <div  class="row"  [formGroupName]="i">
                         <div class="col-md-3">
                           <label class="form-label">Code</label>
                           <input
                             type="text"
                             class="form-control"
-                            placeholder="Code"
+                            placeholder="Code" formControlName="subQueryCode"
                             disabled
                           />
                         </div>
@@ -101,22 +103,24 @@
                             type="text"
                             class="form-control"
                             placeholder="Enter Description"
+                            formControlName="subQueryDescription"
                           />
                         </div>
 
                         <div class="col-md-3">
                           <label class="form-label">Assign Q & A Template</label>
-                        <select  class="form-control custom-select">
+                        <select  class="form-control custom-select" formControlName="assignQATemplate">
                           <option  value=""> <input type="checkbox">select all</option>
                           <option  value=""> <input type="checkbox">select all</option>
                           <option  value=""> <input type="checkbox">select all</option>
                         </select>
                         </div>
                         <div class="col-md-3">
-                          <button type="button" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add</button>&nbsp;&nbsp;
-                          <button type="button" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Remove</button>
-
+                          <button type="button" class="btn btn-success"  (click) ="addSubQuery"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add</button>&nbsp;&nbsp;
+                          <button type="button" class="btn btn-danger"  (click) ="removeSubQuery(i)" ><i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Remove</button>
                         </div>
+                        </div>
+                      </div>
                       </div>
 
                       <ng-container>
@@ -167,9 +171,9 @@
                                   <td class="wd-19" *ngIf="query.active">Active</td>
                                   <td class="wd-19" *ngIf="!query.active">Inactive</td>
                                   <td>
-                                    <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                    <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" ></i
                                     >&nbsp;
-                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
+                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" ></i
                                     >&nbsp;
                                   </td>
                                 </tr>
@@ -330,7 +334,7 @@
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
                       >&nbsp;
 
-                      <button type="button"  tooltip="Reset" *ngIf="isShown" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
+                      <button type="button"  tooltip="Reset" *ngIf="isShown" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
                       >&nbsp;
                       <button type="submit" tooltip="Update" *ngIf="isVisible"  class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -338,7 +342,7 @@
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
                       >&nbsp;
 
-                      <button type="button" tooltip="Cancel" *ngIf="isVisible" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10" (click)="cancel()" >
+                      <button type="button" tooltip="Cancel" *ngIf="isVisible" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"  >
                        <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>
                     </div>
                   </ng-container>
@@ -363,7 +367,7 @@
                                   <th scope="col" class="wd-14">Action</th>
                                 </tr>
                               </thead>
-                              <tbody>
+                              <!-- <tbody>
                                 <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
                                   <td class="wd-9">{{i+1}}</td>
                                   <td class="wd-14">{{query.moduleId}}</td>
@@ -374,14 +378,14 @@
                                   <td class="wd-19" *ngIf="query.active">Active</td>
                                   <td class="wd-19" *ngIf="!query.active">Inactive</td>
                                   <td>
-                                    <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                    <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" ></i
                                     >&nbsp;
-                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
+                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" ></i
                                     >&nbsp;
                                   </td>
                                 </tr>
                                 <tr></tr>
-                              </tbody>
+                              </tbody> -->
                             </table>
                             <pagination-controls (pageChange)="p = $event"></pagination-controls>
                           </div>
