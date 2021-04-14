@@ -82,7 +82,8 @@
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Interest rate (%)</label>
-                    <input type="text"  class="form-control-sm"  formControlName="interestRate" placeholder="Interest Rate (%)"/>&nbsp;
+                    <input type="text"  class="form-control-sm"  formControlName="interestRate" placeholder="Interest Rate (%)"
+                    (focusout)="calculateRateOfInterest($event.target.value)"/>&nbsp;
                  <span style="font-size: 11px; font-weight:500;">Per Annum</span>
                  <label style="font-size: 10px;">As per Policy :12%</label>
 
@@ -239,7 +240,7 @@
                     </table>
                     </div>
                   </div>
-                  <div class=" col-md-8">
+                  <div class=" col-md-8" *ngIf="devaiationData">
                   <h3 class="font-14 text-purple font-bold ">Deviations</h3>
                   <div class="table-responsive Custom_Table">
                     <table class="table table-striped table-bordered table-hover m-b-0" >
@@ -256,13 +257,15 @@
                         <tr *ngFor="let data of devaiationData;">
                           <td>
                             <span *ngIf="data.deviationType == 'LoanAmount'"> Loan Amount</span>
+                            <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installment</span>
+                            <span *ngIf="data.deviationType == 'interestRate'"> Interrst Rate</span>
                           </td>
-                          <td>{{loanAmount}}</td>
+                          <td>{{data.deviationValue}}</td>
                           <td>{{data.userLimit}}</td>
-                          <td>{{deviationVal}}</td>
+                          <td>{{data.deviationValue - data.userLimit}}</td>
                           <td>Critical Condition</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           <td>No. Of Installment</td>
                           <td>18</td>
                           <td>18</td>
@@ -275,7 +278,7 @@
                           <td>6.00%</td>
                           <td>0</td>
                           <td>Critical Condition</td>
-                        </tr>
+                        </tr> -->
                       </tbody>
                     </table>
                     </div>
