@@ -1,31 +1,41 @@
 <div class="row">
     <div class="col-sm-12">
         <fieldset>
-            <legend>EMI Calculation</legend>
+            <legend>Loan Simulator</legend>
             <div class="container">
                 <div class="spacer">
                     <div class="row left-content-wrap">
                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <span class="left-title" style="color: #713f93 !important">
+                                            Loan Type
+                                        </span>
+                                        <br>
+                                          <select
+                                            class="form-control"
+                                            placeholder="Select" (change)="getLoanType($event.target.value)">
+                                            <option [ngValue]="null" selected >Select</option>
+                                            <option  *ngFor="let loan of loanTypeData ">{{loan.loanCode}}</option>
+                                          </select>
+                                    </div>    
+                                </div>
+                           
+                            </div>  
                             <div class="well">
                               <!-- <form #emiCalculatorForm="ngForm" (ngSubmit)="submitEmiCalculator()"></form> -->
                                 <div class="form-group">
-                                    <div class="col-md-8">
-                                          <label class="form-label" style="color: rgb(26, 13, 26); font-weight: 900;">Loan Type</label>
+                                    <div class="col-md-12">
+                                       
 
-                                        <select
-                                          class="form-control"
-                                          placeholder="Select" (change)="getLoanType($event.target.value)">
-                                          <option [ngValue]="null" selected >Select</option>
-                                          <option  *ngFor="let loan of loanTypeData ">{{loan.loanCode}}</option>
-                                        </select>
-                                      <br>
                                       <br>
                                         <span class="left-title">
                                             Loan Amount
                                         </span>
-                                        <input type="number" style="width:44%;float:right;" class="form-control"
+                                        <!-- <input type="number" style="width:44%;float:right;" class="form-control"
                                             (blur)="tbupdate(0)" [(ngModel)]="query.amount" placeholder="Loan Amount"
-                                            name="pemi.highValue" />
+                                            name="pemi.highValue" /> -->
                                     </div>
                                     <br>
                                     <ngx-slider [(value)]="pemi.value" [options]="poptions" (userChangeEnd)="update()">
@@ -39,9 +49,9 @@
                                         <span class="left-title">
                                             Interest Rate
                                         </span>
-                                        <input type="number" style="width:44%;float:right;" class="form-control"
+                                        <!-- <input type="number" style="width:44%;float:right;" class="form-control"
                                             (blur)="tbupdate(1)" [(ngModel)]="query.interest"
-                                            placeholder="Interest Rate" name="remi.highValue" />
+                                            placeholder="Interest Rate" name="remi.highValue" /> -->
                                     </div>
                                     <br>
                                     <ngx-slider [(value)]="remi.value" [options]="roptions" (userChangeEnd)="update()">
@@ -54,12 +64,12 @@
                                     <div class="col-md-10">
                                         <span class="left-title">Loan Tenure</span>
                                         <br>
-                                        <input type="number" *ngIf="yrToggel" class="form-control" (blur)="tbupdate(2)"
+                                        <!-- <input type="number" *ngIf="yrToggel" class="form-control" (blur)="tbupdate(2)"
                                             placeholder="Loan Tenure in Yr" [(ngModel)]="query.tenureYr"
                                             style="width:30%;float:right;">
                                         <input type="number" *ngIf="!yrToggel" class="form-control" (blur)="tbupdate(3)"
                                             placeholder="Loan Tenure in Mo" [(ngModel)]="query.tenureMo"
-                                            style="width:30%;float:right;">
+                                            style="width:30%;float:right;"> -->
                                     </div>
                                     <div class="col-md-2">
                                         <div class="input-group-append">
@@ -82,10 +92,10 @@
                             </div>
 
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 ">
                             <div class="well">
 
-                                <div class="row">
+                                <div class="row box-border">
                                     <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
                                             <div class="col-sm-6">
@@ -116,22 +126,37 @@
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
-                                            <div class="pie-total col-sm-6">
+                                            <div class="pie-total col-sm-8">
                                                 <span>
-                                                    <p>Total Payment</p>
-                                                    <p>(Principal + Interest)</p>
+                                                    <p>Total Payment (Principal + Interest)</p>
                                                 </span>
-                                                <h5 id="loan_total_payment">{{result.total || "--"}}</h5>
+                                                
                                             </div>
-                                            <div class="pie-total col-sm-6">
-                                                <p>Your Monthly Payment</p>
-                                                <h5 id="loan_emi">{{result.emi || "--"}}</h5>
+                                            <div class="pie-total col-sm-4">
+                                                <h5 id="loan_total_payment">{{result.total || "--"}}</h5>
+                                                <!-- <p>Your Monthly Payment</p>
+                                                <h5 id="loan_emi">{{result.emi || "--"}}</h5> -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="pie-content row" id="pieContent">
+                                            <div class="pie-total col-sm-3"></div>
+                                            <div class="pie-total col-sm-3">
+                                                <p>Installment </p>
+                                            </div>
+                                            <div class="pie-total col-sm-6">
+                                                <h5 id="loan_emi" style="margin-left: 72px;">{{result.emi || "--"}} Per Month</h5>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
                            </div>
                         </div>
+                       
                         <div class="float-right" style="margin-left:89%;">
                             <button class="btn btn-success" (click)="applyLoan()">
                                 <i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;

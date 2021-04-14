@@ -35,7 +35,7 @@ export class EmiCalculatorComponent {
 
   filters: any;
   pemi: any = {
-    value: "5"
+    value: "4"
   }
   remi: any = {
     value: "6"
@@ -60,15 +60,17 @@ export class EmiCalculatorComponent {
     total: ""
   }
   yrToggel: boolean;
-  poptions: Options = {
+  poptions: Options = {  //loan amount
     floor: 1,
-    ceil: 6,
-    showTicks: true,
-    tickStep: 1,
+    ceil: 6,  
+    //showTicks: true,
+    tickStep: 0.1,
+    // stepsArray:[{ value: 6,  
+    //   legend: "Small" }],
     translate: (value: any, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return value + '<b>L</b>';
+          return '<b style="color: #eb8471;">' + value * 100000 + '</b>';
         case LabelType.High:
           return value + '<b>L</b>';
         default:
@@ -76,15 +78,15 @@ export class EmiCalculatorComponent {
       }
     }
   };
-  roptions: Options = {
-    floor: 5,
-    ceil: 15,
-    showTicks: true,
-    tickStep: 1,
+  roptions: Options = { // interest rate
+    floor: 0,
+    ceil: 12,
+    // showTicks: true,
+    tickStep: 0.1,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return value + '<b>%</b>';
+          return '<b style="color: #eb8471;">' + value + '%</b>';
         case LabelType.High:
           return value + '<b>%</b>';
         default:
@@ -92,7 +94,7 @@ export class EmiCalculatorComponent {
       }
     }
   };
-  toptions: Options = {
+  toptions: Options = {  // year 
     floor: 1,
     ceil: 15,
     // showTicks: true,
@@ -100,7 +102,7 @@ export class EmiCalculatorComponent {
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return value + '<b>Yr</b>';
+          return '<b style="color: #eb8471;">'+ value + 'Yr</b>';
         case LabelType.High:
           return value + '<b>Yr</b>';
         default:
@@ -108,15 +110,15 @@ export class EmiCalculatorComponent {
       }
     }
   };
-  moptions: Options = {
+  moptions: Options = { // month
     floor: 5,
     ceil: 40,
-    showTicks: true,
-    tickStep: 10,
+    // showTicks: true,
+    tickStep: 1,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
-          return value + '<b>Mo</b>';
+          return '<b style="color: #eb8471;">'+ value + 'Mo</b>';
         case LabelType.High:
           return value + '<b>Mo</b>';
         default:
@@ -128,6 +130,15 @@ export class EmiCalculatorComponent {
   noOfInstallment: any;
   flatIntrest: any;
   loanApplyData: { loanType: any; loanAmount: any; interestRate: any; noOfInstallment: any; installmentAmount: string; };
+  deviationAmount: any;
+  deviationIntrest: any;
+  deviationNoOfInstallment: any;
+  calculatedDeviationAmt: number;
+  allowedLoanAmount: number;
+  allowedRateInterest: number;
+  calculatedDeviationInt: number;
+  calculatedDeviationIntallment: number;
+  allowedRateInstallment: number;
 
   constructor(public loanservice: LoanService,private router: Router) {
     this.yrToggel = true;
@@ -136,7 +147,7 @@ export class EmiCalculatorComponent {
   ngOnInit() {
     this.getAllLoanType();
   }
-
+ 
 
   ngAfterViewInit() {
     this.update();
@@ -207,6 +218,89 @@ export class EmiCalculatorComponent {
         this.noOfInstallment = element.recoveryNoOfInstallments;
         this.flatIntrest = element.intRate;
         this.remi.value = parseInt(this.flatIntrest)
+
+
+        /*** Deviation Amount % calculation */
+        this.deviationAmount = element.deviationAmount
+        this.calculatedDeviationAmt = 500000 * parseInt(this.deviationAmount) / 100
+        this.allowedLoanAmount = 500000 + this.calculatedDeviationAmt
+
+       
+          this.poptions = {  //loan amount
+            floor: 1,
+            ceil: this.allowedLoanAmount / 100000,  
+            tickStep: 0.1,
+            translate: (value: any, label: LabelType): string => {
+              switch (label) {
+                case LabelType.Low:
+                  return '<b style="color: #eb8471;">' + value * 100000 + '</b>';
+                case LabelType.High:
+                  return value + '<b>L</b>';
+                default:
+                  return value + '<b>L</b>';
+              }
+            }
+          };
+
+
+          /*** Deviation Interest % calculation */
+        this.deviationIntrest = element.deviationIntrest
+        this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
+        this.allowedRateInterest = 12 + this.calculatedDeviationInt
+
+        this.roptions = { // interest rate
+          floor: 0,
+          ceil: this.allowedRateInterest,
+          tickStep: 0.1,
+          translate: (value: number, label: LabelType): string => {
+            switch (label) {
+              case LabelType.Low:
+                return '<b style="color: #eb8471;">' + value + '%</b>';
+              case LabelType.High:
+                return value + '<b>%</b>';
+              default:
+                return value + '<b>%</b>';
+            }
+          }
+        };
+
+         /*** Deviation Installment calculation */
+        this.deviationNoOfInstallment = element.deviationNoOfInstallment
+        this.calculatedDeviationIntallment = 48 * parseInt(this.deviationNoOfInstallment) / 100
+        this.allowedRateInstallment = Math.floor(48 + this.calculatedDeviationIntallment)      
+        let year = Math.round(this.allowedRateInstallment) / 12;
+    
+        // this.toptions = {  // year 
+        //   floor: 1,
+        //   ceil: year,
+        //   translate: (value: number, label: LabelType): string => {
+        //     switch (label) {
+        //       case LabelType.Low:
+        //         return '<b style="color: #eb8471;">'+ value + 'Yr</b>';
+        //       case LabelType.High:
+        //         return value + '<b>Yr</b>';
+        //       default:
+        //         return value + '<b>Yr</b>';
+        //     }
+        //   }
+        // };
+        // this.moptions = { // month
+        //   floor: 5,
+        //   ceil: this.allowedRateInstallment,
+        //   // showTicks: true,
+        //   tickStep: 1,
+        //   translate: (value: number, label: LabelType): string => {
+        //     switch (label) {
+        //       case LabelType.Low:
+        //         return '<b style="color: #eb8471;">'+ value + 'Mo</b>';
+        //       case LabelType.High:
+        //         return value + '<b>Mo</b>';
+        //       default:
+        //         return value + '<b>Mo</b>';
+        //     }
+        //   }
+        // };
+        
         // this.yrToggel = false;
         this.query.interest = this.flatIntrest;
         this.query.tenureMo = parseInt(this.noOfInstallment);
@@ -218,7 +312,10 @@ export class EmiCalculatorComponent {
       }
     })
   }
+
   applyLoan(){
+
+
     const data = {
       loanType: this.loanType,
       loanAmount: this.query.amount,

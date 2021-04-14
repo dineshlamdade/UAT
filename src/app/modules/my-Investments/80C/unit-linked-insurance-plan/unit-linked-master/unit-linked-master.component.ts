@@ -150,7 +150,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
-      ecs: new FormControl(0),
+      ecs: new FormControl('0'),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       // investmentGroup2MasterPaymentDetailId: new FormControl(0),
@@ -251,7 +251,8 @@ export class UnitLinkedMasterComponent implements OnInit {
     return this.form.controls;
   }
 
-  // Policy End Date Validations with Policy Start Date
+ 
+  //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
@@ -273,7 +274,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     this.setPaymentDetailToDate();
   }
 
-  // Policy End Date Validations with Current Finanacial Year
+  //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
@@ -285,8 +286,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     );
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
-        'Policy End Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.policyEndDate.reset();
     } else {
@@ -297,7 +297,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Payment Detail From Date
+  //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
     this.paymentDetailMinDate = this.form.value.fromDate;
     const from = this.datePipe.transform(
@@ -313,7 +313,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Current Finanacial Year
+  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
@@ -324,9 +324,9 @@ export class UnitLinkedMasterComponent implements OnInit {
       'yyyy-MM-dd'
     );
     if (to < financialYearStartDate) {
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
       this.alertService.sweetalertWarning(
-        'To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.toDate.reset();
     }
@@ -410,7 +410,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      this.form.get('ecs').setValue('0');
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
@@ -529,7 +529,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
@@ -554,7 +554,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;

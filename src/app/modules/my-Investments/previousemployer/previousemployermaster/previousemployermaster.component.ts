@@ -1,5 +1,12 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+
+
+import jspdf from 'jspdf';
+import * as _html2canvas from "html2canvas";
+const html2canvas: any = _html2canvas;
+
+
 import {
   Component,
   HostListener,
@@ -8,6 +15,10 @@ import {
   Optional,
   TemplateRef,
   ViewChild,
+  ElementRef,
+  AfterViewInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import {
   FormBuilder,
@@ -26,6 +37,7 @@ import { FileService } from '../../file.service';
 import { MyInvestmentsService } from '../../my-Investments.service';
 import { PreviousEmployerService } from '../../previousemployer/previousemployer.service';
 import { from } from 'rxjs';
+
 
 @Component({
   selector: 'app-previousemployermaster',
@@ -71,6 +83,8 @@ export class PreviousemployermasterComponent implements OnInit {
 
   public documentRemark: any;
   public isECS = true;
+
+  public then: any;
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -130,6 +144,11 @@ export class PreviousemployermasterComponent implements OnInit {
   public globalSelectedAmount: string;
 
   public masterSummaryGridData: Array<any> = [];
+
+  imgFile: any = '';
+  imageFile: any;
+ 
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -328,17 +347,17 @@ export class PreviousemployermasterComponent implements OnInit {
     //this.scrollToTop();
     /*     this.paymentDetailGridData = this.masterSummaryGridData[i].paymentDetails; */
 
-   /*  this.masterSummaryGridData[i].dateOfJoining = this.datePipe.transform(
-      this.masterSummaryGridData[i].dateOfJoining,
-      'dd-mmm-yyyy'
-    );  */
+    /*  this.masterSummaryGridData[i].dateOfJoining = this.datePipe.transform(
+       this.masterSummaryGridData[i].dateOfJoining,
+       'dd-mmm-yyyy'
+     );  */
 
     let abc;
     abc = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
     console.log('abc::', abc);
 
-    console.log("dateOfJoining::",this.masterSummaryGridData[i].dateOfJoining)
- 
+    console.log("dateOfJoining::", this.masterSummaryGridData[i].dateOfJoining)
+
     /* this.masterSummaryGridData[i].dateOfLeaving = this.datePipe.transform(
       this.masterSummaryGridData[i].dateOfLeaving,
       'dd-mmm-yyyy'
@@ -368,12 +387,53 @@ export class PreviousemployermasterComponent implements OnInit {
   //------------ On Edit Cancel ----------------
   cancelEdit() {
     this.previousEmployerDetailsform.reset();
- /*    this.previousEmployerDetailsform.get('active').setValue(true);
-    this.showUpdateButton = false;
-    this.isCancel = false; */
+    /*    this.previousEmployerDetailsform.get('active').setValue(true);
+       this.showUpdateButton = false;
+       this.isCancel = false; */
+  }
+  /* =================pdf======================== */
+  /* download(){
+    console.log('hi');
+    // Id of the table
+    let data = document.getElementById('contentToConvert');  
+    html2canvas(data).then(canvas => {
+    // Few necessary setting options
+    const imgWidth = 208;
+    const pageHeight = 295;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const heightLeft = imgHeight;
+    const contentDataURL = canvas.toDataURL('image/png')
+    // A4 size page of PDF
+    const pdf = new jspdf('p', 'mm', 'a4'); 
+    const position = 0;
+    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+    // Generated PDF
+    pdf.save('FORM.12B.pdf'); 
+  });
+  } */
+  download() {
+    console.log('hi');
+
+    let data = document.getElementById('htmlData');
+    html2canvas(data).then(canvas => {
+      console.log(canvas)
+      // Few necessary setting options
+      const imgWidth = 208;
+      const pageHeight = 295;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png')
+      // A4 size page of PDF
+      const pdf = new jspdf('p', 'mm', 'a4');
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+      // Generated PDF
+      pdf.save('FORM.12B.pdf');
+    });
   }
   //------------ On Form 12B Cancel Edit Cancel ----------------
-  cancelFormEdit() {}
+  cancelFormEdit() { }
 
   /*   Summary Master */
   getpreviousEmployerDetailSummary() {
@@ -386,18 +446,42 @@ export class PreviousemployermasterComponent implements OnInit {
       });
   }
   /* ==== */
-
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-xl' })
+      Object.assign({}, { class: 'gray modal-lg' })
     );
   }
-
   openForm12BModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+  openFormSign(template2: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template2,
       Object.assign({}, { class: 'gray modal-lg' })
     );
+  }
+
+  onImageChange(e) {
+    const reader = new FileReader();
+    
+    if(e.target.files && e.target.files.length) {
+      const [file] = e.target.files;
+      reader.readAsDataURL(file);
+    
+      reader.onload = () => {
+        this.imgFile = reader.result as string;
+        
+   
+      };
+    }
+  }
+
+
+  getImageFile(imagefile : any){
+      this.imageFile = imagefile;
   }
 }

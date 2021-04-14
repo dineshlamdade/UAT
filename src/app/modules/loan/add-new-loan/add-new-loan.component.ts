@@ -34,7 +34,7 @@ export class AddNewLoanComponent implements OnInit {
   installmentAmount: number = 0;
   loanCodeName: any;
   dataOfFootballers: any[];
-  documentList: any;
+  documentList: any=[];
   guarantorsList: any;
   getscheduleData: any;
   // minFractionDigits: number;
@@ -50,7 +50,7 @@ export class AddNewLoanComponent implements OnInit {
   empCode: any;
   fullName: string = '';
   excelData: any[];
-  guarentedCount: any[];
+  guarentedCount: any=[];
   empIndex: any;
   documentIndex: any;
   selectedDoc: any;
@@ -62,10 +62,14 @@ export class AddNewLoanComponent implements OnInit {
   deviationNoOfInstallment: any;
   calculatedDeviationAmt: number;
   allowedLoanAmount: number;
-  devaiationData: any[];
+  devaiationData: any[] = [];
   deviationVal: number;
 
   isUploadDocument:boolean=true;
+  calculatedDeviationInt: number;
+  allowedRateInterest: number;
+  calculatedDeviationIntallment: number;
+  allowedInstallment: any;
 
 
   constructor(public formBuilder : FormBuilder,
@@ -80,14 +84,14 @@ export class AddNewLoanComponent implements OnInit {
         "active":new FormControl(true),
         "employeeCode":new FormControl(''),
 
-        "installmentAmount":new FormControl('',[Validators.pattern(/^([-+] ?)?[0-9]+(,[0-9]+)?/)]),
+        "installmentAmount":new FormControl('',[Validators.pattern(/^([-+] ?)?[1-9]+(,[1-9]+)?/)]),
 
         "loanType": new FormControl(null,[Validators.required]),
         "repaymentType":new FormControl(''),
         "underlineAssestValue":new FormControl(null),
         "carOrInstitutionType":new FormControl(''),
 
-        "loanAmount":new FormControl('',[Validators.required,Validators.pattern(/^([-+] ?)?[0-9]+(,[0-9]+)?/)]),
+        "loanAmount":new FormControl('',[Validators.required,Validators.pattern(/^([-+] ?)?[1-9]+(,[1-9]+)?/)]),
         "interestRate":new FormControl(''),
 
         "noOfInstallment":new FormControl(''),
@@ -411,35 +415,37 @@ this.loanTypeData.forEach(element => {
 
 }
 // ................................calculate installment amount............................................
-calculateInstallmentAmount(value)
-{
+calculateInstallmentAmount(value) {
   this.EndDate = null;
 
-  this.calculatedDeviationAmt = 500000 * parseInt(this.deviationAmount) / 100;
-  this.allowedLoanAmount = 500000 + this.calculatedDeviationAmt;
+  this.calculatedDeviationAmt = 500000 * parseInt(this.deviationAmount) / 100
+  this.allowedLoanAmount = 500000 + this.calculatedDeviationAmt
 
-  // alert(this.allowedLoanAmount)
-  // if(parseInt(this.deviationAmount) > 0){
 
-    if(parseInt(value) <= this.allowedLoanAmount){
-      this.loanAmount = value;
-      this.installmentAmount = this.loanAmount / this.noOfInstallment;
-      this.installmentAmount = Math.round(this.installmentAmount);
-      this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
+  // this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
+  // this.allowedRateInterest = 12 + this.calculatedDeviationAmt
 
-      let currentdate = new Date();
-      var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
-      this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
-      this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"));
-    }else{
-      this.toster.success("please enter eligible " + this.allowedLoanAmount +" amount");
-    }
 
-   this.deviationVal =  parseInt(value) - 500000;
 
-   this.devaiationData =[];
-    this.devaiationData.push({
-      "deviationType": 'LoanAmount',
+
+  if (parseInt(value) <= this.allowedLoanAmount) {
+    this.loanAmount = value;
+    this.installmentAmount = this.loanAmount / this.noOfInstallment;
+    this.installmentAmount = Math.round(this.installmentAmount);
+    this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
+
+    let currentdate = new Date();
+    var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
+    this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+    this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+
+
+    if (parseInt(value) > 500000) {
+      this.deviationVal = parseInt(value) - 500000
+
+      // this.devaiationData = [];
+      this.devaiationData.push({
+        "deviationType": 'LoanAmount',
         "userLimit": 500000,
         "deviationValue": parseInt(value),
         "reason": null,
@@ -448,30 +454,120 @@ calculateInstallmentAmount(value)
         "lastModifiedBy": null,
         "lastModifiedDateTime": null,
         "active": true
+      })
+
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    } else {
+      // this.devaiationData = []
+      // this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+
+      this.devaiationData.forEach((ele,index) =>{
+        if(ele.deviationType == 'LoanAmount'){
+           let ind = index;
+           this.devaiationData.splice(ind,1)
+        }
+      })
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    }
+
+
+  } else {
+    this.toster.success("Please Enter Eligible" + this.allowedLoanAmount + " amount")
+    this.devaiationData.forEach((ele,index) =>{
+      if(ele.deviationType == 'LoanAmount'){
+         let ind = index;
+         this.devaiationData.splice(ind,1)
+      }
     })
-
     this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+
+    this.loanAmount = 500000;
+    this.installmentAmount = this.loanAmount / this.noOfInstallment;
+    this.installmentAmount = Math.round(this.installmentAmount);
+    this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
+
+    let currentdate = new Date();
+    var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
+    this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+    this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+  }
+
+
 }
 
-
-
-
-calculateNoOfInstallment(value)
-{
+calculateNoOfInstallment(value) {
   this.EndDate = null;
-  this.noOfInstallment = value;
-  this.installmentAmount = this.loanAmount / this.noOfInstallment;
-  this.installmentAmount = Math.round(this.installmentAmount );
-  this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
-// ..........................end date calculation..............................................
-let currentdate = new Date();
-var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
-this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment)-1));
-this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+
+  this.calculatedDeviationIntallment = 48 * parseInt(this.deviationNoOfInstallment) / 100
+  this.allowedInstallment = 48 + this.calculatedDeviationIntallment
+
+  if (parseInt(value) <= this.allowedInstallment) {
+    this.noOfInstallment = value;
+    this.installmentAmount = this.loanAmount / this.noOfInstallment;
+    this.installmentAmount = Math.round(this.installmentAmount);
+    this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
+
+    // ..........................end date calculation..............................................
+    let currentdate = new Date();
+    var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
+    this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+    this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+
+    if (parseInt(value) > 48) {
+
+      this.devaiationData.push({
+        "deviationType": 'noOfInstallment',
+        "userLimit": 48,
+        "deviationValue": parseInt(value),
+        "reason": null,
+        "createdBy": 'ajay',
+        "createDateTime": null,
+        "lastModifiedBy": null,
+        "lastModifiedDateTime": null,
+        "active": true
+      })
+
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    } else {
+      // this.devaiationData = []
+      this.devaiationData.forEach((ele,index) =>{
+        if(ele.deviationType == 'noOfInstallment'){
+           let ind = index;
+           this.devaiationData.splice(ind,1)
+        }
+      })
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    }
+
+  }
+  else {
+    this.toster.success("Please Enter Eligible " + this.allowedInstallment + " installment")
+    this.noOfInstallment = 48;
+
+    this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
+
+    this.installmentAmount = this.loanAmount / this.noOfInstallment;
+    this.installmentAmount = Math.round(this.installmentAmount);
+    this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
+
+    // ..........................end date calculation..............................................
+    let currentdate = new Date();
+    var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
+    this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+    this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+
+    this.devaiationData.forEach((ele,index) =>{
+      if(ele.deviationType == 'noOfInstallment'){
+         let ind = index;
+         this.devaiationData.splice(ind,1)
+      }
+    })
+    this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+  }
 }
 
-calculateInstallments(value){
+calculateInstallments(value) {
   this.EndDate = null;
   this.installmentAmount = value;
   this.noOfInstallment = this.loanAmount / this.installmentAmount
@@ -481,11 +577,58 @@ calculateInstallments(value){
   // ..........................end date calculation..............................................
   let currentdate = new Date();
   var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
-  this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment)-1));
-  this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate,"dd-MMM-yyyy"))
+  this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+  this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
 
 
- }
+}
+
+
+calculateRateOfInterest(value){
+  this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
+  this.allowedRateInterest = 12 + this.calculatedDeviationInt
+
+  if (parseInt(value) <= this.allowedRateInterest) {
+
+    if (parseInt(value) > 12) {
+
+      this.devaiationData.push({
+        "deviationType": 'interestRate',
+        "userLimit": 12,
+        "deviationValue": parseInt(value),
+        "reason": null,
+        "createdBy": 'ajay',
+        "createDateTime": null,
+        "lastModifiedBy": null,
+        "lastModifiedDateTime": null,
+        "active": true
+      })
+
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    } else {
+
+      this.devaiationData.forEach((ele,index) =>{
+        if(ele.deviationType == 'interestRate'){
+           let ind = index;
+           this.devaiationData.splice(ind,1)
+        }
+      })
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    }
+
+  }
+  else {
+    this.toster.success("Please Enter Eligible"  + this.allowedRateInterest + " interest rate")
+
+    this.devaiationData.forEach((ele,index) =>{
+      if(ele.deviationType == 'interestRate'){
+         let ind = index;
+         this.devaiationData.splice(ind,1)
+      }
+    })
+    this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+  }
+}
 
 // ....................................excel and pdf code...................................................
 exportAsXLSX():void {

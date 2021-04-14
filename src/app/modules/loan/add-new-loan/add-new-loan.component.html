@@ -89,7 +89,8 @@
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Interest rate (%)</label>
-                    <input type="text"  class="form-control-sm"  formControlName="interestRate" placeholder="Interest Rate (%)"/>&nbsp;
+                    <input type="text"  class="form-control-sm"  formControlName="interestRate" placeholder="Interest Rate (%)"
+                    (focusout)="calculateRateOfInterest($event.target.value)"/>&nbsp;
                  <span style="font-size: 11px; font-weight:500;">Per Annum</span>
                  <label style="font-size: 10px;">As per Policy :12%</label>
 
@@ -215,7 +216,7 @@
             </ng-template>
 
                 <div>
-                  <div class=" col-md-4">
+                  <div class=" col-md-4" *ngIf="guarentedCount.length > 0">
                   <h3 class="font-14 text-purple font-bold "> Guarantors</h3>
                   <div class="table-responsive Custom_Table">
                     <table class="table table-striped table-bordered table-hover m-b-0">
@@ -238,7 +239,7 @@
                   </div>
                 </div>
                  <br><br>
-                  <div class=" col-md-8">
+                  <div class=" col-md-8" *ngIf="devaiationData.length > 0">
                   <h3 class="font-14 text-purple font-bold ">Deviations</h3>
                   <div class="table-responsive Custom_Table">
                     <table class="table table-striped table-bordered table-hover m-b-0" >
@@ -255,38 +256,21 @@
                         <tr *ngFor="let data of devaiationData;">
                           <td>
                             <span *ngIf="data.deviationType == 'LoanAmount'"> Loan Amount</span>
+                            <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installment</span>
+                            <span *ngIf="data.deviationType == 'interestRate'"> Interest Rate</span>
                           </td>
-                          <td>{{loanAmount}}</td>
+                          <td>{{data.deviationValue}}</td>
                           <td>{{data.userLimit}}</td>
-                          <td>{{deviationVal}}</td>
-                          <td><input type="text" ></td>
-                        </tr>
-                        <tr>
-                          <td> No. Of Installment
-                          <!-- <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installment</span> -->
-                         </td>
-                          <td>18</td>
-                          <td>18</td>
-                          <td>0</td>
+                          <td>{{data.deviationValue - data.userLimit}}</td>
                           <td><input type="text"></td>
-
                         </tr>
-                        <tr>
-                          <td>Interest Rate
-                          <!-- <span *ngIf="data.deviationType == 'interestRate'">Interest Rate</span> -->
-                          </td>
-                          <td>6.00%</td>
-                          <td>6.00%</td>
-                          <td>0</td>
-                          <td><input type="text"></td>
 
-                        </tr>
                       </tbody>
                     </table>
                     </div>
                   </div>
                   <br><br>
-                  <div class="col-md-6" *ngIf="isUploadDocument">
+                  <div class="col-md-6" *ngIf="documentList.length > 0">
                   <h3 class="font-14 text-purple font-bold "> Upload Documents</h3>
                   <div class="table-responsive Custom_Table">
 
@@ -408,14 +392,14 @@
                   <ng-container class="float-right">
                     <div class="row float-right" style="margin: 10px" >
                       <button type="submit"   class="custom_button custom_btn btn-labeled btn-labeled-left"
-                      tooltip="Save"[disabled]="!AddLoanForm.valid"
+                      tooltip="Save"[disabled]="!AddLoanForm.valid || guarentedCount.length == 0 "
                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid,'btn-bg-green': !AddLoanForm.invalid}">
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
                       >&nbsp;
 
-                      <button type="submit" class="custom_button bg-btn-red custom_btn btn-labeled btn-labeled-left"
+                      <!-- <button type="submit" class="custom_button bg-btn-red custom_btn btn-labeled btn-labeled-left"
                       tooltip="Draft" ><b> <i class="fa fa-file" aria-hidden="true"></i></b>Draft</button
-                      >&nbsp;
+                      >&nbsp; -->
 
                       <button type="button"  tooltip="Reset" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10" (click)="reset()">
                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button

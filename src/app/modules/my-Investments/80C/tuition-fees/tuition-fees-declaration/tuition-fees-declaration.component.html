@@ -98,6 +98,7 @@
                       id="declaredAmount{{
                         summary.tuitionFeesTransactionId
                       }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{
                         summary.tuitionFeesTransactionId
                       }}"
@@ -112,6 +113,7 @@
                   <input
                     type="text"
                     id="actualAmount{{ summary.tuitionFeesTransactionId }}"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{
                       summary.tuitionFeesTransactionId
                     }}"
@@ -199,6 +201,7 @@
                     <input
                       type="text"
                       formControlName="declaredAmount"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       class="form-control"
                       placeholder="Enter Declared Amount"
                       [ngClass]="{
@@ -214,6 +217,7 @@
                     type="text"
                     formControlName="actualAmount"
                     class="form-control"
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                     [ngClass]="{
                       'is-invalid': submitted && masterForm.actualAmount.errors
                     }"
@@ -422,14 +426,21 @@
                 </td>
                 <td>
                   <i
-                    class="fa fa-eye font-16 text-blue cursor-pointer"
-                    tooltip="View"
+                  class="fa fa-eye font-16 text-blue cursor-pointer"
+                  (click)="
+                    declarationEditUpload(
+                      template2,
+                      documentSummary.proofSubmissionId
+                    );
+                    viewDocumentDetail = false
+                  "
+                  tooltip="View"
                   ></i
                   >&nbsp;&nbsp;
-                  <i
+                  <!-- <i
                     class="fa fa-download font-16 text-blue cursor-pointer"
                     tooltip="Download"
-                  ></i>
+                  ></i> -->
                   <div *ngFor="let doc of urlArray" hidden>
                     <iframe
                       style="height: 100vh; width: 100%; display: block"
@@ -611,6 +622,7 @@
                     <input
                       type="text"
                       class="form-control"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       [ngModel]="summary.policyNo"
 
                     />
@@ -624,6 +636,7 @@
                         id="declaredAmount{{
                           summary.tuitionFeesTransactionId
                         }}"
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{
                           summary.tuitionFeesTransactionId
                         }}"
@@ -639,6 +652,7 @@
                     <input
                       type="text"
                       id="actualAmount{{ summary.tuitionFeesTransactionId }}"
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{
                         summary.tuitionFeesTransactionId
                       }}"

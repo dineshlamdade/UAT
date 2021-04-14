@@ -4,7 +4,7 @@
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Tax Saver Fund Name</label>
         <input type="text" formControlName="institution" class="form-control"
-        onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+        onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
            placeholder="Enter Tax Saver Fund Name"
            [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }"  >
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
@@ -14,7 +14,7 @@
         <div class="col-sm-6 col-md-3">
            <label class="form-label">Folio No.</label>
            <input type="text" formControlName="accountNumber" class="form-control"
-           onkeypress="return /[0-9a-zA-Z']/i.test(event.key)"
+           onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
               placeholder="Enter Folio Number"
               [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
            <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
@@ -102,7 +102,7 @@
                   <label class="form-label">Premium Amount</label>
                     <p-inputNumber   class="form-control align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur) = "calculateAnnualAmount()"
                       [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }"
-                       mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2"  min="0"></p-inputNumber>
                       <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                        <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
                     </div>
