@@ -84,12 +84,12 @@
                           <br><br>
                           <div class="col-md-12">
                             <h6  style="color:darkmagenta;">Answer</h6>
-                            <label class="form-label">Subject</label>
+                            <!-- <label class="form-label">Subject</label>
                             <input
                               type="text"
                               formControlName="answerSubject"
                               class="form-control" placeholder="Enter Subject"
-                               [ngClass]="{'is-invalid' : queryForm.get('answerSubject').status == 'INVALID'}"/>
+                               [ngClass]="{'is-invalid' : queryForm.get('answerSubject').status == 'INVALID'}"/> -->
                               <br>
                             <label class="form-label">Description</label>
                             <ckeditor [config]="editorConfig" (drop)="drop($event)" (dragover)="allowDrop($event)" formControlName="answerDescription">

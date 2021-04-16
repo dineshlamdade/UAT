@@ -15,7 +15,8 @@
                       <div class="col-sm-6 col-md-4">
                         <label class="form-label">Module Name</label>
                         <select
-                          class="form-control" [ngClass]="{'is-invalid' : querytypeForm.get('moduleId').status == 'INVALID'}" formControlName="moduleId">
+                          class="form-control" >
+                          <!-- [ngClass]="{'is-invalid' : querytypeForm.get('moduleId').status == 'INVALID'}" formControlName="moduleId" -->
                           <option [ngValue]="null" selected>Select</option>
                           <option
                             value="{{ module.applicationModuleId }}"
@@ -36,7 +37,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      formControlName="code"
+                       formControlName ="queryTypeCode"
                       placeholder="Code"
                       disabled
                     />
@@ -46,7 +47,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      formControlName="description"
+                      formControlName ="queryTypedescription"
                       placeholder="Enter Description"
                     />
                   </div>
@@ -58,12 +59,12 @@
 
                       <div class="custom-controls-stacked">
                          <label class="custom-control custom-radio custom-control-inline">
-                         <input formControlName="query" type="radio"  value="1" (change)="radioButtonChanged($event)"
+                         <input name="query" type="radio"  value="1" (change)="radioButtonChanged($event)"
                             class="custom-control-input" name="query"  checked>
                          <span class="custom-control-label">Yes</span>
                          </label>
                          <label class="custom-control custom-radio custom-control-inline">
-                         <input formControlName="query" type="radio"  value="0" (change)="radioButtonChanged($event)"
+                         <input name="query" type="radio"  value="0" (change)="radioButtonChanged($event)"
                             class="custom-control-input" name="query"  >
                          <span class="custom-control-label">No</span>
                          </label>
@@ -86,14 +87,14 @@
                     <fieldset>
                       <legend>Sub Query</legend>
                       <div formArrayName="queryArray">
-                        <div *ngFor="let contact of queryTypeFormGroup.controls; let i = index;">
+                        <div *ngFor="let list of queryTypeFormGroup.controls; let i = index;">
                           <div  class="row"  [formGroupName]="i">
                         <div class="col-md-3">
                           <label class="form-label">Code</label>
                           <input
                             type="text"
                             class="form-control"
-                            placeholder="Code" formControlName="subQueryCode"
+                            placeholder="Code" formControlName="subQueryTypeCode"
                             disabled
                           />
                         </div>
@@ -103,7 +104,7 @@
                             type="text"
                             class="form-control"
                             placeholder="Enter Description"
-                            formControlName="subQueryDescription"
+                            formControlName="subqueryTypedescription"
                           />
                         </div>
 
@@ -116,8 +117,8 @@
                         </select>
                         </div>
                         <div class="col-md-3">
-                          <button type="button" class="btn btn-success"  (click) ="addSubQuery"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add</button>&nbsp;&nbsp;
-                          <button type="button" class="btn btn-danger"  (click) ="removeSubQuery(i)" ><i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Remove</button>
+                          <button type="button" class="btn btn-success"  (click) ="addSubQuery(i)" *ngIf="addField"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add</button>&nbsp;&nbsp;
+                          <button type="button" class="btn btn-danger"  (click) ="removeSubQuery(i)"  *ngIf= "this.addSubQueryList.length>1 || (i !=0)" ><i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Remove</button>
                         </div>
                         </div>
                       </div>
@@ -129,17 +130,17 @@
                             <label class="custom-control custom-checkbox custom-control-inline pl-45">
                               <input
                                 autocomplete="off" type="checkbox" class="custom-control-input"
-                                name="example-inline-checkbox1" checked
+                                name="example-inline-checkbox1" checked  (change)="changeEvent($event)"
                                 readonly>
                               <span class="custom-control-label">Active </span>
                             </label>
                           </div>
-                          <div class="col-md-3">
+                          <div class="col-md-3"  *ngIf="hideRemarkDiv">
                             <label class="form-label">Remark</label>
                             <textarea
                               autocomplete="off"
                               class="form-control" rows="2" placeholder="Enter Remark"
-                             ></textarea>
+                              [required]="hideRemarkDiv"></textarea>
                           </div>
                         </div>
                       </ng-container>
@@ -162,7 +163,7 @@
                                   <th scope="col" class="wd-14">Action</th>
                                 </tr>
                               </thead>
-                              <tbody>
+                              <!-- <tbody>
                                 <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
                                   <td class="wd-9">{{i+1}}</td>
                                   <td class="wd-14">{{query.moduleId}}</td>
@@ -178,7 +179,7 @@
                                   </td>
                                 </tr>
                                 <tr></tr>
-                              </tbody>
+                              </tbody> -->
                             </table>
                             <div>
                             <pagination-controls (pageChange)="p = $event"></pagination-controls>
@@ -204,12 +205,12 @@
                    <div class="col-sm-3 col-md-3">
                     <div class="custom-controls-stacked">
                        <label class="custom-control custom-radio custom-control-inline">
-                       <input formControlName="priority" type="radio"  (click)="getPriorityRequired('yes')" name="priority"
+                       <input formControlName="priorityRequired" type="radio" name="priorityRequired" (click)="getPriorityRequired('yes')"
                           class="custom-control-input"  checked>
                        <span class="custom-control-label">Yes</span>
                        </label>
                        <label class="custom-control custom-radio custom-control-inline">
-                       <input formControlName="priority" type="radio" (click)="getPriorityRequired('no')" name="priority"
+                       <input formControlName="priorityRequired" type="radio" name="priorityRequired"  (click)="getPriorityRequired('no')"
                           class="custom-control-input" >
                        <span class="custom-control-label">No</span>
                        </label>
@@ -268,13 +269,13 @@
                                       <th scope="col" class="wd-20">Auto Close</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
+                                  <!-- <tbody>
                                     <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
                                       <td class="wd-14">{{query.moduleId}}</td>
                                       <td class="wd-14">{{query.code}}</td>
                                     </tr>
                                     <tr></tr>
-                                  </tbody>
+                                  </tbody> -->
                                 </table>
                                 <pagination-controls (pageChange)="p = $event"></pagination-controls>
                               </div>
@@ -287,7 +288,7 @@
                     <div class="row">
                       <div class="col-md-4">
                       <label class="form-label">Reply Workflow</label>
-                      <select  class="form-control custom-select">
+                      <select  class="form-control custom-select" formControlName ="replyWorkflowId">
                         <option>select</option>
                         <option>select</option>
                         <option>select</option>
@@ -295,7 +296,7 @@
                       </div>
                       <div class="col-md-4">
                         <label class="form-label">Forward Workflow</label>
-                        <select  class="form-control custom-select">
+                        <select  class="form-control custom-select" formControlName ="forwardWorkFlowId">
                           <option>select</option>
                           <option>select</option>
                           <option>select</option>
@@ -308,19 +309,17 @@
                           <label class="custom-control custom-checkbox custom-control-inline pl-45">
                             <input
                               autocomplete="off" type="checkbox" class="custom-control-input"
-                              name="example-inline-checkbox1" checked
+                              name="example-inline-checkbox1" checked  (change)="changeEvent1($event)"
                               readonly>
                             <span class="custom-control-label">Active </span>
                           </label>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3"  *ngIf="hideRemarkDiv1">
                           <label class="form-label">Remark</label>
                           <textarea
                             autocomplete="off"
-
-
                             class="form-control" rows="2" placeholder="Enter Remark"
-                           ></textarea>
+                            [required]="hideRemarkDiv1"></textarea>
                         </div>
                       </div>
                     </ng-container>

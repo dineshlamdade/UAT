@@ -125,7 +125,7 @@ export class QueryComponent implements OnInit {
 
   queryFormSubmit()
   {
-    console.log(JSON.stringify(this.queryForm.value));
+    // console.log(JSON.stringify(this.queryForm.value));
     if(!this.editflag){
       this.queryService.addQuery(this.queryForm.value).subscribe(res =>
         {

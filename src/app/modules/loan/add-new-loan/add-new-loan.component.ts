@@ -70,6 +70,7 @@ export class AddNewLoanComponent implements OnInit {
   allowedRateInterest: number;
   calculatedDeviationIntallment: number;
   allowedInstallment: any;
+  guarentor: any;
 
 
   constructor(public formBuilder : FormBuilder,
@@ -83,26 +84,24 @@ export class AddNewLoanComponent implements OnInit {
         "lastModifiedDateTime":new FormControl(null),
         "active":new FormControl(true),
         "employeeCode":new FormControl(''),
-
         "installmentAmount":new FormControl('',[Validators.pattern(/^([-+] ?)?[1-9]+(,[1-9]+)?/)]),
-
         "loanType": new FormControl(null,[Validators.required]),
         "repaymentType":new FormControl(''),
         "underlineAssestValue":new FormControl(null),
         "carOrInstitutionType":new FormControl(''),
-
         "loanAmount":new FormControl('',[Validators.required,Validators.pattern(/^([-+] ?)?[1-9]+(,[1-9]+)?/)]),
         "interestRate":new FormControl(''),
-
+        // [Validators.max(12.12)]
         "noOfInstallment":new FormControl(''),
+        // [Validators.max(48)]
         "endDate":new FormControl(''),
         "remark":new FormControl(''),
         "externalReferenceNumber":new FormControl(''),
+        "guarantors": new FormControl([]),
+        "deviations": new FormControl([]),
+        "uploadDocuments": new FormControl([]),
+        "approverDetails": new FormControl([]),
 
-        "guarantors" :new FormControl('') ,
-        "deviations": new FormControl(''),
-    "uploadDocuments": new FormControl([]),
-    "approverDetails": new FormControl(''),
    })
 
    if (localStorage.getItem('loanApplyData') != null) {
@@ -291,10 +290,8 @@ getallScheduleData()
       this.getscheduleData = res.data.results[0];
     })
 }
-getGuarantorData()
-{
-this.loanservice.getGuarantorData(this.empCode).subscribe(res =>
-  {
+getGuarantorData() {
+  this.loanservice.getGuarantorData(this.empCode).subscribe(res => {
     this.guarantorDataForTable = res.data.results[0];
 
     this.fullName = this.guarantorDataForTable.fullName
@@ -305,39 +302,36 @@ this.loanservice.getGuarantorData(this.empCode).subscribe(res =>
     })
 
   })
-  let deviation = [
-    {
 
-      "deviationType": null,
-      "userLimit": 500000,
-      "deviationValue": 100000,
-      "reason": null,
+  let guarantorData = [ {
+    "employeeCode" : this.empCode,
+    "employeeFullName": this.guarantorDataForTable.fullName,
+    "createdBy": 'Ajay',
+    "createDateTime": null,
+    "lastModifiedBy": null,
+    "lastModifiedDateTime": null,
+    "active": true
+  }]
+  this.guarentor.push(guarantorData);
+
+  this.AddLoanForm.controls['guarantors'].setValue(this.guarentor);
+  let approverDetails =
+    [{
+
+      "approverLevel": "first",
+      "approverCode": "approve001",
+      "approverName": "approver1",
+      "actionDate": null,
+      "action": "done",
+      "remark": "approved",
+      "status": "approved",
       "createdBy": 'ajay',
-      "createDateTime":null,
+      "createDateTime": null,
       "lastModifiedBy": null,
       "lastModifiedDateTime": null,
       "active": true
-    }
-]
-this.AddLoanForm.controls['deviations'].setValue(deviation);
-
-let approverDetails =
-[{
-
-  "approverLevel": "first",
-  "approverCode": "approve001",
-  "approverName": "approver1",
-  "actionDate": null,
-  "action": "done",
-  "remark": "approved",
-  "status": "approved",
-  "createdBy": 'ajay',
-  "createDateTime": null,
-  "lastModifiedBy": null,
-  "lastModifiedDateTime": null,
-  "active": true
-}]
-this.AddLoanForm.controls['approverDetails'].setValue(approverDetails);
+    }]
+  this.AddLoanForm.controls['approverDetails'].setValue(approverDetails);
 
 }
 
@@ -414,23 +408,20 @@ this.loanTypeData.forEach(element => {
 });
 
 }
-// ................................calculate installment amount............................................
+// ................................calculate installment amount................................................................
 calculateInstallmentAmount(value) {
   this.EndDate = null;
 
   this.calculatedDeviationAmt = 500000 * parseInt(this.deviationAmount) / 100
   this.allowedLoanAmount = 500000 + this.calculatedDeviationAmt
 
-
   // this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
   // this.allowedRateInterest = 12 + this.calculatedDeviationAmt
 
 
-
-
   if (parseInt(value) <= this.allowedLoanAmount) {
     this.loanAmount = value;
-    this.installmentAmount = this.loanAmount / this.noOfInstallment;
+    this.installmentAmount = this.loanAmount / this.noOfInstallment ;
     this.installmentAmount = Math.round(this.installmentAmount);
     this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
@@ -445,7 +436,7 @@ calculateInstallmentAmount(value) {
 
       // this.devaiationData = [];
       this.devaiationData.push({
-        "deviationType": 'LoanAmount',
+        "deviationType": null,
         "userLimit": 500000,
         "deviationValue": parseInt(value),
         "reason": null,
@@ -472,7 +463,7 @@ calculateInstallmentAmount(value) {
 
 
   } else {
-    this.toster.success("Please Enter Eligible" + this.allowedLoanAmount + " amount")
+    this.toster.success("Please Enter Eligible"+ ' ' + this.allowedLoanAmount + " amount")
     this.devaiationData.forEach((ele,index) =>{
       if(ele.deviationType == 'LoanAmount'){
          let ind = index;
@@ -492,8 +483,8 @@ calculateInstallmentAmount(value) {
     this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
   }
 
-
 }
+// ................................calculate No Of installment amount................................................................
 
 calculateNoOfInstallment(value) {
   this.EndDate = null;
@@ -508,7 +499,7 @@ calculateNoOfInstallment(value) {
     this.installmentAmount = Math.round(this.installmentAmount);
     this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
-    // ..........................end date calculation..............................................
+    // ..........................end date calculation.........................................................................
     let currentdate = new Date();
     var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
     this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
@@ -517,7 +508,7 @@ calculateNoOfInstallment(value) {
     if (parseInt(value) > 48) {
 
       this.devaiationData.push({
-        "deviationType": 'noOfInstallment',
+        "deviationType":null,
         "userLimit": 48,
         "deviationValue": parseInt(value),
         "reason": null,
@@ -542,7 +533,7 @@ calculateNoOfInstallment(value) {
 
   }
   else {
-    this.toster.success("Please Enter Eligible " + this.allowedInstallment + " installment")
+    this.toster.success("Please Enter Eligible " +' '+ this.allowedInstallment + " installment")
     this.noOfInstallment = 48;
 
     this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
@@ -582,6 +573,7 @@ calculateInstallments(value) {
 
 
 }
+// ................................calculaterate of interest amount................................................................
 
 
 calculateRateOfInterest(value){
@@ -593,7 +585,7 @@ calculateRateOfInterest(value){
     if (parseInt(value) > 12) {
 
       this.devaiationData.push({
-        "deviationType": 'interestRate',
+        "deviationType": null,
         "userLimit": 12,
         "deviationValue": parseInt(value),
         "reason": null,
@@ -618,7 +610,7 @@ calculateRateOfInterest(value){
 
   }
   else {
-    this.toster.success("Please Enter Eligible"  + this.allowedRateInterest + " interest rate")
+    this.toster.success("Please Enter Eligible" + ' '  + this.allowedRateInterest + " interest rate")
 
     this.devaiationData.forEach((ele,index) =>{
       if(ele.deviationType == 'interestRate'){
