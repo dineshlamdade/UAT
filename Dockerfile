@@ -35,6 +35,7 @@ RUN npm i @babel/compat-data@7.8.0
 #RUN npm update
 #RUN npm audit fix
 #RUN npm update @angular/cli @angular/core
+EXPORT NODE_OPTIONS="--max-old-space-size=8192"
 
 #RUN npm i @angular-devkit/build-angular@0.901.9
 
