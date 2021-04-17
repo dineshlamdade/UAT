@@ -227,12 +227,13 @@
                                                               <input data-provide="datepicker" data-date-autoclose="true" formControlName="billLastFinYearClaimedInNextFinYear"
                                                                 class="form-control" placeholder="DD-MMM"
                                                                 (bsValueChange)="onChangeFromDate()"
-                                                                ngClass="{'is-invalid' : computationForm.get('billLastFinYearClaimedInNextFinYear').status == 'INVALID'}"
                                                                 bsDatepicker
+                                                              
                                                                 [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
                                 
                                 
                                                             </div>
+                                            
                                                           </div>
                                                 </div>
                                             </div>

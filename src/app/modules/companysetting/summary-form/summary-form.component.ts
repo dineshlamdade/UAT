@@ -200,20 +200,40 @@ export class SummaryFormComponent implements OnInit {
   // ...........................Select table list data ......................
 
   checkedListData(index, isChecked, fieldName) {
-    // console.log(index, isChecked, claimId);
+    console.log("hellow", index, isChecked, fieldName);
     console.log(this.summaryGridDataList[index]);
-    this.summaryGridDataList[index].enable = isChecked;
-    if (isChecked == true) {
-      let listData = this.summaryGridDataList[index];
-      listData.mandatory = false;
-      listData.dropDownValues = [];
-      this.summaryGridDataList.push(listData);
-      console.log("myvalue", this.summaryGridDataList);
-    } else {
-      const indexValue = this.summaryGridDataList.indexOf(fieldName);
-      this.summaryGridDataList.splice(indexValue, 1);
+    // this.registerGridDataList[index].enable = isChecked;
+
+    const indexValue = this.summaryGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
+    console.log("indexvalue", indexValue);
+    this.summaryGridDataList[indexValue].enable = isChecked;
+    // this.summaryGridDataList[indexValue].mandatory = false;
+    // this.summaryGridDataList[indexValue].claimForm = false;
+    this.summaryGridDataList[indexValue].dropDownValues = [];
+    if (!isChecked) {
+      //console.log("registerGridDataTempList::",this.registerGridDataTempList);
+    //  const tempIndexValue = this.registerGridDataTempList.findIndex(getIndex => getIndex.fieldName == fieldName);
+  
+      this.summaryGridDataList[indexValue].displayName = '';
+    //  console.log("this.registerGridDataTempList[tempIndexValue].displayName", this.registerGridDataTempList[tempIndexValue].displayName)
+
     }
-    console.log("selected value", this.summaryGridDataList);
+
+
+    // console.log(index, isChecked, claimId);
+    // console.log(this.summaryGridDataList[index]);
+    // this.summaryGridDataList[index].enable = isChecked;
+    // if (isChecked == true) {
+    //   let listData = this.summaryGridDataList[index];
+    //   listData.mandatory = false;
+    //   listData.dropDownValues = [];
+    //   this.summaryGridDataList.push(listData);
+    //   console.log("myvalue", this.summaryGridDataList);
+    // } else {
+    //   const indexValue = this.summaryGridDataList.indexOf(fieldName);
+    //   this.summaryGridDataList.splice(indexValue, 1);
+    // }
+    // console.log("selected value", this.summaryGridDataList);
   }
 
   // .................... Change Event Pass Value............

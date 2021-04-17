@@ -14,6 +14,7 @@ export class ReimbursementMasterComponent implements OnInit {
   public data: any;
   public rembsettingid:number;
   public policyNumber: string;
+  public policyNumber1: string;
   constructor() { }
 
   ngOnInit(): void {
@@ -32,6 +33,11 @@ export class ReimbursementMasterComponent implements OnInit {
   redirectToMaster(event: any) {
     this.tabIndex = event.tabIndex;
     this.policyNumber = event;
+  }
+
+  redirectToMaster1(event: any) {
+    this.tabIndex = 2;
+    this.policyNumber1 = event;
   }
 
   changeTabIndex(index: number)

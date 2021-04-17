@@ -31,7 +31,12 @@
                                         <div class="form-group">
                                             <label class="form-label">Display Name</label>
                                             <input type="text" class="form-control" placeholder="Description"
-                                                formControlName="displayName">
+                                                formControlName="displayName" [ngClass]="{'is-invalid' : submitted && f.displayName.errors}">
+                                                <div *ngIf="submitted && f.displayName.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.displayName.errors.required">
+                                                        Display Name is required
+                                                    </div>
+                                                </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
@@ -271,13 +276,19 @@
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">Registration Template</label>
 
-                                                        <select class="form-control" formControlName="regTemplateId">
+                                                        <select class="form-control" formControlName="regTemplateId"
+                                                        [ngClass]="{'is-invalid' : submitted && f.regTemplateId.errors}">
                                                             <option value="">Select</option>
                                                             <option *ngFor="let headTempList of headTemplateList1"
                                                                 value="{{headTempList.regTemplateId}}">
                                                                 {{headTempList.regTemplateName}}</option>
 
                                                         </select>
+                                                        <div *ngIf="submitted && f.regTemplateId.errors" class="invalid-feedback">
+                                                            <div *ngIf="f.regTemplateId.errors.required">
+                                                                Registration template is required
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
@@ -334,7 +345,7 @@
                                                         *ngIf="headRembType">
                                                         <div class="" *ngIf="headRembType2">
                                                             <label class="form-label">No of registration</label>
-                                                            <input type="text" class="form-control"
+                                                            <input type="number" class="form-control"
                                                                 formControlName="maxCountOfRegiOfHead"
                                                                 placeholder="No of registration">
                                                         </div>
@@ -443,13 +454,20 @@
                                                         <label class="form-label">List of summary heads</label>
 
                                                         <select class="form-control"
-                                                            formControlName="reiListSummaryHeadTempId">
+                                                            formControlName="reiListSummaryHeadTempId"
+                                                            [ngClass]="{'is-invalid' : submitted && f.reiListSummaryHeadTempId.errors}">
                                                             <option value="">Select</option>
                                                             <option *ngFor="let headTempList of headTemplateList3"
                                                                 value="{{headTempList.reiListSummaryHeadTempId}}">
                                                                 {{headTempList.listSummaryHeadTemplateName}}</option>
 
                                                         </select>
+                                                        <div *ngIf="submitted && f.reiListSummaryHeadTempId.errors" class="invalid-feedback">
+                                                            <div *ngIf="f.reiListSummaryHeadTempId.errors.required">
+                                                                Summary Template is required
+                                                            </div>
+                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
@@ -470,13 +488,19 @@
                                                     <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                         <label class="form-label">Declaration Message</label>
                                                         <select class="form-control"
-                                                            formControlName="declarationMessageId">
+                                                            formControlName="declarationMessageId"
+                                                            [ngClass]="{'is-invalid' : submitted && f.declarationMessageId.errors}">
                                                             <option value="">Select</option>
                                                             <option *ngFor="let headTempList of headTemplateList4"
                                                                 value="{{headTempList.declarationMessageId}}">
                                                                 {{headTempList.declarationMessageName}}</option>
 
                                                         </select>
+                                                        <div *ngIf="submitted && f.declarationMessageId.errors" class="invalid-feedback">
+                                                            <div *ngIf="f.declarationMessageId.errors.required">
+                                                                Declaration template is required
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>

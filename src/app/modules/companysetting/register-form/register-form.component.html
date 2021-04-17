@@ -128,7 +128,8 @@
 
                                                                     </td>
                                                                     <td [disabled]="!getfields.enable">
-                                                                        {{getfields.dropDownValues}} <span *ngIf="getfields.nature === 'List' && getfields.enable">Set Value</span>
+                                                                        <!-- <ul><li  *ngFor="let listDrop of this.listDropDown">{{listDrop}}</li></ul> -->
+                                                                        {{getfields.dropDownValues}}
                                                                         <i *ngIf="getfields.nature === 'List' && getfields.enable"
                                                                             class="fa fa-caret-square-o-down text-blue  float-right"
                                                                             tooltip="Add List"

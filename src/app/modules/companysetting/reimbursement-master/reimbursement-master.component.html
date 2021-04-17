@@ -25,7 +25,7 @@
                   [checked]="tabIndex == 1" />
                 <div class="tabs about-page">
                   <!-- <app-remb-general *ngIf="tabIndex == 0" [policyNumber]="policyNumber"> </app-remb-general> -->
-                  <app-remb-general *ngIf="tabIndex == 1" [policyNumber]="policyNumber"
+                  <app-remb-general *ngIf="tabIndex == 1" [policyNumber]="policyNumber" (policyNumber1)="redirectToMaster1($event)"
                    > </app-remb-general>
                 </div>
                 <label class="nav" for="Master">
@@ -35,7 +35,7 @@
                 <input name="nav" type="radio" class="about-radio" id="Declaration" (change)="changeTabIndex(2)"
                   [checked]="tabIndex == 2" />
                 <div class="tabs about-page">
-                  <app-remb-computation #licdeclaration [data]="data" *ngIf="tabIndex == 2"></app-remb-computation>
+                  <app-remb-computation [policyNumber]="policyNumber"  *ngIf="tabIndex == 2"></app-remb-computation>
                 </div>
 
                 <label class="nav" for="Declaration">

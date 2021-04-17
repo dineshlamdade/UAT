@@ -32,10 +32,14 @@ export class RembGeneralComponent implements OnInit {
   public generalForm: FormGroup;
   public submitted = false;
   public rembHeadId: number;
+  public reimbursementGeneralId: number;
   public templateData = [];
-  public tabIndex = 0;
+  private tabIndex = 0;
   @Input() policyNo: string;
-  @Output() rembsettingid = new EventEmitter<any>();
+  @Input() canEdit:string;
+  @Output() policyNumber1 = new EventEmitter<any>();
+  
+  
   constructor(
     public service: ReimbursementMasterService,
     public fb: FormBuilder,
@@ -54,22 +58,22 @@ export class RembGeneralComponent implements OnInit {
     this.generalForm = this.fb.group({
       reimbursementMasterGeneralSettingId: new FormControl(''),
       headMasterId: new FormControl('', Validators.required),
-      displayName: new FormControl(''),
+      displayName: new FormControl('', Validators.required),
       trakingMethod: new FormControl('Same head'),
       trackingOnAnotherHeadId: new FormControl(''),
       claimTaxable: new FormControl('false'),
       billSubLimitMethod: new FormControl(''),
       billSubLimitSDMId: new FormControl(''),
       enableInvestmentDeclaration: new FormControl('false'),
-      regTemplateId: new FormControl(''),
+      regTemplateId: new FormControl('', Validators.required),
       cyclewiseBalanceTracking: new FormControl('false'),
       maxCountOfRegiOfHead: new FormControl(''),
       regiApprWorkflowId: new FormControl(''),
       regiApprSDMId: new FormControl(''),
       claimApprWorkflowId: new FormControl(''),
       claimApprSDMId: new FormControl(''),
-      reiListSummaryHeadTempId: new FormControl(''),
-      declarationMessageId: new FormControl(''),
+      reiListSummaryHeadTempId: new FormControl('', Validators.required),
+      declarationMessageId: new FormControl('', Validators.required),
       formActiveTempid: new FormControl(''),
       claimTempId: new FormControl('', Validators.required),
       ProofOfSubmission: new FormControl('false'),
@@ -125,13 +129,47 @@ export class RembGeneralComponent implements OnInit {
       const inputData = this.policyNumber;
       this.getViewgeneralById(inputData.policyNo);
       console.log("getViewgeneralById", inputData.policyNo);
-    }
+    } 
   }
 
   get f() { return this.generalForm.controls; }
 
   submitGeneralMaster() {
     window.scrollTo(0, 0);
+    if(this.reimbursementGeneralId > 0){
+
+      this.submitted = true;
+      if (this.generalForm.invalid) {
+        return;
+      }
+  
+      let saveArray = [];
+      for (let i = 0; i < this.generalAttrSelectElement.length; i++) {
+        let obj = {
+          reimAttributeMasterId: this.generalAttrSelectElement[i].reimAttributeMasterId,
+          amountLimit: this.generalAttrSelectElement[i].amountLimit,
+          quantityLimit: this.generalAttrSelectElement[i].quantityLimit,
+          onesEvery: this.generalAttrSelectElement[i].onesEvery,
+          frequency: this.generalAttrSelectElement[i].frequency,
+          gapsBetTwoAttributeClaims: this.generalAttrSelectElement[i].gapsBetTwoAttributeClaims,
+          maxCountOfRegiOfAttribute: this.generalAttrSelectElement[i].maxCountOfRegiOfAttribute,
+          active: this.generalAttrSelectElement[i].active
+        }
+        saveArray.push(obj);
+      }
+      console.log("this.generalform", this.generalForm.value);
+      let postData = this.generalForm.getRawValue();
+      // postData.reimbursementTrackingRequestDTO.method = this.eventHead;
+      postData.reimbursementTrackingRequestDTO = saveArray;
+      console.log("postdata", postData);
+      this.service.editReimbursementSubmitData(postData).subscribe((res)=>{
+        console.log("general value update", res);
+        this.alertService.sweetalertMasterSuccess("General setting form updated successfully", "");
+        this.jumpToMasterPage();
+      })
+    
+    }else{
+ 
     this.submitted = true;
     if (this.generalForm.invalid) {
       return;
@@ -160,15 +198,33 @@ export class RembGeneralComponent implements OnInit {
     this.alertService.sweetalertMasterSuccess("General setting form submitted successfully", "");
     this.jumpToMasterPage();
   }
+       
+}
 
   getViewgeneralById(policyNo){
-    window.scrollTo(0, 0);
-    this.service.getGeneralTemplateViewById(policyNo).subscribe((res)=>{
-      console.log("results", res);
-      let generalViewData = res.data.results[0];
-      this.generalForm.patchValue(generalViewData);
-      this.generalForm.disable();
-    })
+  this.reimbursementGeneralId = policyNo;
+    let modePoint = this.policyNumber.canEdit;
+    console.log("this.canEdit", modePoint)
+
+    if(modePoint == true){
+      window.scrollTo(0, 0);
+      this.service.getGeneralTemplateViewById(policyNo).subscribe((res)=>{
+        console.log("results", res);
+        let generalViewData = res.data.results[0];
+        this.generalForm.patchValue(generalViewData);
+        // this.generalForm.disable();
+      })
+    }else{
+      window.scrollTo(0, 0);
+      this.service.getGeneralTemplateViewById(policyNo).subscribe((res)=>{
+        console.log("results", res);
+        let generalViewData = res.data.results[0];
+        this.generalForm.patchValue(generalViewData);
+        this.generalForm.disable();
+      })
+
+    }
+ 
   }
 
 
@@ -264,12 +320,13 @@ declarationNavigate(){
   this.router.navigate(['/declarationForm']);
 }
 jumpToMasterPage() {
+  console.log("hellow");
   this.tabIndex = 2;
-  const rembsettingid = {
+  const policyNumber1 = {
     policyNo : 2,
     tabIndex : this.tabIndex,
   };
-     this.rembsettingid.emit(rembsettingid);
+  this.policyNumber1.emit(policyNumber1);
 }
 
 public eventHead:'';

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ElementRef, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 // import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -21,13 +22,24 @@ export class RembRegistrationComponent implements OnInit {
   public modalRef: BsModalRef;
   public masterfilesArray: File[] = [];
   public documentRemark: any;
-  public alltemplates:Array<any> = [];
+  public alltemplates: Array<any> = [];
+  public reimEmpRegistrationId: number = 0;
+  public urlArray: Array<any> = [];
+  public urlIndex: number;
+  public urlSafe: SafeResourceUrl;
+  public isView: boolean = false;
+  public isEdit: boolean = false;
+  public pdfSrc =
+    'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+  public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
+
   constructor(
     public service: RembRegistrationService,
     public fb: FormBuilder,
     public router: Router,
     public alertService: AlertServiceService,
     private modalService: BsModalService,
+    public sanitizer: DomSanitizer
 
   ) {
 
@@ -47,7 +59,7 @@ export class RembRegistrationComponent implements OnInit {
       employeeMasterId: new FormControl(5),
       reimbursementMasterGeneralSettingId: new FormControl(115),
       regTemplateId: new FormControl(91),
-      proofSubmissionId: new FormControl(1),
+      proofSubmissionId: new FormControl(),
       typeofVehicle: new FormControl(''),
       vehicleNo: new FormControl(''),
       ownership: new FormControl(''),
@@ -70,6 +82,7 @@ export class RembRegistrationComponent implements OnInit {
       checkBox2: new FormControl(''),
 
     });
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
 
     this.getHeadMasterFields(this.headId);
     this.getAllTemplates();
@@ -79,20 +92,96 @@ export class RembRegistrationComponent implements OnInit {
 
   submitRegisterMaster() {
     window.scrollTo(0, 0);
-    this.submitted = true;
-    if (this.registrationForm.invalid) {
-      return;
+    if (this.reimEmpRegistrationId > 0) {
+      console.log("update");
+      this.submitted = true;
+      if (this.registrationForm.invalid) {
+        return;
+      }
+      console.log("this.registrationForm", this.registrationForm.value);
+      let postData = this.registrationForm.getRawValue();
+      this.service.editRegisterData(postData).subscribe((res) => {
+        console.log("Register form", res);
+        this.alertService.sweetalertMasterSuccess("Register form update successfully", "");
+        // console.log("template list", )
+      });
+
+
+    } else {
+      console.log("save");
+      this.submitted = true;
+      if (this.registrationForm.invalid) {
+        return;
+      }
+
+      console.log("this.urlarray", this.urlArray.length);
+      if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
+        this.alertService.sweetalertWarning('Document needed to create registration.')
+        return;
+      } else {
+
+        console.log("this.registrationForm", this.registrationForm.value);
+        let postData = this.registrationForm.getRawValue();
+        this.service.postRegisterData(this.masterfilesArray, postData).subscribe((res) => {
+          console.log("Register form", res);
+          this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
+          // console.log("template list", )
+        });
+      }
     }
-    console.log("this.registrationForm", this.registrationForm.value);
-    let postData = this.registrationForm.getRawValue();
-    this.service.postRegisterData(postData).subscribe((res) => {
-      console.log("Register form", res);
-      this.alertService.sweetalertMasterSuccess("Register form successfully", "");
-      // console.log("template list", )
-    });
-
-
   }
+
+
+
+
+
+
+  getRegisterTemplateViewById(reimEmpRegistrationId, regTemplateId) {
+    window.scrollTo(0, 0);
+    this.service.getRegisterTemplateViewById(reimEmpRegistrationId, regTemplateId).subscribe((res) => {
+      console.log("results", res);
+      let registerTemplateList = res.data.results[0];
+      console.log(registerTemplateList);
+      this.registrationForm.patchValue(registerTemplateList);
+      this.registrationForm.disable();
+      this.urlArray = res.data.results[0].documentInformationResponseDTO;
+      console.log("this.urlArray", this.urlArray);
+    })
+    this.isView = true;
+  }
+
+  getRegisterTemplateEditById(reimEmpRegistrationId, regTemplateId) {
+    window.scrollTo(0, 0);
+    this.reimEmpRegistrationId = reimEmpRegistrationId;
+    this.service.getRegisterTemplateViewById(reimEmpRegistrationId, regTemplateId).subscribe((res) => {
+      console.log("results", res);
+      let registerTemplateList = res.data.results[0];
+      console.log(registerTemplateList);
+      this.registrationForm.patchValue(registerTemplateList);
+      this.urlArray = res.data.results[0].documentInformationResponseDTO;
+
+    })
+    this.isEdit = true;
+  }
+
+  resetForm() {
+    window.scrollTo(0, 0);
+    // this.registerGridDataList = [];
+    this.registrationForm.reset({
+      active: new FormControl(true),
+    });
+    this.getAllTemplates();
+    this.isView = false;
+    this.isEdit = false;
+    this.registrationForm.enable();
+    this.registrationForm.controls.remark.disable();
+    this.urlArray = [];
+  }
+
+
+
+
+
 
 
 
@@ -147,7 +236,7 @@ export class RembRegistrationComponent implements OnInit {
         this.masterfilesArray.push(file);
       }
     }
-    //console.log('this.masterfilesArray::', this.masterfilesArray);
+    console.log('this.masterfilesArray::', this.masterfilesArray);
   }
 
   removeSelectedLicMasterDocument(index: number) {
@@ -156,4 +245,46 @@ export class RembRegistrationComponent implements OnInit {
     //console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
+
+
+  //---------- For Doc Viewer -----------------------
+  nextDocViewer() {
+
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  previousDocViewer() {
+
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
+
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log("---in doc viewer--");
+    this.urlIndex = index;
+
+    console.log("urlArray::", this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+    //this.urlSafe
+    console.log("urlSafe::", this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
+    );
+  }
 }
+

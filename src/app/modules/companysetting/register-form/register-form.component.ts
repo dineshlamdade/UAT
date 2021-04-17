@@ -13,7 +13,7 @@ import { AlertServiceService } from '../../../core/services/alert-service.servic
 export class RegisterFormComponent implements OnInit {
   public registerForm: FormGroup;
   public registerGridDataList: Array<any> = [];
-  public selectedListElement: Array<any> = [];
+  public registerGridDataTempList: Array<any> = [];
   public dropdownListData: Array<any> = [];
   public submitted: boolean = false;
   public loading: boolean = false;
@@ -24,6 +24,7 @@ export class RegisterFormComponent implements OnInit {
   public isView: boolean = false;
   public isEdit: boolean = false;
   public regTemplateId: number = 0;
+  public listDropDown = [];
   constructor(
     public service: RegistrationMasterService,
     public fb: FormBuilder,
@@ -68,7 +69,7 @@ export class RegisterFormComponent implements OnInit {
         return;
       }
 
-      let isAllSelectField = this.registerGridDataList.every( obj => obj.enable == false );
+      let isAllSelectField = this.registerGridDataList.every(obj => obj.enable == false);
 
       if (isAllSelectField) {
         this.alertService.sweetalertWarning('Please select any field list')
@@ -97,24 +98,24 @@ export class RegisterFormComponent implements OnInit {
       if (this.registerForm.invalid) {
         return;
       }
-      let isallSelectedField = this.registerGridDataList.every( o => o.enable == false );
+      let isallSelectedField = this.registerGridDataList.every(o => o.enable == false);
 
       if (isallSelectedField) {
         this.alertService.sweetalertWarning('Please select any field list')
         return
       } else {
-      console.log(this.registerForm.value);
-      let postData = this.registerForm.getRawValue();
-      postData.registrationTemplateDetailsRequestDTO = this.registerGridDataList;
-      console.log("postData", postData);
-      this.service.postRegisterData(postData).subscribe((res) => {
-        console.log("Claim value", res);
-        this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
-        console.log("templateUserId", this.templateUserIdList);
-      })
-      this.dropdownListData = [];
-    }
+        console.log(this.registerForm.value);
+        let postData = this.registerForm.getRawValue();
+        postData.registrationTemplateDetailsRequestDTO = this.registerGridDataList;
+        console.log("postData", postData);
+        this.service.postRegisterData(postData).subscribe((res) => {
+          console.log("Claim value", res);
+          this.templateUserIdList.push(res.data.results[0]);
+          this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
+          console.log("templateUserId", this.templateUserIdList);
+        })
+        this.dropdownListData = [];
+      }
       this.resetForm();
     }
   }
@@ -134,7 +135,10 @@ export class RegisterFormComponent implements OnInit {
       // const nature = { nature: "List" }
       // const returnClaimData = Object.assign(res.data.results[0], nature);
       this.registerGridDataList = res.data.results;
-      console.log(" this.registerGridDataList", this.registerGridDataList)
+      this.registerGridDataTempList = res.data.results;
+      // console.log(" this.registerGridDataList", this.registerGridDataList)
+      console.log(" this.registerGridDataList", this.registerGridDataList);
+      console.log(" this.registerGridDataTempList", this.registerGridDataTempList);
     })
   }
   //....................... View and Edit post list for selected checkbox list...................
@@ -208,21 +212,42 @@ export class RegisterFormComponent implements OnInit {
   // ...........................Select table list data ......................
 
   checkedListData(index, isChecked, fieldName) {
-    // console.log(index, isChecked, claimId);
+    console.log("hellow", index, isChecked, fieldName);
     console.log(this.registerGridDataList[index]);
-    this.registerGridDataList[index].enable = isChecked;
-    if (isChecked == true) {
-      let listData = this.registerGridDataList[index];
-      listData.mandatory = false;
-      listData.claimForm = false;
-      listData.dropDownValues = [];
-      this.dropdownListData = [];
-      this.registerGridDataList.push(listData);
-      console.log("myvalue", this.registerGridDataList);
-    } else {
-      const indexValue = this.registerGridDataList.indexOf(fieldName);
-      this.registerGridDataList.splice(indexValue, 1);
+    // this.registerGridDataList[index].enable = isChecked;
+
+    const indexValue = this.registerGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
+    console.log("indexvalue", indexValue);
+    this.registerGridDataList[indexValue].enable = isChecked;
+    this.registerGridDataList[indexValue].mandatory = false;
+    this.registerGridDataList[indexValue].claimForm = false;
+    this.registerGridDataList[indexValue].dropDownValues = [];
+    if (!isChecked) {
+      //console.log("registerGridDataTempList::",this.registerGridDataTempList);
+    //  const tempIndexValue = this.registerGridDataTempList.findIndex(getIndex => getIndex.fieldName == fieldName);
+  
+      this.registerGridDataList[indexValue].displayName = '';
+    //  console.log("this.registerGridDataTempList[tempIndexValue].displayName", this.registerGridDataTempList[tempIndexValue].displayName)
+
     }
+
+    // if (isChecked == true) {
+
+    //   // let listData = this.registerGridDataList[index];
+    //   // listData.mandatory = false;
+    //   // listData.claimForm = false;
+    //   // listData.dropDownValues = [];
+    //   this.dropdownListData = [];
+    //   // this.registerGridDataList.push(listData);
+    //   console.log("myvalue", this.registerGridDataList);
+    // } else {
+    //   this.registerGridDataList[indexValue].enable = isChecked;
+    //   this.registerGridDataList[indexValue].mandatory = false;
+    //   this.registerGridDataList[indexValue].claimForm = false;
+    //   this.registerGridDataList[indexValue].dropDownValues = [];
+    //   // this.registerGridDataList.splice(indexValue, 1);
+    // }
+
     console.log("selected value", this.registerGridDataList);
     console.log("registerGridDataList value", this.registerGridDataList);
   }
@@ -271,11 +296,14 @@ export class RegisterFormComponent implements OnInit {
     this.dropListModel = '';
     let indexField = this.registerGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
     this.registerGridDataList[indexField].dropDownValues = this.dropdownListData;
+    this.listDropDown = this.dropdownListData
+    console.log("this.listDropDown", this.listDropDown);
+    
   }
 
   getDropdownListRemove(index, dropdownListid) {
     this.dropdownListData.splice(index, 1);
-    console.log(this.dropdownListData);
+    console.log("302", this.dropdownListData);
     let indexField = this.registerGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
     this.registerGridDataList[indexField].dropDownValues = this.dropdownListData;
   }
@@ -299,14 +327,14 @@ export class RegisterFormComponent implements OnInit {
       template,
       Object.assign({}, { class: 'gray modal-md' })
     );
-    if(this.dropdownListData.length !==0){
-      console.log("modal select box", this.registerGridDataList);    
-      let index = this.registerGridDataList.find(element=>element.fieldName == fieldName)
+    // if (this.dropdownListData.length !== 0) {
+      console.log("modal select box", this.registerGridDataList);
+      let index = this.registerGridDataList.find(element => element.fieldName == fieldName)
       this.dropdownListData = index.dropDownValues;
       console.log("listdata", this.dropdownListData);
-     
+
       console.log("dropno", this.dropdownListid);
-    }
+    // }
     this.dropdownListid = fieldName;
     console.log(this.dropdownListid);
   }

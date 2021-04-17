@@ -202,22 +202,41 @@ export class ClaimFormComponent implements OnInit {
   // ...........................Select table list data ......................
 
   checkedListData(index, isChecked, fieldName) {
-    // console.log(index, isChecked, claimId);
+    console.log("hellow", index, isChecked, fieldName);
     console.log(this.claimGridDataList[index]);
-    this.claimGridDataList[index].enable = isChecked;
-    if (isChecked == true) {
-      let listData = this.claimGridDataList[index];
-      listData.mandatory = false;
-      listData.dropDownValues = [];
-      this.dropdownListData = [];
-      this.claimGridDataList.push(listData);
-      console.log("myvalue", this.claimGridDataList);
-    } else {
-      const indexValue = this.claimGridDataList.indexOf(fieldName);
-      this.claimGridDataList.splice(indexValue, 1);
+    // this.registerGridDataList[index].enable = isChecked;
+
+    const indexValue = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
+    console.log("indexvalue", indexValue);
+    this.claimGridDataList[indexValue].enable = isChecked;
+    this.claimGridDataList[indexValue].mandatory = false;
+    // this.claimGridDataList[indexValue].claimForm = false;
+    this.claimGridDataList[indexValue].dropDownValues = [];
+    if (!isChecked) {
+      //console.log("registerGridDataTempList::",this.registerGridDataTempList);
+    //  const tempIndexValue = this.registerGridDataTempList.findIndex(getIndex => getIndex.fieldName == fieldName);
+  
+      this.claimGridDataList[indexValue].displayName = '';
+    //  console.log("this.registerGridDataTempList[tempIndexValue].displayName", this.registerGridDataTempList[tempIndexValue].displayName)
+
     }
-    console.log("selected value", this.claimGridDataList);
-    console.log("claimGridDataList value", this.claimGridDataList);
+    
+    // console.log(index, isChecked, claimId);
+    // console.log(this.claimGridDataList[index]);
+    // this.claimGridDataList[index].enable = isChecked;
+    // if (isChecked == true) {
+    //   let listData = this.claimGridDataList[index];
+    //   listData.mandatory = false;
+    //   listData.dropDownValues = [];
+    //   this.dropdownListData = [];
+    //   this.claimGridDataList.push(listData);
+    //   console.log("myvalue", this.claimGridDataList);
+    // } else {
+    //   const indexValue = this.claimGridDataList.indexOf(fieldName);
+    //   this.claimGridDataList.splice(indexValue, 1);
+    // }
+    // console.log("selected value", this.claimGridDataList);
+    // console.log("claimGridDataList value", this.claimGridDataList);
   }
 
   // .................... Change Event Pass Value............

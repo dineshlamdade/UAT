@@ -9,11 +9,11 @@ import { ReimbursementMasterService } from '../reimbursement-master.service';
   styleUrls: ['./remb-summary.component.scss']
 })
 export class RembSummaryComponent implements OnInit {
-private templateList:Array<any> = [];
-private headtypelist:Array<any> = [];
-private tabIndex = 0;
-@Input() policyNo: string;
-@Output() policyNumber = new EventEmitter<any>();
+  private templateList: Array<any> = [];
+  private headtypelist: Array<any> = [];
+  private tabIndex = 0;
+  @Input() policyNo: string;
+  @Output() policyNumber = new EventEmitter<any>();
 
   constructor(public service: ReimbursementMasterService) { }
 
@@ -22,15 +22,15 @@ private tabIndex = 0;
     this.getReimbursementHeadType();
   }
 
-// Get all summary list
-  getAllTemplateList(){
-    this.service.getAllTemplateList().subscribe((res)=>{
+  // Get all summary list
+  getAllTemplateList() {
+    this.service.getAllTemplateList().subscribe((res) => {
       console.log("res master", res);
       this.templateList = res.data.results;
     })
   }
 
-  
+
   getReimbursementHeadType() {
     console.log("ssss");
     this.service.getReimbursementHeadType().subscribe((res) => {
@@ -51,16 +51,17 @@ private tabIndex = 0;
   //    this.rembsettingid.emit(data);
   //   console.log("summry view", rembSettingId, mode);
   // }
-
-  summaryViewById(policyNo: string) {
+  summaryViewById(policyNo: string, mode: string) {
+    console.log("mode", mode);
     this.tabIndex = 1;
     const policyNumber = {
-      policyNo : policyNo,
-      tabIndex : this.tabIndex,
+      policyNo: policyNo,
+      canEdit: (mode == 'edit' ? true : false),
+      tabIndex: this.tabIndex,
     };
     this.policyNumber.emit(policyNumber);
   }
 
-  
+
 
 }

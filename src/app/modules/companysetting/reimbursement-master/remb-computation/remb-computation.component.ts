@@ -87,11 +87,13 @@ console.log(this.service.getReimbursementSubmitData());
     }
    // console.log("this.generalform", this.computationForm.value);
     let postData = this.computationForm.getRawValue();
+   
     // postData.reimbursementTrackingRequestDTO = this.computationForm;
     console.log('general Form',this.service.getReimbursementSubmitData());
     console.log("postdata", postData);
     let data : any;
     data = this.service.getReimbursementSubmitData();
+    data.billLastFinYearClaimedInNextFinYear = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
     data.reimbursementMasterComputationSettingRequestDTO = this.computationForm.getRawValue();
     console.log(data);
     this.service.postReimbursementSubmitData(data).subscribe((res)=> {
@@ -108,9 +110,9 @@ console.log(this.service.getReimbursementSubmitData());
   onChangeFromDate() {
     const yearDate = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
     console.log("form", yearDate);
-    this.today = new Date(yearDate);
-    console.log("yearDate", this.today);
-    this.computationForm.controls['billLastFinYearClaimedInNextFinYear'].setValue(yearDate);
+    // this.today = new Date(yearDate);
+    // console.log("yearDate", this.today);
+    // this.computationForm.controls['billLastFinYearClaimedInNextFinYear'].setValue(yearDate);
   }
 // ...........................  Select box dropdown items events............
 
@@ -248,3 +250,7 @@ console.log(this.service.getReimbursementSubmitData());
  
   
 }
+
+
+
+
