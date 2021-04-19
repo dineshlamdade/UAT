@@ -12,7 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+// import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CKEditorModule } from 'ckeditor4-angular';
+
 // import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -145,7 +147,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
     EmailSmsModule,
     LoanMasterModule,
     SignaturePadModule
-  
+
   ],
 
   providers: [BsDatepickerModule,
