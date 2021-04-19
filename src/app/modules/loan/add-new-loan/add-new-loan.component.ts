@@ -66,6 +66,7 @@ export class AddNewLoanComponent implements OnInit {
   allowedRateInterest: number;
   calculatedDeviationIntallment: number;
   allowedInstallment: number;
+  guarentor: any[] = [];
 
   constructor(public formBuilder: FormBuilder,
     private modalService: BsModalService, public loanservice: LoanService, public toster: ToastrService,
@@ -94,8 +95,8 @@ export class AddNewLoanComponent implements OnInit {
         "remark": new FormControl(''),
         "externalReferenceNumber": new FormControl(''),
 
-        "guarantors": new FormControl(''),
-        "deviations": new FormControl(''),
+        "guarantors": new FormControl([]),
+        "deviations": new FormControl([]),
         "uploadDocuments": new FormControl([]),
         "approverDetails": new FormControl(''),
 
@@ -296,7 +297,18 @@ export class AddNewLoanComponent implements OnInit {
 
     })
 
+    let guarantorData = [ {
+      "employeeCode" : this.empCode,
+      "employeeFullName": this.guarantorDataForTable.fullName,
+      "createdBy": 'Ajay',
+      "createDateTime": null,
+      "lastModifiedBy": null,
+      "lastModifiedDateTime": null,
+      "active": true
+    }]
+    this.guarentor.push(guarantorData)
 
+    this.AddLoanForm.controls['guarantors'].setValue(this.guarentor);
     let approverDetails =
       [{
 

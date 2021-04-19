@@ -21,6 +21,9 @@ export class GeneralComponent implements OnInit {
   deviationAmount: string = '';
   deviationIntrest: string = '';
   deviationNoOfInstallment: string= '';
+  PricipalNode: any = '';
+  TenureNode: any = '';
+  InterestNode: any = '';
 
 
   constructor(private router: Router) {
@@ -261,5 +264,18 @@ export class GeneralComponent implements OnInit {
       this.router.navigate(['/loan-master/payment'])
     }
   }
-  
+
+
+  /** Node values */
+  getPrincipalAmount(event){
+    this.PricipalNode = event.value
+  }
+
+  getInterestAmount(event){
+    this.InterestNode = event.value
+  }
+
+  getTenureValue(event){
+    this.TenureNode = event.value
+  }
 }

@@ -16,246 +16,305 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12"> -->
-                <div class="card" style="width: 1274px !important; margin-left: 72px !important;">
-                    <div class="card-body">
-                        <div class="tabs about-page">
+<div class="card" style="width: 1274px !important; margin-left: 72px !important;">
+    <div class="card-body">
+        <div class="tabs about-page">
 
-                            <form [formGroup]="generalLoanForm">
-                                <fieldset>
-                                    <fieldset>
-                                        <legend>General</legend>
-                                        <div class="tabview-contents">
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Code</label>
-                                                    <input type="text" class="form-control " formControlName="loanCode">
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Description</label>
-                                                    <input type="text" class="form-control " formControlName="loanDescription">
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Minimum Net Pay (MNP) - Loan Head</label>
-                                                    <select class="form-control" (change)="minimumNetPay($event.target.value)"
-                                                        [disabled]="loandata != ''">
-                                                        <option value="">Select</option>
-                                                        <option [selected]="minimumNetPayValue == 'Yes'">Yes</option>
-                                                        <option [selected]="minimumNetPayValue == 'No'">No</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Loan Application Template</label>
-                                                    <input type="text" class="form-control ">
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Approval Workflow</label>
-                                                    <select class="form-control " formControlName="approvalWorkFlow">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Approval SDM</label>
-                                                    <select class="form-control" formControlName="approvalWorkFlowSDM">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            
-                                                <div class="col-sm-12 col-md-12 mt-10">
-                                                    <label class="form-label">Deviation Permissible</label>
-                                                    <div class="row">  
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">Loan Amount</label>
-                                                        <!-- <select class="form-control" (change)="getdeviationAmount($event.target.value)">
+            <form [formGroup]="generalLoanForm">
+                <fieldset>
+                    <fieldset>
+                        <legend>General</legend>
+                        <div class="tabview-contents">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Code</label>
+                                    <input type="text" class="form-control " formControlName="loanCode">
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-control " formControlName="loanDescription">
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Minimum Net Pay (MNP) - Loan Head</label>
+                                    <select class="form-control" (change)="minimumNetPay($event.target.value)"
+                                        [disabled]="loandata != ''">
+                                        <option value="">Select</option>
+                                        <option [selected]="minimumNetPayValue == 'Yes'">Yes</option>
+                                        <option [selected]="minimumNetPayValue == 'No'">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Loan Application Template</label>
+                                    <input type="text" class="form-control ">
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Approval Workflow</label>
+                                    <select class="form-control " formControlName="approvalWorkFlow">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Approval SDM</label>
+                                    <select class="form-control" formControlName="approvalWorkFlowSDM">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12 mt-10">
+                                <label class="form-label">Deviation Permissible</label>
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">Loan Amount</label>
+                                        <!-- <select class="form-control" (change)="getdeviationAmount($event.target.value)">
                                                             <option value="">Select</option>
                                                             <option [selected]="deviationAmount =='Yes'">Yes</option>
                                                             <option [selected]="deviationAmount =='No'">No</option>
                                                         </select> -->
-                                                        <input type="text" class="form-control " formControlName="deviationAmount">
-                                                    </div>
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">Loan Interest</label>
-                                                        <!-- <select class="form-control" (change)="getdeviationIntrest($event.target.value)">
+                                        <input type="text" class="form-control " formControlName="deviationAmount">
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">Loan Interest</label>
+                                        <!-- <select class="form-control" (change)="getdeviationIntrest($event.target.value)">
                                                             <option value="">Select</option>
                                                             <option [selected]="deviationIntrest =='Yes'">Yes</option>
                                                             <option [selected]="deviationIntrest =='No'">No</option>
                                                         </select> -->
-                                                        <input type="text" class="form-control " formControlName="deviationIntrest">
-                                                    </div>
-                                                    <div class="col-sm-3 col-md-3 mt-10">
-                                                        <label class="form-label">No Of Installment</label>
-                                                        <!-- <select class="form-control" (change)="getdeviationNoOfInstallment($event.target.value)">
+                                        <input type="text" class="form-control " formControlName="deviationIntrest">
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">No Of Installment</label>
+                                        <!-- <select class="form-control" (change)="getdeviationNoOfInstallment($event.target.value)">
                                                             <option value="">Select</option>
                                                             <option [selected]="deviationNoOfInstallment =='Yes'">Yes</option>
                                                             <option [selected]="deviationNoOfInstallment =='No'">No</option>
                                                         </select> -->
-                                                        <input type="text" class="form-control " formControlName="deviationNoOfInstallment">
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                  
-                                        </div>
-                                    </fieldset>
-                                    
-                                    <fieldset>
-                                        <legend>Loan Eligibility</legend>
-                                        <div class="tabview-contents">
-                                            <div class="row">
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Service Period</label>
-                                                    <select class="form-control " formControlName="servicePeriod">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">% Of Underlining Asset</label>
-                                                    <select class="form-control " formControlName="underliningAsset">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Number of times of salary</label>
-                                                    <select class="form-control " formControlName="noOfTimesOfSalary">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Salary Definition</label>
-                                                    <select class="form-control " formControlName="salaryDefinition">
-                                                        <option value="">Select</option>
-                                                        <option>Formula</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Max Amount Allowed</label>
-                                                    <select class="form-control " formControlName="maxAmountLoan">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Gap - Earlier loan application & New loan
-                                                        Application (Months)</label>
-                                                    <select class="form-control " formControlName="gapBetTwoLoanApp">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3 col-md-3 mt-10">
-                                                    <label class="form-label">Gap - End of Earlier Loan & Loan Application
-                                                        (Months)</label>
-                                                    <select class="form-control " formControlName="gapEndOfEarlierLoanAndNewLoanApp">
-                                                        <option value="">Select</option>
-                                                        <option>SDM1</option>
-                                                        <option>SDM2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Instances</label>
-                                                    <div class="table-responsive Custom_Table">
-                                                        <table class="table table-striped table-hover table-bordered m-b-0">
-                                                            <thead class="thead-dark">
-                                                                <tr>
-                                                                    <th>No. of Loans</th>
-                                                                    <th>Month</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        <div class="input-container">
-                                                                            <input class="form-control" type="text"
-                                                                            [ngModelOptions]="{standalone: true}"
-                                                                                [(ngModel)]="loanValue"
-                                                                                (focusout)="getInstanceNoLoan($event.target.value)"
-                                                                                [disabled]="loandata != ''" style="width:100px;">
-                                                                            &nbsp;&nbsp;&nbsp; <span style="margin-top:8px;">IN</span>
-                                                                        </div>
-
-                                                                    </td>
-                                                                    <td>
-                                                                        <input class="form-control "
-                                                                        [ngModelOptions]="{standalone: true}"
-                                                                        [(ngModel)]="monthValue"
-                                                                            (focusout)="getInstanceMonth($event.target.value)"
-                                                                            [disabled]="loandata != ''" style="width:200px;">
-                                                                    </td>
-                                                                </tr>
-                                                                <tr *ngFor="let instance of Instances;let index = index;">
-                                                                    <td>
-                                                                        <div class="input-container">
-                                                                            <input class="form-control " value="{{instance.noOfLoan}}"
-                                                                                [disabled]="loandata != ''">
-                                                                            &nbsp;&nbsp;&nbsp; <span style="margin-top:8px;">IN</span>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input class="form-control " value="{{instance.month}}"
-                                                                            [disabled]="loandata != ''">
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td><i class="fa fa-plus-circle" aria-hidden="true"
-                                                                            (click)="setInstanceData()"></i></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 col-md-6 mt-10"></div>
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Minimum Remaining Service</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Loan Application</label>
-                                                            <select class="form-control "
-                                                                formControlName="minRemainingServiceLoanApplication">
-                                                                <option value="">Select</option>
-                                                                <option>SDM1</option>
-                                                                <option>SDM2</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Loan Completion</label>
-                                                            <select class="form-control "
-                                                                formControlName="minRemainingServiceLoanCompletion">
-                                                                <option value="">Select</option>
-                                                                <option>SDM1</option>
-                                                                <option>SDM2</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
-                                    <div class="row text-right" style="margin: 10px; float:right;">
-                                        <button type="button" class="btn btn-success" (click)="submitGenralForm()">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Next</button>&nbsp;
-                                        <button type="button" class="btn btn-dark" (click)="resetGeneralForm()"
-                                            [disabled]="loandata != '' || editloandata != '' ">
-                                            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
+                                        <input type="text" class="form-control "
+                                            formControlName="deviationNoOfInstallment">
                                     </div>
-                                </fieldset>
-                            </form>
-                            
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-12 col-md-12 mt-10">
+                                <label class="form-label">Node Points</label>
+                                <div class="row">
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">Principal Amount</label>
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="principalradio"
+                                                    value="withNode" (change)="getPrincipalAmount($event.target)">
+                                                <div class="custom-control-label">With Node</div>
+                                            </label>
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="principalradio"
+                                                    value="withoutNode" (change)="getPrincipalAmount($event.target)">
+                                                <div class="custom-control-label">Without Node</div>
+                                            </label>
+                                            <input type="text" class="form-control" placeholder="Principal Amount" *ngIf="PricipalNode == 'withNode'">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">Loan Interest</label>
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="interestradio"
+                                                    value="withNode" (change)="getInterestAmount($event.target)">
+                                                <div class="custom-control-label">With Node</div>
+                                            </label>
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="interestradio"
+                                                    value="withoutNode" (change)="getInterestAmount($event.target)">
+                                                <div class="custom-control-label">Without Node</div>
+                                            </label>
+                                            <input type="text" class="form-control" placeholder="Loan Interest" *ngIf="InterestNode == 'withNode'">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">No Of Installment</label>
+                                        <div class="custom-controls-stacked">
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="noinstallmentradio"
+                                                    value="withNode" (change)="getTenureValue($event.target)">
+                                                <div class="custom-control-label">With Node</div>
+                                            </label>
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="noinstallmentradio"
+                                                    value="withoutNode" (change)="getTenureValue($event.target)">
+                                                <div class="custom-control-label">Without Node</div>
+                                            </label>
+                                            <input type="text" class="form-control" placeholder="No Of Installment" *ngIf="TenureNode == 'withNode'">
+                                        </div>
+                                    </div> 
+                                    <div class="col-sm-3 col-md-3 mt-10">
+                                        <label class="form-label">Minimum Loan</label>
+                                        <input type="text" class="form-control " >
+                                    </div> 
+                                </div>
+                            </div>
                         </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Loan Eligibility</legend>
+                        <div class="tabview-contents">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Service Period</label>
+                                    <select class="form-control " formControlName="servicePeriod">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">% Of Underlining Asset</label>
+                                    <select class="form-control " formControlName="underliningAsset">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Number of times of salary</label>
+                                    <select class="form-control " formControlName="noOfTimesOfSalary">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Salary Definition</label>
+                                    <select class="form-control " formControlName="salaryDefinition">
+                                        <option value="">Select</option>
+                                        <option>Formula</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Max Amount Allowed</label>
+                                    <select class="form-control " formControlName="maxAmountLoan">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Gap - Earlier loan application & New loan
+                                        Application (Months)</label>
+                                    <select class="form-control " formControlName="gapBetTwoLoanApp">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Gap - End of Earlier Loan & Loan Application
+                                        (Months)</label>
+                                    <select class="form-control " formControlName="gapEndOfEarlierLoanAndNewLoanApp">
+                                        <option value="">Select</option>
+                                        <option>SDM1</option>
+                                        <option>SDM2</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 col-md-6 mt-10">
+                                    <label class="form-label">Instances</label>
+                                    <div class="table-responsive Custom_Table">
+                                        <table class="table table-striped table-hover table-bordered m-b-0">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>No. of Loans</th>
+                                                    <th>Month</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-container">
+                                                            <input class="form-control" type="text"
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                [(ngModel)]="loanValue"
+                                                                (focusout)="getInstanceNoLoan($event.target.value)"
+                                                                [disabled]="loandata != ''" style="width:100px;">
+                                                            &nbsp;&nbsp;&nbsp; <span style="margin-top:8px;">IN</span>
+                                                        </div>
+
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control "
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            [(ngModel)]="monthValue"
+                                                            (focusout)="getInstanceMonth($event.target.value)"
+                                                            [disabled]="loandata != ''" style="width:200px;">
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let instance of Instances;let index = index;">
+                                                    <td>
+                                                        <div class="input-container">
+                                                            <input class="form-control " value="{{instance.noOfLoan}}"
+                                                                [disabled]="loandata != ''">
+                                                            &nbsp;&nbsp;&nbsp; <span style="margin-top:8px;">IN</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " value="{{instance.month}}"
+                                                            [disabled]="loandata != ''">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><i class="fa fa-plus-circle" aria-hidden="true"
+                                                            (click)="setInstanceData()"></i></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6 mt-10"></div>
+                                <div class="col-sm-6 col-md-6 mt-10">
+                                    <label class="form-label">Minimum Remaining Service</label>
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6 mt-10">
+                                            <label class="form-label">Loan Application</label>
+                                            <select class="form-control "
+                                                formControlName="minRemainingServiceLoanApplication">
+                                                <option value="">Select</option>
+                                                <option>SDM1</option>
+                                                <option>SDM2</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 mt-10">
+                                            <label class="form-label">Loan Completion</label>
+                                            <select class="form-control "
+                                                formControlName="minRemainingServiceLoanCompletion">
+                                                <option value="">Select</option>
+                                                <option>SDM1</option>
+                                                <option>SDM2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="row text-right" style="margin: 10px; float:right;">
+                        <button type="button" class="btn btn-success" (click)="submitGenralForm()">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;&nbsp;Next</button>&nbsp;
+                        <button type="button" class="btn btn-dark" (click)="resetGeneralForm()"
+                            [disabled]="loandata != '' || editloandata != '' ">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>&nbsp;&nbsp;Reset</button>&nbsp;
                     </div>
-                </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+</div>
 <!-- </div>
         </div>
     </div>

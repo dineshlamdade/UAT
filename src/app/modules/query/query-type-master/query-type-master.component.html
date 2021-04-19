@@ -1,0 +1,402 @@
+<app-leftmenu></app-leftmenu>
+<div class="page">
+  <app-header></app-header>
+  <div class="section-body mt-3">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <form [formGroup]="querytypeForm"  (ngSubmit)="querytypeFormSubmit()">
+                <fieldset>
+                  <legend>Query Type Master</legend>
+                  <div class="tabview-contents">
+                    <div class="row">
+                      <div class="col-sm-6 col-md-4">
+                        <label class="form-label">Module Name</label>
+                        <select
+                          class="form-control" >
+                          <!-- [ngClass]="{'is-invalid' : querytypeForm.get('moduleId').status == 'INVALID'}" formControlName="moduleId" -->
+                          <option [ngValue]="null" selected>Select</option>
+                          <option value="{{ module.applicationModuleId }}"  *ngFor="let module of moduleListData" >
+                            {{ module.applicationModuleName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+               <fieldset>
+                 <legend>
+                  Query
+                 </legend>
+                 <div class="row">
+                   <div class="col-md-3">
+                    <label class="form-label">Code</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                       formControlName ="queryTypeCode"
+                      placeholder="Code"
+                      disabled
+                    />
+                   </div>
+                   <div class="col-md-3">
+                    <label class="form-label">Description</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName ="queryTypedescription"
+                      placeholder="Enter Description"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Sub Query</label>
+                      <div class="custom-controls-stacked">
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input name="query" type="radio"  value="1" (change)="radioButtonChanged($event)"
+                            class="custom-control-input" name="query"  checked>
+                         <span class="custom-control-label">Yes</span>
+                         </label>
+                         <label class="custom-control custom-radio custom-control-inline">
+                         <input name="query" type="radio"  value="0" (change)="radioButtonChanged($event)"
+                            class="custom-control-input" name="query"  >
+                         <span class="custom-control-label">No</span>
+                         </label>
+                      </div>
+
+                  </div>
+
+
+                  <div class="col-md-3" *ngIf="ishidden">
+                    <label class="form-label">Assign Q & A Template</label>
+                    <ng-multiselect-dropdown
+                    [placeholder]="'Select Template'"
+                    [settings]="dropdownSettings"
+                    [data]="queryListData"
+                    [(ngModel)]="selectedItems"
+                    (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)">
+                  </ng-multiselect-dropdown>
+                  </div>
+                 </div>
+               </fieldset>
+
+                    <fieldset>
+                      <legend>Sub Query</legend>
+                      <div formArrayName="queryArray">
+                        <div *ngFor="let list of queryTypeFormGroup.controls; let i = index;">
+                          <div  class="row"  [formGroupName]="i">
+                        <div class="col-md-3">
+                          <label class="form-label">Code</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Code" formControlName="subQueryTypeCode"
+                            disabled
+                          />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Description</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Enter Description"
+                            formControlName="subqueryTypedescription"
+                          />
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">Assign Q & A Template</label>
+                        <ng-multiselect-dropdown
+                        [placeholder]="'Select Template'"
+                        [settings]="dropdownSettings"
+                        [data]="queryListData"
+                        [(ngModel)]="selectedItems"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)">
+                      </ng-multiselect-dropdown>
+                      </div>
+                        <div class="col-md-3">
+                          <button type="button" class="btn btn-success"  (click) ="addSubQuery(i)" *ngIf="addField"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add</button>&nbsp;&nbsp;
+                          <button type="button" class="btn btn-danger"  (click) ="removeSubQuery(i)"  *ngIf= "this.addSubQueryList.length>1 || (i !=0)" ><i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Remove</button>
+                        </div>
+                        </div>
+                      </div>
+                      </div>
+
+                      <ng-container>
+                        <div class=" row mt-20 ">
+                          <div class="col-md-3">
+                            <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                              <input
+                                autocomplete="off" type="checkbox" class="custom-control-input"
+                                name="example-inline-checkbox1" checked  (change)="changeEvent($event)"
+                                readonly>
+                              <span class="custom-control-label">Active </span>
+                            </label>
+                          </div>
+                          <div class="col-md-3"  *ngIf="hideRemarkDiv">
+                            <label class="form-label">Remark</label>
+                            <textarea
+                              autocomplete="off"
+                              class="form-control" rows="2" placeholder="Enter Remark"
+                              [required]="hideRemarkDiv"></textarea>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </fieldset>
+
+                    <div class="tabview-contents" style="margin-top: 70px;">
+                      <div class="row mt-20">
+                        <div class="col-12 col-md-8 col-sm-8">
+                          <div class="table-responsive Custom_Table">
+                            <table
+                              class="table table-striped table-bordered table-hover m-b-0"
+                            >
+                              <thead class="thead-dark">
+                                <tr >
+                                  <th scope="col" class="wd-9">Sr No.</th>
+                                  <th scope="col" class="wd-14">Module </th>
+                                  <th scope="col" class="wd-14">Query</th>
+                                  <th scope="col" class="wd-20">Sub Query</th>
+                                  <th scope="col" class="wd-19">Status</th>
+                                  <th scope="col" class="wd-14">Action</th>
+                                </tr>
+                              </thead>
+                              <!-- <tbody>
+                                <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
+                                  <td class="wd-9">{{i+1}}</td>
+                                  <td class="wd-14">{{query.moduleId}}</td>
+                                  <td class="wd-14">{{query.code}}</td>
+                                  <td class="wd-20">{{query.description}}</td>
+                                  <td class="wd-19" *ngIf="query.active">Active</td>
+                                  <td class="wd-19" *ngIf="!query.active">Inactive</td>
+                                   <td>
+                                <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                >&nbsp;
+                                <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
+                                >&nbsp;
+                              </td>
+                                </tr>
+                                <tr></tr>
+                              </tbody> -->
+                            </table>
+                            <div>
+                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <fieldset>
+                    <legend>General Setting</legend>
+
+                  <div class="row mt-20">
+                    <div class="col-sm-6 col-md-3">
+                      <label class="form-label">Priority Require</label>
+                   </div>
+                   <div class="col-sm-3 col-md-3">
+                    <div class="custom-controls-stacked">
+                       <label class="custom-control custom-radio custom-control-inline">
+                       <input formControlName="priorityRequired" type="radio" name="priorityRequired" (click)="getPriorityRequired('yes')"
+                          class="custom-control-input"  checked>
+                       <span class="custom-control-label">Yes</span>
+                       </label>
+                       <label class="custom-control custom-radio custom-control-inline">
+                       <input formControlName="priorityRequired" type="radio" name="priorityRequired"  (click)="getPriorityRequired('no')"
+                          class="custom-control-input" >
+                       <span class="custom-control-label">No</span>
+                       </label>
+                    </div>
+                  </div>
+                  </div>
+                    <div class="row" >
+                      <div class="col-md-6" *ngIf="!priorityRequiredFlag">
+                        <div class="tabview-contents">
+                          <div class="row mt-20">
+                            <div class="col-12 col-md-12 col-sm-12">
+                              <div class="table-responsive Custom_Table">
+
+                                <table
+                                  class="table table-striped table-bordered table-hover m-b-0"
+                                >
+                                  <thead class="thead-dark">
+                                    <tr >
+                                      <th scope="col" class="wd-9">Sr No.</th>
+                                      <th scope="col" class="wd-14">Priority Type </th>
+                                      <th scope="col" class="wd-14">Resolution Time</th>
+                                      <th scope="col" class="wd-20">Auto Close</th>
+                                      <th scope="col" class="wd-19">Default</th>
+                                    </tr>
+                                  </thead>
+                                  <!-- <tbody>
+                                    <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
+                                      <td class="wd-9">{{i+1}}</td>
+                                      <td class="wd-14">{{query.moduleId}}</td>
+                                      <td class="wd-14">{{query.code}}</td>
+                                      <td class="wd-20">{{query.description}}</td>
+                                      <td class="wd-19">Active</td>
+                                      <td class="wd-19"><input type="checkbox"></td>
+                                    </tr>
+                                    <tr></tr>
+                                  </tbody> -->
+                                </table>
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      </div>
+                      <div class="col-md-6" *ngIf="priorityRequiredFlag">
+                        <div class="tabview-contents">
+                          <div class="row mt-20">
+                            <div class="col-12 col-md-12 col-sm-12">
+                              <div class="table-responsive Custom_Table">
+
+                                <table
+                                  class="table table-striped table-bordered table-hover m-b-0"
+                                >
+                                  <thead class="thead-dark">
+                                    <tr >
+                                      <th scope="col" class="wd-14">Resolution Time</th>
+                                      <th scope="col" class="wd-20">Auto Close</th>
+                                    </tr>
+                                  </thead>
+                                  <!-- <tbody>
+                                    <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
+                                      <td class="wd-14">{{query.moduleId}}</td>
+                                      <td class="wd-14">{{query.code}}</td>
+                                    </tr>
+                                    <tr></tr>
+                                  </tbody> -->
+                                </table>
+                                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-4">
+                      <label class="form-label">Reply Workflow</label>
+                      <select  class="form-control custom-select" formControlName ="Replayworkflow"  >
+                        <option [ngValue]="null" selected>Select</option>
+                        <option value="{{ workflow.workflowMasterHeaderId }}"
+                         *ngFor="let workflow of allWorkflowMasterdata" >
+                          {{ workflow.workflowCode}}
+                        </option>
+                      </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Forward Workflow</label>
+                        <select  class="form-control custom-select" formControlName ="forwardWorkFlowId" >
+                          <option [ngValue]="null" selected>Select</option>
+                          <option value="{{ workflow.workflowMasterHeaderId }}"
+                           *ngFor="let workflow of allWorkflowMasterdata" >
+                            {{ workflow.workflowCode }}
+                          </option>
+                        </select>
+                        </div>
+                    </div>
+                    <ng-container>
+                      <div class=" row mt-20 ">
+                        <div class="col-md-3">
+                          <label class="custom-control custom-checkbox custom-control-inline pl-45">
+                            <input
+                              autocomplete="off" type="checkbox" class="custom-control-input"
+                              name="example-inline-checkbox1" checked  (change)="changeEvent1($event)"
+                              readonly>
+                            <span class="custom-control-label">Active </span>
+                          </label>
+                        </div>
+                        <div class="col-md-3"  *ngIf="hideRemarkDiv1">
+                          <label class="form-label">Remark</label>
+                          <textarea
+                            autocomplete="off"
+                            class="form-control" rows="2" placeholder="Enter Remark"
+                            [required]="hideRemarkDiv1"></textarea>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </fieldset>
+
+                  <ng-container class="float-right">
+                    <div class="row float-right" style="margin: 10px" >
+                      <button type="submit"  *ngIf="isShown" class="custom_button custom_btn btn-labeled btn-labeled-left"
+                      tooltip="Save"[disabled]="!querytypeForm.valid"
+                       [ngClass]="{'disabled-btn-bg-green' : querytypeForm.invalid,'btn-bg-green': !querytypeForm.invalid}">
+                       <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
+                      >&nbsp;
+
+                      <button type="button" tooltip="Reset" *ngIf="isShown" (click)="reset()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                        <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
+                      >&nbsp;
+                      <button type="submit" tooltip="Update" *ngIf="isVisible"  class="custom_button custom_btn btn-labeled btn-labeled-left"
+                      >
+                       <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Update</button
+                      >&nbsp;
+
+                      <button type="button" tooltip="Cancel" *ngIf="isVisible" class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"  >
+                       <b> <i class="fa fa-times-circle"  aria-hidden="true"></i></b>Cancel</button>
+                    </div>
+                  </ng-container>
+                  <fieldset style=" margin-top: 55px;">
+                    <legend>Summary</legend>
+                    <div >
+                      <div class="row mt-20">
+                        <div class="col-12 col-md-12 col-sm-12">
+                          <div class="table-responsive Custom_Table">
+                            <table
+                              class="table table-striped table-bordered table-hover m-b-0"
+                            >
+                              <thead class="thead-dark">
+                                <tr >
+                                  <th scope="col" class="wd-9">Sr No.</th>
+                                  <th scope="col" class="wd-14">Module </th>
+                                  <th scope="col" class="wd-14">Query</th>
+                                  <th scope="col" class="wd-20">Number of Sub Query</th>
+                                  <th scope="col" class="wd-19">Reply Workflow</th>
+                                  <th scope="col" class="wd-14">Forward Workflow</th>
+                                  <th scope="col" class="wd-19">Status</th>
+                                  <th scope="col" class="wd-14">Action</th>
+                                </tr>
+                              </thead>
+                              <!-- <tbody>
+                                <tr *ngFor="let query of queryListData | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
+                                  <td class="wd-9">{{i+1}}</td>
+                                  <td class="wd-14">{{query.moduleId}}</td>
+                                  <td class="wd-14">{{query.code}}</td>
+                                  <td class="wd-20">{{query.description}}</td>
+                                  <td class="wd-20">{{query.description}}</td>
+                                  <td class="wd-20">{{query.description}}</td>
+                                  <td class="wd-19" *ngIf="query.active">Active</td>
+                                  <td class="wd-19" *ngIf="!query.active">Inactive</td>
+                               <td>
+                                <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
+                                >&nbsp;
+                                <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
+                                >&nbsp;
+                              </td>
+                                </tr>
+                                <tr></tr>
+                              </tbody> -->
+                            </table>
+                            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  </fieldset>
+
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AttendanceComponent } from './attendance/attendance.component';
 import { FinancialMasterComponent } from './financial-master/financial-master.component';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
@@ -11,28 +12,27 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path:   'Payroll-List',
+        path:   'payroll-List',
         component:  PayrollListComponent,
         data: { title: ':: DelziaHR :: Payroll-List' },
         
       },
       {
-        path:   'Financial-Master',
+        path:   'financial-Master',
         component:  FinancialMasterComponent,
         data: { title: ':: DelziaHR :: Financial-Master' },
         
       },
       {
-        path:   'Non-Recurring-Amount',
+        path:   'non-Recurring-Amount',
         component:  NonRecurringAmtComponent,
         data: { title: ':: DelziaHR :: Non-Recurring-Amount' },
         
       },
       {
-        path:   'Non-Recurring-qty',
-        component:  NonRecurringQtyComponent,
-        data: { title: ':: DelziaHR :: Non-Recurring-qty' },
-        
+        path:   'attendance',
+        component:  AttendanceComponent,
+        data: { title: ':: DelziaHR :: attendance' },
       },
     ],
   },

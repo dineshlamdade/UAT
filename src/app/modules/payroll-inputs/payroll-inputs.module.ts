@@ -35,6 +35,7 @@ import { PayrollInputsRoutingModule } from './payroll-inputs-routing.module';
 import { SharedlayoutModule } from '../sharedlayout/sharedlayout';
 import { NonRecurringAmtComponent } from './non-recurring-amt/non-recurring-amt.component';
 import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.component';
+import { AttendanceComponent } from './attendance/attendance.component';
 
 
 
@@ -44,7 +45,8 @@ import { NonRecurringQtyComponent } from './non-recurring-qty/non-recurring-qty.
     PayrollListComponent,
      FinancialMasterComponent,
      NonRecurringAmtComponent,
-     NonRecurringQtyComponent
+     NonRecurringQtyComponent,
+     AttendanceComponent
     ],
   imports: [
     CommonModule,
