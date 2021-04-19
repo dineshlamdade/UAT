@@ -23,6 +23,19 @@ export class QueryComponent implements OnInit {
   isShown: boolean= true;
   p: number = 1;
   moduleListData: any;
+
+
+  // editorConfig = {
+  //   toolbar: [
+  //     { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+  //     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
+  //     { name: 'document', items: ['Source'] }
+  //   ],
+  //   allowedContent: true,
+  //   fullPage: true,
+  //   startupMode: 'source',
+  // };
+
   keyword:any = [];
   fieldMap: any;
   mappingData: any = [];
@@ -51,42 +64,42 @@ export class QueryComponent implements OnInit {
 
     this.keyword = [
       {
-        'name':'<<Employee Code>>',
+        'name':'Employee Code',
         'id': 1,
         'description': 'Employee Code'
     },
     {
-        'name':'<<Employee Full Name>>',
+        'name':'Employee Full Name',
         'id': 2,
         'description': 'Employee Full Name'
     },
     {
-        'name':'<<Employee Email>>',
+        'name':'Employee Email',
         'id': 3,
         'description': 'Employee Email'
     },
     {
-        'name':'<<Employee Contact>>',
+        'name':'Employee Contact',
         'id': 4,
         'description': 'Employee Contact'
     },
     {
-        'name':'<<Employee Gender>>',
+        'name':'Employee Gender',
         'id': 5,
         'description': 'Employee Gender'
     },
     {
-        'name':'<<Employee Grade>>',
+        'name':'Employee Grade',
         'id': 6,
         'description': 'Employee Grade'
     },
     {
-      'name':'<<Employee Company>>',
+      'name':'Employee Company',
       'id': 7,
       'description': 'Employee Company'
   },
   {
-    'name':'<<Date>>',
+    'name':'Date',
     'id': 8,
     'description': 'Date'
 },
@@ -105,8 +118,6 @@ export class QueryComponent implements OnInit {
   ngOnInit(): void {
     this.getModuleName();
     this.getAllData();
-    // this.queryForm.controls['code'].setValue(true);
-
   }
   get f(){
     return this.queryForm.controls;

@@ -89,9 +89,9 @@ import { SignaturePadComponent } from './previousemployer/signature-pad/signatur
     OtherincomedeclarationComponent,
     OtherincomeComponent,
     EmployeeNPS80CCDComponent,
-  
 
-   
+
+
 
   ],
   imports: [
@@ -122,7 +122,7 @@ import { SignaturePadComponent } from './previousemployer/signature-pad/signatur
     // BrowserAnimationsModule,
     InputNumberModule,
     FormsModule,
-    SignaturePadModule
+    SignaturePadModule,
 
   ],
 

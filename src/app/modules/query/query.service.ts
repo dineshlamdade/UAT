@@ -10,7 +10,6 @@ export class QueryService {
 
 public apiUrl = environment.baseUrl8091;
 public apiUrl1 = environment.baseUrl8083;
-public apiUrl2 = environment.baseUrl8088;
 constructor(private http : HttpClient ) { }
 
 public getAll()
@@ -41,9 +40,5 @@ public addQueryType(data)
 public updateQueryType(data)
 {
  return this.http.put<any>(this.apiUrl + '/QueryMaster' ,data);
-}
-public getAllWorkflowMasters()
-{
-  return this.http.get<any>(this.apiUrl2 + 'workflowmaster-header/getAllWorkflowMasters')
 }
 }

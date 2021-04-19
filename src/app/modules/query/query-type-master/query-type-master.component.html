@@ -18,7 +18,9 @@
                           class="form-control" >
                           <!-- [ngClass]="{'is-invalid' : querytypeForm.get('moduleId').status == 'INVALID'}" formControlName="moduleId" -->
                           <option [ngValue]="null" selected>Select</option>
-                          <option value="{{ module.applicationModuleId }}"  *ngFor="let module of moduleListData" >
+                          <option
+                            value="{{ module.applicationModuleId }}"
+                            *ngFor="let module of moduleListData" >
                             {{ module.applicationModuleName }}
                           </option>
                         </select>
@@ -51,6 +53,10 @@
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Sub Query</label>
+
+                    <!-- <input type="radio" name="query" value="1" (change)="radioButtonChanged($event)" checked />&nbsp;&nbsp;Yes
+                    <input type="radio" name="query" value="0" (change)="radioButtonChanged($event)" />&nbsp;&nbsp;No -->
+
                       <div class="custom-controls-stacked">
                          <label class="custom-control custom-radio custom-control-inline">
                          <input name="query" type="radio"  value="1" (change)="radioButtonChanged($event)"
@@ -69,14 +75,11 @@
 
                   <div class="col-md-3" *ngIf="ishidden">
                     <label class="form-label">Assign Q & A Template</label>
-                    <ng-multiselect-dropdown
-                    [placeholder]="'Select Template'"
-                    [settings]="dropdownSettings"
-                    [data]="queryListData"
-                    [(ngModel)]="selectedItems"
-                    (onSelect)="onItemSelect($event)"
-                    (onSelectAll)="onSelectAll($event)">
-                  </ng-multiselect-dropdown>
+                    <select  class="form-control custom-select">
+                      <option  value=""> <input type="checkbox">select all</option>
+                      <option  value=""> <input type="checkbox">select all</option>
+                      <option  value=""> <input type="checkbox">select all</option>
+                    </select>
                   </div>
                  </div>
                </fieldset>
@@ -107,15 +110,12 @@
 
                         <div class="col-md-3">
                           <label class="form-label">Assign Q & A Template</label>
-                        <ng-multiselect-dropdown
-                        [placeholder]="'Select Template'"
-                        [settings]="dropdownSettings"
-                        [data]="queryListData"
-                        [(ngModel)]="selectedItems"
-                        (onSelect)="onItemSelect($event)"
-                        (onSelectAll)="onSelectAll($event)">
-                      </ng-multiselect-dropdown>
-                      </div>
+                        <select  class="form-control custom-select" formControlName="assignQATemplate">
+                          <option  value=""> <input type="checkbox">select all</option>
+                          <option  value=""> <input type="checkbox">select all</option>
+                          <option  value=""> <input type="checkbox">select all</option>
+                        </select>
+                        </div>
                         <div class="col-md-3">
                           <button type="button" class="btn btn-success"  (click) ="addSubQuery(i)" *ngIf="addField"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Add</button>&nbsp;&nbsp;
                           <button type="button" class="btn btn-danger"  (click) ="removeSubQuery(i)"  *ngIf= "this.addSubQueryList.length>1 || (i !=0)" ><i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Remove</button>
@@ -171,12 +171,12 @@
                                   <td class="wd-20">{{query.description}}</td>
                                   <td class="wd-19" *ngIf="query.active">Active</td>
                                   <td class="wd-19" *ngIf="!query.active">Inactive</td>
-                                   <td>
-                                <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
-                                >&nbsp;
-                                <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
-                                >&nbsp;
-                              </td>
+                                  <td>
+                                    <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" ></i
+                                    >&nbsp;
+                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" ></i
+                                    >&nbsp;
+                                  </td>
                                 </tr>
                                 <tr></tr>
                               </tbody> -->
@@ -190,6 +190,13 @@
                   </div>
                   <fieldset>
                     <legend>General Setting</legend>
+                    <!-- <div class="row">
+                    <div class="col-md-6" style="padding: 20px;">
+                      <label class="form-label">Priority Require</label>
+                      <input type="radio" (click)="getPriorityRequired('yes')" name="priority" checked /> Yes
+                      <input type="radio" (click)="getPriorityRequired('no')" name="priority" /> No
+                    </div>
+                    </div> -->
 
                   <div class="row mt-20">
                     <div class="col-sm-6 col-md-3">
@@ -281,22 +288,18 @@
                     <div class="row">
                       <div class="col-md-4">
                       <label class="form-label">Reply Workflow</label>
-                      <select  class="form-control custom-select" formControlName ="Replayworkflow"  >
-                        <option [ngValue]="null" selected>Select</option>
-                        <option value="{{ workflow.workflowMasterHeaderId }}"
-                         *ngFor="let workflow of allWorkflowMasterdata" >
-                          {{ workflow.workflowCode}}
-                        </option>
+                      <select  class="form-control custom-select" formControlName ="replyWorkflowId">
+                        <option>select</option>
+                        <option>select</option>
+                        <option>select</option>
                       </select>
                       </div>
                       <div class="col-md-4">
                         <label class="form-label">Forward Workflow</label>
-                        <select  class="form-control custom-select" formControlName ="forwardWorkFlowId" >
-                          <option [ngValue]="null" selected>Select</option>
-                          <option value="{{ workflow.workflowMasterHeaderId }}"
-                           *ngFor="let workflow of allWorkflowMasterdata" >
-                            {{ workflow.workflowCode }}
-                          </option>
+                        <select  class="form-control custom-select" formControlName ="forwardWorkFlowId">
+                          <option>select</option>
+                          <option>select</option>
+                          <option>select</option>
                         </select>
                         </div>
                     </div>
@@ -330,7 +333,7 @@
                        <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button
                       >&nbsp;
 
-                      <button type="button" tooltip="Reset" *ngIf="isShown" (click)="reset()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
+                      <button type="button"  tooltip="Reset" *ngIf="isShown" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10">
                         <b><i class="fa fa-refresh" aria-hidden="true"></i></b>Reset</button
                       >&nbsp;
                       <button type="submit" tooltip="Update" *ngIf="isVisible"  class="custom_button custom_btn btn-labeled btn-labeled-left"
@@ -373,12 +376,12 @@
                                   <td class="wd-20">{{query.description}}</td>
                                   <td class="wd-19" *ngIf="query.active">Active</td>
                                   <td class="wd-19" *ngIf="!query.active">Inactive</td>
-                               <td>
-                                <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" (click)="viewQuery(query)"></i
-                                >&nbsp;
-                                <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" (click)="editQuery(query)"></i
-                                >&nbsp;
-                              </td>
+                                  <td>
+                                    <i class="fa fa-eye" tooltip="View" aria-hidden="true" style="color:darkcyan" ></i
+                                    >&nbsp;
+                                    <i class="fa fa-edit" tooltip="Edit" aria-hidden="true" ></i
+                                    >&nbsp;
+                                  </td>
                                 </tr>
                                 <tr></tr>
                               </tbody> -->
