@@ -12,7 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+// import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CKEditorModule } from 'ckeditor4-angular';
+
 // import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -60,6 +62,15 @@ import { LockModule } from './modules/lock/lock.module';
 
 
 
+
+
+/* import {SignaturePadModule} from 'angular2-signaturepad'; */
+
+/* import { SignaturePadModule } from './modules/@ng-plus/signature-pad'; */
+/* import { } from '@ng-plus/signature-pad' */
+
+
+
 ////////////////////////////////////
 
 
@@ -67,6 +78,8 @@ import { PrimeNGModule } from './app.primeNG.module';
 import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
+import { from } from 'rxjs';
+import { SignaturePadModule } from 'angular2-signaturepad';
 
 
 
@@ -132,7 +145,9 @@ import { LoanMasterModule } from './modules/loan-master/loan-master.module';
     UploadexcelModule,
     EmployeemasterlistpageModule,
     EmailSmsModule,
-    LoanMasterModule
+    LoanMasterModule,
+    SignaturePadModule
+
   ],
 
   providers: [BsDatepickerModule,

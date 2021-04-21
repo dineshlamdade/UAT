@@ -11,4 +11,4 @@ export const environment = {
   baseUrl8089: 'https://dev.deliziahr.com:8089/hrms/v1/',
   baseUrl8090: 'https://dev.deliziahr.com:8090/hrms/v1/',
   baseUrl8091: 'https://dev.deliziahr.com:8091/hrms/v1/',
-}
+};

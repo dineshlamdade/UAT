@@ -87,10 +87,49 @@ export class HousingloanService {
     },
     ));
   }
+
   public getHousePropertyFilterData(propertyName: String): Observable<any> {
     return this._HTTP.get(this.apiUrl + 'housePropertyTransaction/' + propertyName)
     .pipe(map((res: any) => {
       return res;
     }));
   }
+
+  //Save Transation
+  uploadTransactionWithMultipleFiles(
+    files: File[],
+    data: any
+  ): Observable<any> {
+    let formData: any = new FormData();
+   /*  console.log('declarationOfLandlordDocument::', files); */
+    console.log('rentAgreementDocument::', files);
+
+    console.log('in uploadMultipleFiles Service::', files);
+   /*  for (const file of files) {
+      formData.append('declarationOfLandlordDocument', file);
+    } */
+    // for (const file of files) {
+    //   formData.append('rentReciept', file);
+    // }
+    /*
+    for (const file of files) {
+      formData.append('declarationOfLandlordDocument', file);
+    } */
+
+    formData.append('housePropertyTransaction', JSON.stringify(data));
+
+    console.log('formData', formData);
+
+    formData.forEach((value, key) => {
+      console.log(key, ' ', value);
+    });
+    return this._HTTP.post<any>(
+      this.apiUrl + 'housePropertyTransaction/uploadHousePropertyTransactionDocuments',
+      formData,
+      {}
+    );
+  }
+
+
+
 }

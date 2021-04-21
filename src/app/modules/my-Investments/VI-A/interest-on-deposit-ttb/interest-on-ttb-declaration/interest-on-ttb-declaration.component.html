@@ -501,9 +501,8 @@
                     <div class="custom_Label_badge">
                       <button
                         class="btn bg-color-lightgray text-000"
-                        (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        "
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
                       >
                         Documents
                       </button>
@@ -513,31 +512,29 @@
                     </div>
                   </td>
                   <td>
-                    <i
-                      class="fa fa-eye font-16 text-blue cursor-pointer"
-                      tooltip="View"
-                    ></i
-                    >&nbsp;&nbsp;
-                    <i
-                      class="fa fa-download font-16 text-blue cursor-pointer"
-                      tooltip="Download"
-                    ></i>
-                    <div *ngFor="let doc of urlArray" hidden>
-                      <iframe
-                        style="height: 100vh; width: 100%; display: block"
-                        [src]="doc.blobURI"
-                        provider="google"
-                      ></iframe>
-                    </div>
+                    <i *ngIf="canEdit"
+                    class="fa fa-eye font-16 text-blue cursor-pointer"
+                    (click)="
+                    editViewTransaction(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewTransactionDetail = false
+                    "
+                    tooltip="view"
+                  ></i>
+
+
+
                     &nbsp;&nbsp;
-                    <i
+                    <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
-                        declarationEditUpload(
+                      editViewTransaction(
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = true
+                        viewTransactionDetail = true
                       "
                       tooltip="Edit"
                     ></i>
@@ -591,10 +588,10 @@
 </ng-template>
 <ng-template #template2>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh" *ngIf="viewDocumentDetail">
+    <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
       Edit Document Details
     </h5>
-    <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
+    <h5 class="modal-title" id="jasdjgh" *ngIf="!viewTransactionDetail">
       View Document Details
     </h5>
     <button
@@ -968,14 +965,14 @@
       </div>
     </div>
     <hr />
-    <div class="row" *ngIf="viewDocumentDetail">
+    <div class="row" *ngIf="viewTransactionDetail">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
           Upload Documents
         </h3>
       </div>
     </div>
-    <div class="row clearfix mt-10" *ngIf="viewDocumentDetail">
+    <div class="row clearfix mt-10" *ngIf="viewTransactionDetail">
       <div class="col-md-12">
         <div class="row clearfix">
           <div class="col-md-3">
@@ -1063,7 +1060,7 @@
     </button>
     &nbsp;&nbsp;
     <button
-      *ngIf="viewDocumentDetail"
+      *ngIf="viewTransactionDetail"
       type="button"
       tooltip="View Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
