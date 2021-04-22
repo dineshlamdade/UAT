@@ -174,6 +174,7 @@ export class MasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
+      isClaiming80U : new FormControl ('false'),
       disabilityType: new FormControl(null, Validators.required),
       severity: new FormControl(null, Validators.required),
       familyMemberName: new FormControl(null, Validators.required),
@@ -297,6 +298,7 @@ export class MasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.form.reset();
+      this.form.get('isClaiming80U').setValue(false);
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
