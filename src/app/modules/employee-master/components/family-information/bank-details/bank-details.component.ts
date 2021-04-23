@@ -245,9 +245,8 @@ a:any;
 
   validateAccountNo(accountNumber, bank) {
 if(!bank.maxAccNumber){
-this.getmaxNumber(bank);  
-}
-//bank.maxAccNumber=this.a;
+this.getmaxNumber(bank);
+}setTimeout(() => {
     if (bank.maxAccNumber)
      {
       if (accountNumber.length < bank.maxAccNumber) {
@@ -257,7 +256,7 @@ this.getmaxNumber(bank);
         this.accountNumberCountError = '';
         bank.accountNumberCountError = null;
       }
-    }
+    }}, 100)
   }
 
   filterStates(event) {

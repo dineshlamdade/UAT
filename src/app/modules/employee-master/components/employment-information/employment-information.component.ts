@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmploymentInformationService } from './employment-information.service';
 import { EventEmitterService } from './../../employee-master-services/event-emitter/event-emitter.service';
+import { setTime } from 'ngx-bootstrap/chronos/utils/date-setters';
 
 @Component({
   selector: 'app-employment-information',
@@ -26,38 +27,64 @@ export class EmploymentInformationComponent implements OnInit {
   reJoiningTab: boolean = false;
   transferTab: boolean = false;
   exitTab: boolean = false;
+
+  EmpSummaryTabRouter: boolean ;
+  joiningTabRouter: boolean ;
+  reJoiningTabRouter: boolean;
+  transferTabRouter: boolean;
+  exitTabRouter: boolean;
+  sub:string='';
   public tabIndex = 0;
   tabSubscription: Subscription;
+  TransactionHistory: any;
+  LastTransaction: any;
 
   constructor(private formBuilder: FormBuilder,
     private EmploymentInformationService: EmploymentInformationService,
     private EventEmitterService: EventEmitterService, private router: Router) {
     // Active tab selection based on URLS
+
     if (router.url == '/employee-master/employment-information/employment-summary') {
       this.tabIndex = 0;
-      this.EmpSummaryTabValidation();
+     // this.sub='Summary'
+      this.EmpSummaryTabRouter = true;
+     // this.EmpSummaryTabValidation(this.sub);
     }
     if (router.url == '/employee-master/employment-information/joining-information') {
       this.tabIndex = 1;
-      this.joiningTabValidation();
+      this.sub='Joining'
+      this.joiningTabRouter = true;
+    //  this.joiningTabValidation(this.sub);
     }
     if (router.url == '/employee-master/employment-information/re-joining-information') {
       this.tabIndex = 2;
-      this.reJoiningTabValidation();
+      this.sub='Re-Joining'
+      this.reJoiningTabRouter = true;
+      //this.reJoiningTabValidation(this.sub);
     }
     if (router.url == '/employee-master/employment-information/transfer-information') {
       this.tabIndex = 3;
-      this.transferTabValidation();
+      this.sub='Transfer'
+      this.transferTabRouter = true;
+      //this.transferTabValidation(this.sub);
     }
     if (router.url == '/employee-master/employment-information/exit-information') {
       this.tabIndex = 4;
-      this.exitTabValidation();
+      this.sub='Exit'
+      this.exitTabRouter = true;
+
+    //  this.exitTabValidation(this.sub);
+    
     }
   }
 
   ngOnInit(): void {
+
+
+
     const empId = localStorage.getItem('employeeMasterId')
     this.employeeMasterId = Number(empId);
+    this.lastTab();
     // this.router.navigate(['/employee-master/employment-information/employment-summary']);
 
     this.EmploymentForm = this.formBuilder.group({
@@ -67,12 +94,16 @@ export class EmploymentInformationComponent implements OnInit {
       transfer: [''],
       exit: [''],
     });
-    this.new = localStorage.getItem('employeeExitInfoId');  //rejoinee
-    if (this.new) {                                          //if(this.new=='')
+
+
+    this.new = localStorage.getItem('employeeExitInfoId');
+    if (this.new) {
       this.rejoiningBoolean = true;
+     // this.exitTab = false;
     }
     if (!this.new) {
       this.rejoiningBoolean = false;
+     // this.exitTab = true;
     }
     // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
     //   this.rejoiningBoolean = res.data.results[0];
@@ -94,6 +125,7 @@ export class EmploymentInformationComponent implements OnInit {
     this.statusSubscription = this.EventEmitterService.setRejoineeStatusCode().subscribe(res => {
 
       this.rejoiningBoolean = res.rejoinee;
+      this.LastTabValidation();
       // this.EmploymentInformationService.getExitStatus(this.employeeMasterId).subscribe(res => {
       //   
       //   this.rejoiningBoolean = res.data.results[0];
@@ -102,75 +134,128 @@ export class EmploymentInformationComponent implements OnInit {
 
     // Active Tab event Subscription from other components
     this.tabSubscription = this.EventEmitterService.setJoiningInitiate().subscribe(res => {
-
-      this.joiningTabValidation()
+      this.joiningTabRouter=true;
+      this.tabIndex=1;   
+      this.LastTabValidation();   
     })
 
     this.tabSubscription = this.EventEmitterService.setreJoiningInitiate().subscribe(res => {
-
-      this.reJoiningTabValidation()
+      this.reJoiningTabRouter=true;
+      this.tabIndex=2;
+      this.LastTabValidation();
     })
 
     this.tabSubscription = this.EventEmitterService.setTransferInitiate().subscribe(res => {
-
-      this.transferTabValidation()
+     this.transferTabRouter=true;
+     this.tabIndex=3;
+     this.LastTabValidation();
     })
 
     this.tabSubscription = this.EventEmitterService.setExitInitiate().subscribe(res => {
-
-      this.exitTabValidation()
+      this.exitTabRouter=true;
+      this.tabIndex=4;
+      this.LastTabValidation();
     })
 
     this.tabSubscription = this.EventEmitterService.setEmpSummaryInitiate().subscribe(res => {
-
-      this.EmpSummaryTabValidation()
+      this.EmpSummaryTabRouter=true;
+      this.tabIndex=0;
+      this.LastTabValidation();
     })
+    this.LastTabValidation();
   }
+
 
 
   EmpSummaryTabValidation() {
-    this.EmpSummaryTab = true;
-    this.joiningTab = false;
-    this.reJoiningTab = false;
-    this.transferTab = false;
-    this.exitTab = false;
     this.tabIndex = 0;
+    this.EmpSummaryTabRouter = true;
+    this.joiningTabRouter = false;
+    this.reJoiningTabRouter = false;
+    this.transferTabRouter = false;
+    this.exitTabRouter = false;
   }
 
   joiningTabValidation() {
-    this.EmpSummaryTab = false;
-    this.joiningTab = true;
-    this.reJoiningTab = false;
-    this.transferTab = false;
-    this.exitTab = false;
     this.tabIndex = 1;
+   this.EmpSummaryTabRouter = false;
+    this.joiningTabRouter = true;
+    this.reJoiningTabRouter = false;
+    this.transferTabRouter = false;
+    this.exitTabRouter = false;
   }
 
   reJoiningTabValidation() {
-    this.EmpSummaryTab = false;
-    this.joiningTab = false;
-    this.reJoiningTab = true;
-    this.transferTab = false;
-    this.exitTab = false;
-    this.tabIndex = 2;
+    this.tabIndex = 2;  
+    this.EmpSummaryTabRouter = false;
+    this.joiningTabRouter = false;
+    this.reJoiningTabRouter = true;
+    this.transferTabRouter = false;
+    this.exitTabRouter = false;
   }
 
   transferTabValidation() {
-    this.EmpSummaryTab = false;
+    this.tabIndex = 3;
+    this.EmpSummaryTabRouter = false;
+    this.joiningTabRouter = false;
+    this.reJoiningTabRouter = false;
+    this.transferTabRouter = true;
+    this.exitTabRouter = false;
+}
+
+  exitTabValidation() {
+    this.tabIndex = 4; 
+    this.EmpSummaryTabRouter = false;
+    this.joiningTabRouter = false;
+    this.reJoiningTabRouter = false;
+    this.transferTabRouter = false;
+    this.exitTabRouter = true;
+  }
+
+  LastTabValidation() {
+    this.LastTransaction=localStorage.getItem('LastTransaction');
+    if(this.LastTransaction=="Joining"){
+    this.EmpSummaryTab = true;
     this.joiningTab = false;
     this.reJoiningTab = false;
     this.transferTab = true;
-    this.exitTab = false;
-    this.tabIndex = 3;
-  }
-
-  exitTabValidation() {
-    this.EmpSummaryTab = false;
+    this.exitTab=true;
+  }else if(this.LastTransaction=="Re-Joining"){
+    this.EmpSummaryTab = true;
     this.joiningTab = false;
     this.reJoiningTab = false;
+    this.transferTab = true;
+    this.exitTab=true;
+  }else if(this.LastTransaction=="Transfer"){
+    this.EmpSummaryTab = true;
+    this.joiningTab = false;
+    this.reJoiningTab = false;
+    this.transferTab = true;
+    this.exitTab=true;
+  }else if(this.LastTransaction=="Exit"){
+    this.EmpSummaryTab = true;
+    this.joiningTab = false;
+    this.reJoiningTab = true;
     this.transferTab = false;
-    this.exitTab = true;
-    this.tabIndex = 4;
+    this.exitTab=false;
   }
+  }
+  
+
+  lastTab(): any {
+    const empId = localStorage.getItem('employeeMasterId')
+    this.EmploymentInformationService.getTransactionHistory(empId).subscribe(res => {
+
+      this.TransactionHistory = res.data.results[0];
+     
+      if (this.TransactionHistory.length > 0) {
+        this.LastTransaction = this.TransactionHistory[this.TransactionHistory.length - 1].transaction;
+        localStorage.setItem('LastTransaction', this.LastTransaction);
+      }
+   
+    });
+     
+  }
+
 
 }

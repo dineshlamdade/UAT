@@ -9,6 +9,7 @@ import { SharedInformationService } from '../../employee-master-services/shared-
 import { Router } from '@angular/router';
 import { PreviousEmploymentInformationService } from '../previous-employment-information/previous-employment-information.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { familyAddressDetailRequestDTO } from '../family-information/family-information.model';
 
 
 
@@ -23,7 +24,7 @@ export class PayrollAreaInformationComponent implements OnInit {
   PayrollAreaInfoForm: FormGroup;
   modalRef: BsModalRef;
 
-  public PayrollAreaRequestModel = new PayrollAreaRequestModel('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+  public PayrollAreaRequestModel = new PayrollAreaRequestModel('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','', '');
   NewPayrollAreaRequestModel: any;
   PayrollAreaFormSubscription: Subscription;
   employeeMasterId: any;
@@ -81,7 +82,8 @@ export class PayrollAreaInformationComponent implements OnInit {
   currencyArray: Array<any> = [];
   confirmationMsg: string;
   currentPayroll: any;
-
+  attendanceAreaArray = 'Odd,Even'.split(',');
+  
 
   constructor(private formBuilder: FormBuilder, public datepipe: DatePipe,
     private EventEmitterService: EventEmitterService,
@@ -99,6 +101,11 @@ export class PayrollAreaInformationComponent implements OnInit {
       type: ['', Validators.required],
       fromDate: [this.date.fromDate, Validators.required],
       toDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
+      isHoldSalary:[this.PayrollAreaRequestModel.isHoldSalary],
+      isFFS:[this.PayrollAreaRequestModel.isFFS],
+      attendanceAreaCode: [''],
+      attendanceAreaFromDate: [this.date.fromDate],
+      attendanceAreaToDate: [{ value: this.date.toDate, disabled: true }],
       paymentMode: [this.PayrollAreaRequestModel.paymentMode, Validators.required],
       bankName: ['', Validators.required],
       bankAccount: [''],
@@ -109,7 +116,9 @@ export class PayrollAreaInformationComponent implements OnInit {
       priority: [{ value: this.date.toDate, disabled: true }],
       bankfromDate: [this.date.fromDate, Validators.required],
       banktoDate: [{ value: this.date.toDate, disabled: true }, Validators.required],
-      currency: ['']
+      currency: [''],
+
+
     });
 
     const JoiningDate = localStorage.getItem('joiningDate');
@@ -134,6 +143,7 @@ export class PayrollAreaInformationComponent implements OnInit {
 
     this.PayrollAreaRequestModel.payrollAreaToDate = '31-Dec-9999';
     this.PayrollAreaRequestModel.payToDate = '31-Dec-9999';
+    this.PayrollAreaRequestModel.attendanceAreaToDate = '31-Dec-9999';
     // this.PayrollAreaRequestModel.percentageOfNetPay = 100;
     if (!this.multipleBankBoolean) {
       this.PayrollAreaRequestModel.percentageOfNetPay = 100;
@@ -185,6 +195,7 @@ export class PayrollAreaInformationComponent implements OnInit {
         }, 100)
       })
     })
+
   }
 
   payrollAssignValues(payrollAreaCode) {
@@ -221,7 +232,10 @@ export class PayrollAreaInformationComponent implements OnInit {
     PayrollAreaRequestModel.payFromDate = this.datepipe.transform(PayrollAreaRequestModel.payFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaFromDate, 'dd-MMM-yyyy');
     PayrollAreaRequestModel.payrollAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.payrollAreaToDate, 'dd-MMM-yyyy');
-
+    PayrollAreaRequestModel.attendanceAreaFromDate = this.datepipe.transform(PayrollAreaRequestModel.attendanceAreaFromDate, 'dd-MMM-yyyy');
+    PayrollAreaRequestModel.attendanceAreaToDate = this.datepipe.transform(PayrollAreaRequestModel.attendanceAreaToDate, 'dd-MMM-yyyy');
+   if(this.PayrollAreaInfoForm.get('isHoldSalary').value=='') this.PayrollAreaRequestModel.isHoldSalary=false;
+   if(this.PayrollAreaInfoForm.get('isFFS').value=='') this.PayrollAreaRequestModel.isFFS=false;
     // if (PayrollAreaRequestModel.currency == '') {
     delete PayrollAreaRequestModel.currency;
     delete PayrollAreaRequestModel.bankAccount;
@@ -610,10 +624,12 @@ export class PayrollAreaInformationComponent implements OnInit {
   }
 
   amountValidCheck() {
+//     let amt=this.PayrollAreaInfoForm.get('amount').value
+// if(amt){
     if (this.PayrollAreaRequestModel.amount) {
-      this.amountValid = false;
-    } else {
       this.amountValid = true;
+    } else {
+      this.amountValid = false;
     }
   }
 
@@ -873,5 +889,13 @@ export class PayrollAreaInformationComponent implements OnInit {
       this.existingPayrollEditingItem = localStorage.getItem('payrollEditingItem');
       this.existingPayrollEditingItem = JSON.parse(this.existingPayrollEditingItem);
     }
+  }
+
+  holdSalarySetBoolean() {
+   this.PayrollAreaRequestModel.isHoldSalary= this.PayrollAreaInfoForm.get('isHoldSalary').value;
+  }
+
+  ffsSetBoolean() {
+    this.PayrollAreaRequestModel.isFFS= this.PayrollAreaInfoForm.get('isFFS').value;
   }
 }

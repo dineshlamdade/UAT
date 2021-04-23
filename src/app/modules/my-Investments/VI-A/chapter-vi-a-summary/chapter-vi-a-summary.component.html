@@ -4,7 +4,7 @@
 </div>
 <div class="tabview-contents">
   <div class="row mt-10">
-    <div class="col-9">
+    <div class="col-11">
       <div class="page">
         <div class="row mt-" style="position: center;">
           <div class="col-12">
@@ -32,7 +32,7 @@
                       <tbody>
                         <tr *ngFor="let summary of summaryGridData; let i = index">
                           <td scope="row">
-                            <span tooltip="1">{{summary.srNo}}</span>
+                            <span tooltip="1">{{i+1}}</span>
                           </td>
                           <td class="align-left">
                             <span tooltip="{{summary.sectionName}}">{{summary.sectionName}}</span>

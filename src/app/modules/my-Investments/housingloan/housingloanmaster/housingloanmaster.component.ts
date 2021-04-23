@@ -1,12 +1,28 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, TemplateRef } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { isThisISOWeek } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import {AccordionModule} from 'primeng/accordion';     // accordion and accordion tab
-import {MenuItem} from 'primeng/api';
+import { AccordionModule } from 'primeng/accordion'; // accordion and accordion tab
+import { MenuItem } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AlertServiceService } from 'src/app/core/services/alert-service.service';
 import { NumberFormatPipe } from 'src/app/core/utility/pipes/NumberFormatPipe';
@@ -17,11 +33,13 @@ import { HousingloanService } from '../housingloan.service';
   selector: 'app-housingloanmaster',
   templateUrl: './housingloanmaster.component.html',
   styleUrls: ['./housingloanmaster.component.scss'],
-
 })
 export class HousingloanmasterComponent implements OnInit {
+  @Input() public housePropertyMasterIds: any;
+
 
   public countriesList: Array<any> = [];
+
   public showOwner = false;
   public isloanTaken = true;
   public purposeOfLoanList: Array<any> = [];
@@ -29,10 +47,10 @@ export class HousingloanmasterComponent implements OnInit {
   public lenderTypeList: Array<any> = [];
   public loanData: Array<any> = [];
   public loanDetailGridData: Array<any> = [];
-  public  empoyeeAddressList: Array<any> = [];
+  public empoyeeAddressList: Array<any> = [];
   public employeeAddressType: Array<any> = [];
-  public loanDetail: String ;
-  public loanTaken =  true;
+  public loanDetail: String;
+  public loanTaken = true;
   public stampDutyDateValid = false;
 
   public modalRef: BsModalRef;
@@ -43,7 +61,8 @@ export class HousingloanmasterComponent implements OnInit {
   public summaryGridData: Array<any> = [];
   public summaryComputationGridDate: any;
   public masterGridData: Array<any> = [];
-
+  public houseLoanUsageTypeList: Array<any> = [];
+  public houseLoanOwnerTypeList: Array<any> = [];
   public declarationGridData: Array<any> = [];
   public familyMemberGroup: Array<any> = [];
   public frequencyOfPaymentList: Array<any> = [];
@@ -57,9 +76,16 @@ export class HousingloanmasterComponent implements OnInit {
   public transactionInstitutionListWithPolicies: Array<any> = [];
   public familyMemberName: Array<any> = [];
   public urlArray: Array<any> = [];
+  public stampDutyUrlArray: Array<any> = [];
+  public loanSanctionUrlArray: Array<any> = [];
+  public possessionUrlArray: Array<any> = [];
+
   public urlIndex: number;
   public glbalECS: number;
-  public form: FormGroup;
+  public housingLoanForm: FormGroup;
+  public housePropertyLoanDetailList: FormGroup;
+  public HPUsageDetailForm: FormGroup;
+  public HPOwnerDetailForm: FormGroup;
   public Index: number;
   public showUpdateButton: boolean;
   public tabIndex = 0;
@@ -82,7 +108,7 @@ export class HousingloanmasterComponent implements OnInit {
   public enableCheckboxFlag2: any;
   public greaterDateValidations: boolean;
   public policyMinDate: Date;
- public policyMaxDatePPF: Date;
+  public policyMaxDatePPF: Date;
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
   public minFormDate: Date;
@@ -95,6 +121,7 @@ export class HousingloanmasterComponent implements OnInit {
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
+  public globalAddRowIndex1: number;
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
   public isClear: boolean;
@@ -108,10 +135,15 @@ export class HousingloanmasterComponent implements OnInit {
   public globalInstitution: String = 'ALL';
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
-
+  public startDateModel: any = { date: null };
+  public houseLoanDetailSubmitted = false;
+  public houseLoanOwnerDetailSubmitted = false;
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public testVariable: Array<any> = [];
+
+  public proofSubmissionId;
+
   public abc: any[];
   constructor(
     private ref: ChangeDetectorRef,
@@ -126,109 +158,117 @@ export class HousingloanmasterComponent implements OnInit {
     private modalService: BsModalService,
     private alertService: AlertServiceService,
     @Inject(DOCUMENT) private document: Document,
-    public sanitizer: DomSanitizer) {
-      this.form = this.formBuilder.group({
-        housePropertyMasterId:  new FormControl(0),
-        propertyName: new FormControl(null, Validators.required),
-        possessionDate: new FormControl(null, Validators.required),
-        copyFrom: new FormControl(null, Validators.required),
-        address1: new FormControl(null, Validators.required),
-        address2: new FormControl(null, Validators.required),
-        address3: new FormControl(null, Validators.required),
-        country : new FormControl(null, Validators.required),
-        pinCode: new FormControl(null, Validators.required),
-        // state: new FormControl(null, Validators.required),
-        state: new FormControl({value: null, disabled : true}, Validators.required),
-        city: new FormControl(null, Validators.required),
-        townOrVillage: new FormControl(null),
-        stampDutyRegistrationDate: new FormControl(null, Validators.required),
-        stampDutyRegistrationAmount: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-        propertyRegistrationValue: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
+    public sanitizer: DomSanitizer
+  ) {
+    this.housingLoanFormControl();
 
-        loanTaken : new FormControl(null, Validators.required),
-        housePropertyOwnerDetailList: new FormArray([]),
-        housePropertyUsageTypeList:  new FormArray([]),
-        housePropertyLoanDetailList :
-         this.formBuilder.group({
-          housePropertyLoanDetailId : new FormControl(0),
-          purposeOfLoan: new FormControl(null, Validators.required ),
-          lenderName: new FormControl(null, Validators.required),
-          lenderType: new FormControl(null, Validators.required),
-          lenderPANOrAadhar: new FormControl(null, Validators.required),
-          loanAccountNumber: new FormControl(null, Validators.required),
-          loanAmount: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-          preEMIInterestPaid: new FormControl(null, [Validators.required , Validators.pattern('^[0-9]*$')]),
-          loanSanctionedDate: new FormControl(null, Validators.required),
-          loanEndDate: new FormControl(null, Validators.required),
-          percentageClaimedByEmployee: new FormControl(null, [Validators.required , Validators.max(100), Validators.min(0)]),
-        }),
+    (this.housePropertyLoanDetailList = this.formBuilder.group({
+      housePropertyLoanDetailId: new FormControl(0),
+      purposeOfLoan: new FormControl(null, Validators.required),
+      lenderName: new FormControl(null, Validators.required),
+      lenderType: new FormControl(null, Validators.required),
+      lenderPANOrAadhar: new FormControl(null),
+      loanAccountNumber: new FormControl(null, Validators.required),
+      loanAmount: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      preEMIInterestPaid: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
 
-      });
+      loanSanctionedDate: new FormControl(null, Validators.required),
+      loanEndDate: new FormControl(null, Validators.required),
+      percentageClaimedByEmployee: new FormControl(null, [
+        Validators.required,
+        Validators.max(100),
+        Validators.min(0),
+      ]),
 
-      this.housePropertyUsageTypeList.push(this.formBuilder.group({
-        housePropertyUsageTypeId : [0],
-        usageType: [''],
-        fromDate: [''],
-        toDate : [''],
-      }));
+    })),
+      (this.HPUsageDetailForm = this.formBuilder.group({
+        housePropertyUsageTypeId: new FormControl(0),
+        usageType: new FormControl(null, Validators.required),
+        fromDate: new FormControl(null, Validators.required),
+        toDate: new FormControl(null, Validators.required),
+      })),
+      (this.HPOwnerDetailForm = this.formBuilder.group({
+        housePropertyOwnerDetailId: new FormControl(0),
+        ownerName: new FormControl('', Validators.required),
+        firstTimeHomeBuyer: new FormControl('', Validators.required),
+      })),
+      // this.HPUsageDetailForm.push(this.formBuilder.group({
+      //   housePropertyUsageTypeId : [0],
+      //   usageType: [''],
+      //   fromDate: [''],
+      //   toDate : [''],
+      // }));
 
-      this.frequencyOfPaymentList = [
-        {label: 'Monthly', value: 'Monthly'},
-        {label: 'Quarterly', value: 'Quarterly'},
-        {label: 'Half-Yearly', value: 'Halfyearly'},
-        {label: 'Yearly', value: 'Yearly'},
-        {label: 'As & When', value: 'As & When'},
-      ];
+      (this.frequencyOfPaymentList = [
+        { label: 'Monthly', value: 'Monthly' },
+        { label: 'Quarterly', value: 'Quarterly' },
+        { label: 'Half-Yearly', value: 'Halfyearly' },
+        { label: 'Yearly', value: 'Yearly' },
+        { label: 'As & When', value: 'As & When' },
+      ]);
 
-      this.usageTypeList = [
-        {label: 'Self – Occupied', value: 'selfOccupied'},
-        {label: 'Let Out', value: 'letOut'},
-        {label: 'Deemed Let Out', value: 'deemedLetOut'},
-      ];
+    this.usageTypeList = [
+      { label: 'Self – Occupied', value: 'selfOccupied' },
+      { label: 'Let Out', value: 'letOut' },
+      { label: 'Deemed Let Out', value: 'deemedLetOut' },
+    ];
 
-      this.purposeOfLoanList = [
-        {label: 'Acquisition or construction', value: 'Acquisition or construction'},
-        {label: 'Repair or renewal or reconstruction of the house', value: 'Repair or renewal or reconstruction of the house'},
-      ];
+    this.purposeOfLoanList = [
+      {
+        label: 'Acquisition or Construction',
+        value: 'Acquisition or construction',
+      },
+      {
+        label: 'Repair or Renewal or Reconstruction Of The House',
+        value: 'Repair or renewal or reconstruction of the house',
+      },
+    ];
 
-      this.lenderTypeList = [
+    this.lenderTypeList = [
+      { label: 'Financial Institution', value: 'financial' },
 
-        {label: 'Financial Institutions', value: 'financial'},
-
-        {label: 'Employer' , value: 'employer'},
-        {label: 'Others' , value: 'others'},
-
-      ];
-      this.masterPage();
-      this.addNewRowId = 0;
-      this.hideRemarkDiv = false;
-      this.hideRemoveRow = false;
-      this.isClear = false;
-      this.isCancel = false;
-      this.receiptAmount = this.numberFormat.transform(0);
-      this.globalAddRowIndex = 0;
-      this.globalSelectedAmount = this.numberFormat.transform(0);
+      { label: 'Employer', value: 'employer' },
+      { label: 'Others', value: 'others' },
+    ];
+    this.masterPage();
+    this.addNewRowId = 0;
+    this.hideRemarkDiv = false;
+    this.hideRemoveRow = false;
+    this.globalAddRowIndex1 = 0;
+    this.isClear = false;
+    this.isCancel = false;
+    this.receiptAmount = this.numberFormat.transform(0);
+    this.globalAddRowIndex = 0;
+    this.globalSelectedAmount = this.numberFormat.transform(0);
   }
 
   public ngOnInit(): void {
-   this.addOwner(0);
-   this.form.get('country').setValue('India');
-   // console.log('Purpose Of Loan' , this.form.get('housePropertyLoanDetailList').get('purposeOfLoan'))
-    // console.log('dropdown',this.form.get('housePropertyLoanDetailList').get('purposeOfLoan').setValue('construction'))
+    //  this.addOwner(0);
+    this.startDateModel = '31-dec-9999';
+    this.housingLoanForm.get('country').setValue('India');
+    // console.log('Purpose Of Loan' , this.housingLoanForm.get('housePropertyLoanDetailList').get('purposeOfLoan'))
+    // console.log('dropdown',this.housingLoanForm.get('housePropertyLoanDetailList').get('purposeOfLoan').setValue('construction'))
 
     // Business Financial Year API Call
     // this.Service.getBusinessFinancialYear().subscribe((res) => {
     //   this.financialYearStart = res.data.results[0].fromDate;
     // });
 
-   this.Service.getCountryList().subscribe((res) => {
+    this.Service.getCountryList().subscribe((res) => {
       this.countriesList = res.data.results;
 
       console.log('Countries', this.countriesList);
     });
 
-   this.Service.getEmployeeAddressList().subscribe((res) => {
-      this.empoyeeAddressList = res.data.results[0].employeeAddressResponseDTOList;
+    this.Service.getEmployeeAddressList().subscribe((res) => {
+      this.empoyeeAddressList =
+        res.data.results[0].employeeAddressResponseDTOList;
 
       this.empoyeeAddressList.forEach((element) => {
         const obj = {
@@ -242,434 +282,1093 @@ export class HousingloanmasterComponent implements OnInit {
       console.log(' Adddress typr', this.employeeAddressType);
     });
 
-   if ((this.today.getMonth() + 1) <= 3) {
-      this.financialYear = (this.today.getFullYear() - 1) + '-' + this.today.getFullYear();
+    if (this.today.getMonth() + 1 <= 3) {
+      this.financialYear =
+        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
     } else {
-      this.financialYear = this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+      this.financialYear =
+        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
     }
 
-   const splitYear = this.financialYear .split('-', 2);
+    const splitYear = this.financialYear.split('-', 2);
 
-   this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
-   this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+    this.financialYearStartDate = new Date('01-Apr-' + splitYear[0]);
+    this.financialYearEndDate = new Date('31-Mar-' + splitYear[1]);
+
+    if (this.housePropertyMasterIds != undefined || this.housePropertyMasterIds != null) {
+      const input = this.housePropertyMasterIds;
+      // console.log("edit", input)
+      // this.editMaster(input);
+      // console.log('editMaster policyNo', input);
+      this.editMaster(input.housePropertyMasterId);
+      console.log('editMaster policyNo', input.policyNo);
+    }
 
   }
 
-  get f() { return this.form.controls; }
-  get pfArray() { return this.f.pfFormArray as FormArray; }
+  get houseLoanF() {
+    return this.housingLoanForm.controls;
+  }
+
+  get housePropertyLoanList() {
+    return this.housePropertyLoanDetailList.controls;
+  }
+
+  get HPUsageDetailF() {
+    return this.HPUsageDetailForm.controls;
+  }
+
+  get HPOwnerDetailF() {
+    return this.HPOwnerDetailForm.controls;
+  }
+
+  onCheckboxSelect(checkboxValue) {
+    this.loanTaken = true;
+    if (checkboxValue == 'false') {
+      this.loanTaken = false;
+    }
+  }
+
+  // get pfArray() {
+  //   return this.f.pfFormArray as FormArray;
+  // }
   // get housePropertyLoanDetailList() { return this.f.housePropertyLoanDetailList as FormArray; }
-  get housePropertyUsageTypeList() { return this.form.get('housePropertyUsageTypeList') as FormArray; }
+  // get HPUsageDetailForm() { return this.housingLoanForm.get('HPUsageDetailForm') as FormArray; }
 
-  public addOwner(i: number) {
-    const OwnerArray = new FormGroup({
-      housePropertyOwnerDetailId : new FormControl(0),
-      ownerName : new FormControl(''),
-      firstTimeHomeBuyer: new FormControl(''),
+  get housePropertyOwnerForm() {
+    return this.housingLoanForm.get('HPOwnerDetailForm')['controls'];
+  }
 
+  get housePropertyUsageForm() {
+    return this.housingLoanForm.get('HPUsageDetailForm')['controls'];
+  }
+
+  //Form Intialisatin
+
+  housingLoanFormControl() {
+    this.housingLoanForm = this.formBuilder.group({
+      housePropertyMasterId: new FormControl(0),
+      propertyName: new FormControl(null, Validators.required),
+      possessionDate: new FormControl(null, Validators.required),
+      copyFrom: new FormControl(null, Validators.required),
+      address1: new FormControl(null, Validators.required),
+      address2: new FormControl(null, Validators.required),
+      address3: new FormControl(null, Validators.required),
+      country: new FormControl(null, Validators.required),
+      pinCode: new FormControl(null, Validators.required),
+      state: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
+      city: new FormControl(null),
+      town: new FormControl(null),
+      village: new FormControl(null),
+      stampDutyRegistrationDate: new FormControl(null, Validators.required),
+      stampDutyRegistrationAmount: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      propertyRegistrationValue: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+      ]),
+      proofSubmissionId: new FormControl(''),
     });
-    // tslint:disable-next-line:no-angle-bracket-type-assertion
-    (<FormArray> this.form.get('housePropertyOwnerDetailList')).push(OwnerArray);
-    console.log('pgFprmArray' , (this.form.get('housePropertyOwnerDetailList') as FormArray));
-
-}
-
-  public addUsageType(i: number) {
-    console.log('addowner Index' , i);
-    this.housePropertyUsageTypeList.push(this.formBuilder.group({
-      housePropertyUsageTypeId : [0],
-      usageType: [''],
-      fromDate: [''],
-      toDate : [''],
-    }));
-
-    console.log('addowner Index' , this.housePropertyUsageTypeList.value);
-
+  }
+  public cancelOwnerType() {
+    this.HPOwnerDetailForm.reset();
   }
 
-  public removeUsageType(i: number) {
-    if (i > 0) {
-      this.housePropertyUsageTypeList.removeAt(i);
+  public addOwnerType() {
 
-    } else {
 
-      this.showOwner = false;
-      console.log('else', this.showOwner);
-
+    this.houseLoanOwnerDetailSubmitted = true;
+    // housePropertyLoanDetailList  HPUsageDetailForm HPOwnerDetailForm
+    if (this.HPOwnerDetailForm.invalid) {
+      return;
     }
+
+    this.globalAddRowIndex1 -= 1;
+    // this.alertService.sweetalertWarning('Please enter PAN details');
+
+    console.log("houseLoanOwnerTypeList",this.houseLoanOwnerTypeList);
+    console.log("HPOwnerDetailForm", this.HPOwnerDetailForm.value.ownerName);
+    if( this.houseLoanOwnerTypeList.find(
+      (owner) =>
+      owner.ownerName === this.HPOwnerDetailForm.value.ownerName
+    )){
+    this.alertService.sweetalertWarning('Owner name is already exists');
+    return;
   }
+
+
+    // this.houseLoanOwnerTypeList.find(
+    //   (owner) =>
+    //   owner.ownerName === this.HPOwnerDetailForm.value.ownerName
+    // )
+
+    if (
+      this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === 0 ||
+      this.HPOwnerDetailForm.value.housePropertyOwnerDetailId === null
+    ) {
+      this.HPOwnerDetailForm.value.housePropertyOwnerDetailId = this.globalAddRowIndex1;
+      this.houseLoanOwnerTypeList.push(this.HPOwnerDetailForm.value);
+    } else {
+      const index = this.houseLoanOwnerTypeList.findIndex(
+        (land) =>
+          land.housePropertyOwnerDetailId ===
+          this.HPOwnerDetailForm.value.housePropertyOwnerDetailId
+      );
+
+      // this.houseLoanOwnerTypeList[index].rentAmount = this.housingLoanForm.get(
+      //   'HPOwnerDetailForm'
+      // ).value.rentAmount;
+
+      this.houseLoanOwnerTypeList[
+        index
+      ].rentAmount = this.HPOwnerDetailForm.value.rentAmount;
+    }
+    /* this.houseLoanOwnerTypeList.housePropertyOwnerDetailId  = this.globalAddRowIndex1;    */
+    console.log('houseLoanOwnerTypeList', this.houseLoanOwnerTypeList);
+    this.HPOwnerDetailForm.reset();
+    this.houseLoanOwnerDetailSubmitted = false;
+  }
+
+  public cancelUsageType() {
+    this.HPUsageDetailForm.reset();
+  }
+
+  public addUsageType() {
+    /*    console.log('event::', this.HPUsageDetailForm); */
+    this.houseLoanDetailSubmitted = true;
+    if (this.HPUsageDetailForm.invalid) {
+      return;
+    }
+    this.globalAddRowIndex1 -= 1;
+    if( this.houseLoanUsageTypeList.find(
+      (usage) =>
+      usage.usageType == this.HPUsageDetailForm.value.usageType
+    )){
+    this.alertService.sweetalertWarning('Usage Type is already exists');
+    return;
+  }
+
+//   if( this.houseLoanUsageTypeList.find(
+//     (usagelet) =>
+//     usagelet.usageType.letOut === this.HPUsageDetailForm.value.usageType.letOut
+//   )){
+//   this.alertService.sweetalertWarning('Usage Type is already exists');
+//   return;
+// }
+
+
+  // { label: 'Self – Occupied', value: 'selfOccupied' },
+  // { label: 'Let Out', value: 'letOut' },
+  // { label: 'Deemed Let Out', value: 'deemedLetOut' },
+
+
+    if (
+      this.HPUsageDetailForm.value.housePropertyUsageTypeId === 0 ||
+      this.HPUsageDetailForm.value.housePropertyUsageTypeId === null
+    ) {
+      this.HPUsageDetailForm.value.housePropertyUsageTypeId = this.globalAddRowIndex1;
+      this.houseLoanUsageTypeList.push(this.HPUsageDetailForm.value);
+    } else {
+      const index = this.houseLoanUsageTypeList.findIndex(
+        (land) =>
+          land.housePropertyUsageTypeId ===
+          this.HPUsageDetailForm.value.housePropertyUsageTypeId
+      );
+
+      // this.houseLoanUsageTypeList[index].fromDate = this.housingLoanForm.get(
+      //   'HPUsageDetailForm'
+      // ).value.fromDate;
+
+      this.houseLoanUsageTypeList[
+        index
+      ].fromDate = this.HPUsageDetailForm.value.fromDate;
+
+      // this.houseLoanUsageTypeList[index].toDate = this.housingLoanForm.get(
+      //   'HPUsageDetailForm'
+      // ).value.toDate;
+
+      this.houseLoanUsageTypeList[
+        index
+      ].toDate = this.housingLoanForm.value.toDate;
+
+      // this.houseLoanUsageTypeList[index].rentAmount = this.housingLoanForm.get(
+      //   'HPUsageDetailForm'
+      // ).value.rentAmount;
+
+      this.houseLoanUsageTypeList[
+        index
+      ].rentAmount = this.HPUsageDetailForm.value.rentAmount;
+    }
+    /* this.houseLoanUsageTypeList.housePropertyUsageTypeId  = this.globalAddRowIndex1;    */
+    this.HPUsageDetailForm.reset();
+    this.houseLoanDetailSubmitted = false;
+  }
+
+  // public removeUsageType(i: number) {
+  //   if (i > 0) {
+  //     this.HPUsageDetailForm.removeAt(i);
+
+  //   } else {
+
+  //     this.showOwner = false;
+  //     console.log('else', this.showOwner);
+
+  //   }
+  // }
 
   public removeOwner(i: number) {
     if (i > 0) {
-      (this.form.get('housePropertyOwnerDetailList') as FormArray).removeAt(i);
-
+      (this.housingLoanForm.get('HPOwnerDetailForm') as FormArray).removeAt(i);
     } else {
-
       this.showOwner = false;
-      console.log('else', this.showOwner);
-
     }
   }
 
-  public addLoanDetails(formDirective : FormGroupDirective) {
-    this.loansubmitted =true;
-    console.log('this.loansubmitted', this.loanForm)
-    if (this.form.get('housePropertyLoanDetailList').invalid) {
-      console.log(this.form.get('housePropertyLoanDetailList').invalid)
-       return;
-     }
-    this.loanDetailGridData.push(this.form.get('housePropertyLoanDetailList').value);
-    this.form.get('housePropertyLoanDetailList').reset();
-   this.loansubmitted =false;
+  public cancelLoanDetails() {
+    this.housePropertyLoanDetailList.reset();
+  }
 
+  public addLoanDetails(formDirective: FormGroupDirective) {
+    this.loansubmitted = true;
+
+
+    if(this.housePropertyLoanDetailList.value.lenderType == 'others'){
+     this.alertService.sweetalertWarning('Please enter PAN details');
+     return;
+    }
+    console.log('this.loansubmitted', this.housePropertyLoanDetailList);
+    if (this.housePropertyLoanDetailList.invalid) {
+      return;
+    }
+    this.loanDetailGridData.push(
+      this.housePropertyLoanDetailList.getRawValue()
+    );
+    this.housePropertyLoanDetailList.reset();
+    this.loansubmitted = false;
   }
 
   public trackloanDetail(index: number, loanDetail: any) {
     return loanDetail.lenderName;
-
   }
 
   public getPermanentAddressFromPIN() {
-    console.log(this.form.get('pinCode').value);
-    if (this.form.get('pinCode').value.length < 6) {
-      this.form.get('state').setValue('');
-      this.form.get('city').setValue('');
-      this.form.get('townOrVillage').setValue('');
-
+    console.log(this.housingLoanForm.get('pinCode').value);
+    if (this.housingLoanForm.get('pinCode').value.length < 6) {
+      this.housingLoanForm.get('state').setValue('');
+      this.housingLoanForm.get('city').setValue('');
+      this.housingLoanForm.get('town').setValue('');
+      this.housingLoanForm.get('village').setValue('');
     }
-    if (this.form.get('pinCode').value.length === 6 &&  this.form.get('country').value === 'India') {
-      this.Service.getAddressFromPIN(this.form.get('pinCode').value).subscribe((res) => {
-        console.log(res);
-        this.form.get('state').setValue( res.data.results[0].state);
-        this.form.get('city').setValue(res.data.results[0].city);
-        this.form.get('townOrVillage').setValue(res.data.results[0].officeName);
-
-      }, (error: any) => {
-        this.alertService.sweetalertError(error.error.status.messsage);
-
-      });
+    if (
+      this.housingLoanForm.get('pinCode').value.length === 6 &&
+      this.housingLoanForm.get('country').value === 'India'
+    ) {
+      this.Service.getAddressFromPIN(
+        this.housingLoanForm.get('pinCode').value
+      ).subscribe(
+        (res) => {
+          console.log(res);
+          this.housingLoanForm.get('state').setValue(res.data.results[0].state);
+          this.housingLoanForm.get('city').setValue(res.data.results[0].city);
+          this.housingLoanForm.get('town').setValue(res.data.results[0].town);
+          this.housingLoanForm.get('village').setValue(res.data.results[0].village);
+        },
+        (error: any) => {
+          this.alertService.sweetalertError(error.error.status.messsage);
+        }
+      );
     }
   }
 
   public checkRegistrationDateValid() {
-    const stampDutyPaymentDate_ = this.form.get('stampDutyRegistrationDate').value;
+    const stampDutyPaymentDate_ = this.housingLoanForm.get(
+      'stampDutyRegistrationDate'
+    ).value;
     console.log('stampDutyPaymentDate_', stampDutyPaymentDate_);
-    if (stampDutyPaymentDate_ !== null)
-    {
+    if (stampDutyPaymentDate_ !== null) {
       this.stampDutyDateValid = false;
-
     }
-
-
-
   }
 
   // ------------------------------------Master----------------------------
 
-    // convenience getter for easy access to form fields
-    get masterForm() { return this.form.controls; }
-    get loanForm() { return this.form.get('housePropertyLoanDetailList')['controls'];};
+  // Policy End Date Validations with Policy Start Date
+  // setPolicyEndDate() {
+  //   console.log('PPF START DATE', this.housingLoanForm.value.policyStartDate);
+  //   this.policyMinDate = this.housingLoanForm.value.policyStartDate;
+  //   const policyStart = this.datePipe.transform(this.housingLoanForm.get('policyStartDate').value, 'yyyy-MM-dd');
+  //   const policyEnd = this.datePipe.transform(this.housingLoanForm.get('policyEndDate').value, 'yyyy-MM-dd');
+  //   this.minFormDate = this.policyMinDate;
 
-    // Policy End Date Validations with Policy Start Date
-      // setPolicyEndDate() {
-      //   console.log('PPF START DATE', this.form.value.policyStartDate);
-      //   this.policyMinDate = this.form.value.policyStartDate;
-      //   const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
-      //   const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
-      //   this.minFormDate = this.policyMinDate;
+  //   console.log('PPF MIN DATE', this.housingLoanForm.value.policyStartDate);
+  //   if (policyStart > policyEnd) {
+  //       this.housingLoanForm.controls.policyEndDate.reset();
+  //   }
+  //   this.housingLoanForm.patchValue({
+  //       fromDate: this.policyMinDate,
+  //   });
 
-      //   console.log('PPF MIN DATE', this.form.value.policyStartDate);
-      //   if (policyStart > policyEnd) {
-      //       this.form.controls.policyEndDate.reset();
-      //   }
-      //   this.form.patchValue({
-      //       fromDate: this.policyMinDate,
-      //   });
+  //   this.setPaymentDetailToDate();
+  //   //this.setAccountMaxDatePPF(this.policyMinDate);
+  // }
 
-      //   this.setPaymentDetailToDate();
-      //   //this.setAccountMaxDatePPF(this.policyMinDate);
-      // }
+  // Policy End Date Validations with Current Finanacial Year
+  public checkFinancialYearStartDateWithPolicyEnd() {
+    const policyEnd = this.datePipe.transform(
+      this.housingLoanForm.get('policyEndDate').value,
+      'yyyy-MM-dd'
+    );
+    const financialYearStartDate = this.datePipe.transform(
+      this.financialYearStart,
+      'yyyy-MM-dd'
+    );
+    const policyStart = this.datePipe.transform(
+      this.housingLoanForm.get('policyStartDate').value,
+      'yyyy-MM-dd'
+    );
 
-    // Policy End Date Validations with Current Finanacial Year
-      public checkFinancialYearStartDateWithPolicyEnd() {
-        const policyEnd = this.datePipe.transform(this.form.get('policyEndDate').value, 'yyyy-MM-dd');
-        const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
-        const policyStart = this.datePipe.transform(this.form.get('policyStartDate').value, 'yyyy-MM-dd');
+    console.log(policyStart);
+    if (policyEnd < financialYearStartDate) {
+      this.alertService.sweetalertWarning(
+        'Policy End Date should be greater than or equal to Current Financial Year : ' +
+          this.financialYearStart
+      );
+      this.housingLoanForm.controls.policyEndDate.reset();
+    } else {
+      this.housingLoanForm.patchValue({
+        toDate: this.housingLoanForm.value.policyEndDate,
+      });
+      this.maxFromDate = this.housingLoanForm.value.policyEndDate;
+    }
 
-        console.log(policyStart);
-        if (policyEnd < financialYearStartDate) {
-          this.alertService.sweetalertWarning('Policy End Date should be greater than or equal to Current Financial Year : '
-          + this.financialYearStart);
-          this.form.controls.policyEndDate.reset();
-        } else {
-          this.form.patchValue({
-            toDate: this.form.value.policyEndDate,
-          });
-          this.maxFromDate = this.form.value.policyEndDate;
-        }
+    if (policyEnd < policyStart) {
+      this.alertService.sweetalertWarning(
+        'Policy End Date should be greater than Policy Start Date : '
+      );
+      this.housingLoanForm.controls.policyEndDate.reset();
+    } else {
+      this.housingLoanForm.patchValue({
+        toDate: this.housingLoanForm.value.policyEndDate,
+      });
+      this.maxFromDate = this.housingLoanForm.value.policyEndDate;
+    }
+  }
 
-        if (policyEnd < policyStart) {
-          this.alertService.sweetalertWarning('Policy End Date should be greater than Policy Start Date : ');
-          this.form.controls.policyEndDate.reset();
-        } else {
-          this.form.patchValue({
-            toDate: this.form.value.policyEndDate,
-          });
-          this.maxFromDate = this.form.value.policyEndDate;
-        }
+  // Payment Detail To Date Validations with Payment Detail From Date
+  public setPaymentDetailToDate() {
+    this.paymentDetailMinDate = this.housePropertyLoanDetailList.value.loanSanctionedDate;
+    const from = this.datePipe.transform(
+      this.housePropertyLoanDetailList.get('loanSanctionedDate').value,
+      'yyyy-MM-dd'
+    );
+    const to = this.datePipe.transform(
+      this.housePropertyLoanDetailList.get('loanEndDate').value,
+      'yyyy-MM-dd'
+    );
+    // if (from > to) {
+    //   this.housePropertyLoanDetailList.controls.loanEndDate.reset();
+    // }
+  }
+
+  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
+  checkFinancialYearStartDateWithPaymentDetailToDate() {
+    const to = this.datePipe.transform(
+      this.housePropertyLoanDetailList.get('loanEndDate').value,
+      'yyyy-MM-dd'
+    );
+    // const financialYearStartDate = this.datePipe.transform(
+    //   this.financialYearStart,
+    //   'yyyy-MM-dd'
+    // );
+    // if (to < financialYearStartDate) {
+    //   //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
+    //   this.alertService.sweetalertWarning(
+    //     "Policy End Date can't be earlier that start of the Current Financial Year"
+    //   );
+
+    // }
+    // this.housePropertyLoanDetailList.controls.loanEndDate.reset();
+  }
+
+  public setAccountMaxDatePPF(policyMinDate: Date) {
+    console.log('PPFMinDATE', policyMinDate);
+    const maxppfAccountDate = policyMinDate;
+    if (maxppfAccountDate !== null || maxppfAccountDate === undefined) {
+      this.policyMaxDatePPF = new Date(
+        maxppfAccountDate.setFullYear(maxppfAccountDate.getFullYear() + 21)
+      );
+    }
+
+    console.log('PPFMAXDATE', this.policyMaxDatePPF);
+  }
+
+  // // Payment Detail To Date Validations with Current Finanacial Year
+  // public checkFinancialYearStartDateWithPaymentDetailToDate() {
+  //   const to = this.datePipe.transform(
+  //     this.housingLoanForm.get('toDate').value,
+  //     'yyyy-MM-dd'
+  //   );
+  //   const financialYearStartDate = this.datePipe.transform(
+  //     this.financialYearStart,
+  //     'yyyy-MM-dd'
+  //   );
+  //   if (to < financialYearStartDate) {
+  //     this.alertService.sweetalertWarning(
+  //       'To Date should be greater than or equal to Current Financial Year : ' +
+  //         this.financialYearStart
+  //     );
+  //     this.housingLoanForm.controls.toDate.reset();
+  //   }
+  // }
+
+  // Get Master Page Data API call
+  public masterPage() {
+    this.HousingLoanService.getHousingLoanMaster().subscribe((res) => {
+      console.log('masterGridData::', res);
+      this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.possessionDate = new Date(element.possessionDate);
+        element.stampDutyRegistrationDate = new Date(
+          element.stampDutyRegistrationDate
+        );
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+        element.loanSanctionedDate = new Date(element.loanSanctionedDate);
+        element.loanEndDate = new Date(element.loanEndDate);
+      });
+    });
+  }
+
+  // Post Master Page Data API call
+  public addMaster(formData: any, formDirective: FormGroupDirective): void {
+    this.submitted = true;
+    this.houseLoanOwnerTypeList.length;
+    this.houseLoanUsageTypeList.length;
+    this.loanDetailGridData.length;
+
+    // housingLoanForm housePropertyLoanDetailList HPUsageDetailForm HPOwnerDetailForm
+    // houseLoanF  housePropertyLoanList HPUsageDetailF HPOwnerDetailF
+    let invalidSubmission = false;
+    if (this.housingLoanForm.invalid) {
+      invalidSubmission = true;
+      this.alertService.sweetalertWarning('Please enter property details');
+    }
+
+    if (this.houseLoanOwnerTypeList.length == 0) {
+      if (this.HPOwnerDetailForm.invalid) {
+        invalidSubmission = true;
+        this.alertService.sweetalertWarning('Please enter house owner details');
       }
+    }
 
-    // Payment Detail To Date Validations with Payment Detail From Date
-      public setPaymentDetailToDate() {
-        this.paymentDetailMinDate = this.form.value.fromDate;
-        const from = this.datePipe.transform(this.form.get('fromDate').value, 'yyyy-MM-dd');
-        const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
-        if (from > to) {
-          this.form.controls.toDate.reset();
-        }
+    if (this.houseLoanUsageTypeList.length == 0) {
+      if (this.HPUsageDetailForm.invalid) {
+        invalidSubmission = true;
+        this.alertService.sweetalertWarning(
+          'Please enter house loan usage details'
+        );
       }
+    }
 
-      public setAccountMaxDatePPF(policyMinDate: Date) {
-        console.log('PPFMinDATE' ,  policyMinDate );
-        const maxppfAccountDate = policyMinDate;
-        if (maxppfAccountDate !== null || maxppfAccountDate === undefined ) {
-        this.policyMaxDatePPF = new Date (maxppfAccountDate.setFullYear(maxppfAccountDate.getFullYear() + 21));
-        }
-
-        console.log('PPFMAXDATE' ,   this.policyMaxDatePPF );
+    if (this.loanDetailGridData.length == 0) {
+      invalidSubmission = true;
+      if (this.housePropertyLoanDetailList.invalid) {
+        this.alertService.sweetalertWarning('Please enter loan taken details');
       }
+    }
 
-    // Payment Detail To Date Validations with Current Finanacial Year
-      public checkFinancialYearStartDateWithPaymentDetailToDate() {
-        const to = this.datePipe.transform(this.form.get('toDate').value, 'yyyy-MM-dd');
-        const financialYearStartDate = this.datePipe.transform(this.financialYearStart, 'yyyy-MM-dd');
-        if (to < financialYearStartDate) {
-          this.alertService.sweetalertWarning('To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart);
-          this.form.controls.toDate.reset();
-        }
-      }
+    // return the control if any on of the form is invalid
+    if (invalidSubmission) {
+      return;
+    }
 
-    // Get Master Page Data API call
-      public masterPage() {
-        this.HousingLoanService.getHousingLoanMaster().subscribe((res) => {
-          console.log('masterGridData::', res);
+
+
+    // if(
+    //   (this.propertyIndex.length === 0 ||
+    //     this.urlArray.length === 0) &&
+    //   (this.stampDutyRegistration.length === 0 ||
+    //     this.stampDutyUrlArray.length === 0) &&
+    //     (this.loanSanctionLetter.length === 0 ||
+    //       this.loanSanctionUrlArray.length === 0) &&
+    //     (this.possessionLetter.length === 0 ||
+    //       this.possessionUrlArray.length === 0)
+    // )
+    if(
+      (this.propertyIndex.length === 0 ||
+        this.stampDutyRegistration.length === 0) &&
+      (this.loanSanctionLetter.length === 0 ||
+        this.possessionLetter.length === 0) &&
+        (this.urlArray.length === 0 ||
+          this.stampDutyUrlArray.length === 0) &&
+        (this.loanSanctionUrlArray.length === 0 ||
+          this.possessionUrlArray.length === 0)
+    )
+    {
+      this.alertService.sweetalertWarning(
+        'Please upload all mandatory documents'
+      );
+      console.log('urlArray.length', this.urlArray.length);
+      return;
+    } else {
+      // const data = this.housingLoanForm.getRawValue();
+      const data = {
+        // property detail propertied goes here
+        housePropertyMasterId: this.houseLoanF.housePropertyMasterId.value,
+        propertyName: this.houseLoanF.propertyName.value,
+        possessionDate: this.houseLoanF.possessionDate.value,
+        copyFrom: this.houseLoanF.copyFrom.value,
+        address1: this.houseLoanF.address1.value,
+        address2: this.houseLoanF.address2.value,
+        address3: this.houseLoanF.address3.value,
+        country: this.houseLoanF.country.value,
+        pinCode: this.houseLoanF.pinCode.value,
+        state: this.houseLoanF.state.value,
+        city: this.houseLoanF.city.value,
+        town: this.houseLoanF.town.value,
+        village: this.houseLoanF.village.value,
+        stampDutyRegistrationDate: this.houseLoanF.stampDutyRegistrationDate
+          .value,
+        stampDutyRegistrationAmount: this.houseLoanF.stampDutyRegistrationAmount
+          .value,
+        propertyRegistrationValue: this.houseLoanF.propertyRegistrationValue
+          .value,
+        loanTaken: this.loanTaken,
+        housePropertyUsageTypeList: this.houseLoanUsageTypeList,
+        housePropertyOwnerDetailList: this.houseLoanOwnerTypeList,
+        housePropertyLoanDetailList: this.loanDetailGridData,
+      };
+
+      // data.housePropertyLoanDetailList = this.loanDetailGridData;
+      console.log('Housing Loan Data::', data);
+      this.HousingLoanService.submitHousingLoanMasterData(
+        this.propertyIndex,
+        this.stampDutyRegistration,
+        this.loanSanctionLetter,
+        this.possessionLetter,
+        data
+      ).subscribe((res) => {
+        console.log(res);
+        if (res.data.results.length > 0) {
           this.masterGridData = res.data.results;
           this.masterGridData.forEach((element) => {
-            if (element.possessionDate !== null) {
-            element.possessionDate = new Date(element.possessionDate);
-            }
+            element.policyStartDate = new Date(element.policyStartDate);
+            element.policyEndDate = new Date(element.policyEndDate);
+            element.fromDate = new Date(element.fromDate);
+            element.toDate = new Date(element.toDate);
+            this.alertService.sweetalertMasterSuccess(
+              'Record saved successfully.',
+              'Go to "Declaration & Actual" page to see Schedule.'
+            );
           });
+        }
+      });
+
+      this.Index = -1;
+      formDirective.resetForm();
+      this.housingLoanForm.reset();
+
+      this.showUpdateButton = false;
+      this.loanDetailGridData = [];
+      this.propertyIndex = [];
+      this.urlArray = [];
+      this.stampDutyUrlArray = [];
+      this.loanSanctionUrlArray = [];
+      this.possessionUrlArray = [];
+      this.stampDutyRegistration = [];
+      this.loanSanctionLetter = [];
+      this.possessionLetter = [];
+      this.submitted = false;
+    }
+  }
+
+  public onMasterUpload(
+    event: { target: { files: string | any[] } },
+    docType: string
+  ) {
+    console.log('event::', event);
+    console.log('docType::', docType);
+
+    // if (event.target.files.length > 0) {
+    //   for (const file of event.target.files) {
+    //     switch (docType) {
+    //       case 'propertyIndex':
+    //         this.propertyIndex.push(file);
+    //         break;
+    //       case 'stampDutyRegistration':
+    //         this.stampDutyRegistration.push(file);
+    //         break;
+    //       case 'loanSanctionLetter':
+    //         this.loanSanctionLetter.push(file);
+    //         break;
+    //       case 'possessionLetter':
+    //         this.possessionLetter.push(file);
+    //         break;
+    //     }
+    //   }
+    // }
+
+
+    if (event.target.files.length > 0) {
+      for (const file of event.target.files) {
+        switch (docType) {
+          case 'propertyIndex':
+            const data = {
+              name: file.name,
+            };
+            this.urlArray.push(data);
+            this.propertyIndex.push(file);
+            break;
+          case 'stampDutyRegistration':
+            const data1 = {
+              name: file.name,
+            };
+            this.stampDutyUrlArray.push(data1);
+            this.stampDutyRegistration.push(file);
+            break;
+            case 'loanSanctionLetter':
+              const data2 = {
+                name: file.name,
+              };
+              this.loanSanctionUrlArray.push(data2);
+              this.loanSanctionLetter.push(file);
+              break;
+              case 'possessionLetter':
+                const data4 = {
+                  name: file.name,
+                };
+                this.possessionUrlArray.push(data4);
+                this.possessionLetter.push(file);
+                break;
+        }
+      }
+    }
+  }
+  // Remove HousingLoanMaster Document
+  public removeSelectedLicMasterDocument(index: number, docType: string) {
+    switch (docType) {
+      case 'propertyIndex':
+        this.propertyIndex.splice(index, 1);
+        break;
+      case 'stampDutyRegistration':
+        this.stampDutyRegistration.splice(index, 1);
+        break;
+      case 'loanSanctionLetter':
+        this.loanSanctionLetter.splice(index, 1);
+        break;
+      case 'possessionLetter':
+        this.possessionLetter.splice(index, 1);
+        break;
+    }
+  }
+
+  // Family relationship shown on Policyholder selection
+  public OnSelectionfamilyMemberGroup() {
+    const toSelect = this.familyMemberGroup.find(
+      (c) =>
+        c.familyMemberName ===
+        this.housingLoanForm.get('accountHolderName').value
+    );
+    this.housingLoanForm
+      .get('familyMemberInfoId')
+      .setValue(toSelect.familyMemberInfoId);
+    this.housingLoanForm.get('relationship').setValue(toSelect.relation);
+  }
+
+  public onSelectAddressType() {
+    const toSelectAddress = this.empoyeeAddressList.find(
+      (c) => c.addressType === this.housingLoanForm.get('copyFrom').value
+    );
+    console.log('toSelectAddress', toSelectAddress);
+    this.housingLoanForm.get('address1').setValue(toSelectAddress.address1);
+    this.housingLoanForm.get('address2').setValue(toSelectAddress.address2);
+    this.housingLoanForm.get('address3').setValue(toSelectAddress.address3);
+    this.housingLoanForm.get('country').setValue(toSelectAddress.country);
+    this.housingLoanForm.get('pinCode').setValue(toSelectAddress.postalCode);
+    this.housingLoanForm.get('state').setValue(toSelectAddress.state);
+    this.housingLoanForm.get('city').setValue(toSelectAddress.city);
+    this.housingLoanForm.get('town').setValue(toSelectAddress.town);
+    this.housingLoanForm.get('village').setValue(toSelectAddress.village);
+  }
+
+  // on checkPaymentDate
+  public checkPaymentDate() {
+    const stampDutyPaymentDate = this.housingLoanForm.get(
+      'stampDutyRegistrationDate'
+    ).value;
+    console.log('stampDutyPaymentDate', stampDutyPaymentDate);
+
+    if (stampDutyPaymentDate === null) {
+      this.stampDutyDateValid = true;
+
+      console.log(
+        'stampDutyRegistrationDate',
+        this.housingLoanForm.controls[
+          'stampDutyRegistrationDate'
+        ].updateValueAndValidity()
+      );
+      this.alertService.sweetalertWarning(
+        'Please enter stamp duty registration date first to enter amount'
+      );
+    }
+  }
+
+   // On Master Edit functionality
+   public editMaster(housePropertyMasterId) {
+    this.scrollToTop();
+      this.HousingLoanService.getHousingLoanMaster().subscribe((res) => {
+        console.log('masterGridData::', res);
+        this.masterGridData = res.data.results;
+        this.masterGridData.forEach((element) => {
+          element.possessionDate = new Date(element.possessionDate);
+          element.stampDutyRegistrationDate = new Date(
+            element.stampDutyRegistrationDate
+          );
+          element.fromDate = new Date(element.fromDate);
+          element.toDate = new Date(element.toDate);
+          element.loanSanctionedDate = new Date(element.loanSanctionedDate);
+          element.loanEndDate = new Date(element.loanEndDate);
         });
+
+      const obj = this.findByPolicyNo(housePropertyMasterId, this.masterGridData);
+
+      this.loanDetailGridData = [];
+      this.houseLoanUsageTypeList = [];
+      this.houseLoanOwnerTypeList = [];
+      this.loanDetailGridData = obj.paymentDetails;
+      this.housingLoanForm.patchValue(obj);
+      (this.loanDetailGridData = obj.housePropertyLoanDetailList),
+        (this.houseLoanUsageTypeList = obj.housePropertyUsageTypeList),
+        (this.houseLoanUsageTypeList = obj.housePropertyUsageTypeList),
+        (this.houseLoanOwnerTypeList = obj.housePropertyOwerDetailList),
+        (this.Index = housePropertyMasterId);
+      this.showUpdateButton = true;
+      this.urlArray = obj.propertyIndex;
+      this.stampDutyUrlArray = obj.stampDutyRegistration;
+      this.loanSanctionUrlArray = obj.loanSanctionLetter;
+      this.possessionUrlArray = obj.possessionLetter;
+
+      this.proofSubmissionId = obj.proofSubmissionId;
+      this.isClear = true;
+    // }
+     });
+
+  }
+
+   // Find PolicyNo
+  public findByPolicyNo(housePropertyMasterId, masterGridData) {
+    return masterGridData.find((x) => x.housePropertyMasterId === housePropertyMasterId);
+  }
+
+
+  // // On Master Edit functionality
+  // public editMaster(i: number) {
+  //   this.scrollToTop();
+
+  //   this.loanDetailGridData = [];
+  //   this.houseLoanUsageTypeList = [];
+  //   this.houseLoanOwnerTypeList = [];
+  //   this.loanDetailGridData = this.masterGridData[i].paymentDetails;
+  //   this.housingLoanForm.patchValue(this.masterGridData[i]);
+  //   (this.loanDetailGridData = this.masterGridData[i].housePropertyLoanDetailList),
+  //     (this.houseLoanUsageTypeList = this.masterGridData[i].housePropertyUsageTypeList),
+  //     (this.houseLoanUsageTypeList = this.masterGridData[i].housePropertyUsageTypeList),
+  //     (this.houseLoanOwnerTypeList = this.masterGridData[i].housePropertyOwerDetailList),
+  //     (this.Index = i);
+  //   this.showUpdateButton = true;
+  //   this.urlArray = this.masterGridData[i].propertyIndex;
+  //   this.stampDutyUrlArray = this.masterGridData[i].stampDutyRegistration;
+  //   this.loanSanctionUrlArray = this.masterGridData[i].loanSanctionLetter;
+  //   this.possessionUrlArray = this.masterGridData[i].possessionLetter;
+
+  //   this.proofSubmissionId = this.masterGridData[i].proofSubmissionId;
+  //   this.isClear = true;
+  //   // }
+  // }
+
+  scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - (currentScroll / 8));
       }
+    })();
+  }
 
-    // Post Master Page Data API call
-      public addMaster(formData: any, formDirective: FormGroupDirective): void {
 
-        this.submitted = true;
 
-        // if (this.form.invalid) {
-        //   return;
-        // }
 
-        if (this.propertyIndex.length === 0 || this.stampDutyRegistration.length === 0 ||
-          this.loanSanctionLetter.length === 0 || this.possessionLetter.length === 0 ) {
-          this.alertService.sweetalertWarning('Please Upload All Mandatitory Documents');
-          return;
-        } else {
-          const data = this.form.getRawValue();
-          data.housePropertyLoanDetailList = this.loanDetailGridData;
-          console.log('Housing Loan Data::', data);
-          this.HousingLoanService.submitHousingLoanMasterData(this.propertyIndex, this.stampDutyRegistration,
-            this.loanSanctionLetter, this.possessionLetter , data)
-            .subscribe((res) => {
-              console.log(res);
-              if (res.data.results.length > 0) {
-                  this.masterGridData = res.data.results;
-                  this.masterGridData.forEach((element) => {
-                    element.policyStartDate = new Date(element.policyStartDate);
-                    element.policyEndDate = new Date(element.policyEndDate);
-                    element.fromDate = new Date(element.fromDate);
-                    element.toDate = new Date(element.toDate);
-                    this.alertService.sweetalertMasterSuccess('Record saved Successfully.',
-                    'Go to "Declaration & Actual" Page to see Schedule.');
+  //Edit Loan Detail Table
+  editLoanDetails(loanDetails) {
+    // this.housePropertyLoanDetailList.patchValue(this.loanDetailGridData[i]);
+    this.housePropertyLoanDetailList.patchValue({
+      housePropertyLoanDetailId: loanDetails.housePropertyLoanDetailId,
+      purposeOfLoan: loanDetails.purposeOfLoan,
+      lenderName: loanDetails.lenderName,
+      lenderType: loanDetails.lenderType,
+      lenderPANOrAadhar: loanDetails.lenderPANOrAadhar,
+      loanAccountNumber: loanDetails.loanAccountNumber,
+      loanAmount: loanDetails.loanAmount,
+      preEMIInterestPaid: loanDetails.preEMIInterestPaid,
+      loanSanctionedDate: new Date(loanDetails.loanSanctionedDate),
+      loanEndDate: new Date(loanDetails.loanEndDate),
+      percentageClaimedByEmployee: loanDetails.percentageClaimedByEmployee,
+    });
+  }
 
-                  });
+  public editLoanUsageDetails(loanDetail) {
+    // this.agreementDetailsTableList=[];
+    console.log('HPUsageDetailForm', this.HPUsageDetailForm);
+    this.HPUsageDetailForm.patchValue({
+      housePropertyUsageTypeId: loanDetail.housePropertyUsageTypeId,
+      usageType: loanDetail.usageType,
+      toDate: new Date(loanDetail.toDate),
+      fromDate: new Date(loanDetail.fromDate),
+    });
+  }
 
-                }
-            });
+  // //edit houseLoanUsageTypeList
+  editLoanOwnerDetail(i: number) {
+    this.HPOwnerDetailForm.patchValue(this.houseLoanOwnerTypeList[i]);
+  }
 
-          this.Index = -1;
-          formDirective.resetForm();
-          this.form.reset();
+  // //edit houseLoanUsageTypeList
+  // public editLoanUsageDetails(i: number) {
+  //   this.housingLoanForm.get('HPUsageDetailForm').patchValue({
+  //     // houseRentalRentDetailId: this.houseLoanUsageTypeList[i].houseRentalRentDetailId,
+  //     housePropertyUsageTypeId: this.houseLoanUsageTypeList[i]
+  //       .housePropertyUsageTypeId,
+  //     usageType: this.houseLoanUsageTypeList[i].usageType,
+  //     fromDate: new Date(this.houseLoanUsageTypeList[i].fromDate),
+  //     toDate: new Date(this.houseLoanUsageTypeList[i].toDate),
+  //   });
+  // }
 
-          this.showUpdateButton = false;
-          this.loanDetailGridData = [];
-          this.propertyIndex = [];
-          this.submitted = false;
-        }
+  // //edit houseLoanUsageTypeList
+  // public editLoanOwnerDetail(i: number) {
+  //   this.housingLoanForm.get('HPOwnerDetailForm').patchValue({
+  //     housePropertyOwnerDetailId: this.houseLoanOwnerTypeList[i]
+  //       .housePropertyOwnerDetailId,
+  //     ownerName: this.houseLoanOwnerTypeList[i].ownerName,
+  //     firstTimeHomeBuyer: new Date(
+  //       this.houseLoanOwnerTypeList[i].firstTimeHomeBuyer
+  //     ),
+  //   });
+  // }
 
-      }
+  // On Edit Cancel
+  public cancelEdit() {
+    this.housingLoanForm.reset();
+    this.housingLoanForm.get('active').setValue(true);
+    this.housingLoanForm.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+    this.loanDetailGridData = [];
+    this.houseLoanUsageTypeList = [];
+    this.houseLoanOwnerTypeList = [];
+    this.isClear = false;
+  }
 
-      public onMasterUpload(event: { target: { files: string | any[]; }; } , docType: string) {
-        console.log('event::', event);
-        console.log('docType::', docType);
+  // On Master Edit functionality
+  public viewMaster(i: number) {
+    // this.scrollToTop();
+    this.loanDetailGridData = this.masterGridData[i].paymentDetails;
+    this.houseLoanUsageTypeList = this.masterGridData[i].HPUsageDetailForm;
+    this.houseLoanOwnerTypeList = this.masterGridData[i].HPOwnerDetailForm;
+    this.housingLoanForm.patchValue(this.masterGridData[i]);
+    // console.log(this.housingLoanForm.getRawValue());
+    this.Index = i;
+    this.showUpdateButton = true;
+    const formatedPremiumAmount = this.numberFormat.transform(
+      this.masterGridData[i].premiumAmount
+    );
+    // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
+    this.housingLoanForm.get('premiumAmount').setValue(formatedPremiumAmount);
+    this.isCancel = true;
+  }
 
-        if (event.target.files.length > 0) {
+  //Reset form
+  resetView() {
+    this.HPOwnerDetailForm.reset();
+    this.houseLoanOwnerTypeList = [];
+    this.HPUsageDetailForm.reset();
+    this.houseLoanUsageTypeList = [];
+    this.loanDetailGridData = [];
+    this.houseLoanUsageTypeList = [];
+    this.housingLoanForm.reset();
+    this.housePropertyLoanDetailList.reset();
+    this.loanDetailGridData = [];
+    this.propertyIndex = [];
+    this.urlArray = [];
+    this.stampDutyUrlArray = [];
+    this.loanSanctionUrlArray = [];
+    this.possessionUrlArray = [];
+    this.stampDutyRegistration = [];
+    this.loanSanctionLetter = [];
+    this.possessionLetter = [];
+  }
+  // On View Cancel
+  public cancelView() {
+    this.housingLoanForm.reset();
+    this.housingLoanForm.get('active').setValue(true);
+    this.housingLoanForm.get('ecs').setValue(0);
+    this.showUpdateButton = false;
+    this.loanDetailGridData = [];
+    this.isCancel = false;
+  }
+  public UploadModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(
+      template,
+      Object.assign({}, { class: 'gray modal-md' })
+    );
+  }
 
-            for (const file of event.target.files) {
-              switch (docType) {
-                case 'propertyIndex':
-                  this.propertyIndex.push(file);
-                  break;
-                case 'stampDutyRegistration':
-                  this.stampDutyRegistration.push(file);
-                  break;
-                case 'loanSanctionLetter':
-                  this.loanSanctionLetter.push(file);
-                  break;
-                case 'possessionLetter':
-                  this.possessionLetter.push(file);
-                  break;
+  panAndAadhar() {}
 
-            }
-        }
-        // console.log('this.propertyIndex::', this.propertyIndex);
-      }
-    }
-    // Remove HousingLoanMaster Document
-    public removeSelectedLicMasterDocument(index: number , docType: string) {
+  //  // ---------- For Doc Viewer  -----------------------
+  //  public nextDocViewer() {
+  //   this.urlIndex = this.urlIndex + 1;
+  //   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  //     this.urlArray[this.urlIndex].blobURI
+  //   );
 
-      switch (docType) {
-        case 'propertyIndex':
-          this.propertyIndex.splice(index, 1);
-          break;
-        case 'stampDutyRegistration':
-          this.stampDutyRegistration.splice(index, 1);
-          break;
-        case 'loanSanctionLetter':
-          this.loanSanctionLetter.splice(index, 1);
-          break;
-        case 'possessionLetter':
-          this.possessionLetter.splice(index, 1);
-          break;
+  //   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  //     this.stampDutyUrlArray[this.urlIndex].blobURI
+  //   );
+  //   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  //     this.loanSanctionUrlArray[this.urlIndex].blobURI
+  //   );
 
-    }
-      }
+  //   this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+  //     this.possessionUrlArray[this.urlIndex].blobURI
+  //   );
 
-      // Family relationship shown on Policyholder selection
-        public OnSelectionfamilyMemberGroup() {
-          const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
-          this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-          this.form.get('relationship').setValue(toSelect.relation);
-        }
+  // }
 
-        public onSelectAddressType() {
-          const toSelectAddress = this.empoyeeAddressList.find((c) => c.addressType === this.form.get('copyFrom').value);
-          console.log('toSelectAddress', toSelectAddress);
-          this.form.get('address1').setValue(toSelectAddress.address1);
-          this.form.get('address2').setValue(toSelectAddress.address2);
-          this.form.get('address3').setValue(toSelectAddress.address3);
-          this.form.get('country').setValue(toSelectAddress.country);
-          this.form.get('pinCode').setValue(toSelectAddress.postalCode);
-          this.form.get('state').setValue(toSelectAddress.state);
-          this.form.get('city').setValue(toSelectAddress.city);
-          this.form.get('townOrVillage').setValue(toSelectAddress.village);
-        }
+  // ---------- Next Doc Viewer  -----------------------
+  public nextDocViewerPropertyIndex() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
 
-      // on checkPaymentDate
-      public checkPaymentDate() {
-        const stampDutyPaymentDate = this.form.get('stampDutyRegistrationDate').value;
-        console.log('stampDutyPaymentDate', stampDutyPaymentDate);
+  // ---------- Next Doc Viewer  -----------------------
+  public nextDocViewerStampDuty() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.stampDutyUrlArray[this.urlIndex].blobURI
+    );
+  }
+  // ---------- Next Doc Viewer  -----------------------
+  public nextDocViewerLoanSanction() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.loanSanctionUrlArray[this.urlIndex].blobURI
+    );
+  }
 
-        if (stampDutyPaymentDate === null) {
+  // ---------- Next Doc Viewer  -----------------------
+  public nextDocViewerLoanPossession() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.possessionUrlArray[this.urlIndex].blobURI
+    );
+  }
 
-          this.stampDutyDateValid = true;
+  // Previous Doc Viewer
+  public previousDocViewerPropertyIndex() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+  }
 
-          console.log('stampDutyRegistrationDate' ,
-          this.form.controls['stampDutyRegistrationDate'].updateValueAndValidity());
-          this.alertService.sweetalertWarning(
-            'Please Enter stampDutyRegistrationDate First to enter Amount : ',
-	        );
+  // Previous Doc Viewer StampDuty&Registration Charges
+  public previousDocViewerStampDuty() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.stampDutyUrlArray[this.urlIndex].blobURI
+    );
+  }
 
-        }
+  // Previous Doc Viewer LoanSanctionLetter
+  public previousDocViewerLoanSanction() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.loanSanctionUrlArray[this.urlIndex].blobURI
+    );
+  }
 
-      }
+  // Previous Doc Viewer PossessionLetter
+  public previousDocViewerPossession() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.possessionUrlArray[this.urlIndex].blobURI
+    );
+  }
 
-      // On Master Edit functionality
-        public editMaster(i: number) {
-          // this.scrollToTop();
-          console.log('inedit as and when', this.masterGridData[i].frequency);
-          if (this.masterGridData[i].frequency === 'As & When') {
+  //Document View   Property(Index 2)  StampDuty&Registration Charges  LoanSanctionLetter	PossessionLetter
+  public docViewer(template1: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
 
-            this.form.patchValue({
-              institution: this.masterGridData[i].institution,
-              accountNumber: this.masterGridData[i].accountNumber,
-              accountHolderName: this.masterGridData[i].accountHolderName,
-              relationship: this.masterGridData[i].relationship,
-              policyStartDate: this.masterGridData[i].policyStartDate,
-              fromDate: this.masterGridData[i].fromDate,
-              familyMemberInfoId: this.masterGridData[i].familyMemberInfoId,
-              frequencyOfPayment: this.masterGridData[i].frequencyOfPayment,
-              // premiumAmount: this.masterGridData[i].institution,
-              // annualAmount: this.masterGridData[i].institution,
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
 
-              // toDate: new FormControl(null),
-              // ecs: new FormControl(0),
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template1,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
-          });
+  public docViewer2(template2: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
 
-          } else {
-          this.loanDetailGridData = this.masterGridData[i].paymentDetails;
-          this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
-          this.Index = i;
-          this.showUpdateButton = true;
-          const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
-          // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-          this.isClear = true;
-        }
-      }
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.stampDutyUrlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template2,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
-      // On Edit Cancel
-        public cancelEdit() {
-          this.form.reset();
-          this.form.get('active').setValue(true);
-          this.form.get('ecs').setValue(0);
-          this.showUpdateButton = false;
-          this.loanDetailGridData = [];
-          this.isClear = false;
-        }
+  public docViewer3(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
 
-      // On Master Edit functionality
-        public viewMaster(i: number) {
-          // this.scrollToTop();
-          this.loanDetailGridData = this.masterGridData[i].paymentDetails;
-          this.form.patchValue(this.masterGridData[i]);
-          // console.log(this.form.getRawValue());
-          this.Index = i;
-          this.showUpdateButton = true;
-          const formatedPremiumAmount = this.numberFormat.transform(this.masterGridData[i].premiumAmount);
-          // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-          this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-          this.isCancel = true;
-        }
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.loanSanctionUrlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 
-      // On View Cancel
-        public cancelView() {
-          this.form.reset();
-          this.form.get('active').setValue(true);
-          this.form.get('ecs').setValue(0);
-          this.showUpdateButton = false;
-          this.loanDetailGridData = [];
-          this.isCancel = false;
-        }
-        public UploadModal(template: TemplateRef<any> ) {
-          this.modalRef = this.modalService.show(
-            template,
-            Object.assign({}, { class: 'gray modal-md' }),
-        );
+  public docViewer4(template4: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
 
-      }
-
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.possessionUrlArray[this.urlIndex].blobURI
+    );
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template4,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 }

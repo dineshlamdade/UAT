@@ -1,0 +1,92 @@
+.left-title{
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: rgb(62, 34, 221) !important;
+}
+.result{
+    font-size: 16px !important;
+    font-weight: 600!important ;
+}
+
+.active{
+    background-color: lightgray !important;
+}
+
+.well{
+    width: 80% !important;
+}
+
+.ngx-slider .ngx-slider-bar {
+    left: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 1;
+    background: #3c5798 !important;
+    border-radius: 2px;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled).active, .btn-outline-secondary:not(:disabled):not(.disabled):active, .show>.btn-outline-secondary.dropdown-toggle {
+    color: #fff;
+    background-color:#41474c !important;
+    border-color: #6c757d;
+}
+
+.left-content-wrap .loan-content {
+    width: 50% !important;
+    float: left !important;
+    margin: 0 !important;
+}
+
+
+.pie-content {
+    height: 100% !important;
+    padding: 0 !important;
+}
+
+.pie-content .pie-icon.pie-principal {
+    background: linear-gradient(#3AC8DC, #5B6BC0) !important;
+}
+
+.pie-content .pie-icon.pie-interest {
+    background: linear-gradient(#F3A55B, #FB6589) !important;
+}
+
+.pie-content .pie-icon {
+    height: 21px !important;
+    width: 21px !important;
+    display: inline-block !important;
+    border-radius: 10px !important;
+    margin: 0 14px 0 0 !important;
+    vertical-align: text-top !important;
+}
+
+.pie-content h5 {
+    font-size: 18px !important;
+    font-family: "Roboto" !important;
+    font-weight: 500 !important;
+    color: #2b2424 !important;
+    // padding: 5px 0 10px !important;
+    // text-align: center !important;
+}
+
+.emi-content .emi-footer {
+    font-size: 18px !important;
+    color: #2b2424 !important;
+    // text-align: center !important;
+}
+
+
+.box-border{
+    // background-color: lightgrey;
+//   width: 300px;
+//   border: 2px solid green !important;
+//   padding: 50px !important;
+//   margin: 20px !important;
+
+    border: 1px solid rgba(0,0,0,.1) !important;
+    padding: 24px !important;
+    margin: 0px;
+    background-color: white !important;
+    height:400px !important;
+    width: 530px !important;
+}
