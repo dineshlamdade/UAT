@@ -577,6 +577,16 @@ selectedTransactionInstName(institution: any) {
       if ( this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].isECS === 1) {
          this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount =
           data.declaredAmount;
+
+          formatedActualAmount = Number(
+            this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
+              .toString()
+              .replace(',', '')
+          );
+          formatedSelectedAmount = this.numberFormat.transform(
+            formatedGlobalSelectedValue + formatedActualAmount
+          );
+
           this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].dateOfPayment = new Date(data.dateOfPayment);
       } else {
          this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount =
@@ -658,7 +668,7 @@ selectedTransactionInstName(institution: any) {
 
       this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].actualAmount =
           data.declaredAmount;
-
+          this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].dateOfPayment = new Date(data.dateOfPayment);
       formatedActualAmount = Number(
         this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].actualAmount
           .toString()
@@ -729,7 +739,8 @@ selectedTransactionInstName(institution: any) {
       this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].actualAmount =
           data.declaredAmount;
 
-      formatedActualAmount = Number(
+          this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].dateOfPayment = new Date(data.dateOfPayment);
+           formatedActualAmount = Number(
         this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].actualAmount
           .toString()
           .replace(',', ''),
@@ -1511,8 +1522,8 @@ selectedTransactionInstName(institution: any) {
     console.log('this.mediclaimTransactionDetail::', this.mediclaimTransactionDetail);
 
     this.mediclaimTransactionDetail.forEach((element) => {
-      element.mediclaimTransactionList.forEach((innerElement) => {
-        if (innerElement.declaredAmount !== null) {
+    element.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList.forEach((innerElement) => {
+     if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
             .replace(',', '');
@@ -1537,12 +1548,67 @@ selectedTransactionInstName(institution: any) {
         );
 
         innerElement.dateOfPayment = dateOfPaymnet;
-        innerElement.dueDate = dueDate;
+         innerElement.dueDate = dueDate;
       });
+
+      if (element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList !== null){
+        element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((innerElement) => {
+          if (innerElement.declaredAmount !== null) {
+            innerElement.declaredAmount = innerElement.declaredAmount
+              .toString()
+              .replace(',', '');
+          } else {
+            innerElement.declaredAmount = 0.0;
+          }
+          if (innerElement.actualAmount !== null) {
+            innerElement.actualAmount = innerElement.actualAmount
+              .toString()
+              .replace(',', '');
+          } else {
+            innerElement.actualAmount = 0.0;
+          }
+
+          const dateOfPaymnet = this.datePipe.transform(
+            innerElement.dateOfPayment,
+            'yyyy-MM-dd',
+          );
+
+
+          innerElement.dateOfPayment = dateOfPaymnet;
+
+        });
+      };
+
+        if (element.medicalExpenseTransactionDetail.medicalExpenseTransactionList !== null){
+          element.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((innerElement) => {
+
+          if (innerElement.declaredAmount !== null) {
+            innerElement.declaredAmount = innerElement.declaredAmount
+              .toString()
+              .replace(',', '');
+          } else {
+            innerElement.declaredAmount = 0.0;
+          }
+          if (innerElement.actualAmount !== null) {
+            innerElement.actualAmount = innerElement.actualAmount
+              .toString()
+              .replace(',', '');
+          } else {
+            innerElement.actualAmount = 0.0;
+          }
+
+          const dateOfPaymnet = this.datePipe.transform(
+            innerElement.dateOfPayment,
+            'yyyy-MM-dd',
+          );
+
+          innerElement.dateOfPayment = dateOfPaymnet;
+         });
+        }
     });
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
-
+    // delete this.mediclaimTransactionDetail.mediclaimBenefeciaryDetailList;
     let data: any = {};
     if (this.uploadGridData.length > 0) {
       for (let i = 0; i < this.uploadGridData.length; i++) {
@@ -1565,6 +1631,10 @@ selectedTransactionInstName(institution: any) {
         // to check with Preventive Health Check Up
         if (this.expenseType == 'Preventive Health Check Up') {
           const prevHealthCheckupTransList = this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList;
+         const  abc = this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList
+         abc.forEach(element => {
+           delete element.mediclaimBenefeciaryDetailList
+         });
           for (let j = 0; j < prevHealthCheckupTransList.length; j++) {
             if (this.uploadGridData[i] == prevHealthCheckupTransList[j].mediclaimTransactionId) {
               this.mediclaimTransList.push(prevHealthCheckupTransList[j]);
@@ -1576,6 +1646,10 @@ selectedTransactionInstName(institution: any) {
         // to check with Medical Expenses for Parents
         if (this.expenseType == 'Medical Expenses for Parents') {
           const medExpTransList = this.medicalExpenseTransactionDetail.medicalExpenseTransactionList;
+         const parentsDelete = this.medicalExpenseTransactionDetail.medicalExpenseTransactionList
+         parentsDelete.forEach(element => {
+           delete element.mediclaimBenefeciaryDetailList
+         });
           for (let j = 0; j < medExpTransList.length; j++) {
             if (this.uploadGridData[i] == medExpTransList[j].mediclaimTransactionId) {
               this.mediclaimTransList.push(medExpTransList[j]);
@@ -1624,6 +1698,27 @@ selectedTransactionInstName(institution: any) {
               } else {
                 this.glbalECS == 0;
               }
+
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount,
+              );
+
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount,
+              );
+            });
+          });
+
+          this.mediclaimTransactionDetail.forEach((element) => {
+
+            this.initialArrayIndex.push(element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.length);
+
+            element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((innerElement) => {
+
+              if (innerElement.dateOfPayment !== null) {
+                innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
+              }
+
 
               innerElement.declaredAmount = this.numberFormat.transform(
                 innerElement.declaredAmount,
@@ -1732,8 +1827,11 @@ selectedTransactionInstName(institution: any) {
         console.log('edit Data:: ', res);
         this.urlArray =
           res.data.results[0].mediclaimTransactionDocumentDetailList[0].documentDetailList;
-        this.editTransactionUpload = res.data.results[0].mediclaimTransactionDetail;
-        this.editProofSubmissionId = res.data.results[0].proofSubmissionId;
+        this.editTransactionUpload = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList;
+        this.editTransactionUpload = res.data.results[0].mediclaimTransactionDetail.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList;
+        this.editTransactionUpload = res.data.results[0].mediclaimTransactionDetail.medicalExpenseTransactionDetail.medicalExpenseTransactionList;
+        console.log("this.mediclaimTransactionDetail",this.mediclaimTransactionDetail)
+        this.editProofSubmissionId = res.data.results[0].mediclaimTransactionDocumentDetailList[0].dateOfSubmission;
         this.editReceiptAmount = res.data.results[0].receiptAmount;
         this.grandDeclarationTotalEditModal =
           res.data.results[0].grandDeclarationTotal;
@@ -1975,21 +2073,57 @@ selectedTransactionInstName(institution: any) {
   }
 
   // ---- Set Date of Payment On Main Page----
-  setDateOfPayment(
+  setDateOfPaymentPreventive(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
       dateOfPayment: Date;
       actualAmount: number;
-      dueDate: any;
+      // dueDate: any;
     },
     i: number,
-    j: number,
+
   ) {
-    this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].dateOfPayment =
+    this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
-    console.log(this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].dateOfPayment);
+    console.log(this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].dateOfPayment);
   }
+
+   // ---- Set Date of Payment On Main Page----
+   setDateOfPaymentParents(
+    summary: {
+      previousEmployerName: any;
+      // declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: number;
+      // dueDate: any;
+    },
+    i: number,
+
+  ) {
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].dateOfPayment =
+      summary.dateOfPayment;
+    console.log(this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].dateOfPayment);
+  }
+
+
+
+    // ---- Set Date of Payment On Main Page----
+    setDateOfPayment(
+      summary: {
+        previousEmployerName: any;
+        declaredAmount: number;
+        dateOfPayment: Date;
+        actualAmount: number;
+        dueDate: any;
+      },
+      i: number,
+      j: number,
+    ) {
+      this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].dateOfPayment =
+        summary.dateOfPayment;
+      console.log(this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].dateOfPayment);
+    }
 
   // ---- Set Date of Payment On Edit Modal----
   setDateOfPaymentInEditCase(

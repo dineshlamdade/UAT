@@ -159,7 +159,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public transactionStatustList: any;
-  public globalBank: String = 'ALL';
+  public globalBank: String ;
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
@@ -281,6 +281,9 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
+
+    this.transactionStatustList = [];
+
     this.getBankNameList();
     this.resetAll();
   }
@@ -305,38 +308,20 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
           };
           this.bankNameList.push(obj);
         });
-        this.selectedTransactionBankName(0);
+        this.selectedTransactionBankName('All');
       });
   }
     // --------- On bankName selection show all transactions list accordingly all banks--------
-      selectedTransactionBankName(bankName: number) {
+      selectedTransactionBankName(bankName: any) {
         const selectedBank = this.transactionBankNameList.find(item => item.interestOnSavingsDeposit80TTMasterId == bankName);
         this.globalBank = selectedBank.bankName;
         this.selectedMasterId = selectedBank.interestOnSavingsDeposit80TTMasterId;
         this.getTransactionFilterData(this.globalBank);
         this.globalSelectedAmount = this.numberFormat.transform(0);
 
-       // --------- On bankName selection show all transactions list accordingly all banks--------
-          // selectedTransactionBankName(bankNames: any) {
-          //   // console.log("event", event);
-          // // this.selectedMasterId =
-          // this.globalBank = bankNames;
-          // this.getTransactionFilterData(this.globalBank);
-          // this.globalSelectedAmount = this.numberFormat.transform(0);
 
-          // this.transactionBankNameList.forEach((element) => {
-          //   if (bankNames === element.bankName) {
-          //     element.banks.forEach((item) => {
-          //       const bankObj = {
-          //         label: item,
-          //         value: item,
-          //       };
-          //       this.bankNameList.push(bankObj);
-          //     });
-          //   }
-          // });
 
-    if (bankName == 0) {
+    if (bankName == 'All') {
       this.grandTabStatus = true;
       this.isDisabled = true;
     } else {
