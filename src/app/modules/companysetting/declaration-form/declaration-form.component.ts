@@ -40,7 +40,7 @@ export class DeclarationFormComponent implements OnInit {
       declarationMessageId: new FormControl(''),
       declarationMessageName: new FormControl('', Validators.required),
       module: new FormControl('', Validators.required),
-      payRollArea: new FormControl('', Validators.required),
+      payRollArea: new FormControl(''),
       groupCompanyId: new FormControl(1),
       rembDeclarationMessage: new FormControl('', Validators.required),
       fieldId: new FormControl(''),
@@ -68,7 +68,7 @@ export class DeclarationFormComponent implements OnInit {
       this.declarationService.editClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
         // this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Register form updated successfully", "");
+        this.alertService.sweetalertMasterSuccess("Declaration form updated successfully", "");
         // console.log("templateUserId", this.templateUserIdList);
         this.getClaimTemplatesList();
       })
@@ -88,7 +88,7 @@ export class DeclarationFormComponent implements OnInit {
       this.declarationService.postClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
         this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
+        this.alertService.sweetalertMasterSuccess("Declaration form submitted successfully", "");
         console.log("templateUserId", this.templateUserIdList);
       })
       this.declarationForm.reset({

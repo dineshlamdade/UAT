@@ -79,7 +79,7 @@ export class SummaryFormComponent implements OnInit {
         this.summaryService.editClaimData(postData).subscribe((res) => {
           console.log("Claim value", res);
           // this.templateUserIdList.push(res.data.results[0]);
-          this.alertService.sweetalertMasterSuccess("Register form updated successfully", "");
+          this.alertService.sweetalertMasterSuccess("Summary form updated successfully", "");
           console.log("templateUserId", this.templateUserIdList);
         })
       }
@@ -102,7 +102,7 @@ export class SummaryFormComponent implements OnInit {
       this.summaryService.postClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
         this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
+        this.alertService.sweetalertMasterSuccess("Summary form submitted successfully", "");
         console.log("templateUserId", this.templateUserIdList);
       })
     }

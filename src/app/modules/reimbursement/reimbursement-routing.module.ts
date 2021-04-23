@@ -16,6 +16,11 @@ const routes: Routes = [
       data: { title: ':: Epic :: Reimbursement'}
     },
     {
+      path:'reimbursement-master/:name',
+      component: ReimbursementComponent,
+      data: { title: ':: Epic :: Reimbursement'}
+    },
+    {
       path:'ramb-claim-nontaxable',
       component: RembClaimNontaxComponent,
       data: { title: ':: Epic :: Claim Non Taxable'}

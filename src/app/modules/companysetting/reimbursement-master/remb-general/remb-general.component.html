@@ -13,8 +13,7 @@
                                             <label class="form-label">Reimbursement Head</label>
                                             <select class="form-control" formControlName="headMasterId"
                                                 (change)="headerChangeEvent($event.target.value)"
-                                                [ngClass]="{'is-invalid' : submitted && f.headMasterId.errors}"
-                                                >
+                                                [ngClass]="{'is-invalid' : submitted && f.headMasterId.errors}">
                                                 <option value="">Select</option>
                                                 <option *ngFor="let headList of headtypelist"
                                                     value="{{headList.headMasterId}}">{{headList.standardName}}</option>
@@ -31,15 +30,40 @@
                                         <div class="form-group">
                                             <label class="form-label">Display Name</label>
                                             <input type="text" class="form-control" placeholder="Description"
-                                                formControlName="displayName" [ngClass]="{'is-invalid' : submitted && f.displayName.errors}">
-                                                <div *ngIf="submitted && f.displayName.errors" class="invalid-feedback">
-                                                    <div *ngIf="f.displayName.errors.required">
-                                                        Display Name is required
-                                                    </div>
+                                                formControlName="displayName"
+                                                [ngClass]="{'is-invalid' : submitted && f.displayName.errors}">
+                                            <div *ngIf="submitted && f.displayName.errors" class="invalid-feedback">
+                                                <div *ngIf="f.displayName.errors.required">
+                                                    Display Name is required
                                                 </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Limit Tracking In</label>
+                                            <select id="" (change)="trakingChange($event.target.value)"
+                                                class="form-control">
+                                                <option value="">Select</option>
+                                                <option value="same-head" selected>Same Head</option>
+                                                <option value="attributes-same-head">Attributes Of Same Head</option>
+                                                <option value="another-head">Another Head</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="headOprationShow">
+                                        <div class="form-group">
+                                            <label class="form-label">Head</label>
+                                            <select class="form-control" formControlName="trackingOnAnotherHeadId">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let headList of headtypelist"
+                                                    value="{{headList.headMasterId}}">{{headList.standardName}}</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                         <label class="form-label">Limit tracking in</label>
                                         <div class="row">
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
@@ -80,22 +104,12 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
 
                                 <div class="row">
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="headOprationShow">
-                                        <div class="form-group">
-                                            <label class="form-label">Head</label>
-                                            <select class="form-control" formControlName="trackingOnAnotherHeadId">
-                                                <option value="">Select</option>
-                                                <option *ngFor="let headList of headtypelist"
-                                                    value="{{headList.headMasterId}}">{{headList.standardName}}</option>
 
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 mt-3 mb-2"
                                         *ngIf="headTableOprationShow">
                                         <div class="table-responsive Custom_Table">
@@ -109,7 +123,7 @@
                                                         <th>Quantity Limit</th>
                                                         <th>Once Every</th>
                                                         <th>Frequency</th>
-                                                        <th>Gap between 2 claims (in days)</th>
+                                                        <th>Gap Between 2 Claims (In Days)</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -158,7 +172,7 @@
 
                                             <label class="form-label">Claim Taxable</label>
                                             <div class="row">
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                     <div class="custom-controls-stacked">
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
@@ -169,12 +183,69 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                     <div class="custom-controls-stacked">
                                                         <label class="custom-control  custom-radio">
                                                             <input type="radio" class="custom-control-input"
                                                                 formControlName="claimTaxable" name="claimTaxable"
                                                                 value="false" checked="checked">
+                                                            <div class="custom-control-label">No</div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Enable In Investment Declaration</label>
+                                            <div class="row">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="custom-controls-stacked">
+                                                        <label class="custom-control  custom-radio">
+                                                            <input type="radio" class="custom-control-input"
+                                                                formControlName="enableInvestmentDeclaration"
+                                                                name="enableInvestmentDeclaration" value="true" checked>
+                                                            <div class="custom-control-label">Yes</div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="custom-controls-stacked">
+                                                        <label class="custom-control  custom-radio">
+                                                            <input type="radio" class="custom-control-input"
+                                                                formControlName="enableInvestmentDeclaration"
+                                                                name="enableInvestmentDeclaration" value="false"
+                                                                checked="checked">
+                                                            <div class="custom-control-label">No</div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Cycle Wise Balance Tracking</label>
+                                            <div class="row">
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="custom-controls-stacked">
+                                                        <label class="custom-control  custom-radio">
+                                                            <input type="radio" class="custom-control-input"
+                                                                formControlName="cyclewiseBalanceTracking"
+                                                                name="cyclewiseBalanceTracking" value="true" checked>
+                                                            <div class="custom-control-label">Yes</div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                                    <div class="custom-controls-stacked">
+                                                        <label class="custom-control  custom-radio">
+                                                            <input type="radio" class="custom-control-input"
+                                                                formControlName="cyclewiseBalanceTracking"
+                                                                name="cyclewiseBalanceTracking" value="false"
+                                                                checked="checked">
                                                             <div class="custom-control-label">No</div>
                                                         </label>
                                                     </div>
@@ -208,83 +279,28 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Enable in Investment Declaration</label>
-                                            <div class="row">
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                formControlName="enableInvestmentDeclaration"
-                                                                name="enableInvestmentDeclaration" value="true" checked>
-                                                            <div class="custom-control-label">Yes</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                formControlName="enableInvestmentDeclaration"
-                                                                name="enableInvestmentDeclaration" value="false"
-                                                                checked="checked">
-                                                            <div class="custom-control-label">No</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Cycle Balance Tracking</label>
-                                            <div class="row">
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                formControlName="cyclewiseBalanceTracking"
-                                                                name="cyclewiseBalanceTracking" value="true" checked>
-                                                            <div class="custom-control-label">Yes</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control  custom-radio">
-                                                            <input type="radio" class="custom-control-input"
-                                                                formControlName="cyclewiseBalanceTracking"
-                                                                name="cyclewiseBalanceTracking" value="false"
-                                                                checked="checked">
-                                                            <div class="custom-control-label">No</div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div class="registration-form mt-3">
                                     <fieldset>
                                         <legend>Registration</legend>
                                         <div class="row">
-                                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-10 col-lg-10 col-sm-10 col-xs-12">
                                                         <label class="form-label">Registration Template</label>
 
                                                         <select class="form-control" formControlName="regTemplateId"
-                                                        [ngClass]="{'is-invalid' : submitted && f.regTemplateId.errors}">
+                                                            [ngClass]="{'is-invalid' : submitted && f.regTemplateId.errors}">
                                                             <option value="">Select</option>
                                                             <option *ngFor="let headTempList of headTemplateList1"
                                                                 value="{{headTempList.regTemplateId}}">
                                                                 {{headTempList.regTemplateName}}</option>
 
                                                         </select>
-                                                        <div *ngIf="submitted && f.regTemplateId.errors" class="invalid-feedback">
+                                                        <div *ngIf="submitted && f.regTemplateId.errors"
+                                                            class="invalid-feedback">
                                                             <div *ngIf="f.regTemplateId.errors.required">
                                                                 Registration template is required
                                                             </div>
@@ -296,11 +312,11 @@
                                                             tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12">
                                                         <br>
                                                         <a (click)="registerNavigate()" routerLink="" href=""
-                                                            tooltip="Edit Template">Registration Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                            tooltip="Edit Template"><i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -309,9 +325,10 @@
 
                                                 <div class="row">
                                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Max number of registration - limit
-                                                            on</label>
+                                                        <label class="form-label">Max Number Of Registration - Limit
+                                                            On</label>
                                                         <div class="row">
+
                                                             <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12"
                                                                 *ngIf="headRembType">
                                                                 <div class="custom-controls-stacked">
@@ -323,6 +340,8 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
+
+
 
                                                             <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12"
                                                                 *ngIf="headAttribute">
@@ -344,7 +363,7 @@
                                                     <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12"
                                                         *ngIf="headRembType">
                                                         <div class="" *ngIf="headRembType2">
-                                                            <label class="form-label">No of registration</label>
+                                                            <label class="form-label">No Of Registration</label>
                                                             <input type="number" class="form-control"
                                                                 formControlName="maxCountOfRegiOfHead"
                                                                 placeholder="No of registration">
@@ -387,57 +406,63 @@
                                         <legend>Approval Workflow</legend>
                                         <div class="row">
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                <h6 class="mb-3 text-secondary">For Registration</h6>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval Workflow</label>
-                                                        <select class="form-control"
-                                                            formControlName="regiApprWorkflowId">
-                                                            <option>Select</option>
-                                                            <option value="1">Abc</option>
-                                                            <option value="2">Abc</option>
-                                                            <option value="3">Abc</option>
-                                                            <option value="4">Abc</option>
-                                                        </select>
+                                                <fieldset>
+                                                    <h3 class="font-14 text-purple mb-3 font-bold">For Registration</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval Workflow</label>
+                                                            <select class="form-control"
+                                                                formControlName="regiApprWorkflowId">
+                                                                <option>Select</option>
+                                                                <option value="1">Abc</option>
+                                                                <option value="2">Abc</option>
+                                                                <option value="3">Abc</option>
+                                                                <option value="4">Abc</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval SDM</label>
+                                                            <select class="form-control"
+                                                                formControlName="regiApprSDMId">
+                                                                <option>Select</option>
+                                                                <option value="1">Abc</option>
+                                                                <option value="2">Abc</option>
+                                                                <option value="3">Abc</option>
+                                                                <option value="4">Abc</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval SDM</label>
-                                                        <select class="form-control" formControlName="regiApprSDMId">
-                                                            <option>Select</option>
-                                                            <option value="1">Abc</option>
-                                                            <option value="2">Abc</option>
-                                                            <option value="3">Abc</option>
-                                                            <option value="4">Abc</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </fieldset>
                                             </div>
 
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                <h6 class="mb-3 text-secondary">For Claim</h6>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval Workflow</label>
-                                                        <select class="form-control"
-                                                            formControlName="claimApprWorkflowId">
-                                                            <option>Select</option>
-                                                            <option value="1">Abc</option>
-                                                            <option value="2">Abc</option>
-                                                            <option value="3">Abc</option>
-                                                            <option value="4">Abc</option>
-                                                        </select>
+                                                <fieldset>
+                                                    <h3 class="font-14 text-purple mb-3 font-bold">For Claim</h3>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval Workflow</label>
+                                                            <select class="form-control"
+                                                                formControlName="claimApprWorkflowId">
+                                                                <option>Select</option>
+                                                                <option value="1">Abc</option>
+                                                                <option value="2">Abc</option>
+                                                                <option value="3">Abc</option>
+                                                                <option value="4">Abc</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <label class="form-label">Approval SDM</label>
+                                                            <select class="form-control"
+                                                                formControlName="claimApprSDMId">
+                                                                <option>Select</option>
+                                                                <option value="1">Abc</option>
+                                                                <option value="2">Abc</option>
+                                                                <option value="3">Abc</option>
+                                                                <option value="4">Abc</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
-                                                        <label class="form-label">Approval SDM</label>
-                                                        <select class="form-control" formControlName="claimApprSDMId">
-                                                            <option>Select</option>
-                                                            <option value="1">Abc</option>
-                                                            <option value="2">Abc</option>
-                                                            <option value="3">Abc</option>
-                                                            <option value="4">Abc</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                </fieldset>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -450,7 +475,7 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">List of summary heads</label>
 
                                                         <select class="form-control"
@@ -462,12 +487,13 @@
                                                                 {{headTempList.listSummaryHeadTemplateName}}</option>
 
                                                         </select>
-                                                        <div *ngIf="submitted && f.reiListSummaryHeadTempId.errors" class="invalid-feedback">
+                                                        <div *ngIf="submitted && f.reiListSummaryHeadTempId.errors"
+                                                            class="invalid-feedback">
                                                             <div *ngIf="f.reiListSummaryHeadTempId.errors.required">
                                                                 Summary Template is required
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
@@ -475,17 +501,17 @@
                                                             tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
                                                         <a (click)="summaryNavigate()" routerLink="" href=""
-                                                            tooltip="Edit Template">Summary Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                            tooltip="Edit Template"><i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">Declaration Message</label>
                                                         <select class="form-control"
                                                             formControlName="declarationMessageId"
@@ -496,7 +522,8 @@
                                                                 {{headTempList.declarationMessageName}}</option>
 
                                                         </select>
-                                                        <div *ngIf="submitted && f.declarationMessageId.errors" class="invalid-feedback">
+                                                        <div *ngIf="submitted && f.declarationMessageId.errors"
+                                                            class="invalid-feedback">
                                                             <div *ngIf="f.declarationMessageId.errors.required">
                                                                 Declaration template is required
                                                             </div>
@@ -508,11 +535,11 @@
                                                             tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
                                                         <a (click)="declarationNavigate()" routerLink="" href=""
-                                                            tooltip="Edit Template">Declaration Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                            tooltip="Edit Template"><i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -521,7 +548,7 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">Form Activation Template</label>
                                                         <select class="form-control" formControlName="formActiveTempid">
                                                             <option value="">Select</option>
@@ -540,10 +567,10 @@
                                                         <a href="" tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
-                                                        <a href="" tooltip="Edit Template"> Activation Form <i
-                                                                class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                                        <a href="" tooltip="Edit Template"> <i class="fa fa-pencil"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
 
@@ -551,23 +578,22 @@
                                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
 
                                                 <div class="row">
-                                                    <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12">
                                                         <label class="form-label">Claim Template</label>
                                                         <select class="form-control" formControlName="claimTempId"
-                                                        [ngClass]="{'is-invalid' : submitted && f.claimTempId.errors}"
-                                                        >
+                                                            [ngClass]="{'is-invalid' : submitted && f.claimTempId.errors}">
                                                             <option value="">Select</option>
                                                             <option *ngFor="let headTempList of headTemplateList2"
                                                                 value="{{headTempList.claimTempId}}">
                                                                 {{headTempList.claimTemplateName}}</option>
 
                                                         </select>
-                                                   <div *ngIf="submitted && f.claimTempId.errors"
-                                                        class="invalid-feedback">
-                                                        <div *ngIf="f.claimTempId.errors.required">
-                                                            Claim Template name is required
+                                                        <div *ngIf="submitted && f.claimTempId.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.claimTempId.errors.required">
+                                                                Claim Template name is required
+                                                            </div>
                                                         </div>
-                                                    </div>                     
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-sm-1 col-xs-12 text-center">
                                                         <br>
@@ -575,10 +601,10 @@
                                                             tooltip="View Template"><i class="fa fa-eye"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-1 col-lg- col-sm-1 col-xs-12">
                                                         <br>
                                                         <a (click)="claimNavigate()" routerLink="" href=""
-                                                            tooltip="Edit Template">Claim Form <i class="fa fa-sign-in"
+                                                            tooltip="Edit Template"> <i class="fa fa-pencil"
                                                                 aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -587,6 +613,109 @@
                                     </fieldset>
                                 </div>
                             </fieldset>
+                            <div class="approval-form">
+                                <fieldset>
+                                    <legend>Document Required</legend>
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <fieldset>
+                                                <h3 class="font-14 text-purple mb-3 font-bold">For Registration</h3>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+                                                        <div class="form-group">
+                                                            <div class="table-responsive Custom_Table my-registertable">
+                                                                <table
+                                                                    class="table table-striped table-hover table-bordered m-b-0">
+                                                                    <thead class="thead-dark">
+
+                                                                        <tr>
+                                                                            <th>Sr.no</th>
+                                                                            <th>Document Name</th>
+                                                                            <th>Action</th>
+
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Doc1
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <button type="button"
+                                                                                    (click)="resetForm()"
+                                                                                    class="btn btn-primary"
+                                                                                    tooltip="Add name">
+                                                                                    Add</button>
+                                                                            </td>
+
+
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                            <fieldset>
+                                                <h3 class="font-14 text-purple mb-3 font-bold">For Claim</h3>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                                  
+                                                        <div class="form-group">
+                                                            <div class="table-responsive Custom_Table my-registertable">
+                                                                <table
+                                                                    class="table table-striped table-hover table-bordered m-b-0">
+                                                                    <thead class="thead-dark">
+
+                                                                        <tr>
+                                                                            <th>Sr.no</th>
+                                                                            <th>Document Name</th>
+                                                                            <th>Action</th>
+
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>1</td>
+                                                                            <td>Doc1
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <button type="button"
+                                                                                    (click)="resetForm()"
+                                                                                    class="btn btn-primary"
+                                                                                    tooltip="Add name">
+                                                                                    Add</button>
+                                                                            </td>
+
+
+                                                                        </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
                             <div class="row">
 
                                 <div class="col-12">
@@ -623,7 +752,7 @@
 
                 </div>
             </div>
-           
+
         </div>
     </div>
 

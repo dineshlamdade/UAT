@@ -33,6 +33,7 @@
     "angular-count-to": "0.0.3",
     "apexcharts": "^3.26.0",
     "bn-ng-idle": "^1.0.1",
+    "ckeditor4-angular": "^2.1.0",
     "date-fns": "^2.15.0",
     "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",

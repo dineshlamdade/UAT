@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ElementRef, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
@@ -68,11 +68,19 @@ export class RembClaimNontaxComponent implements OnInit {
     public alertService: AlertServiceService,
     private modalService: BsModalService,
     private datePipe: DatePipe,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    // public route:ActivatedRoute,
 
 
   ) {
     this.columns = ["Name", "Address", "Salary", "IsActive", "Delete"];
+    // this.route.params.subscribe(value => {
+    //   console.log(JSON.stringify(value))
+    //   if(value.name == 'telephone'){
+    //     alert("Test code");
+    //   }
+    // })
+   
   }
 
 

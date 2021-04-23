@@ -341,7 +341,7 @@
 
 
 
-       <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+      <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
         <a [routerLink]="['/dashboard']" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
           aria-controls="collapseBasic" class="has-arrow arrow-c" aria-expanded="true"><i
             class="icon-rocket"></i><span>Dashboard</span></a>
@@ -755,7 +755,19 @@
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-houseLoan']" href="javascript:void(0)">House Loan</a></li>
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu" [routerLink]="['/investments-chapterSixA']" href="javascript:void(0)">Chapter VI-A</a></li> -->
           <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
-              [routerLink]="['/reimbursement-master']" href="javascript:void(0)">Telephone</a></li>
+              [routerLink]="['/reimbursement-master/telephone']" href="javascript:void(0)">Telephone</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/reimbursement-master/PCLP']" href="javascript:void(0)">PCLP</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/reimbursement-master/Fuel']" href="javascript:void(0)">Fuel</a></li>
+
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/reimbursement-master/Driver']" href="javascript:void(0)">Driver</a></li>
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/reimbursement-master/Vehicle']" href="javascript:void(0)">Vehicle</a></li>
+
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><a class="submenu"
+              [routerLink]="['/reimbursement-master/LTA']" href="javascript:void(0)">LTA</a></li>
 
         </ul>
       </li>

@@ -14,7 +14,7 @@
                                     <div class="register-part">
                                         <div class="col-12">
                                             <fieldset>
-                                                <legend>Registration Details</legend>
+                                                <legend>Registration Template</legend>
                                                 <div class="row">
                                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                         <div class="form-group">
@@ -22,13 +22,13 @@
                                                             <input type="text" class="form-control"
                                                                 formControlName="regTemplateName"
                                                                 placeholder="Template name"
-                                                                [ngClass]="{'is-invalid': submitted && f.regTemplateName.errors}">
-                                                            <div *ngIf="submitted && f.regTemplateName.errors"
+                                                                [ngClass]="{'is-invalid' : registerForm.get('regTemplateName').status == 'INVALID'}">
+                                                            <!-- <div *ngIf="submitted && f.regTemplateName.errors"
                                                                 class="invalid-feedback">
                                                                 <div *ngIf="f.regTemplateName.errors.required">
                                                                     Template name is required
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
@@ -36,13 +36,13 @@
                                                             <label class="form-label">Description</label>
                                                             <input type="text" class="form-control"
                                                                 placeholder="Description" formControlName="description"
-                                                                [ngClass]="{'is-invalid' : submitted && f.description.errors}">
-                                                            <div *ngIf="submitted && f.description.errors"
+                                                                [ngClass]="{'is-invalid' : registerForm.get('description').status == 'INVALID'}">
+                                                            <!-- <div *ngIf="submitted && f.description.errors"
                                                                 class="invalid-feedback">
                                                                 <div *ngIf="f.description.errors.required">
                                                                     Description is required
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
@@ -86,7 +86,7 @@
 
                                                                     <th>Mandatory</th>
                                                                     <th>Dropdown Values</th>
-                                                                    <th>Claim Form</th>
+                                                                    <!-- <th>Claim Form</th> -->
                                                                     <th>Sequence</th>
                                                                     <!-- <th>nature</th> -->
                                                                 </tr>
@@ -131,12 +131,12 @@
                                                                         <!-- <ul><li  *ngFor="let listDrop of this.listDropDown">{{listDrop}}</li></ul> -->
                                                                         {{getfields.dropDownValues}}
                                                                         <i *ngIf="getfields.nature === 'List' && getfields.enable"
-                                                                            class="fa fa-caret-square-o-down text-blue  float-right"
+                                                                            class="fa fa-caret-square-o-down text-blue font-17 float-right"
                                                                             tooltip="Add List"
                                                                             (click)="modalDropdownList(template2, getfields.srno,getfields.fieldName)"
                                                                             aria-hidden="true"></i>
                                                                     </td>
-                                                                    <td>
+                                                                    <!-- <td>
                                                                         <select name=""
                                                                             class="form-control custom-select"
                                                                             [disabled]="!getfields.enable || isView"
@@ -152,7 +152,7 @@
 
                                                                         </select>
 
-                                                                    </td>
+                                                                    </td> -->
                                                                     <td>{{getfields.sequence}}</td>
                                                                     <!-- <td>{{getfields.nature}}</td> -->
                                                                     <!-- <td><select name="" class="form-control custom-select"
@@ -177,6 +177,55 @@
                                                 </div>
 
 
+                                                <div class="col-12" *ngIf="!isView">
+                                                    <div class="col-12 mt-20">
+                                                        <div class="float-right mb-15">
+<!-- 
+                                                            <button type="submit"
+                                                                class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
+                                                                tooltip="Save" [disabled]="loading">
+                                                                <b><i class="fa fa-floppy-o"></i></b>{{isEdit?'Update':
+                                                                'Save'}}</button> -->
+
+                                                            <button type="submit" [disabled]="registerForm.invalid"
+                                                                [ngClass]="{'disabled-btn-bg-green' : registerForm.invalid,'btn-bg-green': !registerForm.invalid}"
+                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
+                                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>
+                                                                {{isEdit?'Update':
+                                                                'Save'}}
+                                                            </button>
+                                                            <button type="button" tooltip="Reset" (click)="resetForm()"
+                                                                *ngIf="!isEdit"
+                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
+                                                                        class="fa  fa-refresh"></i></b>Reset </button>
+                                                            <button type="button" *ngIf="isEdit" (click)="resetForm()"
+                                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                                tooltip="Cancel"><b><i
+                                                                        class="fa fa-times-circle"></i></b>
+                                                                Cancel</button>
+
+                                                            <!-- <button type="button"
+                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
+                                                            Cancel</button> -->
+
+
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- <end of div col-6 -->
+                                                <div class="col-12" *ngIf="isView">
+                                                    <div class="col-12 mt-20">
+                                                        <div class="float-right mb-15">
+
+                                                            <button type="button" (click)="resetForm()"
+                                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
+                                                                tooltip="Cancel"><b><i
+                                                                        class="fa fa-times-circle"></i></b>
+                                                                Cancel</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- <end of div col-6 -->
 
                                                 <div class="col-12" *ngIf="!isView">
                                                     <div *ngIf="!isEdit">
@@ -231,48 +280,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-12" *ngIf="!isView">
-                                                    <div class="col-12 mt-20">
-                                                        <div class="float-right mb-15">
-
-                                                            <button type="submit"
-                                                                class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left"
-                                                                tooltip="Save" [disabled]="loading">
-                                                                <b><i class="fa fa-floppy-o"></i></b>{{isEdit?'Update':
-                                                                'Save'}}</button>
-
-                                                            <button type="button" tooltip="Reset" (click)="resetForm()"
-                                                                *ngIf="!isEdit"
-                                                                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
-                                                                        class="fa  fa-refresh"></i></b>Reset </button>
-                                                            <button type="button" *ngIf="isEdit" (click)="resetForm()"
-                                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                                                tooltip="Cancel"><b><i
-                                                                        class="fa fa-times-circle"></i></b>
-                                                                Cancel</button>
-
-                                                            <!-- <button type="button"
-                                                            class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                                            tooltip="Cancel"><b><i class="fa fa-times-circle"></i></b>
-                                                            Cancel</button> -->
-
-
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- <end of div col-6 -->
-                                                <div class="col-12" *ngIf="isView">
-                                                    <div class="col-12 mt-20">
-                                                        <div class="float-right mb-15">
-
-                                                            <button type="button" (click)="resetForm()"
-                                                                class="custom_button custom_btn bg-btn-red btn-labeled btn-labeled-left ml-10"
-                                                                tooltip="Cancel"><b><i
-                                                                        class="fa fa-times-circle"></i></b>
-                                                                Cancel</button>
-
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- <end of div col-6 -->
                                             </div>
                                         </div>
                                     </div>
@@ -291,7 +298,7 @@
 
 
             <div class="modal-header">
-                <h5 class="modal-title" id="UploadModalLabel">Add Dropdown Values</h5>
+                <h5 class="modal-title" id="UploadModalLabel">Dropdown Values</h5>
                 <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal"
                     aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
@@ -320,7 +327,7 @@
                                                 </td>
                                                 <td>
                                                     <button (click)="getDropdownListRemove(i, dropdownListid)"
-                                                        class="btn btn-danger">Remove</button>
+                                                        class="btn btn-danger">X</button>
                                                 </td>
                                             </tr>
                                         </table>

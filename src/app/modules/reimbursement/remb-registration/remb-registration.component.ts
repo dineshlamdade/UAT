@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ElementRef, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 // import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
@@ -32,17 +32,80 @@ export class RembRegistrationComponent implements OnInit {
   public pdfSrc =
     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
   public pdfSrc1 = 'https://www.gstatic.com/webp/gallery/1.jpg';
-
+  public test1: boolean = false;
+  public test2: boolean = false;
+  public test3: boolean = false;
+  public test4: boolean = false;
+  public test5: boolean = false;
+  public test6: boolean = false;
   constructor(
     public service: RembRegistrationService,
     public fb: FormBuilder,
     public router: Router,
     public alertService: AlertServiceService,
     private modalService: BsModalService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public route: ActivatedRoute,
 
   ) {
-
+    this.route.params.subscribe(resId => {
+      console.log(JSON.stringify(resId));
+      let routeId = resId.name;
+      console.log("routeId", routeId);
+      if (routeId == 'telephone') {
+        this.test1 = true;
+        this.test2 = false;
+        this.test3 = false;
+        this.test4 = false;
+        this.test5 = false;
+        this.test6 = false;
+        console.log("test1", this.test1);
+      } else if (routeId == 'PCLP') {
+        this.test2 = true;
+        this.test1 = false;
+        this.test3 = false;
+        this.test4 = false;
+        this.test5 = false;
+        this.test6 = false;
+        console.log("test2", this.test2);
+      }
+      else if (routeId == 'Fuel') {
+        this.test3 = true;
+        this.test1 = false;
+        this.test2 = false;
+        this.test4 = false;
+        this.test5 = false;
+        this.test6 = false;
+        console.log("test2", this.test2);
+      }
+      else if (routeId == 'Driver') {
+        this.test4 = true;
+        this.test1 = false;
+        this.test2 = false;
+        this.test3 = false;
+        this.test5 = false;
+        this.test6 = false;
+        console.log("test2", this.test2);
+      }
+      else if (routeId == 'Vehicle') {
+        this.test5 = true;
+        this.test1 = false;
+        this.test2 = false;
+        this.test3 = false;
+        this.test4 = false;
+        this.test6 = false;
+        console.log("test2", this.test2);
+      }
+      else if (routeId == 'LTA') {
+        this.test6 = true;
+        this.test1 = false;
+        this.test2 = false;
+        this.test3 = false;
+        this.test4 = false;
+        this.test5 = false;
+        console.log("LTA", this.test2);
+      }
+    });
 
   }
 

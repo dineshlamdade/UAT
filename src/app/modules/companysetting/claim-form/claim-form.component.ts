@@ -82,7 +82,7 @@ export class ClaimFormComponent implements OnInit {
       this.claimService.editClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
         // this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Register form updated successfully", "");
+        this.alertService.sweetalertMasterSuccess("Claim form updated successfully", "");
         console.log("templateUserId", this.templateUserIdList);
       })
       this.dropdownListData = [];
@@ -106,7 +106,7 @@ export class ClaimFormComponent implements OnInit {
       this.claimService.postClaimData(postData).subscribe((res) => {
         console.log("Claim value", res);
         this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
+        this.alertService.sweetalertMasterSuccess("Claim form submitted successfully", "");
         console.log("templateUserId", this.templateUserIdList);
       })
     }

@@ -8,7 +8,7 @@
                             <fieldset>
                                 <legend>Payment Method Form</legend>
                                 <div class="row mb-2">
-                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                         <div class="form-group">
                                             <label class="form-label">Non Taxable Payment</label>
                                             <select class="form-control" formControlName="nonTaxableMethod"
@@ -29,7 +29,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12" *ngIf="selectedvalue == 'SDM'">
+                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12" *ngIf="selectedvalue == 'SDM'">
                                         <div class="form-group">
                                             <label class="form-label">Non Taxable SDM</label>
                                             <select class="form-control" formControlName="nonTaxableSDMId">
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"  *ngIf="taxView">
                                         <div class="form-group">
-                                            <label class="form-label">Period Defination</label>
+                                            <label class="form-label">Period Definition</label>
                                             <select class="form-control" formControlName="taxablePeriodDefination">
                                                 <option>Select</option>
                                                 <option value="Jan-Mar">Jan-Mar</option>
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"  *ngIf="taxView">
                                         <div class="form-group">
-                                            <label class="form-label">No of Cycles</label>
+                                            <label class="form-label">No. of Cycles</label>
                                             <input  type="number" min="0"  class="form-control" formControlName="taxableNoOfCycle" placeholder="No of cycle">
 
                                         </div>
@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"   *ngIf="lapseView">
                                         <div class="form-group">
-                                            <label class="form-label">Period Defination</label>
+                                            <label class="form-label">Period Definition</label>
                                             <select class="form-control" formControlName="LapseaccrentpayablePeriodDefinition">
                                                 <option>Select</option>
                                                 <option value="Jan-Jun">Jan-Jun</option>
@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"  *ngIf="lapseView">
                                         <div class="form-group">
-                                            <label class="form-label">No of Cycles after period end</label>
+                                            <label class="form-label">No. Of Cycles After Period End</label>
                                             <input type="number" min="0" class="form-control" formControlName="lapseAccruedEntPayableNoOfCycle" placeholder="No of cycle">
 
                                         </div>
@@ -144,17 +144,18 @@
                                     <fieldset>
                                         <legend>Bill Validity</legend>
                                         <div class="row mb-2">
+
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Submit Bill Withhin</label>
-                                                    <input type="text" class="form-control" formControlName="subBillWithCount" placeholder="Enter Days">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="form-label">Days from bill date</label>
-                                                    <div class="row">
-                                                        <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <label class="form-label">From Bill Date</label>
+                                                    <Select class="form-control" id="" formControlName="subBillMethod">
+                                                     
+                                                        <option value="Cycle" selected>Cycle</option>
+                                                        <option value="Days" >Days</option>
+                                                        
+                                                    </Select>
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
                                                                     <input type="radio" class="custom-control-input"
@@ -164,7 +165,7 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
                                                                     <input type="radio" class="custom-control-input"
@@ -174,21 +175,29 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
 
                                                 </div>
                                             </div>
-                                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                            <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Bill date not allowed</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Days" formControlName="billDateNotAllowedCount">
+                                                    <label class="form-label">Submit Bill Withhin</label>
+                                                    <input type="number" class="form-control" min="0" formControlName="subBillWithCount" placeholder="Enter">
                                                 </div>
+                                            </div>
+                                            <div class="col-md-1 col-lg-1 col-sm-2 col-xs-12">
+                                               
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Days from bill date</label>
-                                                    <div class="row">
-                                                        <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                    <label class="form-label">From Bill Date</label>
+                                                    <Select class="form-control" id="" formControlName="billDateNotAllowedMethod">
+                                              
+                                                        <option value="Cycle" selected>Cycle</option>
+                                                        <option value="Days">Days</option>
+                                                    </Select>
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
                                                                     <input type="radio" class="custom-control-input"
@@ -198,7 +207,7 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
                                                                     <input type="radio" class="custom-control-input"
@@ -208,16 +217,22 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
 
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12">
+                                                <div class="form-group">
+                                                    <label class="form-label">Can't Submit Bill Withhin</label>
+                                                    <input type="text" class="form-control" placeholder="Enter" formControlName="billDateNotAllowedCount">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Bill of last finacial year which can be
-                                                        claimed in next FY </label>
+                                                    <label class="form-label">Bill Of Last Financial Year Which Can Be
+                                                        Claimed In Next FY </label>
                                                         <div class="form-group">
                                                             <div class="input-group">
                                                               <div class="input-group-prepend">
@@ -239,9 +254,9 @@
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Unpaid bills carry forward</label>
+                                                    <label class="form-label">Unpaid Bills Carry Forward Allowed</label>
                                                     <div class="row">
-                                                        <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
                                                                     <input type="radio" class="custom-control-input"
@@ -251,7 +266,7 @@
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
                                                                     <input type="radio" class="custom-control-input"
@@ -267,17 +282,17 @@
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Cyclewise - No of line items allowed
+                                                    <label class="form-label">Cyclewise - No. Of Line Items Allowed
                                                     </label>
                                                     <input type="number" min="0" class="form-control" placeholder="Cyclewise - No of line items allowed " formControlName="cyclewiseNumLineItemsAllowed"> 
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Gap between 2 claims </label>
+                                                    <label class="form-label">Gap Between 2 Claims (In Days)</label>
                                                     <input type="number" min="0"  class="form-control"
                                                     formControlName="gapsBetwTwoHeadClaims"
-                                                        placeholder="Gap between 2 claims">
+                                                        placeholder="Gap between 2 claims (In Days)">
                                                 </div>
                                             </div>
 
