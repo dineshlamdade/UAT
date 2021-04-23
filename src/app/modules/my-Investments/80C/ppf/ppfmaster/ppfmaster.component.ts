@@ -70,6 +70,7 @@ export class PPFMasterComponent implements OnInit {
 
   public documentRemark: any;
   public isECS = true;
+  public startDateModel: any = { date: null };
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -182,6 +183,7 @@ export class PPFMasterComponent implements OnInit {
     this.Service.getBusinessFinancialYear().subscribe((res) => {
       this.financialYearStart = res.data.results[0].fromDate;
     });
+    
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
@@ -199,8 +201,10 @@ export class PPFMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        this.familyMemberName.push(obj);
+        this.familyMemberName.push(obj)
+        
       });
+      
     });
 
     // Get All Previous Employer
@@ -210,6 +214,7 @@ export class PPFMasterComponent implements OnInit {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
         // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
+      this.startDateModel =  '31-dec-9999';
     });
 
     if (this.today.getMonth() + 1 <= 3) {
@@ -233,6 +238,7 @@ export class PPFMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
+   
   }
 
   // convenience getter for easy access to form fields

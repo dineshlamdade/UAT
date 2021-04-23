@@ -297,13 +297,13 @@ export class PostOfficeDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.transactionInstitutionNames.push(data);
-    this.transactionPolicyList.push(data);
+    // this.transactionInstitutionNames.push(data);
+    // this.transactionPolicyList.push(data);
     this.postOfficeService
       .getPostOfficeDeclarationInstitutionListWithAccountNo()
       .subscribe((res) => {

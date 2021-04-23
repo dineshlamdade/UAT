@@ -420,12 +420,11 @@ export class NpsDeclarationComponent implements OnInit {
       this.transactionDetail[j].groupTransactionList[i].isECS
     );
     if (checked) {
+      if (this.transactionDetail[j].frequency !== 'As & When') {
       if (this.transactionDetail[j].groupTransactionList[i].isECS === 1) {
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].groupTransactionList[
-          i
-        ].dateOfPayment = new Date(data.dueDate);
+        this.transactionDetail[j].groupTransactionList[i].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
           this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -435,9 +434,11 @@ export class NpsDeclarationComponent implements OnInit {
           this.transactionDetail[j].groupTransactionList[i].dateOfPayment
         );
       } else {
+        console.log('in else actualamount')
         this.transactionDetail[j].groupTransactionList[i].actualAmount =
           data.declaredAmount;
       }
+    }
 
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
@@ -732,37 +733,37 @@ export class NpsDeclarationComponent implements OnInit {
     this.declarationService = new DeclarationService();
   }
 
-  submitDeclaration() {
-    // this.tabIndex = 0;
-    console.log(this.transactionDetail);
-    this.tabIndex = 0;
-    this.transactionDetail.forEach((element) => {
-      element.groupTransactionList.forEach((element) => {
-        element.dateOfPayment = this.datePipe.transform(
-          element.dateOfPayment,
-          'yyyy-MM-dd'
-        );
-      });
-    });
-    const data = this.transactionDetail;
-    this.npsService
-      .postNpsDeclarationTransaction(data)
-      .subscribe((res) => {
-        console.log(res);
-        this.transactionDetail =
-          res.data.results[0].investmentGroupTransactionDetail;
-        this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
-        this.grandActualTotal = res.data.results[0].grandActualTotal;
-        this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-        this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        this.transactionDetail.forEach((element) => {
-          element.groupTransactionList.forEach((element) => {
-            element.dateOfPayment = new Date(element.dateOfPayment);
-          });
-        });
-      });
-    this.resetAll();
-  }
+  // submitDeclaration() {
+  //   // this.tabIndex = 0;
+  //   console.log(this.transactionDetail);
+  //   this.tabIndex = 0;
+  //   this.transactionDetail.forEach((element) => {
+  //     element.groupTransactionList.forEach((element) => {
+  //       element.dateOfPayment = this.datePipe.transform(
+  //         element.dateOfPayment,
+  //         'yyyy-MM-dd'
+  //       );
+  //     });
+  //   });
+  //   const data = this.transactionDetail;
+  //   this.npsService
+  //     .postNpsDeclarationTransaction(data)
+  //     .subscribe((res) => {
+  //       console.log(res);
+  //       this.transactionDetail =
+  //         res.data.results[0].investmentGroupTransactionDetail;
+  //       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+  //       this.grandActualTotal = res.data.results[0].grandActualTotal;
+  //       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+  //       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+  //       this.transactionDetail.forEach((element) => {
+  //         element.groupTransactionList.forEach((element) => {
+  //           element.dateOfPayment = new Date(element.dateOfPayment);
+  //         });
+  //       });
+  //     });
+  //   this.resetAll();
+  // }
 
   // Reset All
   resetAll() {
@@ -859,6 +860,7 @@ export class NpsDeclarationComponent implements OnInit {
       return false;
     }
     if (this.licDeclarationData.dateOfPayment == null) {
+      
       this.alertService.sweetalertError(
         // 'Please make sure that you have selected date of payment for all selected lines',
         'Please Select Date Of Payment',

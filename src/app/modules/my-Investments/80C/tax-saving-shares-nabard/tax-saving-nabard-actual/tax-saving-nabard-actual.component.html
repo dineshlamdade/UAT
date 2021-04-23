@@ -13,6 +13,23 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th> -->
+                <th rowspan="2" class="wd-4">
+                  <label
+                    class="custom-control custom-checkbox checkbox-center"
+                    tooltip="Select All"
+                  >
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      [ngModel]="isCheckAll"
+                      [disabled]="canEdit && isDisabled"
+                      name="select"
+                      value="isCheckAll{{ j }}"
+                      (change)="checkUncheckAll(item, j)"
+                    />
+                    <span class="custom-control-label"></span>
+                  </label>
+                </th>
                 <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
                 </th>
@@ -43,6 +60,43 @@
                   count as c
                 "
               >
+              <td scope="row">
+                <label
+                  class="custom-control custom-checkbox checkbox-center"
+                  *ngIf="isDisabled"
+                  tooltip="Select institution for proof submission"
+                >
+                  <input
+                    type="checkbox"
+                    [ngModel]="enableSelectAll"
+                    [disabled]="isDisabled || summary.proofSubmissionId"
+                    (change)="
+                      onSelectCheckBox( summary, $event,   i, j);
+                      enableCheckboxFlag = j
+                    "
+                    class="custom-control-input"
+                    value="option{{ summary.licTransactionId }}"
+                  />
+                  <span class="custom-control-label"></span>
+                </label>
+                <label
+                  *ngIf="!isDisabled"
+                  class="custom-control custom-checkbox checkbox-center"
+                >
+                  <input
+                    type="checkbox"
+                    [ngModel]="enableSelectAll"
+                    [disabled]="isDisabled || summary.proofSubmissionId"
+                    (change)="
+                      onSelectCheckBox(summary, $event, i, j);
+                      enableCheckboxFlag = j
+                    "
+                    class="custom-control-input"
+                    value="option{{ summary.licTransactionId }}"
+                  />
+                  <span class="custom-control-label"></span>
+                </label>
+              </td>
                 <td *ngIf="previousEmployeeList?.length">
                   <select
                     name="Previous Employer Name"
@@ -131,7 +185,7 @@
                   </span>
                 </td>
               </tr>
-              <tr
+              <tr *ngFor="let item of row; let i = index"
                 role="form"
                 (ngSubmit)="saveTransaction(formDirective)"
                 [formGroup]="taxSavingNabardForm"
@@ -139,6 +193,43 @@
                 method="post"
                 novalidate
               >
+              <td scope="row">
+                <label
+                  class="custom-control custom-checkbox checkbox-center"
+                  *ngIf="isDisabled"
+                  tooltip="Select institution for proof submission"
+                >
+                  <input
+                    type="checkbox"
+                    [ngModel]="enableSelectAll"
+                    [disabled]="isDisabled || summary?.proofSubmissionId"
+                    (change)="
+                      onSelectCheckBox( summary, $event,   i, j);
+                      enableCheckboxFlag = j
+                    "
+                    class="custom-control-input"
+                    value="option{{ summary?.licTransactionId }}"
+                  />
+                  <span class="custom-control-label"></span>
+                </label>
+                <label
+                  *ngIf="!isDisabled"
+                  class="custom-control custom-checkbox checkbox-center"
+                >
+                  <input
+                    type="checkbox"
+                    [ngModel]="enableSelectAll"
+                    [disabled]="isDisabled || summary?.proofSubmissionId"
+                    (change)="
+                      onSelectCheckBox(summary, $event, i, j);
+                      enableCheckboxFlag = j
+                    "
+                    class="custom-control-input"
+                    value="option{{ summary?.licTransactionId }}"
+                  />
+                  <span class="custom-control-label"></span>
+                </label>
+              </td>
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name"
                         formControlName="previousEmployerId" class="form-control custom-select"
@@ -227,6 +318,43 @@
                 <!-- </form> -->
               </tr>
               <tr>
+                <td
+                  colspan="12"
+                  class="align-right font700 font-16 text-light-green cursor-pointer"
+                >
+                  <i
+                    class="fa fa-plus-circle font-20"
+                    tooltip="Add"
+                    (click)="addTable()"
+                  ></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <!-- <i
+                    class="fa fa-times font-16 text-red cursor-pointer"
+                    tooltip="Cancel"
+                    (click)="deleteRow(i)"
+                  ></i> -->
+                </td>
+                <td
+                  *ngIf="!previousEmployeeList?.length"
+                  colspan="11"
+                  class="align-right font700 font-16 text-light-green cursor-pointer"
+                >
+                  <i
+                    class="fa fa-plus-circle font-20"
+                    tooltip="Add"
+                    (click)="addTable()"
+                  ></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <!-- <i
+                    class="fa fa-times font-16 text-red cursor-pointer"
+                    tooltip="Cancel"
+                    (click)="deleteRows(i)"
+                  ></i> -->
+                </td>
+              </tr>
+              <tr>
+                <td *ngIf="previousEmployeeList?.length"
+                class="bg-lightgray font-18 font700 align-left"></td>
                 <td
                   *ngIf="previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left"

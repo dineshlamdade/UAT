@@ -55,11 +55,13 @@ export class NpsMasterComponent implements OnInit {
   public Index: number;
   public showUpdateButton: boolean;
   public tabIndex = 0;
+
   public radioSelected: string;
   public familyRelationSame: boolean;
 
   public documentRemark: any;
   public isECS = true;
+  public startDateModel: any = { date: null };
 
   public masterfilesArray: File[] = [];
   public receiptNumber: number;
@@ -120,6 +122,7 @@ export class NpsMasterComponent implements OnInit {
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
       { label: 'Yearly', value: 'Yearly' },
+       { label: 'As & When', value: 'As & When' },
     ];
     this.masterPage();
     this.addNewRowId = 0;
@@ -157,6 +160,7 @@ export class NpsMasterComponent implements OnInit {
       this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
+    this.startDateModel =  '31-dec-9999';
   }
 
   // initiate Reactive Master Form
