@@ -133,7 +133,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       issueType: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(
-        { value: null, disabled: true },
+        { value: null, },
         Validators.required
       ),
       relationship: new FormControl(
@@ -195,7 +195,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Self') {
+        if (element.relation === 'Self'|| ((element.relation === 'Son' || element.relation === 'Daughter' ) &&  element.ageBracket === 'Minor'))  {
+
           this.familyMemberName.push(obj);
         }
       });

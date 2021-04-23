@@ -150,6 +150,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
+  row = [];
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
   public canEdit: boolean;
@@ -378,6 +379,26 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.receiptAmount = '0.00';
     this.globalSelectedAmount = '0.00';
     //}
+  }
+  addTable() {
+    const obj = {
+      id: '',
+      name: '',
+      email: '',
+      a: '',
+      b: '',
+      c: '',
+      d: '',
+      e: '',
+      f: '',
+      g: '',
+      h: '',
+
+    }
+    this.row.push(obj);
+  }
+  deleteRows(j){
+    this.row.splice(j, 1 );
   }
 
   //------------- When Edit of Document Details -----------------------

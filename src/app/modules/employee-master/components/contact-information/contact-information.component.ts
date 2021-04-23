@@ -57,7 +57,8 @@ export class ContactInformationComponent implements OnInit {
   saveNextBoolean: boolean = false;
   changesLabelArray: Array<any> = [];
   selectedLanguage: any;
-  mobileNumberMatchError: any;
+  mobileNumberEToPMatchError: any;
+  mobileNumberPToEMatchError:any
 
 
 
@@ -1010,11 +1011,19 @@ export class ContactInformationComponent implements OnInit {
 
   }
 
-  checkMatchMobileNumber() {
+  checkPToEMatchMobileNumber() {
     if (this.ContactInfoForm.get('personalmobileNumber').value == this.ContactInfoForm.get('emergencyContactNumber').value) {
-      this.mobileNumberMatchError = true;
+      this.mobileNumberPToEMatchError = true;
     } else {
-      this.mobileNumberMatchError = false;
+      this.mobileNumberPToEMatchError = false;
+    }
+  }
+
+  checkEToPMatchMobileNumber(){
+    if ( this.ContactInfoForm.get('emergencyContactNumber').value==this.ContactInfoForm.get('personalmobileNumber').value ) {
+      this.mobileNumberEToPMatchError = true;
+    } else {
+      this.mobileNumberEToPMatchError = false;
     }
   }
   validEmergencyCountryCode() {
