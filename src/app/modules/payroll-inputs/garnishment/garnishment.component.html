@@ -18,37 +18,38 @@
                                                         <div class="card-body">
                                                             <div class="row mb-10">
                                                                 <div class="col-md-6">
-                                                                    <label class="form-label mb-0  mt-2 float-left">Total Record &nbsp;<span class="text-dark-green font-14 font-bold">(10)</span></label>
+                                                                    <label class="form-label mb-0  mt-2 float-left">Total Records &nbsp;<span class="text-dark-green font-14 font-bold">(10)</span></label>
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="float-right">
                                                                         <button type="button" tooltip="Approve" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-check-square-o"></i></b> Approve </button>
                                                                         <button type="button" tooltip="Edit Transaction" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-pencil"></i></b> Edit Transaction </button>
                                                                         <button type="button" tooltip="Edit Schedule" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i class="fa fa-pencil"></i></b> Edit Schedule </button>
-                                                                        <!-- <button type="button" tooltip="Filter" class="bg-teal-400 btn btn-sm mr-10" (click)="display=true"><b><i class="fa fa-filter"></i></b> </button> -->
+                                                                        <button type="button" tooltip="Filter" class="bg-teal-400 btn btn-sm mr-10" (click)="display=true"><b><i class="fa fa-filter"></i></b> </button>
+                                                                        <span class="ml-10 mt-7"><i tooltip="Export to Excel" class="fa fa-file-excel-o font-18 text-dark-green" ng-reflect-tooltip="Export to Excel"></i></span>
 
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <p-table [value]="summarydata" class="mt-10" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                                            <p-table [value]="Summarydata" class="mt-10" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
-                                                                        <th class="wd-5">
+                                                                        <th rowspan="2" class="wd-5">
                                                                             <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                                                                       <input type="checkbox"  class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
                                                                       </label>
 
                                                                         </th>
-                                                                        <th class="wd-8">
+                                                                        <th rowspan="2" class="wd-2">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Code
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="employeeMasterId"></p-sortIcon>
-                                                                                    <p-columnFilter field="employeeMasterId" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                                                    <p-sortIcon field="empcode"></p-sortIcon>
+                                                                                    <p-columnFilter field="empcode" display="menu" class="p-ml-auto"></p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th>
+                                                                        <th rowspan="2">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Name
                                                                                 <div class="Sort_Filter_Position">
@@ -59,51 +60,51 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th>
+                                                                        <th rowspan="2">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Payroll Area
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="payrollArea.payrollAreaCode"></p-sortIcon>
-                                                                                    <p-columnFilter field="payrollArea.payrollAreaCode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                                                    <p-sortIcon field="payrollarea"></p-sortIcon>
+                                                                                    <p-columnFilter field="payrollarea" display="menu" class="p-ml-auto"></p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
 
-                                                                        <th class="wd-5">
+                                                                        <th colspan="3" class="wd-5 text-center">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                                                Head
+                                                                                Third Party / Garnishment
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="payrollArea.headGroupDefinitionResponse.headGroupDefinitionName"></p-sortIcon>
-                                                                                    <p-columnFilter field="payrollArea.headGroupDefinitionResponse.headGroupDefinitionName" display="menu" class="p-ml-auto">
+                                                                                    <p-sortIcon field="head"></p-sortIcon>
+                                                                                    <p-columnFilter field="head" display="menu" class="p-ml-auto">
 
                                                                                     </p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th>
+                                                                        <th rowspan="2">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Group Id
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="payrollArea.headGroupDefinitionResponse.headGroupDefinitionId"></p-sortIcon>
-                                                                                    <p-columnFilter field="payrollArea.headGroupDefinitionResponse.headGroupDefinitionId" display="menu" class="p-ml-auto">
+                                                                                    <p-sortIcon field="groupid"></p-sortIcon>
+                                                                                    <p-columnFilter field="groupid" display="menu" class="p-ml-auto">
 
                                                                                     </p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th class="wd-8">
+                                                                        <th rowspan="2" class="wd-2">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Once Every
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="onceEvery"></p-sortIcon>
-                                                                                    <p-columnFilter field="onceEvery" display="menu" class="p-ml-auto">
+                                                                                    <p-sortIcon field="onceevery"></p-sortIcon>
+                                                                                    <p-columnFilter field="onceevery" display="menu" class="p-ml-auto">
 
                                                                                     </p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
 
-                                                                        <th>
+                                                                        <th rowspan="2">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Frequency
                                                                                 <div class="Sort_Filter_Position">
@@ -114,7 +115,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th>
+                                                                        <th colspan="2" class="text-center">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Amount
                                                                                 <div class="Sort_Filter_Position">
@@ -125,76 +126,92 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th>
+                                                                        <th rowspan="2" class="wd-8">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 From Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="fromDate"></p-sortIcon>
-                                                                                    <p-columnFilter field="fromDate" display="menu" class="p-ml-auto">
+                                                                                    <p-sortIcon field="fromdate"></p-sortIcon>
+                                                                                    <p-columnFilter field="fromdate" display="menu" class="p-ml-auto">
 
                                                                                     </p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th class="wd-8">
+                                                                        <th rowspan="2" class="wd-8">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 To Date
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="toDate"></p-sortIcon>
-                                                                                    <p-columnFilter field="toDate" display="menu" class="p-ml-auto">
+                                                                                    <p-sortIcon field="todate"></p-sortIcon>
+                                                                                    <p-columnFilter field="todate" display="menu" class="p-ml-auto">
 
                                                                                     </p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th> Remark </th>
-                                                                        <th>Approval Status </th>
-                                                                        <th></th>
-                                                                        <th class="wd-8">Action</th>
+                                                                        <th rowspan="2"> Remark </th>
+                                                                        <th rowspan="2">Approval Status </th>
+
+                                                                        <th rowspan="2" class="wd-8">Action</th>
                                                                     </tr>
+                                                                    <tr>
+                                                                    <th>Head</th>
+                                                                     <th>Description</th>
+                                                                      <th>Account No</th>
+                                                                       <th>Amount</th>
+                                                                    <th>% </th>
+                                                                    </tr>
+                                                                   
                                                                 </ng-template>
 
-                                                                <ng-template pTemplate="body" let-summarydata>
+                                                                <ng-template pTemplate="body" let-Summarydata>
                                                                     <tr class="p-selectable-row">
                                                                         <td class="text-center"> <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                                                                     <input type="checkbox"  class="custom-control-input" name="select"/> <span class="custom-control-label"></span>
                                                                     </label></td>
                                                                         <td class="bg-color-light_gray">
-                                                                            <label class="form-lable mb-0 ">{{summarydata.employeeMasterId}}</label>
+                                                                            <label class="form-lable mb-0 ">{{Summarydata.empcode}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.empname}}</label></td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.payrollArea.payrollAreaCode}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.empname}}</label></td>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.payrollarea}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0 text-link" (click)="ViewTransactionHistory(template1)">{{summarydata.payrollArea.headGroupDefinitionResponse.headGroupDefinitionName}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0 text-link" (click)="ViewTransactionHistory(template1)">{{Summarydata.head}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.payrollArea.headGroupDefinitionResponse.headGroupDefinitionId}} </label>
+                                                                         <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.desc}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.onceEvery}} </label>
+                                                                         <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.accountno}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.frequency}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.groupid}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.amount}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.onceevery}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.fromDate}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.frequency}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.toDate}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.amount}} </label>
+
+                                                                        </td> <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.amountper}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.remark}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.fromdate}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{summarydata.approvalstatus}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.todate}} </label>
 
                                                                         </td>
-                                                                        <td><span class="ml-1 mt-2"><i tooltip="View Transaction" class="fa fa-clock-o font-16 text-blue cursor-pointer" aria-hidden="true" (click)="ViewScheduleDetail(template2)" ></i></span></td>
-                                                                        <td><span class="ml-1 mt-2"><i tooltip="View Transaction" class="fa fa-eye font-16 text-blue cursor-pointer" aria-hidden="true" ></i>&nbsp;&nbsp;&nbsp;<i tooltip="View Schedule" class="fa fa-eye font-16 text-dark-green cursor-pointer"  aria-hidden="true"></i></span></td>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.remark}} </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{Summarydata.approvalstatus}} </label>
+
+                                                                        </td>
+                                                                        <!-- <td><span class="ml-1 mt-2"></span></td> -->
+                                                                        <td><span class="ml-1 mt-2"><i tooltip="View Transaction" class="fa fa-clock-o font-16 text-blue cursor-pointer" aria-hidden="true" (click)="ViewTransactionHistory(template1)" ></i>&nbsp;&nbsp;<i tooltip="View Schedule" class="fa fa-eye font-16 text-blue cursor-pointer" (click)="ViewScheduleDetail(template2)" aria-hidden="true" ></i>&nbsp;&nbsp;&nbsp;<i tooltip="View Transaction" class="fa fa-eye font-16 text-dark-green cursor-pointer"  aria-hidden="true"></i></span></td>
                                                                     </tr>
                                                                 </ng-template>
                                                             </p-table>
@@ -217,7 +234,15 @@
                                                                 <div class="section-body bg-color-white">
 
                                                                     <div class="row mt-10">
+                                                                      
                                                                         <div class="col-md-2">
+                                                                            <label class="form-label mb-0">Payroll Area</label>
+                                                                            <select name="PayrollArea" class="form-control custom-select">
+                                            <option value="PA_01"> PA_01 </option>
+                                            <option value="PA_02"> PA_02</option>
+                                    </select>
+                                                                        </div>
+                                                                          <div class="col-md-2">
                                                                             <label class="form-label mb-0">Employee Code</label>
                                                                             <select name="EmployeeCode" class="form-control custom-select">
                                             <option value="001"> 001 </option>
@@ -226,20 +251,18 @@
 
                                                                         </div>
                                                                         <div class="col-md-2">
-                                                                            <label class="form-label mb-0">Payroll Area</label>
-                                                                            <select name="payrollArea.payrollAreaCode" class="form-control custom-select">
-                                            <option value="PA_01"> PA_01 </option>
-                                            <option value="PA_02"> PA_02</option>
-                                    </select>
+                                                                         <label class="form-label mb-0">Select Cities</label>
+
+                                                                         <p-multiSelect [options]="cities" [(ngModel)]="selectedCities" optionLabel="name"></p-multiSelect>
                                                                         </div>
-                                                                        <div class="col-md-2">
+                                                                        <!-- <div class="col-md-2">
                                                                             <label class="form-label mb-0">Cycle</label>
                                                                             <select name="cycle" class="form-control custom-select">
                                             <option value="C1"> C1 </option>
                                             <option value="C2"> C2</option>
                                     </select>
-                                                                        </div>
-                                                                        <div class="col-md-2">
+                                                                        </div> -->
+                                                                        <!-- <div class="col-md-2">
                                                                             <label class="form-label mb-0"> From Date</label>
 
                                                                             <div class="form-group mr-2 mb-0">
@@ -252,8 +275,8 @@
                                                                             </div>
 
 
-                                                                        </div>
-                                                                        <div class="col-md-2">
+                                                                        </div> -->
+                                                                        <!-- <div class="col-md-2">
                                                                             <label class="form-label mb-0"> To Date</label>
 
                                                                             <div class="form-group mr-2 mb-0">
@@ -264,7 +287,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </div> -->
                                                                     </div>
                                                                     <div class="row mt-10">
                                                                         <div class="col-md-12 pl-0 pr-0">
@@ -327,6 +350,20 @@
                                                                                         <label class="form-label mb-2"> Payroll Area - Frequency</label>
                                                                                         <input type="text" class="form-control" disabled>
                                                                                     </div>
+                                                                                       <div class="col-md-1 mt-4">
+                                                                                             <label class="custom-control custom-radio">
+           <input type="radio" class="custom-control-input" name="example- radios"value="option1">
+      <div class="custom-control-label">Input In</div>
+     </label>
+
+                                                                                    </div>
+                                                                                    <div class="col-md-2 mt-4">
+                                                                                       <label class="custom-control custom-radio">
+           <input type="radio" class="custom-control-input" name="example- radios"value="option1">
+      <div class="custom-control-label">Amount Terms</div>
+     </label>
+                                                                                    </div>
+
 
                                                                                     <div class="col-md-3 ml-30">
                                                                                         <div class="row">
@@ -353,32 +390,22 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12 p-0">
-                                                                            <p-table [value]="transactionData" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" [style]="{'width':'100%'}">
+                                                                            <p-table [value]="users1" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]" [style]="{'width':'100%'}">
                                                                                 <ng-template pTemplate="header">
                                                                                     <tr>
                                                                                         <th rowspan="2">
                                                                                             Sr. No.
                                                                                         </th>
-                                                                                        <th rowspan="2">
+                                                                                        <th colspan="3" class="text-center">
                                                                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                                                                Head Type
+                                                                                              Third Party / Garnishment
                                                                                                 <div class="Sort_Filter_Position">
                                                                                                     <p-sortIcon field="headtype"></p-sortIcon>
                                                                                                     <p-columnFilter field="headtype" display="menu" class="p-ml-auto"></p-columnFilter>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </th>
-                                                                                        <th rowspan="2">
-                                                                                            <div class="p-d-flex p-jc-between p-ai-center">
-                                                                                                Head Description
-                                                                                                <div class="Sort_Filter_Position">
-                                                                                                    <p-sortIcon field="headdesc"></p-sortIcon>
-                                                                                                    <p-columnFilter field="headdesc" display="menu" class="p-ml-auto">
-
-                                                                                                    </p-columnFilter>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </th>
+                                                                                     
                                                                                         <th rowspan="2" class="wd-8">
                                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                                 Opening Amount
@@ -404,8 +431,8 @@
                                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                                 Once Every
                                                                                                 <div class="Sort_Filter_Position">
-                                                                                                    <p-sortIcon field="onceEvery"></p-sortIcon>
-                                                                                                    <p-columnFilter field="onceEvery" display="menu" class="p-ml-auto">
+                                                                                                    <p-sortIcon field="onceevery"></p-sortIcon>
+                                                                                                    <p-columnFilter field="onceevery" display="menu" class="p-ml-auto">
 
                                                                                                     </p-columnFilter>
                                                                                                 </div>
@@ -426,8 +453,8 @@
                                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                                 From Date
                                                                                                 <div class="Sort_Filter_Position">
-                                                                                                    <p-sortIcon field="fromDate"></p-sortIcon>
-                                                                                                    <p-columnFilter field="fromDate" display="menu" class="p-ml-auto">
+                                                                                                    <p-sortIcon field="FromDate"></p-sortIcon>
+                                                                                                    <p-columnFilter field="FromDate" display="menu" class="p-ml-auto">
 
                                                                                                     </p-columnFilter>
                                                                                                 </div>
@@ -459,8 +486,8 @@
                                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                                 To Date
                                                                                                 <div class="Sort_Filter_Position">
-                                                                                                    <p-sortIcon field="toDate"></p-sortIcon>
-                                                                                                    <p-columnFilter field="toDate" display="menu" class="p-ml-auto">
+                                                                                                    <p-sortIcon field="ToDate"></p-sortIcon>
+                                                                                                    <p-columnFilter field="ToDate" display="menu" class="p-ml-auto">
 
                                                                                                     </p-columnFilter>
                                                                                                 </div>
@@ -470,14 +497,18 @@
                                                                                         <th rowspan="2" class="wd-8"> Status </th>
                                                                                         <th rowspan="2"></th>
                                                                                     </tr>
+                                                                                    <tr>
+                                                                                    <th>Head</th>
+                                                                                     <th>Description</th>
+                                                                                      <th>Account No</th>
+                                                                                    </tr>
                                                                                 </ng-template>
                                                                                 <ng-template pTemplate="body" let-user1>
                                                                                     <tr class="p-selectable-row">
                                                                                         <td class="text-center">{{user1.srno}}</td>
-                                                                                        <td class="bg-color-light_gray">
-                                                                                            <label class="form-lable mb-0 text-link" (click)="ViewHistory(template)">{{user1.headtype}}</label>
-                                                                                        </td>
-                                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.headdesc}}</label></td>
+                                                                                       <td class="bg-color-light_gray"><label class="form-lable mb-0 text-link" (click)="ViewTransactionHistory(template1)">{{user1.head}}</label></td>
+                                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.desc}}</label></td>
+                                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.accountno}}</label></td>
                                                                                         <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.openingval}} </label>
                                                                                             <!-- <input type="text" value={{user1.openingval}} class="form-control" disabled> -->
                                                                                         </td>
@@ -487,14 +518,14 @@
                                                                                             <input type="text" value={{user1.closingamt}} class="form-control" disabled>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="text" value={{user1.onceEvery}} class="form-control">
+                                                                                            <input type="text" value={{user1.onceevery}} class="form-control">
                                                                                         </td>
                                                                                         <td class="bg-color-light_gray"><label class="form-lable mb-0">{{user1.Frequency}} </label>
                                                                                             <!-- <input type="text" value={{user1.Frequency}} class="form-control" disabled> -->
                                                                                         </td>
                                                                                         <td>
-                                                                                            <!-- <label class="form-lable mb-0">{{user1.fromDate}} </label> -->
-                                                                                            <input type="text" value={{user1.fromDate}} class="form-control wd-100" disabled>
+                                                                                            <!-- <label class="form-lable mb-0">{{user1.FromDate}} </label> -->
+                                                                                            <input type="text" value={{user1.FromDate}} class="form-control wd-100" disabled>
                                                                                         </td>
                                                                                         <td>
                                                                                             <select name="revision type" class="form-control custom-select wd-150">
@@ -508,8 +539,8 @@
                                                                                             <!-- <input type="text" value={{user1.Nooftrans}} class="form-control" disabled> -->
                                                                                         </td>
                                                                                         <td>
-                                                                                            <!-- <label class="form-lable mb-0">{{user1.toDate}} </label> -->
-                                                                                            <input type="text" value={{user1.toDate}} class="form-control wd-100" disabled>
+                                                                                            <!-- <label class="form-lable mb-0">{{user1.ToDate}} </label> -->
+                                                                                            <input type="text" value={{user1.ToDate}} class="form-control wd-100" disabled>
                                                                                         </td>
                                                                                         <td>
                                                                                             <input type="text" value={{user1.remark}} class="form-control wd-100">
@@ -517,7 +548,7 @@
                                                                                         <td>
                                                                                             <label></label>
                                                                                         </td>
-                                                                                        <td><span class="ml-1 mt-2 d-flex"><i class="fa fa-deviantart font-16 text-blue cursor-pointer" aria-hidden="true"></i>&nbsp;<i class="fa fa-clock-o font-16 text-blue cursor-pointer" (click)="ViewScheduleDetail(template2)" aria-hidden="true"></i></span></td>
+                                                                                        <td><span class="ml-1 mt-2 d-flex"><i class="fa fa-deviantart font-16 text-blue cursor-pointer" aria-hidden="true"></i>&nbsp;<i tooltip="View Schedule" class="fa fa-eye font-16 text-blue cursor-pointer" (click)="ViewScheduleDetail(template2)" aria-hidden="true" ></i>&nbsp;<i tooltip="View Schedule" class="fa fa-plus font-16 text-blue cursor-pointer" aria-hidden="true" ></i></span></td>
                                                                                     </tr>
                                                                                 </ng-template>
                                                                                 <ng-template pTemplate="emptymessage">
@@ -571,10 +602,10 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <p-table [value]="scheduleData" class="mt-10" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
-                                                                <!-- <ng-template pTemplate="colgroup" let-summarydata>
+                                                            <p-table [value]="ScheduleData" class="mt-10" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                                                <!-- <ng-template pTemplate="colgroup" let-Summarydata>
                                                                 <colgroup>
-                                                                    <col *ngFor="let col of summarydata" style="width:200px">
+                                                                    <col *ngFor="let col of Summarydata" style="width:200px">
                                                                 </colgroup>
                                                             </ng-template> -->
                                                                 <ng-template pTemplate="header">
@@ -587,8 +618,8 @@
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Emp. Code
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="semployeeMasterId"></p-sortIcon>
-                                                                                    <p-columnFilter field="semployeeMasterId" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                                                    <p-sortIcon field="sempcode"></p-sortIcon>
+                                                                                    <p-columnFilter field="sempcode" display="menu" class="p-ml-auto"></p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
@@ -607,15 +638,15 @@
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
                                                                                 Payroll Area
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="spayrollArea.payrollAreaCode"></p-sortIcon>
-                                                                                    <p-columnFilter field="spayrollArea.payrollAreaCode" display="menu" class="p-ml-auto"></p-columnFilter>
+                                                                                    <p-sortIcon field="spayrollarea"></p-sortIcon>
+                                                                                    <p-columnFilter field="spayrollarea" display="menu" class="p-ml-auto"></p-columnFilter>
                                                                                 </div>
                                                                             </div>
                                                                         </th>
 
-                                                                        <th rowspan="2" class="wd-5">
+                                                                        <th colspan="3" class="wd-5 text-center">
                                                                             <div class="p-d-flex p-jc-between p-ai-center">
-                                                                                Head
+                                                                                Third Party / Garnishment
                                                                                 <div class="Sort_Filter_Position">
                                                                                     <p-sortIcon field="shead"></p-sortIcon>
                                                                                     <p-columnFilter field="shead" display="menu" class="p-ml-auto">
@@ -635,12 +666,12 @@
                                                                                 </div>
                                                                             </div>
                                                                         </th>
-                                                                        <th colspan="3" class="wd-8">
+                                                                        <th colspan="4" class="wd-8">
                                                                             <div class="p-d-flex p-jc-center p-ai-center">
                                                                                 Schedule
                                                                                 <div class="Sort_Filter_Position">
-                                                                                    <p-sortIcon field="onceEvery"></p-sortIcon>
-                                                                                    <p-columnFilter field="onceEvery" display="menu" class="p-ml-auto">
+                                                                                    <p-sortIcon field="onceevery"></p-sortIcon>
+                                                                                    <p-columnFilter field="onceevery" display="menu" class="p-ml-auto">
 
                                                                                     </p-columnFilter>
                                                                                 </div>
@@ -707,8 +738,18 @@
                                                                         </th>
 
                                                                         <th rowspan="2" class="wd-8">Remark</th>
+                                                                        <th rowspan="2"></th>
                                                                     </tr>
                                                                     <tr>
+                                                                     <th class="wd-8">
+                                                                            Head
+                                                                        </th>
+                                                                         <th class="wd-8">
+                                                                            Description
+                                                                        </th>
+                                                                         <th class="wd-8">
+                                                                           Account No.
+                                                                        </th>
                                                                         <th class="wd-8">
                                                                             No.
                                                                         </th>
@@ -718,41 +759,55 @@
                                                                         <th class="wd-8">
                                                                             Amount
                                                                         </th>
+                                                                         <th class="wd-8">
+                                                                            %
+                                                                        </th>
                                                                     </tr>
                                                                 </ng-template>
 
-                                                                <!-- <ng-template pTemplate="body" let-scheduleData>
+                                                                <ng-template pTemplate="body" let-ScheduleData>
                                                                     <tr class="p-selectable-row">
-                                                                        <td> <label class="form-lable mb-0 ">{{scheduleData.ssrno}}</label></td>
+                                                                        <td> <label class="form-lable mb-0 ">{{ScheduleData.ssrno}}</label></td>
                                                                         <td class="bg-color-light_gray">
-                                                                            <label class="form-lable mb-0 ">{{scheduleData.semployeeMasterId}}</label>
+                                                                            <label class="form-lable mb-0 ">{{ScheduleData.sempcode}}</label>
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.sempname}}</label></td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.spayrollArea.payrollAreaCode}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.sempname}}</label></td>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.spayrollarea}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0 text-link" (click)="ViewScheduleHistory(template3)">{{scheduleData.shead}} </label>
+                                                                          <td class="bg-color-light_gray"><label class="form-lable mb-0 text-link" (click)="ViewTransactionHistory(template1)">{{ScheduleData.head}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.sgroupid}} </label>
+                                                                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.desc}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.schno}} </label>
+                                                                          <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.accountno}} </label>
+
+                                                                        </td>
+                                                                       
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.sgroupid}} </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.schno}} </label>
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><input data-provide="datepicker" data-date-autoclose="true" class="form-control wd-100" bsDatepicker disabled>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0"><input type="text" [value]="scheduleData.schamount"  class="form-control wd-80" disabled> </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0"><input type="text" [value]="ScheduleData.schamount"  class="form-control wd-80" disabled> </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.processedamount}} </label>
+                                                                         <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.per}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.balamount}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.processedamount}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.processingcycle}} </label>
+                                                                        
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.balamount}} </label>
+
+                                                                        </td>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.processingcycle}} </label>
 
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
@@ -770,15 +825,17 @@
                                                                         <td class="bg-color-light_gray"><input data-provide="datepicker" data-date-autoclose="true" class="form-control" bsDatepicker>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{scheduleData.approvalstatus}} </label>
+                                                                        <td class="bg-color-light_gray"><label class="form-lable mb-0">{{ScheduleData.approvalstatus}} </label>
 
                                                                         </td>
-                                                                        <td class="bg-color-light_gray"><input type="text" class="form-control" [value]="scheduleData.remark">
+                                                                        <td class="bg-color-light_gray"><input type="text" class="form-control" [value]="ScheduleData.remark">
 
                                                                         </td>
+                                                                       <td><i tooltip="View Schedule" class="fa fa-eye font-16 text-blue cursor-pointer" (click)="ViewScheduleHistory(template3)" aria-hidden="true" ></i></td>
+                                                                        
 
                                                                     </tr>
-                                                                </ng-template> -->
+                                                                </ng-template>
                                                             </p-table>
                                                             <div class="row mt-15">
                                                                 <div class="col-12">
@@ -940,7 +997,7 @@
                                 Sneha Suryawanshi
 </label>
                                 </div>
-                                <div class="col-md-2">
+                                <!-- <div class="col-md-2">
                                     <label class="form-label mt-1 mb-0">Payroll Area</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
 PA-01
@@ -951,11 +1008,29 @@ PA-01
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
 G1
 </label>
-                                </div>
+                                </div> -->
                                 <div class="col-md-2">
                                     <label class="form-label mt-1 mb-0">Head</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
 H1
+</label>
+                                </div>
+                                 <div class="col-md-2">
+                                    <label class="form-label mt-1 mb-0">Third Party Head </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+H1
+</label>
+                                </div>
+                                 <div class="col-md-2">
+                                    <label class="form-label mt-1 mb-0">Third Party Desc </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+Desc1
+</label>
+                                </div>
+                                 <div class="col-md-2">
+                                    <label class="form-label mt-1 mb-0">Third Party Account No </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+123454321
 </label>
                                 </div>
 
@@ -969,23 +1044,32 @@ H1
                             <table class="table table-striped table-hover table-bordered m-b-0">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th class="wd-10 font700">Once Every</th>
-                                        <th class="wd-10 font700">Frequency</th>
-                                        <th class="wd-10 font700">Amount</th>
-                                        <th class="wd-10 font700">From Date</th>
-                                        <th class="wd-8 font700">Type</th>
-                                        <th class="wd-10 font700">No. of Transaction</th>
-                                        <th class="wd-10 font700">To Date</th>
-                                        <th class="wd-10 font700">Remark</th>
-                                        <th class="wd-13 font700">Updated Date & Time</th>
-                                        <th class="wd-10 font700">Updated By</th>
+                                      <th rowspan="2" class="wd-10 font700">Group Id</th>
+                                        <th rowspan="2" class="wd-10 font700">Payroll Area</th>
+                                        <th rowspan="2" class="wd-10 font700">Once Every</th>
+                                        <th rowspan="2" class="wd-10 font700">Frequency</th>
+                                        <th colspan="2" class="wd-10 font700">Amount</th>
+                                        <th  rowspan="2" class="wd-10 font700">From Date</th>
+                                        <th rowspan="2" class="wd-8 font700">Type</th>
+                                        <th  rowspan="2" class="wd-10 font700">No. of Transactions</th>
+                                        <th rowspan="2" class="wd-10 font700">To Date</th>
+                                        <th rowspan="2" class="wd-10 font700">Remark</th>
+                                        <th rowspan="2" class="wd-13 font700">Updated Date & Time</th>
+                                        <th rowspan="2" class="wd-10 font700">Updated By</th>
+                                    </tr>
+                                    <tr>
+                                    <th>Amount</th>
+                                    <th>%</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                     <td>G1</td>
+                                      <td>PA_01</td>
                                         <td></td>
                                         <td>Monthly</td>
                                         <td>0.00</td>
+                                        <td>5%</td>
                                         <td>12-Apr-2020</td>
                                         <td></td>
                                         <td>2</td>
@@ -996,9 +1080,12 @@ H1
 
                                     </tr>
                                     <tr>
+                                     <td>G2</td>
+                                      <td>PA_02</td>
                                         <td></td>
                                         <td>Monthly</td>
                                         <td>0.00</td>
+                                        <td>15%</td>
                                         <td>12-Apr-2020</td>
                                         <td></td>
                                         <td>2</td>
@@ -1067,6 +1154,27 @@ H1
                                 </div>
 
                             </div>
+                            <div class="row mt-10">
+                             <div class="col-md-2">
+                                    <label class="form-label mt-1 mb-0">Third Party Head </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+H1
+</label>
+                                </div>
+                                 <div class="col-md-2">
+                                    <label class="form-label mt-1 mb-0">Third Party Desc </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+Desc1
+</label>
+                                </div>
+                                 <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Third Party Account No </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+123454321
+</label>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1076,7 +1184,7 @@ H1
                             <table class="table table-striped table-hover table-bordered m-b-0">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th colspan="3" class="wd-40 font700">Schedule</th>
+                                        <th colspan="4" class="wd-40 font700">Schedule</th>
                                         <th rowspan="2" class="wd-10 font700">Processed Amount</th>
                                         <th rowspan="2" class="wd-10 font700">Balance Amount</th>
                                         <th rowspan="2" class="wd-10 font700">Processing Cycle</th>
@@ -1089,6 +1197,7 @@ H1
                                         <th>No.</th>
                                         <th>Date</th>
                                         <th>Amount</th>
+                                        <th>% </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1096,8 +1205,10 @@ H1
                                         <td>1</td>
                                         <td><input data-provide="datepicker" data-date-autoclose="true" class="form-control" bsDatepicker disabled></td>
                                         <td><input type="text" class="form-control" disabled></td>
-                                        <td>12-Apr-2020</td>
+                                        <td><input type="text" class="form-control" disabled></td>
+                                        
                                         <td>2,000.00</td>
+                                         <td>2,000.00</td>
 
                                         <td>Apr-2021</td>
                                         <td><label class="custom-control custom-checkbox checkbox-center">
@@ -1139,26 +1250,91 @@ H1
                     <div class="col-md-12 pl-0 pr-0">
                         <div class="border-dark-card radius-10 p-2 mt-3">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Emp. Code</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+0001  </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Emp. Name</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+                              Sneha Suryawanshi
+</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Payroll Area</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+PA-01
+</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Group Id</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+G1
+</label>
+                                </div>
+                                
+
+                            </div>
+                            <div class="row mt-10">
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Head</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+H1
+</label>
+                                </div>
+                                <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Schedule No.</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
 10001  </label>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-label mt-1 mb-0">Original Schedhule Date</label>
+                                <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Original Schedule Date
+                                      </label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
                             10-Apr-2020
 </label>
                                 </div>
-                                <div class="col-md-4">
+                                 <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Schedule %</label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+10%
+</label>
+                                </div>
+                              
+
+
+                            </div>
+                              <div class="row mt-10">
+                                <div class="col-md-3">
                                     <label class="form-label mt-1 mb-0">Schedule Amount</label>
                                     <label class="font-12 text-ellipsis mt-1 mb-0">
 2,000.00
 </label>
                                 </div>
-
+                             <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Third Party Head </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+H1
+</label>
+                                </div>
+                                 <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Third Party Desc </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+Desc1
+</label>
+                                </div>
+                                
 
                             </div>
+                            <div class="row mt-10">
+                             <div class="col-md-3">
+                                    <label class="form-label mt-1 mb-0">Third Party Account No </label>
+                                    <label class="font-12 text-ellipsis mt-1 mb-0">
+123454321
+</label>
+                                </div>
+                                                        </div>
                         </div>
                     </div>
                 </div>

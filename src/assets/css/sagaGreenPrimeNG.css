@@ -2265,7 +2265,9 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 
 .p-datatable .p-paginator-bottom {
     border-width: 0 0 1px 0;
-    border-radius: 0;
+    border: 1px solid #ddd;
+    position: sticky;
+    left: 0;
 }
 
 .p-datatable {
@@ -2873,12 +2875,17 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
 }
 
 .p-paginator {
-    background: #ffffff;
+    background: #f2f2f2;
     color: #6c757d;
-    border: solid #e9ecef;
+    border: solid #ddd;
     border-width: 0;
-    padding: 0.5rem 1rem;
-    border-radius: 3px;
+    padding: 0px;
+    font-size: 13px;
+    font-family: Montserrat, sans-serif!important;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .p-paginator .p-paginator-first,
@@ -5860,9 +5867,4 @@ p-togglebutton.ng-dirty.ng-invalid>.p-togglebutton.p-button {
     background: transparent;
     border-radius: 50%;
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
-}
-
-/* added  by Komal */
-.p-inputright .p-inputnumber-input {
-  text-align: right!important;
 }

@@ -91,20 +91,20 @@
                   <div class="col-md-3">
                     <label class="form-label mb-2">Heads</label>
                     <label class="custom-control custom-radio custom-control-inline mr-4">
-                      <input type="radio" class="custom-control-input" name="isPEIRecord"
-                       (change)="selectedInputHeads($event.target.value)" [value]="'Yes'" />
+                      <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
+                       (change)="selectedInputHeads()" [value]="1" />
                       <span class="custom-control-label" >Input</span>
                     </label>
                     <label
                       class="custom-control custom-radio custom-control-inline mr-4">
-                      <input type="radio" class="custom-control-input"  name="isPEIRecord"
-                       (change)="selectedInputHeads($event.target.value)"  [value]="'all'"checked />
+                      <input type="radio" [(ngModel)]="headField" class="custom-control-input"  name="isPEIRecord"
+                       (change)="selectedInputHeads()"  [value]="2"/>
                       <span class="custom-control-label">All</span>
                     </label>
                     <label
                       class="custom-control custom-radio custom-control-inline mr-4">
-                      <input type="radio" class="custom-control-input" name="isPEIRecord"
-                      (change)="selectedInputHeads($event.target.value)" [value]="'No'"/>
+                      <input type="radio" [(ngModel)]="headField" class="custom-control-input" name="isPEIRecord"
+                      (change)="selectedInputHeads()" [value]="3"/>
                       <span class="custom-control-label">Auto</span>
                     </label>
                   </div>
@@ -118,8 +118,8 @@
                   </div>
                   <div class="col-md-2 pl-0">
                     <label class="form-label mb-2">Updation Field</label>
-                    <select name="Gender" class="form-control custom-select" (change)="updationField($event.target.options.selectedIndex)" >
-                      <option selected>select</option>
+                    <select name="Gender"  class="form-control custom-select" [(ngModel)]="updationField" (change)="getUpdationField($event.target.options.selectedIndex)" >
+                      <option selected value=null>select</option>
                       <option value="1">Change Amount</option>
                       <option value="2">Change %</option>
                       <option value="3">Closing Amount</option>
@@ -442,45 +442,48 @@
                 </ng-template>
 
                 <ng-template pTemplate="body" let-summary let-rowIndex="rowIndex">
-                  <tr  class="p-selectable-row" >
-                   <td><span>{{rowIndex + 1}} </span></td>
+                  <tr  class="p-selectable-row" *ngIf="headsFlag[rowIndex]">
+                   <td><span>{{summary.srNo}} </span></td>
                     <td class="bg-color-light_gray"><span tooltip="{{ summary.headType }}" >{{ summary.headType }} </span></td>
                     <td class="bg-color-light_gray">
                       <span class="text-link" (click)="ViewHistory(template)">{{summary.headDescription}}</span>
                     </td>
                     <td><input type="number"  [(ngModel)]="summary.openingAmount" class="form-control align-right" disabled /> </td>
                    <td>
-                      <input type="number" (change)="changeValueCalculation(rowIndex)" [(ngModel)]="summary.changeValue"
+                      <input type="number" (change)="onChangeValueCalculation(rowIndex)" [(ngModel)]="summary.changeValue"
                         class="form-control" [disabled]="((changeValueFlag) || (summary.isPEIRecord !='Yes'))"/>
                     </td>
                     <td>
-                      <input type="number" (change)="updationFieldCalculation(rowIndex)" [(ngModel)]="summary.changePercenatge"
+                      <input type="number" (change)="onChangePercentageCalculation(rowIndex)" [(ngModel)]="summary.changePercenatge"
                         class="form-control" [disabled]="((changePercentageFlag) || (summary.isPEIRecord !='Yes'))" />
                     </td>
                     <td>
-                      <input type="number" (change)="updationFieldCalculation(rowIndex)" [(ngModel)]="summary.closingAmount"
+                      <input type="number" (change)="onChangeClosingAmountCalculation(rowIndex)" [(ngModel)]="summary.closingAmount"
                         class="form-control" [disabled]="((closingAmountFlag) || (summary.isPEIRecord !='Yes'))" />
                     </td>
-                    <td class="bg-color-light_gray text-center"> <label class="form-lable mb-0">{{summary.unitofmeasure}}</label>
+                    <td class="bg-color-light_gray text-center"> <label class="form-lable mb-0">{{summary.uom}}</label>
                      </td>
                     <td class="text-center">
                       <i tooltip="Schedule" (click)="Schedule(template2)" *ngIf="summary.isPEIRecord ==='Yes'"
                         class="fa fa-clock-o font-18 text-blue cursor-pointer"
                           [(ngModel)]="summary.isSchedulable"></i>&nbsp;&nbsp;
-                      <!-- <i
-                        tooltip="Schedule"
-                        (click)="Schedule(template2)" 
-                        class="fa fa-eye font-18 text-blue cursor-pointer"
-                      ></i> -->
+                      <i tooltip="Schedule"  (click)="Schedule(template2)" class="fa fa-eye font-18 text-blue cursor-pointer"></i>
                     </td>
                     <td colspan="2">
                       <div class="d-flex">
                         <span class="ml-2 mr-2 mt-2" ><i class="fa fa-clone text-blue font-16"></i ></span>
-                          <input data-provide="datepicker"  data-date-autoclose="true"
+                          <!-- <input data-provide="datepicker"  data-date-autoclose="true"
                           class="form-control mr-2" [(ngModel)]="summary.fromdate" bsDatepicker />
                       
                         <input data-provide="datepicker" data-date-autoclose="true"
-                          class="form-control"  [(ngModel)]="summary.todate" bsDatepicker/>
+                          class="form-control"  [(ngModel)]="summary.todate" bsDatepicker/> -->
+
+                          <input type="text" class="form-control" [ngModel]="summary.fromdate | date: 'dd-MMM-yyyy'"
+                                (ngModelChange)="summary.fromdate = $event.toLocaleDateString()"
+                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker/>
+                          <input type="text" class="form-control" [ngModel]="summary.todate | date: 'dd-MMM-yyyy'"
+                                (ngModelChange)="summary.todate = $event.toLocaleDateString()"
+                                [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker/>
                       </div>
                       </td>
                     <td>
