@@ -206,6 +206,7 @@ export class ReJoiningInformationComponent implements OnInit {
         if (this.confirmMsg) {
           this.onNoClick();
         }
+       // localStorage.setItem('LastTransaction', 'Re-Joining');
         localStorage.removeItem('rejoinee');
         this.EventEmitterService.getEmpSummaryInitiate();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
@@ -213,6 +214,7 @@ export class ReJoiningInformationComponent implements OnInit {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
     } else {
+      localStorage.setItem('LastTransaction', 'Re-Joining');
       this.EmploymentInformationService.postReJoiningInformation(ReJoiningInformationModel).subscribe(res => {
 
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
@@ -224,6 +226,7 @@ export class ReJoiningInformationComponent implements OnInit {
         if (this.confirmMsg) {
           this.onNoClick();
         }
+      
         this.EventEmitterService.getEmpSummaryInitiate();
         localStorage.removeItem('rejoinee');
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
