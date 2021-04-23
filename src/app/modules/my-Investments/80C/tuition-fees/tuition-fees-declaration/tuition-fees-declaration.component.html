@@ -427,7 +427,7 @@
               <td>
                 <select  class="form-control align-right custom-select" 
                 [(ngModel)]="addRowSummary.childName"
-                         (change)='OnSelectionfamilyMemberGroup()'>
+                         (change)='OnSelectionfamilyMemberGroup(addRowSummary, i)'>
                   <option [ngValue]="null">Select</option>
                   <option
                     *ngFor="let childNames of childNameList"
