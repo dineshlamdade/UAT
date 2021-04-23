@@ -86,7 +86,7 @@ export class PPFMasterComponent implements OnInit {
   public paymentDetailMinDate: Date;
   public paymentDetailMaxDate: Date;
   public minFormDate: any = '';
-  public maxFromDate: any = '';
+  public maxFromDate: Date= new Date( "9999-12-31");
   public financialYearStart: Date;
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
@@ -139,7 +139,7 @@ export class PPFMasterComponent implements OnInit {
         Validators.required
       ),
       policyStartDate: new FormControl(null, Validators.required),
-      policyEndDate: new FormControl(null),
+      policyEndDate: new FormControl(new Date("9999-12-31"), Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       active: new FormControl(true, Validators.required),
       remark: new FormControl(null),
