@@ -122,7 +122,7 @@ export class GgaSummaryComponent implements OnInit {
       this.futureDonationsDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
     }
   }
-
+/* 
   jumpToMasterPage(policyNo: string) {
     this.tabIndex = 1;
     const data = {
@@ -130,7 +130,7 @@ export class GgaSummaryComponent implements OnInit {
       tabIndex: this.tabIndex,
     };
     this.policyNumber.emit(data);
-  }
+  } */
 
   keyPressedSpaceNotAllow(event: any) {
     console.log('HI ');

@@ -48,6 +48,7 @@ import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhos
 import { ChapterVIASummaryComponent } from './VI-A/chapter-vi-a-summary/chapter-vi-a-summary.component';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
+import { EmployeenationalpensionComponent } from './Other/employeenationalpension/employeenationalpension.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { SignaturePadComponent } from './previousemployer/signature-pad/signatur
     ChamasterComponent,
     ChapterVIASummaryComponent,
     PrincipalRepaymentOnHousingLoanComponent,
+    EmployeenationalpensionComponent
 
    
 

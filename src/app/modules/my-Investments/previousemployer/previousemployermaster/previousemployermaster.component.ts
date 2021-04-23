@@ -418,15 +418,15 @@ export class PreviousemployermasterComponent implements OnInit {
     html2canvas(data).then(canvas => {
       console.log(canvas)
       // Few necessary setting options
-      const imgWidth = 208;
-      const pageHeight = 295;
+      const imgWidth = 193;
+     const pageHeight = 0;
       const imgHeight = canvas.height * imgWidth / canvas.width;
-      const heightLeft = imgHeight;
+     // const heightLeft = imgHeight;
 
       const contentDataURL = canvas.toDataURL('image/png')
       // A4 size page of PDF
       const pdf = new jspdf('p', 'mm', 'a4');
-      const position = 0;
+      const position = -120;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
       // Generated PDF
       pdf.save('FORM.12B.pdf');

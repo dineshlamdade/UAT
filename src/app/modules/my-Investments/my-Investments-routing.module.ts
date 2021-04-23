@@ -51,6 +51,7 @@ import { CeaComponent } from './Other/Child Education Allowance/cea/cea.componen
 import { ChildeducationallowanceComponent } from './Other/Child Education Allowance/childeducationallowance/childeducationallowance.component';
 import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
+import { EmployeenationalpensionComponent } from './Other/employeenationalpension/employeenationalpension.component';
 
 
 const routes: Routes = [
@@ -116,10 +117,15 @@ const routes: Routes = [
                     },
 
                     {
-                      path:   'Other-HouseProperty',
-                      component:  HousePropertyComponent,
-                       data: { title: ':: DelziaHR ::  HouseProperty' },
-                      },
+                        path:   'Other-HouseProperty',
+                        component:  HousePropertyComponent,
+                         data: { title: ':: DelziaHR ::  HouseProperty' },
+                        },
+                        {
+                          path:   'Other-Employeenationalpension',
+                          component:  EmployeenationalpensionComponent,
+                           data: { title: ':: DelziaHR ::  Employeenationalpension' },
+                          },
 
                       {
                         path:   'Other-PrincipalRepaymentOnHousingLoan',
