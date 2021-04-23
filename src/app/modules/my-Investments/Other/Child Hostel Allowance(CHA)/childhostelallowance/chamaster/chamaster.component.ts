@@ -130,6 +130,11 @@ export class ChamasterComponent implements OnInit {
       toDate: new FormControl(null, Validators.required),
       employeeMasterId: new FormControl(0),
       childHostelAllowanceMasterId: new FormControl(0),
+      
+      ageBracket: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
     });
 
     this.masterPage();
@@ -266,11 +271,22 @@ export class ChamasterComponent implements OnInit {
   }
 
   //----------- Family relationship shown on Policyholder selection ---------------
-  OnSelectionfamilyMemberGroup() {
+/*   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('nameOfChild').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  }
+ */
+  OnSelectionfamilyMemberGroup() {
+    if(this.form.get('nameOfChild').value == null ){
+      this.form.get('ageBracket').setValue(null);
+    }
+    const toSelect = this.familyMemberGroup.find(
+      (c) => c.familyMemberName === this.form.get('nameOfChild').value
+    );
+    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+    this.form.get('ageBracket').setValue(toSelect.ageBracket);
   }
 
   //--------------- Deactivate the Remark -------------------

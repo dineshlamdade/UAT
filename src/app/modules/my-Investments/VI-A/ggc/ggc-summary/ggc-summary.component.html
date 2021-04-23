@@ -14,7 +14,8 @@
               </thead>
               <tbody>
                  <tr *ngFor="let summary of summaryGridData; let i = index">
-                    <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.policyNo)">
+                 <!--    <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.policyNo)"> -->
+                  <td class="wd-20 align-left" >
                        <span tooltip="{{summary.donee}}">{{summary.donee}}</span>
                     </td>
                     <td class="wd-20"><span tooltip="{{summary.purpose}}">{{summary.purpose}}</span>
@@ -44,7 +45,7 @@
                  </tr>
                  <tr>
                   <td colspan="5">
-                      <h3 class="align-left font-14 text-purple font-bold"> Computation Of Sec.80-GGA</h3>
+                      <h3 class="align-left font-14 text-purple font-bold"> Computation Of Sec.80-GGC</h3>
                   </td>
                 </tr>
                  <tr class="table-light-color">

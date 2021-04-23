@@ -146,6 +146,18 @@ export class HouseRentService {
   }
 
 
+    // Get Computation
+    getComputation(): Observable<any> {
+      return this._HTTP
+        .get(this.apiUrl + '/houseRentalMaster/hraComputation')
+        .pipe(
+          map((res: any) => {
+            return res;
+          })
+        );
+    }
+
+
 /* uploadTransactionWithMultipleFiles(rentReciept: File[], bankStatement: File[],
     data: any): Observable<any> {
    let formData: any = new FormData();

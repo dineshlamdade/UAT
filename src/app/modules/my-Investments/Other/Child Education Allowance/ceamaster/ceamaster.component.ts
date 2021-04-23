@@ -123,13 +123,18 @@ export class CeamasterComponent implements OnInit {
     public sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
-      // age: new FormControl({ value: null, disabled: true },Validators.required),
+    //  ageBracket: new FormControl({ value: null, disabled: true },Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       nameOfChild: new FormControl(null, Validators.required),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       employeeMasterId: new FormControl(0),
       childrenEducationAllowanceMasterId: new FormControl(0),
+
+      ageBracket: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
     });
 
     this.masterPage();
@@ -266,11 +271,22 @@ export class CeamasterComponent implements OnInit {
   }
 
   //----------- Family relationship shown on Policyholder selection ---------------
-  OnSelectionfamilyMemberGroup() {
+/*   OnSelectionfamilyMemberGroup() {
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('nameOfChild').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+  } */
+
+    OnSelectionfamilyMemberGroup() {
+    if(this.form.get('nameOfChild').value == null ){
+      this.form.get('ageBracket').setValue(null);
+    }
+    const toSelect = this.familyMemberGroup.find(
+      (c) => c.familyMemberName === this.form.get('nameOfChild').value
+    );
+    this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
+    this.form.get('ageBracket').setValue(toSelect.ageBracket);
   }
 
   //--------------- Deactivate the Remark -------------------
