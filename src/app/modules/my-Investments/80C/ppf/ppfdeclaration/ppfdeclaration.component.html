@@ -303,7 +303,7 @@
                     type="text"
                     [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                     [minDate]="financialYearStartDate"
-                    [maxDate]="financialYearEndDate"
+                    [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker"
                     data-date-autoclose="true"
@@ -476,9 +476,9 @@
               <td class="bg-gray font-18 font700 align-right wd-9">
                 <span
                   class="padding-right-12"
-                  tooltip="{{ grandActualTotal | number: '1.2-2' }}"
+                  tooltip="{{ actualTotal | number: '1.2-2' }}"
                 >
-                  {{ grandActualTotal | number: "1.2-2" }}
+                  {{ actualTotal | number: "1.2-2" }}
                 </span>
               </td>
               <td class="bg-gray font-18 font700 align-right wd-9">
@@ -603,7 +603,7 @@
                     <td>
                       <span>
                         <input
-                          type="text"
+                          type="text" onkeypress="return /[0-9]/i.test(event.key)"
                           class="form-control align-right"
                           [(ngModel)]="globalSelectedAmount"
                           [disabled]="true"
@@ -971,7 +971,7 @@
                       name="Previous Employer Name"
                       class="form-control custom-select"
                       (change)="updatePreviousEmpId($event, i, j)"
-                      [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+                      [disabled]="isDisabled || summary.transactionStatus === 'Submitted'||previousEmployeeList?.length==0" 
                     >
                       <option [ngValue]="0">Select Previous Emp.</option>
                       <option
@@ -1025,7 +1025,7 @@
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                      [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"

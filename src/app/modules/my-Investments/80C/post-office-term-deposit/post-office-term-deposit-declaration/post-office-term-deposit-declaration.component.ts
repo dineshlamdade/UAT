@@ -150,6 +150,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
+  row = [];
   public hideRemarkDiv: boolean;
   public hideRemoveRow: boolean;
   public isClear: boolean;
@@ -383,6 +384,27 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.globalSelectedAmount = '0.00';
     //}
   }
+  addTable() {
+    const obj = {
+      id: '',
+      name: '',
+      email: '',
+      a: '',
+      b: '',
+      c: '',
+      d: '',
+      e: '',
+      f: '',
+      g: '',
+      h: '',
+
+    }
+    this.row.push(obj);
+  }
+  deleteRows(j){
+    this.row.splice(j, 1 );
+  }
+
 
   //------------- When Edit of Document Details -----------------------
   declarationEditUpload(
