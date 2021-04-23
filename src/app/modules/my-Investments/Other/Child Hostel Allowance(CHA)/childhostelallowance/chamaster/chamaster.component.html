@@ -21,8 +21,17 @@
                      </div>
                   </div>
 
-                  <div class="row mt-0 mb-10">
-                     <div class="col-sm-6 col-md-4">
+                  <div class="col-sm-6 col-md-3">
+                     <label class="form-label">Age</label>
+                     <input type="text" formControlName="ageBracket" class="form-control" disabled
+                       [ngClass]="{ 'is-invalid': submitted && masterForm.ageBracket.errors }">
+                     <div *ngIf="submitted && masterForm.ageBracket.errors" class="invalid-feedback">
+                       <div *ngIf="masterForm.ageBracket.errors.required">ageBracket is mandatory</div>
+                     </div>
+                   </div>
+
+                  <!-- <div class="row mt-0 mb-10"> -->
+                     <div class="col-sm-6 col-md-3">
                         <label class="form-label">From Date</label>
                         <div class="form-group">
                            <div class="input-group">
@@ -41,7 +50,7 @@
                            </div>
                         </div>
                      </div>
-                     <div class="col-sm-6 col-md-4">
+                     <div class="col-sm-6 col-md-3">
                         <label class="form-label">To Date</label>
                         <div class="form-group">
                            <div class="input-group">
@@ -62,7 +71,7 @@
                         </div>
                      </div>
                   </div>
-               </div>
+             <!--   </div> -->
             </fieldset>
          </div>
       </div>

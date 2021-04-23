@@ -37,10 +37,18 @@ export class HouserentsummaryComponent implements OnInit {
   showData = false;
   public modalRef: BsModalRef;
 
+
+  public baseTotal: number;
+  public arrearTotal: number;
+  public total: number;
+  public maxEligibilityTotal: number;
+  public applicableAllowanceTotal: number;
+
   /*   @Input() institution: string; */
   @Input() propertyHouseName: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() policyNumber = new EventEmitter<any>();
+  @Output() houseRentalMasterIds = new EventEmitter<any>();
 
   constructor(
     private houseRentService: HouseRentService,
@@ -50,8 +58,24 @@ export class HouserentsummaryComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+
+    this.getComputationSummaryPage();
     // Summary get Call on Page Load
     this.summaryPage();
+  }
+
+
+  getComputationSummaryPage() {
+    this.houseRentService.getComputation().subscribe((res) => {
+      this.summaryGridData = res.data.results[0].childrenEducationAllowanceComputation;
+        console.log("res::",res)
+      this.baseTotal = res.data.results[0].baseTotal;
+      this.arrearTotal = res.data.results[0].arrearTotal;
+      this.total = res.data.results[0].total;
+      this.maxEligibilityTotal = res.data.results[0].maxEligibilityTotal;
+      this.applicableAllowanceTotal =
+        res.data.results[0].applicableAllowanceTotal;
+    });
   }
 
   redirectToDeclarationActual(propertyName: string, mode: string) {
@@ -85,19 +109,27 @@ export class HouserentsummaryComponent implements OnInit {
     });
   }
 
-  jumpToMasterPage(propertyName: string) {
+/*   jumpToMasterPage(propertyName: string) {
     this.tabIndex = 1;
     const data = {
       number: propertyName,
       tabIndex: this.tabIndex,
     };
     this.policyNumber.emit(data);
-  }
+  } */
+  jumpToMasterPage(houseRentalMasterId: number) {
+  this.tabIndex = 1;
+  const houseRentalMasterIds = {
+    houseRentalMasterId: houseRentalMasterId,
+    tabIndex: this.tabIndex,
+  };
+  this.houseRentalMasterIds.emit(houseRentalMasterIds);
+}
 
   opencomputationModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-lg' })
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 }

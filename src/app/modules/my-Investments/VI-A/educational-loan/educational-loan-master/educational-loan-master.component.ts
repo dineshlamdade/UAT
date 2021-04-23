@@ -162,7 +162,7 @@ export class EducationalLoanMasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-      fullTimeCourse: new FormControl('false'),
+      fullTimeCourse: new FormControl('true'),
       studentName: new FormControl(null, Validators.required),
       relationship: new FormControl(
         { value: null, disabled: true },
@@ -193,7 +193,7 @@ export class EducationalLoanMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Daughter' || element.relation === 'Son') {
+        if (element.relation === 'Daughter' || element.relation === 'Son' ||  element.relation === 'Self' || element.ageBracket === 'Minor') {
           this.familyMemberName.push(obj);
         }
       });
@@ -336,6 +336,22 @@ export class EducationalLoanMasterComponent implements OnInit {
     console.log('this.filesArray.size::', this.masterfilesArray.length);
   }
 
+ /*  ====================hide===================== */
+  show = true;
+ 
+  toggle()
+   {
+    this.show = !this.show
+    this.alertService.sweetalertWarning(
+      'You Have No Full Time Course Then Educational Loan Not To Apply ');
+   
+  }
+  
+  toggle1()
+  {
+    this.show = true;
+ }
+  
   // Policy End Date Validations with Current Finanacial Year
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(

@@ -54,6 +54,7 @@ import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme
 
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
+import { EmployeenationalpensionComponent } from './Other/employeenationalpension/employeenationalpension.component';
 
 @NgModule({
   declarations: [
