@@ -13,6 +13,7 @@ import { FamilyInformationService } from './../family-information.service';
 import { ConfirmationModalComponent } from './../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
+import { timeStamp } from 'node:console';
 
 
 
@@ -333,6 +334,8 @@ export class FamilyDetailsComponent implements OnInit {
       this.IsActive = true;
       const isActive = this.FamilyDetailsInfoForm.get('isActive');
       isActive.disable();
+      if(this.IsActive==true)
+      {this.FamilyDetailsInfoForm.get('remark').disable}
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
