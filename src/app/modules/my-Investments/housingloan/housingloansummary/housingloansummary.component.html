@@ -19,7 +19,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let summary of summaryGridData.housePropertySummaryDetails; let i = index">
-              <td rowspan="1" class="text-link">{{summary.houseDescription}}</td>
+              <td class="text-link wd-20 align-left" (click)="jumpToMasterPage(summary.housePropertyMasterId)" >{{summary.houseDescription}}</td>
 
               <td class="padding-0">
                 <div class="pd-5" *ngFor="let usageType of summary.housePropertyUsageTypeList"
@@ -47,10 +47,13 @@
                   </div>
                 </div>
               </td>
-              <td rowspan="1" class="text-link">{{summary.declaredAmount}}</td>
-              <td rowspan="1" class="text-link">{{summary.actualAmount}}</td>
-              <td><i class="fa fa-edit font-16 text-dark-green cursor-pointer" tooltip="Edit"></i>&nbsp;&nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i>
+              <td rowspan="1" >{{summary.declaredAmount}}</td>
+              <td rowspan="1" >{{summary.actualAmount}}</td>
+              <td class="wd-10">
+                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                (click)="redirectToDeclarationActual(summary.housePropertyMasterId, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                (click)="redirectToDeclarationActual(summary.housePropertyMasterId, 'view')" tooltip="View"></i>
               </td>
             </tr>
             <tr *ngIf="!summaryGridData.housePropertySummaryDetails?.length">
@@ -59,6 +62,12 @@
                   Available</span>
               </td>
             </tr>
+            <!-- <tr *ngIf="!summaryGridData?.length  && summaryGridData.housePropertySummaryDetails !== undefined" >
+              <td colspan="6">
+                 <span class="font-14 font500 align-center text-red">No Data
+                 Available</span>
+              </td>
+           </tr> -->
             <tr class="bg-color-white">
               <td colspan="7" class="align-left font700 text-purple font-18">Computation</td>
             </tr>
@@ -131,13 +140,13 @@
                   {{ deductionInSec24ActualAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EE !== 0" >
               <td colspan="7" class="align-left font700 text-cyan font-16 bg-color-white">&nbsp;<i
                   class="fa fa-info-circle text-link  font-18" aria-hidden="true"
                   (click)="InfoDialogforSectionEightyEE(infodialog1)"></i> &nbsp; &nbsp;Additional Benefit (Sec. 80-EE)
               </td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EE !== 0">
               <td colspan="4" class="align-right font700">Balance Available &nbsp; <span
                   class="Letterbadge">F</span>&nbsp;= &nbsp;<span class="Letterbadge">C</span> - &nbsp; <span
                   class="Letterbadge">E</span></td>
@@ -149,14 +158,14 @@
                   {{ balanceAvailableIn80EEActualAmountAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EE !== 0">
               <td colspan="4" class="align-right font700">Limit &nbsp; <span class="Letterbadge">G</span></td>
               <td class="align-right"><span class="padding-right-12" tooltip="{{ limitIn80EE | number: '1.2-2' }}">
                   {{ limitIn80EE | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EE !== 0">
               <td colspan="4" class="align-right font700">Deduction (Sec. 80-EE) &nbsp; <span
                   class="Letterbadge">H</span> &nbsp; = &nbsp; Minimum of ( &nbsp; <span class="Letterbadge">F</span>
                 &nbsp; & &nbsp; <span class="Letterbadge">G</span> &nbsp; )</td>
@@ -168,13 +177,13 @@
                   {{ deductionIn80EEActualAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EEA !== 0">
               <td colspan="7" class="align-left font700 text-cyan font-16 bg-color-white"> &nbsp;<i
                   class="fa fa-info-circle text-link  font-18" aria-hidden="true"
                   (click)="InfoDialogforSectionEightyEEA(infodialog2)"></i> &nbsp; &nbsp;Additional Benefit (Sec.
                 80-EEA)</td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EEA !== 0">
               <td colspan="4" class="align-right font700">Balance Available &nbsp; <span
                   class="Letterbadge">F</span>&nbsp;= &nbsp;<span class="Letterbadge">C</span> - &nbsp; <span
                   class="Letterbadge">E</span></td>
@@ -186,15 +195,15 @@
                   {{ balanceAvailableIn80EEAActualAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EEA !== 0">
               <td colspan="4" class="align-right font700">Limit &nbsp; <span class="Letterbadge">G</span></td>
               <td class="align-right"><span class="padding-right-12" tooltip="{{ limitIn80EEA | number: '1.2-2' }}">
                   {{ limitIn80EEA | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
-              <td colspan="4" class="align-right font700">Deduction (Sec. 80-EE) &nbsp; <span
+            <tr class="table-light-color" *ngIf = "limitIn80EEA !== 0">
+              <td colspan="4" class="align-right font700">Deduction (Sec. 80-EEA) &nbsp; <span
                   class="Letterbadge">H</span> &nbsp; = &nbsp; Minimum of ( &nbsp; <span class="Letterbadge">F</span>
                 &nbsp; & &nbsp; <span class="Letterbadge">G</span> &nbsp; )</td>
               <td class="align-right"><span class="padding-right-12"
@@ -205,7 +214,7 @@
                   {{ deductionIn80EEAActualAmount | number: "1.2-2" }}</span> </td>
               <td class="align-right bg-color-lightgray"></td>
             </tr>
-            <tr class="table-light-color">
+            <tr class="table-light-color" *ngIf = "limitIn80EEA !== 0 || limitIn80EE !== 0" >
               <td colspan="4" class="align-right font700">Total Loss from House property: &nbsp; <span
                   class="Letterbadge">I</span> &nbsp;= &nbsp;<span class="Letterbadge">E</span> + &nbsp; <span
                   class="Letterbadge">H</span></td>
@@ -246,10 +255,10 @@
           <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;Loan is
             sanctioned during Financial Year 2016-17</p>
           <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;Loan Value
-            <=R s. 35 Lakh </p>
+            <= Rs. 35 Lakh </p>
               <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;House
                 Property Value
-                <=R s. 50 Lakh </p>
+                <= Rs. 50 Lakh </p>
         </div>
       </div>
     </div>
@@ -285,7 +294,7 @@
             sanctioned during Financial Year 2019-20 or 2020-2021</p>
           <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;House Property
             Value
-            <=R s. 45 Lakh </p>
+            <= Rs. 45 Lakh </p>
         </div>
       </div>
     </div>

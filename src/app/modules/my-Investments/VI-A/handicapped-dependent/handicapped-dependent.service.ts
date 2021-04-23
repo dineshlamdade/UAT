@@ -69,6 +69,8 @@ export class HandicappedDependentService {
       return res;
     }));
   }
+
+
   getAllInstitutesFromGlobal() {
     return this._HTTP.get(this.apiUrl + 'institution')
     .pipe(map((res: any) => {

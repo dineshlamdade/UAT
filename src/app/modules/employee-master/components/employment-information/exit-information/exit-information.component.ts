@@ -149,6 +149,7 @@ export class ExitInformationComponent implements OnInit {
     if (this.employeeExitInfoId) {
       this.putExitSubmit(ExitInformation);
     } else {
+      localStorage.setItem('LastTransaction', 'Exit');
       this.EmploymentInformationService.postExitForm(ExitInformation).subscribe(res => {
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         // this.ExitInformation = res.data.results[0];
@@ -158,6 +159,7 @@ export class ExitInformationComponent implements OnInit {
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.ExitForm.reset();
         this.EventEmitterService.getEmpSummaryInitiate();
+      
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
         // this.EventEmitterService.getRejoineeStatusCode(true);
       }, (error: any) => {

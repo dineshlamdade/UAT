@@ -104,11 +104,13 @@ export class TransferInformationComponent implements OnInit {
     if (this.employeeTransferId) {
       this.putTransferFormSubmit(TransferToInformation);
     } else {
+      localStorage.setItem('LastTransaction', 'Transfer');
       this.EmploymentInformationService.postTransferToForm(TransferToInformation).subscribe(res => {
         // this.TransferToInformation = res.data.results[0];
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
         this.TransferForm.reset();
+        
         this.EventEmitterService.getEmpSummaryInitiate();
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {

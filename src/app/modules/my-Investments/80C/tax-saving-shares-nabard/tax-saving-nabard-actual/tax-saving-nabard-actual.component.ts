@@ -88,6 +88,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   public enableCheckboxFlag3: boolean;
   public addRow1: boolean;
   public addRow2: number;
+  public investmentGroup3TransactionDetailList: Array<any> = [];
   public previousEmployeeList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
@@ -211,16 +212,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.getTransactionFilterData();
     // console.log('data::', this.data);
-    if (this.data === undefined || this.data === null) {
-      this.declarationPage();
-    } else {
-      const input = this.data;
-      this.globalInstitution = input.institution;
-      this.globalPolicy = input.policyNo;
-      // this.getInstitutionListWithPolicyNo();
-      this.getTransactionFilterData(input.institution, input.policyNo, 'All');
-    }
+
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     this.enableAddRow = 0;
@@ -332,7 +326,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
       documentRemark: this.documentRemark,
     };
 
-    console.log('Fixed Deposite Data::', data);
+    console.log('Senior Citizen Data::', data);
 
     this.taxSavingNabardService
       .uploadTSNabardTransactionwithDocument(this.filesArray, data)
@@ -572,13 +566,13 @@ export class TaxSavingNabardActualComponent implements OnInit {
     });
   }
 
-  updatePreviousEmpId(event: any, i: number, j: number) {
+  updatePreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);
-    this.transactionDetail[j].group2TransactionList[i].previousEmployerId =
+    this.investmentGroup3TransactionDetailList[i].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.transactionDetail[j].group2TransactionList[i].previousEmployerId
+      this.investmentGroup3TransactionDetailList[i].previousEmployerId
     );
   }
 
@@ -614,11 +608,33 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.selectedTransactionInstName('All');
   }
 
+  // public getInstitutionListWithPolicyNo() {
+  //   this.taxSavingNabardService
+  //     .subscribe((res) => {
+  //       console.log('getInstitutionListWithPolicyNo', res);
+  //       this.transactionInstitutionListWithPolicies = res.data.results;
 
+  //       res.data.results.forEach((element) => {
+  //         const obj = {
+  //           label: element.institution,
+  //           value: element.institution,
+  //         };
+  //         this.transactionInstitutionNames.push(obj);
+
+  //         element.policies.forEach((policy) => {
+  //           const policyObj = {
+  //             label: policy,
+  //             value: policy,
+  //           };
+  //           this.transactionPolicyList.push(policyObj);
+  //         });
+  //       });
+  //     });
+  // }
   // --------- On institution selection show all transactions list accordingly all policies--------
   selectedTransactionInstName(institutionName: any) {
     this.globalInstitution = institutionName;
-    this.getTransactionFilterData(this.globalInstitution, null, null);
+    //this.getTransactionFilterData(this.globalInstitution, null, null);
     this.globalSelectedAmount = this.numberFormat.transform(0);
     const data = {
       label: 'All',
@@ -660,30 +676,29 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   // -------- On Policy selection show all transactions list accordingly all policies---------
-  selectedPolicy(policy: any) {
+ /*  selectedPolicy(policy: any) {
     this.globalPolicy = policy;
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
       null
     );
-  }
+  } */
 
   // ------- On Transaction Status selection show all transactions list accordingly all policies------
-  selectedTransactionStatus(transactionStatus: any) {
+/*   selectedTransactionStatus(transactionStatus: any) {
     this.getTransactionFilterData(
       this.globalInstitution,
       this.globalPolicy,
       transactionStatus
     );
-  }
+  } */
 
   // -------- ON select to check input boxex--------
   public onSelectCheckBox(
-    data: any,
+
     event: { target: { checked: any } },
-    i: number,
-    j: number
+    i: number
   ) {
     const checked = event.target.checked;
 
@@ -695,32 +710,27 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
     let formatedActualAmount: number = 0;
     let formatedSelectedAmount: string;
-    console.log(
-      'in IS ECS::',
-      this.transactionDetail[j].group2TransactionList[i].isECS
-    );
+
     if (checked) {
-      if (this.transactionDetail[j].group2TransactionList[i].isECS === 1) {
-        this.transactionDetail[j].group2TransactionList[i].actualAmount =
+     /*  if (this.transactionDetail[j].isECS === 1) {
+        this.transactionDetail[j].actualAmount =
           data.declaredAmount;
-        this.transactionDetail[j].group2TransactionList[
-          i
-        ].dateOfPayment = new Date(data.dueDate);
+        this.transactionDetail[j].dateOfPayment = new Date(data.dueDate);
         console.log(
           'in IS actualAmount::',
-          this.transactionDetail[j].group2TransactionList[i].actualAmount
+          this.transactionDetail[j].actualAmount
         );
         console.log(
           'in IS dateOfPayment::',
-          this.transactionDetail[j].group2TransactionList[i].dateOfPayment
+          this.transactionDetail[j].dateOfPayment
         );
       } else {
-        this.transactionDetail[j].group2TransactionList[i].actualAmount =
+        this.transactionDetail[j].actualAmount =
           data.declaredAmount;
       }
-
+ */
       formatedActualAmount = Number(
-        this.transactionDetail[j].group2TransactionList[i].actualAmount
+        this.investmentGroup3TransactionDetailList[i].declaredAmount
           .toString()
           .replace(',', '')
       );
@@ -728,47 +738,45 @@ export class TaxSavingNabardActualComponent implements OnInit {
         formatedGlobalSelectedValue + formatedActualAmount
       );
       console.log('in if formatedSelectedAmount::', formatedSelectedAmount);
-      this.uploadGridData.push(data.investmentGroup2TransactionId);
+     // this.uploadGridData.push(data.investmentGroup2TransactionId);
 
       // this.dateOfPaymentGlobal =new Date (data.dueDate) ;
       // this.actualAmountGlobal = Number(data.declaredAmount);
     } else {
       formatedActualAmount = Number(
-        this.transactionDetail[j].group2TransactionList[i].actualAmount
+        this.investmentGroup3TransactionDetailList[i].declaredAmount
           .toString()
           .replace(',', '')
       );
-      this.transactionDetail[j].group2TransactionList[
-        i
-      ].actualAmount = this.numberFormat.transform(0);
-      this.transactionDetail[j].group2TransactionList[i].dateOfPayment = null;
+     // this.investmentGroup3TransactionDetailList[i].actualAmount = this.numberFormat.transform(0);
+    //  this.investmentGroup3TransactionDetailList[i].dateOfPayment = null;
 
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue - formatedActualAmount
       );
       // console.log('in else formatedSelectedAmount::', formatedSelectedAmount);
-      const index = this.uploadGridData.indexOf(
+     /*  const index = this.uploadGridData.indexOf(
         data.investmentGroup2TransactionId
       );
-      this.uploadGridData.splice(index, 1);
+      this.uploadGridData.splice(index, 1); */
     }
 
     this.globalSelectedAmount = formatedSelectedAmount;
     console.log('this.globalSelectedAmount::', this.globalSelectedAmount);
-    this.actualTotal = 0;
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
+    /* this.actualTotal = 0;
+    this.investmentGroup3TransactionDetailList.forEach((element) => { */
       // console.log(element.actualAmount.toString().replace(',', ""));
-      this.actualTotal += Number(
+  /*     this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
       );
-    });
-    this.transactionDetail[j].actualTotal = this.actualTotal;
+    }); */
+   // this.transactionDetail[j].actualTotal = this.actualTotal;
 
-    if (this.uploadGridData.length) {
+  /*   if (this.uploadGridData.length) {
       this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
-    console.log(this.uploadGridData.length);
+    console.log(this.uploadGridData.length); */
   }
 
   // ------------ To Check / Uncheck All  Checkboxes-------------
@@ -785,7 +793,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
       this.isCheckAll = true;
       this.enableSelectAll = true;
       this.enableCheckboxFlag2 = item.institutionName;
-      item.group2TransactionList.forEach((element) => {
+      item.forEach((element) => {
         this.uploadGridData.push(element.investmentGroup2TransactionId);
       });
       this.enableFileUpload = true;
@@ -795,135 +803,108 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   // --------------- ON change of declared Amount in line-------------
-  onDeclaredAmountChange(
+  onInstitutionChange(
     summary: {
-      previousEmployerName: any;
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;
       declaredAmount: number;
+      // actualAmount: number;
       dateOfPayment: Date;
-      actualAmount: any;
-      dueDate: Date;
     },
-    i: number,
-    j: number
+    i: number
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
 
-    this.transactionDetail[j].group2TransactionList[
-      i
-    ].declaredAmount = this.declarationService.declaredAmount;
-    const formatedDeclaredAmount = this.numberFormat.transform(
-      this.transactionDetail[j].group2TransactionList[i].declaredAmount
-    );
-    // console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
-    this.transactionDetail[j].group2TransactionList[
-      i
-    ].declaredAmount = formatedDeclaredAmount;
+    this.investmentGroup3TransactionDetailList[i].institution = this.declarationService.institution;
 
-    this.declarationTotal = 0;
-    // this.declaredAmount=0;
-
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
-      );
-      // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
-    });
-
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
-  // ------------ ON change of DueDate in line----------
-  onDueDateChange(
+  // --------------- ON change of Accoun No in line-------------
+  onAccountNoChange(
     summary: {
-      previousEmployerName: any;
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;
       declaredAmount: number;
+      // actualAmount: number;
       dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
     },
-    i: number,
-    j: number
+    i: number
   ) {
-    this.transactionDetail[j].group2TransactionList[i].dueDate =
-      summary.dueDate;
+    this.declarationService = new DeclarationService(summary);
+    // console.log("Ondeclaration Amount change" + summary.declaredAmount);
+
+    this.investmentGroup3TransactionDetailList[i].accountNumber = this.declarationService.accountNumber;
+
   }
+// --------------- ON change of DateOfPayment in line-------------
+
+  onChangeDateOfPayment(
+    summary: {
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;
+      declaredAmount: number;
+      // actualAmount: number;
+      dateOfPayment: Date;
+    },
+    i: number
+  ) {
+    console.log("summary::",summary)
+   // this.declarationService = new DeclarationService(summary);
+    this.investmentGroup3TransactionDetailList[i].dateOfPayment = summary.dateOfPayment;
+
+
+     }
 
   // ------------Actual Amount change-----------
   onActualAmountChange(
     summary: {
-      previousEmployerName: any;
+      previousEmployerId:number;
+      institution: 0;
+      accountNumber: number;
       declaredAmount: number;
+      // actualAmount: number;
       dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: Date;
     },
-    i: number,
-    j: number
+    i: number
   ) {
+    console.log("summary::",summary)
     this.declarationService = new DeclarationService(summary);
-    // console.log("Actual Amount change::" , summary);
-
-    this.transactionDetail[j].group2TransactionList[
-      i
-    ].actualAmount = this.declarationService.actualAmount;
-    // console.log("Actual Amount changed::" , this.transactionDetail[j].group2TransactionList[i].actualAmount);
+    console.log("declarationService::",this.declarationService)
+    this.investmentGroup3TransactionDetailList[i].declaredAmount = this.declarationService.declaredAmount;
+    console.log("investmentGroup3TransactionDetailList[i].declaredAmount::",this.investmentGroup3TransactionDetailList[i])
     const formatedActualAmount = this.numberFormat.transform(
-      this.transactionDetail[j].group2TransactionList[i].actualAmount
+      this.investmentGroup3TransactionDetailList[i].declaredAmount
     );
-    // console.log(`formatedActualAmount::`,formatedActualAmount);
-    this.transactionDetail[j].group2TransactionList[
-      i
-    ].actualAmount = formatedActualAmount;
-
-    if (
-      this.transactionDetail[j].group2TransactionList[i].actualAmount !==
-        Number(0) ||
-      this.transactionDetail[j].group2TransactionList[i].actualAmount !== null
-    ) {
-      // console.log(`in if::`,this.transactionDetail[j].group2TransactionList[i].actualAmount);
-      this.isDisabled = false;
-    } else {
-      // console.log(`in else::`,this.transactionDetail[j].group2TransactionList[i].actualAmount);
-      this.isDisabled = true;
-    }
+    this.investmentGroup3TransactionDetailList[i].declaredAmount = formatedActualAmount;
 
     this.actualTotal = 0;
-    this.actualAmount = 0;
-    this.transactionDetail[j].group2TransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ""));
+    this.declaredAmount = 0;
+    this.investmentGroup3TransactionDetailList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(',', '')
       );
-      // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+      this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
     });
 
-    this.transactionDetail[j].actualTotal = this.actualTotal;
+    this.transactionDetail.forEach((element) => {
+      this.actualTotal += Number(
+        element.declaredAmount.toString().replace(',', '')
+      );
+      this.declaredAmount += Number(element.declaredAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.declaredAmount;
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
   }
 
   // --------Add New ROw Function---------
-  // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
-  //   dateOfPayment: Date; actualAmount: any;  dueDate: Date}, j: number, i: number) {
-  addRowInList(
-    summarynew: {
-      investmentGroup2TransactionId: number;
-      investmentGroup2MasterPaymentDetailId: number;
-      previousEmployerId: number;
-      declaredAmount: any;
-      dateOfPayment : Date;
-      // investedAmount : number;
-      accountNumber: number;
-      actualAmount: any;
-      institution: number;
-    },
-    j: number
+   addRowInList(
   ) {
     // console.log('summary::',  summarynew);
     // if (this.initialArrayIndex[j] > i) {
@@ -931,27 +912,24 @@ export class TaxSavingNabardActualComponent implements OnInit {
     // } else {
     //   this.hideRemoveRow  = true;
     // }
-    this.declarationService = new DeclarationService(summarynew);
-    // console.log('declarationService::', this.declarationService);
-    this.globalAddRowIndex -= 1;
-    console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
+    this.declarationService = new DeclarationService();
+    console.log('declarationService::', this.declarationService);
+    //this.globalAddRowIndex -= 1;
+   // console.log(' in add this.globalAddRowIndex::', this.globalAddRowIndex);
     this.shownewRow = true;
     this.isDisabled = false;
-    this.declarationService.investmentGroup2TransactionId = this.globalAddRowIndex;
-    this.declarationService.declaredAmount = null;
+    this.declarationService.investmentGroup3TransactionId = 0;
+    this.declarationService.declaredAmount = 0;
     this.declarationService.accountNumber = null;
-    this.declarationService.actualAmount = null;
-    this.declarationService.institution = 0;
+    this.declarationService.actualAmount = 0;
+    this.declarationService.institution = null;
     this.declarationService.dateOfPayment = null;
-    // this.declarationService.investedAmount = null;
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
-    // this.declarationService.investmentGroup2MasterPaymentDetailId = this.transactionDetail[
-    //   j
-    // ].group2TransactionList[0].investmentGroup2MasterPaymentDetailId;
-    // this.transactionDetail[j].group2TransactionList.push(this.declarationService);
-    // console.log('addRow::', this.transactionDetail[j].group2TransactionList);
+
+    this.investmentGroup3TransactionDetailList.push(this.declarationService);
+    console.log('addRow::', this.investmentGroup3TransactionDetailList);
   }
 
   sweetalertWarning(msg: string) {
@@ -964,13 +942,13 @@ export class TaxSavingNabardActualComponent implements OnInit {
 
   // -------- Delete Row--------------
   deleteRow(j: number) {
-    const rowCount = this.transactionDetail[j].group2TransactionList.length - 1;
+    const rowCount = this.transactionDetail[j].length - 1;
     // console.log('rowcount::', rowCount);
     // console.log('initialArrayIndex::', this.initialArrayIndex);
-    if (this.transactionDetail[j].group2TransactionList.length == 1) {
+    if (this.transactionDetail[j].length == 1) {
       return false;
     } else if (this.initialArrayIndex[j] <= rowCount) {
-      this.transactionDetail[j].group2TransactionList.splice(rowCount, 1);
+      this.transactionDetail[j].splice(rowCount, 1);
       return true;
     }
   }
@@ -993,10 +971,8 @@ export class TaxSavingNabardActualComponent implements OnInit {
     // tslint:disable-next-line: max-line-length
     this.transactionDetail[j].actualTotal +=
       this.declarationService.actualAmount -
-      this.transactionDetail[j].group2TransactionList[i].actualAmount;
-    this.transactionDetail[j].group2TransactionList[
-      i
-    ] = this.declarationService;
+      this.transactionDetail[j].actualAmount;
+    this.transactionDetail[j]= this.declarationService;
     this.declarationService = new DeclarationService();
   }
 
@@ -1012,7 +988,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     ].actualTotal += this.declarationService.actualAmount;
     this.grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
-    this.transactionDetail[j].group2TransactionList.push(
+    this.transactionDetail[j].push(
       this.declarationService
     );
     this.declarationService = new DeclarationService();
@@ -1023,7 +999,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     console.log(this.transactionDetail);
     this.tabIndex = 0;
     this.transactionDetail.forEach((element) => {
-      element.group2TransactionList.forEach((element) => {
+      element.forEach((element) => {
         element.dateOfPayment = this.datePipe.transform(
           element.dateOfPayment,
           'yyyy-MM-dd'
@@ -1040,7 +1016,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
       this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
       this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
       this.transactionDetail.forEach((element) => {
-        element.group2TransactionList.forEach((element) => {
+        element.forEach((element) => {
           element.dateOfPayment = new Date(element.dateOfPayment);
         });
       });
@@ -1087,7 +1063,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
     this.currentFileUpload = null;
   }
 
-  // Remove Selected LicTransaction Document
+  // Remove Selected Transaction Document
   removeSelectedTransactionDocument(index: number) {
     this.filesArray.splice(index, 1);
     console.log('this.filesArray::', this.filesArray);
@@ -1101,10 +1077,17 @@ export class TaxSavingNabardActualComponent implements OnInit {
       );
       return;
     }
-    console.log('this.transactionDetail::', this.transactionDetail);
+    console.log('this.investmentGroup3TransactionDetailList::', this.investmentGroup3TransactionDetailList);
 
-    this.transactionDetail.forEach((element) => {
-      element.group2TransactionList.forEach((innerElement) => {
+
+      this.investmentGroup3TransactionDetailList.forEach((innerElement) => {
+        // if (innerElement.declaredAmount !== null) {
+        //   innerElement.declaredAmount = innerElement.declaredAmount
+        //     .toString()
+        //     .replace(',', '');
+        // } else {
+        //   innerElement.declaredAmount = 0.0;
+        // }
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
@@ -1112,43 +1095,23 @@ export class TaxSavingNabardActualComponent implements OnInit {
         } else {
           innerElement.declaredAmount = 0.0;
         }
-        if (innerElement.actualAmount !== null) {
-          innerElement.actualAmount = innerElement.actualAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.actualAmount = 0.0;
-        }
 
         const dateOfPaymnet = this.datePipe.transform(
           innerElement.dateOfPayment,
           'yyyy-MM-dd'
         );
-        const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd'
-        );
 
         innerElement.dateOfPayment = dateOfPaymnet;
-        innerElement.dueDate = dueDate;
       });
-    });
+
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
-      investmentGroup3TransactionDetail: this.transactionDetail,
-      groupTransactionIDs: this.uploadGridData,
+      investmentGroup3TransactionDetailList: this.investmentGroup3TransactionDetailList,
       receiptAmount: this.receiptAmount,
       documentRemark: this.documentRemark,
     };
     console.log('data::', data);
-
-    // this.fileService.uploadSingleFile(this.currentFileUpload, data)
-    // .pipe(tap(event => {
-    //     if (event.type === HttpEventType.UploadProgress) {
-    //         this.loaded = Math.round(100 * event.loaded / event.total);
-    //     }
-    // }))
     this.taxSavingNabardService
       .uploadTSNabardTransactionwithDocument(this.filesArray, data)
       .subscribe((res) => {
@@ -1163,7 +1126,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
           this.transactionDetail.forEach((element) => {
-            element.group2TransactionList.forEach((innerElement) => {
+            element.forEach((innerElement) => {
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(
                   innerElement.dateOfPayment
@@ -1202,13 +1165,13 @@ export class TaxSavingNabardActualComponent implements OnInit {
     console.log(globalSelectedAmount_);
     if (receiptAmount_ < globalSelectedAmount_) {
     this.alertService.sweetalertError(
-      'Receipt Amount should be equal or greater than Invested Amount of Selected lines',
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
     );
   } else if (receiptAmount_ > globalSelectedAmount_) {
     console.log(receiptAmount_);
     console.log(globalSelectedAmount_);
     this.alertService.sweetalertWarning(
-      'Receipt Amount is greater than Selected line Invested Amount',
+      'Receipt Amount is greater than Selected line Actual Amount',
     );
   }
     this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
@@ -1217,11 +1180,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
   // Update Previous Employee in Edit Modal
   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
     console.log('select box value::', event.target.value);
-    this.editTransactionUpload[j].group2TransactionList[i].previousEmployerId =
+    this.editTransactionUpload[j].previousEmployerId =
       event.target.value;
     console.log(
       'previous emp id::',
-      this.editTransactionUpload[j].group2TransactionList[i].previousEmployerId
+      this.editTransactionUpload[j].previousEmployerId
     );
   }
 
@@ -1237,11 +1200,11 @@ export class TaxSavingNabardActualComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].group2TransactionList[i].dueDate =
+    this.editTransactionUpload[j].dueDate =
       summary.dueDate;
     console.log(
       'onDueDateChangeInEditCase::',
-      this.editTransactionUpload[j].group2TransactionList[i].dueDate
+      this.editTransactionUpload[j].dueDate
     );
   }
 
@@ -1263,21 +1226,17 @@ export class TaxSavingNabardActualComponent implements OnInit {
         summary.declaredAmount
     );
 
-    this.editTransactionUpload[j].group2TransactionList[
-      i
-    ].declaredAmount = this.declarationService.declaredAmount;
+    this.editTransactionUpload[j].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].group2TransactionList[i].declaredAmount
+      this.editTransactionUpload[j].declaredAmount
     );
     console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[
-      i
-    ].declaredAmount = formatedDeclaredAmount;
+    this.editTransactionUpload[j].declaredAmount = formatedDeclaredAmount;
 
     this.declarationTotal = 0;
 
-    this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
+    this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
         element.declaredAmount.toString().replace(',', '')
@@ -1304,10 +1263,10 @@ export class TaxSavingNabardActualComponent implements OnInit {
     i: number,
     j: number
   ) {
-    this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment =
+    this.editTransactionUpload[j].dateOfPayment =
       summary.dateOfPayment;
     console.log(
-      this.editTransactionUpload[j].group2TransactionList[i].dateOfPayment
+      this.editTransactionUpload[j].dateOfPayment
     );
   }
 
@@ -1329,43 +1288,39 @@ export class TaxSavingNabardActualComponent implements OnInit {
       summary
     );
 
-    this.editTransactionUpload[j].group2TransactionList[
-      i
-    ].actualAmount = this.declarationService.actualAmount;
+    this.editTransactionUpload[j].actualAmount = this.declarationService.actualAmount;
     console.log(
       'Actual Amount changed::',
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount
+      this.editTransactionUpload[j].actualAmount
     );
 
     const formatedActualAmount = this.numberFormat.transform(
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount
+      this.editTransactionUpload[j].actualAmount
     );
     console.log(`formatedActualAmount::`, formatedActualAmount);
 
-    this.editTransactionUpload[j].group2TransactionList[
-      i
-    ].actualAmount = formatedActualAmount;
+    this.editTransactionUpload[j].actualAmount = formatedActualAmount;
 
     if (
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount !==
+      this.editTransactionUpload[j].actualAmount !==
         Number(0) ||
-      this.editTransactionUpload[j].group2TransactionList[i].actualAmount !==
+      this.editTransactionUpload[j].actualAmount !==
         null
     ) {
       console.log(
         `in if::`,
-        this.editTransactionUpload[j].group2TransactionList[i].actualAmount
+        this.editTransactionUpload[j].actualAmount
       );
     } else {
       console.log(
         `in else::`,
-        this.editTransactionUpload[j].group2TransactionList[i].actualAmount
+        this.editTransactionUpload[j].actualAmount
       );
     }
 
     this.actualTotal = 0;
     this.actualAmount = 0;
-    this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
+    this.editTransactionUpload[j].forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(',', '')
@@ -1409,16 +1364,9 @@ export class TaxSavingNabardActualComponent implements OnInit {
       this.hideCopytoActualDate = false;
     }
   }
-  // copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
-  //   dueDate = new Date(dueDate);
-  //   this.transactionDetail[0].group2TransactionList[i].dateOfPayment = dueDate;
-  //   this.declarationService.dateOfPayment = this.transactionDetail[0].group2TransactionList[
-  //     i
-  //   ].dateOfPayment;
-  //   console.log('Date OF PAyment' + this.declarationService.dateOfPayment);
-  // }
 
-  // Remove Selected LicTransaction Document Edit Maodal
+
+  // Remove Selected Transaction Document Edit Maodal
   removeSelectedTransactionDocumentInEditCase(index: number) {
     this.editfilesArray.splice(index, 1);
     console.log('this.editfilesArray::', this.editfilesArray);
@@ -1452,11 +1400,7 @@ export class TaxSavingNabardActualComponent implements OnInit {
   }
 
   // Common Function for filter to call API
-  getTransactionFilterData(
-    institution: String,
-    policyNo: String,
-    transactionStatus: String
-  ) {
+  getTransactionFilterData( ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
     this.taxSavingNabardService.getTransactionFilterData().subscribe((res) => {
       console.log('getTransactionFilterData', res);
@@ -1470,7 +1414,6 @@ export class TaxSavingNabardActualComponent implements OnInit {
         this.grandActualTotal = res.data.results[0].grandActualTotal;
         this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
         this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-        // this.initialArrayIndex = res.data.results[0].licTransactionDetail[0].group2TransactionList.length;
 
         this.initialArrayIndex = [];
 
@@ -1482,8 +1425,6 @@ export class TaxSavingNabardActualComponent implements OnInit {
             element.actualAmount
           );
         });
-      } else {
-        this.addRowInList(this.declarationService, 0);
       }
     });
   }
@@ -1505,32 +1446,15 @@ export class TaxSavingNabardActualComponent implements OnInit {
       });
   }
 
-  setDateOfPayment(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    i: number,
-    j: number
-  ) {
-    this.transactionDetail[j].group2TransactionList[i].dateOfPayment =
-      summary.dateOfPayment;
-    console.log(
-      this.transactionDetail[j].group2TransactionList[i].dateOfPayment
-    );
-  }
+
 }
 
 class DeclarationService {
-  public investmentGroup2TransactionId = 0;
-  public investmentGroup2MasterPaymentDetailId: number;
+  public investmentGroup3TransactionId = 0;
   public previousEmployerId = 0;
   public institution: 0;
   public accountNumber: number;
-  // public investedAmount:number;
+  // public dueDate: Date;
   public declaredAmount: number;
   public actualAmount: number;
   public dateOfPayment: Date;
