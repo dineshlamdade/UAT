@@ -1,17 +1,5 @@
 <app-loan-master></app-loan-master>
 
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- <div class="section-body">
     <div class="container-fluid">
         <div class="row">
@@ -63,10 +51,14 @@
                                         <option>SDM2</option>
                                     </select>
                                 </div>
+                                <div class="col-sm-3 col-md-3 mt-10">
+                                    <label class="form-label">Minimum Loan</label>
+                                    <input type="text" class="form-control" formControlName="minLoanAmount">
+                                </div> 
                             </div>
 
                             <div class="col-sm-12 col-md-12 mt-10">
-                                <label class="form-label">Deviation Permissible</label>
+                                <label class="form-label">Permissible Deviation (%)</label>
                                 <div class="row">
                                     <div class="col-sm-3 col-md-3 mt-10">
                                         <label class="form-label">Loan Amount</label>
@@ -101,22 +93,26 @@
 
 
                             <div class="col-sm-12 col-md-12 mt-10">
-                                <label class="form-label">Node Points</label>
+                                <label class="form-label">Node Settings</label>
                                 <div class="row">
                                     <div class="col-sm-3 col-md-3 mt-10">
                                         <label class="form-label">Principal Amount</label>
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio">
                                                 <input type="radio" class="custom-control-input" name="principalradio"
-                                                    value="withNode" (change)="getPrincipalAmount($event.target)">
+                                                    value="withNode" (change)="getPrincipalAmount($event.target)"
+                                                    [checked]="principalWithNodeFlag == 'withNode'">
                                                 <div class="custom-control-label">With Node</div>
                                             </label>
                                             <label class="custom-control custom-radio">
                                                 <input type="radio" class="custom-control-input" name="principalradio"
-                                                    value="withoutNode" (change)="getPrincipalAmount($event.target)">
+                                                    value="withoutNode" (change)="getPrincipalAmount($event.target)"
+                                                    [checked]="principalWithNodeFlag == 'withoutNode'">
                                                 <div class="custom-control-label">Without Node</div>
                                             </label>
-                                            <input type="text" class="form-control" placeholder="Principal Amount" *ngIf="PricipalNode == 'withNode'">
+                                            <input type="text" class="form-control" 
+                                            placeholder="Gap between two nodes" *ngIf="PricipalNode == 'withNode'" 
+                                            formControlName = "principalAmountNode">
                                         </div>
                                     </div>
                                     <div class="col-sm-3 col-md-3 mt-10">
@@ -124,15 +120,18 @@
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio">
                                                 <input type="radio" class="custom-control-input" name="interestradio"
-                                                    value="withNode" (change)="getInterestAmount($event.target)">
+                                                    value="withNode" (change)="getInterestAmount($event.target)"
+                                                    [checked]="intrestWithNodeFlag == 'withNode'">
                                                 <div class="custom-control-label">With Node</div>
                                             </label>
                                             <label class="custom-control custom-radio">
                                                 <input type="radio" class="custom-control-input" name="interestradio"
-                                                    value="withoutNode" (change)="getInterestAmount($event.target)">
+                                                    value="withoutNode" (change)="getInterestAmount($event.target)"
+                                                    [checked]="intrestWithNodeFlag == 'withoutNode'">
                                                 <div class="custom-control-label">Without Node</div>
                                             </label>
-                                            <input type="text" class="form-control" placeholder="Loan Interest" *ngIf="InterestNode == 'withNode'">
+                                            <input type="text" class="form-control" placeholder="Gap between two nodes" 
+                                            *ngIf="InterestNode == 'withNode'" formControlName = "intrestNode">
                                         </div>
                                     </div>
                                     <div class="col-sm-3 col-md-3 mt-10">
@@ -140,21 +139,21 @@
                                         <div class="custom-controls-stacked">
                                             <label class="custom-control custom-radio">
                                                 <input type="radio" class="custom-control-input" name="noinstallmentradio"
-                                                    value="withNode" (change)="getTenureValue($event.target)">
+                                                    value="withNode" (change)="getTenureValue($event.target)"
+                                                    [checked]="noOfInstallWithNodeFlag == 'withNode'">
                                                 <div class="custom-control-label">With Node</div>
                                             </label>
                                             <label class="custom-control custom-radio">
                                                 <input type="radio" class="custom-control-input" name="noinstallmentradio"
-                                                    value="withoutNode" (change)="getTenureValue($event.target)">
+                                                    value="withoutNode" (change)="getTenureValue($event.target)"
+                                                    [checked]="noOfInstallWithNodeFlag == 'withoutNode'">
                                                 <div class="custom-control-label">Without Node</div>
                                             </label>
-                                            <input type="text" class="form-control" placeholder="No Of Installment" *ngIf="TenureNode == 'withNode'">
+                                            <input type="text" class="form-control" placeholder="Gap between two nodes" 
+                                            *ngIf="TenureNode == 'withNode'" formControlName = "noOfInstallmentNode">
                                         </div>
                                     </div> 
-                                    <div class="col-sm-3 col-md-3 mt-10">
-                                        <label class="form-label">Minimum Loan</label>
-                                        <input type="text" class="form-control " >
-                                    </div> 
+                                   
                                 </div>
                             </div>
                         </div>
@@ -229,6 +228,7 @@
                                                 <tr>
                                                     <th>No. of Loans</th>
                                                     <th>Month</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -239,7 +239,7 @@
                                                                 [ngModelOptions]="{standalone: true}"
                                                                 [(ngModel)]="loanValue"
                                                                 (focusout)="getInstanceNoLoan($event.target.value)"
-                                                                [disabled]="loandata != ''" style="width:100px;">
+                                                                [disabled]="loandata != ''" style="width:200px;">
                                                             &nbsp;&nbsp;&nbsp; <span style="margin-top:8px;">IN</span>
                                                         </div>
 
@@ -251,6 +251,8 @@
                                                             (focusout)="getInstanceMonth($event.target.value)"
                                                             [disabled]="loandata != ''" style="width:200px;">
                                                     </td>
+                                                    <td><i class="fa fa-plus-circle" aria-hidden="true"
+                                                        (click)="setInstanceData()"></i></td>
                                                 </tr>
                                                 <tr *ngFor="let instance of Instances;let index = index;">
                                                     <td>
@@ -264,11 +266,8 @@
                                                         <input class="form-control " value="{{instance.month}}"
                                                             [disabled]="loandata != ''">
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td><i class="fa fa-plus-circle" aria-hidden="true"
-                                                            (click)="setInstanceData()"></i></td>
+                                                    <td><i class="fa fa-times" aria-hidden="true"
+                                                        (click)="removeInstanceData(index)"></i></td>
                                                 </tr>
                                             </tbody>
                                         </table>

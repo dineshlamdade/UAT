@@ -5,3 +5,14 @@ text-align: right;
 // .thead-dark tr th{
 //   width:10%;
 // }
+.placeholderStyle ::placeholder
+{
+font-size: 13px;
+color:#bfc7d5;
+// font-weight: 200;
+}
+.placeholderStyle .form-control-sm {
+  border-radius: -0.8rem;
+  // color:#bfc7d5;
+
+}

@@ -15,15 +15,18 @@ export class GeneralComponent implements OnInit {
   monthValue: any;
   minimumNetPayValue: string = '';
   loandata: any = '';
-  editloandata: any ='';
+  editloandata: any = '';
   tabIndex: number = 1;
   url: string;
   deviationAmount: string = '';
   deviationIntrest: string = '';
-  deviationNoOfInstallment: string= '';
+  deviationNoOfInstallment: string = '';
   PricipalNode: any = '';
   TenureNode: any = '';
   InterestNode: any = '';
+  intrestWithNodeFlag: string = '';
+  noOfInstallWithNodeFlag: string = '';
+  principalWithNodeFlag: string = '';
 
 
   constructor(private router: Router) {
@@ -45,9 +48,22 @@ export class GeneralComponent implements OnInit {
       instances: new FormControl(""),
       minRemainingServiceLoanApplication: new FormControl(""),
       minRemainingServiceLoanCompletion: new FormControl(""),
-      deviationAmount:new FormControl(""),
-      deviationIntrest:new FormControl(""),
-      deviationNoOfInstallment:new FormControl(""),
+      deviationAmount: new FormControl(""),
+      deviationIntrest: new FormControl(""),
+      deviationNoOfInstallment: new FormControl(""),
+     
+      intrestNode: new FormControl(0),
+      intrestWithNode: new FormControl(""),
+      intrestWithoutNode: new FormControl(""),
+
+      noOfInstallmentNode: new FormControl(0),
+      noOfInstallmenttWithNode: new FormControl(""),
+      noOfInstallmenttWithoutNode: new FormControl(""),
+
+      principalAmountNode: new FormControl(0),
+      principalAmountWithNode: new FormControl(""),
+      principalAmountWithoutNode: new FormControl(""),
+      minLoanAmount: new FormControl(null)
     })
 
     if (localStorage.getItem('viewData') != null) {
@@ -60,7 +76,7 @@ export class GeneralComponent implements OnInit {
           {
             "month": element.month,
             "noOfLoan": element.noOfLoan
-          } 
+          }
         )
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
@@ -88,6 +104,30 @@ export class GeneralComponent implements OnInit {
         this.deviationNoOfInstallment = 'No'
       }
 
+      if (this.loandata.intrestWithNode == true) {
+        this.intrestWithNodeFlag = 'withNode'
+        this.InterestNode = 'withNode'
+      } else {
+        this.intrestWithNodeFlag = 'withoutNode'
+        this.InterestNode = 'withoutNode'
+      }
+
+      if (this.loandata.noOfInstallmenttWithNode == true) {
+        this.noOfInstallWithNodeFlag = 'withNode'
+        this.TenureNode = 'withNode'
+      } else {
+        this.noOfInstallWithNodeFlag = 'withoutNode'
+        this.TenureNode = 'withoutNode'
+      }
+
+      if (this.loandata.principalAmountWithNode == true) {
+        this.principalWithNodeFlag = 'withNode'
+        this.PricipalNode = 'withNode'
+      } else {
+        this.principalWithNodeFlag = 'withoutNode'
+        this.PricipalNode = 'withoutNode'
+      }
+
       this.generalLoanForm.disable()
     }
 
@@ -100,7 +140,7 @@ export class GeneralComponent implements OnInit {
           {
             "month": element.month,
             "noOfLoan": element.noOfLoan
-          } 
+          }
         )
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
@@ -129,6 +169,32 @@ export class GeneralComponent implements OnInit {
         this.deviationNoOfInstallment = 'No'
       }
 
+      if (this.editloandata.intrestWithNode == true) {
+        this.intrestWithNodeFlag = 'withNode'
+        this.InterestNode = 'withNode'
+      } else {
+        this.intrestWithNodeFlag = 'withoutNode'
+        this.InterestNode = 'withoutNode'
+      }
+
+      if (this.editloandata.noOfInstallmenttWithNode == true) {
+        this.noOfInstallWithNodeFlag = 'withNode'
+        this.TenureNode = 'withNode'
+      } else {
+        this.noOfInstallWithNodeFlag = 'withoutNode'
+        this.TenureNode = 'withoutNode'
+      }
+
+      if (this.editloandata.principalAmountWithNode == true) {
+        this.principalWithNodeFlag = 'withNode'
+        this.PricipalNode = 'withNode'
+
+      } else {
+        this.principalWithNodeFlag = 'withoutNode'
+        this.PricipalNode = 'withoutNode'
+
+      }
+
       this.generalLoanForm.enable()
     }
 
@@ -136,10 +202,10 @@ export class GeneralComponent implements OnInit {
 
   ngOnInit(): void {
     this.url = window.location.pathname
-    if(this.url == "/loan-master/general"){
+    if (this.url == "/loan-master/general") {
       this.tabIndex = 1
       this.changeTabIndex(1)
-    } 
+    }
 
     if (localStorage.getItem('generalForm') != null) {
       let generalFormValue = JSON.parse(localStorage.getItem('generalForm'))
@@ -150,7 +216,7 @@ export class GeneralComponent implements OnInit {
           {
             "month": element.month,
             "noOfLoan": element.noOfLoan
-          } 
+          }
         )
       });
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
@@ -210,27 +276,33 @@ export class GeneralComponent implements OnInit {
     this.loanValue = ''
   }
 
+  removeInstanceData(index){
+    this.Instances.splice(index,1)
+    this.monthValue = ''
+    this.loanValue = ''
+  }
 
-  getdeviationAmount(value){
-    if( value== 'Yes'){
+
+  getdeviationAmount(value) {
+    if (value == 'Yes') {
       this.generalLoanForm.controls['deviationAmount'].setValue(1)
-    }else{
+    } else {
       this.generalLoanForm.controls['deviationAmount'].setValue(0)
     }
   }
 
-  getdeviationIntrest(value){
-    if( value== 'Yes'){
+  getdeviationIntrest(value) {
+    if (value == 'Yes') {
       this.generalLoanForm.controls['deviationIntrest'].setValue(1)
-    }else{
+    } else {
       this.generalLoanForm.controls['deviationIntrest'].setValue(0)
     }
   }
 
-  getdeviationNoOfInstallment(value){
-    if( value== 'Yes'){
+  getdeviationNoOfInstallment(value) {
+    if (value == 'Yes') {
       this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(1)
-    }else{
+    } else {
       this.generalLoanForm.controls['deviationNoOfInstallment'].setValue(0)
     }
   }
@@ -238,6 +310,11 @@ export class GeneralComponent implements OnInit {
   /** Submit general form */
   submitGenralForm() {
     if (this.loandata == '') {
+      this.generalLoanForm.controls['minLoanAmount'].setValue(parseInt(this.generalLoanForm.controls['minLoanAmount'].value))
+      this.generalLoanForm.controls['intrestNode'].setValue(parseInt(this.generalLoanForm.controls['intrestNode'].value))
+      this.generalLoanForm.controls['noOfInstallmentNode'].setValue(parseInt(this.generalLoanForm.controls['noOfInstallmentNode'].value))
+      this.generalLoanForm.controls['principalAmountNode'].setValue(parseInt(this.generalLoanForm.controls['principalAmountNode'].value))
+
       this.generalLoanForm.controls['instances'].setValue(this.Instances)
       this.generalLoanForm.controls['loanApplicationTemplate'].setValue([null])
       localStorage.setItem('generalForm', JSON.stringify(this.generalLoanForm.value))
@@ -254,28 +331,50 @@ export class GeneralComponent implements OnInit {
 
   changeTabIndex(index: number) {
     this.tabIndex = index;
-    if(this.tabIndex == 1 ){
+    if (this.tabIndex == 1) {
       this.router.navigate(['/loan-master/general'])
     }
-    if(this.tabIndex == 2){
+    if (this.tabIndex == 2) {
       this.router.navigate(['/loan-master/recovery'])
     }
-    if(this.tabIndex == 3){
+    if (this.tabIndex == 3) {
       this.router.navigate(['/loan-master/payment'])
     }
   }
 
 
   /** Node values */
-  getPrincipalAmount(event){
+  getPrincipalAmount(event) {
     this.PricipalNode = event.value
+
+    if(this.PricipalNode == 'withNode'){
+      this.generalLoanForm.controls['principalAmountWithNode'].setValue(true)
+      this.generalLoanForm.controls['principalAmountWithoutNode'].setValue(false)
+    }else{
+      this.generalLoanForm.controls['principalAmountWithNode'].setValue(false)
+      this.generalLoanForm.controls['principalAmountWithoutNode'].setValue(true)
+    }
   }
 
-  getInterestAmount(event){
+  getInterestAmount(event) {
     this.InterestNode = event.value
+    if(this.InterestNode == 'withNode'){
+      this.generalLoanForm.controls['intrestWithNode'].setValue(true)
+      this.generalLoanForm.controls['intrestWithoutNode'].setValue(false)
+    }else{
+      this.generalLoanForm.controls['intrestWithNode'].setValue(false)
+      this.generalLoanForm.controls['intrestWithoutNode'].setValue(true)
+    }
   }
 
-  getTenureValue(event){
+  getTenureValue(event) {
     this.TenureNode = event.value
+    if(this.TenureNode == 'withNode'){
+      this.generalLoanForm.controls['noOfInstallmenttWithNode'].setValue(true)
+      this.generalLoanForm.controls['noOfInstallmenttWithoutNode'].setValue(false)
+    }else{
+      this.generalLoanForm.controls['noOfInstallmenttWithNode'].setValue(false)
+      this.generalLoanForm.controls['noOfInstallmenttWithoutNode'].setValue(true)
+    }
   }
 }

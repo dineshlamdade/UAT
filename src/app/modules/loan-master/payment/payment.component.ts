@@ -20,7 +20,7 @@ export class PaymentComponent implements OnInit {
   filesArray: any = [];
   documentRemark: any = '';
   fileName: any;
-  Instances: any[] =[];
+  Instances: any[] = [];
   loandata: any;
   editloandata: any;
   paymentRecoveryInNextCyclePriVal: string = '';
@@ -28,8 +28,8 @@ export class PaymentComponent implements OnInit {
   documentName: any;
   editFlag: boolean = false;
 
-  constructor(private loanmasterService: LoanMasterService, 
-    private modalService: BsModalService, 
+  constructor(private loanmasterService: LoanMasterService,
+    private modalService: BsModalService,
     private toaster: ToastrService,
     private router: Router) {
 
@@ -80,9 +80,20 @@ export class PaymentComponent implements OnInit {
       taxSettingPerquisiteLoanCategory: new FormControl(""),
       taxSettingPerquisiteSubCategory: new FormControl(""),
       underliningAsset: new FormControl(""),
-      deviationAmount:new FormControl(""),
-      deviationIntrest:new FormControl(""),
-      deviationNoOfInstallment:new FormControl(""),
+      deviationAmount: new FormControl(""),
+      deviationIntrest: new FormControl(""),
+      deviationNoOfInstallment: new FormControl(""),
+      intrestNode: new FormControl(""),
+      intrestWithNode: new FormControl(""),
+      intrestWithoutNode: new FormControl(""),
+
+      noOfInstallmentNode: new FormControl(""),
+      noOfInstallmenttWithNode: new FormControl(""),
+      noOfInstallmenttWithoutNode: new FormControl(""),
+
+      principalAmountNode: new FormControl(""),
+      principalAmountWithNode: new FormControl(""),
+      principalAmountWithoutNode: new FormControl(""),
     })
 
     this.paymentLoanForm = new FormGroup({
@@ -112,7 +123,7 @@ export class PaymentComponent implements OnInit {
           {
             "month": element.month,
             "noOfLoan": element.noOfLoan
-          } 
+          }
         )
       });
 
@@ -122,7 +133,7 @@ export class PaymentComponent implements OnInit {
           {
             "documentName": element.documentName,
             "documentRemark": element.documentRemark
-          } 
+          }
         )
       });
 
@@ -155,7 +166,7 @@ export class PaymentComponent implements OnInit {
           {
             "month": element.month,
             "noOfLoan": element.noOfLoan
-          } 
+          }
         )
       });
       this.loanMasterForm.patchValue(this.editloandata)
@@ -167,7 +178,7 @@ export class PaymentComponent implements OnInit {
           {
             "documentName": element.documentName,
             "documentRemark": element.documentRemark
-          } 
+          }
         )
       });
 
@@ -200,7 +211,7 @@ export class PaymentComponent implements OnInit {
           {
             "month": element.month,
             "noOfLoan": element.noOfLoan
-          } 
+          }
         )
       });
     }
@@ -219,7 +230,7 @@ export class PaymentComponent implements OnInit {
           {
             "documentName": element.documentName,
             "documentRemark": element.documentRemark
-          } 
+          }
         )
       });
 
@@ -240,7 +251,7 @@ export class PaymentComponent implements OnInit {
       }
     }
 
-   
+
   }
 
   getDeductionHead() {
@@ -262,38 +273,38 @@ export class PaymentComponent implements OnInit {
 
   /** Submit Loan Master form */
   submitPaymentForm() {
-    if(!this.editFlag){
+    if (!this.editFlag) {
       this.paymentLoanForm.controls['document'].setValue(this.filesArray)
       localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
       this.loanMasterForm.patchValue(this.paymentLoanForm.value)
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
       this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
       console.log("Add Data: " + JSON.stringify(this.loanMasterForm.value))
-  
+
       this.loanmasterService.saveLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Saved Successfully!!')
         }
       )
-    }else{
+    } else {
       this.paymentLoanForm.controls['document'].setValue(this.filesArray)
       localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
       this.loanMasterForm.patchValue(this.paymentLoanForm.value)
       this.loanMasterForm.controls['document'].setValue(this.filesArray)
       this.loanMasterForm.controls['noOfGuarantor'].setValue(parseInt(this.paymentLoanForm.controls['noOfGuarantor'].value))
       console.log("Update Data: " + JSON.stringify(this.loanMasterForm.value))
-  
+
       this.loanmasterService.updateLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Updated Successfully!!')
         }
-      ) 
+      )
     }
-    
+
   }
 
   /**navigate to previous tab (recovery) */
-  previousTab(){
+  previousTab() {
     this.paymentLoanForm.controls['document'].setValue(this.filesArray)
     localStorage.setItem('paymentLoanForm', JSON.stringify(this.paymentLoanForm.value))
     this.router.navigate(['/loan-master/recovery'])
@@ -346,9 +357,15 @@ export class PaymentComponent implements OnInit {
         "documentRemark": this.documentRemark
       });
 
-      this.documentName = null;
-      this.documentRemark = null;
+    this.documentName = null;
+    this.documentRemark = null;
     console.log(this.filesArray);
+  }
+
+  removeDocument(index){
+    this.filesArray.splice(index,1)
+    this.documentName = null;
+    this.documentRemark = null;
   }
 
 }

@@ -132,7 +132,7 @@
                                                             (drop)="drop($event)" (dragover)="allowDrop($event)">
                                                         </ckeditor> -->
 
-                                                        <ckeditor [editor]="Editor" (drop)="drop($event)"
+                                                        <ckeditor  (drop)="drop($event)"
                                                             formControlName="emailBody" (dragover)="allowDrop($event)" [ngClass]="{'is-invalid' : emailSmsForm.get('emailBody').status == 'INVALID'}">
                                                         </ckeditor>
                                                     </div>
@@ -140,7 +140,7 @@
                                                     <div class="col-md-12">
                                                         <label class="form-label" style="color:darkmagenta;">SMS</label>
                                                         <label class="form-label">Body</label>
-                                                        <ckeditor [editor]="Editor" formControlName="smsBody">
+                                                        <ckeditor formControlName="smsBody">
                                                         </ckeditor>
                                                     </div>
                                                 </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ToastrService } from 'ngx-toastr';
 import { EmailSmsService } from '../email-sms.service';
 
@@ -12,7 +11,7 @@ import { EmailSmsService } from '../email-sms.service';
 export class EmailSmsComponent implements OnInit {
 
   emailSmsForm: FormGroup;
-  public Editor = ClassicEditor;
+  // public Editor = ClassicEditor;
 
   editorConfig = {
     toolbar: [

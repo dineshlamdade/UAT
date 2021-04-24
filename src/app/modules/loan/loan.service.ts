@@ -9,8 +9,9 @@ import { environment } from 'src/environments/environment';
 export class LoanService {
 
 public apiUrl = environment.baseUrl8087;
+public apiUrl1 = environment.baseUrl8088;
 constructor(private http : HttpClient) { }
-
+// .....................loan application Api....................................................................
 public getAll()
 {
 return this.http.get<any>(this.apiUrl + 'loanApplication/getAll');
@@ -41,5 +42,14 @@ public getGuarantorData(id)
 {
   return this.http.get<any>(this.apiUrl  +'employee-Master/getByEmployeeCode/'+id);
 }
+public deleteLoanScheduleByID(id)
+{
+  return this.http.delete<any>(this.apiUrl  +'/loan-Schedule/deleteByTempLoanMasterId/'+id);
+}
+// .........................Summary Page Api................................................................
+public getApproverDetails()
+{
+  return this.http.get<any>(this.apiUrl1 + '/workflowMaster-report/approverDetails')
 
+}
 }

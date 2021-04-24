@@ -16,7 +16,7 @@
                                           <select
                                             class="form-control"
                                             placeholder="Select" (change)="getLoanType($event.target.value)">
-                                            <option [ngValue]="null" selected >Select</option>
+                                            <option value="" selected >Select</option>
                                             <option  *ngFor="let loan of loanTypeData ">{{loan.loanCode}}</option>
                                           </select>
                                     </div>    
@@ -38,7 +38,9 @@
                                             name="pemi.highValue" /> -->
                                     </div>
                                     <br>
-                                    <ngx-slider [(value)]="pemi.value" [options]="poptions" (userChangeEnd)="update()">
+                                    <!-- [(highValue)]="maxValue" -->
+                                    <ngx-slider [(value)]="pemi.value" [options]="poptions" (userChangeEnd)="update()"
+                                    >
                                     </ngx-slider>
                                 </div>
 
@@ -92,24 +94,11 @@
                             </div>
 
                         </div>
-                        <div class="col-sm-6 ">
+                        <div class="col-sm-6 " *ngIf="loanType != ''">
                             <div class="well">
 
                                 <div class="row box-border">
-                                    <div class="col-sm-12">
-                                        <div class="pie-content row" id="pieContent">
-                                            <div class="col-sm-6">
-                                                <p><span class="pie-icon pie-principal"></span>Principal Amount</p>
-                                                <h5 id="loan_principal">{{query.amount}}</h5>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <p><span class="pie-icon pie-interest"></span>Total Interest Payable</p>
-                                                <h5 id="loan_interest">{{result.interest || "--"}}</h5>
-                                            </div>
-                                        </div>
-                                        <br>
-                                    </div>
+                                    
                                     <div class="col-sm-12">
 
                                         <div style="display: block;">
@@ -118,38 +107,61 @@
                                                   [data]="doughnutChartData"
                                                   [labels]="doughnutChartLabels"
                                                   [chartType]="doughnutChartType"
-                                                  [colors]="doughnutChartColors">
+                                                  [colors]="doughnutChartColors"
+                                                  [legend]="false">
                                                 </canvas>
                                               </div>
                                         </div>
                                        <br>
                                     </div>
+
                                     <div class="col-sm-12">
+                                        <div class="pie-content row" id="pieContent">
+                                            <div class="col-sm-6">
+                                                <p><span class="pie-icon pie-principal"></span>Principal : 
+                                                <span style="font-weight: 600;">{{query.amount}}</span> </p>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <p><span class="pie-icon pie-interest"></span>Interest : 
+                                                    <!-- <h5 id="loan_interest"></h5> -->
+                                                <span style="font-weight: 600;">{{result.interest || "--"}}</span></p>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <p><span class="pie-icon"></span>Total Payment : 
+                                                    <!-- <h5 id="loan_interest"></h5> -->
+                                                <span style="font-weight: 600;">{{result.total || "--"}}</span></p>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <!-- <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
                                             <div class="pie-total col-sm-8">
                                                 <span>
-                                                    <p>Total Payment (Principal + Interest)</p>
+                                                    <p>Total Payment</p>
                                                 </span>
                                                 
                                             </div>
                                             <div class="pie-total col-sm-4">
                                                 <h5 id="loan_total_payment">{{result.total || "--"}}</h5>
-                                                <!-- <p>Your Monthly Payment</p>
-                                                <h5 id="loan_emi">{{result.emi || "--"}}</h5> -->
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <br>
-                                <div class="row">
+                                <div class="row" *ngIf="loanRecoveyMethod != 'Perpetual'">
                                     <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
-                                            <div class="pie-total col-sm-3"></div>
+                                            <div class="pie-total col-sm-1"></div>
                                             <div class="pie-total col-sm-3">
                                                 <p>Installment </p>
                                             </div>
-                                            <div class="pie-total col-sm-6">
-                                                <h5 id="loan_emi" style="margin-left: 72px;">{{result.emi || "--"}} Per Month</h5>
+                                            <div class="pie-total col-sm-8">
+                                                <h5 id="loan_emi" style="margin-left: 72px;" *ngIf="loanRecoveyMethod == 'Reducing balance'">{{result.emi || "--"}} Per Month + Interest</h5>
+                                                <h5 id="loan_emi" style="margin-left: 72px;" *ngIf="loanRecoveyMethod != 'Reducing balance'">{{result.emi || "--"}} Per Month</h5>
                                             </div>
                                         </div>
                                     </div>    

@@ -12,10 +12,10 @@
                                         <legend>Payment</legend>
                                         <div class="tabview-contents">
                                             <div class="row">
-                                                <div class="col-sm-6 col-md-6 mt-10">
-                                                    <label class="form-label">Adhoc Payments</label>
+                                                <div class="col-sm-4 col-md-4 mt-10">
+                                                    <label class="form-label">Adhoc Payments Treatment</label>
                                                     <div class="col-sm-6 col-md-6 mt-10">
-                                                        <label class="form-label">Treatment</label>
+                                                        <!-- <label class="form-label">Treatment</label> -->
                                                         <select class="form-control " formControlName="adhocPaymentsTreatment">
                                                             <option value="">Select</option>
                                                             <option>Reduce Installment</option>
@@ -28,7 +28,7 @@
                                                         cycle</label>
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-6 mt-10">
-                                                            <label class="form-label">Pricipal</label>
+                                                            <label class="form-label">Principal</label>
                                                             <select class="form-control"
                                                                 (click)="paymentRecoveryInNextCyclePri($event.target.value)">
                                                                 <option value="">Select</option>
@@ -148,8 +148,11 @@
                                                     <label class="form-label">No. of Guarantor</label>
                                                     <select class="form-control " formControlName="noOfGuarantor">
                                                         <option value="">Select</option>
+                                                        <option>0</option>
                                                         <option>1</option>
                                                         <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -165,6 +168,7 @@
                                                         <tr>
                                                             <th>Document Name</th>
                                                             <th>Remark</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -175,21 +179,22 @@
                                                             <td>
                                                                 <input class="form-control" [(ngModel)]="documentRemark" name="documentRemark" [ngModelOptions]="{standalone: true}">
                                                             </td>
+                                                            <td><a (click)="documentSubmit()">
+                                                                <i class=" fa fa-plus-circle"></i>
+                                                            </a></td>
                                                         </tr>
-                                                        <tr *ngFor="let doc of filesArray;">
+                                                        <tr *ngFor="let doc of filesArray;let index = index;">
                                                             <td>
                                                                 <input class="form-control" value="{{doc.documentName}}">
                                                             </td>
                                                             <td>
                                                                 <input class="form-control" value="{{doc.documentRemark}}">
                                                             </td>
+                                                            <td><a (click)="removeDocument(index)">
+                                                                <i class=" fa fa-times"></i>
+                                                            </a></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td></td>
-                                                            <td><a (click)="documentSubmit()">
-                                                                    <i class=" fa fa-plus-circle"></i>
-                                                                </a></td>
-                                                        </tr>
+                                                        
                                                     </tbody>
                                                 </table>
                                             </div>
