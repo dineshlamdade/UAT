@@ -20,8 +20,18 @@
                         <div *ngIf="masterForm.nameOfChild.errors.required">School Going Child Name is mandatory</div>
                      </div>
                   </div>
-                  <div class="row mt-0 mb-10">
-                     <div class="col-sm-6 col-md-4">
+
+                  <div class="col-sm-6 col-md-3">
+                     <label class="form-label">Age</label>
+                     <input type="text" formControlName="ageBracket" class="form-control" disabled
+                       [ngClass]="{ 'is-invalid': submitted && masterForm.ageBracket.errors }">
+                     <div *ngIf="submitted && masterForm.ageBracket.errors" class="invalid-feedback">
+                       <div *ngIf="masterForm.ageBracket.errors.required">ageBracket is mandatory</div>
+                     </div>
+                   </div>
+
+                 <!--  <div class="row mt-0 mb-10"> -->
+                     <div class="col-sm-6 col-md-3">
                         <label class="form-label">From Date</label>
                         <div class="form-group">
                            <div class="input-group">
@@ -30,7 +40,7 @@
                               </div>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                 (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate"
+                                 [minDate]="minFormDate"
                                  [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
                                  [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
                               <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
@@ -40,15 +50,14 @@
                            </div>
                         </div>
                      </div>
-                     <div class="col-sm-6 col-md-4">
+                     <div class="col-sm-6 col-md-3">
                         <label class="form-label">To Date</label>
                         <div class="form-group">
                            <div class="input-group">
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               </div>
-                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                 (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"                               
                                  [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate"
                                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                  placeholder="To Date" bsDatepicker
@@ -61,7 +70,7 @@
                         </div>
                      </div>
                   </div>
-               </div>
+              <!--  </div> -->
             </fieldset>
          </div>
       </div>
@@ -101,7 +110,7 @@
                            <tr *ngFor="let summary of masterGridData; let i = index">
                               <td class="wd-10"><span tooltip="{{summary.nameOfChild}}">{{summary.nameOfChild}}</span>
                               </td>
-                              <td class="wd-10"><span tooltip="{{summary.age}}">{{summary.age}}</span>
+                              <td class="wd-10"><span tooltip="{{summary.ageBracket}}">{{summary.ageBracket}}</span>
                               </td>
                               <td class="wd-10"><span
                                     tooltip="{{ summary.fromDate | date :'dd-MMM-yyyy' }}">{{summary.fromDate

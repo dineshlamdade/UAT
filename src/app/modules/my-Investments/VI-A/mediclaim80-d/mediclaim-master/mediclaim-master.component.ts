@@ -120,6 +120,8 @@ export class MediclaimMasterComponent implements OnInit {
   public globalSelectedAmount: string;
   public visibilityFlag = true;
 
+  public familyMemberList: any;
+
   public dropdownSettings: any;
   public ServicesList = [];
   public dropdownList = [];
@@ -197,7 +199,7 @@ export class MediclaimMasterComponent implements OnInit {
     this.globalAddRowIndex = 0;
     this.globalSelectedAmount = this.numberFormat.transform(0);
   }
-  abc() {
+  familyMember() {
     console.log(this.ServicesList);
   }
   public ngOnInit(): void {
@@ -217,66 +219,67 @@ export class MediclaimMasterComponent implements OnInit {
 
     // Family Member List API call
     this.Service.getFamilyInfo().subscribe((res) => {
-      let abc = [];
-      res.data.results.forEach((element) => {
+      let familyMember = [];
+      this.familyMemberList = res.data.results;
+       res.data.results.forEach((element) => {
         const obj = {
           familyMemberInfoId: element.familyMemberInfoId,
           familyMemberName: element.name,
           relation: element.relationship,
+
         };
 
-        if(this.form.value.expenseType == 'Mediclaim Premium' && this.form.value.expenseType == 'Preventive Health Check Up'){
+        if(this.form.value.expenseType == 'Mediclaim Premium' || this.form.value.expenseType == 'Preventive Health Check Up'){
           if (element.relation !== 'Brother' || element.relation !== 'Sister') {
 
             let familyNameWithRelation =
               element.familyMemberName + '(' + element.relation + ')';
-            abc.push({
+            familyMember.push({
               familyMemberInfoId: element.familyMemberInfoId,
               name: familyNameWithRelation,
             });
-            console.log('family List', this.dropdownList);
           }
-        }
-        if(this.form.value.expenseType == 'Medical Expenses for Parents'){
-              if (element.relation === 'Senior Citizen') {
+        }else{
+          console.log(element)
+              if ((element.relation === 'Father' || element.relation === 'Mother') && element.ageBracket === 'Senior Citizen') {
 
               let familyNameWithRelation =
                 element.familyMemberName + '(' + element.relation + ')';
-              abc.push({
+              familyMember.push({
                 familyMemberInfoId: element.familyMemberInfoId,
                 name: familyNameWithRelation,
               });
-              console.log('family List', this.dropdownList);
             }
       }
       });
-      this.dropdownList = abc;
+      this.dropdownList = familyMember;
       console.log('dropdownList::', this.dropdownList);
     });
 
 
-     // Family Member List API call
-     this.Service.getFamilyInfo().subscribe((res) => {
-      let abc = [];
-        res.data.results.forEach((element) => {
-          const obj = {
-            familyMemberInfoId: element.familyMemberInfoId,
-            familyMemberName: element.name,
-            relation: element.relationship,
-          };
-          if (element.relation !== 'Brother' || element.relation !== 'Sister') {
-            let familyNameWithRelation =
-              element.familyMemberName + '(' + element.relation + ')';
-            abc.push({
-              familyMemberInfoId: element.familyMemberInfoId,
-              name: familyNameWithRelation,
-            });
-            console.log('family List', this.dropdownList);
-          }
-        });
-        this.dropdownList = abc;
-        console.log('dropdownList::', this.dropdownList);
-      });
+    //  // Family Member List API call
+    //  this.Service.getFamilyInfo().subscribe((res) => {
+    //   let familyMember = [];
+    //     res.data.results.forEach((element) => {
+    //       const obj = {
+    //         familyMemberInfoId: element.familyMemberInfoId,
+    //         familyMemberName: element.name,
+    //         relation: element.relationship,
+    //       };
+    //       if (element.relation !== 'Brother' || element.relation !== 'Sister') {
+    //         let familyNameWithRelation =
+    //           element.familyMemberName + '(' + element.relation + ')';
+    //         familyMember.push({
+    //           familyMemberInfoId: element.familyMemberInfoId,
+    //           name: familyNameWithRelation,
+    //         });
+    //         console.log('family List', this.dropdownList);
+    //       }
+    //     });
+    //     this.dropdownList = familyMember;
+    //     console.log('dropdownList::', this.dropdownList);
+    //   });
+
     // this.deactivateRemark();
 
     // Get All Institutes From Global Table
@@ -613,8 +616,8 @@ export class MediclaimMasterComponent implements OnInit {
     // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
     this.form.get('premiumAmount').setValue(formatedPremiumAmount);
     this.isClear = true;
-    const abc = this.masterGridData[i];
-    this.urlArray = abc.documentInformationList;
+    const familyMember = this.masterGridData[i];
+    this.urlArray = familyMember.documentInformationList;
     this.proofSubmissionId = this.proofSubmissionId;
     // this.proofSubmissionId = obj.proofSubmissionId;
 
@@ -736,6 +739,41 @@ export class MediclaimMasterComponent implements OnInit {
       this.form.get('toDate').setValidators([Validators.required]);
       this.form.get('toDate').updateValueAndValidity();
     }
+    let familyMember = [];
+    this.familyMemberList.forEach((element) => {
+        const obj = {
+        familyMemberInfoId: element.familyMemberInfoId,
+        familyMemberName: element.name,
+        relation: element.relationship,
+
+      };
+      // typeOfExpenceList
+      if(this.form.value.expenseType == 'Mediclaim Premium' || this.form.value.expenseType == 'Preventive Health Check Up'){
+        console.log("Mediclaim Premium", element)
+        if (element.relation !== 'Brother' || element.relation !== 'Sister') {
+
+          let familyNameWithRelation =
+            element.familyMemberName + '(' + element.relation + ')';
+          familyMember.push({
+            familyMemberInfoId: element.familyMemberInfoId,
+            name: familyNameWithRelation,
+          });
+        }
+      }else{
+        console.log("!!Mediclaim",element)
+            if ((element.relation === 'Father' || element.relation === 'Mother') && element.ageBracket === 'Senior Citizen') {
+
+            let familyNameWithRelation =
+              element.familyMemberName + '(' + element.relation + ')';
+            familyMember.push({
+              familyMemberInfoId: element.familyMemberInfoId,
+              name: familyNameWithRelation,
+            });
+          }
+    }
+    });
+    this.dropdownList = familyMember;
+    console.log("dropdownList",this.dropdownList)
   }
 
   selectionChallenged(event) {

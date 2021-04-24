@@ -211,7 +211,27 @@ export class PPFDeclarationComponent implements OnInit {
     this.deactiveCopytoActualDate();
 
     // Get API call for All previous employee Names
-    this.Service.getpreviousEmployeName().subscribe((res) => {
+    // this.Service.getpreviousEmployeName().subscribe((res) => {
+    //   console.log('previousEmployeeList::', res);
+    //   if (!res.data.results[0]) {
+    //     return;
+    //   }
+    //   res.data.results.forEach((element) => {
+    //     const obj = {
+    //       label: element.name,
+    //       value: element.previousEmployerId,
+    //     };
+    //     this.previousEmployeeList.push(obj);
+    //   });
+    // });
+
+    // Get All Previous Employer
+    this.Service.getAllPreviousEmployer().subscribe((res) => {
+      console.log(res.data.results);
+      // if (res.data.results.length > 0) {
+      //   this.employeeJoiningDate = res.data.results[0].joiningDate;
+      //   // console.log('employeeJoiningDate::',this.employeeJoiningDate);
+      // }
       console.log('previousEmployeeList::', res);
       if (!res.data.results[0]) {
         return;
@@ -223,15 +243,6 @@ export class PPFDeclarationComponent implements OnInit {
         };
         this.previousEmployeeList.push(obj);
       });
-    });
-
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
-      if (res.data.results.length > 0) {
-        this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
-      }
     });
 
     if (this.today.getMonth() + 1 <= 3) {
@@ -292,13 +303,13 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.transactionInstitutionNames.push(data);
-    this.transactionPolicyList.push(data);
+    // this.transactionInstitutionNames.push(data);
+    // this.transactionPolicyList.push(data);
     this.Service.getPPFDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
         console.log('getinstitution' , res);
@@ -623,7 +634,7 @@ export class PPFDeclarationComponent implements OnInit {
   addRowInList(
     summarynew: {
       investmentGroup1TransactionId: number;
-      licMasterPaymentDetailsId: number;
+      investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
       dueDate: Date;
       declaredAmount: any;
@@ -653,9 +664,9 @@ export class PPFDeclarationComponent implements OnInit {
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
-    this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[
+    this.declarationService.investmentGroup1MasterPaymentDetailId = this.transactionDetail[
       j
-    ].groupTransactionList[0].licMasterPaymentDetailsId;
+    ].groupTransactionList[0].investmentGroup1MasterPaymentDetailId;
     this.transactionDetail[j].groupTransactionList.push(this.declarationService);
     console.log('addRow::', this.transactionDetail[j].groupTransactionList);
   }
@@ -1228,7 +1239,7 @@ export class PPFDeclarationComponent implements OnInit {
 
 class DeclarationService {
   public investmentGroup1TransactionId = 0;
-  public licMasterPaymentDetailsId: number;
+  public investmentGroup1MasterPaymentDetailId: number;
   public previousEmployerId = 0;
   public dueDate: Date;
   public declaredAmount: number;

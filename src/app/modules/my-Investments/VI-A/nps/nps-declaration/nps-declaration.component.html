@@ -174,42 +174,77 @@
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" class="form-control" [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" [disabled]="
-                        initialArrayIndex[j] > i || summary.isECS === 1
-                      " (ngModelChange)="
-                        summary.dueDate = $event.toLocaleDateString();
+                    <input  *ngIf = "item.frequency !=='As & When'"
+                    type="text" 
+                    class="form-control" 
+                    [minDate]="financialYearStartDate"
+                      [maxDate]="financialYearEndDate" 
+                      [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'" 
+                      [disabled]="initialArrayIndex[j] > i || summary.isECS === 1
+                      " (ngModelChange)="summary.dueDate = $event.toLocaleDateString();
                         onDueDateChange(summary, i, j)
-                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" bsDatepicker />
+                      " [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                      data-provide="datepicker" 
+                      bsDatepicker 
+                      />
+                      <input
+                    *ngIf = "item.frequency ==='As & When'"
+                      type="text"
+                      class="form-control"
+                     placeholder="NA"
+                     disabled
+                    />
                   </div>
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
-                      class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i" />
+                    <input   *ngIf = "item.frequency !=='As & When'"
+                    type="text" 
+                    id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                      name="declaredAmount{{ summary.investmentGroup1TransactionId }}" 
+                      [(ngModel)]="summary.declaredAmount"
+                      class="form-control align-right" 
+                      (change)="onDeclaredAmountChange(summary, i, j)"
+                      [disabled]="initialArrayIndex[j] > i" 
+                      />
                     <!-- <span class="clone_Icon" tooltip="Copy to Actual"
                               (click)="summary.actualAmount = summary.declaredAmount ; onActualAmountChange(summary, i, j)"><i
                               class=" fa fa-files-o cursor-pointer"></i> </span> -->
+                              <input
+                              *ngIf = "item.frequency ==='As & When'"
+                               type="text"
+                               class="form-control"
+                              placeholder="NA"
+                              disabled
+                             />
                   </div>
                 </td>
                 <td>
-                  <input type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
-                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker" data-date-autoclose="true"
+                  <input type="text" 
+                  [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                    [minDate]="financialYearStartDate" 
+                    [maxDate]="today"
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" 
+                    data-provide="datepicker" 
+                    data-date-autoclose="true"
                     (ngModelChange)="
                       summary.dateOfPayment = $event.toLocaleDateString();
                       setDateOfPayment(summary, i, j)
                     " [disabled]="
                       isDisabled || summary.transactionStatus === 'Submitted'
-                    " class="form-control" bsDatepicker />
+                    " class="form-control" 
+                    bsDatepicker 
+                    />
                 </td>
                 <td>
-                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                    [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
-                    class="form-control align-right" />
+                  <input type="text" 
+                  id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                    name="actualAmount{{ summary.investmentGroup1TransactionId }}" 
+                    [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
+                    [(ngModel)]="summary.actualAmount" 
+                    (change)="onActualAmountChange(summary, i, j)"
+                    class="form-control align-right" 
+                    />
                 </td>
                 <td>
                   <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -262,7 +297,10 @@
                 </td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip="{{ item.actualTotal | number: '1.2-2' }}" class="padding-right-12">
+                  <span
+                    tooltip="{{ item.actualTotal | number: '1.2-2' }}"
+                    class="padding-right-12"
+                  >
                     {{ item.actualTotal | number: "1.2-2" }}
                   </span>
                 </td>
@@ -304,8 +342,11 @@
               </td>
               <td class="bg-gray font-18 font700 align-right wd-11"></td>
               <td class="bg-gray font-18 font700 align-right wd-9">
-                <span class="padding-right-12" tooltip="{{ grandActualTotal | number: '1.2-2' }}">
-                  {{ grandActualTotal | number: "1.2-2" }}
+                <span
+                  class="padding-right-12"
+                  tooltip="{{ actualTotal | number: '1.2-2' }}"
+                >
+                  {{ actualTotal | number: "1.2-2" }}
                 </span>
               </td>
               <td class="bg-gray font-18 font700 align-right wd-9">
@@ -804,7 +845,7 @@
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
                       [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                      [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"
