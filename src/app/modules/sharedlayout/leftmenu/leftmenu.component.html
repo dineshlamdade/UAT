@@ -417,8 +417,8 @@
                 'EmployeeMaster.personalInformation' | transloco }}</span></a>
           </li>
 
-          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" >
-            <!-- [class.disabled]="!checkEmpId()" -->
+          <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"  [class.disabled]="!checkEmpId()">
+           
             <a class="submenu" [routerLink]="['/employee-master/employment-information/employment-summary']"><span>{{
                 'EmployeeMaster.employmentInformation' |
                 transloco }}</span></a>
