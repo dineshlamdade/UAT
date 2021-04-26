@@ -46,4 +46,8 @@ export class AttendanceService {
     return this.HttpClient.post<any>(this.url + `AttendanceInput`, data); 
 
   }
+
+  payrollAreaDetails(payRollAreaId):Observable<any>{
+    return this.HttpClient.get<any>(this.url + `payrollArea-details/`+ payRollAreaId); 
+  }
 }

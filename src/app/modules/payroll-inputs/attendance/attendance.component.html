@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="tabview tabview_fixed_deposit">
-                                <input name="nav" type="radio" class="about-radio" id="summary" checked />
+                                <input name="nav" type="radio" class="about-radio" id="summary" checked (click)="summeryTab()"/>
                                 <div class="tabs about-page">
                                     <div class="card">
                                         <div class="card-body">
@@ -314,7 +314,7 @@
                                 <label class="nav" for="summary">
                                     <span> Summary </span>
                                 </label>
-                                <input name="nav" type="radio" class="about-radio" id="Attendance" />
+                                <input name="nav" type="radio" class="about-radio" id="Attendance" (click)="attendaceTabClick()" [disabled]="selectedEmpData.length == 0"/>
                                 <div class="tabs about-page">
                                     <div class="card mt-20">
                                         <div class="card-body card-box-border">
@@ -401,7 +401,7 @@
                                                             </div>
                                                             <input data-provide="datepicker" data-date-autoclose="true"
                                                                 class="form-control" placeholder="Date" bsDatepicker
-                                                                disabled>
+                                                                disabled value="{{startDate}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -416,7 +416,7 @@
                                                             </div>
                                                             <input data-provide="datepicker" data-date-autoclose="true"
                                                                 class="form-control" placeholder="Date" bsDatepicker
-                                                                disabled>
+                                                                disabled value="{{fromDate}}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -432,11 +432,11 @@
                                                     <input type="text" class="form-control" disabled>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-spacearound mt-15">
+                                            <div class="d-flex justify-content-spacearound mt-15" *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green ">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.total}}</h3>
                                                             <span>Total Days</span>
                                                         </div>
                                                     </div>
@@ -444,7 +444,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.weeklyOff}}</h3>
                                                             <span>Weekly Off</span>
                                                         </div>
                                                     </div>
@@ -452,7 +452,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.holiday}}</h3>
                                                             <span> Holiday</span>
                                                         </div>
                                                     </div>
@@ -460,7 +460,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidLeaves}}</h3>
                                                             <span>Leave</span>
                                                         </div>
                                                     </div>
@@ -468,7 +468,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.leaveWithoutPay}}</h3>
                                                             <span>Leave Without Pay</span>
                                                         </div>
                                                     </div>
@@ -476,7 +476,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.presentDay}}</h3>
                                                             <span>Present Days</span>
                                                         </div>
                                                     </div>
@@ -484,7 +484,7 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>30</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays}}</h3>
                                                             <span>Payable Days</span>
                                                         </div>
                                                     </div>

@@ -3,6 +3,7 @@ import { Component, HostListener, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AttendanceService } from '../attendance.service';
 import { ExcelserviceService } from '../../excel_service/excelservice.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 export interface User1 {
@@ -56,8 +57,8 @@ export class AttendanceComponent implements OnInit {
 
   /** Sumarry data */
   attendanceData: any;
-  fromDate: any;
-  toDate: any;
+  fromDate: any = null;
+  toDate: any = null;
 
   masterSelected:boolean;
   checklist:any;
@@ -65,10 +66,14 @@ export class AttendanceComponent implements OnInit {
   selectedEmpData: any=[];
   selectedAllFlag: boolean=false;
   excelData: any[];
+  payRollAreaId: number;
+  payrollAreaDetailsData: any;
+  startDate: any;
+  attendanceInputGetTotalAPIRecordsUIData: any;
 
 
   constructor(private modalService: BsModalService, private attendanceService: AttendanceService,
-    private datepipe: DatePipe,private excelservice: ExcelserviceService) {
+    private datepipe: DatePipe,private excelservice: ExcelserviceService,private toster: ToastrService) {
       this.masterSelected = false;
 
       this.checkedList = [];
@@ -141,8 +146,8 @@ export class AttendanceComponent implements OnInit {
 
     let attendanceFromDate = this.datepipe.transform(this.fromDate, 'yyyy-MM-dd')
     let attendanceToDate = this.datepipe.transform(this.toDate, 'yyyy-MM-dd')
-    formData.append('attendanceFromDate', attendanceFromDate)
-    formData.append('attendanceToDate', attendanceToDate)
+    formData.append('attendanceFromDate', attendanceFromDate + ' 00:00:00')
+    formData.append('attendanceToDate', attendanceToDate + ' 00:00:00')
 
     this.attendanceService.AttendanceSummaryDatewiseRecordsUI(formData).subscribe(
       res => {
@@ -187,13 +192,15 @@ export class AttendanceComponent implements OnInit {
   attendanceInputGetTotalAPIRecordsUI() {
     const formData = new FormData();
 
-    formData.append('CycleId', '9')
-    formData.append('employeeMasterId', '1')
-    formData.append('payrollAreaCode', 'PA-Staff')
+    formData.append('CycleId', this.selectedEmpData[0].cycle)
+    formData.append('employeeMasterId', this.selectedEmpData[0].employeeMasterId)
+    formData.append('payrollAreaCode', this.selectedEmpData[0].payrollAreacode)
+
 
     this.attendanceService.attendanceInputGetTotalAPIRecordsUI(formData).subscribe(
       res => {
-
+        this.attendanceInputGetTotalAPIRecordsUIData = res.data.results[0];
+        console.log("attendanceInputGetTotalAPIRecordsUIData:",this.attendanceInputGetTotalAPIRecordsUIData);
       }
     )
 
@@ -299,4 +306,27 @@ export class AttendanceComponent implements OnInit {
   }
 
 
+  payrollAreaDetails(){
+    this.payRollAreaId = 18;
+    this.attendanceService.payrollAreaDetails(this.payRollAreaId).subscribe(
+      res => {
+        this.payrollAreaDetailsData = res.data.results;
+        this.startDate= this.payrollAreaDetailsData[0].effectiveToDate;
+        this.fromDate= this.payrollAreaDetailsData[0].effectiveFromDate;
+        //console.log("startDate:",this.startDate);
+      }
+    )
+  }
+
+  attendaceTabClick(){
+   
+      this.payrollAreaDetails();
+      this.attendanceInputGetTotalAPIRecordsUI();
+   
+    
+  }
+
+  summeryTab(){
+    this.fromDate = null;
+  }
 }
