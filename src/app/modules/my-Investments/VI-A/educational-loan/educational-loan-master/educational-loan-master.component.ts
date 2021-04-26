@@ -342,16 +342,14 @@ export class EducationalLoanMasterComponent implements OnInit {
   toggle()
    {
     this.show = !this.show
-    this.alertService.sweetalertWarning(
-      'You Have No Full Time Course Then Educational Loan Not To Apply ');
-   
+    if(!this.show)
+    {
+      this.alertService.sweetalertWarning(
+        'You Have No Full Time Course Then Educational Loan Not To Apply ');
+    } 
   }
   
-  toggle1()
-  {
-    this.show = true;
- }
-  
+ 
   // Policy End Date Validations with Current Finanacial Year
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
