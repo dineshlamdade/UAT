@@ -1731,7 +1731,29 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     });
   }
 
-}
+  
+      // Family relationship shown on Policyholder selection
+      OnSelectionfamilyMemberGroup( summary: {
+        childName:string;
+        previousEmployerId:number;
+        institution: 0;
+        accountNumber: number;
+        declaredAmount: number;
+        actualAmount: number;
+        dateOfPayment: Date;
+      },
+      i: number) {
+        console.log("summary::", summary);
+        const toSelect = this.familyMemberGroup.find(
+          (element) => element.familyMemberName ===  summary.childName
+        );
+        this.tuitionFeesTransactionDetailList[i].familyMemberInfoId = toSelect.familyMemberInfoId;
+        // this.tuitionFeesForm.get('relationship').setValue(toSelect.relation);
+        this.tuitionFeesTransactionDetailList[i].relationship = toSelect.relation;
+      }
+  
+    }
+
 //   setDateOfPayment(
 //     summary: {
 //       previousEmployerName: any;
@@ -1758,6 +1780,8 @@ class DeclarationService {
   public previousEmployerId = 0;
   public institution: 0;
   public childName: string;
+  public familyMemberInfoId: number;
+  public relationship: string;
   // public accountNumber: number;
   // public dueDate: Date;
   public declaredAmount: number;
@@ -2239,16 +2263,6 @@ class DeclarationService {
 
     
 
-//       // Family relationship shown on Policyholder selection
-//      OnSelectionfamilyMemberGroup() {
-//       const toSelect = this.familyMemberGroup.find(
-//         (element) => element.familyMemberName === this.tuitionFeesForm.get('childName').value
-//       );
-//       this.tuitionFeesForm.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-//       this.tuitionFeesForm.get('relationship').setValue(toSelect.relation);
-//     }
-
-//   }
 
 //   class DeclarationService {
 //     public tuitionFeesTransactionId = 0;
