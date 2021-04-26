@@ -117,10 +117,15 @@ const routes: Routes = [
                     },
 
                     {
-                      path:   'Other-HouseProperty',
-                      component:  HousePropertyComponent,
-                       data: { title: ':: DelziaHR ::  HouseProperty' },
-                      },
+                        path:   'Other-HouseProperty',
+                        component:  HousePropertyComponent,
+                         data: { title: ':: DelziaHR ::  HouseProperty' },
+                        },
+                        /* {
+                          path:   'Other-Employeenationalpension',
+                          component:  EmployeenationalpensionComponent,
+                           data: { title: ':: DelziaHR ::  Employeenationalpension' },
+                          }, */
 
                       {
                         path:   'Other-PrincipalRepaymentOnHousingLoan',

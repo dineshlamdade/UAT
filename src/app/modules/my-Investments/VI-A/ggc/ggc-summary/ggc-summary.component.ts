@@ -53,6 +53,7 @@ export class GgcSummaryComponent implements OnInit {
       tabIndex : this.tabIndex,
       canEdit: (mode == 'edit' ? true : false)
     };
+
     this.institution = institution;
     this.policyNo = policyNo;
     //console.log('institution::', institution);
@@ -118,14 +119,14 @@ export class GgcSummaryComponent implements OnInit {
 
   }
 
-    jumpToMasterPage(policyNo: string) {
+  /*   jumpToMasterPage(policyNo: string) {
       this.tabIndex = 1;
       const data = {
         number : policyNo,
         tabIndex : this.tabIndex
       };;
       this.policyNumber.emit(data);
-    }
+    } */
 
     keyPressedSpaceNotAllow(event: any) {
       console.log('HI ');

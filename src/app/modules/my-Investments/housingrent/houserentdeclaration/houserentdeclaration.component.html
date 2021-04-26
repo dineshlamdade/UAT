@@ -1,8 +1,7 @@
 <div class="tabview-contents">
   <div class="row mb-15" *ngIf="isDisabled">
     <div class="col-md-12">
-      <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span> Select institution for proof
-        submission
+      <label class="mt-2 highlightlabel font-13 font600"><span class="text-red">*</span> Select Property for prof submission
       </label>
     </div>
   </div>
@@ -167,7 +166,7 @@
                  ">
                 <td scope="row">
                   <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                    tooltip="Select institution for proof submission">
+                    tooltip="Select Property for prof submission">
                     <input type="checkbox" [ngModel]="enableSelectAll"
                       [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                          onSelectCheckBox(summary, $event, i, j);
@@ -761,7 +760,7 @@
                    ">
                   <td scope="row">
                     <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                      tooltip="Select institution for proof submission">
+                      tooltip="Select Property for prof submission">
                       <input type="checkbox" [ngModel]="enableSelectAll"
                         [disabled]="isDisabled || summary.proofSubmissionId" (change)="
                            onSelectCheckBox(summary, $event, i, j);

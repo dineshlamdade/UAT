@@ -83,7 +83,7 @@
                 <th rowspan="2" class="wd-12 font700">Actual</th>
                 <th colspan="2" class="wd-16 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-16 font700">Remark</th>
-                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-8">Proof Submission ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -103,15 +103,13 @@
                     <input type="checkbox" [ngModel]="enableSelectAll" (change)="
                         onSelectCheckBox(summary, $event, i, j);
                         enableCheckboxFlag = j
-                      "
-                      [disabled]="summary.proofSubmissionId || isDisabled"
-                      class="custom-control-input" value="option{{ summary.housePropertyTransactionId }}" />
+                      " [disabled]="summary.proofSubmissionId || isDisabled" class="custom-control-input"
+                      value="option{{ summary.housePropertyTransactionId }}" />
                     <span class="custom-control-label"></span>
                   </label>
                   <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
                     <input type="checkbox" [ngModel]="enableSelectAll"
-                      [disabled]="summary.proofSubmissionId || isDisabled "
-                      (change)="
+                      [disabled]="summary.proofSubmissionId || isDisabled " (change)="
                         onSelectCheckBox(summary, $event, i, j);
                         enableCheckboxFlag = j
                       " class="custom-control-input" value="option{{ summary.housePropertyTransactionId }}" />
@@ -140,24 +138,22 @@
                 </td>
                 <td>
                   <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
-                    [disabled]="initialArrayIndex[j] > i || isDisabled "
-                    class="form-control align-right" disabled />
+                    [disabled]="initialArrayIndex[j] > i || isDisabled " class="form-control align-right" disabled />
                 </td>
                 <td>
                   <input type="text" [ngModel]="summary.amountApproved | number: '1.2-2'"
-                    [disabled]="initialArrayIndex[j] > i || isDisabled "
-                    class="form-control align-right" disabled />
+                    [disabled]="initialArrayIndex[j] > i || isDisabled " class="form-control align-right" disabled />
                 </td>
                 <td>
                   <span tooltip="{{ summary.remark }}">
                     {{ summary.remark }}
                   </span>
                 </td>
-                <!-- <td>
+                <td>
                   <span tooltip="{{ summary.proofSubmissionId }}">
-                    {{ summary.proofSubmissionId }}
+                   <i class="fa fa-clipboard"></i>
                   </span>
-                </td> -->
+                </td>
                 <td class="text-orange font700">
                   <span tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
@@ -205,7 +201,7 @@
                     <tbody>
 
 
-                 <tr *ngFor="
+                      <tr *ngFor="
                         let summary of item.housePropertyTransactionPreviousEmployerList;
                         let i = index;
                         count as c
@@ -255,10 +251,9 @@
                               {{ previousEmpParticular.label }}
                             </option> -->
                             [ngModel]="summary.particulars"
-                            <option *ngFor="let particulars of previousEmpParticularList"
-                            [value]="particulars.value">
-                            {{particulars.label}}
-                          </option>
+                            <option *ngFor="let particulars of previousEmpParticularList" [value]="particulars.value">
+                              {{particulars.label}}
+                            </option>
 
 
                           </select>
@@ -268,7 +263,8 @@
                             <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
                               name="actualAmount{{ summary.housePropertyTransactionId }}"
                               [(ngModel)]="summary.actualAmount" class="form-control align-right"
-                              (change)="onActualAmountChangePre(summary, i, j)" [disabled]="initialArrayIndex[j] > i" [disabled]="
+                              (change)="onActualAmountChangePre(summary, i, j)" [disabled]="initialArrayIndex[j] > i"
+                              [disabled]="
                               isDisabled || summary.transactionStatus === 'Submitted'
                             " />
                           </div>
@@ -288,7 +284,7 @@
                         </td>
                         <td>
                           <span tooltip="{{ summary.proofSubmissionId }}">
-                            {{ summary.proofSubmissionId }}
+                           <i class="fa fa-clipboard"></i>
                           </span>
                         </td>
                         <td class="text-orange font700">
@@ -298,41 +294,21 @@
                         </td>
                       </tr>
                       <tr *ngIf="!isDisabled ">
-                        <td
-                          *ngIf="previousEmployeeList?.length"
-                          colspan="9"
-                          class="align-right font700 font-16 text-light-green cursor-pointer"
-                        >
-                          <i
-                            class="fa fa-plus-circle font-20"
-                            tooltip="Add"
-                            (click)="addRowInList(PreviousEmployeeService, j)"
-                          ></i>
+                        <td *ngIf="previousEmployeeList?.length" colspan="9"
+                          class="align-right font700 font-16 text-light-green cursor-pointer">
+                          <i class="fa fa-plus-circle font-20" tooltip="Add"
+                            (click)="addRowInList(PreviousEmployeeService, j)"></i>
                           <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                          <i
-                            class="fa fa-times font-16 text-red cursor-pointer"
-                            *ngIf="hideRemoveRow"
-                            tooltip="Cancel"
-                            (click)="deleteRow(j)"
-                          ></i>
+                          <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                            (click)="deleteRow(j)"></i>
                         </td>
-                        <td
-                          *ngIf="!previousEmployeeList?.length"
-                          colspan="9"
-                          class="align-right font700 font-16 text-light-green cursor-pointer"
-                        >
-                          <i
-                            class="fa fa-plus-circle font-20"
-                            tooltip="Add"
-                            (click)="addRowInList(PreviousEmployeeService, j)"
-                          ></i>
+                        <td *ngIf="!previousEmployeeList?.length" colspan="9"
+                          class="align-right font700 font-16 text-light-green cursor-pointer">
+                          <i class="fa fa-plus-circle font-20" tooltip="Add"
+                            (click)="addRowInList(PreviousEmployeeService, j)"></i>
                           <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                          <i
-                            class="fa fa-times font-16 text-red cursor-pointer"
-                            *ngIf="hideRemoveRow"
-                            tooltip="Cancel"
-                            (click)="deleteRow(j)"
-                          ></i>
+                          <i class="fa fa-times font-16 text-red cursor-pointer" *ngIf="hideRemoveRow" tooltip="Cancel"
+                            (click)="deleteRow(j)"></i>
                         </td>
                       </tr>
 
@@ -568,8 +544,6 @@
                       <th scope="col" class="font700 wd-5">Sr No.</th>
                       <th scope="col" class="font700 wd-20">Document Name</th>
                       <th scope="col" class="font700 wd-20">Attachment</th>
-                      <th scope="col" class="font700 wd-10">Receipt Date</th>
-                      <th scope="col" class="font700 wd-10">Receipt Number</th>
                       <th scope="col" class="font700 wd-15">Total Selected Amount </th>
                       <th scope="col" class="font700 wd-15"> Receipt Amount</th>
                       <th scope="col" class="font700 wd-12">Action</th>
@@ -588,26 +562,11 @@
                         </span>
                       </td>
                       <td>
-                        <span>
-                          <input type="text" class="form-control align-right" [(ngModel)]="receiptDate"
-                            [disabled]="true" />
-                        </span>
-                      </td>
-                      <td>
-                        <span>
-                          <input type="text" class="form-control align-right" [(ngModel)]="receiptNumber" />
-                        </span>
-                      </td>
-                      <td>
-                        <!-- <span>
-                          <input type="text" class="form-control align-right" [(ngModel)]="globalSelectedAmount"
-                            [disabled]="true" />
-                        </span> -->
                         <!-- <p-inputNumber  formControlName="annualAmount" name="Annual Amount"
                         [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }" mode="decimal" locale="en-IN"
                         [minFractionDigits]="2"></p-inputNumber> -->
-                        <p-inputNumber class="p-inputright" [(ngModel)]="globalSelectedAmount" [disabled]="true" mode="decimal" locale="en-IN"
-                        [minFractionDigits]="2" ></p-inputNumber>
+                        <p-inputNumber class="p-inputright" [(ngModel)]="globalSelectedAmount" [disabled]="true"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
                       </td>
                       <td>
                         <!-- <span>
@@ -615,8 +574,9 @@
                             class="form-control align-right" (blur)="changeReceiptAmountFormat()"
                             [(ngModel)]="receiptAmount" />
                         </span> -->
-                        <p-inputNumber class="p-inputright" [(ngModel)]="receiptAmount" onchange="changeReceiptAmountFormat()" mode="decimal" locale="en-IN"
-                        [minFractionDigits]="2" ></p-inputNumber>
+                        <p-inputNumber class="p-inputright" [(ngModel)]="receiptAmount"
+                          onchange="changeReceiptAmountFormat()" mode="decimal" locale="en-IN" [minFractionDigits]="2">
+                        </p-inputNumber>
 
 
                         <!-- <input
@@ -649,30 +609,17 @@
                         </span>
                       </td>
                       <td>
-                        <span>
-                          <input type="text" class="form-control align-right" [(ngModel)]="receiptDate"
-                            [disabled]="true" />
-                        </span>
-                      </td>
-                      <td>
-                        <span>
-                          <input type="text" class="form-control align-right" [(ngModel)]="receiptNumber" />
-                        </span>
-                      </td>
-                      <td>
                         <p-inputNumber  class="p-inputright" [(ngModel)]="globalSelectedAmountRental" [disabled]="true" [minFractionDigits]="2" mode="decimal" locale="en-IN"></p-inputNumber>
                       </td>
+                      <!-- <p-inputNumber class="p-inputright" [(ngModel)]="globalSelectedAmount" [disabled]="true"
+                        mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
                       <td>
                         <!-- <span>
                           <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
                             [(ngModel)]="receiptAmount" />
                         </span> -->
-                        <input
-                        type="text" onkeypress="return /[0-9]/i.test(event.key)"
-                        class="form-control align-right"
-                        (blur)="changeReceiptAmountFormatRental()"
-                        [(ngModel)]="receiptAmount"
-                      />
+                        <input type="text" onkeypress="return /[0-9]/i.test(event.key)" class="form-control align-right"
+                          (blur)="changeReceiptAmountFormat()" [(ngModel)]="receiptAmount" />
                       </td>
                       <td>
                         <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
@@ -697,36 +644,48 @@
                           <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp; {{ item.name }},
                         </span>
                       </td>
-                      <td>
-                        <span>
-                          <input type="text" class="form-control align-right" [(ngModel)]="receiptDate"
-                            [disabled]="true" />
-                        </span>
-                      </td>
-                      <td>
-                        <span>
-                          <input type="text" class="p-inputright"  [(ngModel)]="receiptNumber" />
-                        </span>
-                      </td>
                       <!-- <td>
                         <p-inputNumber class="align-right" [(ngModel)]="globalSelectedAmountMunicipal"  [disabled]="true" [minFractionDigits]="2" mode="decimal" locale="en-IN"></p-inputNumber>
                       </td> -->
 
                       <td>
-                        <p-inputNumber  class="p-inputright" [(ngModel)]="globalSelectedAmountMunicipal" [disabled]="true" [minFractionDigits]="2" mode="decimal" locale="en-IN"></p-inputNumber>
+                        <!-- <p-inputNumber  class="p-inputright" [(ngModel)]="globalSelectedAmountMunicipal" [disabled]="true" [minFractionDigits]="2" mode="decimal" locale="en-IN"></p-inputNumber> -->
+                        <p-inputNumber class="p-inputright" [(ngModel)]="globalSelectedAmount" [disabled]="true"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber>
+                      </td>
+
+
+                      <td>
+                        <input type="text" onkeypress="return /[0-9]/i.test(event.key)" class="form-control align-right"
+                          (blur)="changeReceiptAmountFormat()" [(ngModel)]="receiptAmount" />
                       </td>
                       <td>
-                        <!-- <span>
-                          <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
-                            [(ngModel)]="receiptAmount" />
-                        </span> -->
+                        <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+                            !enableFileUpload
+                              ? sweetalertWarning(
+                                  'Please select transaction to Upload Document'
+                                )
+                              : UploadModalMuniciple(template7)
+                          "></i>&nbsp;&nbsp;
+                        <!-- <i class="fa fa-times font-16 text-red cursor-pointer" tooltip="Cancel" (click)="removeDocument()"></i> -->
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row"></th>
+                      <td>
 
-                        <input
-                        type="text" onkeypress="return /[0-9]/i.test(event.key)"
-                        class="form-control align-right"
-                        (blur)="changeReceiptAmountFormatMunicipal()"
-                        [(ngModel)]="receiptAmount"
-                      />
+                      </td>
+                      <td class="bg-gray font-18 font700 wd-8"> Total</td>
+                      <td>
+                        <p-inputNumber  class="p-inputright" [(ngModel)]="globalSelectedAmountMunicipal" [disabled]="true" [minFractionDigits]="2" mode="decimal" locale="en-IN"></p-inputNumber>
+                        <!-- <p-inputNumber class="p-inputright" [(ngModel)]="globalSelectedAmount" [disabled]="true"
+                          mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
+                      </td>
+
+
+                      <td>
+                        <input type="text" onkeypress="return /[0-9]/i.test(event.key)" class="form-control align-right"
+                          (blur)="changeReceiptAmountFormat()" [(ngModel)]="receiptAmount" />
                       </td>
                       <td>
                         <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
@@ -752,12 +711,31 @@
   <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
     <div class="col-12">
       <div class="float-right mb-15">
-        <button type="button"  class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
+        <button type="button" (click)="upload()
+             " class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple">
           <b><i class="fa fa-floppy-o"></i></b> Save
         </button>
       </div>
     </div>
   </div>
+
+  <!-- <div class="row mt-10">
+    <div class="col-12">
+      <div class="float-right mb-15">
+        <button
+          type="button"
+          (click)="
+            receiptAmount < globalSelectedAmount
+              ? sweetalertError('Receipt Amount should be equal or greater than Actual Amount of Selected lines')
+              : upload()"
+          class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+        >
+          <b><i class="fa fa-floppy-o"></i></b> Save
+        </button>
+      </div>
+    </div>
+  </div> -->
+
 
   <!-- (click)="
               receiptAmount < globalSelectedAmount
@@ -1426,13 +1404,7 @@
 <ng-template #template6>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -1448,23 +1420,13 @@
               <label class="filelabel">
                 <i class="fa fa-upload"> </i>
                 <span class="title"> Choose file </span>
-                <input
-                  class="FileUpload1"
-                  class="dropify"
-                  (change)="onUploadRental($event)"
-                  accept=".jpg , .jpeg, .pdf , .png"
-                  id="FileInput"
-                  type="file"
-                  multiple
-                />
+                <input class="FileUpload1" class="dropify" (change)="onUploadRental($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
             <div *ngIf="rentalIncomeReceipt.length > 0" class="fileuploadbox">
               Selected Files
-              <label
-                *ngFor="let item of rentalIncomeReceipt; let index = index"
-                class="filelabeldisplay"
-              >
+              <label *ngFor="let item of rentalIncomeReceipt; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
                   <span class="title">
@@ -1472,10 +1434,7 @@
                   </span>
                 </div>
                 <div>
-                  <i
-                    class="fa fa-times text-red font-18"
-                    (click)="removeSelectedTransactionDocumentRental(index)"
-                  ></i>
+                  <i class="fa fa-times text-red font-18" (click)="removeSelectedTransactionDocumentRental(index)"></i>
                 </div>
               </label>
             </div>
@@ -1484,11 +1443,7 @@
             <label class="form-label">Remark</label>
           </div>
           <div class="col-md-12">
-            <textarea
-              class="form-control"
-              [(ngModel)]="documentRemark"
-              rows="2"
-            ></textarea>
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
           </div>
         </div>
       </div>
@@ -1505,13 +1460,7 @@
 <ng-template #template7>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -1527,23 +1476,13 @@
               <label class="filelabel">
                 <i class="fa fa-upload"> </i>
                 <span class="title"> Choose file </span>
-                <input
-                  class="FileUpload1"
-                  class="dropify"
-                  (change)="onUploadMuniciple($event)"
-                  accept=".jpg , .jpeg, .pdf , .png"
-                  id="FileInput"
-                  type="file"
-                  multiple
-                />
+                <input class="FileUpload1" class="dropify" (change)="onUploadMuniciple($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
               </label>
             </div>
             <div *ngIf="municipalTaxReceipt.length > 0" class="fileuploadbox">
               Selected Files
-              <label
-                *ngFor="let item of municipalTaxReceipt; let index = index"
-                class="filelabeldisplay"
-              >
+              <label *ngFor="let item of municipalTaxReceipt; let index = index" class="filelabeldisplay">
                 <div class="text-ellipsis">
                   <i class="fa fa-paperclip"> </i>
                   <span class="title">
@@ -1551,10 +1490,8 @@
                   </span>
                 </div>
                 <div>
-                  <i
-                    class="fa fa-times text-red font-18"
-                    (click)="removeSelectedTransactionDocumentMunciple(index)"
-                  ></i>
+                  <i class="fa fa-times text-red font-18"
+                    (click)="removeSelectedTransactionDocumentMunciple(index)"></i>
                 </div>
               </label>
             </div>
@@ -1563,11 +1500,7 @@
             <label class="form-label">Remark</label>
           </div>
           <div class="col-md-12">
-            <textarea
-              class="form-control"
-              [(ngModel)]="documentRemark"
-              rows="2"
-            ></textarea>
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
           </div>
         </div>
       </div>

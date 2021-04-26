@@ -166,11 +166,17 @@
                       {{ summary.remark }}
                     </span>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span tooltip="{{ summary.proofSubmissionId }}">
                       {{ summary.proofSubmissionId }}
                     </span>
+                  </td> -->
+                  <td>
+                    <span tooltip="{{ summary.proofSubmissionId }}">
+                     <i class="fa fa-clipboard"></i>
+                    </span>
                   </td>
+
                   <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
@@ -1023,8 +1029,10 @@
     </button>
   </div>
   <div class="card-body Box-Spacing">
-    <div *ngFor="let item of editTransactionUpload; let j = index">
-      <div *ngIf="expenseType == 'Mediclaim Premium' || expenseType == 'All'">
+    <!-- <div *ngFor="let item of editTransactionUpload; let j = index">
+      <div *ngIf="expenseType == 'Mediclaim Premium' || expenseType == 'All'"> -->
+     <div *ngFor="let item of editTransactionUpload; let j = index">
+          <div *ngIf="item.mediclaimTransactionDetail.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList != null">
         <h3 class="font-14 text-purple font-bold">Mediclaim</h3>
         <div *ngFor="let item of mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList; let j = index">
 
@@ -1264,9 +1272,9 @@
           </div>
         </div>
       </div>
-    <br>
-    <!-- <div *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'"> -->
-      <div>
+     <br>
+     <!-- <div *ngIf="expenseType == 'Preventive Health Check Up' || expenseType == 'All'"> -->
+      <div *ngIf= "item.mediclaimTransactionDetail.preventiveHealthCheckupTransactionDetail !== null">
         <h3 class="font-14 text-purple font-bold">Preventive Health Checkup</h3>
         <div *ngIf="preventiveHealthCheckupTransactionDetail">
           <div class="row mt-15">

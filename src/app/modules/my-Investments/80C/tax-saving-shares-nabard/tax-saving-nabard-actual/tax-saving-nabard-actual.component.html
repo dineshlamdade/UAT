@@ -190,17 +190,19 @@
                     class="form-control"
                     bsDatepicker
                   />
+
+
                 </td>
 
                 <td>
                   <input
                     type="text"
-                    id="declaredAmount{{ summary.investmentGroup3TransactionId }}"
+                    id="actualAmount{{ summary.investmentGroup3TransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
-                    name="declaredAmount{{
+                    name="actualAmount{{
                       summary.investmentGroup3TransactionId
                     }}"
-                    [(ngModel)]="summary.declaredAmount"
+                    [(ngModel)]="summary.actualAmount"
                     [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                     class="form-control align-right"
                   />
@@ -226,11 +228,18 @@
                     {{ summary.remark }}
                   </span>
                 </td>
-                <td>
+                <!-- <td>
                   <span tooltip="{{ summary.proofSubmissionId }}">
                     {{ summary.proofSubmissionId }}
                   </span>
+                </td> -->
+                <td>
+                  <span tooltip="{{ summary.proofSubmissionId }}">
+                   <i class="fa fa-clipboard"></i>
+                  </span>
                 </td>
+
+
                 <td class="text-orange font700">
                   <span tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
@@ -337,8 +346,7 @@
                   <input
                     type="text"
                     [ngModel]="addRowSummary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate"
-                    [maxDate]="financialYearEndDate"
+                    [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker"
                     data-date-autoclose="true"
@@ -353,7 +361,7 @@
                 <td>
                   <input
                     type="text"
-                    [(ngModel)]="addRowSummary.declaredAmount"
+                    [(ngModel)]="addRowSummary.actualAmount"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     class="form-control align-right"
                     (change)="onActualAmountChange(addRowSummary, i)"
@@ -393,7 +401,7 @@
                   class="align-right font700 font-16 text-light-green cursor-pointer"
                 > -->
                 <td
-                  colspan="12"
+                  colspan="11"
                 class="align-right font700 font-16 text-light-green cursor-pointer"
               >
                   <i
@@ -431,6 +439,43 @@
 
               <tr>
                 <td
+                  colspan="12"
+                  class="align-right font700 font-16 text-light-green cursor-pointer"
+                >
+                  <i
+                    class="fa fa-plus-circle font-20"
+                    tooltip="Add"
+                    (click)="addTable()"
+                  ></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <!-- <i
+                    class="fa fa-times font-16 text-red cursor-pointer"
+                    tooltip="Cancel"
+                    (click)="deleteRow(i)"
+                  ></i> -->
+                </td>
+                <td
+                  *ngIf="!previousEmployeeList?.length"
+                  colspan="11"
+                  class="align-right font700 font-16 text-light-green cursor-pointer"
+                >
+                  <i
+                    class="fa fa-plus-circle font-20"
+                    tooltip="Add"
+                    (click)="addTable()"
+                  ></i>
+                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
+                  <!-- <i
+                    class="fa fa-times font-16 text-red cursor-pointer"
+                    tooltip="Cancel"
+                    (click)="deleteRows(i)"
+                  ></i> -->
+                </td>
+              </tr>
+              <tr>
+                <td *ngIf="previousEmployeeList?.length"
+                class="bg-lightgray font-18 font700 align-left"></td>
+                <td
                   *ngIf="previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left"
                 >Total</td>
@@ -464,7 +509,7 @@
                 </td>
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
-                <td class="bg-lightgray font-18 font700"></td>
+                <!-- <td class="bg-lightgray font-18 font700"></td> -->
               </tr>
 
             </tbody>
@@ -639,9 +684,8 @@
                     <div class="custom_Label_badge">
                       <button
                         class="btn bg-color-lightgray text-000"
-                        (click)="
-                          UploadedDocumentModal1(template1, documentIndex)
-                        "
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
                       >
                         Documents
                       </button>
@@ -650,43 +694,36 @@
                       }}</span>
                     </div>
                   </td>
+
                   <td>
                     <i
                     class="fa fa-eye font-16 text-blue cursor-pointer"
                     (click)="
-                      declarationEditUpload(
+                    editViewTransaction(
                         template2,
                         documentSummary.proofSubmissionId
                       );
-                      viewDocumentDetail = false
+                      viewTransactionDetail = false
                     "
-                    tooltip="View"
-                    ></i
-                    >&nbsp;&nbsp;
-                    <!-- <i
-                      class="fa fa-download font-16 text-blue cursor-pointer"
-                      tooltip="Download"
-                    ></i> -->
-                    <div *ngFor="let doc of urlArray" hidden>
-                      <iframe
-                        style="height: 100vh; width: 100%; display: block"
-                        [src]="doc.blobURI"
-                        provider="google"
-                      ></iframe>
-                    </div>
+                    tooltip="view"
+                  ></i>
+
+
+
                     &nbsp;&nbsp;
                     <i
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
-                        declarationEditUpload(
+                      editViewTransaction(
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = true
+                        viewTransactionDetail = true
                       "
                       tooltip="Edit"
                     ></i>
                   </td>
+
                 </tr>
               </tbody>
             </table>
@@ -744,10 +781,10 @@
 
 <ng-template #template2>
   <div class="modal-header">
-    <h5 class="modal-title" id="jasdjgh" *ngIf="viewDocumentDetail">
+    <h5 class="modal-title" id="jasdjgh" *ngIf="viewTransactionDetail">
       Edit Document Details
     </h5>
-    <h5 class="modal-title" id="jasdjgh" *ngIf="!viewDocumentDetail">
+    <h5 class="modal-title" id="jasdjgh" *ngIf="!viewTransactionDetail">
       View Document Details
     </h5>
     <button
@@ -981,14 +1018,14 @@
     </div>
 
     <hr />
-    <div class="row" *ngIf="viewDocumentDetail">
+    <div class="row" *ngIf="viewTransactionDetail">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
           Upload Documents
         </h3>
       </div>
     </div>
-    <div class="row clearfix mt-10" *ngIf="viewDocumentDetail">
+    <div class="row clearfix mt-10" *ngIf="viewTransactionDetail">
       <div class="col-md-12">
         <div class="row clearfix">
           <div class="col-md-3">
@@ -1023,7 +1060,7 @@
                 <div>
                   <i
                     class="fa fa-times text-red font-18"
-                    (click)="removeSelectedTransactionDocumentInEditCase(index)"
+                    (click)="removeSelectedLicTransactionDocumentInEditCase(index)"
                   ></i>
                 </div>
               </label>
@@ -1060,22 +1097,38 @@
               {{ doc.fileName }}
             </div>
           </div>
+          <!-- <div class="col-md-1">
+             <i class="fa fa-eye font-16 text-blue font-900 mt-2" tooltip="View Document" (click)='modalRef.hide(); docViewer(template3)'></i>
+             </div> -->
         </div>
+        <!-- <div class="row mt-10 mb-10">
+              <div class="col-md-12">
+                  <div class="float-right">
+                      <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3)" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+            <b><i class="fa fa-eye"></i></b> View
+          </button> &nbsp;&nbsp;
+                      <button *ngIf="viewTransactionDetail" type="button" tooltip="View Document" (click)="modalRef.hide(); uploadUpdateTransaction()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+            <b><i class="fa fa-copy"></i></b> Save
+          </button>
+                  </div>
+              </div>
+          </div> -->
       </div>
     </div>
   </div>
+
   <div class="modal-footer">
     <button
       type="button"
       tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3)"
+      (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
     <button
-      *ngIf="viewDocumentDetail"
+      *ngIf="viewTransactionDetail"
       type="button"
       tooltip="View Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
@@ -1087,6 +1140,7 @@
 </ng-template>
 
 
+<!-- dOC VIEWER -->
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
@@ -1101,7 +1155,7 @@
     </button>
   </div>
   <!-- <button (click)="previousDocViewer()" [disabled]="urlIndex == 0">previous</button>
-     <button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
+<button (click)="nextDocViewer()" [disabled]="urlIndex == (urlArray.length-1)">next</button> -->
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
@@ -1116,11 +1170,7 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe
-          style="height: 100vh; width: 100%; display: block"
-          [src]="urlSafe"
-          provider="google"
-        ></iframe>
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
       </div>
       <div class="col-md-1">
         <button
@@ -1142,7 +1192,6 @@
     </button>
   </div>
 </ng-template>
-
 <ng-template #template4>
   <div class="modal-header">
     <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
@@ -1160,6 +1209,9 @@
     <div class="card">
       <div class="card-body">
         <div class="row clearfix">
+          <!-- <div class="col-md-12">
+           <label class="form-label">Upload File here :</label>
+        </div> -->
           <div class="col-md-12">
             <div class="fileuploadbox bg-color-lightgray">
               <label class="filelabel">
