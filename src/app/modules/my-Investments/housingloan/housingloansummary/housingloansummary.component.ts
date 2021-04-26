@@ -15,7 +15,7 @@ export class HousingloansummaryComponent implements OnInit {
   @Output() myEvent = new EventEmitter<any>();
   @Output() housePropertyMasterIds = new EventEmitter<any>();
   public modalRef: BsModalRef;
-  public summaryGridData : any;
+  public summaryGridData : any = [];
   // public totalDeclaredAmount : number;
   // public totalActualAmount : number;
   // public grandTotalDeclaredAmount : number;
@@ -64,7 +64,7 @@ public tabIndex = 0;
   summaryPage() {
     this.housingloanService.getHousingLoanummary().subscribe((res) => {
       console.log(res);
-      // if(res.data.results.lenght > 0){
+      if(res.data.results.length > 0){
       this.summaryGridData = res.data.results[0];
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
@@ -90,7 +90,8 @@ public tabIndex = 0;
       this.totalLossFromHousePropertyDeclaredAmount = res.data.results[0].totalLossFromHousePropertyDeclaredAmount;
       this.totalLossFromHousePropertyActualAmount = res.data.results[0].totalLossFromHousePropertyActualAmount;
       console.log(this.summaryGridData);
-    // }
+    }
+
     });
   }
 
