@@ -375,7 +375,7 @@
                         [maxDate]="rentMaxDate"  
                      [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }"  >
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
-                        <div *ngIf="landRentDetailForm.toDate.errors.required">Property Name is mandatory</div>
+                        <div *ngIf="landRentDetailForm.toDate.errors.required">To Date is mandatory</div>
                      </div>
                   </div>
                </div>
