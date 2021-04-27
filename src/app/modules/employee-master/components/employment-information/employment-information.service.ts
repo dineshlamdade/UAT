@@ -157,7 +157,7 @@ export class EmploymentInformationService {
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('X-TenantId', 'PaysquareDefault');
-    return this.httpClient.get(environment.baseUrl8083 + '/companymaster/getAllAtGroup', { headers: headers })
+    return this.httpClient.get(environment.baseUrl8083 + 'companymaster/getAllAtGroup', { headers: headers })
       .pipe(map((res: any) => {
         return res;
       }))
