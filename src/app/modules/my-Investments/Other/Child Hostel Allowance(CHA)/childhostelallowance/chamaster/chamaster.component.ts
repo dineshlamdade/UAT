@@ -126,6 +126,7 @@ export class ChamasterComponent implements OnInit {
       // age: new FormControl({ value: null, disabled: true },Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
       nameOfChild: new FormControl(null, Validators.required),
+      age: new FormControl(null, Validators.required),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
       employeeMasterId: new FormControl(0),
@@ -204,6 +205,10 @@ export class ChamasterComponent implements OnInit {
     this.childhostelallowanceService.getCHAMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
+      this.masterGridData.forEach((element) => {
+        element.fromDate = new Date(element.fromDate);
+        element.toDate = new Date(element.toDate);
+      });
     });
   }
 
@@ -232,6 +237,10 @@ export class ChamasterComponent implements OnInit {
       if (res) {
         if (res.data.results.length > 0) {
           this.masterGridData = res.data.results;
+          this.masterGridData.forEach((element) => {
+            element.fromDate = new Date(element.fromDate);
+            element.toDate = new Date(element.toDate);
+          });
 
           this.alertService.sweetalertMasterSuccess(
             'Record saved Successfully.',
@@ -280,13 +289,13 @@ export class ChamasterComponent implements OnInit {
  */
   OnSelectionfamilyMemberGroup() {
     if(this.form.get('nameOfChild').value == null ){
-      this.form.get('ageBracket').setValue(null);
+      this.form.get('age').setValue(null);
     }
     const toSelect = this.familyMemberGroup.find(
       (c) => c.familyMemberName === this.form.get('nameOfChild').value
     );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
-    this.form.get('ageBracket').setValue(toSelect.ageBracket);
+    this.form.get('age').setValue(toSelect.age);
   }
 
   //--------------- Deactivate the Remark -------------------

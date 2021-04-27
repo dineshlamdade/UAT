@@ -21,12 +21,21 @@
                      </div>
                   </div>
 
+                  <!-- <div class="col-sm-6 col-md-3">
+                     <label class="form-label">Age</label>
+                     <input type="text" formControlName="age" class="form-control" disabled
+                       [ngClass]="{ 'is-invalid': submitted && masterForm.age.errors }">
+                     <div *ngIf="submitted && masterForm.age.errors" class="invalid-feedback">
+                       <div *ngIf="masterForm.age.errors.required">Age is mandatory</div>
+                     </div>
+                   </div> -->
+                   
                   <div class="col-sm-6 col-md-3">
                      <label class="form-label">Age</label>
-                     <input type="text" formControlName="ageBracket" class="form-control" disabled
-                       [ngClass]="{ 'is-invalid': submitted && masterForm.ageBracket.errors }">
-                     <div *ngIf="submitted && masterForm.ageBracket.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.ageBracket.errors.required">ageBracket is mandatory</div>
+                     <input type="text" formControlName="age" class="form-control" disabled
+                       [ngClass]="{ 'is-invalid': submitted && masterForm.age.errors }">
+                     <div *ngIf="submitted && masterForm.age.errors" class="invalid-feedback">
+                       <div *ngIf="masterForm.age.errors.required">age is mandatory</div>
                      </div>
                    </div>
 
@@ -40,7 +49,7 @@
                               </div>
                               <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                                 (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate"
+                                [minDate]="minFormDate"
                                  [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
                                  [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
                               <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
@@ -57,8 +66,7 @@
                               <div class="input-group-prepend">
                                  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                               </div>
-                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                                 (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                              <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"                                
                                  [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate"
                                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
                                  placeholder="To Date" bsDatepicker
