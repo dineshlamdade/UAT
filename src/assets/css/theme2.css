@@ -91,24 +91,20 @@ border-color: #818e0b!important; */
   border-color: #5a5278;
 }
 
-.custom-control-input:checked ~ .custom-control-label::before,
-.custom-radio
-  .custom-control-input:disabled:checked
-  ~ .custom-control-label::before,
-.custom-checkbox
-  .custom-control-input:disabled:checked
-  ~ .custom-control-label::before {
+.custom-control-input:checked~.custom-control-label::before,
+.custom-radio .custom-control-input:disabled:checked~.custom-control-label::before,
+.custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
   /* border-color: #6c7709;
 background: linear-gradient(-45deg, #6c7709, #818e0b)!important; */
   border-color: #38b449;
   background: #38b449;
 }
 
-.custom-switch-input:checked ~ .custom-switch-indicator {
+.custom-switch-input:checked~.custom-switch-indicator {
   background: #38b449;
 }
 
-.selectgroup-input:checked + .selectgroup-button {
+.selectgroup-input:checked+.selectgroup-button {
   border-color: #5a5278;
   color: #5a5278;
   background: rgba(90, 82, 120, 0.2);
@@ -118,16 +114,16 @@ background: linear-gradient(-45deg, #6c7709, #818e0b)!important; */
   color: #e8769f !important;
 }
 
-.wizard > .steps .current a,
-.wizard > .steps .current a:hover,
-.wizard > .steps .current a:active,
-.wizard > .actions a,
-.wizard > .actions a:hover {
+.wizard>.steps .current a,
+.wizard>.steps .current a:hover,
+.wizard>.steps .current a:active,
+.wizard>.actions a,
+.wizard>.actions a:hover {
   background: #5a5278;
 }
 
-.wizard > .steps .done a,
-.wizard > .steps .done a:hover {
+.wizard>.steps .done a,
+.wizard>.steps .done a:hover {
   background: rgba(90, 82, 120, 0.2);
   color: #5a5278;
 }
@@ -325,7 +321,7 @@ body {
   border-color: #5a5278;
 }
 
-.metismenu .active > a {
+.metismenu .active>a {
   color: #5a5278;
   border-color: #5a5278;
 }
@@ -335,8 +331,8 @@ body {
   background: transparent;
 }
 
-.metismenu.grid > li.active > a,
-.metismenu.grid > li > a:hover {
+.metismenu.grid>li.active>a,
+.metismenu.grid>li>a:hover {
   background: rgba(90, 82, 120, 0.1);
   color: #5a5278;
 }
@@ -451,13 +447,13 @@ body {
 
 @media only screen and (max-width: 1024px) {
   .auth .auth_left .card {
-    right: -50px;
+      right: -50px;
   }
 }
 
 @media only screen and (max-width: 992px) {
   .auth .auth_left .card {
-    right: auto;
+      right: auto;
   }
 }
 
@@ -474,7 +470,7 @@ body {
   color: #f1f1f1 !important;
 }
 
-.sidebar_dark .sidebar .metismenu .active > a {
+.sidebar_dark .sidebar .metismenu .active>a {
   color: #e4bd51;
 }
 
@@ -486,12 +482,12 @@ body {
   color: #e4bd51 !important;
 }
 
-.gradient .custom-switch-input:checked ~ .custom-switch-indicator {
+.gradient .custom-switch-input:checked~.custom-switch-indicator {
   background: linear-gradient(45deg, #5a5278, #e8769f) !important;
 }
 
-.gradient .metismenu.grid > li.active > a,
-.gradient .metismenu.grid > li > a:hover {
+.gradient .metismenu.grid>li.active>a,
+.gradient .metismenu.grid>li>a:hover {
   background: linear-gradient(45deg, #5a5278, #5a5278) !important;
   color: #fff;
   border: 0;
@@ -514,11 +510,13 @@ body {
   background: linear-gradient(45deg, #5a5278, #e8769f) !important;
 }
 
-.metismenu.grid > li > a {
+.metismenu.grid>li>a {
   border-color: #5a5278;
 }
 
+
 /* Custom Css Start Here */
+
 
 /* tabview css start here */
 
@@ -553,14 +551,14 @@ border-top: 2px solid #38b449; */
   font-family: Montserrat, sans-serif !important;
 }
 
-.tabview input[type="radio"]:checked + .tabs + label.nav {
+.tabview input[type="radio"]:checked+.tabs+label.nav {
   /* background: linear-gradient(-45deg, #D6ED17FF, #acbe0e); */
   background: #38b449;
   color: #ffffff;
   padding-left: 0px;
 }
 
-.tabview input[type="radio"]:checked + .tabs + label.nav span {
+.tabview input[type="radio"]:checked+.tabs+label.nav span {
   padding-left: 0px;
 }
 
@@ -581,16 +579,16 @@ border-top: 2px solid #38b449; */
   align-items: center;
 }
 
-input[type="radio"] + .tabs {
+input[type="radio"]+.tabs {
   transition: transform 0.2s;
   transform: translateX(100%);
 }
 
-input[type="radio"]:checked + .tabs {
+input[type="radio"]:checked+.tabs {
   transform: translateX(0%);
 }
 
-input[type="radio"]:checked + .tabs .tabview-contents > * {
+input[type="radio"]:checked+.tabs .tabview-contents>* {
   opacity: 1;
   transform: translateY(0px);
 }
@@ -604,12 +602,10 @@ input[type="radio"]:checked + .tabs .tabview-contents > * {
   font-family: Montserrat, sans-serif !important;
 }
 
+
 /* tabview css End here */
 
-<<<<<<< HEAD
-<<<<<<< HEAD=======
-=======
->>>>>>> 4669bf0b2351ace8535e39cf0785df68381c04c5
+<<<<<<< HEAD <<<<<<< HEAD==============>>>>>>>4669bf0b2351ace8535e39cf0785df68381c04c5
 /* tabview css start here */
 
 .apprtabview {
@@ -640,14 +636,14 @@ input[type="radio"]:checked + .tabs .tabview-contents > * {
   font-family: Montserrat, sans-serif !important;
 }
 
-.apprtabview input[type="radio"]:checked + .apprtabs + label.nav {
+.apprtabview input[type="radio"]:checked+.apprtabs+label.nav {
   /* background: linear-gradient(-45deg, #D6ED17FF, #acbe0e); */
   background: #38b449;
   color: #ffffff;
   padding-left: 0px;
 }
 
-.apprtabview input[type="radio"]:checked + .apprtabs + label.nav span {
+.apprtabview input[type="radio"]:checked+.apprtabs+label.nav span {
   padding-left: 0px;
 }
 
@@ -668,16 +664,16 @@ input[type="radio"]:checked + .tabs .tabview-contents > * {
   align-items: center;
 }
 
-input[type="radio"] + .apprtabs {
+input[type="radio"]+.apprtabs {
   transition: transform 0.2s;
   transform: translateX(100%);
 }
 
-input[type="radio"]:checked + .apprtabs {
+input[type="radio"]:checked+.apprtabs {
   transform: translateX(0%);
 }
 
-input[type="radio"]:checked + .apprtabs .tabview-contents > * {
+input[type="radio"]:checked+.apprtabs .tabview-contents>* {
   opacity: 1;
   transform: translateY(0px);
 }
@@ -691,13 +687,10 @@ input[type="radio"]:checked + .apprtabs .tabview-contents > * {
   font-family: Montserrat, sans-serif !important;
 }
 
+
 /* tabview css End here */
 
-<<<<<<< HEAD
->>>>>>>90a6665f027b915bc1891ab460c4187c9ba5e308
-=======
-
->>>>>>> 4669bf0b2351ace8535e39cf0785df68381c04c5
+<<<<<<< HEAD>>>>>>>90a6665f027b915bc1891ab460c4187c9ba5e308=======>>>>>>>4669bf0b2351ace8535e39cf0785df68381c04c5
 /* Feildset CSS Start*/
 
 legend {
@@ -718,6 +711,7 @@ fieldset {
   border-radius: 6px;
 }
 
+
 /* Feildset CSS End*/
 
 .padding-0 {
@@ -731,6 +725,7 @@ fieldset {
   padding: 5px !important;
   border-bottom: 1px solid #ccc !important;
 }
+
 
 /* custom button css Start*/
 
@@ -778,8 +773,7 @@ fieldset {
   font-size: 0.8125rem;
   line-height: 26px;
   border-radius: 0.1875rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .add_custom_btn {
@@ -801,8 +795,7 @@ fieldset {
   font-size: 0.8125rem;
   line-height: 26px;
   border-radius: 0.1875rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .add_custom_btn {
@@ -852,13 +845,13 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
-.btn-labeled-left > b {
+.btn-labeled-left>b {
   left: -1px;
   border-top-left-radius: 0.1875rem;
   border-bottom-left-radius: 0.1875rem;
 }
 
-.btn-labeled > b {
+.btn-labeled>b {
   position: absolute;
   top: 0px;
   background-color: rgba(0, 0, 0, 0.15);
@@ -872,7 +865,7 @@ strong {
   font-weight: bolder;
 }
 
-.btn-labeled > b > i {
+.btn-labeled>b>i {
   top: 0;
 }
 
@@ -895,7 +888,9 @@ strong {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* custom button css end*/
+
 
 /* custom text color css Start */
 
@@ -1027,7 +1022,9 @@ strong {
   align-items: center !important;
 }
 
+
 /* Previous Employer */
+
 .text-center {
   text-align: center !important;
 }
@@ -1044,7 +1041,9 @@ strong {
   align-items: center !important;
 }
 
+
 /* custom text color css end */
+
 
 /* Custom Width css Start */
 
@@ -1189,9 +1188,27 @@ strong {
   width: 27% !important;
 }
 
+
 /* Custom Width css End */
 
+
 /* Custom table css start */
+
+.Custom_Table .table *::-webkit-scrollbar {
+  width: 0px;
+  height: 7px;
+  transition: .3s background
+}
+
+.Custom_Table .table *::-webkit-scrollbar-thumb {
+  /* background: #f8f9fa; */
+  background: #bfbfbf!important;
+  border-radius: 50px;
+}
+
+.Custom_Table .table *:hover::-webkit-scrollbar-thumb {
+  background: #8c8c8c
+}
 
 .Custom_Table .table td,
 .table th {
@@ -1386,6 +1403,7 @@ color: green; */
   color: white;
 }
 
+
 /* datepicker header css start */
 
 .theme-green .bs-datepicker-head {
@@ -1434,7 +1452,7 @@ th .p-dialog .p-dialog-footer {
   border-top-left-radius: 3px;
 }
 
-.p-fileupload .p-fileupload-row > div {
+.p-fileupload .p-fileupload-row>div {
   padding: 10px !important;
 }
 
@@ -1634,8 +1652,7 @@ button:focus {
   line-height: 1.5 !important;
   border: 1px solid #999 !important;
   border-radius: 0.25rem !important;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-    box-shadow 0.2s !important;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s !important;
   appearance: none !important;
   border-radius: 3px !important;
 }
@@ -1722,8 +1739,8 @@ button:focus {
   border-radius: 13px;
   border: 2px solid #ddd;
   /* // -webkit-transform: translate(-50%,-50%);
-  //     -ms-transform: translate(-50%,-50%);
-  //         transform: translate(-50%,-50%); */
+//     -ms-transform: translate(-50%,-50%);
+//         transform: translate(-50%,-50%); */
 }
 
 .image-size-info {
@@ -1756,8 +1773,9 @@ button:focus {
   max-width: 43px;
 }
 
+
 /* .p-button-label {
-  visibility: hidden !important;
+visibility: hidden !important;
 } */
 
 .p-inputtext:invalid {
@@ -1835,6 +1853,7 @@ input {
   transition: 200ms color;
 }
 
+
 /* .filelabel:hover {
 border: 2px dashed #38b449;
 } */
@@ -1894,71 +1913,61 @@ border-right: 2px dotted green; */
 
 @-webkit-keyframes color-change {
   0% {
-    color: #38b449;
+      color: #38b449;
   }
-
   50% {
-    color: blue;
+      color: blue;
   }
-
   100% {
-    color: orangered;
+      color: orangered;
   }
 }
 
 @-moz-keyframes color-change {
   0% {
-    color: #38b449;
+      color: #38b449;
   }
-
   50% {
-    color: blue;
+      color: blue;
   }
-
   100% {
-    color: orangered;
+      color: orangered;
   }
 }
 
 @-ms-keyframes color-change {
   0% {
-    color: #38b449;
+      color: #38b449;
   }
-
   50% {
-    color: blue;
+      color: blue;
   }
-
   100% {
-    color: orangered;
+      color: orangered;
   }
 }
 
 @-o-keyframes color-change {
   0% {
-    color: #38b449;
+      color: #38b449;
   }
-
   50% {
-    color: blue;
+      color: blue;
   }
-
   100% {
-    color: orangered;
+      color: orangered;
   }
 }
 
 @keyframes color-change {
   0% {
-    color: #38b449;
+      color: #38b449;
   }
-
   50% {
-    color: blue;
+      color: blue;
   }
-
   100% {
-    color: orangered;
+      color: orangered;
   }
 }
 
@@ -2005,391 +2014,343 @@ border-right: 2px dotted green; */
 
 @-webkit-keyframes anime1 {
   0% {
-    width: 112px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 112px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   12.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   25% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   37.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   50% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   62.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   75% {
-    width: 48px;
-    height: 112px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 112px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   87.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   100% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
 }
 
 @keyframes anime1 {
   0% {
-    width: 112px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 112px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   12.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   25% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   37.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   50% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   62.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
-
   75% {
-    width: 48px;
-    height: 112px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 112px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   87.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   100% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
 }
 
 @-webkit-keyframes anime2 {
   0% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   12.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   25% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   37.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   50% {
-    width: 112px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 112px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   62.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   75% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   87.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   100% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
 }
 
 @keyframes anime2 {
   0% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   12.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   25% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   37.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   50% {
-    width: 112px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 0px;
+      width: 112px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 0px;
   }
-
   62.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   75% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   87.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   100% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
 }
 
 @-webkit-keyframes anime3 {
   0% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   12.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   25% {
-    width: 48px;
-    height: 112px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 112px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   37.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   50% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   62.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   75% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   87.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   100% {
-    width: 112px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 112px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
 }
 
 @keyframes anime3 {
   0% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   12.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   25% {
-    width: 48px;
-    height: 112px;
-    margin-top: 0px;
-    margin-left: 64px;
+      width: 48px;
+      height: 112px;
+      margin-top: 0px;
+      margin-left: 64px;
   }
-
   37.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   50% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   62.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   75% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   87.5% {
-    width: 48px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 64px;
+      width: 48px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 64px;
   }
-
   100% {
-    width: 112px;
-    height: 48px;
-    margin-top: 64px;
-    margin-left: 0px;
+      width: 112px;
+      height: 48px;
+      margin-top: 64px;
+      margin-left: 0px;
   }
 }
 
@@ -2411,13 +2372,15 @@ border-right: 2px dotted green; */
   margin-bottom: 5px !important;
 }
 
+
 /* job master tab set */
+
 
 /*
 CSS for the main interaction
 */
 
-.tabset > input[type="radio"] {
+.tabset>input[type="radio"] {
   position: absolute;
   left: -200vw;
 }
@@ -2426,16 +2389,16 @@ CSS for the main interaction
   display: none;
 }
 
-.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+.tabset>input:first-child:checked~.tab-panels>.tab-panel:first-child,
+.tabset>input:nth-child(3):checked~.tab-panels>.tab-panel:nth-child(2),
+.tabset>input:nth-child(5):checked~.tab-panels>.tab-panel:nth-child(3),
+.tabset>input:nth-child(7):checked~.tab-panels>.tab-panel:nth-child(4),
+.tabset>input:nth-child(9):checked~.tab-panels>.tab-panel:nth-child(5),
+.tabset>input:nth-child(11):checked~.tab-panels>.tab-panel:nth-child(6) {
   display: block;
 }
 
-.tabset > label {
+.tabset>label {
   position: relative;
   display: inline-block;
   padding: 15px 15px 25px;
@@ -2447,7 +2410,7 @@ CSS for the main interaction
   margin-bottom: 0px;
 }
 
-.tabset > label::after {
+.tabset>label::after {
   content: "";
   position: absolute;
   left: 15px;
@@ -2457,18 +2420,18 @@ CSS for the main interaction
   background: #8d8d8d;
 }
 
-.tabset > label:hover,
-.tabset > input:focus + label {
+.tabset>label:hover,
+.tabset>input:focus+label {
   color: #713f93 !important;
 }
 
-.tabset > label:hover::after,
-.tabset > input:focus + label::after,
-.tabset > input:checked + label::after {
+.tabset>label:hover::after,
+.tabset>input:focus+label::after,
+.tabset>input:checked+label::after {
   background: #713f93 !important;
 }
 
-.tabset > input:checked + label {
+.tabset>input:checked+label {
   border-color: #ccc;
   border-bottom: 1px solid #fff;
   margin-bottom: -1px;
@@ -2489,7 +2452,7 @@ CSS for the main interaction
   width: 100%;
 }
 
-.tabset > input[type="radio"] {
+.tabset>input[type="radio"] {
   position: absolute;
   left: -200vw;
 }
@@ -2498,16 +2461,16 @@ CSS for the main interaction
   display: none;
 }
 
-.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+.tabset>input:first-child:checked~.tab-panels>.tab-panel:first-child,
+.tabset>input:nth-child(3):checked~.tab-panels>.tab-panel:nth-child(2),
+.tabset>input:nth-child(5):checked~.tab-panels>.tab-panel:nth-child(3),
+.tabset>input:nth-child(7):checked~.tab-panels>.tab-panel:nth-child(4),
+.tabset>input:nth-child(9):checked~.tab-panels>.tab-panel:nth-child(5),
+.tabset>input:nth-child(11):checked~.tab-panels>.tab-panel:nth-child(6) {
   display: block;
 }
 
-.tabset > label {
+.tabset>label {
   position: relative;
   display: inline-block;
   padding: 15px 15px 25px;
@@ -2518,7 +2481,7 @@ CSS for the main interaction
   margin-bottom: 0px;
 }
 
-.tabset > label::after {
+.tabset>label::after {
   content: "";
   position: absolute;
   left: 15px;
@@ -2528,18 +2491,18 @@ CSS for the main interaction
   background: #8d8d8d;
 }
 
-.tabset > label:hover,
-.tabset > input:focus + label {
+.tabset>label:hover,
+.tabset>input:focus+label {
   color: #713f93 !important;
 }
 
-.tabset > label:hover::after,
-.tabset > input:focus + label::after,
-.tabset > input:checked + label::after {
+.tabset>label:hover::after,
+.tabset>input:focus+label::after,
+.tabset>input:checked+label::after {
   background: #713f93 !important;
 }
 
-.tabset > input:checked + label {
+.tabset>input:checked+label {
   border-color: #ccc;
   border-bottom: 1px solid #fff;
   margin-bottom: -1px;
@@ -2559,6 +2522,7 @@ CSS for the main interaction
 .tabset {
   width: 100%;
 }
+
 
 /* end of job tab set */
 
@@ -2580,7 +2544,7 @@ CSS for the main interaction
   display: none;
 }
 
-.toggle-box + label {
+.toggle-box+label {
   cursor: pointer;
   display: block;
   font-weight: bold;
@@ -2588,16 +2552,16 @@ CSS for the main interaction
   margin-bottom: 5px;
 }
 
-.toggle-box + label + div {
+.toggle-box+label+div {
   display: none;
   margin-bottom: 10px;
 }
 
-.toggle-box:checked + label + div {
+.toggle-box:checked+label+div {
   display: block;
 }
 
-.toggle-box + label:before {
+.toggle-box+label:before {
   background-color: #4f5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2614,7 +2578,7 @@ CSS for the main interaction
   width: 20px;
 }
 
-.toggle-box:checked + label:before {
+.toggle-box:checked+label:before {
   content: "\2212";
 }
 
@@ -2622,7 +2586,7 @@ CSS for the main interaction
   display: none;
 }
 
-.toggle-sub-box + label {
+.toggle-sub-box+label {
   cursor: pointer;
   display: block;
   font-weight: bold;
@@ -2630,16 +2594,16 @@ CSS for the main interaction
   margin-bottom: 5px;
 }
 
-.toggle-sub-box + label + div {
+.toggle-sub-box+label+div {
   display: none;
   margin-bottom: 10px;
 }
 
-.toggle-sub-box:checked + label + div {
+.toggle-sub-box:checked+label+div {
   display: block;
 }
 
-.toggle-sub-box + label:before {
+.toggle-sub-box+label:before {
   background-color: #4f5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2657,7 +2621,7 @@ CSS for the main interaction
   width: 20px;
 }
 
-.toggle-sub-box:checked + label:before {
+.toggle-sub-box:checked+label:before {
   background-color: #4f5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2814,14 +2778,14 @@ legend {
   font-family: Montserrat, sans-serif !important;
 }
 
-.educatiotabview input[type="radio"]:checked + .tabs + label.nav {
+.educatiotabview input[type="radio"]:checked+.tabs+label.nav {
   /* background: linear-gradient(-45deg, #D6ED17FF, #acbe0e); */
   background: #38b449;
   color: #ffffff;
   padding-left: 0px;
 }
 
-.educatiotabview input[type="radio"]:checked + .tabs + label.nav span {
+.educatiotabview input[type="radio"]:checked+.tabs+label.nav span {
   padding-left: 0px;
 }
 
@@ -2901,7 +2865,7 @@ legend {
   display: none;
 }
 
-.toggle-box + label {
+.toggle-box+label {
   cursor: pointer;
   display: block;
   font-weight: bold;
@@ -2909,16 +2873,16 @@ legend {
   margin-bottom: 5px;
 }
 
-.toggle-box + label + div {
+.toggle-box+label+div {
   display: none;
   margin-bottom: 10px;
 }
 
-.toggle-box:checked + label + div {
+.toggle-box:checked+label+div {
   display: block;
 }
 
-.toggle-box + label:before {
+.toggle-box+label:before {
   background-color: #4f5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2935,7 +2899,7 @@ legend {
   width: 20px;
 }
 
-.toggle-box:checked + label:before {
+.toggle-box:checked+label:before {
   content: "\2212";
 }
 
@@ -2943,7 +2907,7 @@ legend {
   display: none;
 }
 
-.toggle-sub-box + label {
+.toggle-sub-box+label {
   cursor: pointer;
   display: block;
   font-weight: bold;
@@ -2951,16 +2915,16 @@ legend {
   margin-bottom: 5px;
 }
 
-.toggle-sub-box + label + div {
+.toggle-sub-box+label+div {
   display: none;
   margin-bottom: 10px;
 }
 
-.toggle-sub-box:checked + label + div {
+.toggle-sub-box:checked+label+div {
   display: block;
 }
 
-.toggle-sub-box + label:before {
+.toggle-sub-box+label:before {
   background-color: #4f5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -2978,7 +2942,7 @@ legend {
   width: 20px;
 }
 
-.toggle-sub-box:checked + label:before {
+.toggle-sub-box:checked+label:before {
   background-color: #4f5150;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -3006,6 +2970,7 @@ legend {
   font-size: 12px !important;
 }
 
+
 /* added by anant */
 
 .disabled-button {
@@ -3015,9 +2980,20 @@ legend {
 .selectedMaterialCode1 {
   background-color: #63ff6199;
 }
+
 .boldRow {
   font-weight: bold;
   background-color: rgb(255, 255, 155);
 }
 
+.table tr.activeleft td {
+  background-color: #5aa5bd !important;
+  color: white;
+}
+
+
 /* end here */
+
+.border-bottom-gray {
+  border-bottom: 2px solid gray!important;
+}

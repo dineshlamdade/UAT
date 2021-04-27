@@ -463,8 +463,9 @@ selectedTransactionLenderName(lenderName: any) {
     if (checked) {
       this.transactionDetail[j].electricVehicleLoanTransactionList[
         i
-      ].actualAmount = data.declaredAmount;
-
+      ].actualAmount = data.actualAmount;
+      
+   /*  ].actualAmount = data.declaredAmount; */
 
       formatedActualAmount = Number(
         this.transactionDetail[j].electricVehicleLoanTransactionList[

@@ -1,6 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AnyCnameRecord, AnyMxRecord } from 'node:dns';
+import { NumberFormat } from 'xlsx/types';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 import { HousingloanService } from '../housingloan.service';
 @Component({
@@ -9,8 +10,12 @@ import { HousingloanService } from '../housingloan.service';
   styleUrls: ['./housingloansummary.component.scss']
 })
 export class HousingloansummaryComponent implements OnInit {
+
+  @Input() housePropertyMasterId: number;
+  @Output() myEvent = new EventEmitter<any>();
+  @Output() housePropertyMasterIds = new EventEmitter<any>();
   public modalRef: BsModalRef;
-  public summaryGridData : any;
+  public summaryGridData : any = [];
   // public totalDeclaredAmount : number;
   // public totalActualAmount : number;
   // public grandTotalDeclaredAmount : number;
@@ -39,9 +44,12 @@ public  totalLossFromHousePropertyDeclaredAmount : number;
 public  totalLossFromHousePropertyActualAmount : number;
 public housePropertySummaryDetails: Array<any> = [];
 
+public futureGlobalPolicyDeclaredAmount = 0;
+public futureGlobalPolicyDeclaredAmountInvestment = 0;
+
 public tempFlag : boolean;
 public InterestFlag : boolean;
-
+public tabIndex = 0;
 
 
   constructor(  private modalService: BsModalService,
@@ -56,12 +64,14 @@ public InterestFlag : boolean;
   summaryPage() {
     this.housingloanService.getHousingLoanummary().subscribe((res) => {
       console.log(res);
-      // if(res.data.results.lenght > 0){
+      if(res.data.results.length > 0){
       this.summaryGridData = res.data.results[0];
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.futurePurchasePrincipalDeclaredAmount  = res.data.results[0].futurePurchasePrincipalDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futurePurchasePrincipalDeclaredAmount;
       this.futurePurchaseInterestDeclaredAmount = res.data.results[0].futurePurchaseInterestDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmountInvestment = res.data.results[0].futurePurchaseInterestDeclaredAmount;
       this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
       this.limitSec24  = res.data.results[0].limitSec24;
@@ -80,7 +90,8 @@ public InterestFlag : boolean;
       this.totalLossFromHousePropertyDeclaredAmount = res.data.results[0].totalLossFromHousePropertyDeclaredAmount;
       this.totalLossFromHousePropertyActualAmount = res.data.results[0].totalLossFromHousePropertyActualAmount;
       console.log(this.summaryGridData);
-    // }
+    }
+
     });
   }
 
@@ -89,13 +100,13 @@ public InterestFlag : boolean;
   const data = {
     futureNewPolicyDeclaredAmount: this.futurePurchasePrincipalDeclaredAmount,
   };
-
-  console.log('postFuturePolicyPurchasesInvestment Data..', data);
-  this.housingloanService.postFuturePolicyPurchasesInvestment(data).subscribe((res) => {
+    console.log('postFuturePolicyPurchasesPrincipal Data..', data);
+    this.housingloanService.postFuturePolicyPurchasesPrincipal(data).subscribe((res) => {
     this.summaryGridData = res.data.results[0];
     this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
     this.totalActualAmount = res.data.results[0].totalActualAmount;
     this.futurePurchasePrincipalDeclaredAmount  = res.data.results[0].futurePurchasePrincipalDeclaredAmount;
+    this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futurePurchasePrincipalDeclaredAmount;
     this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
     this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
     this.limitSec24  = res.data.results[0].limitSec24;
@@ -122,12 +133,16 @@ public InterestFlag : boolean;
   this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
 }
 
-  onChangeFutureNewPurchasesPrincipal() {
-    this.futurePurchasePrincipalDeclaredAmount = this.futurePurchasePrincipalDeclaredAmount;
-    if (this.futurePurchasePrincipalDeclaredAmount != 0) {
+    // On Change Future New Policy Declared Amount with formate
+    onChangeFutureNewPurchasesPrincipal() {
+      this.futurePurchasePrincipalDeclaredAmount = this.futurePurchasePrincipalDeclaredAmount;
+      if (this.futurePurchasePrincipalDeclaredAmount > 0) {
       this.addFuturePolicyPurchasesPrincipal();
+    }else if(this.futurePurchasePrincipalDeclaredAmount <0) {
+      this.futurePurchasePrincipalDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
     }
   }
+
 
   // Post New Future Policy Data API call
  public addFuturePolicyPurchasesInterest(): void {
@@ -135,12 +150,13 @@ public InterestFlag : boolean;
     futureNewPolicyDeclaredAmount: this.futurePurchaseInterestDeclaredAmount,
   };
 
-  console.log('postFuturePolicyPurchasesPrincipal Data..', data);
-  this.housingloanService.postFuturePolicyPurchasesPrincipal(data).subscribe((res) => {
+  console.log('postFuturePolicyPurchasesInvestment Data..', data);
+  this.housingloanService.postFuturePolicyPurchasesInvestment(data).subscribe((res) => {
     this.summaryGridData = res.data.results[0];
     this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
     this.totalActualAmount = res.data.results[0].totalActualAmount;
     this.futurePurchaseInterestDeclaredAmount = res.data.results[0].futurePurchaseInterestDeclaredAmount;
+    this.futureGlobalPolicyDeclaredAmountInvestment = res.data.results[0].futurePurchaseInterestDeclaredAmount;
     this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
     this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
     this.limitSec24  = res.data.results[0].limitSec24;
@@ -167,12 +183,15 @@ public InterestFlag : boolean;
   this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
 }
 
-  onChangeFutureNewPurchasesInterest() {
-    this.futurePurchaseInterestDeclaredAmount = this.futurePurchaseInterestDeclaredAmount;
-    if (this.futurePurchaseInterestDeclaredAmount != 0) {
-      this. addFuturePolicyPurchasesInterest();
-  }
+onChangeFutureNewPurchasesInterest() {
+  this.futurePurchaseInterestDeclaredAmount = this.futurePurchaseInterestDeclaredAmount;
+  if (this.futurePurchaseInterestDeclaredAmount > 0) {
+  this.addFuturePolicyPurchasesInterest();
+}else if(this.futurePurchaseInterestDeclaredAmount <0) {
+  this.futurePurchaseInterestDeclaredAmount = this.futureGlobalPolicyDeclaredAmountInvestment;
 }
+}
+
 
 keyPressedSpaceNotAllow(event: any) {
   console.log('HI ');
@@ -181,7 +200,6 @@ keyPressedSpaceNotAllow(event: any) {
 
   if (!pattern.test(inputChar)) {
     this.futurePurchasePrincipalDeclaredAmount = 0;
-    // this.futurePurchaseInterestDeclaredAmount = 0;
 
     this.tempFlag = true;
     // invalid character, prevent input
@@ -197,7 +215,6 @@ keyPressedSpaceNotAllowInterest(event: any) {
   let inputChar = String.fromCharCode(event.key);
 
   if (!pattern.test(inputChar)) {
-    // this.futurePurchasePrincipalDeclaredAmount = 0;
     this.futurePurchaseInterestDeclaredAmount = 0;
 
     this.InterestFlag = true;
@@ -207,6 +224,30 @@ keyPressedSpaceNotAllowInterest(event: any) {
     this.InterestFlag = false;
   }
 }
+
+
+redirectToDeclarationActual(
+  housePropertyMasterId: number,
+  mode: string
+) {
+  this.tabIndex = 2;
+  const data = {
+    housePropertyMasterId: housePropertyMasterId,
+    tabIndex: this.tabIndex,
+    canEdit: mode == 'edit' ? true : false,
+  };
+  this.housePropertyMasterId = housePropertyMasterId;
+  this.myEvent.emit(data);
+}
+jumpToMasterPage(housePropertyMasterId: number) {
+  this.tabIndex = 1;
+  const housePropertyMasterIds = {
+    housePropertyMasterId: housePropertyMasterId,
+    tabIndex: this.tabIndex,
+  };
+  this.housePropertyMasterIds.emit(housePropertyMasterIds);
+}
+
 
   InfoDialogforSectionEightyEE(infodialog1: TemplateRef<any>)
   {

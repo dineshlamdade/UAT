@@ -170,6 +170,17 @@ export class EducationDetailComponent implements OnInit {
     }   
   }
 
+//   dateSet(){
+//     if( this.EducationInfoForm.get('education').value=='Senior Secondary' ||  this.EducationInfoForm.get('Higher Secondary').value=='')
+//     if( this.EducationInfoForm.get('education').value=='Senior Secondary'){
+//       if()
+// startDate='';
+
+//     }else{
+
+//     }
+//   }
+
 
   getEducationList() {
 
