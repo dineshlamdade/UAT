@@ -1004,6 +1004,11 @@ strong {
     border: 1px solid #999 !important;
 }
 
+.bg-letterbadge-gray {
+    background-color: #ddd!important;
+    color: #000!important;
+}
+
 .bg-color-light_gray {
     background-color: #f2f2f2 !important;
     color: #000 !important;
