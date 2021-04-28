@@ -231,8 +231,12 @@
                           <tbody *ngFor="let gurantor of guarentedCount, ,let i = index;">
                             <tr>
                               <td>{{i+1}}</td>
+                              <!--  -->
                               <td><input type="text" value="{{gurantor.empCode}}"
-                                  (focusout)="getEmpcode($event.target.value,i)"></td>
+                                  (focusout)="getEmpcode($event.target.value,i)"
+                                  class="form-control"
+                                  [ngClass]="{'is-invalid' : gurantor.empCode == undefined || gurantor.empCode == ''}"
+                                  ></td>
                               <td><input type="text" value="{{gurantor.fullName}}" disabled></td>
                             </tr>
                           </tbody>
@@ -255,7 +259,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let data of devaiationData;">
+                          <tr *ngFor="let data of devaiationData; let index = index;">
                             <td>
                               <span *ngIf="data.deviationType == 'LoanAmount'"> Loan Amount</span>
                               <span *ngIf="data.deviationType == 'noOfInstallment'"> No. Of Installment</span>
@@ -264,7 +268,9 @@
                             <td>{{data.deviationValue}}</td>
                             <td>{{data.userLimit}}</td>
                             <td>{{data.deviationValue - data.userLimit}}</td>
-                            <td><input type="text" (focusout)="reasons($event.target.value)"></td>
+                            <td><input type="text" class="form-control" value="{{data.reason}}" 
+                              (focusout)="reasons($event.target.value, index)"
+                              [ngClass]="{'is-invalid' : data.reason == undefined || data.reason == ''}"></td>
                             <!-- [ngClass]="{'is-invalid' : AddLoanForm.get('reason').status == 'INVALID'}" formControlName="reason" -->
                           </tr>
 
@@ -402,11 +408,14 @@
                   </div>
                   <br><br>
                   <ng-container class="float-right">
-                    <!-- || (documentList.length != documentReason.length) -->
+                    <!-- || (documentList.length != documentReason.length) 
+                    
+                    || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length)-->
+                    <!-- || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) -->
                     <div class="row float-right" style="margin: 10px">
                       <button type="submit" class="custom_button custom_btn btn-labeled btn-labeled-left" tooltip="Save"
-                        [disabled]="AddLoanForm.invalid || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length)"
-                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length)  || (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}">
+                        [disabled]="AddLoanForm.invalid || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length) "
+                        [ngClass]="{'disabled-btn-bg-green' : AddLoanForm.invalid || (devaiationData.length != deviationReason.length) || (guarentedCount.length != guarantorName.length) ,'btn-bg-green': !AddLoanForm.invalid}">
                         <b> <i class="fa fa-floppy-o" aria-hidden="true"></i></b>Save</button>&nbsp;
 
                       <!-- <button type="submit" tooltip="Update" *ngIf="isVisible"  class="custom_button custom_btn btn-labeled btn-labeled-left"
