@@ -207,6 +207,8 @@ export class JoiningInformationComponent implements OnInit {
     JoiningInformationModel.expectedConfirmationDate = this.datepipe.transform(JoiningInformationModel.expectedConfirmationDate, "dd-MMM-yyyy");
     JoiningInformationModel.confirmationDate = this.datepipe.transform(JoiningInformationModel.confirmationDate, "dd-MMM-yyyy");
     // JoiningInformationModel.projectedRetirementDate = this.datepipe.transform(JoiningInformationModel.projectedRetirementDate, "dd-MMM-yyyy");
+   
+      
 
 
     if (this.employementInfoId && this.employementInfoId > 0) {
@@ -222,6 +224,7 @@ export class JoiningInformationComponent implements OnInit {
         }
         this.employementInfoId = res.data.results[0].employementInfoId;
         this.CommonDataService.sweetalertMasterSuccess("Success..!!", res.status.messsage);
+      //  localStorage.setItem('LastTransaction', 'Joining');
         this.EventEmitterService.getEmpSummaryInitiate();
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId)
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
@@ -233,6 +236,7 @@ export class JoiningInformationComponent implements OnInit {
         this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
       })
     } else {
+      localStorage.setItem('LastTransaction', 'Joining');
       this.EmploymentInformationService.postJoiningInformation(JoiningInformationModel).subscribe(res => {
 
         // this.notifyService.showSuccess(res.status.messsage, "Success..!!");
@@ -246,7 +250,7 @@ export class JoiningInformationComponent implements OnInit {
         this.employementInfoId = res.data.results[0].employementInfoId;
         this.EventEmitterService.getEmpSummaryInitiate();
         localStorage.setItem('joiningDate', this.JoiningInformationModel.joiningDate);
-
+        
         localStorage.setItem('employementJoiningInfoId', this.employementInfoId);
         this.router.navigate(['/employee-master/employment-information/employment-summary']);
       }, (error: any) => {

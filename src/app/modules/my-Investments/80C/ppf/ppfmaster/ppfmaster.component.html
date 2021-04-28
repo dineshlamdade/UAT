@@ -88,7 +88,7 @@
             <span class="input-group-text"><i class="fa fa-calendar"></i></span>
           </div>
           <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate"
-            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control" 
             (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()" [minDate]="policyToDate"
             placeholder="Account End Date" bsDatepicker
             [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
@@ -140,7 +140,7 @@
                 <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
               <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
@@ -154,7 +154,7 @@
               </div>
             </div>
           </div>
-          <div class="row mt-4 mb-10">
+          <div class="row mt-4 mb-10" *ngIf="FrequencyofPayment.value !== 'As & When'">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">From Date</label>
                <div class="form-group">
@@ -166,6 +166,7 @@
                   <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control"
                     (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate" [maxDate]="maxFromDate"
+                    
                     placeholder="From Date" bsDatepicker
                     [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
                   <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
@@ -174,7 +175,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3">
+            <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
               <label class="form-label">To Date</label>
               <div class="form-group">
                  <div class="input-group">

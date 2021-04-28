@@ -1449,20 +1449,15 @@ export class GgcDeclarationActualComponent implements OnInit {
       }
 
       //Payment Detail To Date Validations with Payment Detail From Date
-        // setPaymentDetailToDate() {
-        //   this.paymentDetailMinDate = this.form.value.fromDate;
-        //   const from = this.datePipe.transform(
-        //     this.form.get('fromDate').value,
-        //     'yyyy-MM-dd'
-        //   );
-        //   const to = this.datePipe.transform(
-        //     this.form.get('toDate').value,
-        //     'yyyy-MM-dd'
-        //   );
-        //   if (from > to) {
-        //     this.form.controls.toDate.reset();
-        //   }
-        // }
+      setPaymentDetailToDate() {
+          this.paymentDetailMinDate = this.form.value.fromDate;
+        const from = this.datePipe.transform(
+            this.form.get('fromDate').value,
+            'yyyy-MM-dd'
+          );
+        
+         
+         }
       // Common Function for filter to call API
       getTransactionFilterData() {
         // this.Service.getTransactionInstName(data).subscribe(res => {
