@@ -10,7 +10,7 @@ import { HousingloanService } from '../housingloan.service';
   styleUrls: ['./housingloansummary.component.scss']
 })
 export class HousingloansummaryComponent implements OnInit {
-
+  @Input() houseDescription: string;
   @Input() housePropertyMasterId: number;
   @Output() myEvent = new EventEmitter<any>();
   @Output() housePropertyMasterIds = new EventEmitter<any>();
@@ -225,20 +225,34 @@ keyPressedSpaceNotAllowInterest(event: any) {
   }
 }
 
-
-redirectToDeclarationActual(
-  housePropertyMasterId: number,
-  mode: string
-) {
+redirectToDeclarationActual(houseDescription: string, mode: string) {
   this.tabIndex = 2;
   const data = {
-    housePropertyMasterId: housePropertyMasterId,
+    propertyHouseName: houseDescription,
     tabIndex: this.tabIndex,
     canEdit: mode == 'edit' ? true : false,
   };
-  this.housePropertyMasterId = housePropertyMasterId;
+  this.houseDescription = houseDescription;
+  console.log('houseDescription::', houseDescription);
+console.log('propertyhouseDescriptionName::', houseDescription);
   this.myEvent.emit(data);
 }
+
+
+// redirectToDeclarationActual(
+//   housePropertyMasterId: number,
+//   mode: string
+// ) {
+//   this.tabIndex = 2;
+//   const data = {
+//     housePropertyMasterId: housePropertyMasterId,
+//     tabIndex: this.tabIndex,
+//     canEdit: mode == 'edit' ? true : false,
+//   };
+//   this.housePropertyMasterId = housePropertyMasterId;
+//   this.myEvent.emit(data);
+// }
+
 jumpToMasterPage(housePropertyMasterId: number) {
   this.tabIndex = 1;
   const housePropertyMasterIds = {
