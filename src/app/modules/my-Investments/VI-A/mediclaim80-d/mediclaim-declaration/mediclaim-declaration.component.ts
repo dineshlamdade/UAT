@@ -60,6 +60,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   public institutionNameList: Array<any> = [];
   public mediclaimTransactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
+  public documentDetailListEdit: Array<any> = [];
   public uploadGridData: Array<any> = [];
   public transactionInstitutionNames: Array<any> = [];
   public transactionWithMediclaimInstitutionName: Array<any> = [];
@@ -73,8 +74,8 @@ export class MediclaimDeclarationComponent implements OnInit {
 
   public transactionPolicyList: Array<any> = [];
   public transactionInstitutionListWithPolicies: Array<any> = [];
-
-  public mediclaimPremiumTransactionDetail: any;
+  public mediclaimPremiumTransactionDetail: any = {};
+  // public mediclaimPremiumTransactionDetail: any;
   public preventiveHealthCheckupTransactionDetail: any;
   public medicalExpenseTransactionDetail: any;
   // public mediclaimPremiumTransactionList: Array<any> = [];
@@ -100,6 +101,10 @@ export class MediclaimDeclarationComponent implements OnInit {
   public previousEmployeeList: Array<any> = [];
   public proofSubmissionFileList: Array<any> = [];
   public proofSubmissionPolicyNoList: Array<any> = [];
+  public mediclaimPremiumTransactionDetailEdit:any
+  public preventiveHealthCheckupTransactionDetailEdit:any
+  public medicalExpenseTransactionDetailEdit:any
+
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
   public futureNewPolicyDeclaredAmount: string;
@@ -130,7 +135,7 @@ export class MediclaimDeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
 
   public dateOfPaymentGlobal: Date;
@@ -969,8 +974,7 @@ selectedTransactionInstName(institution: any) {
   ) {
     this.declarationService = new DeclarationService(summary);
     // console.log("Ondeclaration Amount change" + summary.declaredAmount);
-
-    this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
+     this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].declaredAmount = this.declarationService.declaredAmount;
     const formatedDeclaredAmount = this.numberFormat.transform(
       this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].declaredAmount, );
     console.log(`formatedDeclaredAmount::`,formatedDeclaredAmount);
@@ -1521,38 +1525,34 @@ selectedTransactionInstName(institution: any) {
     }
     console.log('this.mediclaimTransactionDetail::', this.mediclaimTransactionDetail);
 
-    this.mediclaimTransactionDetail.forEach((element) => {
-    element.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList.forEach((innerElement) => {
-     if (innerElement.declaredAmount !== null) {
-          innerElement.declaredAmount = innerElement.declaredAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.declaredAmount = 0.0;
-        }
-        if (innerElement.actualAmount !== null) {
-          innerElement.actualAmount = innerElement.actualAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.actualAmount = 0.0;
-        }
-
-        const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
-          'yyyy-MM-dd',
-        );
-        const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd',
-        );
-
-        innerElement.dateOfPayment = dateOfPaymnet;
-         innerElement.dueDate = dueDate;
+    if (this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList !== null){
+      this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList.forEach((element) => {
+        element.mediclaimTransactionList.forEach((innerElement) => {
+          if (innerElement.declaredAmount !== null) {
+            innerElement.declaredAmount = innerElement.declaredAmount
+              .toString()
+              .replace(',', '');
+          } else {
+            innerElement.declaredAmount = 0.0;
+          }
+          if (innerElement.actualAmount !== null) {
+            innerElement.actualAmount = innerElement.actualAmount
+              .toString()
+              .replace(',', '');
+          } else {
+            innerElement.actualAmount = 0.0;
+          }
+         const dateOfPaymnet = this.datePipe.transform(
+            innerElement.dateOfPayment,
+            'yyyy-MM-dd'
+          );
+          innerElement.dateOfPayment = dateOfPaymnet;
+        });
       });
+    }
 
-      if (element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList !== null){
-        element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((innerElement) => {
+    if (this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList !== null){
+        this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((innerElement) => {
           if (innerElement.declaredAmount !== null) {
             innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
@@ -1577,35 +1577,34 @@ selectedTransactionInstName(institution: any) {
           innerElement.dateOfPayment = dateOfPaymnet;
 
         });
-      };
+      }
 
-        if (element.medicalExpenseTransactionDetail.medicalExpenseTransactionList !== null){
-          element.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((innerElement) => {
+    //   if (this.medicalExpenseTransactionDetail.medicalExpenseTransactionList !== null){
+    //      this.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((innerElement) => {
+    //       if (innerElement.declaredAmount !== null) {
+    //         innerElement.declaredAmount = innerElement.declaredAmount
+    //           .toString()
+    //           .replace(',', '');
+    //       } else {
+    //         innerElement.declaredAmount = 0.0;
+    //       }
+    //       if (innerElement.actualAmount !== null) {
+    //         innerElement.actualAmount = innerElement.actualAmount
+    //           .toString()
+    //           .replace(',', '');
+    //       } else {
+    //         innerElement.actualAmount = 0.0;
+    //       }
 
-          if (innerElement.declaredAmount !== null) {
-            innerElement.declaredAmount = innerElement.declaredAmount
-              .toString()
-              .replace(',', '');
-          } else {
-            innerElement.declaredAmount = 0.0;
-          }
-          if (innerElement.actualAmount !== null) {
-            innerElement.actualAmount = innerElement.actualAmount
-              .toString()
-              .replace(',', '');
-          } else {
-            innerElement.actualAmount = 0.0;
-          }
+    //       const dateOfPaymnet = this.datePipe.transform(
+    //         innerElement.dateOfPayment,
+    //         'yyyy-MM-dd',
+    //       );
 
-          const dateOfPaymnet = this.datePipe.transform(
-            innerElement.dateOfPayment,
-            'yyyy-MM-dd',
-          );
+    //       innerElement.dateOfPayment = dateOfPaymnet;
+    //      });
 
-          innerElement.dateOfPayment = dateOfPaymnet;
-         });
-        }
-    });
+    //     }
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     // delete this.mediclaimTransactionDetail.mediclaimBenefeciaryDetailList;
@@ -1681,12 +1680,9 @@ selectedTransactionInstName(institution: any) {
 
           this.initialArrayIndex = [];
 
-          this.mediclaimTransactionDetail.forEach((element) => {
-
+          this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList.forEach((element) => {
             this.initialArrayIndex.push(element.mediclaimTransactionList.length);
-
             element.mediclaimTransactionList.forEach((innerElement) => {
-
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
               }
@@ -1706,14 +1702,37 @@ selectedTransactionInstName(institution: any) {
               innerElement.actualAmount = this.numberFormat.transform(
                 innerElement.actualAmount,
               );
+              console.log("numberFormat mediclaimPremiumTransactionDetail ", innerElement.actualAmount)
             });
           });
 
-          this.mediclaimTransactionDetail.forEach((element) => {
+
+          this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((element) => {
 
             this.initialArrayIndex.push(element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.length);
 
             element.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((innerElement) => {
+
+              if (innerElement.dateOfPayment !== null) {
+                innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
+              }
+
+
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount,
+              );
+
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount,
+              );
+            });
+          });
+
+          this.medicalExpenseTransactionDetail.forEach((element) => {
+
+            this.initialArrayIndex.push(element.medicalExpenseTransactionDetail.medicalExpenseTransactionList.length);
+
+            element.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((innerElement) => {
 
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
@@ -1743,29 +1762,66 @@ selectedTransactionInstName(institution: any) {
     this.globalSelectedAmount = '0.00';
   }
 
+
   changeReceiptAmountFormat() {
-      // tslint:disable-next-line: variable-name
-      let receiptAmount_: number;
-      let globalSelectedAmount_ : number;
+    // tslint:disable-next-line: variable-name
+    let receiptAmount_: number;
+    let globalSelectedAmount_ : number;
 
-      receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
-      globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
+    receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+    globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
 
-      console.log(receiptAmount_);
-      console.log(globalSelectedAmount_);
-      if (receiptAmount_ < globalSelectedAmount_) {
-      this.alertService.sweetalertError(
-        'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
-      );
-    } else if (receiptAmount_ > globalSelectedAmount_) {
-      console.log(receiptAmount_);
-      console.log(globalSelectedAmount_);
-      this.alertService.sweetalertWarning(
-        'Receipt Amount is greater than Selected line Actual Amount',
-      );
-    }
-      this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    if (receiptAmount_ < globalSelectedAmount_) {
+    this.alertService.sweetalertError(
+      'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+    );
+    this.receiptAmount = '0.00';
+    return false;
+  } else if (receiptAmount_ > globalSelectedAmount_) {
+    console.log(receiptAmount_);
+    console.log(globalSelectedAmount_);
+    this.alertService.sweetalertWarning(
+      'Receipt Amount is greater than Selected line Actual Amount',
+    );
+    // this.receiptAmount = '0.00';
+    // return false;
   }
+    this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
+}
+
+changeReceiptAmountFormatExcpence() {
+  // tslint:disable-next-line: variable-name
+  let receiptAmount_: number;
+  let globalSelectedAmountExpense_ : number;
+
+  receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
+  globalSelectedAmountExpense_ = parseFloat(this.globalSelectedAmountExpense.replace(/,/g, ''));
+
+  console.log(receiptAmount_);
+  console.log(globalSelectedAmountExpense_);
+  if (receiptAmount_ < globalSelectedAmountExpense_) {
+  this.alertService.sweetalertError(
+    'Receipt Amount should be equal or greater than Actual Amount of Selected lines',
+  );
+  this.receiptAmount = '0.00';
+  return false;
+} else if (receiptAmount_ > globalSelectedAmountExpense_) {
+  console.log(receiptAmount_);
+  console.log(globalSelectedAmountExpense_);
+  this.alertService.sweetalertWarning(
+    'Receipt Amount is greater than Selected line Actual Amount',
+  );
+  // this.receiptAmount = '0.00';
+  // return false;
+}
+  this.receiptAmount= this.numberFormat.transform(this.receiptAmount);
+}
+
+
+
+
 
   UploadModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
@@ -1874,68 +1930,42 @@ selectedTransactionInstName(institution: any) {
     this.mediclaim80DService.getTransactionByProofSubmissionId(proofSubmissionId).subscribe((res) => {
       this.urlArray = res.data.results[0].mediclaimTransactionDocumentDetailList[0].documentDetailList;
       if (res.data.results[0].mediclaimTransactionDetail != null || res.data.results[0].mediclaimTransactionDetail != undefined) {
-        this.mediclaimPremiumTransactionDetail = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail;
-        this.mediclaimPremiumTransactionList = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList;
-        this.preventiveHealthCheckupTransactionDetail = res.data.results[0].mediclaimTransactionDetail.preventiveHealthCheckupTransactionDetail;
-        this.medicalExpenseTransactionDetail = res.data.results[0].mediclaimTransactionDetail.medicalExpenseTransactionDetail;
+        this.mediclaimPremiumTransactionDetailEdit = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail;
+        this.preventiveHealthCheckupTransactionDetailEdit = res.data.results[0].mediclaimTransactionDetail.preventiveHealthCheckupTransactionDetail;
+        this.medicalExpenseTransactionDetailEdit = res.data.results[0].mediclaimTransactionDetail.medicalExpenseTransactionDetail;
       }
       if (res.data.results[0].mediclaimTransactionDocumentDetailList != null || res.data.results[0].mediclaimTransactionDocumentDetailList != undefined) {
-        this.documentDetailList = res.data.results[0].mediclaimTransactionDocumentDetailList;
+        this.documentDetailListEdit = res.data.results[0].mediclaimTransactionDocumentDetailList;
       }
       this.initialArrayIndex = [];
 
-      this.editProofSubmissionId = res.data.results[0].mediclaimTransactionDocumentDetailList[0].dateOfSubmission;
-      this.editReceiptAmount = res.data.results[0].receiptAmount;
-      this.grandDeclarationTotalEditModal =
-        res.data.results[0].grandDeclarationTotal;
-      this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
-      this.grandRejectedTotalEditModal =
-        res.data.results[0].grandRejectedTotal;
-      this.grandApprovedTotalEditModal =
-        res.data.results[0].grandApprovedTotal;
+      // this.editProofSubmissionId = res.data.results[0].mediclaimTransactionDocumentDetailList[0].dateOfSubmission;
+      // this.editReceiptAmount = res.data.results[0].receiptAmount;
+      // this.grandDeclarationTotalEditModal =
+      //   res.data.results[0].grandDeclarationTotal;
+      // this.grandActualTotalEditModal = res.data.results[0].grandActualTotal;
+      // this.grandRejectedTotalEditModal =
+      //   res.data.results[0].grandRejectedTotal;
+      // this.grandApprovedTotalEditModal =
+      //   res.data.results[0].grandApprovedTotal;
       // console.log(this.urlArray);
-      this.urlArray.forEach((element) => {
-        element.blobURI = 'data:image/image;base64,' + element.blobURI;
-      });
-      this.editTransactionUpload.forEach((element) => {
-        element.mediclaimTransactionList.forEach((innerElement) => {
-          innerElement.declaredAmount = this.numberFormat.transform(
-            innerElement.declaredAmount,
-          );
-          innerElement.actualAmount = this.numberFormat.transform(
-            innerElement.actualAmount,
-          );
-        });
-      });
+      // this.urlArray.forEach((element) => {
+      //   element.blobURI = 'data:image/image;base64,' + element.blobURI;
+      // });
+      // this.editTransactionUpload.forEach((element) => {
+      //   element.mediclaimTransactionList.forEach((innerElement) => {
+      //     innerElement.declaredAmount = this.numberFormat.transform(
+      //       innerElement.declaredAmount,
+      //     );
+      //     innerElement.actualAmount = this.numberFormat.transform(
+      //       innerElement.actualAmount,
+      //     );
+      //   });
+      // });
     });
   }
 
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
-
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
-    );
-  }
 
   // -----------Common Function for filter to call API---------------
   getTransactionFilterData(
@@ -1948,7 +1978,6 @@ selectedTransactionInstName(institution: any) {
     ).subscribe((res) => {
       if (res.data.results[0].mediclaimTransactionDetail != null || res.data.results[0].mediclaimTransactionDetail != undefined) {
         this.mediclaimPremiumTransactionDetail = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail;
-        this.mediclaimPremiumTransactionList = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList;
         this.preventiveHealthCheckupTransactionDetail = res.data.results[0].mediclaimTransactionDetail.preventiveHealthCheckupTransactionDetail;
         this.medicalExpenseTransactionDetail = res.data.results[0].mediclaimTransactionDetail.medicalExpenseTransactionDetail;
       }
@@ -1989,80 +2018,70 @@ selectedTransactionInstName(institution: any) {
 
   // Upload Document And save Edited Transaction
   public uploadUpdateTransaction() {
-
-    console.log(
-      'uploadUpdateTransaction editTransactionUpload::',
-      this.editTransactionUpload,
-    );
-
-    this.editTransactionUpload.forEach((element) => {
-      element.mediclaimTransactionList.forEach((innerElement) => {
-        if (innerElement.declaredAmount !== null) {
-          innerElement.declaredAmount = innerElement.declaredAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.declaredAmount = 0.0;
-        }
-        if (innerElement.actualAmount !== null) {
-          innerElement.actualAmount = innerElement.actualAmount
-            .toString()
-            .replace(',', '');
-        } else {
-          innerElement.actualAmount = 0.0;
+    let data: any = {};
+    if (this.uploadGridData.length > 0) {
+      for (let i = 0; i < this.uploadGridData.length; i++) {
+        // to check with medical premium
+        if (this.expenseType == 'Mediclaim Premium') {
+          const medPremTransList = this.mediclaimPremiumTransactionDetailEdit.mediclaimPremiumTransactionList;
+          for (let k = 0; k < medPremTransList.length; k++) {
+            if (this.globalPolicy == medPremTransList[k].institution){
+              const medTransList = this.mediclaimPremiumTransactionDetailEdit.mediclaimPremiumTransactionList[k].mediclaimTransactionList;
+              for (let j = 0; j < medTransList.length; j++) {
+                if (this.uploadGridData[i] == medTransList[j].mediclaimTransactionId) {
+                  this.mediclaimTransList.push(medTransList[j]);
+                }
+              }
+              data.mediclaimTransactionList = this.mediclaimTransList;
+            }
+          }
         }
 
-        const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
-          'yyyy-MM-dd',
-        );
-        const dueDate = this.datePipe.transform(
-          innerElement.dueDate,
-          'yyyy-MM-dd',
-        );
+        // to check with Preventive Health Check Up
+        if (this.expenseType == 'Preventive Health Check Up') {
+          const prevHealthCheckupTransList = this.preventiveHealthCheckupTransactionDetailEdit.preventiveHealthCheckupTransactionList;
+         const  abc = this.preventiveHealthCheckupTransactionDetailEdit.preventiveHealthCheckupTransactionList
+         abc.forEach(element => {
+           delete element.mediclaimBenefeciaryDetailList
+         });
+          for (let j = 0; j < prevHealthCheckupTransList.length; j++) {
+            if (this.uploadGridData[i] == prevHealthCheckupTransList[j].mediclaimTransactionId) {
+              this.mediclaimTransList.push(prevHealthCheckupTransList[j]);
+            }
+          }
+          data.mediclaimTransactionList = this.mediclaimTransList;
+        }
 
-        innerElement.dateOfPayment = dateOfPaymnet;
-        innerElement.dueDate = dueDate;
-        this.uploadGridData.push(innerElement.mediclaimTransactionId);
-      });
-    });
-
-    this.editTransactionUpload.forEach((element) => {
-      element.mediclaimTransactionList.forEach((innerElement) => {
-        const dateOfPaymnet = this.datePipe.transform(
-          innerElement.dateOfPayment,
-          'yyyy-MM-dd',
-        );
-        innerElement.dateOfPayment = dateOfPaymnet;
-      });
-    });
-
-    const data = {
-      proofSubmissionId: this.mediclaimTransactionDetail[0].proofSubmissionId,
-      mediclaimTransactionDetail: this.editTransactionUpload,
-      mediclaimTransactionIds: this.uploadGridData,
-      receiptAmount: this.receiptAmount,
-      // documentRemark: this.documentRemark,
-      // proofSubmissionId: this.editProofSubmissionId,
-      // receiptAmount: this.editReceiptAmount,
-    };
-
-
-
-    console.log('uploadUpdateTransaction data::', data);
+        // to check with Medical Expenses for Parents
+        if (this.expenseType == 'Medical Expenses for Parents') {
+          const medExpTransList = this.medicalExpenseTransactionDetailEdit.medicalExpenseTransactionList;
+         const parentsDelete = this.medicalExpenseTransactionDetailEdit.medicalExpenseTransactionList
+         parentsDelete.forEach(element => {
+           delete element.mediclaimBenefeciaryDetailList
+         });
+          for (let j = 0; j < medExpTransList.length; j++) {
+            if (this.uploadGridData[i] == medExpTransList[j].mediclaimTransactionId) {
+              this.mediclaimTransList.push(medExpTransList[j]);
+            }
+          }
+          data.mediclaimTransactionList = this.mediclaimTransList;
+        }
+      }
+    }
+    data.mediclaimTransactionIds = this.uploadGridData;
+    data.receiptAmount = this.receiptAmount;
+    // data.documentRemark = this.documentRemark;
+    console.log('data::', data);
 
     this.mediclaim80DService
       .uploadMediclaim80DDocument(this.editfilesArray, data)
       .subscribe((res) => {
-        console.log('uploadUpdateTransaction::', res);
+        console.log(res);
         if (res.data.results.length > 0) {
 
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            '',
-          );
-
-          this.mediclaimTransactionDetail = res.data.results[0].mediclaimTransactionDetail;
+          this.mediclaimPremiumTransactionDetail = res.data.results[0].mediclaimTransactionDetail.mediclaimPremiumTransactionDetail;
+          this.preventiveHealthCheckupTransactionDetail = res.data.results[0].mediclaimTransactionDetail.preventiveHealthCheckupTransactionDetail;
+          this.medicalExpenseTransactionDetail = res.data.results[0].mediclaimTransactionDetail.medicalExpenseTransactionDetail;
           this.documentDetailList = res.data.results[0].mediclaimTransactionDocumentDetailList;
           this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -2071,12 +2090,9 @@ selectedTransactionInstName(institution: any) {
 
           this.initialArrayIndex = [];
 
-          this.mediclaimTransactionDetail.forEach((element) => {
-
+          this.mediclaimPremiumTransactionDetailEdit.mediclaimPremiumTransactionList.forEach((element) => {
             this.initialArrayIndex.push(element.mediclaimTransactionList.length);
-
             element.mediclaimTransactionList.forEach((innerElement) => {
-
               if (innerElement.dateOfPayment !== null) {
                 innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
               }
@@ -2098,11 +2114,36 @@ selectedTransactionInstName(institution: any) {
               );
             });
           });
+
+          this.mediclaimTransactionDetail.forEach((element) => {
+
+            this.initialArrayIndex.push(element.preventiveHealthCheckupTransactionDetailEdit.preventiveHealthCheckupTransactionList.length);
+
+            element.preventiveHealthCheckupTransactionDetailEdit.preventiveHealthCheckupTransactionList.forEach((innerElement) => {
+
+              if (innerElement.dateOfPayment !== null) {
+                innerElement.dateOfPayment = new Date(innerElement.dateOfPayment);
+              }
+
+
+              innerElement.declaredAmount = this.numberFormat.transform(
+                innerElement.declaredAmount,
+              );
+
+              innerElement.actualAmount = this.numberFormat.transform(
+                innerElement.actualAmount,
+              );
+            });
+          });
+
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            '',
+          );
         } else {
           this.alertService.sweetalertWarning(res.status.messsage);
         }
       });
-    this.currentFileUpload = null;
   }
 
   downloadTransaction(proofSubmissionId) {
@@ -2122,8 +2163,8 @@ selectedTransactionInstName(institution: any) {
     );
   }
 
-  // ---- Set Date of Payment On Main Page----
-  setDateOfPaymentPreventive(
+   // ---- Set Date of Payment On Main Page----
+   setDateOfPaymentExpense(
     summary: {
       previousEmployerName: any;
       declaredAmount: number;
@@ -2137,6 +2178,24 @@ selectedTransactionInstName(institution: any) {
     this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].dateOfPayment =
       summary.dateOfPayment;
     console.log(this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].dateOfPayment);
+  }
+
+
+  // ---- Set Date of Payment On Main Page----
+  setDateOfPaymentPreventive(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: number;
+      // dueDate: any;
+    },
+    i: number,
+
+  ) {
+    this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].dateOfPayment =
+      summary.dateOfPayment;
+    console.log(this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].dateOfPayment);
   }
 
    // ---- Set Date of Payment On Main Page----
@@ -2165,14 +2224,14 @@ selectedTransactionInstName(institution: any) {
         declaredAmount: number;
         dateOfPayment: Date;
         actualAmount: number;
-        dueDate: any;
+
       },
       i: number,
       j: number,
     ) {
-      this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].dateOfPayment =
+      this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].dateOfPayment =
         summary.dateOfPayment;
-      console.log(this.mediclaimTransactionDetail[j].mediclaimTransactionList[i].dateOfPayment);
+      console.log(this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].dateOfPayment);
     }
 
   // ---- Set Date of Payment On Edit Modal----
@@ -2191,6 +2250,36 @@ selectedTransactionInstName(institution: any) {
       summary.dateOfPayment;
     console.log(
       this.editTransactionUpload[j].mediclaimTransactionList[i].dateOfPayment,
+    );
+  }
+
+
+  // ---------------- Doc Viewr Code ----------------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+  }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI,
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' }),
     );
   }
 

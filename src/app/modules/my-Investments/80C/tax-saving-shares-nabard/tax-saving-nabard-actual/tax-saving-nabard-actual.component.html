@@ -36,7 +36,7 @@
                 <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                <th rowspan="2" class="wd-8">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -417,7 +417,7 @@
                     (click)="deleteRow()"
                   ></i>
                 </td>
-                <td
+                <!-- <td
                   *ngIf="!previousEmployeeList?.length"
                   colspan="11"
                   class="align-right font700 font-16 text-light-green cursor-pointer"
@@ -434,7 +434,7 @@
                     tooltip="Cancel"
                     (click)="deleteRow()"
                   ></i>
-                </td>
+                </td> -->
               </tr>
 
               <tr>
@@ -444,6 +444,7 @@
                   *ngIf="previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left"
                 >Total</td>
+                <td class="bg-lightgray font-18 font700 align-left"></td>
                 <td
                   *ngIf="!previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left"
@@ -843,7 +844,9 @@
                       type="text"
                       class="form-control"
                       [ngModel]="summary.institution"
-
+                      [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    "
                     />
                     <!-- [disabled]="summary.institution" -->
                   </td>
@@ -854,7 +857,9 @@
                         class="form-control"
                         onkeypress="return /[0-9 ]/i.test(event.key)"
                         [ngModel]="summary.accountNumber"
-
+                        [disabled]="
+                        isDisabled || summary.transactionStatus === 'Submitted'
+                      "
                       />
                       <!-- [disabled]="summary.accountNumber" -->
                     </div>
@@ -889,9 +894,7 @@
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPayment(summary, i)
                       "
-                      [disabled]="
-                        isDisabled || summary.transactionStatus === 'Submitted'
-                      "
+
                       class="form-control"
                       bsDatepicker
                     />
@@ -899,12 +902,12 @@
                   <td>
                     <input
                       type="text"
-                      id="declaredAmount{{ summary.investmentGroup3TransactionId }}"
+                      id="actualAmount{{ summary.investmentGroup3TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{
+                      name="actualAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
-                      [(ngModel)]="summary.declaredAmount"
+                      [(ngModel)]="summary.actualAmount"
 
                       class="form-control align-right"
                     />
@@ -951,9 +954,6 @@
                   <td class="bg-lightgray font-18 font700 align-left">Total</td>
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
-                      {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
-                    </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
