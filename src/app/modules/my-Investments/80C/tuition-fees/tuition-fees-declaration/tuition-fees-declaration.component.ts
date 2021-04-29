@@ -1638,14 +1638,14 @@ export class TuitionFeesDeclarationComponent implements OnInit {
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
   }
 
   previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
   }
 
@@ -1654,7 +1654,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
@@ -1662,6 +1662,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
   }
+
 
   // Common Function for filter to call API
   getTransactionFilterData() {
