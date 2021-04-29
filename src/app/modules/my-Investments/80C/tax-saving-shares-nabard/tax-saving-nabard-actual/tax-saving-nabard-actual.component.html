@@ -36,7 +36,7 @@
                 <th rowspan="2" class="wd-9 font700">Invested Amount</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                <th rowspan="2" class="wd-8">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -417,7 +417,7 @@
                     (click)="deleteRow()"
                   ></i>
                 </td>
-                <td
+                <!-- <td
                   *ngIf="!previousEmployeeList?.length"
                   colspan="11"
                   class="align-right font700 font-16 text-light-green cursor-pointer"
@@ -434,44 +434,9 @@
                     tooltip="Cancel"
                     (click)="deleteRow()"
                   ></i>
-                </td>
+                </td> -->
               </tr>
 
-              <tr>
-                <td
-                  colspan="12"
-                  class="align-right font700 font-16 text-light-green cursor-pointer"
-                >
-                  <i
-                    class="fa fa-plus-circle font-20"
-                    tooltip="Add"
-                    (click)="addTable()"
-                  ></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <!-- <i
-                    class="fa fa-times font-16 text-red cursor-pointer"
-                    tooltip="Cancel"
-                    (click)="deleteRow(i)"
-                  ></i> -->
-                </td>
-                <td
-                  *ngIf="!previousEmployeeList?.length"
-                  colspan="11"
-                  class="align-right font700 font-16 text-light-green cursor-pointer"
-                >
-                  <i
-                    class="fa fa-plus-circle font-20"
-                    tooltip="Add"
-                    (click)="addTable()"
-                  ></i>
-                  <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                  <!-- <i
-                    class="fa fa-times font-16 text-red cursor-pointer"
-                    tooltip="Cancel"
-                    (click)="deleteRows(i)"
-                  ></i> -->
-                </td>
-              </tr>
               <tr>
                 <td *ngIf="previousEmployeeList?.length"
                 class="bg-lightgray font-18 font700 align-left"></td>
@@ -479,18 +444,19 @@
                   *ngIf="previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left"
                 >Total</td>
+                <td class="bg-lightgray font-18 font700 align-left"></td>
                 <td
                   *ngIf="!previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-left"
                 >Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right">
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
+                <!-- <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ grandDeclarationTotal | number: "1.2-2" }}
                   </span>
-                </td>
+                </td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
@@ -509,7 +475,7 @@
                 </td>
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
-                <!-- <td class="bg-lightgray font-18 font700"></td> -->
+                <td class="bg-lightgray font-18 font700"></td>
               </tr>
 
             </tbody>
@@ -878,7 +844,9 @@
                       type="text"
                       class="form-control"
                       [ngModel]="summary.institution"
-
+                      [disabled]="
+                      isDisabled || summary.transactionStatus === 'Submitted'
+                    "
                     />
                     <!-- [disabled]="summary.institution" -->
                   </td>
@@ -889,7 +857,9 @@
                         class="form-control"
                         onkeypress="return /[0-9 ]/i.test(event.key)"
                         [ngModel]="summary.accountNumber"
-
+                        [disabled]="
+                        isDisabled || summary.transactionStatus === 'Submitted'
+                      "
                       />
                       <!-- [disabled]="summary.accountNumber" -->
                     </div>
@@ -924,9 +894,7 @@
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPayment(summary, i)
                       "
-                      [disabled]="
-                        isDisabled || summary.transactionStatus === 'Submitted'
-                      "
+
                       class="form-control"
                       bsDatepicker
                     />
@@ -934,12 +902,12 @@
                   <td>
                     <input
                       type="text"
-                      id="declaredAmount{{ summary.investmentGroup3TransactionId }}"
+                      id="actualAmount{{ summary.investmentGroup3TransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
-                      name="declaredAmount{{
+                      name="actualAmount{{
                         summary.investmentGroup3TransactionId
                       }}"
-                      [(ngModel)]="summary.declaredAmount"
+                      [(ngModel)]="summary.actualAmount"
 
                       class="form-control align-right"
                     />
@@ -986,9 +954,6 @@
                   <td class="bg-lightgray font-18 font700 align-left">Total</td>
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
-                      {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
-                    </span>
                   </td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">

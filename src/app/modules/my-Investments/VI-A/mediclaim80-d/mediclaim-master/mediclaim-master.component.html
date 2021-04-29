@@ -242,6 +242,10 @@
                                    {{summary.ecs==1?'Yes':'No'}}
                                    </span>
                                 </td>
+                                <td class="wd-5">
+                                  <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMasterPayment(i)" tooltip="Edit"></i> &nbsp;&nbsp;
+                              </td>
+
                              </tr>
                              <tr *ngIf="!paymentDetailGridData?.length">
                                 <td colspan="7">

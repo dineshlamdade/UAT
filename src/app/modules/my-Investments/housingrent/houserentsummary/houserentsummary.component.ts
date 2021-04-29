@@ -67,7 +67,8 @@ export class HouserentsummaryComponent implements OnInit {
 
   getComputationSummaryPage() {
     this.houseRentService.getComputation().subscribe((res) => {
-      this.summaryGridData = res.data.results[0].childrenEducationAllowanceComputation;
+      if(res.data.results.length > 0){
+      this.summaryGridData = res.data.results[0].houseRentalAllowanceComputationList;
         console.log("res::",res)
       this.baseTotal = res.data.results[0].baseTotal;
       this.arrearTotal = res.data.results[0].arrearTotal;
@@ -75,6 +76,7 @@ export class HouserentsummaryComponent implements OnInit {
       this.maxEligibilityTotal = res.data.results[0].maxEligibilityTotal;
       this.applicableAllowanceTotal =
         res.data.results[0].applicableAllowanceTotal;
+      }
     });
   }
 
@@ -85,7 +87,7 @@ export class HouserentsummaryComponent implements OnInit {
       tabIndex: this.tabIndex,
       canEdit: mode == 'edit' ? true : false,
     };
-    this.propertyName = propertyName; 
+    this.propertyName = propertyName;
     console.log('propertyName::', propertyName);
   console.log('propertyName::', propertyName);
     this.myEvent.emit(data);
@@ -96,6 +98,7 @@ export class HouserentsummaryComponent implements OnInit {
   summaryPage() {
     this.houseRentService.gethouseRentSummary().subscribe((res) => {
       console.log(res);
+      if(res.data.results.length > 0){
       this.summaryGridData = res.data.results;
       this.propertyName = res.data.results[0].propertyName;
       this.fromDate = res.data.results[0].fromDate;
@@ -106,6 +109,7 @@ export class HouserentsummaryComponent implements OnInit {
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount; */
       // console.log(res);
+    }
     });
   }
 
