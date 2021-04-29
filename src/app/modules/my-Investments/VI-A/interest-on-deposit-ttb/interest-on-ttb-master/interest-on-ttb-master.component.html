@@ -18,17 +18,50 @@
                       </option>
                     </select>
                   </div> -->
-            <div class="col-sm-6 col-md-3">
-              <label class="form-label">State Name</label>
-              <select name="family_Member_Name" id="state" formControlName="state" (change)='onSelectState()'
-                class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
-                <option [ngValue]="null">Select</option>
-                <option *ngFor="let state of stateNameList" [value]="state">
-                  {{state}}
-                  <!-- <option *ngFor="let state of stateNameList" [value]="state.value">
-                        {{state.label}} -->
+                  <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Select Bank Name</label>
+
+                    <select name="bankName" *ngIf="accountNoList.length == 0 "  id="bankName" formControlName="bankName" (change)='onSelectBankAccount()'
+                      disabled
+                      class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                      <option [ngValue]="null">Select</option>
+                      <option *ngFor="let bankName of accountNoList"[value]="bankName.value">
+                        {{bankName.label}}
+                      </option>
+                    </select>
+
+                    <select name="bankName" *ngIf="accountNoList.length > 0 " id="bankName" formControlName="bankName"                  
+                      (change)='onSelectBankCode($event.target.value)'                   
+                      class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                    <option [ngValue]="null">Select</option>
+                    <option *ngFor="let bankName of accountNoList"[value]="bankName.value">
+                      {{bankName.label}}
+                    </option>
+                  </select>
+
+                    <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                      <div *ngIf="masterForm.state.errors.required">Bank A/C Is Mandatory</div>
+                    </div>
+                  </div>               
+
+                 <div class="col-sm-6 col-md-3">
+                    <label class="form-label">State Name</label>
+                       <select name="family_Member_Name" id="state"*ngIf="accountNoList.length > 0 " formControlName="state" (change)='onSelectState()'
+                        disabled
+                         class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                          <option [ngValue]="null">Select</option>
+                          <option *ngFor="let state of stateNameList" [value]="state">
+                           {{state}}
                 </option>
               </select>
+
+              <select name="family_Member_Name" id="state" *ngIf="accountNoList.length == 0 " formControlName="state" (change)='onSelectState()'
+                      class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                      <option [ngValue]="null">Select</option>
+                      <option *ngFor="let state of stateNameList" [value]="state">
+                      {{state}}
+                 </option>
+             </select>
               <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.state.errors.required">State Is Mandatory</div>
               </div>
@@ -36,6 +69,7 @@
             <div class="col-sm-3">
               <label class="form-label">IFSC Code</label>
               <p-autoComplete [(ngModel)]="bankIFSC" [suggestions]="ifscCodeList" placeholder="Search IFSC"
+              [disabled] = "accountNoList?.length"
                 (completeMethod)="searchIFSC($event, bankIFSC)" formControlName="ifscCode" (ngModelChange)="bankIFSC = $event?.toUpperCase();
                           onSelectIFSCCode(bankIFSC)">
                 <ng-template let-ifsc pTemplate="item">
@@ -75,9 +109,16 @@
             </div>
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Account Number</label>
-              <input type="text" formControlName="accountNumber" class="form-control"
+
+              <input type="text" *ngIf="accountNoList.length > 0 " formControlName="accountNumber" class="form-control"
+                disabled
                 onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Account Number"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+
+                <input type="text" *ngIf="accountNoList.length == 0 " formControlName="accountNumber" class="form-control"
+                 onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" placeholder="Enter Account Number"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+
               <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.accountNumber.errors.required">Account Number is mandatory</div>
               </div>
