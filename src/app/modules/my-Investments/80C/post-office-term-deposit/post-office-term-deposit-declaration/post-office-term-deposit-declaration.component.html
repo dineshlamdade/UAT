@@ -411,7 +411,7 @@
                     (click)="deleteRow()"
                   ></i>
                 </td>
-                <td
+                <!-- <td
                   *ngIf="!previousEmployeeList?.length"
                   colspan="11"
                   class="align-right font700 font-16 text-light-green cursor-pointer"
@@ -428,7 +428,7 @@
                     tooltip="Cancel"
                     (click)="deleteRow()"
                   ></i>
-                </td>
+                </td> -->
               </tr>
 
               
@@ -790,7 +790,7 @@
               <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
                 <tr>
                   
-                <th rowspan="2" class="wd-4">
+            <!--     <th rowspan="2" class="wd-4">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
                     tooltip="Select All"
@@ -806,7 +806,7 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-
+ -->
                   <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
@@ -857,7 +857,7 @@
                   "
                 >
 
-                <td scope="row">
+                <!-- <td scope="row">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
                     *ngIf="isDisabled"
@@ -893,7 +893,7 @@
                     />
                     <span class="custom-control-label"></span>
                   </label>
-                </td>
+                </td> -->
 
                   <td *ngIf="previousEmployeeList?.length">
                     <select
@@ -1028,14 +1028,13 @@
                   ></td> -->
                   <td class="bg-lightgray font-18 font700 align-left">Total</td>
                   <td class="bg-lightgray font-18 font700 align-right"></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
                       {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <td class="bg-lightgray font-18 font700 align-right"></td>                  
+                <!--   <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
                       {{ grandActualTotalEditModal | number: "1.2-2" }}
@@ -1053,7 +1052,7 @@
                   </td>
                   
                   <td class="bg-lightgray font-18 font700"></td>
-                  <td class="bg-lightgray font-18 font700"></td>
+              <!--     <td class="bg-lightgray font-18 font700"></td> -->
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
                 </tr>

@@ -457,6 +457,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
       receiptAmount: this.editReceiptAmount,
+      
     };
     console.log('uploadUpdateTransaction data::', data);
 

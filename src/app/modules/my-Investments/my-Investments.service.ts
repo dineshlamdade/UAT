@@ -148,14 +148,14 @@ public apiUrl = environment.baseUrl8085;
   // }
 
   getFamilyInfo() : Observable<any>  {
-    return this._HTTP.get(this.apiUrl + '/licmaster-detail/familyMemberList')
+    return this._HTTP.get(this.apiUrl + 'licmaster-detail/familyMemberList')
     .pipe(map((res: any) => {
       return res;
     }));
   }
 
   getFamilyInfoPPF() : Observable<any>  {
-    return this._HTTP.get<any>(this.apiUrl + '/licmaster-detail/familyMemberList')
+    return this._HTTP.get<any>(this.apiUrl + 'licmaster-detail/familyMemberList')
     .pipe(map((res) =>{
       return res
 .filter(e => e.data.results.relation.includes('Self'));
