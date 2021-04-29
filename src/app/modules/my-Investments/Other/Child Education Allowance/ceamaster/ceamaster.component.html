@@ -23,10 +23,10 @@
 
                   <div class="col-sm-6 col-md-3">
                      <label class="form-label">Age</label>
-                     <input type="text" formControlName="ageBracket" class="form-control" disabled
-                       [ngClass]="{ 'is-invalid': submitted && masterForm.ageBracket.errors }">
-                     <div *ngIf="submitted && masterForm.ageBracket.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.ageBracket.errors.required">ageBracket is mandatory</div>
+                     <input type="text" formControlName="age" class="form-control" disabled
+                       [ngClass]="{ 'is-invalid': submitted && masterForm.age.errors }">
+                     <div *ngIf="submitted && masterForm.age.errors" class="invalid-feedback">
+                       <div *ngIf="masterForm.age.errors.required">age is mandatory</div>
                      </div>
                    </div>
 
@@ -110,7 +110,7 @@
                            <tr *ngFor="let summary of masterGridData; let i = index">
                               <td class="wd-10"><span tooltip="{{summary.nameOfChild}}">{{summary.nameOfChild}}</span>
                               </td>
-                              <td class="wd-10"><span tooltip="{{summary.ageBracket}}">{{summary.ageBracket}}</span>
+                              <td class="wd-10"><span tooltip="{{summary.age}}">{{summary.age}}</span>
                               </td>
                               <td class="wd-10"><span
                                     tooltip="{{ summary.fromDate | date :'dd-MMM-yyyy' }}">{{summary.fromDate

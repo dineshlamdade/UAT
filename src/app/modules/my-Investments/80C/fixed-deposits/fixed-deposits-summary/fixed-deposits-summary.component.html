@@ -49,9 +49,7 @@
               <td class="align-right">
                 <span class="padding-right-12" tooltip="{{totalActualAmount | number:'1.2-2'}}">
                   {{totalActualAmount | number:'1.2-2'}}
-                </span>  <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
-                (onBlur)="keyPressedSpaceNotAllow()"
-                mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
+                </span>
               </td>
               <td></td>
             </tr>
@@ -61,10 +59,13 @@
               </td>
               <td>
 
+                <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
+              (onBlur)="keyPressedSpaceNotAllow()"
+              mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
                 <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
                 (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()"  min="0" mode="decimal" locale="en-IN" [minFractionDigits]="2"
                 [(ngModel)]="futureNewPolicyDeclaredAmount"></p-inputNumber> -->
-              
+
 
               </td>
               <td></td>
