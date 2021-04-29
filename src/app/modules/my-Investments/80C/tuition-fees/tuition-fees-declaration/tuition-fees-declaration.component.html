@@ -758,7 +758,7 @@
                   </div>
                 </td>
                 <td>
-                  <i
+                  <i 
                     class="fa fa-eye font-16 text-blue cursor-pointer"
                     (click)="
                     declarationEditUpload(
@@ -770,10 +770,19 @@
                     tooltip="View"
                   ></i
                   >&nbsp;&nbsp;
-                  <!-- <i
-                    class="fa fa-download font-16 text-blue cursor-pointer"
-                    tooltip="Download"
-                  ></i> -->
+
+                  <!-- <i *ngIf="canEdit"
+                  class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                  (click)="
+                 declarationEditUpload(
+                      template2,
+                      documentSummary.proofSubmissionId
+                    );
+                    viewDocumentDetail = true
+                  "
+                  tooltip="Edit"
+                ></i> -->
+              
                   <div *ngFor="let doc of urlArray" hidden>
                     <iframe
                       style="height: 100vh; width: 100%; display: block"
@@ -782,7 +791,7 @@
                     ></iframe>
                   </div>
                   &nbsp;&nbsp;
-                  <i
+                  <i 
                     class="fa fa-edit font-16 text-dark-green cursor-pointer"
                     (click)="
                       declarationEditUpload(
@@ -1238,7 +1247,7 @@
     <button
       type="button"
       tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3)"
+      (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View
