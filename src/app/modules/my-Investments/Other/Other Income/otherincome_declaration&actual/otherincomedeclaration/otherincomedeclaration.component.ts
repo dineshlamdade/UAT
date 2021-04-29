@@ -11,6 +11,7 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators} fro
 export class OtherincomedeclarationComponent implements OnInit {
   row = [];
   otherIncomeData: any;
+  otherIncomeTotal: any;
   otherIncomeId: any;
   discription: any;
   amount: any;
@@ -44,7 +45,8 @@ export class OtherincomedeclarationComponent implements OnInit {
         return;
       }
       this.otherIncomeData = res.data.results[0].otherIncomeDetail;
-      console.log(this.otherIncomeData[0].otherIncomeId);
+      this.otherIncomeTotal = res.data.results[0].total;
+      console.log(res.data.results[0].total);
 
     });
   }
