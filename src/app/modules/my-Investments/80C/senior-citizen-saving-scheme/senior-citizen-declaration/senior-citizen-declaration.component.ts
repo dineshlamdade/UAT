@@ -23,6 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { elementAt } from 'rxjs/operators';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { FileService } from '../../../file.service';
@@ -349,6 +350,9 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
               element.actualAmount = this.numberFormat.transform(
                 element.actualAmount
               );
+          /*     element.forEach((element) => {
+          element.dateOfPayment = new Date(element.dateOfPayment);
+        }); */
             });
 
             this.alertService.sweetalertMasterSuccess(
@@ -450,64 +454,68 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       } else {
         element.actualAmount = 0.0;
       }
+      const dateOfPaymnet = this.datePipe.transform(
+        element.dateOfPayment,
+        'yyyy-MM-dd'
+      );
+
+      element.dateOfPayment = dateOfPaymnet;
+      this.uploadGridData.push(element.investmentGroup3TransactionId);
     });
+   
 
     const data = {
-      investmentGroup3TransactionDetail: this.editTransactionUpload[0],
-      //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
-      receiptAmount: this.editReceiptAmount,
-      
-    };
-    console.log('uploadUpdateTransaction data::', data);
+      investmentGroup3TransactionDetailList: this.editTransactionUpload,
+      receiptAmount: this.receiptAmount,
+      documentRemark: this.documentRemark,
+      groupTransactionIDs:this.uploadGridData,
 
+    };  
+    console.log('uploadUpdateTransaction data::', data);
     this.seniorCitizenService
       .uploadSeniorCitizenTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
-        if (res.data.results.length > 0) {
-
+        if (res.data.results.length > 0) {         
           this.transactionDetail =
-              res.data.results[0].investmentGroup3TransactionDetailList;
-            this.documentDetailList = res.data.results[0].documentInformation;
-            this.grandDeclarationTotal =
-              res.data.results[0].grandDeclarationTotal;
-            this.grandActualTotal = res.data.results[0].grandActualTotal;
-            this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-            this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+            res.data.results[0].investmentGroup3TransactionDetailList;
+          console.log('transactionDetail', this.transactionDetail);
+  
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+  
+          this.initialArrayIndex = [];
+  
+          this.transactionDetail.forEach((element) => {
+            element.declaredAmount = this.numberFormat.transform(
+              element.declaredAmount
+            );
+            element.actualAmount = this.numberFormat.transform(
+              element.actualAmount
+            );
+          });          
+        this.alertService.sweetalertMasterSuccess(
+          'Transaction Saved Successfully.',
+          ''
+        );
+      } else {
+        this.alertService.sweetalertWarning(res.status.messsage);
+      }
 
-            this.transactionDetail.forEach((element) => {
-              element.declaredAmount = this.numberFormat.transform(
-                element.declaredAmount
-              );
-              element.actualAmount = this.numberFormat.transform(
-                element.actualAmount
-              );
-            });
-
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            ''
-          );
-
-
-        } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
-        }
       });
       this.resetEditVariable()
   }
 
 
   resetEditVariable() {
-
     this.urlArray = [];
-
-
         this.editTransactionUpload = [];
         this.currentFileUpload = null;
         this.editfilesArray = [];
-
         this.grandDeclarationTotalEditModal = 0;
         this.grandActualTotalEditModal = 0;
         this.grandRejectedTotalEditModal =
@@ -1052,7 +1060,8 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  upload() {
+  upload() 
+  {
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -1085,7 +1094,6 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
         innerElement.dateOfPayment = dateOfPaymnet;
       });
-   
 
     this.receiptAmount = this.receiptAmount.toString().replace(',', '');
     const data = {
@@ -1169,6 +1177,27 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     );
   }
 
+   // ------------ ON change of DueDate in Edit Modal----------
+   
+ // ---- Set Date of Payment On Edit Modal----
+ onChangeDateOfPaymentEditCase(
+  summary: {
+    previousEmployerName: any;
+    declaredAmount: number;
+    dateOfPayment: Date;
+    actualAmount: number;
+    dueDate: any;
+  },
+  i: number,
+  j: number
+) {
+  this.editTransactionUpload[j].dateOfPayment =
+    summary.dateOfPayment;
+  console.log(
+    this.editTransactionUpload[j].dateOfPayment
+  );
+}
+
   // ------------ ON change of DueDate in Edit Modal----------
   onDueDateChangeInEditCase(
     summary: {
@@ -1232,24 +1261,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
       'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal
     );
   }
-  // ---- Set Date of Payment On Edit Modal----
-  setDateOfPaymentInEditCase(
-    summary: {
-      previousEmployerName: any;
-      declaredAmount: number;
-      dateOfPayment: Date;
-      actualAmount: number;
-      dueDate: any;
-    },
-    i: number,
-    j: number
-  ) {
-    this.editTransactionUpload[j].dateOfPayment =
-      summary.dateOfPayment;
-    console.log(
-      this.editTransactionUpload[j].dateOfPayment
-    );
-  }
+ 
 
   // ------------Actual Amount change Edit Modal-----------
   onActualAmountChangeInEditCase(

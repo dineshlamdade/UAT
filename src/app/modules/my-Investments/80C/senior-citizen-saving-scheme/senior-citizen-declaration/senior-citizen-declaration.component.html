@@ -945,6 +945,9 @@
                         [(ngModel)]="summary.declaredAmount"
                         (change)="setActualAmoutInEditModal($event)"
                         class="form-control align-right"
+                        [disabled]="
+                        isDisabled || summary.transactionStatus === 'Submitted'
+                      "
                       />
                       <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
                     </div>
@@ -960,12 +963,12 @@
                       data-date-autoclose="true"
                       (ngModelChange)="
                         summary.dateOfPayment = $event.toLocaleDateString();
-                        onChangeDateOfPayment(summary, i)
+                        onChangeDateOfPaymentEditCase(summary, i)
                       "
                      
                       class="form-control"
                       bsDatepicker
-                    />
+                    />                    
                   </td>
                   <td>
                     <input
@@ -978,9 +981,7 @@
                       [(ngModel)]="summary.actualAmount"
 
                       class="form-control align-right"
-                      [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    "
+                    
                     />
                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                   </td>
@@ -1160,7 +1161,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="View Document"
+      tooltip="View Document" 
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
