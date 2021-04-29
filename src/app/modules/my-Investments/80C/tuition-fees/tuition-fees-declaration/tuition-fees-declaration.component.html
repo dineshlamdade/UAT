@@ -535,24 +535,7 @@
                   (click)="deleteRow()"
                 ></i>
               </td>
-              <td
-                *ngIf="!previousEmployeeList?.length"
-                colspan="11"
-                class="align-right font700 font-16 text-light-green cursor-pointer"
-              >
-                <i
-                  class="fa fa-plus-circle font-20"
-                  tooltip="Add"
-                  (click)="addRowInList()"
-                ></i>
-                <span tooltip="Add Row">Add</span>&nbsp;&nbsp;
-                <i
-                  class="fa fa-times font-16 text-red cursor-pointer"
-                  *ngIf="hideRemoveRow"
-                  tooltip="Cancel"
-                  (click)="deleteRow()"
-                ></i>
-              </td>
+            
             </tr>
 
             <tr>
@@ -615,7 +598,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-9">
+          <div class="col-md-12">
             <div class="table-responsive Custom_Table">
               <table
                 class="table table-striped table-hover table-bordered m-b-0"
@@ -624,7 +607,11 @@
                 <tr>
                   <th scope="col" class="font700 wd-8">Sr No.</th>
                   <th scope="col" class="font700 wd-40">Document Name</th>
-                  <th scope="col" class="font700 wd-40">Attachment</th>
+                  <th scope="col" class="font700 wd-20">Attachment</th>
+                  <th scope="col" class="font700 wd-16">
+                    Total Selected Amount
+                  </th>
+                  <th scope="col" class="font700 wd-16">Receipt Amount</th>
                   <th scope="col" class="font700 wd-12">Action</th>
                 </tr>
                 </thead>
@@ -633,7 +620,7 @@
                   <th scope="row"><span tooltip="1">1</span></th>
                   <td>
                     <span tooltip="Premium Receipt/ Premium Statement"></span>
-                    Receipt
+                    Receipt / Statement
                   </td>
                   <!-- <td>
                     <span
@@ -653,6 +640,27 @@
                         <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
                         {{ item.name }},
                       </span>
+                  </td>
+                  <td>
+                    <span>
+                      <input
+                        type="text"
+                        class="form-control align-right"
+                        [(ngModel)]="globalSelectedAmount"
+                        [disabled]="true"
+                      />
+                    </span>
+                  </td>
+                  <td>
+                    <span>
+                      <input
+                        type="text"
+                        class="form-control align-right"
+                        onkeypress="return /[0-9]/i.test(event.key)"
+                        (change)="changeReceiptAmountFormat()"
+                        [(ngModel)]="receiptAmount"
+                      />
+                    </span>
                   </td>
                   <td>
                     <i
@@ -679,7 +687,13 @@
       <div class="float-right mb-15">
         <button
           type="button"
-          (click)="upload()"
+          (click)="
+            receiptAmount < globalSelectedAmount
+              ? sweetalertError(
+                  'Receipt Amount should be equal or greater than Actual Amount of Selected lines'
+                )
+                :upload()
+          "
           class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
           tooltip="Save"
         >
@@ -885,7 +899,7 @@
               <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
               <tr>
 
-                <th rowspan="2" class="wd-4">
+                <!-- <th rowspan="2" class="wd-4">
                   <label
                     class="custom-control custom-checkbox checkbox-center"
                     tooltip="Select All"
@@ -900,15 +914,15 @@
                     />
                     <span class="custom-control-label"></span>
                   </label>
-                </th>
+                </th> -->
               
-                <th rowspan="2" class="wd-10 font700">
+                <!-- <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
-                </th>
+                </th> -->
                 <th rowspan="2" class="wd-10 font700">
                   <span tooltip="School/Collage Name">School/Collage Name</span>
                 </th>
-                <th rowspan="2" class="wd-11 font700">Policy No</th>
+                <th rowspan="2" class="wd-11 font700">Child Name</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
@@ -927,7 +941,7 @@
                 <th rowspan="2" class="wd-15 font700">
                   <span>School/Collage Name</span>
                 </th>
-                <th rowspan="2" class="wd-11 font700">Policy No</th>
+                <th rowspan="2" class="wd-11 font700">Child Name</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Actual</th>
@@ -949,7 +963,7 @@
                     count as c
                   "
               >
-              <td scope="row">
+              <!-- <td scope="row">
                 <label
                   class="custom-control custom-checkbox checkbox-center"
                   *ngIf="isDisabled"
@@ -985,8 +999,8 @@
                   />
                   <span class="custom-control-label"></span>
                 </label>
-              </td>
-                <td *ngIf="previousEmployeeList?.length">
+              </td> -->
+                <!-- <td *ngIf="previousEmployeeList?.length">
                   <select
                     name="Previous Employer Name"
                     class="form-control custom-select"
@@ -1006,12 +1020,13 @@
                       {{ previousEmployee.label }}
                     </option>
                   </select>
-                </td>
+                </td> -->
                 <td>
                   <input
                     type="text"
                     class="form-control"
                     [ngModel]="summary.institution"
+                    [disabled]="summary.institution"
 
                   />
                   <!-- [disabled]="summary.institution" -->
@@ -1022,7 +1037,8 @@
                       type="text"
                       class="form-control"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
-                      [ngModel]="summary.policyNo"
+                      [ngModel]="summary.childName"
+                      [disabled]="summary.childName"
 
                     />
                     <!-- [disabled]="summary.accountNumber" -->
@@ -1042,6 +1058,7 @@
                       [(ngModel)]="summary.declaredAmount"
                       (change)="setActualAmoutInEditModal($event)"
                       class="form-control align-right"
+                      [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                     />
                     <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
                   </div>
@@ -1059,9 +1076,7 @@
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPayment(summary, i)
                       "
-                    [disabled]="
-                        isDisabled || summary.transactionStatus === 'Submitted'
-                      "
+                   
                     class="form-control"
                     bsDatepicker
                   />
@@ -1123,8 +1138,8 @@
                   *ngIf="!previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-right"
                 >Total</td>
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
+                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">

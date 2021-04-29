@@ -26,7 +26,7 @@ export class OtherincomedeclarationComponent implements OnInit {
 
   addTable() {
     const obj = {
-      OtherIncomeid: '',
+      // OtherIncomeid: '',
       Descriptions: '',
       Amounts: '',
       Remarks: ''
@@ -56,7 +56,7 @@ export class OtherincomedeclarationComponent implements OnInit {
     const data = [{
       amount: this.amount.toString().replace('"', ''),
       description: this.discription,
-      otherIncomeId: this.otherIncomeId,
+      // otherIncomeId: this.otherIncomeId,
       remark: this.remark,
     }];
     this.otherincomeService.postOtherIncome(data).subscribe((res) => {
