@@ -223,7 +223,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
 
     this.deactiveCopytoActualDate();
     this.getpreviousEmployeName();
-    this.getAllPreviousEmployer();
+   /*  this.getAllPreviousEmployer(); */
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -467,7 +467,7 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
     const data = {
       proofSubmissionId: this.editProofSubmissionId,
       investmentGroup3TransactionDetailList: this.editTransactionUpload,
-      receiptAmount: this.receiptAmount,
+      receiptAmount: this.editReceiptAmount,
       documentRemark: this.documentRemark,
       groupTransactionIDs:this.uploadGridData,
 
@@ -543,15 +543,14 @@ export class SeniorCitizenDeclarationComponent implements OnInit {
   }
 
   // Get All Previous Employer
-  getAllPreviousEmployer() {
+/*   getAllPreviousEmployer() {
     this.Service.getAllPreviousEmployer().subscribe((res) => {
       console.log(res.data.results);
       if (res.data.results.length > 0) {
         this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
       }
     });
-  }
+  } */
 
   updatePreviousEmpId(event: any, i: number) {
     console.log('select box value::', event.target.value);

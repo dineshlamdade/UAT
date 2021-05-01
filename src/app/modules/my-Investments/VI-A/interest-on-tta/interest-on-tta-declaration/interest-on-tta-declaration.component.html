@@ -514,7 +514,7 @@
                         documentSummary.documentDetailList.length
                       }}</span>
                     </div>
-                  </td>>
+                  </td>
                   <td>
                     <i *ngIf="canEdit"
                     class="fa fa-eye font-16 text-blue cursor-pointer"
@@ -525,11 +525,8 @@
                       );
                       viewTransactionDetail = false
                     "
-                    tooltip="view"
-                  ></i>
-
-
-
+                    tooltip="view">
+                  </i>
                     &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
@@ -665,9 +662,9 @@
                   <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
-                  <th rowspan="2" class="wd-10 font700">
+                 <!--  <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-11 font700">Interest Received Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
@@ -683,12 +680,12 @@
               </thead>
               <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
                 <tr>
-                  <th rowspan="2" class="wd-4">
+                <!--   <th rowspan="2" class="wd-4">
                     <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
                       <input type="checkbox" class="custom-control-input" name="select" />
                       <span class="custom-control-label"></span>
                     </label>
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-11 font700">Interest Received Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-9 font700">Actual</th>
@@ -809,7 +806,7 @@
                     *ngIf="previousEmployeeList?.length"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+               <!--    <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip=" {{ item.declarationTotal | number: '1.2-2' }}"
@@ -818,7 +815,7 @@
                       {{ item.declarationTotal | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                <!--   <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip="{{ item.actualTotal | number: '1.2-2' }}"
@@ -938,7 +935,7 @@
                     {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                   </span>
                 </td>
-                <td class="bg-gray font-18 font700 align-right wd-11"></td>
+                <!-- <td class="bg-gray font-18 font700 align-right wd-11"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd_9">
                   <span
                     class="padding-right-12"

@@ -48,6 +48,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
   public familyMemberNameList: Array<any> = [];
 
+  public empolyeeBankList: Array<any> = [];
+
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
@@ -190,7 +192,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-      savingBankMasterId: new FormControl(0),
+      savingBankMasterId: new FormControl(null),
+     /*  savingBankMasterId: new FormControl(0), */
       ifscCode: new FormControl(null, Validators.required),
       state:  new FormControl(null, Validators.required),
       bankName:  new FormControl(null, Validators.required),
@@ -222,30 +225,11 @@ export class InterestOnTtaMasterComponent implements OnInit {
       });
     }
 
-     // Account Code List API call
-/*      getMasterAccountList() {
-      this.interestOnTtaService.getAccountInfoList().subscribe((res) => {
-        console.log('this.accountNoList::', this.accountNoList);
-        res.data.results.forEach((element) => {
-        console.log("element::",element)
-        element.forEach((innerelemet) => {
-          console.log("innerelemet::",innerelemet)
-          const obj = {
-            label: innerelemet.bankName,
-            value: innerelemet.bankName,
-          };
-          this.accountNoList.push(obj);
-          
-        });
-      
-      });
-
-      });
-    } */
+    
 
   // Account  Code List API call
   // Account Code List API call
-  getMasterAccountList() {
+/*   getMasterAccountList() {
     this.interestOnTtaService.getAccountInfoList().subscribe((res) => {
       if(res.data.results.length > 0){
         res.data.results.forEach((element) => {
@@ -262,7 +246,56 @@ export class InterestOnTtaMasterComponent implements OnInit {
       }      
       console.log('this.accountNoList::', this.accountNoList); 
     });
+  } */
+  // Account  Code List API call
+  // Account Code List API call
+  getMasterAccountList() {
+    this.interestOnTtaService.getAccountInfoList().subscribe((res) => {
+      if(res.data.results.length > 0){
+        this.empolyeeBankList = res.data.results[0];
+        res.data.results.forEach((element) => {
+          console.log("element::",element)
+          element.forEach((innerelemet) => {
+            console.log("innerelemet::",innerelemet)
+            const obj = {
+              label: innerelemet.bankName,
+              value: innerelemet.employeeBankInfoId,
+            };
+            this.accountNoList.push(obj);            
+          });  
+
+        });
+      }      
+      console.log('this.accountNoList::', this.accountNoList); 
+    });
   }
+
+
+onSelectBankCode(employeeBankInfoId:any)
+ {
+   console.log("empolyeeBankList::", this.empolyeeBankList)
+   console.log("employeeBankInfoId::", employeeBankInfoId)
+   const id=Number(employeeBankInfoId)
+
+   console.log("employeeBankInfoId1111::",id)
+       const employeeBankInfo = this.empolyeeBankList.find(   
+      (bankInfo) => bankInfo.employeeBankInfoId === id);
+    console.log("employeeBankInfo::",employeeBankInfo);
+   // this.form.patchValue(employeeBankInfo);
+
+    this.form.patchValue({     
+     //  savingBankMasterId: new FormControl(0),
+     savingBankMasterId:employeeBankInfo.employeeBankInfoId,
+         ifscCode: employeeBankInfo.bankIFSC,
+        state: employeeBankInfo.state,
+        bankName:  employeeBankInfo.bankName,       
+         branchName: employeeBankInfo.branchName,
+       bankAddress: employeeBankInfo.branchAddress,
+       accountNumber:employeeBankInfo.accountNo,
+     });
+  }
+
+  
 
       //get ifsc detail
       IFSCDetails(bankIFSC) {
