@@ -75,7 +75,8 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+            <!--     <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+            <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -96,7 +97,8 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
-                <th rowspan="2" class="wd-10">Proof Submission ID</th>
+              <!--   <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+              <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -183,11 +185,17 @@
                     {{ summary.remark }}
                   </span>
                 </td>
-                <td>
+              <!--   <td>
                   <span tooltip="{{ summary.proofSubmissionId }}">
                     {{ summary.proofSubmissionId }}
                   </span>
+                </td> -->
+                <td>
+                  <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
+                    <i class="fa fa-clipboard"></i>
+                  </span>
                 </td>
+
                 <td class="text-orange font700">
                   <span tooltip="{{ summary.transactionStatus }}">
                     {{ summary.transactionStatus }}
@@ -637,7 +645,8 @@
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-7 font700">Remark</th>
-                  <th rowspan="2" class="wd-8">Proof Submission ID</th>
+               <!--    <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+               <th rowspan="2" class="wd-7">PS ID</th>
                   <th rowspan="2" class="wd-10 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -658,7 +667,8 @@
                   <th rowspan="2" class="wd-9 font700">Actual</th>
                   <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                   <th rowspan="2" class="wd-10 font700">Remark</th>
-                  <th rowspan="2" class="wd-10">Proof Submission ID</th>
+             <!--      <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+             <th rowspan="2" class="wd-7">PS ID</th>
                   <th rowspan="2" class="wd-15 font700">Transaction Status</th>
                 </tr>
                 <tr>
@@ -720,14 +730,24 @@
                       {{ summary.remark }}
                     </span>
                   </td>
-                  <td>
+                 <!--  <td>
                     <span tooltip="{{ summary.proofSubmissionId }}">
                       {{ summary.proofSubmissionId }}
                     </span>
+                  </td> -->
+                  <td>
+                    <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
+                      <i class="fa fa-clipboard"></i>
+                    </span>
                   </td>
-                  <td class="text-orange font700">
+                 <!--  <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
+                    </span>
+                  </td> -->
+                  <td>
+                    <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
+                      <i class="fa fa-clipboard"></i>
                     </span>
                   </td>
                 </tr>
