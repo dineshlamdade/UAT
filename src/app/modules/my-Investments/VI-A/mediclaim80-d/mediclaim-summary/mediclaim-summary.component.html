@@ -124,14 +124,28 @@
             </tr>
             <tr>
               <td colspan="3" class="align-right font700">Total</td>
-              <td class="align-right table-light-color font700"> <span class="padding-right-12"
+              <!-- <td class="align-right table-light-color font700"> <span class="padding-right-12"
                   tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
                   {{ totalDeclaredAmount | number: "1.2-2" }}
                 </span></td>
-              <td class="align-right"> <span class="padding-right-12"
+                <td class="align-right table-light-color font700"> <span class="padding-right-12"
+                  tooltip="{{ totalActualAmount | number: '1.2-2' }}">
+                  {{ totalActualAmount | number: "1.2-2" }}
+                </span></td> -->
+                <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-12"
+                  tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
+                  {{ totalDeclaredAmount | number: "1.2-2" }}
+                </span></td>
+                 <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-12"
                   tooltip="{{ totalActualAmount | number: '1.2-2' }}">
                   {{ totalActualAmount | number: "1.2-2" }}
                 </span></td>
+
+
+              <!-- <td class="align-right table-light-color font700" class="align-right"> <span class="padding-right-12"
+                  tooltip="{{ totalActualAmount | number: '1.2-2' }}">
+                  {{ totalActualAmount | number: "1.2-2" }}
+                </span></td> -->
               <td></td>
 
             </tr>
@@ -362,10 +376,9 @@
             </tr>
             <tr class="bg-color-white text-000 align-right font700">
               <td colspan="3" class="align-right text-000 bg-color-white">Total </td>
-              <td class="align-left font700 bg-color-white"><span class="Letterbadge">K</span> = <span
+              <td class="align-left font700 bg-color-white"><span class="Letterbadge">I</span> = <span
                   class="Letterbadge">F</span> + &nbsp;
-                <span class="Letterbadge">G</span>+ &nbsp; <span class="Letterbadge">H </span> + &nbsp; <span
-                  class="Letterbadge">I</span> + &nbsp; <span class="Letterbadge">J</span>
+                <span class="Letterbadge">G</span>+ &nbsp; <span class="Letterbadge">H </span>
               </td>
               <td class="align-right font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
@@ -406,7 +419,7 @@
               <td rowspan="2" class="text-center text-purple font700 table-light-color">Benefit</td>
               <td class="align-left table-light-color font700">Self/ Spouse/ Children</td>
               <td class="align-left table-light-color font700">Senior Citizen/ Non Senior Citizen</td>
-              <td class="align-left font700 table-light-color "><span class="Letterbadge">M</span>= Minimum of <span
+              <td class="align-left font700 table-light-color "><span class="Letterbadge">J</span>= Minimum of <span
                   class="Letterbadge">A</span> & <span class="Letterbadge">F</span> &nbsp;</td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
@@ -428,7 +441,7 @@
             <tr>
               <td class="align-left table-light-color table-light-color font700"> Parents</td>
               <td class="align-left table-light-color table-light-color font700">Senior Citizen/ Non Senior Citizen</td>
-              <td class="align-left font700 table-light-color"><span class="Letterbadge">N</span>= Minimum of <span
+              <td class="align-left font700 table-light-color"><span class="Letterbadge">K</span>= Minimum of <span
                   class="Letterbadge">H</span> & <span class="Letterbadge">C</span> &nbsp;</td>
               <td class="align-right table-light-color font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
@@ -448,8 +461,8 @@
             </tr>
             <tr class="bg-color-white text-000 align-right font700">
               <td colspan="3" class="align-right text-000">Total</td>
-              <td class="align-left font700"><span class="Letterbadge">O</span> = <span class="Letterbadge">M</span> +
-                &nbsp; <span class="Letterbadge">N</span></td>
+              <td class="align-left font700"><span class="Letterbadge">L</span> = <span class="Letterbadge">J</span> +
+                &nbsp; <span class="Letterbadge">K</span></td>
               <td class="align-right font700">
                 <span *ngIf = "mediclaimSummaryComputationDeclared !== undefined"
                 tooltip="{{ mediclaimSummaryComputationDeclared.totalBenefit | number: '1.2-2' }}">

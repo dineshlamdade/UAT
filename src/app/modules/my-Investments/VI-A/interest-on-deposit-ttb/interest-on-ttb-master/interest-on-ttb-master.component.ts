@@ -75,6 +75,9 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public documentRemark: any;
 
   public masterfilesArray: File[] = [];
+
+  public accountNoList: Array<any> = [];
+  
   public receiptNumber: number;
   public receiptAmount: string;
   public receiptDate: Date;
@@ -114,6 +117,9 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public globalSelectedAmount: string;
   public selectedState: string;
 
+  public selectedBankAccount: Number;
+  public bankAccount:string;
+  
   public disability : string;
   public severity : string;
   public isClaiming80U: boolean = true;
@@ -150,6 +156,7 @@ export class InterestOnTtbMasterComponent implements OnInit {
     this.getFinacialYear();
     this.getMasterIFSCCodeList();
     this.getMasterStateList();
+    this.getMasterAccountList();
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
@@ -179,7 +186,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
       savingBankMasterId: new FormControl(0),
       ifscCode: new FormControl(null, Validators.required),
       state:  new FormControl(null,Validators.required),
-      bankName: new FormControl({value: null, disabled: true },Validators.required),
+      bankName:  new FormControl(null,Validators.required),
+     // bankName: new FormControl({value: null, disabled: true },Validators.required),
       branchName: new FormControl({value: null, disabled: true },Validators.required),
       bankAddress: new FormControl({value: null, disabled: true },Validators.required),
       accountNumber: new FormControl(null, Validators.required),
@@ -207,7 +215,63 @@ export class InterestOnTtbMasterComponent implements OnInit {
       });
     }
 
-      //get ifsc detail
+
+    // Account  Code List API call
+  // Account Code List API call
+  getMasterAccountList() {
+    this.interestOnTtbService.getAccountInfoList().subscribe((res) => {
+      if(res.data.results.length > 0){
+        res.data.results.forEach((element) => {
+          console.log("element::",element)
+          element.forEach((innerelemet) => {
+            console.log("innerelemet::",innerelemet)
+            const obj = {
+              label: innerelemet.bankName,
+              value: innerelemet.bankName,
+            };
+            this.accountNoList.push(obj);            
+          });       
+        });
+      }      
+      console.log('this.accountNoList::', this.accountNoList); 
+    });
+  }
+
+
+onSelectBankCode(employeeBankInfoId:any)
+ {
+   console.log("bankName::",employeeBankInfoId)
+   this.interestOnTtbService.getAccountInfoList().subscribe((res) => {
+    
+    console.log("res::",res);  
+
+    const toSelectAddress = res.find(
+      (c) => c.addressType === employeeBankInfoId.target.value
+    );
+    this.form
+    .get('employeeBankInfoId')
+    .get('state')
+    .get('ifscCode')
+    .get('bankName')
+    .get('branchName')
+    .get('bankAddress')
+    .setValue(toSelectAddress.state,toSelectAddress.ifscCode,);
+    
+  }); 
+  }
+
+ /*  this.interestOnTtbService.getAccountInfoList().subscribe((res) => {
+    console.log(res); */    
+  /*   this.form.patchValue({
+      state: res.data.results[0].state,
+      ifscCode: res.data.results[0].ifscCode,
+      bankName: res.data.results[0].bankName,      
+      branchName: res.data.results[0].branchName,
+      bankAddress: res.data.results[0].address,    
+    }); 
+  });*/
+
+//get ifsc detail
       IFSCDetails(bankIFSC) {
         if(bankIFSC.length == 11) {
         this.interestOnTtbService.getDataFromIFSC(bankIFSC).subscribe(res => {
@@ -225,7 +289,6 @@ export class InterestOnTtbMasterComponent implements OnInit {
       // search IFSC code
       onSelectIFSCCode(evt: any) {
         if (evt.length == 11) {
-
         console.log('evt::==', evt);
         this.interestOnTtbService.getDataFromIFSC(evt).subscribe((res) => {
           console.log(res);
@@ -237,6 +300,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
         });
       }
       }
+
+    
 
     getDataFromIFSC(bankIFSC) {
       if (bankIFSC.length < 11) {
@@ -305,6 +370,12 @@ export class InterestOnTtbMasterComponent implements OnInit {
      this.bankIFSC ='';
     }
 
+    onSelectBankAccount(evt:any)
+    {
+      this.selectedBankAccount = evt;
+      this.bankAccount = '';
+
+    }
     // IFSC Code List API call
     getMasterIFSCCodeList() {
       const state = this.masterForm.state.value;

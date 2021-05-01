@@ -533,6 +533,17 @@ export class MediclaimMasterComponent implements OnInit {
     }
   }
 
+
+     // //edit houseLoanUsageTypeList
+     editMasterPayment(i:number) {
+      this.form.patchValue(this.paymentDetailGridData[i]);
+
+      this.form.get('paymentDetailGridData').patchValue({
+        // premiumAmount: this.form.value.premiumAmount,
+        premiumAmount: this.paymentDetailGridData[i].premiumAmount,
+      });
+    }
+
   onMasterUpload(event: { target: { files: string | any[] } }) {
     //console.log('event::', event);
     if (event.target.files.length > 0) {
