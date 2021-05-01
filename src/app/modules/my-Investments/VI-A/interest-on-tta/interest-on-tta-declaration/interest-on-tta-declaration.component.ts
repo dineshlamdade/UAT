@@ -925,7 +925,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       );
       // console.log(this.declarationTotal);
     });
-
+    this.grandDeclarationTotal = this.declarationTotal;
     this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
     console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
   }
