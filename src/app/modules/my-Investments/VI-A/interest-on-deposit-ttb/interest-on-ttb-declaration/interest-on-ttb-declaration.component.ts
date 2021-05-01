@@ -359,7 +359,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -391,7 +391,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -405,7 +405,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[
         i
@@ -426,7 +426,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -493,7 +493,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -562,7 +562,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -756,14 +756,14 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -937,7 +937,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1008,7 +1008,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1180,14 +1180,14 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }

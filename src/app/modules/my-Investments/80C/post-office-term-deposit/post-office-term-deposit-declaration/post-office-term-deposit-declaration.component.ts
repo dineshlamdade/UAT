@@ -256,7 +256,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -315,14 +315,14 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
 
     transactionDetail.declaredAmount = transactionDetail.declaredAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
     transactionDetail.actualAmount = transactionDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
 
     const data = {
       investmentGroup3TransactionDetail: transactionDetail,
-      receiptAmount: this.receiptAmount.toString().replace(',', ''),
+      receiptAmount: this.receiptAmount.toString().replace(/,/g, ''),
       documentRemark: this.documentRemark,
     };
 
@@ -464,12 +464,12 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       if (element.declaredAmount !== null) {
         element.declaredAmount = element.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         element.declaredAmount = 0.0;
       }
       if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount.toString().replace(',', '');
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
       } else {
         element.actualAmount = 0.0;
       }
@@ -706,7 +706,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -733,7 +733,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -747,7 +747,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.investmentGroup3TransactionDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
      // this.investmentGroup3TransactionDetailList[i].actualAmount = this.numberFormat.transform(0);
     //  this.investmentGroup3TransactionDetailList[i].dateOfPayment = null;
@@ -768,7 +768,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.investmentGroup3TransactionDetailList.forEach((element) => { */
       // console.log(element.actualAmount.toString().replace(',', ""));
   /*     this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     }); */
    // this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -887,14 +887,14 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.actualAmount = 0;
     this.investmentGroup3TransactionDetailList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
     this.transactionDetail.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
@@ -1086,14 +1086,14 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -1107,7 +1107,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       });
    
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       investmentGroup3TransactionDetailList: this.investmentGroup3TransactionDetailList,
       receiptAmount: this.receiptAmount,
@@ -1240,10 +1240,10 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
     });
 
@@ -1322,9 +1322,9 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
