@@ -164,6 +164,7 @@ export class NpsDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   public canEdit : boolean;
   public licDeclarationData: any;
+  dateOfJoining: Date;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -222,10 +223,16 @@ export class NpsDeclarationComponent implements OnInit {
     // Get API call for All previous employee Names
     this.Service.getpreviousEmployeName().subscribe((res) => {
       console.log('previousEmployeeList::', res);
+
       if (!res.data.results[0]) {
         return;
       }
-      res.data.results.forEach((element) => {
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
+ res.data.results.forEach((element) => {
+        
         const obj = {
           label: element.name,
           value: element.previousEmployerId,
@@ -234,14 +241,8 @@ export class NpsDeclarationComponent implements OnInit {
       });
     });
 
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
-      if (res.data.results.length > 0) {
-        this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
-      }
-    });
+ 
+  
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
