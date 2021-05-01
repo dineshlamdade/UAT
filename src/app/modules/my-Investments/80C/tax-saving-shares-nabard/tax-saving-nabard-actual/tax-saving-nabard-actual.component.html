@@ -175,8 +175,8 @@
                   <input
                     type="text"
                     [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate"
-                    [maxDate]="financialYearEndDate"
+                  
+                    [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker"
                     data-date-autoclose="true"
@@ -880,8 +880,8 @@
                     <input
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                      [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                     
+                      [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"

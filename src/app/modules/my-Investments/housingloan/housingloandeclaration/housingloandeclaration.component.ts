@@ -435,7 +435,7 @@ export class HousingloandeclarationComponent implements OnInit {
       formatedactualAmount = Number(
         this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       console.log('formatedactualAmount', formatedactualAmount);
 
@@ -463,7 +463,7 @@ export class HousingloandeclarationComponent implements OnInit {
       formatedactualAmount = Number(
         this.transactionDetail[j].housePropertyTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].housePropertyTransactionList[
         i
@@ -486,9 +486,9 @@ export class HousingloandeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.transactionDetail[j].housePropertyTransactionList.forEach(
       (element) => {
-        console.log(element.actualAmount.toString().replace(',', ''));
+        console.log(element.actualAmount.toString().replace(/,/g, ''));
         this.actualTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
       }
     );
@@ -537,7 +537,7 @@ export class HousingloandeclarationComponent implements OnInit {
     // const formatedGlobalSelectedValue = Number(
     //   this.globalSelectedAmount === '0'
     //     ? this.globalSelectedAmount
-    //     : this.globalSelectedAmount.toString().replace(',', '')
+    //     : this.globalSelectedAmount.toString().replace(/,/g, '')
     // );
 
     // this.globalSelectedAmount === '0'
@@ -562,7 +562,7 @@ export class HousingloandeclarationComponent implements OnInit {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       // formatedSelectedAmount = this.numberFormat.transform(
       //   formatedGlobalSelectedValue + formatedactualAmount
@@ -578,7 +578,7 @@ export class HousingloandeclarationComponent implements OnInit {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].housePropertyTransactionPreviousEmployerList[
         i
@@ -604,9 +604,9 @@ export class HousingloandeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].housePropertyTransactionPreviousEmployerList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -649,7 +649,7 @@ export class HousingloandeclarationComponent implements OnInit {
       (element) => {
         // console.log(element.declaredAmount.toString().replace(',', ""));
         this.declarationTotal += Number(
-          element.declaredAmount.toString().replace(',', '')
+          element.declaredAmount.toString().replace(/,/g, '')
         );
         // console.log(this.declarationTotal);
         // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -722,7 +722,7 @@ export class HousingloandeclarationComponent implements OnInit {
       (element) => {
         // console.log(element.actualAmount.toString().replace(',', ""));
         this.actualTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
         // console.log(this.actualTotal);
         // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -783,7 +783,7 @@ export class HousingloandeclarationComponent implements OnInit {
     ].housePropertyTransactionPreviousEmployerList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1106,7 +1106,7 @@ export class HousingloandeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
           console.log(
             'innerElement.declaredAmount',
             innerElement.declaredAmount
@@ -1117,7 +1117,7 @@ export class HousingloandeclarationComponent implements OnInit {
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
           console.log('innerElement.actualAmount', innerElement.actualAmount);
         } else {
           innerElement.actualAmount = 0.0;
@@ -1129,7 +1129,7 @@ export class HousingloandeclarationComponent implements OnInit {
           // if (element.declaredAmount !== null) {
           //   element.declaredAmount = element.declaredAmount
           //     .toString()
-          //     .replace(',', '');
+          //     .replace(/,/g, '');
           //     console.log("element.declaredAmount", element.declaredAmount);
           // } else {
           //   element.declaredAmount = 0.0;
@@ -1140,7 +1140,7 @@ export class HousingloandeclarationComponent implements OnInit {
           if (element.actualAmount !== null) {
             element.actualAmount = element.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
             console.log('element.actualAmount', element.actualAmount);
           } else {
             element.actualAmount = 0.0;
@@ -1149,7 +1149,7 @@ export class HousingloandeclarationComponent implements OnInit {
       );
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       housePropertyMasterId: this.transactionDetail[0].housePropertyMasterId,
       housePropertyTransactionIds: this.uploadGridData,
@@ -1449,14 +1449,14 @@ export class HousingloandeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }

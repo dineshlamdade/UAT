@@ -568,7 +568,7 @@ selectedTransactionInstName(institution: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', ''),
+        : this.globalSelectedAmount.toString().replace(/,/g, ''),
     );
 
     let formatedActualAmount = 0;
@@ -581,7 +581,7 @@ selectedTransactionInstName(institution: any) {
           formatedActualAmount = Number(
             this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
               .toString()
-              .replace(',', '')
+              .replace(/,/g, '')
           );
           formatedSelectedAmount = this.numberFormat.transform(
             formatedGlobalSelectedValue + formatedActualAmount
@@ -596,7 +596,7 @@ selectedTransactionInstName(institution: any) {
       formatedActualAmount = Number(
          this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
           .toString()
-          .replace(',', ''),
+          .replace(/,/g, ''),
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount,
@@ -612,7 +612,7 @@ selectedTransactionInstName(institution: any) {
       // formatedActualAmount = Number(
       //    this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i].actualAmount
       //     .toString()
-      //     .replace(',', ''),
+      //     .replace(/,/g, ''),
       // );
       // this.mediclaimPremiumTransactionList[j].mediclaimTransactionList[ this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList[i]
       //   i
@@ -633,7 +633,7 @@ selectedTransactionInstName(institution: any) {
     this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
     });
     this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].actualTotal = this.actualTotal;
@@ -658,7 +658,7 @@ selectedTransactionInstName(institution: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmountPreventive == '0'
         ? this.globalSelectedAmountPreventive
-        : this.globalSelectedAmountPreventive.toString().replace(',', ''),
+        : this.globalSelectedAmountPreventive.toString().replace(/,/g, ''),
     );
 
     let formatedActualAmount = 0;
@@ -672,7 +672,7 @@ selectedTransactionInstName(institution: any) {
       formatedActualAmount = Number(
         this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].actualAmount
           .toString()
-          .replace(',', ''),
+          .replace(/,/g, ''),
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount,
@@ -683,7 +683,7 @@ selectedTransactionInstName(institution: any) {
       formatedActualAmount = Number(
         this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[i].actualAmount
           .toString()
-          .replace(',', ''),
+          .replace(/,/g, ''),
       );
       this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList[
         i
@@ -704,7 +704,7 @@ selectedTransactionInstName(institution: any) {
     this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
     });
     this.preventiveHealthCheckupTransactionDetail.actualTotal = this.actualTotal;
@@ -728,7 +728,7 @@ selectedTransactionInstName(institution: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmountExpense == '0'
         ? this.globalSelectedAmountExpense
-        : this.globalSelectedAmountExpense.toString().replace(',', ''),
+        : this.globalSelectedAmountExpense.toString().replace(/,/g, ''),
     );
 
     let formatedActualAmount = 0;
@@ -743,7 +743,7 @@ selectedTransactionInstName(institution: any) {
            formatedActualAmount = Number(
         this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].actualAmount
           .toString()
-          .replace(',', ''),
+          .replace(/,/g, ''),
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount,
@@ -754,7 +754,7 @@ selectedTransactionInstName(institution: any) {
       formatedActualAmount = Number(
         this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[i].actualAmount
           .toString()
-          .replace(',', ''),
+          .replace(/,/g, ''),
       );
       this.medicalExpenseTransactionDetail.medicalExpenseTransactionList[
         i
@@ -775,7 +775,7 @@ selectedTransactionInstName(institution: any) {
     this.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
     });
     this.medicalExpenseTransactionDetail.actualTotal = this.actualTotal;
@@ -907,7 +907,7 @@ selectedTransactionInstName(institution: any) {
     // this.declaredAmount=0;
     this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList.forEach((element) => {
       console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(element.declaredAmount.toString().replace(',', ''),);
+      this.declarationTotal += Number(element.declaredAmount.toString().replace(/,/g, ''),);
       // this.declarationTotal += element.declaredAmount;
       console.log(this.declarationTotal);
       // this.declaredAmount+= element.actualAmount;
@@ -945,7 +945,7 @@ selectedTransactionInstName(institution: any) {
     // this.declaredAmount=0;
     this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((element) => {
       console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(element.declaredAmount.toString().replace(',', ''),);
+      this.declarationTotal += Number(element.declaredAmount.toString().replace(/,/g, ''),);
       // this.declarationTotal += element.declaredAmount;
       console.log(this.declarationTotal);
       // this.declaredAmount+= element.actualAmount;
@@ -980,7 +980,7 @@ selectedTransactionInstName(institution: any) {
     // this.declaredAmount=0;
     this.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((element) => {
       console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(element.declaredAmount.toString().replace(',', ''),);
+      this.declarationTotal += Number(element.declaredAmount.toString().replace(/,/g, ''),);
       // this.declarationTotal += element.declaredAmount;
       console.log(this.declarationTotal);
       // this.declaredAmount+= element.actualAmount;
@@ -1027,10 +1027,10 @@ selectedTransactionInstName(institution: any) {
     this.editTransactionUpload[j].mediclaimTransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', ''),
+        element.declaredAmount.toString().replace(/,/g, ''),
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', ''),
+        element.declaredAmount.toString().replace(/,/g, ''),
       );
       // console.log(this.declarationTotal);
     });
@@ -1115,7 +1115,7 @@ selectedTransactionInstName(institution: any) {
     this.preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1167,7 +1167,7 @@ selectedTransactionInstName(institution: any) {
     this.medicalExpenseTransactionDetail.medicalExpenseTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1219,7 +1219,7 @@ selectedTransactionInstName(institution: any) {
     this.mediclaimPremiumTransactionDetail.mediclaimPremiumTransactionList[j].mediclaimTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1265,7 +1265,7 @@ selectedTransactionInstName(institution: any) {
   //   this.actualAmount = 0;
   //   this.mediclaimTransactionDetail[j].mediclaimPremiumTransactionDetail.mediclaimTransactionList[i].forEach((element) => {
   //     this.actualTotal += Number(
-  //       element.actualAmount.toString().replace(',', ''),
+  //       element.actualAmount.toString().replace(/,/g, ''),
   //     );
   //   });
   //   this.mediclaimTransactionDetail[j].actualTotal = this.actualTotal;
@@ -1325,9 +1325,9 @@ selectedTransactionInstName(institution: any) {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].mediclaimTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', ''),
+        element.actualAmount.toString().replace(/,/g, ''),
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1526,14 +1526,14 @@ selectedTransactionInstName(institution: any) {
      if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -1556,14 +1556,14 @@ selectedTransactionInstName(institution: any) {
           if (innerElement.declaredAmount !== null) {
             innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.declaredAmount = 0.0;
           }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
@@ -1585,14 +1585,14 @@ selectedTransactionInstName(institution: any) {
           if (innerElement.declaredAmount !== null) {
             innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.declaredAmount = 0.0;
           }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
@@ -1607,7 +1607,7 @@ selectedTransactionInstName(institution: any) {
         }
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     // delete this.mediclaimTransactionDetail.mediclaimBenefeciaryDetailList;
     let data: any = {};
     if (this.uploadGridData.length > 0) {
@@ -2000,14 +2000,14 @@ selectedTransactionInstName(institution: any) {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }

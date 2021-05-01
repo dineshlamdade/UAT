@@ -400,7 +400,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
@@ -437,7 +437,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionPreviousEmployerList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -449,7 +449,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionPreviousEmployerList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].specifiedDiseaseTransactionPreviousEmployerList[
         i
@@ -473,7 +473,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -494,7 +494,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
@@ -526,7 +526,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -539,7 +539,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           j
         ].specifiedDiseaseTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].specifiedDiseaseTransactionList[
         i
@@ -563,7 +563,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       j
     ].specifiedDiseaseTransactionList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -656,12 +656,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ''));
+      // console.log(element.declaredAmount.toString().replace(/,/g, ''));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
@@ -700,12 +700,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
 
     this.transactionDetail[j].specifiedDiseaseTransactionList.forEach(
       (element) => {
-        // console.log(element.declaredAmount.toString().replace(',', ''));
+        // console.log(element.declaredAmount.toString().replace(/,/g, ''));
         this.declarationTotal += Number(
-          element.declaredAmount.toString().replace(',', '')
+          element.declaredAmount.toString().replace(/,/g, '')
         );
         // console.log(this.declarationTotal);
-        // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+        // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
       }
     );
 
@@ -778,12 +778,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -841,12 +841,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].specifiedDiseaseTransactionList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -1072,14 +1072,14 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         if (item.actualAmount !== null) {
           item.actualAmount = item.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
         }
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.declaredAmount = 0.0;
         }
@@ -1093,14 +1093,14 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
         if (innerElement.actualAmount !== undefined || innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
         // if (innerElement.declaredAmount !== undefined || innerElement.declaredAmount !== null) {
         //   innerElement.declaredAmount = innerElement.declaredAmount
         //     .toString()
-        //     .replace(',', '');
+        //     .replace(/,/g, '');
         // } else {
           innerElement.declaredAmount = 0.0;
         // }
@@ -1108,7 +1108,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     }
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
 
     const data = {
       specifiedDiseaseTransactionList: this.transactionDetail[0].specifiedDiseaseTransactionList,
@@ -1276,10 +1276,10 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1373,12 +1373,12 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
     this.editTransactionUpload[
       j
     ].specifiedDiseaseTransactionPreviousEmployerList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1561,14 +1561,14 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
           if (innerElement.declaredAmount !== null) {
             innerElement.declaredAmount = innerElement.declaredAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.declaredAmount = 0.0;
           }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
@@ -1576,7 +1576,7 @@ export class TreatmentOfSpecifiedDeclarationComponent implements OnInit {
       );
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       specifiedDiseaseTransactionList: this.editTransactionUpload[0]
         .specifiedDiseaseTransactionList,
