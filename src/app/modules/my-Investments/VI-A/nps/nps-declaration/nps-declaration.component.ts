@@ -556,7 +556,17 @@ export class NpsDeclarationComponent implements OnInit {
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
   }
+  
 
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
@@ -853,11 +863,11 @@ export class NpsDeclarationComponent implements OnInit {
     });
 
     if(this.licDeclarationData.previousEmployerId == 0){
-      this.alertService.sweetalertError(
+      // this.alertService.sweetalertError(
         // 'Please make sure that you have selected previous employer for all selected lines',
-        'Please Select Previous Employer',
-      );
-      return false;
+        // 'Please Select Previous Employer',
+      // );
+      // return false;
     }
     if (this.licDeclarationData.dateOfPayment == null) {
       
