@@ -375,7 +375,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
 
@@ -459,7 +459,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     ) {
       let installment = this.form.value.premiumAmount;
 
-      // installment = installment.toString().replace(',', '');
+      // installment = installment.toString().replace(/,/g, '');
 
       // console.log(installment);
       if (!this.form.value.frequencyOfPayment) {

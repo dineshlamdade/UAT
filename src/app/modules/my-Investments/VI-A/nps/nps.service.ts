@@ -74,7 +74,7 @@ export class NpsService {
 
 
   getpreviousEmployeName() {
-    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+    return this._HTTP.get(this.apiUrl + 'previousemployer')
     .pipe(map((res: any) => {
       return res;
     }));
