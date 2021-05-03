@@ -466,7 +466,7 @@ export class MediclaimMasterComponent implements OnInit {
             frequencyOfPayment: this.masterForm.frequencyOfPayment.value,
             premiumAmount: this.masterForm.premiumAmount.value
               .toString()
-              .replace(',', ''),
+              .replace(/,/g, ''),
             annualAmount: this.masterForm.annualAmount.value,
             ecs: this.masterForm.ecs.value,
             fromDate: this.masterForm.fromDate.value,
@@ -570,7 +570,7 @@ export class MediclaimMasterComponent implements OnInit {
       ) {
         let installment = this.form.value.premiumAmount;
 
-        // installment = installment.toString().replace(',', '');
+        // installment = installment.toString().replace(/,/g, '');
 
         // console.log(installment);
         if (!this.form.value.frequencyOfPayment) {

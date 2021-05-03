@@ -164,6 +164,7 @@ export class NpsDeclarationComponent implements OnInit {
   public globalSelectedAmount: string;
   public canEdit : boolean;
   public licDeclarationData: any;
+  dateOfJoining: Date;
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
@@ -222,10 +223,16 @@ export class NpsDeclarationComponent implements OnInit {
     // Get API call for All previous employee Names
     this.Service.getpreviousEmployeName().subscribe((res) => {
       console.log('previousEmployeeList::', res);
+
       if (!res.data.results[0]) {
         return;
       }
-      res.data.results.forEach((element) => {
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
+ res.data.results.forEach((element) => {
+        
         const obj = {
           label: element.name,
           value: element.previousEmployerId,
@@ -234,14 +241,8 @@ export class NpsDeclarationComponent implements OnInit {
       });
     });
 
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
-      if (res.data.results.length > 0) {
-        this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
-      }
-    });
+ 
+  
 
     if (this.today.getMonth() + 1 <= 3) {
       this.financialYear =
@@ -410,7 +411,7 @@ export class NpsDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -443,7 +444,7 @@ export class NpsDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -457,7 +458,7 @@ export class NpsDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].groupTransactionList[
         i
@@ -478,7 +479,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -548,7 +549,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -556,7 +557,17 @@ export class NpsDeclarationComponent implements OnInit {
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
   }
+  
 
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
@@ -617,7 +628,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -826,14 +837,14 @@ export class NpsDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -853,11 +864,11 @@ export class NpsDeclarationComponent implements OnInit {
     });
 
     if(this.licDeclarationData.previousEmployerId == 0){
-      this.alertService.sweetalertError(
+      // this.alertService.sweetalertError(
         // 'Please make sure that you have selected previous employer for all selected lines',
-        'Please Select Previous Employer',
-      );
-      return false;
+        // 'Please Select Previous Employer',
+      // );
+      // return false;
     }
     if (this.licDeclarationData.dateOfPayment == null) {
       
@@ -889,7 +900,7 @@ export class NpsDeclarationComponent implements OnInit {
       return false;
     }
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       investmentGroupTransactionDetail: this.transactionDetail,
       groupTransactionIDs: this.uploadGridData,
@@ -1036,7 +1047,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
       console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1107,7 +1118,7 @@ export class NpsDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].groupTransactionList.forEach((element) => {
       console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1274,14 +1285,14 @@ export class NpsDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
