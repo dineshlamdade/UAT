@@ -473,49 +473,58 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       } else {
         element.actualAmount = 0.0;
       }
+      const dateOfPaymnet = this.datePipe.transform(
+        element.dateOfPayment,
+        'yyyy-MM-dd'
+      );
+
+      element.dateOfPayment = dateOfPaymnet;
+      this.uploadGridData.push(element.investmentGroup3TransactionId);
     });
+   
 
     const data = {
-      investmentGroup3TransactionDetail: this.editTransactionUpload[0],
-      //documentRemark: this.documentRemark,
       proofSubmissionId: this.editProofSubmissionId,
+      investmentGroup3TransactionDetailList: this.editTransactionUpload,
       receiptAmount: this.editReceiptAmount,
-    };
-    console.log('uploadUpdateTransaction data::', data);
+      documentRemark: this.documentRemark,
+      groupTransactionIDs:this.uploadGridData,
 
+    };  
+    console.log('uploadUpdateTransaction data::', data);
     this.postOfficeTermDepositService
       .uploadPOTDepositTransactionwithDocument(this.editfilesArray, data)
       .subscribe((res) => {
         console.log('uploadUpdateTransaction::', res);
-        if (res.data.results.length > 0) {
-
+        if (res.data.results.length > 0) {         
           this.transactionDetail =
-              res.data.results[0].investmentGroup3TransactionDetailList;
-            this.documentDetailList = res.data.results[0].documentInformation;
-            this.grandDeclarationTotal =
-              res.data.results[0].grandDeclarationTotal;
-            this.grandActualTotal = res.data.results[0].grandActualTotal;
-            this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-            this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+            res.data.results[0].investmentGroup3TransactionDetailList;
+          console.log('transactionDetail', this.transactionDetail);
+  
+          this.documentDetailList = res.data.results[0].documentInformation;
+          this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+          this.grandActualTotal = res.data.results[0].grandActualTotal;
+          this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+          this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+  
+          this.initialArrayIndex = [];
+  
+          this.transactionDetail.forEach((element) => {
+            element.declaredAmount = this.numberFormat.transform(
+              element.declaredAmount
+            );
+            element.actualAmount = this.numberFormat.transform(
+              element.actualAmount
+            );
+          });          
+        this.alertService.sweetalertMasterSuccess(
+          'Transaction Saved Successfully.',
+          ''
+        );
+      } else {
+        this.alertService.sweetalertWarning(res.status.messsage);
+      }
 
-            this.transactionDetail.forEach((element) => {
-              element.declaredAmount = this.numberFormat.transform(
-                element.declaredAmount
-              );
-              element.actualAmount = this.numberFormat.transform(
-                element.actualAmount
-              );
-            });
-
-          this.alertService.sweetalertMasterSuccess(
-            'Transaction Saved Successfully.',
-            ''
-          );
-
-
-        } else {
-          this.alertService.sweetalertWarning(res.status.messsage);
-        }
       });
       this.resetEditVariable()
   }
@@ -1072,7 +1081,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     console.log('this.filesArray.size::', this.filesArray.length);
   }
 
-  upload() {
+/*   upload() {
     if (this.filesArray.length === 0) {
       this.alertService.sweetalertError(
         'Please attach Premium Receipt / Premium Statement'
@@ -1153,6 +1162,88 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     this.filesArray = [];
     this.globalSelectedAmount = '0.00';
     this.investmentGroup3TransactionDetailList = [];
+  } */
+  upload() 
+  {
+    if (this.filesArray.length === 0) {
+      this.alertService.sweetalertError(
+        'Please attach Premium Receipt / Premium Statement'
+      );
+      return;
+    }
+    console.log('this.investmentGroup3TransactionDetailList::', this.investmentGroup3TransactionDetailList);
+
+  
+      this.investmentGroup3TransactionDetailList.forEach((innerElement) => {
+        if (innerElement.declaredAmount !== null) {
+          innerElement.declaredAmount = innerElement.declaredAmount
+            .toString()
+            .replace(',', '');
+        } else {
+          innerElement.declaredAmount = 0.0;
+        }
+        if (innerElement.actualAmount !== null) {
+          innerElement.actualAmount = innerElement.actualAmount
+            .toString()
+            .replace(',', '');
+        } else {
+          innerElement.actualAmount = 0.0;
+        }
+
+        const dateOfPaymnet = this.datePipe.transform(
+          innerElement.dateOfPayment,
+          'yyyy-MM-dd'
+        );
+
+        innerElement.dateOfPayment = dateOfPaymnet;
+      });
+
+    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    const data = {
+      investmentGroup3TransactionDetailList: this.investmentGroup3TransactionDetailList,
+      receiptAmount: this.receiptAmount,
+      documentRemark: this.documentRemark,
+      groupTransactionIDs:this.uploadGridData,
+
+    };
+    console.log('data::', data);
+    this.postOfficeTermDepositService
+      .uploadPOTDepositTransactionwithDocument(this.filesArray, data)
+      .subscribe((res) => {
+        console.log(res);
+        if (res.data.results.length > 0) {         
+            this.transactionDetail =
+              res.data.results[0].investmentGroup3TransactionDetailList;
+            console.log('transactionDetail', this.transactionDetail);
+    
+            this.documentDetailList = res.data.results[0].documentInformation;
+            this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+            this.grandActualTotal = res.data.results[0].grandActualTotal;
+            this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+            this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+    
+            this.initialArrayIndex = [];
+    
+            this.transactionDetail.forEach((element) => {
+              element.declaredAmount = this.numberFormat.transform(
+                element.declaredAmount
+              );
+              element.actualAmount = this.numberFormat.transform(
+                element.actualAmount
+              );
+            });          
+          this.alertService.sweetalertMasterSuccess(
+            'Transaction Saved Successfully.',
+            ''
+          );
+        } else {
+          this.alertService.sweetalertWarning(res.status.messsage);
+        }
+      });
+    this.receiptAmount = '0.00';
+    this.filesArray = [];
+    this.globalSelectedAmount = '0.00';
+    this.investmentGroup3TransactionDetailList = [];
   }
 
   changeReceiptAmountFormat() {
@@ -1188,7 +1279,24 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       this.editTransactionUpload[j].previousEmployerId
     );
   }
-
+ // ---- Set Date of Payment On Edit Modal----
+ onChangeDateOfPaymentEditCase(
+  summary: {
+    previousEmployerName: any;
+    declaredAmount: number;
+    dateOfPayment: Date;
+    actualAmount: number;
+    dueDate: any;
+  },
+  i: number,
+  j: number
+) {
+  this.editTransactionUpload[j].dateOfPayment =
+    summary.dateOfPayment;
+  console.log(
+    this.editTransactionUpload[j].dateOfPayment
+  );
+}
   // ------------ ON change of DueDate in Edit Modal----------
   onDueDateChangeInEditCase(
     summary: {
@@ -1374,19 +1482,19 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-  nextDocViewer() {
+/*   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
-  }
+  } */
 
-  previousDocViewer() {
+ /*  previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI
     );
-  }
+  } */
 
   /* docViewer(template3: TemplateRef<any>) {
     this.urlIndex = 0;
@@ -1400,7 +1508,7 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
     );
   } */
 
-  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+  /* docViewer(template3: TemplateRef<any>, documentDetailList: any) {
     console.log("documentDetailList::", documentDetailList)
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
@@ -1412,7 +1520,35 @@ export class PostOfficeTermDepositDeclarationComponent implements OnInit {
       template3,
       Object.assign({}, { class: 'gray modal-xl' }),
     );
+  } */
+  // ---------------- Doc Viewr Code ----------------------------                                               
+    nextDocViewer() {
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI
+      );
+    }
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
   }
+
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log('documentDetailList::', documentDetailList);
+    this.urlArray = documentDetailList;
+    this.urlIndex = 0;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    console.log(this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
+  
 
   // Common Function for filter to call API
   getTransactionFilterData( ) {

@@ -56,7 +56,7 @@ export class SeniorCitizenService {
 
   getpreviousEmployeName() {
 
-    return this._HTTP.get(this.apiUrl + 'previousEmployer-detail')
+    return this._HTTP.get(this.apiUrl + 'lic-transaction/previousemployer')
     .pipe(map((res: any) => {
       return res;
     }));

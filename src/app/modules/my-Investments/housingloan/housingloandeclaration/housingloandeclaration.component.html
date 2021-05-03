@@ -91,6 +91,7 @@
                 <th>Approved</th>
               </tr>
             </thead>
+
             <tbody>
               <tr *ngFor="
                   let summary of item.housePropertyTransactionList;
@@ -125,7 +126,8 @@
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.housePropertyTransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="ondeclaredAmountChange(summary, i, j)"
-                      [disabled]="initialArrayIndex[j] > i || isDisabled || summary.transactionStatus === 'Submitted' " />
+                      [disabled]="initialArrayIndex[j] > i"
+                          [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'" />
                   </div>
                 </td>
 
@@ -133,7 +135,8 @@
                   <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
                     onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.housePropertyTransactionId }}"
-                    [disabled]="initialArrayIndex[j] > i || isDisabled || summary.transactionStatus === 'Submitted'"
+                    [disabled]="initialArrayIndex[j] > i"
+                    [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'"
                     [(ngModel)]="summary.actualAmount" (change)="onactualAmountChange(summary, i, j)"
                     class="form-control align-right" />
                 </td>
@@ -187,6 +190,20 @@
                         <th rowspan="2" class="wd-20 font700">
                           Previous Employer Name
                         </th>
+                        <th rowspan="2" class="wd-15 font700">Particulars</th>
+                        <th rowspan="2" class="wd-15 font700">Actual</th>
+                        <th colspan="2" class="wd-16 font700">Receipt Amount</th>
+                        <th rowspan="2" class="wd-16 font700">Remark</th>
+                        <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                        <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                      </tr>
+                      <tr>
+                        <th>Rejected</th>
+                        <th>Approved</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                      <tr>
                         <th rowspan="2" class="wd-15 font700">Particulars</th>
                         <th rowspan="2" class="wd-15 font700">Actual</th>
                         <th colspan="2" class="wd-16 font700">Receipt Amount</th>
@@ -312,54 +329,6 @@
                             (click)="deleteRow(j)"></i>
                         </td>
                       </tr>
-
-                      <!-- <tr>
-                        <td scope="row">
-                          <label class="custom-control custom-checkbox checkbox-center" *ngIf="isDisabled"
-                            tooltip="Select institution for proof submission">
-                            <input type="checkbox" [ngModel]="enableSelectAll" (change)="enableCheckboxFlag = j"
-                              class="custom-control-input" />
-                            <span class="custom-control-label"></span>
-                          </label>
-                          <label *ngIf="!isDisabled" class="custom-control custom-checkbox checkbox-center">
-                            <input type="checkbox" [ngModel]="enableSelectAll" (change)="enableCheckboxFlag = j"
-                              class="custom-control-input" />
-                            <span class="custom-control-label"></span>
-                          </label>
-                        </td>
-                        <td>
-                          <select name="previousEmpParticulars" class="custom-select">
-                            <option [ngValue]="0"></option>
-                            <option *ngFor="
-                                let previousEmpParticular of previousEmpParticularList
-                              " [value]="previousEmpParticular.value">
-                              {{ previousEmpParticular.label }}
-                            </option>
-                          </select>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                          <input type="text" class="form-control align-right" />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control align-right" disabled />
-                        </td>
-                        <td>
-                          <input type="text" class="form-control align-right" disabled />
-                        </td>
-                        <td>
-                          <span> </span>
-                        </td>
-                        <td>
-                          <span tooltip=""> </span>
-                        </td>
-                        <td class="text-orange font700">
-                          <span tooltip=""> </span>
-                        </td>
-                      </tr> -->
-
-
                     </tbody>
                   </table>
                 </div>
@@ -900,17 +869,25 @@
                         name="declaredAmount{{ summary.housePropertyTransactionId }}"
                         [(ngModel)]="summary.declaredAmount" class="form-control align-right"
                         (change)="ondeclaredAmountChange(summary, i, j)"
-                        [disabled]="initialArrayIndex[j] > i || isDisabled || summary.transactionStatus === 'Submitted' " />
+                        [disabled]="initialArrayIndex[j] > i" [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'" />
                     </div>
                   </td>
-                  <td>
+                  <!-- <td>
                     <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
                       onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.housePropertyTransactionId }}"
-                      [disabled]="initialArrayIndex[j] > i || isDisabled || summary.transactionStatus === 'Submitted'"
+                      [disabled]="initialArrayIndex[j] > i" [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'"
                       [(ngModel)]="summary.actualAmount" (change)="onactualAmountChange(summary, i, j)"
                       class="form-control align-right" />
+                  </td> -->
+                  <td>
+                    <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
+                      name="actualAmount{{ summary.housePropertyTransactionId }}" [(ngModel)]="summary.actualAmount"
+                      (change)="onActualAmountChangeInEditCase(summary, i)" class="form-control align-right"
+                      />
                   </td>
+
+
                   <td>
                     <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                       [disabled]="initialArrayIndex[j] > i || isDisabled " class="form-control align-right" disabled />
@@ -1033,11 +1010,16 @@
                                 name="actualAmount{{ summary.housePropertyTransactionId }}"
                                 [(ngModel)]="summary.actualAmount" class="form-control align-right"
                                 (change)="onActualAmountChangePre(summary, i, j)" [disabled]="initialArrayIndex[j] > i"
-                                [disabled]="
-                              isDisabled || summary.transactionStatus === 'Submitted'
-                            " />
+                                [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'" />
                             </div>
                           </td>
+                          <td>
+                            <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
+                              name="actualAmount{{ summary.housePropertyTransactionId }}" [(ngModel)]="summary.actualAmount"
+                              (change)="onActualAmountChangeInEditCasePreviousEMP(summary, i)" class="form-control align-right"
+                              />
+                          </td>
+
                           <td>
                             <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
                               class="form-control align-right" disabled />

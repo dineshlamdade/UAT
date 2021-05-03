@@ -20,8 +20,7 @@
                   </div> -->
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Select Bank Name</label>
-
-                    <select name="bankName" *ngIf="accountNoList.length == 0 "  id="bankName" formControlName="bankName" (change)='onSelectBankAccount()'
+                    <select name="bankName" *ngIf="accountNoList.length == 0 "  id="bankName" formControlName="savingBankMasterId" 
                       disabled
                       class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
                       <option [ngValue]="null">Select</option>
@@ -30,7 +29,7 @@
                       </option>
                     </select>
 
-                    <select name="bankName" *ngIf="accountNoList.length > 0 " id="bankName" formControlName="bankName"                  
+                    <select name="bankName" *ngIf="accountNoList.length > 0 " id="bankName" formControlName="savingBankMasterId"                  
                       (change)='onSelectBankCode($event.target.value)'                   
                       class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
                     <option [ngValue]="null">Select</option>
@@ -52,8 +51,8 @@
                           <option [ngValue]="null">Select</option>
                           <option *ngFor="let state of stateNameList" [value]="state">
                            {{state}}
-                </option>
-              </select>
+                        </option>
+                   </select>
 
               <select name="family_Member_Name" id="state" *ngIf="accountNoList.length == 0 " formControlName="state" (change)='onSelectState()'
                       class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
@@ -88,7 +87,10 @@
               <div *ngIf="submitted && masterForm.bankName.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.bankName.errors.required">Bank Name Is Mandatory</div>
               </div>
-            </div>
+            </div>           
+          </div>
+          <div class="row mt-4 mb-10">
+
             <div class="col-sm-6 col-md-3">
               <label class="form-label">Branch Name</label>
               <input type="text" formControlName="branchName" class="form-control" disabled
@@ -97,8 +99,7 @@
                 <div *ngIf="masterForm.branchName.errors.required">Branch Name Is Mandatory</div>
               </div>
             </div>
-          </div>
-          <div class="row mt-4 mb-10">
+
             <div class="col-sm-6 col-md-3">
               <label class="form-label" for="">Branch Address</label>
               <textarea class="text-area" formControlName="bankAddress" class="form-control" disabled

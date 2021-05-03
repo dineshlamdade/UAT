@@ -653,54 +653,32 @@
                   </td> -->
                   <td>
                     <div class="custom_Label_badge">
-                      <button
-                        class="btn bg-color-lightgray text-000"
-                        (click)="docViewer(template3, documentSummary.documentDetailList)"
-
-                      >
+                      <button class="btn bg-color-lightgray text-000"
+                        (click)="docViewer(template3, documentSummary.documentDetailList)">
                         Documents
                       </button>
                       <span class="Label_badge">{{
                         documentSummary.documentDetailList.length
-                      }}</span>
+                        }}</span>
                     </div>
                   </td>
+
                   <td>
-                    <i
-                    class="fa fa-eye font-16 text-blue cursor-pointer"
-                    (click)="
-                      declarationEditUpload(
+                    <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
+                    declarationEditUpload(
                         template2,
                         documentSummary.proofSubmissionId
                       );
-                      viewDocumentDetail = false
-                    "
-                    tooltip="View"
-                    ></i
-                    >&nbsp;&nbsp;
-                    <!-- <i
-                      class="fa fa-download font-16 text-blue cursor-pointer"
-                      tooltip="Download"
-                    ></i> -->
-                    <div *ngFor="let doc of urlArray" hidden>
-                      <iframe
-                        style="height: 100vh; width: 100%; display: block"
-                        [src]="doc.blobURI"
-                        provider="google"
-                      ></iframe>
-                    </div>
+                      viewTransactionDetail = false
+                    " tooltip="view"></i>
                     &nbsp;&nbsp;
-                    <i
-                      class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                      (click)="
-                        declarationEditUpload(
+                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="
+                    declarationEditUpload(
                           template2,
                           documentSummary.proofSubmissionId
                         );
-                        viewDocumentDetail = true
-                      "
-                      tooltip="Edit"
-                    ></i>
+                        viewTransactionDetail = true
+                      " tooltip="Edit"></i>
                   </td>
                 </tr>
               </tbody>
@@ -1148,7 +1126,7 @@
       </div>
     </div>
   </div>
-  <div class="modal-footer">
+ <!--  <div class="modal-footer">
     <button
       type="button"
       tooltip="View Document"
@@ -1165,6 +1143,19 @@
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
+      <b><i class="fa fa-save"></i></b> Save
+    </button>
+  </div> -->
+
+  <div class="modal-footer">
+    <button type="button" tooltip="View Document" (click)="modalRef.hide(); docViewer(template3,urlArray)"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
+      <b><i class="fa fa-eye"></i></b> View
+    </button>
+    &nbsp;&nbsp;
+    <button *ngIf="viewDocumentDetail" type="button" tooltip="View Document"
+      (click)="modalRef.hide(); uploadUpdateTransaction()"
+      class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left">
       <b><i class="fa fa-save"></i></b> Save
     </button>
   </div>

@@ -88,6 +88,33 @@
                   <th>Approved</th>
                 </tr>
               </thead>
+              <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                <tr>
+                  <th rowspan="2" class="wd-4">
+                    <label
+                      class="custom-control custom-checkbox checkbox-center"
+                      tooltip="Select All">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        name="select"
+                      />
+                      <span class="custom-control-label"></span>
+                    </label>
+                  </th>
+                  <th rowspan="2" class="wd-10 font700">Declared</th>
+                  <th rowspan="2" class="wd-12 font700">Date of Payment</th>
+                  <th rowspan="2" class="wd-10 font700">Actual</th>
+                  <th colspan="2" class="wd-20 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-10 font700">Remark</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
+                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                </tr>
+                <tr>
+                  <th>Rejected</th>
+                  <th>Approved</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr *ngFor="let summary of item.mediclaimTransactionList;
                     let i = index; count as c">
@@ -122,7 +149,7 @@
                   <td>
                     <div class="custom_icon_badge">
                           <input
-                          type="text"
+                          type="text" placeholder="Enter Declared Amount"
                           id="declaredAmount{{ summary.mediclaimTransactionId }}"
                           name="declaredAmount{{ summary.mediclaimTransactionId }}"
                           [(ngModel)]="summary.declaredAmount"
@@ -143,7 +170,7 @@
                   </td>
                   <td>
                     <input
-                    type="text" class="form-control align-right"
+                    type="text" class="form-control align-right" placeholder="Enter Actual Amount "
                     id="actualAmount{{ summary.mediclaimTransactionId }}"
                     name="actualAmount{{ summary.mediclaimTransactionId }}"
                     [(ngModel)]="summary.actualAmount"
@@ -201,9 +228,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
-                  <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td> -->
+                  <td colspan="1" class="bg-lightgray font-18 font700">Total</td>
+                  <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+
+                  <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ item.declaredTotal | number: '1.2-2' }}" class="padding-right-12">
                       {{ item.declaredTotal | number: "1.2-2" }}
@@ -314,6 +342,31 @@
                   <th>Approved</th>
                 </tr>
               </thead>
+              <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                <tr>
+                  <th rowspan="2" class="wd-4">
+                    <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                      <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                        [disabled]="canEdit && isDisabled" name="select"
+                        (change)="preventiveCheckUncheckAll(preventiveHealthCheckupTransactionDetail)" />
+                      <span class="custom-control-label"></span>
+                    </label>
+                  </th>
+                  <th rowspan="2" class="wd-10 font700"> Benefeciary / ies </th>
+                  <th rowspan="2" class="wd-9 font700">Declared</th>
+                  <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                  <th rowspan="2" class="wd-9 font700">Actual</th>
+                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-7 font700">Remark</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
+                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                </tr>
+                <tr>
+                  <th>Rejected</th>
+                  <th>Approved</th>
+                </tr>
+              </thead>
+
               <tbody>
                 <tr
                   *ngFor="let summary of preventiveHealthCheckupTransactionDetail.preventiveHealthCheckupTransactionList; let i = index; count as c ">
@@ -473,7 +526,7 @@
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="bg-lightgray font-18 font700">Benifit Available</td>
+                  <td colspan="2" class="bg-lightgray font-18 font700">Benefits  Available</td>
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
@@ -538,6 +591,31 @@
                     </label>
                   </th>
                   <th rowspan="2" class="wd-10 font700"> Previous Employer Name </th>
+                  <th rowspan="2" class="wd-10 font700"> Benefeciary / ies </th>
+                  <th rowspan="2" class="wd-9 font700">Declared</th>
+                  <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                  <th rowspan="2" class="wd-9 font700">Actual</th>
+                  <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                  <th rowspan="2" class="wd-7 font700">Remark</th>
+                  <th rowspan="2" class="wd-8">PS ID</th>
+                  <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                </tr>
+                <tr>
+                  <th>Rejected</th>
+                  <th>Approved</th>
+                </tr>
+              </thead>
+              <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                <tr>
+                  <th rowspan="2" class="wd-4">
+                    <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
+                      <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll"
+                        [disabled]="canEdit && isDisabled" name="select"
+                        value="isCheckAll{{medicalExpenseTransactionDetail }}"
+                        (change)="expenceCheckUncheckAll(medicalExpenseTransactionDetail)" />
+                      <span class="custom-control-label"></span>
+                    </label>
+                  </th>
                   <th rowspan="2" class="wd-10 font700"> Benefeciary / ies </th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -779,7 +857,7 @@
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
+                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormatPreventive()"
                           [(ngModel)]="receiptAmount" />
                       </span>
                     </td>
@@ -894,6 +972,7 @@
                   <th scope="col" class="font700 wd-10">Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 <!-- <ng-container *ngFor="
             let documentSummary of documentDetailList;
@@ -1142,6 +1221,22 @@
                     <th>Approved</th>
                   </tr>
                 </thead>
+                <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
+                  <tr>
+                    <th rowspan="1" class="wd-1 font700"></th>
+                    <th rowspan="2" class="wd-9 font700">Declared</th>
+                    <th rowspan="2" class="wd-11 font700">Date of Payment</th>
+                    <th rowspan="2" class="wd-9 font700">Actual</th>
+                    <th colspan="2" class="wd-17 font700">Receipt Amount</th>
+                    <th rowspan="2" class="wd-7 font700">Remark</th>
+                    <th rowspan="2" class="wd-8">PS ID</th>
+                    <th rowspan="2" class="wd-10 font700">Transaction Status</th>
+                  </tr>
+                  <tr>
+                    <th>Rejected</th>
+                    <th>Approved</th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr *ngFor="let summary of item.mediclaimTransactionList;
                       let i = index; count as c">
@@ -1191,20 +1286,23 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPayment(summary, i, j)"  class="form-control" bsDatepicker
-                          [disabled]="initialArrayIndex[j] > i"
-                            [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' " />
+                          setDateOfPaymentInEditCaseMediclaim(summary, i, j)"  class="form-control" bsDatepicker
+                          [disabled]="initialArrayIndex[j] > i"/>
                     </td>
                     <td>
-                      <input
+                      <!-- <input
                       type="text" class="form-control align-right"
                       id="actualAmount{{ summary.mediclaimTransactionId }}"
                       name="actualAmount{{ summary.mediclaimTransactionId }}"
                       [(ngModel)]="summary.actualAmount"
-                      (change)="onActualAmountChange(summary, i, j)"
+                      (change)="onActualAmountChangeInEditCaseMediclaim(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i"
-                            [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
-                    />
+
+                    /> -->
+
+                    <p-inputNumber class="form-control align-right"  name="actualAmount{{ summary.mediclaimTransactionId }}" id="actualAmount{{ summary.mediclaimTransactionId }}"
+                    (onBlur)="onActualAmountChangeInEditCaseMediclaim(summary, i, j)" [(ngModel)]="summary.actualAmount" [disabled]="initialArrayIndex[j] > i"
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2" min="0" ></p-inputNumber>
                     </td>
                     <td>
                       <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -1403,18 +1501,12 @@
                     </td>
                     <td>
                       <div class="custom_icon_badge">
-                        <!-- <input type="text" id="declaredAmount{{ summary.mediclaimTransactionId }}"
-                          name="declaredAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.declaredAmount"
-                          class="form-control align-right" (change)="onPreventiveDeclaredAmountChange(summary, i)"
-                          [disabled]="summary.transactionStatus === 'Submitted'"/> -->
-
-                          <input
-                          type="text"
+                        <input type="text"
                           id="declaredAmount{{ summary.mediclaimTransactionId }}"
                           name="declaredAmount{{ summary.mediclaimTransactionId }}"
                           [(ngModel)]="summary.declaredAmount"
                           class="form-control align-right"
-                          (change)="onPreventiveDeclaredAmountChange(summary, i)"
+                          (change)="onPreventiveDeclaredAmountChangeInEditCase(summary, i)"
                           [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' "
                         />
                       </div>
@@ -1425,14 +1517,14 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPaymentPreventive(summary, i)"  class="form-control" bsDatepicker
-                            [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted' " />
+                          setDateOfPaymentInEditCasePreventive(summary, i)"  class="form-control" bsDatepicker
+                          />
                     </td>
                     <td>
                       <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
                         name="actualAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.actualAmount"
-                        (change)="onActualAmountChangePrevi(summary, i)" class="form-control align-right"
-                        [disabled]="summary.transactionStatus === 'Submitted'"/>
+                        (change)="onActualAmountChangepreventive(summary, i)" class="form-control align-right"
+                        />
                     </td>
                     <td>
                       <input type="text" [ngModel]="summary.amountRejected | number: '1.2-2'"
@@ -1524,7 +1616,7 @@
                     <td class="bg-lightgray font-18 font700 align-right"></td>
                   </tr>
                   <tr>
-                    <td colspan="2" class="bg-lightgray font-18 font700">Benifit Available</td>
+                    <td colspan="2" class="bg-lightgray font-18 font700">Benefits  Available</td>
                     <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                     <td class="bg-lightgray font-18 font700 align-right">
                       <span
@@ -1642,7 +1734,7 @@
                       <div class="custom_icon_badge">
                         <input type="text" id="declaredAmount{{ summary.mediclaimTransactionId }}"
                           name="declaredAmount{{ summary.mediclaimTransactionId }}" [(ngModel)]="summary.declaredAmount"
-                          class="form-control align-right" (change)="onExpenseDeclaredAmountChange(summary, i, j)"
+                          class="form-control align-right" (change)="onExpenseDeclaredAmountChange(summary, j)"
                           [disabled]="summary.transactionStatus === 'Submitted'"/>
                           <!-- [disabled]="initialArrayIndex[j] > i" /> -->
                       </div>
@@ -1653,14 +1745,13 @@
                         [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" data-provide="datepicker"
                         data-date-autoclose="true" (ngModelChange)="
                           summary.dateOfPayment = $event.toLocaleDateString();
-                          setDateOfPaymentPreventive(summary, i, j)" [disabled]="
-                          isDisabled || summary.transactionStatus === 'Submitted'" class="form-control" bsDatepicker />
+                          setDateOfPaymentInEditCaseExpence(summary, j)"  class="form-control" bsDatepicker />
                     </td>
                     <td>
                       <input type="text" id="actualAmount{{ summary.mediclaimTransactionId }}"
                         name="actualAmount{{ summary.mediclaimTransactionId }}" [disabled]="initialArrayIndex[j] > i"
-                        [(ngModel)]="summary.actualAmount" (change)="ononExpenseActualAmountChangePrevi(summary, i, j)"
-                        [disabled]="summary.transactionStatus === 'Submitted'"
+                        [(ngModel)]="summary.actualAmount" (change)="onActualAmountChangeInEditCaseExpense(summary, i, j)"
+
                         class="form-control align-right" />
                     </td>
                     <td>

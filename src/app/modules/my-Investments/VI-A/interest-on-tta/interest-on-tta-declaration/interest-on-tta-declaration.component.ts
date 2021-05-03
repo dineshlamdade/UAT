@@ -148,7 +148,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
   public addNewRowId: number;
-  public declarationTotal: number;
+  public declaredTotal: number;
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
@@ -503,10 +503,23 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       const formatedDeclaredAmount = this.numberFormat.transform(
       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount);
       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount = formatedDeclaredAmount;
-      this.declarationTotal = 0;
+      this.declaredTotal = 0;
       this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
-      this.declarationTotal += Number(element.declaredAmount.toString().replace(/,/g, ''));});
-      this.transactionDetail[j].declarationTotal = this.declarationTotal;
+      this.declaredTotal += Number(element.declaredAmount.toString().replace(/,/g, ''));});
+      this.transactionDetail[j].declaredTotal = this.declaredTotal;
+
+      
+ this.declaredTotal = 0;
+
+ this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
+   console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
+   this.declaredTotal += Number(
+     element.declaredAmount.toString().replace(/,/g, '')
+   );
+   // console.log(this.declaredTotal);
+ });
+
+ this.grandDeclarationTotal = this.declaredTotal;
   }
 
   // ------------ ON change of DueDate in line----------
@@ -642,7 +655,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     }
     this.transactionDetail[
       j
-    ].declarationTotal += this.declarationService.declaredAmount;
+    ].declaredTotal += this.declarationService.declaredAmount;
     this.transactionDetail[
       j
     ].actualTotal += this.declarationService.actualAmount;
@@ -916,18 +929,18 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
 
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount = formatedDeclaredAmount;
 
-    this.declarationTotal = 0;
+    this.declaredTotal = 0;
 
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
-      console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
+      console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ''));
+      this.declaredTotal += Number(
         element.declaredAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.declarationTotal);
+      // console.log(this.declaredTotal);
     });
 
-    this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
-    console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
+    this.editTransactionUpload[j].declaredTotal = this.declaredTotal;
+    console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declaredTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
   setDateOfPaymentInEditCase(
@@ -990,7 +1003,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ""));
+      console.log(element.actualAmount.toString().replace(',', ''));
       this.actualTotal += Number(
         element.actualAmount.toString().replace(/,/g, '')
       );

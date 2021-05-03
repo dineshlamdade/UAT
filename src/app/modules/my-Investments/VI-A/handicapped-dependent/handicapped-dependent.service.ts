@@ -110,11 +110,15 @@ export class HandicappedDependentService {
   }
 
   uploadHandicappedTransactionwithDocument(data:any): Observable<any> {
-       return this._HTTP.post<any>(
+    console.log('handicappedDependent-Transaction', data);
+
+    return this._HTTP.post<any>(
       this.apiUrl + 'handicappedDependent-Transaction',data,
       {
 
       });
+
+
   }
 }
 
