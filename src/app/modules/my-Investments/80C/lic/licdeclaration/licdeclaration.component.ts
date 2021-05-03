@@ -177,6 +177,7 @@ export class LicdeclarationComponent implements OnInit {
   public testnumber1: number =5000;
   public testnumber2: number =5000;
   licDeclarationData: any;
+  dateOfJoining: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -210,7 +211,7 @@ export class LicdeclarationComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    console.log('data::', this.data);
+    // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
       this.canEdit = true;
@@ -238,6 +239,10 @@ export class LicdeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -580,7 +585,8 @@ export class LicdeclarationComponent implements OnInit {
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    this.grandDeclarationTotal = this.declarationTotal;
+    // this.transactionDetail[j].declarationTotal = this.declarationTotal;
     // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
   }
 
@@ -1077,7 +1083,8 @@ export class LicdeclarationComponent implements OnInit {
         console.log(res);
         if (res.data.results.length > 0) {
 
-          this.transactionDetail = res.data.results[0].licTransactionDetail;
+          this.transactionDetail = 
+          res.data.results[0].licTransactionDetail;
           this.documentDetailList = res.data.results[0].documentInformation;
           this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
           this.grandActualTotal = res.data.results[0].grandActualTotal;
@@ -1255,13 +1262,11 @@ export class LicdeclarationComponent implements OnInit {
     transactionStatus: String,
   ) {
     // this.Service.getTransactionInstName(data).subscribe(res => {
-    this.Service.getTransactionFilterData(
-      institution,
-      policyNo,
-      transactionStatus,
-    ).subscribe((res) => {
-      console.log(res);
-      this.transactionDetail = res.data.results[0].licTransactionDetail;
+    this.Service.getTransactionFilterData(institution,policyNo,transactionStatus,)
+    .subscribe((res) => {
+      console.log('getTransactionFilterData', res);
+      this.transactionDetail = 
+      res.data.results[0].licTransactionDetail;
       this.documentDetailList = res.data.results[0].documentInformation;
       this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
       this.grandActualTotal = res.data.results[0].grandActualTotal;

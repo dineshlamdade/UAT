@@ -312,9 +312,9 @@
                   </span>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}">
-                     <!-- {{ summary.proofSubmissionId }} -->
-                     <i class="fa fa-clipboard"></i>
+                  <span *ngIf="summary.transactionStatus == 'Submitted'" 
+                  tooltip="{{ summary.proofSubmissionId }}">
+                    <i class="fa fa-clipboard"></i>
                   </span>
                 </td>
                 <td class="text-orange font700">

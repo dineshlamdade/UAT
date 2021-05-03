@@ -90,9 +90,9 @@
                 <th rowspan="2" class="wd-10 font700">
                   Previous Employer Name
                 </th>
-                <th rowspan="2" class="wd-4 font700">
+                <!-- <th rowspan="2" class="wd-4 font700">
                   <span tooltip="Electronic Clearing Service">ECS</span>
-                </th>
+                </th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -116,7 +116,7 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </th>
-                <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                 <th rowspan="2" class="wd-11 font700">Due Date</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
                 <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -171,9 +171,9 @@
                     </option>
                   </select>
                 </td>
-                <td>
-                  <!-- <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span> -->
-                </td>
+                <!-- <td>
+                  <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                </td> -->
                 <td>
                   <div class="custom_icon_badge">
                     <input type="text" class="form-control" [minDate]="financialYearStartDate"
@@ -229,8 +229,8 @@
                   </span>
                 </td>
                 <td>
-                  <span tooltip="{{ summary.proofSubmissionId }}">
-                    <!-- {{ summary.proofSubmissionId }} -->
+                  <span *ngIf="summary.transactionStatus == 'Submitted'" 
+                  tooltip="{{ summary.proofSubmissionId }}">
                     <i class="fa fa-clipboard"></i>
                   </span>
                 </td>
@@ -259,7 +259,7 @@
               <tr>
                 <td colspan="2" class="bg-lightgray font-18 font700">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ item.declarationTotal | number: "1.2-2" }}
@@ -703,9 +703,9 @@
                   <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
                   </th>
-                  <th rowspan="2" class="wd-4 font700">
+                  <!-- <th rowspan="2" class="wd-4 font700">
                     <span tooltip="Electronic Clearing Service">ECS</span>
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -722,7 +722,7 @@
               </thead>
               <thead class="thead-dark" *ngIf="!previousEmployeeList?.length">
                 <tr>
-                  <th rowspan="2" class="wd-4 font700"><span>ECS</span></th>
+                  <!-- <th rowspan="2" class="wd-4 font700"><span>ECS</span></th> -->
                   <th rowspan="2" class="wd-11 font700">Due Date</th>
                   <th rowspan="2" class="wd-9 font700">Declared</th>
                   <th rowspan="2" class="wd-11 font700">Date of Payment</th>
@@ -762,11 +762,11 @@
                       </option>
                     </select>
                   </td>
-                  <td>
+                  <!-- <td>
                     <span
                       >{{ summary.isECS === 1 ? "Yes" : "No" }}</span
                     >
-                  </td>
+                  </td> -->
                   <td>
                     <div class="custom_icon_badge">
                       <input

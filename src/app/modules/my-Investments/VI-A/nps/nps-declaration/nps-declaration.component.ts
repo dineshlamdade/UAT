@@ -1242,6 +1242,7 @@ export class NpsDeclarationComponent implements OnInit {
         this.initialArrayIndex = [];
 
         this.transactionDetail.forEach((element) => {
+          
           this.initialArrayIndex.push(element.groupTransactionList.length);
 
           element.groupTransactionList.forEach((innerElement) => {
