@@ -31,11 +31,9 @@
                       <div *ngIf="masterForm.state.errors.required">Bank A/C Is Mandatory</div>
                     </div>
                   </div> -->
-
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Select Bank Name</label>
-
-                    <select name="bankName" *ngIf="accountNoList.length == 0 "  id="bankName" formControlName="bankName" (change)='onSelectBankAccount()'
+                    <select name="bankName" *ngIf="accountNoList.length == 0 "  id="bankName" formControlName="savingBankMasterId" 
                       disabled
                       class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
                       <option [ngValue]="null">Select</option>
@@ -44,18 +42,20 @@
                       </option>
                     </select>
 
-                    <select name="bankName" *ngIf="accountNoList.length > 0 " id="bankName" formControlName="bankName" (change)='onSelectBankAccount()'
-                    class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
+                    <select name="bankName" *ngIf="accountNoList.length > 0 " id="bankName" formControlName="savingBankMasterId"                  
+                      (change)='onSelectBankCode($event.target.value)'                   
+                      class="form-control custom-select" [ngClass]="{ 'is-invalid': submitted && masterForm.state.errors }">
                     <option [ngValue]="null">Select</option>
                     <option *ngFor="let bankName of accountNoList"[value]="bankName.value">
                       {{bankName.label}}
                     </option>
                   </select>
 
-                    <div *ngIf="submitted && masterForm.bankName.errors" class="invalid-feedback">
-                      <div *ngIf="masterForm.bankName.errors.required">Bank A/C Is Mandatory</div>
+                    <div *ngIf="submitted && masterForm.state.errors" class="invalid-feedback">
+                      <div *ngIf="masterForm.state.errors.required">Bank A/C Is Mandatory</div>
                     </div>
                   </div>  
+            
             <!-- <div class="col-sm-6 col-md-3">
               <label class="form-label">State Name</label>
               <input formControlName="state" class="form-control" placeholder="State" disabled
@@ -134,7 +134,7 @@
                   <div *ngIf="masterForm.bankName.errors.required">Bank Name Is Mandatory</div>
                 </div>
               </div>
-            </div> <br><br><br>
+            </div> <br><br>
               <div class="row">
               <div class="col-sm-6 col-md-3">
                 <label class="form-label">Branch Name</label>

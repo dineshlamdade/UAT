@@ -77,6 +77,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
   public masterfilesArray: File[] = [];
 
   public accountNoList: Array<any> = [];
+
+  public empolyeeBankList: Array<any> = [];
   
   public receiptNumber: number;
   public receiptAmount: string;
@@ -182,8 +184,8 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
   // initiate Reactive Master Form
   initiateMasterForm() {
-    this.form = this.formBuilder.group({
-      savingBankMasterId: new FormControl(0),
+    this.form = this.formBuilder.group({    
+      savingBankMasterId: new FormControl(null),
       ifscCode: new FormControl(null, Validators.required),
       state:  new FormControl(null,Validators.required),
       bankName:  new FormControl(null,Validators.required),
@@ -221,16 +223,18 @@ export class InterestOnTtbMasterComponent implements OnInit {
   getMasterAccountList() {
     this.interestOnTtbService.getAccountInfoList().subscribe((res) => {
       if(res.data.results.length > 0){
+        this.empolyeeBankList = res.data.results[0];
         res.data.results.forEach((element) => {
           console.log("element::",element)
           element.forEach((innerelemet) => {
             console.log("innerelemet::",innerelemet)
             const obj = {
               label: innerelemet.bankName,
-              value: innerelemet.bankName,
+              value: innerelemet.employeeBankInfoId,
             };
             this.accountNoList.push(obj);            
-          });       
+          });  
+
         });
       }      
       console.log('this.accountNoList::', this.accountNoList); 
@@ -240,14 +244,64 @@ export class InterestOnTtbMasterComponent implements OnInit {
 
 onSelectBankCode(employeeBankInfoId:any)
  {
-   console.log("bankName::",employeeBankInfoId)
+   console.log("empolyeeBankList::", this.empolyeeBankList)
+   console.log("employeeBankInfoId::", employeeBankInfoId)
+   const id=Number(employeeBankInfoId)
+
+   console.log("employeeBankInfoId1111::",id)
+       const employeeBankInfo = this.empolyeeBankList.find(   
+      (bankInfo) => bankInfo.employeeBankInfoId === id);
+    console.log("employeeBankInfo::",employeeBankInfo);
+   // this.form.patchValue(employeeBankInfo);
+
+    this.form.patchValue({     
+     //  savingBankMasterId: new FormControl(0),
+     savingBankMasterId:employeeBankInfo.employeeBankInfoId,
+         ifscCode: employeeBankInfo.bankIFSC,
+        state: employeeBankInfo.state,
+        bankName:  employeeBankInfo.bankName,       
+         branchName: employeeBankInfo.branchName,
+       bankAddress: employeeBankInfo.branchAddress,
+       accountNumber:employeeBankInfo.accountNo,
+     });
+
+  /*  this.empolyeeBankList.forEach(element => 
+    {
+      console.log("element::",element)   
+      console.log("element.employeeBankInfoId === employeeBankInfoId::",element.employeeBankInfoId === employeeBankInfoId)
+      
+      if(element.employeeBankInfoId === id)
+      {
+        console.log("inIf::")
+        this.form.patchValue({
+         // fromDate: this.policyMinDate,
+          savingBankMasterId: new FormControl(0),
+         ifscCode: new FormControl(null, Validators.required),
+           state:  new FormControl(null,Validators.required),
+           bankName:  new FormControl(null,Validators.required),
+           // bankName: new FormControl({value: null, disabled: true },Validators.required),
+            branchName: new FormControl({value: null, disabled: true },Validators.required),
+          bankAddress: new FormControl({value: null, disabled: true },Validators.required),
+          accountNumber: new FormControl(null, Validators.required),
+        });
+      }   
+
+     
+  
+
+    }
+    ) */
+
+  /*  console.log("bankName::",employeeBankInfoId)
    this.interestOnTtbService.getAccountInfoList().subscribe((res) => {
-    
     console.log("res::",res);  
 
-    const toSelectAddress = res.find(
-      (c) => c.addressType === employeeBankInfoId.target.value
+
+    const employeeBankInfoId = res.find(   
+      (c) => c.employeeBankInfoId === employeeBankInfoId.target.value
     );
+    console.log('employeeBankInfoId', employeeBankInfoId);
+
     this.form
     .get('employeeBankInfoId')
     .get('state')
@@ -255,9 +309,8 @@ onSelectBankCode(employeeBankInfoId:any)
     .get('bankName')
     .get('branchName')
     .get('bankAddress')
-    .setValue(toSelectAddress.state,toSelectAddress.ifscCode,);
     
-  }); 
+  }); */ 
   }
 
  /*  this.interestOnTtbService.getAccountInfoList().subscribe((res) => {
@@ -417,7 +470,7 @@ onSelectBankCode(employeeBankInfoId:any)
     if (this.form.invalid) {
       return;
     }
-
+  /*   delete this.form.value.selectbankName; */
     if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Deposit in Saving Account 80TTA Document needed to Create Master.'
