@@ -1439,17 +1439,22 @@ export class HousingloandeclarationComponent implements OnInit {
       this.hideCopytoActualDate = false;
     }
   }
-  // public copytoActualDate(dueDate: Date, j: number, i: number, item: any) {
-  //   dueDate = new Date(dueDate);
-  //   // item.housePropertyTransactionList.dateOfPayment = dueDate;
-  //   this.transactionDetail[0].housePropertyTransactionList[i].dateOfPayment = dueDate;
-  //   this.PreviousEmployeeService.dateOfPayment = this.transactionDetail[0].housePropertyTransactionList[
-  //     i
-  //   ].dateOfPayment;
-  //   // this.dateOfPayment = dueDate;
-  //   alert('hiiii');
-  //   console.log('Date OF PAyment' + this.PreviousEmployeeService.dateOfPayment);
-  // }
+
+   // Update Previous Employee in Edit Modal
+   updatePreviousEmpIdInEditCase(event: any, i: number, j: number) {
+    console.log('select box value::', event.target.value);
+    this.editTransactionUpload[j].housePropertyTransactionList[i].previousEmployerId =
+      event.target.value;
+      this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId =
+      event.target.value;
+    console.log(
+      'previous emp id::',
+      this.editTransactionUpload[j].housePropertyTransactionList[i].previousEmployerId,
+
+      this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].previousEmployerId,
+    );
+  }
+
 
   // When Edit of Document Details
   public editViewTransaction(
@@ -1539,8 +1544,104 @@ export class HousingloandeclarationComponent implements OnInit {
           res.data.results[0].housePropertyTransactionDocumentDetailList;
         console.log('transactionDetail', this.transactionDetail);
         this.initialArrayIndex = [];
+        this.transactionDetail.forEach((element) => {
+          this.initialArrayIndex.push(element.housePropertyTransactionList.length);
+
+          element.housePropertyTransactionList.forEach((innerElement) => {
+            if (innerElement.dateOfPayment !== null) {
+              innerElement.dateOfPayment = new Date(
+                innerElement.dateOfPayment
+              );
+            }
+            innerElement.declaredAmount = this.numberFormat.transform(
+              innerElement.declaredAmount
+            );
+            innerElement.actualAmount = this.numberFormat.transform(
+              innerElement.actualAmount
+            );
+          });
+
+          this.initialArrayIndex.push(
+            element.housePropertyTransactionPreviousEmployerList.length
+          );
+
+          element.housePropertyTransactionPreviousEmployerList.forEach(
+            (element) => {
+              element.actualAmount = this.numberFormat.transform(
+                element.actualAmount
+              );
+            }
+          );
+        });
       }
     );
+  }
+
+
+  onActualAmountChangeInEditCase(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: any;
+      dueDate;
+    },
+    i: number,
+    j:number,
+  ) {
+    this.PreviousEmployeeService = new PreviousEmployeeService(summary);
+    this.editTransactionUpload[j].housePropertyTransactionList[i].actualAmount = this.PreviousEmployeeService.actualAmount;
+    const formatedactualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j].housePropertyTransactionList[i].actualAmount
+    );
+    console.log(`formatedactualAmount::`, formatedactualAmount);
+    this.editTransactionUpload[j].housePropertyTransactionList[i].actualAmount = formatedactualAmount;
+
+    // this.declarationTotal = 0;
+    // this.editTransactionUpload[j].housePropertyTransactionList.forEach(
+    //   (element) => {
+    //     console.log(element.declaredAmount.toString().replace(',', ''));
+    //     this.declarationTotal += Number(
+    //       element.declaredAmount.toString().replace(/,/g, '')
+    //     );
+    //     console.log(this.declarationTotal);
+    //   }
+    // );
+    // this.editTransactionUpload.declarationTotal = this.declarationTotal;
+  }
+
+
+
+  onActualAmountChangeInEditCasePreviousEMP(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: any;
+      dueDate;
+    },
+    i: number,
+    j:number,
+  ) {
+    this.PreviousEmployeeService = new PreviousEmployeeService(summary);
+    this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].actualAmount = this.PreviousEmployeeService.actualAmount;
+    const formatedactualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].actualAmount
+    );
+    console.log(`formatedactualAmount::`, formatedactualAmount);
+    this.editTransactionUpload[j].housePropertyTransactionPreviousEmployerList[i].actualAmount = formatedactualAmount;
+
+    // this.declarationTotal = 0;
+    // this.editTransactionUpload[j].housePropertyTransactionList.forEach(
+    //   (element) => {
+    //     console.log(element.declaredAmount.toString().replace(',', ''));
+    //     this.declarationTotal += Number(
+    //       element.declaredAmount.toString().replace(/,/g, '')
+    //     );
+    //     console.log(this.declarationTotal);
+    //   }
+    // );
+    // this.editTransactionUpload.declarationTotal = this.declarationTotal;
   }
 
   // tslint:disable-next-line: typedef
