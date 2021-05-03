@@ -19,29 +19,36 @@ export class TokenInterceptorService implements HttpInterceptor {
 
   public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+
     if (this.authService.getJwtToken()) {
       request = this.addToken(request, this.authService.getJwtToken());
     }
-
     return next.handle(request).pipe(catchError((error) => {
       const type = error.status;
-      // console.log(error.status);
-      // console.log(error.error);
+      const message = error.message
+      console.log(error.message + " error")
       switch (type) {
         case 401: {
           this.authService.logout();
-          this.alertService.sweetalertError('Session Has Expired !!');
+          this.alertService.sweetalertError('Your session is expired please login again !!');
+          //this.router.navigate(['/login']);
           break;
         }
-
-        //    case  0 : {
-        //     console.log(type)
-        //     this.authService.logout();
-        //     this.alertService.alert( 'Session Has Expired !!', 'warning', 'login');
-        //     break;
-        //  }
+        case 400: {
+          // if(message == 'Invalid Token String'){
+          //   this.alertService.sweetalertError('Invalid Token String');
+          //   // this.authService.logout();
+          //   // this.router.navigate(['/login']);
+          // }else if(message == 'Your session is expired please login again'){
+          //   this.alertService.sweetalertError('Your session is expired please login again');
+          //   // this.authService.logout();
+          //   // this.router.navigate(['/login']);
+          // }
+          break;
+        }
         case 401: {
           this.alertService.sweetalertError('Invalid Token Please, Please Try Again !!!!',);
+          //this.router.navigate(['/login']);
           break;
         }
         case 404: {
@@ -52,38 +59,7 @@ export class TokenInterceptorService implements HttpInterceptor {
           this.alertService.sweetalertError('Failed To load Resource,  Please Try Again !!',);
           break;
         }
-        //      default : {
-        //       console.log('default error');
-        //       this.alertService.sweetalertError('Something Went Wrong,  Please Try Again !!', );
-        //       break;
-        //  }
-
       }
-
-      //console.log('my error status', error.status);
-
-      // if ( error.status === 401) {
-      //   this.authService.logout();
-      //   this.alertService.alert( 'Session Has Expired !!', 'warning', 'login');
-      //   return throwError(error);
-
-      //   // return this.handle401Error(request, next);
-      // } else if (error.status === 0 ) {
-      //     this.alertService.alert('Session Has Expired !!' , 'warning', 'home');
-      //     this.authService.logout();
-      //   return throwError(error);
-      // } else if (error.status === 404) {
-      //   this.alertService.alert('Data not found !!', 'warning', 'home');
-      //   return throwError(error);
-      // } else if (error.status === 500) {
-      //   this.alertService.alert('Failed To load Resource,  Please Try Again !!', 'warning', 'home');
-      //   return throwError(error);
-      // } else {
-      //   this.authService.logout();
-      //   this.alertService.alert('Session Has Expired !!', 'warning', 'login');
-      //   return throwError(error);
-      // }
-
       return throwError(error);
     }));
   }
@@ -99,15 +75,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       },
     });
   }
-  // private addToken(request: HttpRequest<any>, token: string) {
-  //   //console.log('My token ',token);
-  //   return request.clone({
-  //     setHeaders: {
-  //       'X-Authorization': `${token}`,
-  //     },
-  //   });
-  // }
-
+ 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
@@ -130,16 +98,3 @@ export class TokenInterceptorService implements HttpInterceptor {
     }
   }
 }
-
-//   constructor( private injector: Injector) { }
-
-//   intercept(req, next) {
-//     const authService = this.injector.get(AuthService);
-//     const tokenizedReq = req.clone({
-//       setHeaders: {
-//         Authorization: `Bearer ${authService.getToken()}`,
-//       },
-//     });
-//     return next.handle(tokenizedReq);
-//   }
-// }

@@ -47,6 +47,7 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
 import { HeadCreationComponent } from './head-creation/head-creation.component';
 import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -99,6 +100,7 @@ import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation
     ToastModule,
     InputTextModule,
     ProgressBarModule,
+    BrowserModule
 
   ],
 

@@ -9,25 +9,25 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <span class="left-title" style="color: #713f93 !important">
+
                                             Loan Type
-                                        </span>
-                                        <br>
+
+                                        <br><br>
                                           <select
                                             class="form-control"
                                             placeholder="Select" (change)="getLoanType($event.target.value)">
                                             <option value="" selected >Select</option>
                                             <option  *ngFor="let loan of loanTypeData ">{{loan.loanCode}}</option>
                                           </select>
-                                    </div>    
+                                    </div>
                                 </div>
-                           
-                            </div>  
-                            <div class="well">
+
+                            </div>
+                            <div class="well" *ngIf="loanType != ''">
                               <!-- <form #emiCalculatorForm="ngForm" (ngSubmit)="submitEmiCalculator()"></form> -->
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                       
+
 
                                       <br>
                                         <span class="left-title">
@@ -98,9 +98,9 @@
                             <div class="well">
 
                                 <div class="row box-border">
-                                    
-                                    <div class="col-sm-12">
 
+                                    <div class="col-sm-12">
+                                         <h5 style="margin-left: 150px;">Repayment Details</h5>
                                         <div style="display: block;">
                                             <div style="display: block;">
                                                 <canvas baseChart
@@ -118,18 +118,18 @@
                                     <div class="col-sm-12">
                                         <div class="pie-content row" id="pieContent">
                                             <div class="col-sm-6">
-                                                <p><span class="pie-icon pie-principal"></span>Principal : 
+                                                <p><span class="pie-icon pie-principal"></span>Principal :
                                                 <span style="font-weight: 600;">{{query.amount}}</span> </p>
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <p><span class="pie-icon pie-interest"></span>Interest : 
+                                                <p><span class="pie-icon pie-interest"></span>Interest :
                                                     <!-- <h5 id="loan_interest"></h5> -->
                                                 <span style="font-weight: 600;">{{result.interest || "--"}}</span></p>
                                             </div>
 
                                             <div class="col-sm-12">
-                                                <p><span class="pie-icon"></span>Total Payment : 
+                                                <p><span class="pie-icon"></span>Total Payment :
                                                     <!-- <h5 id="loan_interest"></h5> -->
                                                 <span style="font-weight: 600;">{{result.total || "--"}}</span></p>
                                             </div>
@@ -143,7 +143,7 @@
                                                 <span>
                                                     <p>Total Payment</p>
                                                 </span>
-                                                
+
                                             </div>
                                             <div class="pie-total col-sm-4">
                                                 <h5 id="loan_total_payment">{{result.total || "--"}}</h5>
@@ -164,13 +164,13 @@
                                                 <h5 id="loan_emi" style="margin-left: 72px;" *ngIf="loanRecoveyMethod != 'Reducing balance'">{{result.emi || "--"}} Per Month</h5>
                                             </div>
                                         </div>
-                                    </div>    
+                                    </div>
                                 </div>
                            </div>
                         </div>
-                       
+
                         <div class="float-right" style="margin-left:89%;">
-                            <button class="btn btn-success" (click)="applyLoan()">
+                            <button class="btn btn-success" (click)="applyLoan()"  [disabled] ="loanType == ''">
                                 <i class="fa fa-check-circle" aria-hidden="true"></i>&nbsp;
                                 Apply Loan
                             </button>

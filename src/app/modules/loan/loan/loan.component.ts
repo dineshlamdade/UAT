@@ -11,6 +11,7 @@ import * as _html2canvas from "html2canvas";
 import { Router } from '@angular/router';
 const html2canvas: any = _html2canvas;
 
+
 @Component({
   selector: 'app-loan',
   templateUrl: './loan.component.html',
@@ -20,44 +21,20 @@ export class LoanComponent implements OnInit {
   LoanForm: FormGroup;
   public modalRef: BsModalRef;
   excelData: any[];
-  summaryData: any;
-
-  @Input() public data: any;
-  @Input() public applyLoanData: any;
-
+  summaryData: any=[];
+  loandata: any = '';
+  searchText:string;
   editflag: boolean = false;
-  loanType: any;
-  // query: any;
-  // remi: any;
-  // result: any;
 
-  query: any = {
-    amount: "",
-    interest: "",
-    tenureYr: "",
-    tenureMo: ""
-  }
-
-  result = {
-    emi: "",
-    interest: "",
-    total: ""
-  }
-  remi: any = {
-    value: "2"
-  }
   constructor(public formBuilder : FormBuilder,
     private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ,
     private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,private router: Router) {
     this.LoanForm = this.formBuilder.group({
+
+      // "searchText": new FormControl(''),
+
     })
 
-
-    // if (localStorage.getItem('loanApplicationFormData') != null) {
-    //   let loandata = JSON.parse(localStorage.getItem('loanApplicationFormData'));
-
-
-    //  }
    }
   ngOnInit(): void {
     this.getAllData();
@@ -66,20 +43,7 @@ export class LoanComponent implements OnInit {
   {
 
   }
-   editQuery(loan)
-  {
-    this.editflag = true;
-    // this.AddLoanForm.enable();
-    // this.AddLoanForm.patchValue(loan);
-    // this.isVisible =true;
-    // this.isShown = false;
-  }
-  viewQuery(loan)
-  {
-    this.editflag = false;
-  //  this.AddLoanForm.patchValue(loan);
-  //  this.AddLoanForm.disable();
-  }
+
   disbursementRequest(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
@@ -136,22 +100,37 @@ this.loanservice.getAll().subscribe(res =>
     this.summaryData = res.data.results[0];
   })
 }
-editLoanAppForm()
+
+navigateToAdd(){
+  localStorage.removeItem('EditLoanData');
+  localStorage.removeItem('ViweLoanData');
+  this.router.navigate(['/loan/add-new-loan']);
+}
+
+editLoanAppForm(summary)
 {
-  const data = {
-    loanType: this.loanType,
-    loanAmount: this.query.amount,
-    interestRate: this.query.interest,
-    noOfInstallment: this.remi.value,
-    installmentAmount: this.result.emi
-  };
-  this.applyLoanData = data;
-    localStorage.setItem('loanApplyData',JSON.stringify(data))
-    console.log("evn: "+JSON.stringify(data))
-    this.router.navigate(['/loan/add-new-loan'])
+  localStorage.clear();
+  localStorage.setItem('EditLoanData',JSON.stringify(summary))
+  this.router.navigate(['/loan/add-new-loan']);
+  this.editflag = true;
 
 
 }
+viewLoanAppForm(summary)
+{
+  localStorage.clear();
+  localStorage.setItem('ViweLoanData',JSON.stringify(summary))
+  this.router.navigate(['/loan/add-new-loan']);
+  this.editflag = false;
 
 
+}
+deleteLoanForm()
+{
+
+}
+downloadSchedule()
+{
+
+}
 }

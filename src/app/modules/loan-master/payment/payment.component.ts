@@ -284,6 +284,7 @@ export class PaymentComponent implements OnInit {
       this.loanmasterService.saveLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Saved Successfully!!')
+          this.router.navigate['/loan-master/summary']
         }
       )
     } else {
@@ -297,6 +298,7 @@ export class PaymentComponent implements OnInit {
       this.loanmasterService.updateLoanMasterData(this.loanMasterForm.value).subscribe(
         res => {
           this.toaster.success('', 'Loan data Updated Successfully!!')
+          this.router.navigate['/loan-master/summary']
         }
       )
     }

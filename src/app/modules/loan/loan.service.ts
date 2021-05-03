@@ -52,4 +52,5 @@ public getApproverDetails()
   return this.http.get<any>(this.apiUrl1 + '/workflowMaster-report/approverDetails')
 
 }
+
 }
