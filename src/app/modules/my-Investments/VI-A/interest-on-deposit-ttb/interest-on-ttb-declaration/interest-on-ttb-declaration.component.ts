@@ -146,7 +146,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public employeeJoiningDate: Date;
   public windowScrolled: boolean;
   public addNewRowId: number;
-  public declarationTotal: number;
+  public declaredTotal: number;
   public declaredAmount: number;
   public actualTotal: number;
   public actualAmount: number;
@@ -487,20 +487,20 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
       i
     ].declaredAmount = formatedDeclaredAmount;
 
-    this.declarationTotal = 0;
+    this.declaredTotal = 0;
     // this.declaredAmount=0;
 
     this.transactionDetail[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
+      this.declaredTotal += Number(
         element.declaredAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.declarationTotal);
+      // console.log(this.declaredTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.transactionDetail[j].declaredTotal = this.declaredTotal;
+    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declaredTotal);
   }
 
   // ------------ ON change of DueDate in line----------
@@ -658,7 +658,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     }
     this.transactionDetail[
       j
-    ].declarationTotal += this.declarationService.declaredAmount;
+    ].declaredTotal += this.declarationService.declaredAmount;
     this.transactionDetail[
       j
     ].actualTotal += this.declarationService.actualAmount;
@@ -932,18 +932,18 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
 
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList[i].declaredAmount = formatedDeclaredAmount;
 
-    this.declarationTotal = 0;
+    this.declaredTotal = 0;
 
     this.editTransactionUpload[j].interestOnSavingDeposit80TTTransactionList.forEach((element) => {
       console.log('declaredAmount::', element.declaredAmount.toString().replace(',', ""));
-      this.declarationTotal += Number(
+      this.declaredTotal += Number(
         element.declaredAmount.toString().replace(/,/g, '')
       );
-      // console.log(this.declarationTotal);
+      // console.log(this.declaredTotal);
     });
 
-    this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
-    console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declarationTotal);
+    this.editTransactionUpload[j].declaredTotal = this.declaredTotal;
+    console.log( "DeclarATION total==>>" + this.editTransactionUpload[j].declaredTotal);
   }
    // ---- Set Date of Payment On Edit Modal----
   setDateOfPaymentInEditCase(

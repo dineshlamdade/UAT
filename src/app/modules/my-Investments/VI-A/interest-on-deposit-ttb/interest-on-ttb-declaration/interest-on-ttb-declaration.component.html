@@ -224,8 +224,8 @@
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
-                  <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
-                    {{ item.declarationTotal | number: "1.2-2" }}
+                  <span tooltip=" {{ item.declaredTotal | number: '1.2-2' }}" class="padding-right-12">
+                    {{ item.declaredTotal | number: "1.2-2" }}
                   </span>
                 </td>
                 <td class="bg-lightgray font-18 font700 align-right">
@@ -740,16 +740,16 @@
                       <i class="fa fa-clipboard"></i>
                     </span>
                   </td>
-                 <!--  <td class="text-orange font700">
+                  <td class="text-orange font700">
                     <span tooltip="{{ summary.transactionStatus }}">
                       {{ summary.transactionStatus }}
                     </span>
-                  </td> -->
-                  <td>
+                  </td>
+                 <!--  <td>
                     <span *ngIf="summary.transactionStatus == 'Submitted'" tooltip="{{ summary.proofSubmissionId }}">
                       <i class="fa fa-clipboard"></i>
                     </span>
-                  </td>
+                  </td> -->
                 </tr>
                 <tr>
                   <td colspan="1" class="bg-lightgray font-18 font700">
@@ -758,8 +758,8 @@
                   <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                <!--    <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
-                    <span tooltip=" {{ item.declarationTotal | number: '1.2-2' }}" class="padding-right-12">
-                      {{ item.declarationTotal | number: "1.2-2" }}
+                    <span tooltip=" {{ item.declaredTotal | number: '1.2-2' }}" class="padding-right-12">
+                      {{ item.declaredTotal | number: "1.2-2" }}
                     </span>
                   </td>
            <!--        <td class="bg-lightgray font-18 font700 align-right"></td> -->
