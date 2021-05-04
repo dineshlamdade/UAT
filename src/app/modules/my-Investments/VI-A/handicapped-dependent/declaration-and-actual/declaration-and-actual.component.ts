@@ -345,7 +345,7 @@ export class DeclarationAndActualComponent implements OnInit {
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -404,10 +404,10 @@ export class DeclarationAndActualComponent implements OnInit {
 
     // transactionDetail.declaredAmount = transactionDetail.declaredAmount
     //   .toString()
-    //   .replace(',', '');
+    //   .replace(/,/g, '');
     transactionDetail.actualAmount = transactionDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
 
     // const data = {
     //   physicallyHandicappedDetail: transactionDetail,
@@ -668,12 +668,12 @@ export class DeclarationAndActualComponent implements OnInit {
       if (element.declaredAmount !== null) {
         element.declaredAmount = element.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         element.declaredAmount = 0.0;
       }
       if (element.actualAmount !== null) {
-        element.actualAmount = element.actualAmount.toString().replace(',', '');
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
       } else {
         element.actualAmount = 0.0;
       }
@@ -930,7 +930,7 @@ export class DeclarationAndActualComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -941,7 +941,7 @@ export class DeclarationAndActualComponent implements OnInit {
       formatedActualAmount = Number(
         this.previousEmployerHandicappedDependentResponseList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -951,7 +951,7 @@ export class DeclarationAndActualComponent implements OnInit {
       formatedActualAmount = Number(
         this.previousEmployerHandicappedDependentResponseList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.previousEmployerHandicappedDependentResponseList[i].actualAmount = this.numberFormat.transform(0);
       formatedSelectedAmount = this.numberFormat.transform(
@@ -968,7 +968,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     // this.previousEmployerHandicappedDependentResponseList.actualTotal = this.actualTotal;
@@ -1034,7 +1034,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.currentEmployerHandicappedDependentResponseList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -1105,7 +1105,7 @@ export class DeclarationAndActualComponent implements OnInit {
     this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1415,7 +1415,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
 
 
-    // this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    // this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       currentEmployerHandicappedDependentList: this.currentEmployerHandicappedDependentList,
       previousEmployerHandicappedDependentResponseList: this.previousEmployerHandicappedDependentList,
@@ -1475,7 +1475,7 @@ export class DeclarationAndActualComponent implements OnInit {
 
   unformatAmount(amount) {
     if (amount !== null && amount != undefined) {
-      amount = amount.toString().replace(',', '');
+      amount = amount.toString().replace(/,/g, '');
     } else {
       amount = 0.0;
     }
@@ -1570,10 +1570,10 @@ export class DeclarationAndActualComponent implements OnInit {
     this.editTransactionUpload[j].forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
     });
 
@@ -1642,8 +1642,8 @@ export class DeclarationAndActualComponent implements OnInit {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.previousEmployerHandicappedDependentResponseList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
-      this.actualTotal += Number( element.actualAmount.toString().replace(',', '')  );
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
+      this.actualTotal += Number( element.actualAmount.toString().replace(/,/g, '')  );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });

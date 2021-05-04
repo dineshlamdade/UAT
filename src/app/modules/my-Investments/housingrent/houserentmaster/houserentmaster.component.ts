@@ -704,6 +704,7 @@ export class HouserentmasterComponent implements OnInit {
        }
 
      console.log("this.landLordDetailTableList.length:",this.landLordDetailTableList.length)
+
       if(this.landLordDetailTableList.length ===0)
           {
             console.log('landLordDetailTableList', this.landLordDetailTableList.length);
@@ -712,6 +713,7 @@ export class HouserentmasterComponent implements OnInit {
             );
           return;
         }
+        
         if (this.houseRentform.get('agreementDetailList').invalid && this.agreementDetailsTableList.length === 0) 
       {
         this.agreementDetailssubmitted=true;        
@@ -778,16 +780,25 @@ export class HouserentmasterComponent implements OnInit {
       } */ 
     /*   else 
       { */
+        if (this.houseRentform.get('agreementDetailList').invalid && this.agreementDetailsTableList.length !== 0)
+        {
+          data.agreementDetailList = this.agreementDetailsTableList;
+        }
+        else if (!this.houseRentform.get('agreementDetailList').invalid)
+        {
+          this.agreementDetailsTableList=[];
+          this.agreementDetailsTableList.push(
+            this.houseRentform.get('agreementDetailList').value
+          );
+          console.log("agreementDetailsTableList::",this.agreementDetailsTableList)
+          data.agreementDetailList = this.agreementDetailsTableList;
+          
+        }
         console.log(":agreementDetailList:", this.houseRentform.get('agreementDetailList').value.houseRentalAgreementDetailId)
 
      /*    if(this.houseRentform.get('agreementDetailList').value.houseRentalAgreementDetailId >0 ) */
          /*  { */
-            this.agreementDetailsTableList=[];
-            this.agreementDetailsTableList.push(
-              this.houseRentform.get('agreementDetailList').value
-            );
-            data.agreementDetailList = this.agreementDetailsTableList;
-            
+          
          /*  } */
         
     /*   } */
@@ -1114,52 +1125,6 @@ export class HouserentmasterComponent implements OnInit {
     this.landLordDetailTableList = this.masterGridData[i].landLordDetailList;
 
     this.RentDetailTableList = this.masterGridData[i].rentDetailList;
-
-/* -----------------------validation----------------------- */
-  /*   this.houseDetailsRentsubmitted = true;
-
-    console.log('Houserentform', this.houseRentform);
-
-    if ( this.houseRentform.get('houseRentMaster').invalid )
-       {
-        
-        return;
-     }
-   
-     console.log("this.landLordDetailTableList.length:",this.landLordDetailTableList.length)
-  if (this.landLordDetailTableList.length ===0)
-       {
-        console.log('landLordDetailTableList', this.landLordDetailTableList.length);
-        this.alertService.sweetalertWarning(
-          'Please Enter LandLord Detail Table Filed'
-        );
-      return;
-    } 
-
-
-    if (this.agreementDetailsTableList.length ===0)
-       {
-        console.log('agreementDetailsTableList', this.agreementDetailsTableList.length);
-        this.alertService.sweetalertWarning(
-          'Please Enter LandLord Detail Table Filed'
-        );
-      return;
-    }  */
-   /*  if (this.houseRentform.get('agreementDetailList').invalid) {
-      this.agreementDetailssubmitted=true;
-      console.log(this.houseRentform.get('agreementDetailList').invalid);
-      return;
-    } */
-
-
-   /*  if (this.RentDetailTableList.length ===0)
-       {
-        this.alertService.sweetalertWarning(
-          'Please Enter  Rent Details Table Filed'
-        );
-      return;
-    }  */
-
 
     console.log('documentInformationList', this.masterGridData[i].documentInformationList  );
     this.masterGridData[i].documentInformationList.forEach(

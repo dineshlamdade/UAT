@@ -13,7 +13,8 @@
                 <input name="nav" type="radio" class="about-radio" id="summary" (change)="changeTabIndex(0)"
                   [checked]="tabIndex == 0" />
                 <div class="tabs about-page">
-                  <app-houserentsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-houserentsummary>
+              <!--   <app-houserentsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"></app-houserentsummary> -->
+                  <app-houserentsummary *ngIf="tabIndex == 0" (myEvent)="changeTabIndexForRedirect($event)"  (houseRentalMasterIds)="redirectToMaster($event)"></app-houserentsummary>
                 </div>
                 <label class="nav" for="summary">
                   <span> Summary </span>

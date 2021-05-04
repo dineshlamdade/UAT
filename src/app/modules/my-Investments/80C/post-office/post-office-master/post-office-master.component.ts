@@ -374,7 +374,7 @@ export class PostOfficeMasterComponent implements OnInit {
 
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
 

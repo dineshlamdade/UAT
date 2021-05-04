@@ -8,7 +8,7 @@
          <div class="row">
             <div class="col-sm-6 col-md-3">
                <label class="form-label">House Name</label>
-               <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
+               <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
                placeholder="Enter House Name"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.propertyName.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.propertyName.errors" class="invalid-feedback">
@@ -17,7 +17,7 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label"><b> Address</b> (Copy From)</label>
-               <select name="Address_Copy_From" id="copyFrom" placeholder="Copy Address"
+               <select name="Address_Copy_From" id="copyFrom" placeholder="Enter Address"
                   (change)='onSelectAddressType($event)' formControlName="copyFrom" class="form-control custom-select"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.copyFrom.errors }" #CopyFrom>
                   <option *ngFor="let addressType of employeeAddressType" [value]="addressType.value">
@@ -34,33 +34,33 @@
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Addrsss 1</label>
                <input type="text" formControlName="address1" class="form-control" 
-               onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Property Name"
+               onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Addrsss 1"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address1.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address1.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.address1.errors.required">Property Name is mandatory</div>
+                  <div *ngIf="houseRentMaster.address1.errors.required">Addrsss 1 mandatory</div>
                </div>
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Addrsss 2</label>
                <input type="text" formControlName="address2" class="form-control"onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
-               placeholder="Enter Property Name"
+               placeholder="Enter Addrsss 2"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address2.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address2.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.address2.errors.required">Property Name is mandatory</div>
+                  <div *ngIf="houseRentMaster.address2.errors.required">Addrsss 2 mandatory</div>
                </div>
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Addrsss 3</label>
-               <input type="text" formControlName="address3" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
-               placeholder="Enter Property Name"
+               <input type="text" formControlName="address3" class="form-control"  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
+               placeholder=" Enter Addrsss 3"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address3.errors }">
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address3.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.address3.errors.required">Property Name is mandatory</div>
+                  <div *ngIf="houseRentMaster.address3.errors.required">Addrsss 3 mandatory</div>
                </div>
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Country</label>
-               <select name="Address_Copy_From" id="country" placeholder="Copy Address" formControlName="country"
+               <select name="Address_Copy_From" id="country" placeholder="Country" formControlName="country"
                   class="form-control custom-select"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.country.errors }" #country>
                   <option *ngFor="let country of countriesList" [value]="country">
@@ -85,7 +85,7 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">State</label>
-               <input type="text" formControlName="state" class="form-control" placeholder=""
+               <input type="text" formControlName="state" class="form-control" placeholder="State"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.state.errors }" disabled>
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.state.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.state.errors.required">State is mandatory</div>
@@ -93,7 +93,7 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">City</label>
-               <input type="text" formControlName="city" class="form-control" placeholder=""
+               <input type="text" formControlName="city" class="form-control" placeholder="City"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.city.errors }" disabled>
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.city.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.city.errors.required">City Name is mandatory</div>
@@ -101,7 +101,7 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">Town/Village</label>
-               <input type="text" formControlName="village" class="form-control" placeholder=""
+               <input type="text" formControlName="village" class="form-control" placeholder="Town/Village"
                   [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.village.errors }" disabled>
                <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.village.errors" class="invalid-feedback">
                   <div *ngIf="houseRentMaster.village.errors.required">Town/Village Name is mandatory</div>
@@ -110,14 +110,14 @@
          </div>
          <div class="row mt-20">
             <div class="col-sm-6 col-md-3">
-               <label class="custom-control custom-radio custom-control-inline">
+               <label class="custom-control custom-radio custom-control-inline" placeholder="Metro City">
                   <input formControlName="metroCity" type="radio" class="custom-control-input" name="metroCity"
                    [value]="true" checked  >
                   <span class="custom-control-label form-label">Metro City</span>
                </label>
             </div>
             <div class="col-sm-6 col-md-3">
-               <label class="custom-control custom-radio custom-control-inline">
+               <label class="custom-control custom-radio custom-control-inline" placeholder="Non-Metro City">
                   <input formControlName="metroCity" type="radio" class="custom-control-input" name="metroCity"
                   [value]="false">
                   <span class="custom-control-label form-label">Non-Metro City</span>
@@ -132,17 +132,17 @@
          <div class="row">
             <div class="col-sm-6 col-md-2">
                <label class="form-label">Landlord Name</label>
-               <input type="text" formControlName="name" placeholder="Landlord Name is mandatory" class="form-control"
-               onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
+               <input type="text" formControlName="name" placeholder="Landlord Name" class="form-control"
+               onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
                   name="Premium Amount"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.name.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.name.errors" class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.name.errors.required">Landlord Name is mandatory</div>
+                  <div *ngIf="landLordDetailForm.name.errors.required">Landlord Name</div>
                </div>
             </div>
             <div class="col-sm-6 col-md-2">
                <label class="form-label">Address</label>
-               <input type="text" formControlName="address" placeholder="Address is mandatory" class="form-control"
+               <input type="text" formControlName="address" placeholder=" Enter Address" class="form-control"
                onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
                   name="Premium Amount"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.address.errors }">
@@ -157,7 +157,7 @@
                   <span class="form-label">Landlord PAN</span>
                </label>
                <input type="text" maxlength="12" minlength="10" formControlName="landLordPan"
-                  placeholder="Enter PAN Number" class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
+                  placeholder="Enter PAN " class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors" class="invalid-feedback">
                   <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN Number is Mandatory</div>
@@ -166,12 +166,12 @@
             </div>
             <div class="col-sm-6 col-md-3">
                <label class="form-label">% Share Of Total Rent</label>
-               <input type="number" formControlName="percentageShareOfRent" placeholder="Enter Share Of Total Rent is"
+               <input type="number" formControlName="percentageShareOfRent" placeholder="Enter Share Of Total Rent "
                   min="0" max="100" class="form-control "
                   [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors }">
                <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors"
                   class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.percentageShareOfRent.errors.required">% Share Of Total Rent is
+                  <div *ngIf="landLordDetailForm.percentageShareOfRent.errors.required">% Total Rent is Mandatory
                      mandatory</div>
                   <div *ngIf="landLordDetailForm.percentageShareOfRent.errors?.max">Max 100 is allowed</div>
                </div>
@@ -281,8 +281,8 @@
             </div> -->
             <div class="col-sm-6 col-md-3">
                <label class="form-label pl-10">Remark</label>
-               <textarea formControlName="remark" [ngClass]="{'form-submitted': formDirective.submitted}"
-                  class="form-control ml-10" rows="1"
+               <textarea formControlName="remark"  id="exampleFormControlTextarea2"  [ngClass]="{'form-submitted': formDirective.submitted}"
+                  class="form-control ml-10" rows="1"  placeholder="Remark"
                   [ngClass]="{ 'is-invalid': agreementDetailssubmitted}"></textarea>
                <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.remark.errors"
                   class="invalid-feedback">
@@ -318,7 +318,7 @@
                               {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
                            </span>
                         </td>
-                        <td>
+                        <td> 
                            <span>
                               {{loanDetail.remark}}
                            </span>
@@ -375,14 +375,14 @@
                         [maxDate]="rentMaxDate"  
                      [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }"  >
                      <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
-                        <div *ngIf="landRentDetailForm.toDate.errors.required">Property Name is mandatory</div>
+                        <div *ngIf="landRentDetailForm.toDate.errors.required">To Date is mandatory</div>
                      </div>
                   </div>
                </div>
             </div>
             <div class="col-sm-6 col-md-3">
-               <label class="form-label">Monthly Rent Amount</label>
-               <p-inputNumber class="form-control align-right" formControlName="rentAmount" mode="decimal"
+               <label class="form-label align-left">Monthly Rent Amount</label>
+               <p-inputNumber class="p-inputright" formControlName="rentAmount" mode="decimal"  placeholder="Monthly Rent Amount "
                   locale="en-IN" [minFractionDigits]="2"
                   [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.rentAmount.errors }">
                </p-inputNumber>
@@ -419,7 +419,7 @@
                               {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
                            </span>
                         </td>
-                        <td class="align-right">
+                        <td >
                            <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'}}">
                               {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
                            </span>
@@ -602,7 +602,7 @@
                            <td class="wd-5">
                               <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editHouseRentMaster(i)" tooltip="Edit"></i>
                               &nbsp;&nbsp;
-                              <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewHouseRentMaster(i)"   tooltip="View"></i>
+                             <!--  <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewHouseRentMaster(i)"   tooltip="View"></i> -->
                            </td>
                         </tr>
                         <tr *ngIf="!masterGridData?.length">

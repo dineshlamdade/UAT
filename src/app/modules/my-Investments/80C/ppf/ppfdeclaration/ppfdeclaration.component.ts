@@ -211,7 +211,27 @@ export class PPFDeclarationComponent implements OnInit {
     this.deactiveCopytoActualDate();
 
     // Get API call for All previous employee Names
-    this.Service.getpreviousEmployeName().subscribe((res) => {
+    // this.Service.getpreviousEmployeName().subscribe((res) => {
+    //   console.log('previousEmployeeList::', res);
+    //   if (!res.data.results[0]) {
+    //     return;
+    //   }
+    //   res.data.results.forEach((element) => {
+    //     const obj = {
+    //       label: element.name,
+    //       value: element.previousEmployerId,
+    //     };
+    //     this.previousEmployeeList.push(obj);
+    //   });
+    // });
+
+    // Get All Previous Employer
+    this.Service.getAllPreviousEmployer().subscribe((res) => {
+      console.log(res.data.results);
+      // if (res.data.results.length > 0) {
+      //   this.employeeJoiningDate = res.data.results[0].joiningDate;
+      //   // console.log('employeeJoiningDate::',this.employeeJoiningDate);
+      // }
       console.log('previousEmployeeList::', res);
       if (!res.data.results[0]) {
         return;
@@ -223,15 +243,6 @@ export class PPFDeclarationComponent implements OnInit {
         };
         this.previousEmployeeList.push(obj);
       });
-    });
-
-    // Get All Previous Employer
-    this.Service.getAllPreviousEmployer().subscribe((res) => {
-      console.log(res.data.results);
-      if (res.data.results.length > 0) {
-        this.employeeJoiningDate = res.data.results[0].joiningDate;
-        // console.log('employeeJoiningDate::',this.employeeJoiningDate);
-      }
     });
 
     if (this.today.getMonth() + 1 <= 3) {
@@ -292,13 +303,13 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   public getInstitutionListWithPolicyNo() {
-    const data = {
-      label: 'All',
-      value: 'All',
-    };
+    // const data = {
+    //   label: 'All',
+    //   value: 'All',
+    // };
 
-    this.transactionInstitutionNames.push(data);
-    this.transactionPolicyList.push(data);
+    // this.transactionInstitutionNames.push(data);
+    // this.transactionPolicyList.push(data);
     this.Service.getPPFDeclarationInstitutionListWithPolicyNo().subscribe(
       (res) => {
         console.log('getinstitution' , res);
@@ -399,7 +410,7 @@ export class PPFDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount === '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -433,7 +444,7 @@ export class PPFDeclarationComponent implements OnInit {
           formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', ''),
+          .replace(/,/g, ''),
            );
           formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -448,7 +459,7 @@ export class PPFDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.transactionDetail[j].groupTransactionList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].groupTransactionList[
         i
@@ -469,7 +480,7 @@ export class PPFDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
     console.log(element.actualAmount.toString().replace(',', ""));
     this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -510,7 +521,7 @@ export class PPFDeclarationComponent implements OnInit {
       previousEmployerName: any;
       declaredAmount: number;
       dateOfPayment: Date;
-      actualAmount: any;
+      actualAmount: number;
       dueDate: Date;
     },
     i: number,
@@ -536,7 +547,7 @@ export class PPFDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -605,7 +616,7 @@ export class PPFDeclarationComponent implements OnInit {
     this.transactionDetail[j].groupTransactionList.forEach((element) => {
       // console.log(element.actualAmount.toString().replace(',', ""));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -623,7 +634,7 @@ export class PPFDeclarationComponent implements OnInit {
   addRowInList(
     summarynew: {
       investmentGroup1TransactionId: number;
-      licMasterPaymentDetailsId: number;
+      investmentGroup1MasterPaymentDetailId: number;
       previousEmployerId: number;
       dueDate: Date;
       declaredAmount: any;
@@ -653,9 +664,9 @@ export class PPFDeclarationComponent implements OnInit {
     this.declarationService.transactionStatus = 'Pending';
     this.declarationService.amountRejected = 0.0;
     this.declarationService.amountApproved = 0.0;
-    this.declarationService.licMasterPaymentDetailsId = this.transactionDetail[
+    this.declarationService.investmentGroup1MasterPaymentDetailId = this.transactionDetail[
       j
-    ].groupTransactionList[0].licMasterPaymentDetailsId;
+    ].groupTransactionList[0].investmentGroup1MasterPaymentDetailId;
     this.transactionDetail[j].groupTransactionList.push(this.declarationService);
     console.log('addRow::', this.transactionDetail[j].groupTransactionList);
   }
@@ -714,7 +725,9 @@ export class PPFDeclarationComponent implements OnInit {
     this.transactionDetail[
       j
     ].actualTotal += this.declarationService.actualAmount;
-    this.grandActualTotal += this.declarationService.actualAmount;
+    this.transactionDetail[
+      j
+    ].grandActualTotal += this.declarationService.actualAmount;
     this.grandDeclarationTotal += this.declarationService.declaredAmount;
     this.transactionDetail[j].groupTransactionList.push(this.declarationService);
     this.declarationService = new DeclarationService();
@@ -823,14 +836,14 @@ export class PPFDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -849,7 +862,7 @@ export class PPFDeclarationComponent implements OnInit {
       });
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       investmentGroupTransactionDetail: this.transactionDetail,
       groupTransactionIDs: this.uploadGridData,
@@ -1094,14 +1107,14 @@ export class PPFDeclarationComponent implements OnInit {
         if (innerElement.declaredAmount !== null) {
           innerElement.declaredAmount = innerElement.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.declaredAmount = 0.0;
         }
         if (innerElement.actualAmount !== null) {
           innerElement.actualAmount = innerElement.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.actualAmount = 0.0;
         }
@@ -1228,7 +1241,7 @@ export class PPFDeclarationComponent implements OnInit {
 
 class DeclarationService {
   public investmentGroup1TransactionId = 0;
-  public licMasterPaymentDetailsId: number;
+  public investmentGroup1MasterPaymentDetailId: number;
   public previousEmployerId = 0;
   public dueDate: Date;
   public declaredAmount: number;

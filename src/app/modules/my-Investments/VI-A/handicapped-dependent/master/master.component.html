@@ -7,19 +7,7 @@
               <fieldset>
                 <legend>Disabled Family Member Details</legend>
                 <div class="row">
-                  <div class="col-sm-6 col-md-3">
-                    <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">Is Family Member Claiming Deduction [Sec.80-U]?</label>
-                    <div class="custom-controls-stacked ml-15 mt-10">
-                      <label class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" name="isClaiming80U" value=True  (change)="onRadioChange(true)">
-                        <span class="custom-control-label">Yes</span>
-                      </label>
-                      <label class="custom-control custom-radio custom-control-inline">
-                        <input  type="radio" class="custom-control-input" name="isClaiming80U" value=False checked (change)="onRadioChange(false)">
-                        <span class="custom-control-label">No</span>
-                      </label>
-                    </div>
-                  </div>
+
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Famliy Member Name</label>
                     <select name="family_Member_Name" id="familyMemberName" formControlName="familyMemberName" (change)='OnSelectionfamilyMemberGroup()'
@@ -35,6 +23,7 @@
                       <div *ngIf="masterForm.familyMemberName.errors.required">family Member Name Is Mandatory</div>
                     </div>
                   </div>
+
                   <div class="col-sm-6 col-md-3">
                     <label class="form-label">Relationship</label>
                     <input type="text" formControlName="relationship" class="form-control"
@@ -43,6 +32,19 @@
                        <div *ngIf="masterForm.relationship.errors.required">Relationship Is Mandatory</div>
                     </div>
                  </div>
+                 <div class="col-sm-6 col-md-3">
+                  <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">Is Family Member Claiming Deduction [Sec.80-U]?</label>
+                  <div class="custom-controls-stacked ml-15 mt-10">
+                    <label class="custom-control custom-radio custom-control-inline">
+                      <input type="radio" class="custom-control-input" name="isClaiming80U" value=1  (change)="onRadioChange(true)">
+                      <span class="custom-control-label">Yes</span>
+                    </label>
+                    <label class="custom-control custom-radio custom-control-inline">
+                      <input  type="radio" class="custom-control-input" name="isClaiming80U" value=0 checked (change)="onRadioChange(false)">
+                      <span class="custom-control-label">No</span>
+                    </label>
+                  </div>
+                </div>
                 </div>
                 <div class="row mt-4 mb-10">
                   <div class="col-sm-6 col-md-3">

@@ -394,7 +394,7 @@ selectedTransactionLenderName(lenderName: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount = 0;
@@ -404,13 +404,13 @@ selectedTransactionLenderName(lenderName: any) {
        this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount = data.actualAmount;
         formatedActualAmount = Number(
         this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
-          .toString().replace(',', ''));
+          .toString().replace(/,/g, ''));
       formatedSelectedAmount = this.numberFormat.transform(formatedGlobalSelectedValue + formatedActualAmount);
       this.uploadGridData.push(data.electricVehicleLoanTransactionId);
     } else {
       formatedActualAmount = Number(this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].electricVehicleLoanTransactionPreviousEmployerList[i].actualAmount = this.numberFormat.transform(0);
 
@@ -430,9 +430,9 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
     });
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -456,22 +456,23 @@ selectedTransactionLenderName(lenderName: any) {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
     let formatedActualAmount = 0;
     let formatedSelectedAmount: string;
     if (checked) {
       this.transactionDetail[j].electricVehicleLoanTransactionList[
         i
-      ].actualAmount = data.declaredAmount;
-
+      ].actualAmount = data.actualAmount;
+      
+   /*  ].actualAmount = data.declaredAmount; */
 
       formatedActualAmount = Number(
         this.transactionDetail[j].electricVehicleLoanTransactionList[
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -483,7 +484,7 @@ selectedTransactionLenderName(lenderName: any) {
           i
         ].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       this.transactionDetail[j].electricVehicleLoanTransactionList[
         i
@@ -504,7 +505,7 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
       (element) => {
         this.actualTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
       }
     );
@@ -601,12 +602,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.declaredAmount.toString().replace(',', ''));
+      // console.log(element.declaredAmount.toString().replace(/,/g, ''));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
-      // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ''));
+      // this.declaredAmount+=Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
@@ -640,7 +641,7 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
       (element) => {
         this.declarationTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
       }
     );
@@ -716,12 +717,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.transactionDetail[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      // console.log(element.actualAmount.toString().replace(',', ''));
+      // console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       // console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -775,12 +776,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.actualAmount = null;
     this.transactionDetail[j].electricVehicleLoanTransactionList.forEach(
       (element) => {
-        // console.log(element.actualAmount.toString().replace(',', ''));
+        // console.log(element.actualAmount.toString().replace(/,/g, ''));
         this.actualTotal += Number(
-          element.actualAmount.toString().replace(',', '')
+          element.actualAmount.toString().replace(/,/g, '')
         );
         // console.log(this.actualTotal);
-        // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+        // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
       }
     );
 
@@ -1003,14 +1004,14 @@ selectedTransactionLenderName(lenderName: any) {
         if (item.declaredAmount !== null) {
           item.declaredAmount = item.declaredAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.declaredAmount = 0.0;
         }
         if (item.actualAmount !== null) {
           item.actualAmount = item.actualAmount
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           item.actualAmount = 0.0;
         }
@@ -1027,7 +1028,7 @@ selectedTransactionLenderName(lenderName: any) {
             ) {
               innerElement.actualAmount = innerElement.actualAmount
                 .toString()
-                .replace(',', '');
+                .replace(/,/g, '');
             } else {
               innerElement.actualAmount = 0.0;
             }
@@ -1037,7 +1038,7 @@ selectedTransactionLenderName(lenderName: any) {
             // ) {
             //   innerElement.declaredAmount = innerElement.declaredAmount
             //     .toString()
-            //     .replace(',', '');
+            //     .replace(/,/g, '');
             // } else {
             //   innerElement.declaredAmount = 0.0;
             // }
@@ -1049,7 +1050,7 @@ selectedTransactionLenderName(lenderName: any) {
     });
 
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       electricVehicleLoanTransactionList: this.transactionDetail[0].electricVehicleLoanTransactionList,
       electricVehicleLoanTransactionPreviousEmployerList: this.transactionDetail[0].electricVehicleLoanTransactionPreviousEmployerList,
@@ -1229,10 +1230,10 @@ selectedTransactionLenderName(lenderName: any) {
     ].electricVehicleLoanTransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
     });
@@ -1326,12 +1327,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.editTransactionUpload[
       j
     ].electricVehicleLoanTransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1404,12 +1405,12 @@ selectedTransactionLenderName(lenderName: any) {
     this.editTransactionUpload[
       j
     ].electricVehicleLoanTransactionPreviousEmployerList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
-      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ''));
+      // this.actualAmount += Number(element.actualAmount.toString().replace(/,/g, ''));
     });
 
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
@@ -1563,14 +1564,14 @@ selectedTransactionLenderName(lenderName: any) {
           // if (innerElement.declaredAmount !== null) {
           //   innerElement.declaredAmount = innerElement.declaredAmount
           //     .toString()
-          //     .replace(',', '');
+          //     .replace(/,/g, '');
           // } else {
           //   innerElement.declaredAmount = 0.0;
           // }
           if (innerElement.actualAmount !== null) {
             innerElement.actualAmount = innerElement.actualAmount
               .toString()
-              .replace(',', '');
+              .replace(/,/g, '');
           } else {
             innerElement.actualAmount = 0.0;
           }
@@ -1590,7 +1591,7 @@ selectedTransactionLenderName(lenderName: any) {
       );
     });
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       electricVehicleLoanTransactionList: this.editTransactionUpload[0].electricVehicleLoanTransactionList,
       electricVehicleLoanTransactionPreviousEmployerList: this.editTransactionUpload[0].electricVehicleLoanTransactionPreviousEmployerList,

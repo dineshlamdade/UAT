@@ -71,7 +71,7 @@ getpreviousEmployerDetailSummary() {
     let formData: any = new FormData();    
     console.log('in uploadMultipleFiles Service::', data);
     for (const file of document) {
-      formData.append('licDocuments', file);
+      formData.append('document', file);
     }
     // formData.append('licDocuments', document);
     formData.append('previousEmployerDetail', JSON.stringify(data));

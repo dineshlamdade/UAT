@@ -21,8 +21,8 @@
                   >
                 </th>
                 <th rowspan="2" class="wd-11 font700">Purpose</th>
-                <th rowspan="2" class="wd-11 font700">Date of Payment</th>
                 <th rowspan="2" class="wd-9 font700">Declared</th>
+                <th rowspan="2" class="wd-11 font700">Date of Payment</th>               
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
@@ -74,9 +74,7 @@
                       *ngFor="let previousEmployee of previousEmployeeList"
                       [value]="previousEmployee.value"
                       [selected]="
-                        previousEmployee.value == summary.previousEmployerId
-                      "
-                    >
+                        previousEmployee.value == summary.previousEmployerId">
                       {{ previousEmployee.label }}
                     </option>
                   </select>
@@ -99,23 +97,9 @@
                   </option>
                   </select>
                 </td>
-                <td>
-                  <input
-                    type="text"
-                    [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate"
-                    [maxDate]="financialYearEndDate"
-                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                    data-provide="datepicker"
-                    data-date-autoclose="true"
-                    (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
-                      setDateOfPaymentInEditCase(summary, i, j)"
-                    [disabled]="summary.transactionStatus=='Approved'"
-                    class="form-control"
-                    bsDatepicker
-                    [disabled]="summary.dateOfPayment"
-                  />
-                </td>
+                 
+
+                
                 <!-- <td>
                   <input type="text" [ngModel]="summary.dueDate | date: 'dd-MMM-yyyy'"
                     [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate"
@@ -143,6 +127,21 @@
                     />
                   </div>
                 </td>
+                <td>
+                  <input
+                    type="text" [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                    [minDate]="financialYearStartDate" [maxDate]="financialYearEndDate" 
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                    data-provide="datepicker"
+                    data-date-autoclose="true"
+                    (ngModelChange)="summary.dateOfPayment = $event.toLocaleDateString();
+                      setDateOfPaymentInEditCase(summary, i, j)"
+                    [disabled]="summary.transactionStatus=='Approved'"
+                    class="form-control"
+                    bsDatepicker
+                    [disabled]="summary.dateOfPayment"
+                  />
+                </td>  
 
                 <td>
                   <input
@@ -241,12 +240,7 @@
                   </option>
                   </select>
                 </td>
-                <td>
-                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfPayment" data-provide="datepicker"
-                  data-date-autoclose="true" class="form-control"
-                  [ngClass]="{'is-invalid': submitted && masterForm.dateOfPayment.errors}"
-                  [minDate]="minFormDate" [maxDate]="maxFromDate" placeholder="Select Date" bsDatepicker>
-                </td>
+               
                 <td>
                   <div class="custom_icon_badge">
                     <input
@@ -262,6 +256,12 @@
                     />
                     <!-- (change)="setActualAmout($event)" -->
                   </div>
+                </td>
+                <td>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfPayment" data-provide="datepicker"
+                  data-date-autoclose="true" class="form-control"
+                  [ngClass]="{'is-invalid': submitted && masterForm.dateOfPayment.errors}"  [maxDate]="today"
+                    placeholder="Select Date" bsDatepicker>
                 </td>
                 <td>
                   <input
@@ -318,12 +318,13 @@
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
-                <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip=" {{ grandDeclarationTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ grandDeclarationTotal | number: "1.2-2" }}
                   </span>
                 </td>
+                <td class="bg-lightgray font-18 font700 align-right"></td>
+              
                 <td class="bg-lightgray font-18 font700 align-right">
                   <span tooltip="{{ grandActualTotal | number: '1.2-2' }}" class="padding-right-12">
                     {{ grandActualTotal | number: "1.2-2" }}

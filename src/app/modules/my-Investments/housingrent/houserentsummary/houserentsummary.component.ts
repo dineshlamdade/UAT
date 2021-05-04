@@ -37,10 +37,18 @@ export class HouserentsummaryComponent implements OnInit {
   showData = false;
   public modalRef: BsModalRef;
 
+
+  public baseTotal: number;
+  public arrearTotal: number;
+  public total: number;
+  public maxEligibilityTotal: number;
+  public applicableAllowanceTotal: number;
+
   /*   @Input() institution: string; */
   @Input() propertyHouseName: string;
   @Output() myEvent = new EventEmitter<any>();
   @Output() policyNumber = new EventEmitter<any>();
+  @Output() houseRentalMasterIds = new EventEmitter<any>();
 
   constructor(
     private houseRentService: HouseRentService,
@@ -50,8 +58,26 @@ export class HouserentsummaryComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
+
+    this.getComputationSummaryPage();
     // Summary get Call on Page Load
     this.summaryPage();
+  }
+
+
+  getComputationSummaryPage() {
+    this.houseRentService.getComputation().subscribe((res) => {
+      if(res.data.results.length > 0){
+      this.summaryGridData = res.data.results[0].houseRentalAllowanceComputationList;
+        console.log("res::",res)
+      this.baseTotal = res.data.results[0].baseTotal;
+      this.arrearTotal = res.data.results[0].arrearTotal;
+      this.total = res.data.results[0].total;
+      this.maxEligibilityTotal = res.data.results[0].maxEligibilityTotal;
+      this.applicableAllowanceTotal =
+        res.data.results[0].applicableAllowanceTotal;
+      }
+    });
   }
 
   redirectToDeclarationActual(propertyName: string, mode: string) {
@@ -61,7 +87,7 @@ export class HouserentsummaryComponent implements OnInit {
       tabIndex: this.tabIndex,
       canEdit: mode == 'edit' ? true : false,
     };
-    this.propertyName = propertyName; 
+    this.propertyName = propertyName;
     console.log('propertyName::', propertyName);
   console.log('propertyName::', propertyName);
     this.myEvent.emit(data);
@@ -72,6 +98,7 @@ export class HouserentsummaryComponent implements OnInit {
   summaryPage() {
     this.houseRentService.gethouseRentSummary().subscribe((res) => {
       console.log(res);
+      if(res.data.results.length > 0){
       this.summaryGridData = res.data.results;
       this.propertyName = res.data.results[0].propertyName;
       this.fromDate = res.data.results[0].fromDate;
@@ -82,22 +109,31 @@ export class HouserentsummaryComponent implements OnInit {
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount; */
       // console.log(res);
+    }
     });
   }
 
-  jumpToMasterPage(propertyName: string) {
+/*   jumpToMasterPage(propertyName: string) {
     this.tabIndex = 1;
     const data = {
       number: propertyName,
       tabIndex: this.tabIndex,
     };
     this.policyNumber.emit(data);
-  }
+  } */
+  jumpToMasterPage(houseRentalMasterId: number) {
+  this.tabIndex = 1;
+  const houseRentalMasterIds = {
+    houseRentalMasterId: houseRentalMasterId,
+    tabIndex: this.tabIndex,
+  };
+  this.houseRentalMasterIds.emit(houseRentalMasterIds);
+}
 
   opencomputationModal(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
-      Object.assign({}, { class: 'gray modal-lg' })
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 }

@@ -133,7 +133,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       issueType: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
       accountHolderName: new FormControl(
-        { value: null, disabled: true },
+        { value: null, },
         Validators.required
       ),
       relationship: new FormControl(
@@ -195,7 +195,8 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
           label: element.familyMemberName,
           value: element.familyMemberName,
         };
-        if (element.relation === 'Self') {
+        if (element.relation === 'Self'|| ((element.relation === 'Son' || element.relation === 'Daughter' ) &&  element.ageBracket === 'Minor'))  {
+
           this.familyMemberName.push(obj);
         }
       });
@@ -374,7 +375,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       data.proofSubmissionId = this.proofSubmissionId;
       data.fromDate = from;
       data.toDate = to;
-      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('Post Office Data::', data);
 
@@ -458,7 +459,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     ) {
       let installment = this.form.value.premiumAmount;
 
-      // installment = installment.toString().replace(',', '');
+      // installment = installment.toString().replace(/,/g, '');
 
       // console.log(installment);
       if (!this.form.value.frequencyOfPayment) {
