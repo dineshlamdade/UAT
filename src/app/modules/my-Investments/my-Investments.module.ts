@@ -55,6 +55,8 @@ import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignaturePadComponent } from './previousemployer/signature-pad/signature-pad.component';
 import { EmployeenationalpensionComponent } from './Other/employeenationalpension/employeenationalpension.component';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
+import { AffirmationComponent } from './affirmation/affirmation.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +92,7 @@ import { EmployeenationalpensionComponent } from './Other/employeenationalpensio
     OtherincomedeclarationComponent,
     OtherincomeComponent,
     EmployeeNPS80CCDComponent,
+    AffirmationComponent,
 
 
 
@@ -124,6 +127,7 @@ import { EmployeenationalpensionComponent } from './Other/employeenationalpensio
     InputNumberModule,
     FormsModule,
     SignaturePadModule,
+    ScrollPanelModule,
 
   ],
 
