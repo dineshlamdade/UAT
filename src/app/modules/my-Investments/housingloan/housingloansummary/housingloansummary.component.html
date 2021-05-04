@@ -54,25 +54,25 @@
                         <tr *ngIf="!summaryGridData.housePropertySummaryDetails?.length">
                             <td colspan="7">
                                 <span class="font-14 font500 align-center text-red">No Data
-                  Available</span>
+                Available</span>
                             </td>
                         </tr>
                         <!-- <tr *ngIf="!summaryGridData?.length  && summaryGridData.housePropertySummaryDetails !== undefined" >
-              <td colspan="6">
-                 <span class="font-14 font500 align-center text-red">No Data
-                 Available</span>
-              </td>
-           </tr> -->
+            <td colspan="6">
+               <span class="font-14 font500 align-center text-red">No Data
+               Available</span>
+            </td>
+         </tr> -->
                         <tr class="bg-color-white">
                             <td colspan="7" class="align-left font700 text-purple font-18">Computation</td>
                         </tr>
                         <tr class="table-light-color">
                             <td colspan="4" class="align-right font700">Total &nbsp; <span class="Letterbadge">A</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ totalDeclaredAmount | number: '1.2-2' }}">
-                  {{ totalDeclaredAmount | number: "1.2-2" }}</span>
+                {{ totalDeclaredAmount | number: "1.2-2" }}</span>
                             </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ totalActualAmount | number: '1.2-2' }}">
-                  {{ totalActualAmount | number: "1.2-2" }}</span>
+                {{ totalActualAmount | number: "1.2-2" }}</span>
                             </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
@@ -97,9 +97,9 @@
                             <td colspan="4" class="align-right font700">Grand Total &nbsp; <span class="Letterbadge">C</span>&nbsp;= &nbsp;
                                 <span class="Letterbadge">A</span> + &nbsp; <span class="Letterbadge">B2</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ grandTotalDeclaredAmount | number: '1.2-2' }}">
-                  {{ grandTotalDeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ grandTotalDeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ grandTotalActualAmount | number: '1.2-2' }}">
-                  {{ grandTotalActualAmount | number: "1.2-2" }}</span> </td>
+                {{ grandTotalActualAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color">
@@ -108,17 +108,17 @@
                         <tr class="table-light-color">
                             <td colspan="4" class="align-right font700">Limit &nbsp; <span class="Letterbadge">D</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ limitSec24 | number: '1.2-2' }}">
-                  {{ limitSec24 | number: "1.2-2" }}</span> </td>
+                {{ limitSec24 | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ limitSec24 | number: '1.2-2' }}">
-                  {{ limitSec24 | number: "1.2-2" }}</span> </td>
+                {{ limitSec24 | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color">
                             <td colspan="4" class="align-right font700">Deduction (Sec. 24) &nbsp; <span class="Letterbadge">E</span> &nbsp; = &nbsp; Minimum of ( &nbsp; <span class="Letterbadge">C</span> &nbsp; & &nbsp; <span class="Letterbadge">D</span> &nbsp; )</td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ deductionInSec24DeclaredAmount | number: '1.2-2' }}">
-                  {{ deductionInSec24DeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ deductionInSec24DeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ deductionInSec24ActualAmount | number: '1.2-2' }}">
-                  {{ deductionInSec24ActualAmount | number: "1.2-2" }}</span> </td>
+                {{ deductionInSec24ActualAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EE !== 0">
@@ -128,24 +128,24 @@
                         <tr class="table-light-color" *ngIf="limitIn80EE !== 0">
                             <td colspan="4" class="align-right font700">Balance Available &nbsp; <span class="Letterbadge">F</span>&nbsp;= &nbsp;<span class="Letterbadge">C</span> - &nbsp; <span class="Letterbadge">E</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ balanceAvailableIn80EEDeclaredAmount | number: '1.2-2' }}">
-                  {{ balanceAvailableIn80EEDeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ balanceAvailableIn80EEDeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ balanceAvailableIn80EEActualAmountAmount | number: '1.2-2' }}">
-                  {{ balanceAvailableIn80EEActualAmountAmount | number: "1.2-2" }}</span> </td>
+                {{ balanceAvailableIn80EEActualAmountAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EE !== 0">
                             <td colspan="4" class="align-right font700">Limit &nbsp; <span class="Letterbadge">G</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ limitIn80EE | number: '1.2-2' }}">
-                  {{ limitIn80EE | number: "1.2-2" }}</span> </td>
+                {{ limitIn80EE | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EE !== 0">
                             <td colspan="4" class="align-right font700">Deduction (Sec. 80-EE) &nbsp; <span class="Letterbadge">H</span> &nbsp; = &nbsp; Minimum of ( &nbsp; <span class="Letterbadge">F</span> &nbsp; & &nbsp; <span class="Letterbadge">G</span> &nbsp; )</td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ deductionIn80EEDeclaredAmount | number: '1.2-2' }}">
-                  {{ deductionIn80EEDeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ deductionIn80EEDeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ deductionIn80EEActualAmount | number: '1.2-2' }}">
-                  {{ deductionIn80EEActualAmount | number: "1.2-2" }}</span> </td>
+                {{ deductionIn80EEActualAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EEA !== 0">
@@ -155,32 +155,32 @@
                         <tr class="table-light-color" *ngIf="limitIn80EEA !== 0">
                             <td colspan="4" class="align-right font700">Balance Available &nbsp; <span class="Letterbadge">F</span>&nbsp;= &nbsp;<span class="Letterbadge">C</span> - &nbsp; <span class="Letterbadge">E</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ balanceAvailableIn80EEADeclaredAmount | number: '1.2-2' }}">
-                  {{ balanceAvailableIn80EEADeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ balanceAvailableIn80EEADeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ balanceAvailableIn80EEAActualAmount | number: '1.2-2' }}">
-                  {{ balanceAvailableIn80EEAActualAmount | number: "1.2-2" }}</span> </td>
+                {{ balanceAvailableIn80EEAActualAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EEA !== 0">
                             <td colspan="4" class="align-right font700">Limit &nbsp; <span class="Letterbadge">G</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ limitIn80EEA | number: '1.2-2' }}">
-                  {{ limitIn80EEA | number: "1.2-2" }}</span> </td>
+                {{ limitIn80EEA | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EEA !== 0">
                             <td colspan="4" class="align-right font700">Deduction (Sec. 80-EEA) &nbsp; <span class="Letterbadge">H</span> &nbsp; = &nbsp; Minimum of ( &nbsp; <span class="Letterbadge">F</span> &nbsp; & &nbsp; <span class="Letterbadge">G</span> &nbsp; )</td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ deductionIn80EEADeclaredAmount | number: '1.2-2' }}">
-                  {{ deductionIn80EEADeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ deductionIn80EEADeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ deductionIn80EEAActualAmount | number: '1.2-2' }}">
-                  {{ deductionIn80EEAActualAmount | number: "1.2-2" }}</span> </td>
+                {{ deductionIn80EEAActualAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                         <tr class="table-light-color" *ngIf="limitIn80EEA !== 0 || limitIn80EE !== 0">
                             <td colspan="4" class="align-right font700">Total Loss from House property: &nbsp; <span class="Letterbadge">I</span> &nbsp;= &nbsp;<span class="Letterbadge">E</span> + &nbsp; <span class="Letterbadge">H</span></td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ totalLossFromHousePropertyDeclaredAmount | number: '1.2-2' }}">
-                  {{ totalLossFromHousePropertyDeclaredAmount | number: "1.2-2" }}</span> </td>
+                {{ totalLossFromHousePropertyDeclaredAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right"><span class="padding-right-12" tooltip="{{ totalLossFromHousePropertyActualAmount | number: '1.2-2' }}">
-                  {{ totalLossFromHousePropertyActualAmount | number: "1.2-2" }}</span> </td>
+                {{ totalLossFromHousePropertyActualAmount | number: "1.2-2" }}</span> </td>
                             <td class="align-right bg-color-lightgray"></td>
                         </tr>
                     </tbody>
@@ -193,8 +193,8 @@
     <div class="modal-header">
         <h5 class="modal-title" id="jasdjgh">Information</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">×</span>
-    </button>
+    <span aria-hidden="true">×</span>
+  </button>
     </div>
     <div class="card">
         <div class="card-body">
@@ -204,7 +204,7 @@
                 </div>
                 <div class="col-md-12 mt-3">
                     <label class="text-unnderline font700 align-left">Additional benefit of Rs. 50000 is available subject to
-            below conditions</label>
+          below conditions</label>
                 </div>
                 <div class="col-md-12 mt-2">
                     <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;Employee is First Time Home buyer and does not have any house property on his/her name</p>
@@ -220,16 +220,16 @@
     <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Save</button>  -->
         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-      Close
-    </button>
+    Close
+  </button>
     </div>
 </ng-template>
 <ng-template #infodialog2>
     <div class="modal-header">
         <h5 class="modal-title" id="jasdjgh">Information</h5>
         <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">×</span>
-    </button>
+    <span aria-hidden="true">×</span>
+  </button>
     </div>
     <div class="card">
         <div class="card-body">
@@ -239,7 +239,7 @@
                 </div>
                 <div class="col-md-12 mt-3">
                     <label class="text-unnderline font700 align-left">Additional benefit of Rs. 150000 is available subject to
-            below conditions</label>
+          below conditions</label>
                 </div>
                 <div class="col-md-12 mt-2">
                     <p><i class="fa fa-hand-o-right text-light-green font-20" aria-hidden="true"></i> &nbsp; &nbsp;Employee is First Time Home buyer and does not have any house property on his/her name</p>
@@ -253,7 +253,7 @@
     <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary">Save</button>  -->
         <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
-      Close
-    </button>
+    Close
+  </button>
     </div>
 </ng-template>

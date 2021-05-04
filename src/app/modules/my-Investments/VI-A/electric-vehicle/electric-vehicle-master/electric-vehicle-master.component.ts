@@ -333,7 +333,7 @@ export class ElectricVehicleMasterComponent implements OnInit {
 
       data.loanStartDate = from;
       data.loanEndDate = to;
-      // data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      // data.premiumAmount = data.premiumAmount.toString().replace(/,/g, '');
 
       console.log('electric Vehicle ::', data);
 

@@ -224,7 +224,7 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
 
     transactionDetail.deductionAmountPerCycle = transactionDetail.deductionAmountPerCycle
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
 
     const data = [
       {
@@ -290,7 +290,7 @@ export class TaxAdjustmentsAmountComponent implements OnInit {
         if (innerElement.deductionAmountPerCycle !== null) {
           innerElement.deductionAmountPerCycle = innerElement.deductionAmountPerCycle
             .toString()
-            .replace(',', '');
+            .replace(/,/g, '');
         } else {
           innerElement.deductionAmountPerCycle = 0.0;
         }

@@ -81,7 +81,7 @@ export class GgcSummaryComponent implements OnInit {
 
     // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-        // this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
+        // this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(/,/g, '');
         const data = {
             futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
         };
