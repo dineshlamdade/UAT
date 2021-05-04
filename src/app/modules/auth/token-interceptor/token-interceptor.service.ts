@@ -26,7 +26,7 @@ export class TokenInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(catchError((error) => {
       const type = error.status;
       const message = error.message
-      console.log(error.message + " error")
+     // console.log(error.message + " error")
       switch (type) {
         case 401: {
           this.authService.logout();
