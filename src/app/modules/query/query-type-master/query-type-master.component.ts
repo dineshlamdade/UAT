@@ -42,7 +42,9 @@ export class QueryTypeMasterComponent implements OnInit {
   //   return this.querytypeForm.get('queryArray') as FormArray;
   // }
 
-  constructor(public formBuilder: FormBuilder, public queryService: QueryService, public toster: ToastrService) {
+  constructor(public formBuilder: FormBuilder, 
+    public queryService: QueryService, 
+    public toster: ToastrService) {
 
     this.querytypeForm = new FormGroup(
       {
@@ -57,6 +59,7 @@ export class QueryTypeMasterComponent implements OnInit {
         "autoCloseTimeforNopriority": new FormControl(''),
         "resolutionTimeforNopriority": new FormControl(''),
         "active": new FormControl(true),
+        "Replayworkflow": new FormControl(""),
         "listQueryAnsMappingReqDTO": new FormControl([]),
         "listQueryPriorityRequestDTO": new FormControl([]),
         "subQueryRequestDTO": new FormControl([])
@@ -65,13 +68,13 @@ export class QueryTypeMasterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.querytypeForm = this.formBuilder.group({
-      subQueryCode: '',
-      subQueryDescription: '',
-      assignQATemplate: '',
-      queryArray: this.formBuilder.array([this.createSubquery()])
-    })
-    this.addSubQueryList = this.querytypeForm.get('queryArray') as FormArray;
+    // this.querytypeForm = this.formBuilder.group({
+    //   subQueryCode: '',
+    //   subQueryDescription: '',
+    //   assignQATemplate: '',
+    //   queryArray: this.formBuilder.array([this.createSubquery()])
+    // })
+    // this.addSubQueryList = this.querytypeForm.get('queryArray') as FormArray;
     this.getModuleName();
     this.getAll();
 
