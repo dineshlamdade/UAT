@@ -5,6 +5,11 @@ import { Router } from '@angular/router';
 import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
+import { CKEditor4 } from 'ckeditor4-angular/ckeditor';
+export interface summaryTempList {
+  declarationMessageName;
+  module;
+}
 @Component({
   selector: 'app-declaration-form',
   templateUrl: './declaration-form.component.html',
@@ -15,6 +20,8 @@ export class DeclarationFormComponent implements OnInit {
   public claimGridDataList: Array<any> = [];
   public selectedListElement: Array<any> = [];
   public dropdownListData: Array<any> = [];
+  public keywordList: Array<any> = [];
+  
   public submitted: boolean = false;
   public loading: boolean = false;
   public modalRef: BsModalRef;
@@ -24,13 +31,94 @@ export class DeclarationFormComponent implements OnInit {
   public isView: boolean = false;
   public isEdit: boolean = false;
   public declarationMessageId: number = 0;
+  public keyword: any = [];
+  public declarationTempList: summaryTempList[];
+  queryForm: FormGroup;
+  ckeConfig: any;
+  // public Editor = ClassicEditor;
+  queryListData: any;
+  editflag: boolean = false;
+  hideRemarkDiv: boolean = false;
+  isVisible: boolean = false;
+  isShown: boolean = true;
+  p: number = 1;
+  moduleListData: any;
+
+
+  // editorConfig = {
+  //   toolbar: [
+  //     { name: 'basicstyles', items: [ 'Bold', 'Italic' ] },
+  //     { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ] },
+  //     { name: 'document', items: ['Source'] }
+  //   ],
+  //   allowedContent: true,
+  //   fullPage: true,
+  //   startupMode: 'source',
+  // };
+
+  fieldMap: any;
+  mappingData: any = [];
+
+  public allTechnologies = ["Reimbursement", "Reimbursement1", "Reimbursement2"];
   constructor(
     public declarationService: DeclarationService,
     public fb: FormBuilder,
     private modalService: BsModalService,
     private alertService: AlertServiceService,
-  ) { }
-  public allTechnologies = ["Reimbursement", "Reimbursement1", "Reimbursement2"]; 
+  ) {
+    this.keyword = [
+      {
+        'name': 'Employee Code',
+        'id': 1,
+        'description': '10250'
+      },
+      {
+        'name': 'Employee Full Name',
+        'id': 2,
+        'description': 'Swapnil Darekar'
+      },
+      {
+        'name': 'Employee Email',
+        'id': 3,
+        'description': 'Swapnil@paysquare.com'
+      },
+      {
+        'name': 'Employee Contact',
+        'id': 4,
+        'description': '9730825383'
+      },
+      {
+        'name': 'Employee Gender',
+        'id': 5,
+        'description': 'Male'
+      },
+      {
+        'name': 'Employee Grade',
+        'id': 6,
+        'description': 'A Grade'
+      },
+      {
+        'name': 'Employee Company',
+        'id': 7,
+        'description': 'Paysquare'
+      },
+      {
+        'name': 'Date',
+        'id': 8,
+        'description': '23-04-2021'
+      },
+
+    ]
+
+    this.keyword.forEach(element => {
+      this.mappingData.push(
+        [element.id.toString(), '[' + element.description + ']']
+      )
+    })
+
+    this.fieldMap = new Map<string, string>(this.mappingData);
+
+  }
   ngOnInit(): void {
     this.declarationForm = this.fb.group({
       // createdBy: new FormControl(''),
@@ -45,19 +133,20 @@ export class DeclarationFormComponent implements OnInit {
       rembDeclarationMessage: new FormControl('', Validators.required),
       fieldId: new FormControl(''),
       active: new FormControl(true),
-    
+
     });
     // this.getAllFields();
     this.getClaimTemplatesList();
+    this.getStandardKeyword();
   }
   get f() { return this.declarationForm.controls; }
 
   //................. Submit claim form.................
   submitClaimMaster() {
     window.scrollTo(0, 0);
-    console.log("this.declarationMessageId",this.declarationMessageId);
+    console.log("this.declarationMessageId", this.declarationMessageId);
     console.log("its edit ")
-    if(this.declarationMessageId > 0){
+    if (this.declarationMessageId > 0) {
       this.submitted = true;
       if (this.declarationForm.invalid) {
         return;
@@ -76,7 +165,7 @@ export class DeclarationFormComponent implements OnInit {
       this.declarationForm.reset({
         active: new FormControl(true),
       });
-    }else{
+    } else {
       console.log("its save ")
       this.submitted = true;
       if (this.declarationForm.invalid) {
@@ -95,10 +184,10 @@ export class DeclarationFormComponent implements OnInit {
         active: new FormControl(true),
       });
     }
-     
- 
- 
-}
+
+
+
+  }
   // ....................Active remark disabled....................
   activeRemark(event) {
     if (event == false) {
@@ -136,9 +225,14 @@ export class DeclarationFormComponent implements OnInit {
     })
 
   }
-  
+  getStandardKeyword(){
+    this.declarationService.getStandardKeyword().subscribe((res)=>{
+      this.keywordList = res.data.results;
+      console.log("getStandardKeyword", this.keywordList);
+    });
+  }
   getClaimTemplateEditById(claimTempId, companyId) {
-  this.declarationMessageId = claimTempId;
+    this.declarationMessageId = claimTempId;
     window.scrollTo(0, 0);
     this.declarationService.getClaimTemplateViewById(claimTempId, companyId).subscribe((res) => {
       console.log(res);
@@ -164,10 +258,11 @@ export class DeclarationFormComponent implements OnInit {
     this.declarationService.getClaimTemplateList().subscribe((res) => {
       console.log(res);
       this.templateUserIdList = res.data.results[0];
+      this.declarationTempList = this.templateUserIdList;
       console.log("templateUserIdList", this.templateUserIdList)
     })
   }
- 
+
   // ...........................Select table list data ......................
 
   checkedListData(index, isChecked, fieldName) {
@@ -188,26 +283,26 @@ export class DeclarationFormComponent implements OnInit {
   }
 
   // .................... Change Event Pass Value............
-  moduleChange(event){
-console.log("event", event)
+  moduleChange(event) {
+    console.log("event", event)
   }
 
-  companyChange(event){
+  companyChange(event) {
     console.log("event", event)
-      }
-    
-      resetForm(){
-        window.scrollTo(0, 0);
-        this.declarationForm.reset({
-          active: new FormControl(true),
-        });
-        // this.getAllFields();
-        this.isView = false;
-        this.isEdit = false;
-        this.declarationForm.enable();
-        // this.claimForm.controls.remark.disable();
-        
-      }
+  }
+
+  resetForm() {
+    window.scrollTo(0, 0);
+    this.declarationForm.reset({
+      active: new FormControl(true),
+    });
+    // this.getAllFields();
+    this.isView = false;
+    this.isEdit = false;
+    this.declarationForm.enable();
+    // this.claimForm.controls.remark.disable();
+
+  }
 
   mindatoryChangeEvt(index, changeValue, fieldName) {
     console.log(index, changeValue, fieldName);
@@ -261,5 +356,62 @@ console.log("event", event)
 
 
 
-}
 
+  /*** CKeditor Drag and Drop */
+
+  allowDrop(ev): void {
+    ev.preventDefault();
+  }
+  drag(ev): void {
+    ev.dataTransfer.setData('text', ev.target.id);
+  }
+  drop(ev): void {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData('text');
+    const dataValue = this.fieldMap.get(data);
+
+    console.log("data value after drop: " + dataValue)
+    const startPos = ev.target.selectionStart;
+    const endPos = ev.target.selectionEnd;
+
+    console.log(ev.target.value)
+
+    ev.target.value = ev.target.value.substring(0, startPos)
+      + dataValue
+      + ev.target.value.substring(endPos, ev.target.value.length);
+
+    let bodyValue = ev.target.value.substring(0, startPos)
+      + '[' + data + ']'
+    console.log(bodyValue)
+  }
+
+  public onChange( event: CKEditor4.EventInfo ) {
+    console.log("cks", event.editor.getData() );
+    
+}
+  editorConfig = {
+    toolbar: [
+      { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'ExportPdf', 'Preview', 'Print', '-', 'Templates'] },
+      { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+      { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+      { name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
+      '/',
+      { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat'] },
+      { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'] },
+      { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+      { name: 'insert', items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'] },
+      '/',
+      { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+      { name: 'colors', items: ['TextColor', 'BGColor'] },
+      { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+      { name: 'about', items: ['About'] },
+      { name: 'colors' },
+
+    ],
+    allowedContent: true,
+
+
+  };
+
+
+}

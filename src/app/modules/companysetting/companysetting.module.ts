@@ -55,6 +55,8 @@ import { ReimbursementMasterComponent } from './reimbursement-master/reimburseme
 import { RembComputationComponent } from './reimbursement-master/remb-computation/remb-computation.component';
 import { RembGeneralComponent } from './reimbursement-master/remb-general/remb-general.component';
 import { RembSummaryComponent } from './reimbursement-master/remb-summary/remb-summary.component';
+import { CKEditorModule } from 'ckeditor4-angular';
+
 @NgModule( {
   declarations: [
     HeadCreationComponent,
@@ -112,7 +114,7 @@ import { RembSummaryComponent } from './reimbursement-master/remb-summary/remb-s
     ToastModule,
     InputTextModule,
     ProgressBarModule,
-
+    CKEditorModule,
   ],
 
   providers: [DatePipe, NumberFormatPipe],

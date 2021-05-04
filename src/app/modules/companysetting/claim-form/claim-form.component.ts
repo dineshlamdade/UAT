@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
+export interface summaryTempList{
+  claimTemplateName;
+  description;
+}
 @Component( {
   selector: 'app-claim-form',
   templateUrl: './claim-form.component.html',
@@ -23,6 +27,7 @@ export class ClaimFormComponent implements OnInit {
   public isView: boolean = false;
   public isEdit: boolean = false;
   public claimTempId: number = 0;
+  claimTempList: summaryTempList[];
   constructor(
     public claimService: ClaimService,
     public fb: FormBuilder,
@@ -195,6 +200,7 @@ export class ClaimFormComponent implements OnInit {
     this.claimService.getClaimTemplateList().subscribe( ( res ) => {
       console.log( res );
       this.templateUserIdList = res.data.results;
+      this.claimTempList = this.templateUserIdList;
       console.log( "191", this.templateUserIdList );
     } )
   }

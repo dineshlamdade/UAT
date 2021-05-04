@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
+export interface summaryTempList {
+  listSummaryHeadTemplateName;
+  description;
+}
 @Component({
   selector: 'app-summary-form',
   templateUrl: './summary-form.component.html',
@@ -24,6 +28,7 @@ export class SummaryFormComponent implements OnInit {
   public isView: boolean = false;
   public isEdit: boolean = false;
   public claimTempId: number = 0;
+  public summaryTempList: summaryTempList[];
   constructor(
     public summaryService: SummaryService,
     public fb: FormBuilder,
@@ -79,7 +84,7 @@ export class SummaryFormComponent implements OnInit {
         this.summaryService.editClaimData(postData).subscribe((res) => {
           console.log("Claim value", res);
           // this.templateUserIdList.push(res.data.results[0]);
-          this.alertService.sweetalertMasterSuccess("Summary form updated successfully", "");
+          this.alertService.sweetalertMasterSuccess("Reimbursement Sub-Heads Summary Form Template Updated Successfully", "");
           console.log("templateUserId", this.templateUserIdList);
         })
       }
@@ -95,17 +100,17 @@ export class SummaryFormComponent implements OnInit {
         this.alertService.sweetalertWarning('Please select any field list')
         return
       } else {
-      console.log(this.summaryForm.value);
-      let postData = this.summaryForm.getRawValue();
-      postData.reimbursementListSummaryHeadTemplateDetailsRequestDTO = this.summaryGridDataList;
-      console.log("postData", postData);
-      this.summaryService.postClaimData(postData).subscribe((res) => {
-        console.log("Claim value", res);
-        this.templateUserIdList.push(res.data.results[0]);
-        this.alertService.sweetalertMasterSuccess("Summary form submitted successfully", "");
-        console.log("templateUserId", this.templateUserIdList);
-      })
-    }
+        console.log(this.summaryForm.value);
+        let postData = this.summaryForm.getRawValue();
+        postData.reimbursementListSummaryHeadTemplateDetailsRequestDTO = this.summaryGridDataList;
+        console.log("postData", postData);
+        this.summaryService.postClaimData(postData).subscribe((res) => {
+          console.log("Claim value", res);
+          this.templateUserIdList.push(res.data.results[0]);
+          this.alertService.sweetalertMasterSuccess("Reimbursement Sub-Heads Summary Form Template Submitted Successfully", "");
+          console.log("templateUserId", this.templateUserIdList);
+        })
+      }
       this.resetForm();
     }
   }
@@ -194,6 +199,7 @@ export class SummaryFormComponent implements OnInit {
     this.summaryService.getClaimTemplateList().subscribe((res) => {
       console.log(res);
       this.templateUserIdList = res.data.results;
+      this.summaryTempList = this.templateUserIdList
     })
   }
 
@@ -212,10 +218,10 @@ export class SummaryFormComponent implements OnInit {
     this.summaryGridDataList[indexValue].dropDownValues = [];
     if (!isChecked) {
       //console.log("registerGridDataTempList::",this.registerGridDataTempList);
-    //  const tempIndexValue = this.registerGridDataTempList.findIndex(getIndex => getIndex.fieldName == fieldName);
-  
+      //  const tempIndexValue = this.registerGridDataTempList.findIndex(getIndex => getIndex.fieldName == fieldName);
+
       this.summaryGridDataList[indexValue].displayName = '';
-    //  console.log("this.registerGridDataTempList[tempIndexValue].displayName", this.registerGridDataTempList[tempIndexValue].displayName)
+      //  console.log("this.registerGridDataTempList[tempIndexValue].displayName", this.registerGridDataTempList[tempIndexValue].displayName)
 
     }
 

@@ -8,32 +8,32 @@
                             <fieldset>
                                 <legend>Payment Method Form</legend>
                                 <div class="row mb-2">
-                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                         <div class="form-group">
                                             <label class="form-label">Non Taxable Payment</label>
                                             <select class="form-control" formControlName="nonTaxableMethod"
-                                            [ngClass]="{'is-invalid': submitted && f.nonTaxableMethod.errors}"
-                                                [(ngModel)]="selectedvalue" >
-                                                <option>Select</option>
+                                            [ngClass]="{'is-invalid' : computationForm.get('nonTaxableMethod').status == 'INVALID'}"
+                                                (change)="changeSelectedNonTaxvalue($event.target.value)">
+                                                <option value="" selected>Select</option>
                                                 <option value="Till Annual">Till Annual</option>
                                                 <option value="Till Annual">Till Accrual</option>
                                                 <option value="SDM">SDM</option>
 
                                             </select>
-                                            <div *ngIf="submitted && f.nonTaxableMethod.errors"
-                                            class="invalid-feedback">
-                                            <div *ngIf="f.nonTaxableMethod.errors.required">
-                                                Non Taxable Payment is required
-                                            </div>
-                                        </div>
+                                            <!-- <div *ngIf="submitted && f.nonTaxableMethod.errors"
+                                                class="invalid-feedback">
+                                                <div *ngIf="f.nonTaxableMethod.errors.required">
+                                                    Non Taxable Payment is required
+                                                </div>
+                                            </div> -->
                                         </div>
 
                                     </div>
-                                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12" *ngIf="selectedvalue == 'SDM'">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="nonTaxSelectedvalue">
                                         <div class="form-group">
                                             <label class="form-label">Non Taxable SDM</label>
                                             <select class="form-control" formControlName="nonTaxableSDMId">
-                                                <option>Select</option>
+                                                <option value="" selected>Select</option>
                                                 <option value="1">SDM 1</option>
                                                 <option value="2">SDM 2</option>
                                                 <option value="3">SDM 3</option>
@@ -51,17 +51,15 @@
                                                 (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
                                                 (onDeSelect)="onDeSelect($event)"
                                                 (onDeSelectAll)="onDeSelectAll($event)"
-                               
-                                                >
+                                             >
                                             </ng-multiselect-dropdown>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"
-                                        *ngIf="taxView">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="taxView">
                                         <div class="form-group">
                                             <label class="form-label">Frequency </label>
                                             <select class="form-control" formControlName="taxableFrequency">
-                                                <option>Select</option>
+                                                <option value="" selected>Select</option>
                                                 <option value="Quarter">Quarter</option>
                                                 <option value="Half year">Half year</option>
                                                 <option value="Year">Year</option>
@@ -69,11 +67,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"  *ngIf="taxView">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="taxView">
                                         <div class="form-group">
                                             <label class="form-label">Period Definition</label>
                                             <select class="form-control" formControlName="taxablePeriodDefination">
-                                                <option>Select</option>
+                                                <option value="" selected>Select</option>
                                                 <option value="Jan-Mar">Jan-Mar</option>
                                                 <option value="Feb-Apr">Feb-Apr</option>
                                                 <option value="Mar-May">Mar-May</option>
@@ -81,10 +79,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"  *ngIf="taxView">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="taxView">
                                         <div class="form-group">
                                             <label class="form-label">No. of Cycles</label>
-                                            <input  type="number" min="0"  class="form-control" formControlName="taxableNoOfCycle" placeholder="No of cycle">
+                                            <input type="number" min="0" class="form-control"
+                                                formControlName="taxableNoOfCycle" placeholder="No of cycle">
 
                                         </div>
                                     </div>
@@ -95,10 +94,10 @@
                                             <label class="form-label">Lapse - Accrued Ent. Payable</label>
                                             <ng-multiselect-dropdown [placeholder]="'None Selected'"
                                                 [settings]="dropdownSettings" [data]="taxableList"
-                                                (onSelect)="onItemSelectLapse($event)" (onSelectAll)="onSelectAllLapse($event)"
+                                                (onSelect)="onItemSelectLapse($event)"
+                                                (onSelectAll)="onSelectAllLapse($event)"
                                                 (onDeSelect)="onDeSelectLapse($event)"
                                                 (onDeSelectAll)="onDeSelectAllLapse($event)"
-                               
                                                 >
                                             </ng-multiselect-dropdown>
 
@@ -107,8 +106,9 @@
                                     <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="lapseView">
                                         <div class="form-group">
                                             <label class="form-label">Frequency </label>
-                                            <select class="form-control" formControlName="lapseAccruedEntPayableFrequency">
-                                                <option>Select</option>
+                                            <select class="form-control"
+                                                formControlName="lapseAccruedEntPayableFrequency">
+                                                <option value="" selected>Select</option>
                                                 <option value="Quarter">Quarter</option>
                                                 <option value="Half year">Half year</option>
                                                 <option value="Year">Year</option>
@@ -116,11 +116,12 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"   *ngIf="lapseView">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="lapseView">
                                         <div class="form-group">
                                             <label class="form-label">Period Definition</label>
-                                            <select class="form-control" formControlName="LapseaccrentpayablePeriodDefinition">
-                                                <option>Select</option>
+                                            <select class="form-control"
+                                                formControlName="LapseaccrentpayablePeriodDefinition">
+                                                <option value="" selected>Select</option>
                                                 <option value="Jan-Jun">Jan-Jun</option>
                                                 <option value="Feb-Jul">Feb-Jul</option>
                                                 <option value="Mar-Aug">Mar-Aug</option>
@@ -131,10 +132,12 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12"  *ngIf="lapseView">
+                                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12" *ngIf="lapseView">
                                         <div class="form-group">
                                             <label class="form-label">No. Of Cycles After Period End</label>
-                                            <input type="number" min="0" class="form-control" formControlName="lapseAccruedEntPayableNoOfCycle" placeholder="No of cycle">
+                                            <input type="number" min="0" class="form-control"
+                                                formControlName="lapseAccruedEntPayableNoOfCycle"
+                                                placeholder="No of cycle">
 
                                         </div>
                                     </div>
@@ -144,59 +147,81 @@
                                     <fieldset>
                                         <legend>Bill Validity</legend>
                                         <div class="row mb-2">
-
-                                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">From Bill Date</label>
-                                                    <Select class="form-control" id="" formControlName="subBillMethod">
-                                                     
-                                                        <option value="Cycle" selected>Cycle</option>
-                                                        <option value="Days" >Days</option>
-                                                        
-                                                    </Select>
-                                                    <!-- <div class="row">
-                                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                            <div class="custom-controls-stacked">
-                                                                <label class="custom-control  custom-radio">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                    formControlName="subBillMethod"
-                                                                        name="subBillMethod" value="Days" checked>
-                                                                    <div class="custom-control-label">Days</div>
-                                                                </label>
+                                                    <label class="form-label">Submit Bill Within(From Bill Date)</label>
+                                                    <div class="row mb-2">
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <input type="text" class="form-control" min="0"
+                                                                formControlName="subBillWithCount" placeholder="Enter"
+                                                                [ngClass]="{'is-invalid' : computationForm.get('subBillWithCount').status == 'INVALID'}">
+                                                        </div>
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <div class="form-group">
+
+                                                                <select id="" class="form-control"
+                                                                    formControlName="subBillMethod">
+                                                                    <option value="" selected>Select Way</option>
+                                                                    <option value="Cycle">Cycle</option>
+                                                                    <option value="Days">Days</option>
+
+                                                                </select>
+                                                                <!-- <div class="row">
+                                                                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                                                    <div class="custom-controls-stacked">
+                                                                        <label class="custom-control  custom-radio">
+                                                                            <input type="radio" class="custom-control-input"
+                                                                            formControlName="subBillMethod"
+                                                                                name="subBillMethod" value="Days" checked>
+                                                                            <div class="custom-control-label">Days</div>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
+                                                                    <div class="custom-controls-stacked">
+                                                                        <label class="custom-control  custom-radio">
+                                                                            <input type="radio" class="custom-control-input"
+                                                                            formControlName="subBillMethod"
+                                                                                name="subBillMethod" value="Cycle" checked>
+                                                                            <div class="custom-control-label">Cycle</div>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
+
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
-                                                            <div class="custom-controls-stacked">
-                                                                <label class="custom-control  custom-radio">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                    formControlName="subBillMethod"
-                                                                        name="subBillMethod" value="Cycle" checked>
-                                                                    <div class="custom-control-label">Cycle</div>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="form-label">Submit Bill Withhin</label>
-                                                    <input type="number" class="form-control" min="0" formControlName="subBillWithCount" placeholder="Enter">
-                                                </div>
-                                            </div>
+
                                             <div class="col-md-1 col-lg-1 col-sm-2 col-xs-12">
-                                               
+
                                             </div>
-                                            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
+                                            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">From Bill Date</label>
-                                                    <Select class="form-control" id="" formControlName="billDateNotAllowedMethod">
-                                              
-                                                        <option value="Cycle" selected>Cycle</option>
-                                                        <option value="Days">Days</option>
-                                                    </Select>
-                                                    <!-- <div class="row">
+
+                                                    <label class="form-label">Can't Submit Bill Within(From Bill
+                                                        Date)</label>
+                                                    <div class="row mb-2">
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+
+                                                            <input type="text" class="form-control" placeholder="Enter"
+                                                                formControlName="billDateNotAllowedCount"
+                                                                [ngClass]="{'is-invalid' : computationForm.get('billDateNotAllowedCount').status == 'INVALID'}">
+
+                                                        </div>
+                                                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
+                                                            <div class="form-group">
+
+                                                                <select class="form-control" formControlName="billDateNotAllowedMethod" 
+                                                                   >
+                                                                   <option value="" selected>Select Way</option>
+                                                                    <option value="Cycle" >Cycle</option>
+                                                                    <option value="Days">Days</option>
+                                                                </select>
+                                                                <!-- <div class="row">
                                                         <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12">
                                                             <div class="custom-controls-stacked">
                                                                 <label class="custom-control  custom-radio">
@@ -219,64 +244,53 @@
                                                         </div>
                                                     </div> -->
 
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12">
-                                                <div class="form-group">
-                                                    <label class="form-label">Can't Submit Bill Withhin</label>
-                                                    <input type="text" class="form-control" placeholder="Enter" formControlName="billDateNotAllowedCount">
-                                                </div>
-                                            </div>
+
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Bill Of Last Financial Year Which Can Be
+                                                    <label class="form-label">Bill Of Last Financial Year (Fy) Which Can
+                                                        Be
                                                         Claimed In Next FY </label>
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                              <div class="input-group-prepend">
-                                                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                                              </div>
-                                
-                                                              <input data-provide="datepicker" data-date-autoclose="true" formControlName="billLastFinYearClaimedInNextFinYear"
-                                                                class="form-control" placeholder="DD-MMM"
-                                                                (bsValueChange)="onChangeFromDate()"
-                                                                bsDatepicker
-                                                              
-                                                                [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }">
-                                
-                                
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text"><i
+                                                                        class="fa fa-calendar"></i></span>
                                                             </div>
-                                            
-                                                          </div>
+
+                                                            <input data-provide="datepicker" data-date-autoclose="true"
+                                                                formControlName="billLastFinYearClaimedInNextFinYear"
+                                                                class="form-control" placeholder="DD-MMM"
+                                                                (bsValueChange)="onChangeFromDate()" bsDatepicker
+                                                                [bsConfig]="{ dateInputFormat: 'DD-MMM',containerClass:'theme-green custom' }"
+                                                                [ngClass]="{'is-invalid' : computationForm.get('billLastFinYearClaimedInNextFinYear').status == 'INVALID'}">
+
+
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Unpaid Bills Carry Forward Allowed</label>
-                                                    <div class="row">
-                                                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                                            <div class="custom-controls-stacked">
-                                                                <label class="custom-control  custom-radio">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                    formControlName="unPaidBillCarryForward"
-                                                                        name="unPaidBillCarryForward" value="true" checked>
-                                                                    <div class="custom-control-label">Yes</div>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
-                                                            <div class="custom-controls-stacked">
-                                                                <label class="custom-control  custom-radio">
-                                                                    <input type="radio" class="custom-control-input"
-                                                                    formControlName="unPaidBillCarryForward"
-                                                                        name="unPaidBillCarryForward" value="false" checked>
-                                                                    <div class="custom-control-label">No</div>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <label class="form-label">Unpaid Bills Carry Forward</label>
+                                                    <div class="custom-controls-stacked  ">
+                                                        <label class="custom-control custom-radio custom-control-inline">
+                                                          <input formControlName="unPaidBillCarryForward" type="radio" class="custom-control-input"  value="true" [checked]="unPaidBill == 'true'" >
+                                                          <span class="custom-control-label">Yes</span>
+                                                        </label>
+                                                        <label class="custom-control custom-radio custom-control-inline">
+                                                          <input formControlName="unPaidBillCarryForward" type="radio" class="custom-control-input" value="false"  [checked]="unPaidBill == 'false'" >
+                                                          <span class="custom-control-label">No</span>
+                                                        </label>
+                                                      </div>
+                                               
 
                                                 </div>
                                             </div>
@@ -284,14 +298,16 @@
                                                 <div class="form-group">
                                                     <label class="form-label">Cyclewise - No. Of Line Items Allowed
                                                     </label>
-                                                    <input type="number" min="0" class="form-control" placeholder="Cyclewise - No of line items allowed " formControlName="cyclewiseNumLineItemsAllowed"> 
+                                                    <input type="number" min="0" class="form-control"
+                                                        placeholder="Cyclewise - No of line items allowed "
+                                                        formControlName="cyclewiseNumLineItemsAllowed">
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12">
                                                 <div class="form-group">
                                                     <label class="form-label">Gap Between 2 Claims (In Days)</label>
-                                                    <input type="number" min="0"  class="form-control"
-                                                    formControlName="gapsBetwTwoHeadClaims"
+                                                    <input type="number" min="0" class="form-control"
+                                                        formControlName="gapsBetwTwoHeadClaims"
                                                         placeholder="Gap between 2 claims (In Days)">
                                                 </div>
                                             </div>
@@ -314,13 +330,19 @@
                                                 <b><i class="fa fa-chevron-circle-left" aria-hidden="true"></i></b>
                                                 Previous</button>
 
-                                            <button type="submit"
+                                            <!-- <button type="submit"
                                                 class="custom_button custom_btn btn-bg-green  btn-labeled btn-labeled-left ml-10"
                                                 tooltip="Save" [disabled]="loading">
-                                                <b><i class="fa fa-floppy-o"></i></b> Save</button>
+                                                <b><i class="fa fa-floppy-o"></i></b> Save</button> -->
+                                                <button type="submit" [disabled]="computationForm.invalid"
+                                                [ngClass]="{'disabled-btn-bg-green' : computationForm.invalid,'btn-bg-green': !computationForm.invalid}"
+                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left  ml-10"
+                                                tooltip="Save"><b><i class="fa fa-floppy-o"></i></b>
+                                                {{isEdit?'Update':
+                                                'Save'}}
+                                            </button>
 
-
-                                            <button type="button" tooltip="Reset"
+                                            <button type="button" tooltip="Reset"  (click)="resetForm()"
                                                 class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                         class="fa  fa-refresh"></i></b> Reset</button>
 
@@ -338,7 +360,7 @@
 
                 </div>
             </div>
-          
+
         </div>
     </div>
 

@@ -5,11 +5,19 @@ import { Router } from '@angular/router';
 import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
+export interface summaryTempList {
+  // srno;
+  // groupName;
+  // groupDescription;
+  regTemplateName;
+  description;
+}
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.scss']
 })
+
 export class RegisterFormComponent implements OnInit {
   public registerForm: FormGroup;
   public registerGridDataList: Array<any> = [];
@@ -24,7 +32,9 @@ export class RegisterFormComponent implements OnInit {
   public isView: boolean = false;
   public isEdit: boolean = false;
   public regTemplateId: number = 0;
-  public listDropDown = [];
+  public listDropDown:number;
+  // userGridData: userGridData[];
+ public registerTempList: summaryTempList[];
   constructor(
     public service: RegistrationMasterService,
     public fb: FormBuilder,
@@ -57,6 +67,12 @@ export class RegisterFormComponent implements OnInit {
     this.getAllFields();
     this.getClaimTemplatesList();
     // this.isView=false;
+    // this.userGridData = [
+    //   { srno: '1', groupName: 'System Admin',groupDescription:'System Admin Desc' },
+    //   { srno: '2', groupName: 'DB Admin',groupDescription:'DB Admin Desc' },
+    //   { srno: '3', groupName: 'Paysquare Admin',groupDescription:'Paysquare Admin Desc' },
+    //   { srno: '4', groupName: 'App_Admin',groupDescription:'App_Admin Desc' },
+    // ];
   }
   get f() { return this.registerForm.controls; }
 
@@ -87,7 +103,7 @@ export class RegisterFormComponent implements OnInit {
         this.service.editRegisterData(postData).subscribe((res) => {
           console.log("Claim value", res);
           // this.templateUserIdList.push(res.data.results[0]);
-          this.alertService.sweetalertMasterSuccess("Register form updated successfully", "");
+          this.alertService.sweetalertMasterSuccess("Registration Form Template Updated Successfully", "");
           console.log("templateUserId", this.templateUserIdList);
         })
       }
@@ -111,7 +127,7 @@ export class RegisterFormComponent implements OnInit {
         this.service.postRegisterData(postData).subscribe((res) => {
           console.log("Claim value", res);
           this.templateUserIdList.push(res.data.results[0]);
-          this.alertService.sweetalertMasterSuccess("Register form submitted successfully", "");
+          this.alertService.sweetalertMasterSuccess("Registration Form Template Submitted Successfully", "");
           console.log("templateUserId", this.templateUserIdList);
         })
         this.dropdownListData = [];
@@ -205,6 +221,7 @@ export class RegisterFormComponent implements OnInit {
     this.service.getRegisterTemplateList().subscribe((res) => {
       console.log(res);
       this.templateUserIdList = res.data.results;
+      this.registerTempList =  this.templateUserIdList;
       console.log("191", this.templateUserIdList);
     })
   }
@@ -296,7 +313,7 @@ export class RegisterFormComponent implements OnInit {
     this.dropListModel = '';
     let indexField = this.registerGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
     this.registerGridDataList[indexField].dropDownValues = this.dropdownListData;
-    this.listDropDown = this.dropdownListData
+    this.listDropDown =   this.registerGridDataList[indexField].dropDownValues;
     console.log("this.listDropDown", this.listDropDown);
     
   }

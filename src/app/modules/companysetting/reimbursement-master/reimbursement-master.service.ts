@@ -8,6 +8,7 @@ import { Observable, pipe } from 'rxjs';
 })
 export class ReimbursementMasterService {
   apiUrl = environment.baseUrl8089;
+  apiUrl2 = environment.baseUrl8088;
   reimbursementForm: any;
 
   constructor(private http: HttpClient) { }
@@ -56,6 +57,12 @@ export class ReimbursementMasterService {
         return response;
       }));
   }
+  getAllWorkflowMasters() {
+    return this.http.get(this.apiUrl2 + 'workflowmaster-header/getAllWorkflowMasters')
+      .pipe(map((response: any) => {
+        return response;
+      }));
+  }
 
   setReimbursementSubmitData(data) {
     this.reimbursementForm = data;
@@ -72,6 +79,14 @@ export class ReimbursementMasterService {
       }));
   }
 
+  putReimbursementUpdateData(data) {
+    return this.http.put(this.apiUrl + 'reimbursement-general-setting/edit-reimbursement-setting', data)
+      .pipe(map((res: any) => {
+        return res;
+      }));
+  }
+
+  
   
   editReimbursementSubmitData(data) {
     return this.http.put(this.apiUrl + 'reimbursement-general-setting/edit-reimbursement-setting', data)

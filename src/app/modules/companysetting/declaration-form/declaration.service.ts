@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class DeclarationService {
   apiUrl = environment.baseUrl8089;
+  apiUrl2 = environment.baseUrl8091;
 
   constructor(private http: HttpClient) { }
 
@@ -27,6 +28,14 @@ export class DeclarationService {
     }));
   }
 
+  getStandardKeyword(){
+    return this.http.get(this.apiUrl2 + 'StandardKeyword')
+    .pipe(map((response: any) => {
+      return response
+    }));
+  }
+
+  
 
 getClaimTemplateViewById(regClaimTemplateId, companyId){
   return this.http.get(this.apiUrl + 'declaration-message-company/get-remb-declaration-message/' + regClaimTemplateId + "/" + companyId)

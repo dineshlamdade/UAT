@@ -20,6 +20,9 @@ export class RembComputationComponent implements OnInit {
   public today: any = new Date();
   public taxView = false;
   public lapseView = false;
+  public nonTaxSelectedvalue = false;
+  public rembGeneralId: number;
+  public unPaidBill = ''
   constructor(
     public fb: FormBuilder,
     private datePipe: DatePipe,
@@ -28,9 +31,12 @@ export class RembComputationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-console.log(this.service.getReimbursementSubmitData());
+    console.log("sss", this.service.getReimbursementSubmitData());
+    this.getRembIdValue();
+
     this.computationForm = this.fb.group({
       reiMasterComputationSettingID: new FormControl(''),
+      reimbursementMasterGeneralSettingId: new FormControl(''),
       nonTaxableMethod: new FormControl('', Validators.required),
       nonTaxableSDMId: new FormControl(''),
       taxableMethodFNF: new FormControl('false'),
@@ -46,10 +52,10 @@ console.log(this.service.getReimbursementSubmitData());
       LapseaccrentpayablePeriodDefinition: new FormControl(''),
       lapseAccruedEntPayableNoOfCycle: new FormControl(''),
       subBillMethod: new FormControl(''),
-      subBillWithCount: new FormControl(''),
+      subBillWithCount: new FormControl('', Validators.required),
       billDateNotAllowedMethod: new FormControl(''),
-      billDateNotAllowedCount: new FormControl(''),
-      billLastFinYearClaimedInNextFinYear: new FormControl(''),
+      billDateNotAllowedCount: new FormControl('', Validators.required),
+      billLastFinYearClaimedInNextFinYear: new FormControl('', Validators.required),
       unPaidBillCarryForward: new FormControl('false'),
       cyclewiseNumLineItemsAllowed: new FormControl(''),
       gapsBetwTwoHeadClaims: new FormControl(''),
@@ -81,40 +87,101 @@ console.log(this.service.getReimbursementSubmitData());
 
   submitComputationMaster() {
     window.scrollTo(0, 0);
-    this.submitted = true;
-    if (this.computationForm.invalid) {
-      return;
+    if (this.rembGeneralId > 0) {
+      this.submitted = true;
+      if (this.computationForm.invalid) {
+        return;
+      }
+      // console.log("this.generalform", this.computationForm.value);
+      let postData = this.computationForm.getRawValue();
+
+      // postData.reimbursementTrackingRequestDTO = this.computationForm;
+      console.log('general Form', this.service.getReimbursementSubmitData());
+      console.log("postdata", postData);
+      let data: any;
+      data = this.service.getReimbursementSubmitData();
+      // data.billLastFinYearClaimedInNextFinYear = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
+      data.reimbursementMasterComputationSettingRequestDTO = this.computationForm.getRawValue();
+      console.log("json data", JSON.stringify(data));
+      this.service.putReimbursementUpdateData(data).subscribe((res) => {
+        console.log("comp result", res);
+        this.alertService.sweetalertMasterSuccess("Computation form updated successfully", "");
+
+        // console.log("templateUserId", this.templateUserIdList);
+     })
+     this.resetForm(); 
+    } else {
+      this.submitted = true;
+      if (this.computationForm.invalid) {
+        return;
+      }
+      // console.log("this.generalform", this.computationForm.value);
+      let postData = this.computationForm.getRawValue();
+
+      // postData.reimbursementTrackingRequestDTO = this.computationForm;
+      console.log('general Form', this.service.getReimbursementSubmitData());
+      console.log("postdata", postData);
+      let data: any;
+      data = this.service.getReimbursementSubmitData();
+      // data.billLastFinYearClaimedInNextFinYear = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
+      data.reimbursementMasterComputationSettingRequestDTO = this.computationForm.getRawValue();
+      console.log("json data", JSON.stringify(data));
+      this.service.postReimbursementSubmitData(data).subscribe((res) => {
+        console.log("comp result", res);
+        this.alertService.sweetalertMasterSuccess("Computation form submitted successfully", "");
+
+        // console.log("templateUserId", this.templateUserIdList);
+      })
+      this.resetForm(); 
     }
-   // console.log("this.generalform", this.computationForm.value);
-    let postData = this.computationForm.getRawValue();
-   
-    // postData.reimbursementTrackingRequestDTO = this.computationForm;
-    console.log('general Form',this.service.getReimbursementSubmitData());
-    console.log("postdata", postData);
-    let data : any;
-    data = this.service.getReimbursementSubmitData();
-    data.billLastFinYearClaimedInNextFinYear = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
-    data.reimbursementMasterComputationSettingRequestDTO = this.computationForm.getRawValue();
-    console.log(data);
-    this.service.postReimbursementSubmitData(data).subscribe((res)=> {
-      console.log("comp result", res);
-      this.alertService.sweetalertMasterSuccess("Computation form submitted successfully", "");
-      
-      // console.log("templateUserId", this.templateUserIdList);
+  }
+  getRembIdValue() {
+    let generalData = this.service.getReimbursementSubmitData();
+    if (generalData == undefined) {
+      console.log("No data available");
+    } else {
+      if (generalData.reimbursementMasterGeneralSettingId > 0) {
+        this.rembGeneralId = generalData.reimbursementMasterGeneralSettingId;
+        this.getViewgeneralById(this.rembGeneralId);
+        console.log("rembids", generalData.reimbursementMasterGeneralSettingId);
+      }
+    }
+
+  }
+
+
+  getViewgeneralById(policyNo) {
+    console.log("show data");
+    window.scrollTo(0, 0);
+    this.service.getGeneralTemplateViewById(policyNo).subscribe((res) => {
+      console.log("results", res);
+      let generalViewData = res.data.results[0].reimbursementMasterComputationSettingResponseDTO;
+      this.computationForm.patchValue(generalViewData);
+      // this.computationForm.disable();
+      if (generalViewData.unPaidBillCarryForward == true) {
+        this.unPaidBill = 'true';
+      } else {
+        this.unPaidBill = 'false';
+      }
+      let changeNonTaxValue = generalViewData.nonTaxableMethod;
+      console.log("changeNonTaxValue", changeNonTaxValue);
+      this.changeSelectedNonTaxvalue(changeNonTaxValue);
+      this.onItemSelect(3);
     })
 
   }
 
- 
+
+
 
   onChangeFromDate() {
     const yearDate = this.datePipe.transform(this.computationForm.get('billLastFinYearClaimedInNextFinYear').value, 'MM-dd');
-    console.log("form", yearDate);
+    // console.log("form", yearDate);
     // this.today = new Date(yearDate);
     // console.log("yearDate", this.today);
-    // this.computationForm.controls['billLastFinYearClaimedInNextFinYear'].setValue(yearDate);
+    this.computationForm.controls['billLastFinYearClaimedInNextFinYear'].setValue(yearDate);
   }
-// ...........................  Select box dropdown items events............
+  // ...........................  Select box dropdown items events............
 
 
   onItemSelect(event) {
@@ -182,7 +249,7 @@ console.log(this.service.getReimbursementSubmitData());
   }
 
 
-  
+
   onItemSelectLapse(event) {
     let myevents = event;
     console.log("onItemSelect", event);
@@ -247,8 +314,21 @@ console.log(this.service.getReimbursementSubmitData());
     }
   }
 
- 
-  
+  //on change event value get
+  changeSelectedNonTaxvalue(eventValue) {
+    let nonTaxvalue = eventValue;
+    if (nonTaxvalue == 'SDM') {
+      this.nonTaxSelectedvalue = true;
+    } else {
+      this.nonTaxSelectedvalue = false;
+    }
+  }
+
+  resetForm() {
+    window.scrollTo(0, 0);
+    this.computationForm.reset();
+
+  }
 }
 
 
