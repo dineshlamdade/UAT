@@ -80,9 +80,9 @@ export class AddNewLoanComponent implements OnInit {
   editLoanData: any;
   isVisible: boolean = true;
   isVisiblee: boolean = false;
-  isVisibleee:boolean= false;
+  isVisibleee: boolean = false;
   viewFlag: boolean = false;
-  viewAppNo:boolean = false;
+  viewAppNo: boolean = false;
   applicationNo: any;
   applicationDate: any;
 
@@ -91,7 +91,7 @@ export class AddNewLoanComponent implements OnInit {
     private modalService: BsModalService, public loanservice: LoanService, public toster: ToastrService,
     private datePipe: DatePipe, private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
 
-      
+
     this.AddLoanForm = this.formBuilder.group(
       {
 
@@ -117,8 +117,8 @@ export class AddNewLoanComponent implements OnInit {
         "uploadDocuments": new FormControl([]),
         "approverDetails": new FormControl([]),
         "loanApplicationId": new FormControl(''),
-    "loanApplicationNumber": new FormControl(''),
-    "loanMasterId": new FormControl('')
+        "loanApplicationNumber": new FormControl(''),
+        "loanMasterId": new FormControl('')
 
       })
     if (localStorage.getItem('EditLoanData') != null) {
@@ -155,7 +155,7 @@ export class AddNewLoanComponent implements OnInit {
                 this.instituteType = true;
                 this.carType = false;
                 this.isAssetValue = true;
-              // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
+                // this.AddLoanForm.controls['carOrInstitutionType'].setValue(element.carOrInstitutionType);
 
                 this.AddLoanForm.controls["underlineAssestValue"].setValidators([Validators.required])
                 this.AddLoanForm.controls["carOrInstitutionType"].setValidators([Validators.required])
@@ -407,7 +407,11 @@ export class AddNewLoanComponent implements OnInit {
         // this.toster.success("", 'You Dont have apply same Loan');
         this.router.navigate(['/loan/application']);
         this.getAllData();
-      })
+      }, error => {
+        if (error.status.code == '409') {
+          this.toster.error("", 'Provided  employeeeCode is Already Exist!');
+        }
+      });
     } else {
       this.updateLoan();
       // this.reset();
@@ -497,7 +501,7 @@ export class AddNewLoanComponent implements OnInit {
     })
   }
   getGuarantorData() {
-    this.guarentor = []
+    //this.guarentor = []
     this.loanservice.getGuarantorData(this.empCode).subscribe(res => {
       this.guarantorDataForTable = res.data.results[0];
       this.fullName = this.guarantorDataForTable.fullName;
@@ -506,34 +510,79 @@ export class AddNewLoanComponent implements OnInit {
         'fullName': this.guarantorDataForTable.fullName,
       })
 
+
+      if (this.fullName  != null) {
+        if (this.guarentor.length > 0) {
+         // console.log("fname" + this.fullName)
+          this.guarentor.forEach((element, index) => {
+            if (parseInt(element.employeeCode) == parseInt(this.empCode)) {
+            //  console.log("in if")
+              let ind = index;
+              this.guarentor.splice(ind, 1)
+              this.guarantorName.splice(ind, 1)
+              this.guarentor.splice(ind, 1, {
+                "employeeCode": this.empCode,
+                "employeeFullName": this.fullName,
+                "createdBy": 'Ajay',
+                "createDateTime": null,
+                "lastModifiedBy": null,
+                "lastModifiedDateTime": null,
+                "active": true
+              })
+              this.guarantorName.splice(ind, 1, this.fullName)
+              this.AddLoanForm.controls['guarantors'].setValue(this.guarentor);
+
+            } else {
+              if (parseInt(element.empCode) == parseInt(this.empCode)) {
+               // console.log("in if1")
+                let ind = index;
+                this.guarentor.splice(ind, 1)
+                this.guarantorName.splice(ind, 1)
+              }
+              //console.log("in else")
+              let guarantorData = {
+                "employeeCode": this.empCode,
+                "employeeFullName": this.fullName,
+                "createdBy": 'Ajay',
+                "createDateTime": null,
+                "lastModifiedBy": null,
+                "lastModifiedDateTime": null,
+                "active": true
+              }
+              this.guarentor.push(guarantorData);
+              this.guarantorName.push(this.fullName)
+              this.AddLoanForm.controls['guarantors'].setValue(this.guarentor);
+            }
+          });
+        } else {
+         // console.log("in else1")
+          let guarantorData = {
+            "employeeCode": this.empCode,
+            "employeeFullName": this.fullName,
+            "createdBy": 'Ajay',
+            "createDateTime": null,
+            "lastModifiedBy": null,
+            "lastModifiedDateTime": null,
+            "active": true
+          }
+          this.guarentor.push(guarantorData);
+          this.guarantorName.push(this.fullName)
+          this.AddLoanForm.controls['guarantors'].setValue(this.guarentor);
+        }
+        console.log(JSON.stringify(this.guarentor))
+        console.log("this.guarantorName: "+ this.guarantorName)
+      }
     })
-
-
-    //alert(this.fullName)
-
-    let guarantorData = {
-      "employeeCode": this.empCode,
-      "employeeFullName": this.fullName,
-      "createdBy": 'Ajay',
-      "createDateTime": null,
-      "lastModifiedBy": null,
-      "lastModifiedDateTime": null,
-      "active": true
-    }
-    this.guarentor.push(guarantorData);
-
-    this.AddLoanForm.controls['guarantors'].setValue(this.guarentor);
-
-
-    console.log(JSON.stringify(this.guarentor))
-
   }
 
   getEmpcode(value, index) {
-    this.empCode = value;
-    this.empIndex = index;
-    this.guarantorName.push(value)
-    this.getGuarantorData();
+    if (value != '' || value != undefined) {
+      this.empCode = value;
+      this.empIndex = index;
+
+      this.getGuarantorData();
+    }
+
   }
 
   assetValueShowHide($event) {
@@ -865,10 +914,10 @@ export class AddNewLoanComponent implements OnInit {
 
         //this.installmentAmount = this.flatIntrest / (12 * 100)
       }
-      else{
+      else {
         // alert(this.loanAmount)
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
       }
 
       this.installmentAmount = parseFloat(this.installmentAmount)
@@ -888,6 +937,8 @@ export class AddNewLoanComponent implements OnInit {
           this.devaiationData.forEach((ele, index) => {
             if (ele.deviationType == 'noOfInstallment') {
               let ind = index;
+              this.devaiationData.splice(ind, 1)
+            
               this.devaiationData.splice(ind, 1, {
                 "deviationType": 'noOfInstallment',
                 "userLimit": 48,
@@ -900,6 +951,7 @@ export class AddNewLoanComponent implements OnInit {
                 "active": true
               })
             } else {
+           
               if (ele.deviationType == 'noOfInstallment') {
                 let ind = index;
                 this.devaiationData.splice(ind, 1)
@@ -918,6 +970,7 @@ export class AddNewLoanComponent implements OnInit {
             }
           })
         } else {
+          
           this.devaiationData.push({
             "deviationType": 'noOfInstallment',
             "userLimit": 48,
@@ -1017,103 +1070,103 @@ export class AddNewLoanComponent implements OnInit {
     // this.noOfInstallment = this.noOfInstallment + 1;
     this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
 
-    
+
     if (parseInt(this.noOfInstallment) <= this.allowedInstallment) {
-        if (this.devaiationData.length > 0) {
-          this.devaiationData.forEach((ele, index) => {
-            if (ele.deviationType == 'noOfInstallment') {
-              let ind = index;
-              this.devaiationData.splice(ind, 1, {
-                "deviationType": 'noOfInstallment',
-                "userLimit": 48,
-                "deviationValue": parseInt(this.noOfInstallment),
-                "reason": null,
-                "createdBy": 'ajay',
-                "createDateTime": null,
-                "lastModifiedBy": null,
-                "lastModifiedDateTime": null,
-                "active": true
-              })
-            } else {
-              if (ele.deviationType == 'noOfInstallment') {
-                let ind = index;
-                this.devaiationData.splice(ind, 1)
-              }
-              this.devaiationData.push({
-                "deviationType": 'noOfInstallment',
-                "userLimit": 48,
-                "deviationValue": parseInt(this.noOfInstallment),
-                "reason": null,
-                "createdBy": 'ajay',
-                "createDateTime": null,
-                "lastModifiedBy": null,
-                "lastModifiedDateTime": null,
-                "active": true
-              })
-            }
-          })
-        } else {
-          this.devaiationData.push({
-            "deviationType": 'noOfInstallment',
-            "userLimit": 48,
-            "deviationValue": parseInt(this.noOfInstallment),
-            "reason": null,
-            "createdBy": 'ajay',
-            "createDateTime": null,
-            "lastModifiedBy": null,
-            "lastModifiedDateTime": null,
-            "active": true
-          })
-        }
-      }else {
-        this.toster.success("Please Enter Eligible " + ' ' + this.allowedInstallment + " installment")
-        this.noOfInstallment = this.allowedInstallment;
-  
-        this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
-  
-        if (this.recoveryAllMethod == 'Reducing Balance' || this.recoveryAllMethod == 'Principal First & then Interest') {
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
-        }
-        if (this.recoveryAllMethod == 'EMI') {
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]  
-        }
-        if (this.recoveryAllMethod == 'Flat Interest') {
-  
-        }
-  
-        if (this.recoveryAllMethod == 'Perpetual') {
-          this.installmentAmount = this.loanAmount / this.noOfInstallment;
-          this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
-  
-          //this.installmentAmount = this.flatIntrest / (12 * 100)
-        }
-  
-        this.installmentAmount = parseFloat(this.installmentAmount)
-  
-        this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
-  
-        // ..........................end date calculation..............................................
-        let currentdate = new Date();
-        var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
-        this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
-        this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
-        this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
-  
+      if (this.devaiationData.length > 0) {
         this.devaiationData.forEach((ele, index) => {
           if (ele.deviationType == 'noOfInstallment') {
             let ind = index;
-            this.devaiationData.splice(ind, 1)
+            this.devaiationData.splice(ind, 1, {
+              "deviationType": 'noOfInstallment',
+              "userLimit": 48,
+              "deviationValue": parseInt(this.noOfInstallment),
+              "reason": null,
+              "createdBy": 'ajay',
+              "createDateTime": null,
+              "lastModifiedBy": null,
+              "lastModifiedDateTime": null,
+              "active": true
+            })
+          } else {
+            if (ele.deviationType == 'noOfInstallment') {
+              let ind = index;
+              this.devaiationData.splice(ind, 1)
+            }
+            this.devaiationData.push({
+              "deviationType": 'noOfInstallment',
+              "userLimit": 48,
+              "deviationValue": parseInt(this.noOfInstallment),
+              "reason": null,
+              "createdBy": 'ajay',
+              "createDateTime": null,
+              "lastModifiedBy": null,
+              "lastModifiedDateTime": null,
+              "active": true
+            })
           }
         })
-        this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+      } else {
+        this.devaiationData.push({
+          "deviationType": 'noOfInstallment',
+          "userLimit": 48,
+          "deviationValue": parseInt(this.noOfInstallment),
+          "reason": null,
+          "createdBy": 'ajay',
+          "createDateTime": null,
+          "lastModifiedBy": null,
+          "lastModifiedDateTime": null,
+          "active": true
+        })
       }
-      
+    } else {
+      this.toster.success("Please Enter Eligible " + ' ' + this.allowedInstallment + " installment")
+      this.noOfInstallment = this.allowedInstallment;
 
+      this.AddLoanForm.controls['noOfInstallment'].setValue(this.noOfInstallment);
 
+      if (this.recoveryAllMethod == 'Reducing Balance' || this.recoveryAllMethod == 'Principal First & then Interest') {
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+      }
+      if (this.recoveryAllMethod == 'EMI') {
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+      }
+      if (this.recoveryAllMethod == 'Flat Interest') {
+
+      }
+
+      if (this.recoveryAllMethod == 'Perpetual') {
+        this.installmentAmount = this.loanAmount / this.noOfInstallment;
+        this.installmentAmount = this.installmentAmount.toString().match(/^-?\d+(?:\.\d{0,2})?/)[0]
+
+        //this.installmentAmount = this.flatIntrest / (12 * 100)
+      }
+
+      this.installmentAmount = parseFloat(this.installmentAmount)
+
+      this.AddLoanForm.controls['installmentAmount'].setValue(this.installmentAmount);
 
       // ..........................end date calculation..............................................
+      let currentdate = new Date();
+      var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
+      this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
+      this.EndDate = new Date(this.EndDate.getFullYear(), this.EndDate.getMonth() + 1, 0);
+      this.AddLoanForm.controls['endDate'].setValue(this.datePipe.transform(this.EndDate, "dd-MMM-yyyy"))
+
+      this.devaiationData.forEach((ele, index) => {
+        if (ele.deviationType == 'noOfInstallment') {
+          let ind = index;
+          this.devaiationData.splice(ind, 1)
+        }
+      })
+      this.AddLoanForm.controls['deviations'].setValue(this.devaiationData);
+    }
+
+
+
+
+    // ..........................end date calculation..............................................
     let currentdate = new Date();
     var lastDay = new Date(currentdate.getFullYear(), currentdate.getMonth() + 1, 0);
     this.EndDate = new Date(lastDay.setMonth(lastDay.getMonth() + parseInt(this.noOfInstallment) - 1));
@@ -1130,10 +1183,10 @@ export class AddNewLoanComponent implements OnInit {
 
     this.calculatedDeviationInt = 12 * parseInt(this.deviationIntrest) / 100
     this.allowedRateInterest = 12 - this.calculatedDeviationInt
- //debugger
+    //debugger
     if (parseInt(value) <= 12 && parseInt(value) >= this.allowedRateInterest) {
 
-      if ( parseInt(value) >= this.allowedRateInterest && parseInt(value) < 12) {
+      if (parseInt(value) >= this.allowedRateInterest && parseInt(value) < 12) {
 
         if (this.devaiationData.length > 0) {
           this.devaiationData.forEach((ele, index) => {
@@ -1352,7 +1405,7 @@ export class AddNewLoanComponent implements OnInit {
 
     this.loanservice.updateLoan(this.AddLoanForm.value).subscribe(res => {
       this.updatedData = res.data.results;
-     // console.log("&&&&&&&&&&&&", this.updatedData);
+      // console.log("&&&&&&&&&&&&", this.updatedData);
       this.toster.success("Updated loanApplication details Successfully.");
       this.router.navigate(['/loan/application']);
 

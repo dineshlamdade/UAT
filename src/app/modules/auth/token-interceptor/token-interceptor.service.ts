@@ -31,24 +31,11 @@ export class TokenInterceptorService implements HttpInterceptor {
         case 401: {
           this.authService.logout();
           this.alertService.sweetalertError('Your session is expired please login again !!');
-          //this.router.navigate(['/login']);
+          this.router.navigate(['/login']);
           break;
         }
         case 400: {
-          // if(message == 'Invalid Token String'){
-          //   this.alertService.sweetalertError('Invalid Token String');
-          //   // this.authService.logout();
-          //   // this.router.navigate(['/login']);
-          // }else if(message == 'Your session is expired please login again'){
-          //   this.alertService.sweetalertError('Your session is expired please login again');
-          //   // this.authService.logout();
-          //   // this.router.navigate(['/login']);
-          // }
-          break;
-        }
-        case 401: {
-          this.alertService.sweetalertError('Invalid Token Please, Please Try Again !!!!',);
-          //this.router.navigate(['/login']);
+          //   this.alertService.sweetalertError('Please Check Your Data !!');
           break;
         }
         case 404: {
