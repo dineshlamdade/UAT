@@ -280,7 +280,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       declaredAmountFormatted !== undefined
     ) {
       //let installment = this.form.value.premiumAmount;
-      //installment = installment.toString().replace(',', '');
+      //installment = installment.toString().replace(/,/g, '');
       const formatedDeclaredAmount = this.numberFormat.transform(
         declaredAmountFormatted
       );
@@ -336,14 +336,14 @@ export class TuitionFeesDeclarationComponent implements OnInit {
 
     tuitionFeesDetail.declaredAmount = tuitionFeesDetail.declaredAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
     tuitionFeesDetail.actualAmount = tuitionFeesDetail.actualAmount
       .toString()
-      .replace(',', '');
+      .replace(/,/g, '');
 
     const data = {
       tuitionFeesTransactionDetail : this.transactionDetail,
-      receiptAmount: this.receiptAmount.toString().replace(',', ''),
+      receiptAmount: this.receiptAmount.toString().replace(/,/g, ''),
       documentRemark: this.documentRemark,
     };
 
@@ -523,73 +523,100 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       });
   }
 
-  //-------------- Upload Document in Edit Document Detail ---------------------
-  // public uploadUpdateTransaction() {
-  //   console.log(
-  //     'uploadUpdateTransaction editTransactionUpload::',
-  //     this.editTransactionUpload
-  //   );
+ // -------------- Upload Document in Edit Document Detail ---------------------
 
-  //   this.editTransactionUpload.forEach((element) => {
-  //     if (element.declaredAmount !== null) {
-  //       element.declaredAmount = element.declaredAmount
-  //         .toString()
-  //         .replace(',', '');
-  //     } else {
-  //       element.declaredAmount = 0.0;
-  //     }
-  //     if (element.actualAmount !== null) {
-  //       element.actualAmount = element.actualAmount.toString().replace(',', '');
-  //     } else {
-  //       element.actualAmount = 0.0;
-  //     }
-  //   });
+  public uploadUpdateTransaction() {
+    console.log(
+      'uploadUpdateTransaction editTransactionUpload::',
+      this.editTransactionUpload
+    );
 
-  //   const data = {
-  //     tuitionFeesTransactionDetail: this.editTransactionUpload[0],
-  //     //documentRemark: this.documentRemark,
-  //     proofSubmissionId: this.editProofSubmissionId,
-  //     receiptAmount: this.editReceiptAmount,
-  //   };
-  //   console.log('uploadUpdateTransaction data::', data);
+    this.editTransactionUpload.forEach((element) => {
+      if (element.declaredAmount !== null) {
+        element.declaredAmount = element.declaredAmount
+          .toString()
+          .replace(/,/g, '');
+      } else {
+        element.declaredAmount = 0.0;
+      }
+      if (element.actualAmount !== null) {
+        element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
+      } else {
+        element.actualAmount = 0.0;
+      }
+      const dateOfPaymnet = this.datePipe.transform(
+        element.dateOfPayment,
+        'yyyy-MM-dd'
+      );
+      element.dateOfPayment = dateOfPaymnet;
+      this.uploadGridData.push(element.tuitionFeesTransactionId);
+    });
 
-  //   this.tuitionFeesService
-  //          .uploadFDTransactionwithDocument(this.editfilesArray, data)
-  //     (this.editfilesArray, data)
-  //     .subscribe((res) => {
-  //       console.log('uploadUpdateTransaction::', res);
-  //       if (res.data.results.length > 0) {
+    const data = {
+      // tuitionFeesTransactionDetail: this.editTransactionUpload[0],
+      // //documentRemark: this.documentRemark,
+      // proofSubmissionId: this.editProofSubmissionId,
+      // receiptAmount: this.editReceiptAmount,
+      proofSubmissionId: this.editProofSubmissionId,
+      tuitionFeesTransactionDetailRequestList: this.editTransactionUpload,
+      receiptAmount: this.editReceiptAmount,
+      documentRemark: this.documentRemark,
+      groupTransactionIDs:this.uploadGridData,
+    };
+    console.log('uploadUpdateTransaction data::', data);
 
-  //         this.transactionDetail =
-  //             res.data.results[0].tuitionFeesTransactionDetailList;
-  //           this.documentDetailList = res.data.results[0].documentInformation;
-  //           this.grandDeclarationTotal =
-  //             res.data.results[0].grandDeclarationTotal;
-  //           this.grandActualTotal = res.data.results[0].grandActualTotal;
-  //           this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
-  //           this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
-
-  //           this.transactionDetail.forEach((element) => {
-  //             element.declaredAmount = this.numberFormat.transform(
-  //               element.declaredAmount
-  //             );
-  //             element.actualAmount = this.numberFormat.transform(
-  //               element.actualAmount
-  //             );
-  //           });
-
-  //         this.alertService.sweetalertMasterSuccess(
-  //           'Transaction Saved Successfully.',
-  //           ''
-  //         );
+    this.tuitionFeesService
+           .uploadTuitionFeesTransactionwithDocument(this.editfilesArray, data)
+           .subscribe((res) => {
+            console.log('uploadUpdateTransaction::', res);
+            if (res.data.results.length > 0) {
 
 
-  //       } else {
-  //         this.alertService.sweetalertWarning(res.status.messsage);
-  //       }
-  //     });
-  //     this.resetEditVariable()
-  // }
+              this.transactionDetail =
+                res.data.results[0].tuitionFeesTransactionDetailList;
+              console.log('transactionDetail', this.transactionDetail);
+    
+              this.documentDetailList = res.data.results[0].documentInformation;
+              this.grandDeclarationTotal = res.data.results[0].grandDeclarationTotal;
+              this.grandActualTotal = res.data.results[0].grandActualTotal;
+              this.grandRejectedTotal = res.data.results[0].grandRejectedTotal;
+              this.grandApprovedTotal = res.data.results[0].grandApprovedTotal;
+              // this.transactionDetail.forEach((element) => {
+              //   element.group2TransactionList.forEach((innerElement) => {
+              //     if (innerElement.dateOfPayment !== null) {
+              //       innerElement.dateOfPayment = new Date(
+              //         innerElement.dateOfPayment
+              //       );
+              //     }
+              //     if (this.employeeJoiningDate < innerElement.dueDate) {
+              //       innerElement.active = false;
+              //     }
+              //     innerElement.declaredAmount = this.numberFormat.transform(
+              //       innerElement.declaredAmount
+              //     );
+              //     // console.log(`formatedPremiumAmount::`,innerElement.declaredAmount);
+              //   });
+              // });
+              this.initialArrayIndex = [];
+    
+              this.transactionDetail.forEach((element) => {
+                element.declaredAmount = this.numberFormat.transform(
+                  element.declaredAmount
+                );
+                element.actualAmount = this.numberFormat.transform(
+                  element.actualAmount
+                );
+              });
+              this.alertService.sweetalertMasterSuccess(
+                'Transaction Saved Successfully.',
+                ''
+              );
+            } else {
+              this.alertService.sweetalertWarning(res.status.messsage);
+            }
+      });
+      this.resetEditVariable()
+  }
 
 
   resetEditVariable() {
@@ -761,7 +788,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     const formatedGlobalSelectedValue = Number(
       this.globalSelectedAmount == '0'
         ? this.globalSelectedAmount
-        : this.globalSelectedAmount.toString().replace(',', '')
+        : this.globalSelectedAmount.toString().replace(/,/g, '')
     );
 
     let formatedActualAmount: number = 0;
@@ -789,7 +816,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.tuitionFeesTransactionDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       formatedSelectedAmount = this.numberFormat.transform(
         formatedGlobalSelectedValue + formatedActualAmount
@@ -803,7 +830,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       formatedActualAmount = Number(
         this.tuitionFeesTransactionDetailList[i].actualAmount
           .toString()
-          .replace(',', '')
+          .replace(/,/g, '')
       );
       // this.transactionDetail[j].actualAmount = this.numberFormat.transform(0);
       // this.transactionDetail[j].dateOfPayment = null;
@@ -824,7 +851,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     // this.transactionDetail[j].group2TransactionList.forEach((element) => {
     //   // console.log(element.actualAmount.toString().replace(',', ""));
     //   this.actualTotal += Number(
-    //     element.actualAmount.toString().replace(',', '')
+    //     element.actualAmount.toString().replace(/,/g, '')
     //   );
     // });
     // this.transactionDetail[j].actualTotal = this.actualTotal;
@@ -893,7 +920,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
   //   this.transactionDetail[j].group2TransactionList.forEach((element) => {
   //     // console.log(element.declaredAmount.toString().replace(',', ""));
   //     this.declarationTotal += Number(
-  //       element.declaredAmount.toString().replace(',', '')
+  //       element.declaredAmount.toString().replace(/,/g, '')
   //     );
   //     // console.log(this.declarationTotal);
   //     // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
@@ -991,14 +1018,14 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     this.actualAmount = 0;
     this.tuitionFeesTransactionDetailList.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
 
     this.transactionDetail.forEach((element) => {
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
     });
@@ -1039,7 +1066,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     // this.transactionDetail[j].forEach((element) => {
     //   // console.log(element.actualAmount.toString().replace(',', ""));
     //   this.actualTotal += Number(
-    //     element.actualAmount.toString().replace(',', '')
+    //     element.actualAmount.toString().replace(/,/g, '')
     //   );
     //   // console.log(this.actualTotal);
     //   // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1304,14 +1331,14 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       if (innerElement.declaredAmount !== null) {
         innerElement.declaredAmount = innerElement.declaredAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         innerElement.declaredAmount = 0.0;
       }
       if (innerElement.actualAmount !== null) {
         innerElement.actualAmount = innerElement.actualAmount
           .toString()
-          .replace(',', '');
+          .replace(/,/g, '');
       } else {
         innerElement.actualAmount = 0.0;
       }
@@ -1330,7 +1357,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     });
 
 
-    this.receiptAmount = this.receiptAmount.toString().replace(',', '');
+    this.receiptAmount = this.receiptAmount.toString().replace(/,/g, '');
     const data = {
       tuitionFeesTransactionDetailRequestList: this.tuitionFeesTransactionDetailList,
       groupTransactionIDs: this.uploadGridData,
@@ -1489,10 +1516,10 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
       console.log(
         'declaredAmount::',
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(',', '')
+        element.declaredAmount.toString().replace(/,/g, '')
       );
     });
 
@@ -1574,9 +1601,9 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     this.actualTotal = 0;
     this.actualAmount = 0;
     this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
-      console.log(element.actualAmount.toString().replace(',', ''));
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
       this.actualTotal += Number(
-        element.actualAmount.toString().replace(',', '')
+        element.actualAmount.toString().replace(/,/g, '')
       );
       console.log(this.actualTotal);
       // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
@@ -1638,14 +1665,14 @@ export class TuitionFeesDeclarationComponent implements OnInit {
   nextDocViewer() {
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
   }
 
   previousDocViewer() {
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
   }
 
@@ -1654,7 +1681,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
+      this.urlArray[this.urlIndex].blobURI,
     );
     console.log(this.urlSafe);
     this.modalRef = this.modalService.show(
@@ -1662,6 +1689,7 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-xl' })
     );
   }
+
 
   // Common Function for filter to call API
   getTransactionFilterData() {
@@ -1799,6 +1827,14 @@ class DeclarationService {
 
 
 
+
+// function uploadUpdateTransaction() {
+//   throw new Error('Function not implemented.');
+// }
+
+// function uploadUpdateTransaction() {
+//   throw new Error('Function not implemented.');
+// }
 // // When Edit of Document Details
 // declarationEditUpload(
 //   template2: TemplateRef<any>,
@@ -1856,12 +1892,12 @@ class DeclarationService {
 //     if (element.declaredAmount !== null) {
 //       element.declaredAmount = element.declaredAmount
 //         .toString()
-//         .replace(',', '');
+//         .replace(/,/g, '');
 //     } else {
 //       element.declaredAmount = 0.0;
 //     }
 //     if (element.actualAmount !== null) {
-//       element.actualAmount = element.actualAmount.toString().replace(',', '');
+//       element.actualAmount = element.actualAmount.toString().replace(/,/g, '');
 //     } else {
 //       element.actualAmount = 0.0;
 //     }
@@ -2022,10 +2058,10 @@ class DeclarationService {
 //   this.editTransactionUpload[j].forEach((element) => {
 //     console.log(
 //       'declaredAmount::',
-//       element.declaredAmount.toString().replace(',', '')
+//       element.declaredAmount.toString().replace(/,/g, '')
 //     );
 //     this.declarationTotal += Number(
-//       element.declaredAmount.toString().replace(',', '')
+//       element.declaredAmount.toString().replace(/,/g, '')
 //     );
 //     // console.log(this.declarationTotal);
 //   });
@@ -2100,9 +2136,9 @@ class DeclarationService {
 //       this.actualTotal = 0;
 //       this.actualAmount = 0;
 //       this.editTransactionUpload[j].group2TransactionList.forEach((element) => {
-//         console.log(element.actualAmount.toString().replace(',', ''));
+//         console.log(element.actualAmount.toString().replace(/,/g, ''));
 //         this.actualTotal += Number(
-//           element.actualAmount.toString().replace(',', '')
+//           element.actualAmount.toString().replace(/,/g, '')
 //         );
 //         console.log(this.actualTotal);
 //         // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));

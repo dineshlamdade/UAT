@@ -63,6 +63,9 @@ import { TreatmentOfSpecifiedSummaryComponent } from './treatment-of-specified-d
 import { TreatmentOfSpecifiedMasterComponent } from './treatment-of-specified-diseases/treatment-of-specified-master/treatment-of-specified-master.component';
 import { TreatmentOfSpecifiedDeclarationComponent } from './treatment-of-specified-diseases/treatment-of-specified-declaration/treatment-of-specified-declaration.component';
 import {InputNumberModule} from 'primeng/inputnumber';
+import { TokenInterceptorService } from '../../auth/token-interceptor/token-interceptor.service';
+import { AuthGuard } from '../../auth/auth.guard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { ChapterVIASummaryComponent } from './chapter-vi-a-summary/chapter-vi-a-summary.component';
 
 @NgModule({
@@ -139,7 +142,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
         InputNumberModule
     ],
 
-  providers: [ DatePipe, NumberFormatPipe],
+  providers: [ DatePipe, NumberFormatPipe,  AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },],
 
 })
 export class investmentChapterVIAModule { }

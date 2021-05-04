@@ -142,7 +142,8 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -171,7 +172,8 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
-                <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -241,7 +243,7 @@
                   </select>
                 </td>
                 <td>
-                  <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                  <!-- <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span> -->
                 </td>
                 <td>
                   <div class="custom_icon_badge">
@@ -284,8 +286,8 @@
                   <input
                     type="text"
                     [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate"
-                    [maxDate]="financialYearEndDate"
+                    
+                    [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker"
                     data-date-autoclose="true"
@@ -335,7 +337,8 @@
                 </td>
                 <td>
                   <span tooltip="{{ summary.proofSubmissionId }}">
-                    {{ summary.proofSubmissionId }}
+                    <!-- {{ summary.proofSubmissionId }} -->
+                    <i class="fa fa-clipboard"></i>
                   </span>
                 </td>
                 <td class="text-orange font700">
@@ -764,10 +767,7 @@
                     "
                     tooltip="view"
                   ></i>
-
-
-
-                    &nbsp;&nbsp;
+                  &nbsp;&nbsp;
                     <i *ngIf="canEdit"
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
@@ -996,8 +996,8 @@
                     <input
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                      [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
+                     
+                      [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
                       data-date-autoclose="true"
@@ -1008,6 +1008,7 @@
                       bsDatepicker
                     />
                   </td>
+                  <!-- [minDate]="financialYearStartDate" -->
                   <td>
                     <input
                       type="text"
@@ -1134,7 +1135,6 @@
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span
                     class="padding-right-12"
-                    placement="left"
                     tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}"
                   >
                     {{ grandActualTotalEditModal | number: "1.2-2" }}

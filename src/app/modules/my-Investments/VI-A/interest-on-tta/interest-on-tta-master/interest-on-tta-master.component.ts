@@ -48,6 +48,8 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
   public familyMemberNameList: Array<any> = [];
 
+  public empolyeeBankList: Array<any> = [];
+
   public transactionDetail: Array<any> = [];
   public documentDetailList: Array<any> = [];
   public uploadGridData: Array<any> = [];
@@ -57,9 +59,15 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public transactionInstitutionListWithPolicies: Array<any> = [];
 
   public stateNameList: Array<any> = [];
+
+  public accountNoList: Array<any> = [];
+
+  
   public ifscCodeList: Array<any> = [];
   public bankNameLsit: Array<any> = [];
   public bankIFSC:any;
+
+  public bankAC:any;
 
 
   public  TotalIFSCcodeList: Array<any> = [];
@@ -115,6 +123,10 @@ export class InterestOnTtaMasterComponent implements OnInit {
   public globalSelectedAmount: string;
   public selectedState: string;
 
+  public bankAccount:string;
+
+  public selectedBankAccount: Number;
+
   public disability : string;
   public severity : string;
   public isClaiming80U: boolean = true;
@@ -153,6 +165,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
     this.getFinacialYear();
     this.getMasterIFSCCodeList();
     this.getMasterStateList();
+    this.getMasterAccountList();
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
     // this.deactivateRemark();
@@ -179,10 +192,12 @@ export class InterestOnTtaMasterComponent implements OnInit {
   // initiate Reactive Master Form
   initiateMasterForm() {
     this.form = this.formBuilder.group({
-      savingBankMasterId: new FormControl(0),
+      savingBankMasterId: new FormControl(null),
+     /*  savingBankMasterId: new FormControl(0), */
       ifscCode: new FormControl(null, Validators.required),
       state:  new FormControl(null, Validators.required),
-      bankName: new FormControl({value: null, disabled: true },Validators.required),
+      bankName:  new FormControl(null, Validators.required),
+      //bankName: new FormControl({value: null, disabled: true },Validators.required),
       branchName: new FormControl({value: null, disabled: true },Validators.required),
       bankAddress: new FormControl({value: null, disabled: true },Validators.required),
       accountNumber: new FormControl(null, Validators.required),
@@ -205,11 +220,82 @@ export class InterestOnTtaMasterComponent implements OnInit {
 
     // State Code List API call
     getMasterStateList() {
-
       this.interestOnTtaService.getStateInfoList().subscribe((res) => {
         this.stateNameList = res.data.results;
       });
     }
+
+    
+
+  // Account  Code List API call
+  // Account Code List API call
+/*   getMasterAccountList() {
+    this.interestOnTtaService.getAccountInfoList().subscribe((res) => {
+      if(res.data.results.length > 0){
+        res.data.results.forEach((element) => {
+          console.log("element::",element)
+          element.forEach((innerelemet) => {
+            console.log("innerelemet::",innerelemet)
+            const obj = {
+              label: innerelemet.bankName,
+              value: innerelemet.bankName,
+            };
+            this.accountNoList.push(obj);            
+          });       
+        });
+      }      
+      console.log('this.accountNoList::', this.accountNoList); 
+    });
+  } */
+  // Account  Code List API call
+  // Account Code List API call
+  getMasterAccountList() {
+    this.interestOnTtaService.getAccountInfoList().subscribe((res) => {
+      if(res.data.results.length > 0){
+        this.empolyeeBankList = res.data.results[0];
+        res.data.results.forEach((element) => {
+          console.log("element::",element)
+          element.forEach((innerelemet) => {
+            console.log("innerelemet::",innerelemet)
+            const obj = {
+              label: innerelemet.bankName,
+              value: innerelemet.employeeBankInfoId,
+            };
+            this.accountNoList.push(obj);            
+          });  
+
+        });
+      }      
+      console.log('this.accountNoList::', this.accountNoList); 
+    });
+  }
+
+
+onSelectBankCode(employeeBankInfoId:any)
+ {
+   console.log("empolyeeBankList::", this.empolyeeBankList)
+   console.log("employeeBankInfoId::", employeeBankInfoId)
+   const id=Number(employeeBankInfoId)
+
+   console.log("employeeBankInfoId1111::",id)
+       const employeeBankInfo = this.empolyeeBankList.find(   
+      (bankInfo) => bankInfo.employeeBankInfoId === id);
+    console.log("employeeBankInfo::",employeeBankInfo);
+   // this.form.patchValue(employeeBankInfo);
+
+    this.form.patchValue({     
+     //  savingBankMasterId: new FormControl(0),
+     savingBankMasterId:employeeBankInfo.employeeBankInfoId,
+         ifscCode: employeeBankInfo.bankIFSC,
+        state: employeeBankInfo.state,
+        bankName:  employeeBankInfo.bankName,       
+         branchName: employeeBankInfo.branchName,
+       bankAddress: employeeBankInfo.branchAddress,
+       accountNumber:employeeBankInfo.accountNo,
+     });
+  }
+
+  
 
       //get ifsc detail
       IFSCDetails(bankIFSC) {
@@ -233,7 +319,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
             this.form.patchValue({
               branchName: res.data.results[0].branchName,
               bankAddress: res.data.results[0].address,
-              bankName: res.data.results[0].bankName,
+             bankName: res.data.results[0].bankName,
             });
           });
         }
@@ -261,7 +347,7 @@ export class InterestOnTtaMasterComponent implements OnInit {
       this.form.patchValue({
         branchName:'',
         bankAddress: '',
-        bankName:'',
+      //  bankName:'',
       });
 
       if (searchTerm.query.length < 11) {
@@ -320,6 +406,15 @@ export class InterestOnTtaMasterComponent implements OnInit {
      this.bankIFSC ='';
     }
 
+
+  /*   onSelectBankAccount(evt:any)
+    {
+      this.selectedBankAccount = evt;
+      this.bankAccount = '';
+
+    } */
+
+  
     // IFSC Code List API call
     getMasterIFSCCodeList() {
       const state = this.masterForm.state.value;

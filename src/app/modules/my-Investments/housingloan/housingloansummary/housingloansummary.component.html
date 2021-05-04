@@ -49,12 +49,15 @@
               </td>
               <td rowspan="1" >{{summary.declaredAmount}}</td>
               <td rowspan="1" >{{summary.actualAmount}}</td>
+
               <td class="wd-10">
                 <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
-                (click)="redirectToDeclarationActual(summary.housePropertyMasterId, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                    (click)="redirectToDeclarationActual(summary.houseDescription,  'edit')"
+                    tooltip="Edit"></i>&nbsp;&nbsp;
                 <i class="fa fa-eye font-16 text-blue cursor-pointer"
-                (click)="redirectToDeclarationActual(summary.housePropertyMasterId, 'view')" tooltip="View"></i>
-              </td>
+                    (click)="redirectToDeclarationActual(summary.houseDescription, 'view')"
+                    tooltip="View"></i>
+            </td>
             </tr>
             <tr *ngIf="!summaryGridData.housePropertySummaryDetails?.length">
               <td colspan="7">

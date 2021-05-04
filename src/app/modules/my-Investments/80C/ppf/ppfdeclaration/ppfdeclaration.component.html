@@ -142,7 +142,8 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-7 font700">Remark</th>
-                <th rowspan="2" class="wd-8">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-8">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-10 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -172,7 +173,8 @@
                 <th rowspan="2" class="wd-9 font700">Actual</th>
                 <th colspan="2" class="wd-17 font700">Receipt Amount</th>
                 <th rowspan="2" class="wd-10 font700">Remark</th>
-                <th rowspan="2" class="wd-10">Proof Submission ID</th>
+                <!-- <th rowspan="2" class="wd-10">Proof Submission ID</th> -->
+                <th rowspan="2" class="wd-7">PS ID</th>
                 <th rowspan="2" class="wd-15 font700">Transaction Status</th>
               </tr>
               <tr>
@@ -247,7 +249,7 @@
                   </select>
                 </td>
                 <td>
-                  <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span>
+                  <!-- <span>{{ summary.isECS === 1 ? "Yes" : "No" }}</span> -->
                 </td>
                 <td>
                   <div class="custom_icon_badge">
@@ -279,7 +281,8 @@
                     <input
                     *ngIf = "item.frequency !=='As & When'"
                       type="text"
-                      id="declaredAmount{{ summary.licTransactionId }}"  onkeypress="return /[0-9 ]/i.test(event.key)"
+                      id="declaredAmount{{ summary.licTransactionId }}"  
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.licTransactionId }}"
                       [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right"
@@ -302,7 +305,7 @@
                   <input
                     type="text"
                     [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                    [minDate]="financialYearStartDate"
+                   
                     [maxDate]="today"
                     [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     data-provide="datepicker"
@@ -318,11 +321,13 @@
                     bsDatepicker
                   />
                 </td>
+                <!-- [minDate]="financialYearStartDate" -->
                 <td>
                   <input
 
                     type="text"
-                    id="actualAmount{{ summary.licTransactionId }}"  onkeypress="return /[0-9 ]/i.test(event.key)"
+                    id="actualAmount{{ summary.licTransactionId }}"  
+                    onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.licTransactionId }}"
                     [disabled]="initialArrayIndex[j] > i && item.frequency !=='As & When'"
                     [(ngModel)]="summary.actualAmount"
@@ -353,7 +358,8 @@
                 </td>
                 <td>
                   <span tooltip="{{ summary.proofSubmissionId }}">
-                    {{ summary.proofSubmissionId }}
+                     <!-- {{ summary.proofSubmissionId }} -->
+                     <i class="fa fa-clipboard"></i>
                   </span>
                 </td>
                 <td class="text-orange font700">
@@ -476,9 +482,9 @@
               <td class="bg-gray font-18 font700 align-right wd-9">
                 <span
                   class="padding-right-12"
-                  tooltip="{{ actualTotal | number: '1.2-2' }}"
+                  tooltip="{{ grandActualTotal | number: '1.2-2' }}"
                 >
-                  {{ actualTotal | number: "1.2-2" }}
+                  {{ grandActualTotal | number: "1.2-2" }}
                 </span>
               </td>
               <td class="bg-gray font-18 font700 align-right wd-9">
@@ -1024,7 +1030,7 @@
                     <input
                       type="text"
                       [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                      [minDate]="financialYearStartDate"
+                     
                       [maxDate]="today"
                       [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                       data-provide="datepicker"
@@ -1035,6 +1041,7 @@
                       bsDatepicker
                     />
                   </td>
+                  <!-- [minDate]="financialYearStartDate" -->
                   <td>
                     <input
                       type="text"
@@ -1188,7 +1195,7 @@
                   </span>
                 </td>
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
-                <td class="bg-gray font-18 font700 align-right wd-9">
+                <td class="bg-lightgray font-18 font700 align-right">
                   <span
                     class="padding-right-12"
                     tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}"

@@ -43,7 +43,7 @@ export class InterestOnTtaService {
 
   //get ifsc detail
   getDataFromIFSC(bankIFSC) : Observable<any>  {
-    return this._HTTP.get(this.baseUrl8085Employee + '/bank-master/data/' + bankIFSC)
+    return this._HTTP.get(this.baseUrl8085Employee + 'bank-master/data/' + bankIFSC)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -51,15 +51,22 @@ export class InterestOnTtaService {
 
   //state info list
   getStateInfoList() : Observable<any>  {
-    return this._HTTP.get(this.baseUrl8085Employee + '/location-information/state')
+    return this._HTTP.get(this.baseUrl8085Employee + 'location-information/state')
     .pipe(map((res: any) => {
       return res;
     }));
   }
-
+  
+  //Account info list
+  getAccountInfoList() : Observable<any>  {
+    return this._HTTP.get(this.baseUrl8085Employee + 'employee-bank-info/employeeMasterId/64')
+    .pipe(map((res: any) => {
+      return res;
+    }));
+  }
   //IFSC code list
   getIFSCCodeList(state : string) : Observable<any>  {
-    return this._HTTP.get(this.baseUrl8085Employee + '/bank-master/ifsc/' + state)
+    return this._HTTP.get(this.baseUrl8085Employee + 'bank-master/ifsc/' + state)
     .pipe(map((res: any) => {
       return res;
     }));
@@ -67,7 +74,7 @@ export class InterestOnTtaService {
 
    //search IFSCcode service
     searchIFSC(terms: any, stateModel) {
-      return this._HTTP.get(this.baseUrl8085Employee+ '/bank-master/ifsc/' + stateModel + '/' + terms)
+      return this._HTTP.get(this.baseUrl8085Employee+ 'bank-master/ifsc/' + stateModel + '/' + terms)
     .pipe(map((res: any) =>{
       return res;
     }))
