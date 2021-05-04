@@ -157,14 +157,14 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       masterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
       depositType: new FormControl('recurring'),
-      proofSubmissionId : new FormControl('')
+      proofSubmissionId: new FormControl(''),
     });
 
     this.frequencyOfPaymentList = [{ label: 'One Time', value: 'OneTime' }];
 
     this.issueTypeOfList = [
-      { label: 'VIII th Issue', value: 'VIII th Issue' },
-      { label: 'IX th Issue', value: 'IX th Issue' },
+      { label: 'VIII th Issue', value: 'VIII' },
+      { label: 'IX th Issue', value: 'IX' },
     ];
 
     this.masterPage();
@@ -255,7 +255,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     return this.form.controls;
   }
 
-  // Policy End Date Validations with Policy Start Date
+  //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
@@ -277,7 +277,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     this.setPaymentDetailToDate();
   }
 
-  // Policy End Date Validations with Current Finanacial Year
+  //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
@@ -289,8 +289,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     );
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
-        'Policy End Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.policyEndDate.reset();
     } else {
@@ -301,7 +300,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Payment Detail From Date
+  //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
     this.paymentDetailMinDate = this.form.value.fromDate;
     const from = this.datePipe.transform(
@@ -317,7 +316,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Current Finanacial Year
+  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
@@ -328,14 +327,13 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       'yyyy-MM-dd'
     );
     if (to < financialYearStartDate) {
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
       this.alertService.sweetalertWarning(
-        'To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.toDate.reset();
     }
   }
-
   // Get Master Page Data API call
   masterPage() {
     this.nscService.getNSCMaster().subscribe((res) => {
@@ -358,7 +356,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       return;
     }
 
-    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0  ) {
+    if (this.masterfilesArray.length === 0 && this.urlArray.length === 0) {
       this.alertService.sweetalertWarning(
         'Post Office Recurring  Document needed to Create Master.'
       );
@@ -373,12 +371,12 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         'yyyy-MM-dd'
       );
       const data = this.form.getRawValue();
-            data.proofSubmissionId = this.proofSubmissionId;
-            data.fromDate = from;
-            data.toDate = to;
-            data.premiumAmount = data.premiumAmount.toString().replace(',', '');
+      data.proofSubmissionId = this.proofSubmissionId;
+      data.fromDate = from;
+      data.toDate = to;
+      data.premiumAmount = data.premiumAmount.toString().replace(',', '');
 
-               console.log('Post Office Data::', data);
+      console.log('Post Office Data::', data);
 
       this.nscService
         .uploadMultipleNSCMasterFiles(this.masterfilesArray, data)
@@ -469,9 +467,9 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       if (this.form.value.frequencyOfPayment === 'One Time') {
         installment = installment * 1;
       }
-      const formatedPremiumAmount = this.form.value.premiumAmount;
+      // const formatedPremiumAmount = this.form.value.premiumAmount;
       // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-      this.form.get('premiumAmount').setValue(formatedPremiumAmount);
+      // this.form.get('premiumAmount').setValue(formatedPremiumAmount);
       this.form.get('annualAmount').setValue(installment);
     }
   }
@@ -503,6 +501,7 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
 
   // On Master Edit functionality
   editMaster(accountNumber) {
+    this.scrollToTop();
     this.nscService.getNSCMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -512,43 +511,39 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
         element.fromDate = new Date(element.fromDate);
         element.toDate = new Date(element.toDate);
       });
-      console.log(accountNumber)
-      const obj =  this.findByPolicyNo(accountNumber,this.masterGridData);
+      console.log(accountNumber);
+      const obj = this.findByPolicyNo(accountNumber, this.masterGridData);
 
       // Object.assign({}, { class: 'gray modal-md' }),
-      console.log("Edit Master",obj);
-      if (obj!= 'undefined'){
-
-      this.paymentDetailGridData = obj.paymentDetails;
-      this.form.patchValue(obj);
-      this.Index = obj.accountNumber;
-      this.showUpdateButton = true;
-      this.isClear = true;
-      this.urlArray = obj.documentInformationList;
-      this.proofSubmissionId = obj.proofSubmissionId;
-    }
+      console.log('Edit Master', obj);
+      if (obj != 'undefined') {
+        this.paymentDetailGridData = obj.paymentDetails;
+        this.form.patchValue(obj);
+        this.Index = obj.accountNumber;
+        this.showUpdateButton = true;
+        this.isClear = true;
+        this.urlArray = obj.documentInformationList;
+        this.proofSubmissionId = obj.proofSubmissionId;
+      }
     });
-    }
-
-  findByPolicyNo(accountNumber,masterGridData){
-    return masterGridData.find(x => x.accountNumber === accountNumber)
   }
 
-  // On Master Edit functionality
-  // viewMaster(i: number) {
-  //   //this.scrollToTop();
-  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-  //   this.form.patchValue(this.masterGridData[i]);
-  //   // console.log(this.form.getRawValue());
-  //   this.Index = i;
-  //   this.showUpdateButton = true;
-  //   const formatedPremiumAmount = this.numberFormat.transform(
-  //     this.masterGridData[i].premiumAmount
-  //   );
-  //   // console.log(`formatedPremiumAmount::`,formatedPremiumAmount);
-  //   this.form.get('premiumAmount').setValue(formatedPremiumAmount);
-  //   this.isCancel = true;
-  // }
+  // findByPolicyNo Fuctionality
+  findByPolicyNo(accountNumber, masterGridData) {
+    return masterGridData.find((x) => x.accountNumber === accountNumber);
+  }
+
+  // scrollToTop Fuctionality
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
 
   // On View Cancel
   resetView() {
@@ -567,44 +562,41 @@ export class NationalSevingCertificateMasterComponent implements OnInit {
       Object.assign({}, { class: 'gray modal-md' })
     );
   }
-    //---------- For Doc Viewer -----------------------
-    nextDocViewer() {
+  //---------- For Doc Viewer -----------------------
+  nextDocViewer() {
+    this.urlIndex = this.urlIndex + 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
 
-      this.urlIndex = this.urlIndex + 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      //   this.urlArray[this.urlIndex]
-      // );
-    }
+  previousDocViewer() {
+    this.urlIndex = this.urlIndex - 1;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+    //   this.urlArray[this.urlIndex]
+    // );
+  }
 
-    previousDocViewer() {
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
+    this.urlIndex = index;
 
-      this.urlIndex = this.urlIndex - 1;
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      //   this.urlArray[this.urlIndex]
-      // );
-    }
-
-    docViewer(template3: TemplateRef<any>,index:any) {
-      console.log("---in doc viewer--");
-      this.urlIndex = index;
-
-      console.log("urlArray::", this.urlArray);
-      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-        this.urlArray[this.urlIndex].blobURI,
-      );
-      //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
-      //this.urlSafe
-      console.log("urlSafe::",  this.urlSafe);
-      this.modalRef = this.modalService.show(
-        template3,
-        Object.assign({}, { class: 'gray modal-xl' }),
-      );
-    }
-
+    console.log('urlArray::', this.urlArray);
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+      this.urlArray[this.urlIndex].blobURI
+    );
+    //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
+    //this.urlSafe
+    console.log('urlSafe::', this.urlSafe);
+    this.modalRef = this.modalService.show(
+      template3,
+      Object.assign({}, { class: 'gray modal-xl' })
+    );
+  }
 }

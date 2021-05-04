@@ -9,13 +9,10 @@ exports.__esModule = true;
 exports.AppRoutingModule = void 0;
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-//////////////////
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-////////////////////
 var routes = [
+    { path: '', pathMatch: 'full', redirectTo: '/login' },
     { path: 'auth', loadChildren: './modules/auth/auth.module#AuthModule' },
     { path: '', loadChildren: './modules/dashboard/dashboard.module#DashboardModule' },
-    { path: 'payroll', loadChildren: './modules/payroll/payroll.module#PayrollModule' },
     { path: 'profile', loadChildren: './modules/profile/profile.module#ProfileModule' },
     { path: 'settings', loadChildren: './modules/settings/settings.module#SettingsModule' },
     { path: 'admin-approval', loadChildren: './modules/admin-approval/admin-approval.module#AdminApprovalModule' },
@@ -25,6 +22,10 @@ var routes = [
         path: 'investment',
         loadChildren: './modules/my-Investments/my-Investments.module#MyInvestmentsModule'
     },
+    {
+        path: 'PayrollInputs',
+        loadChildren: './modules/payroll-inputs/payroll-inputs.module#PayrollInputsModule'
+    },
     { path: 'lms', loadChildren: './modules/lms/lms.module#LMSModule' },
     { path: 'workflow', loadChildren: './modules/workflow/workflow.module#workflowModule' },
     {
@@ -33,6 +34,13 @@ var routes = [
     },
     { path: 'otherMaster', loadChildren: './modules/other-master/other-master.module#OtherMasterModule' },
     { path: 'companysetting', loadChildren: './modules/companysetting/companysetting.module#CompanySettingModule' },
+    // ................................22-3-2021 Pooja .................................. ........
+    { path: 'query', loadChildren: './modules/query/query.module#QueryModule' },
+    { path: 'loan', loadChildren: './modules/loan/loan.module#LoanModule' },
+    // ................................22-3-2021 Pooja .................................. ........
+    { path: 'lock', loadChildren: './modules/lock/lock.module#LockModule' },
+    { path: 'email-sms', loadChildren: './modules/email-sms/email-sms.module#EmailSmsModule' },
+    { path: 'loan-master', loadChildren: './modules/loan-master/loan-master.module#LoanMasterModule' },
     { path: '', pathMatch: 'full', redirectTo: '/dashboard' },
     { path: '**', pathMatch: 'full', redirectTo: '/dashboard' },
 ];

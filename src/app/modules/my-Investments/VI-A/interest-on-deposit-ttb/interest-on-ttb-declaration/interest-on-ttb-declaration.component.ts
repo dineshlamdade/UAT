@@ -37,10 +37,9 @@ import { InterestOnTtbService } from '../interest-on-ttb.service';
 })
 export class InterestOnTtbDeclarationComponent implements OnInit {
 
-
-  @Input() bankName: string;
-  @Input() policyNo: string;
-  @Input() data: any;
+  @Input() public bankName: string;
+  @Input() accountNumber: string;
+  @Input() public data: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -118,7 +117,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
-  public viewDocumentDetail = true;
+  public viewTransactionDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
   public actualAmountGlobal: Number;
@@ -160,12 +159,13 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   public financialYearEndDate: Date;
   public today = new Date();
   public transactionStatustList: any;
-  public globalBank: String = 'ALL';
+  public globalBank: String ;
   public globalPolicy: String = 'ALL';
   public globalTransactionStatus: String = 'ALL';
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public selectedMasterId: string;
+  public canEdit : boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -203,12 +203,15 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
       this.globalBank = input.bankName;
       this.getBankNameList();
       this.getTransactionFilterData(input.bankName);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -278,6 +281,9 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
 
   // ------- On declaration page get API call for All Institutions added into Master-------
   declarationPage() {
+
+    this.transactionStatustList = [];
+
     this.getBankNameList();
     this.resetAll();
   }
@@ -302,38 +308,20 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
           };
           this.bankNameList.push(obj);
         });
-        this.selectedTransactionBankName(0);
+        this.selectedTransactionBankName('All');
       });
   }
     // --------- On bankName selection show all transactions list accordingly all banks--------
-      selectedTransactionBankName(bankMasterId: number) {
-        const selectedBank = this.transactionBankNameList.find(item => item.interestOnSavingsDeposit80TTMasterId == bankMasterId);
+      selectedTransactionBankName(bankName: any) {
+        const selectedBank = this.transactionBankNameList.find(item => item.interestOnSavingsDeposit80TTMasterId == bankName);
         this.globalBank = selectedBank.bankName;
         this.selectedMasterId = selectedBank.interestOnSavingsDeposit80TTMasterId;
         this.getTransactionFilterData(this.globalBank);
         this.globalSelectedAmount = this.numberFormat.transform(0);
 
-       // --------- On bankName selection show all transactions list accordingly all banks--------
-          // selectedTransactionBankName(bankNames: any) {
-          //   // console.log("event", event);
-          // // this.selectedMasterId =
-          // this.globalBank = bankNames;
-          // this.getTransactionFilterData(this.globalBank);
-          // this.globalSelectedAmount = this.numberFormat.transform(0);
 
-          // this.transactionBankNameList.forEach((element) => {
-          //   if (bankNames === element.bankName) {
-          //     element.banks.forEach((item) => {
-          //       const bankObj = {
-          //         label: item,
-          //         value: item,
-          //       };
-          //       this.bankNameList.push(bankObj);
-          //     });
-          //   }
-          // });
 
-    if (bankMasterId == 0) {
+    if (bankName == 'All') {
       this.grandTabStatus = true;
       this.isDisabled = true;
     } else {
@@ -1081,7 +1069,7 @@ export class InterestOnTtbDeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {

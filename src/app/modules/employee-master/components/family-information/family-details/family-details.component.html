@@ -35,6 +35,26 @@
                                             <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                                             <div class="row family-first-line">
                                                 <div class="col-sm-6 col-md-4">
+                                                    <label class="form-label">Relationship</label>
+                                                    <select class="form-control" placeholder="Select"
+                                                        (completeMethod)="filterRelationship($event)"
+                                                        formControlName="relation"
+                                                        [(ngModel)]="familyMemberInfoRequestDTO.relation"
+                                                        placeholder="Enter Relationship" #relation
+                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
+                                                        (change)="populateGender(relation);getParentName()">
+                                                        <option value="" selected>Select</option>
+                                                        <option *ngFor="let relationOption of relationshipList"
+                                                            [value]="relationOption">
+                                                            {{relationOption}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+
+
+
+                                                <div class="col-sm-6 col-md-4">
                                                     <label class="form-label">Name</label>
                                                     <input type="text" class="form-control" placeholder="Enter Name"
                                                         formControlName="familyMemberName"
@@ -61,22 +81,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6 col-md-4">
-                                                    <label class="form-label">Relationship</label>
-                                                    <select class="form-control" placeholder="Select"
-                                                        (completeMethod)="filterRelationship($event)"
-                                                        formControlName="relation"
-                                                        [(ngModel)]="familyMemberInfoRequestDTO.relation"
-                                                        placeholder="Enter Relationship" #relation
-                                                        [ngClass]="{'is-invalid' : FamilyDetailsInfoForm.get('relation').status == 'INVALID'}"
-                                                        (change)="populateGender(relation)">
-                                                        <option value="" selected>Select</option>
-                                                        <option *ngFor="let relationOption of relationshipList"
-                                                            [value]="relationOption">
-                                                            {{relationOption}}
-                                                        </option>
-                                                    </select>
-                                                </div>
+                                               
                                                 <div class="col-sm-6 col-md-4">
                                                     <label class="form-label">Gender</label>
 
@@ -136,7 +141,7 @@
 
                                                 <div class="col-sm-6 col-md-4 mt-15">
                                                     <label class="form-label">Age Bracket</label>
-                                                    <input type="text" class="form-control" placeholder="Age Bracket"
+                                                    <input type="text" class="form-control" placeholder="Age Bracket" disabled
                                                         formControlName="ageBracket"
                                                         [(ngModel)]="familyMemberInfoRequestDTO.ageBracket"
                                                         (change)="validateIsdependant()"
@@ -157,7 +162,7 @@
                                                         </label>
                                                         <label
                                                             class="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" class="custom-control-input" value="no"
+                                                            <input type="radio" class="custom-control-input" value="no" 
                                                                 (change)="dependentOnEmployeeValidation($event)"
                                                                 formControlName="dependentOnEmployeeToggle"
                                                                 [(ngModel)]="dependentOnEmployee">
@@ -184,7 +189,7 @@
                                                         <label
                                                             class="custom-control custom-radio custom-control-inline">
                                                             <input type="radio" class="custom-control-input" value="no"
-                                                                (change)="companyMediclaimValidation($event)"
+                                                                (change)="companyMediclaimValidation($event)"  
                                                                 formControlName="companyMediclaimToggle"
                                                                 [(ngModel)]="companyMediclaim">
                                                             <span class="custom-control-label">

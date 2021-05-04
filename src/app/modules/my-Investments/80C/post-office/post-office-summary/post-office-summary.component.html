@@ -35,9 +35,16 @@
                   {{summary.actualAmount | number:'1.2-2'}}
                 </span>
               </td>
-              <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+              <td class="wd-10">
+                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'edit')" tooltip="Edit"></i>&nbsp;&nbsp;
+                <i class="fa fa-eye font-16 text-blue cursor-pointer"
+                (click)="redirectToDeclarationActual(summary.institution, summary.accountNumber, 'view')" tooltip="View"></i>
+              </td>
+              <!-- <td class="wd-10">
+                <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td> -->
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="6">
@@ -64,9 +71,12 @@
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
+                <!-- <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
                 (onBlur) = "onChangeFutureNewPlanDeclaredAmount()"  mode="decimal"  min="0" locale="en-IN" [minFractionDigits]="2"
-               ></p-inputNumber>
+               ></p-inputNumber> -->
+               <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPlanDeclaredAmount()"
+                       (onBlur)="keyPressedSpaceNotAllow()"
+                       mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
               </td>
               <td></td>
               <td></td>

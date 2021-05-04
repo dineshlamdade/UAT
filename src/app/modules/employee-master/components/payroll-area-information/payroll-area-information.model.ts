@@ -22,7 +22,11 @@ export class PayrollAreaRequestModel {
         public payrollAreaCode:any,
         public additionalPayrollAllowed: any,
         public multibankingAllowed: any,
-        y
+        public attendanceAreaCode:any,
+        public attendanceAreaFromDate:any,
+        public attendanceAreaToDate:any,
+        public isHoldSalary:any,
+        public isFFS:any
     ){}
 
 } 

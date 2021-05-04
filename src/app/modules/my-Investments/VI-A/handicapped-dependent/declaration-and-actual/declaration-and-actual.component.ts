@@ -504,8 +504,8 @@ export class DeclarationAndActualComponent implements OnInit {
     });
   }
 
-   //Get Family Name List
-   getMasterFamilyInfo() {
+  //Get Family Name List
+  getMasterFamilyInfo() {
     this.handicappedDependentService.getFamilyInfoList().subscribe((res) => {
       console.log('getFamilyInfo', res);
       this.familyMemberGroup = res.data.results;
@@ -527,6 +527,7 @@ export class DeclarationAndActualComponent implements OnInit {
       });
     });
   }
+
     OnSelectionfamilyMemberGroup(formArrayElement, event) {
 
       if (event.target.value !== '0: null') {
@@ -1688,31 +1689,6 @@ export class DeclarationAndActualComponent implements OnInit {
     console.log('this.editfilesArray.size::', this.editfilesArray.length);
   }
 
-  nextDocViewer() {
-    this.urlIndex = this.urlIndex + 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  previousDocViewer() {
-    this.urlIndex = this.urlIndex - 1;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-  }
-
-  docViewer(template3: TemplateRef<any>) {
-    this.urlIndex = 0;
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI
-    );
-    console.log(this.urlSafe);
-    this.modalRef = this.modalService.show(
-      template3,
-      Object.assign({}, { class: 'gray modal-xl' })
-    );
-  }
 
   // Common Function for filter to call API
   getTransactionFilterData(
@@ -1790,6 +1766,36 @@ export class DeclarationAndActualComponent implements OnInit {
         console.log(this.urlArray);
       });
   }
+
+    // ---------------- Doc Viewr Code ----------------------------
+    nextDocViewer() {
+      this.urlIndex = this.urlIndex + 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    previousDocViewer() {
+      this.urlIndex = this.urlIndex - 1;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+    }
+
+    docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+      console.log("documentDetailList::", documentDetailList)
+      this.urlArray = documentDetailList;
+      this.urlIndex = 0;
+      this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
+        this.urlArray[this.urlIndex].blobURI,
+      );
+      console.log(this.urlSafe);
+      this.modalRef = this.modalService.show(
+        template3,
+        Object.assign({}, { class: 'gray modal-xl' }),
+      );
+    }
+
 
   // setDateOfPayment(
   //   summary: {

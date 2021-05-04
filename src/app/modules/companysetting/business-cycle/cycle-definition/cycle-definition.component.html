@@ -1,5 +1,5 @@
 <form class="card" role="form" (ngSubmit)="addCycleDefinition()" [formGroup]="cycleDefinitionForm" method="post"
-  novalidate>
+  #formDirective="ngForm" novalidate>
 
 
   <div class="card">
@@ -142,15 +142,12 @@
                   <tr>
                     <th></th>
                     <th></th>
-
                     <th></th>
                     <th></th>
-
-
-
 
                     <th scope="col">From Date</th>
                     <th scope="col">To Date</th>
+                    <th></th>
                   </tr>
                 </thead>
 
@@ -159,21 +156,21 @@
                     <td class="align-center wd-8">
                       <span>{{i+1}}</span>
                     </td>
-                    <td class="wd-15">
+                    <td class="align-left wd-15">
                       <span>{{summary.cycleName}}</span>
                     </td>
-                    <td class="wd-15">
+                    <td class="align-left wd-15">
                       <span>{{summary.description}}</span>
                     </td>
-                    <td class="wd-30">
+                    <td class="align-left wd-30">
                       <span>{{summary.serviceName}}</span>
                     </td>
-                    <td class="wd-15">
-                      <span>{{summary.businessYearDefinition.fromDate}} </span>
+                    <td class="align-left wd-15">
+                      <span>{{summary.businessYearDefinition.fullFromDate}} </span>
                     </td>
 
-                    <td class="wd-15">
-                      <span>{{summary.businessYearDefinition.toDate}} </span>
+                    <td class="align-left wd-15">
+                      <span>{{summary.businessYearDefinition.fullToDate}} </span>
                     </td>
 
                     <td>

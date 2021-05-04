@@ -14,7 +14,9 @@ export class GgcSummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: any;
+  public futureNewPolicyDeclaredAmount: 0;
+  public futureGlobalPolicyDeclaredAmount: 0;
+
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -25,7 +27,7 @@ export class GgcSummaryComponent implements OnInit {
   public selectedInstitution: string;
   public benefitAvailableOnActualAmount : number;
   public benefitAvailableOnDeclaredAmount : number;
-
+  public tempFlag : boolean;
    @Input() institution: string;
   @Input() policyNo: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -65,9 +67,9 @@ export class GgcSummaryComponent implements OnInit {
           this.summaryGridData = res.data.results[0].donations80GGTransactionList;
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
-          this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
-            res.data.results[0].futureDonationsDeclaredAmount
-          );
+          this.futureNewPolicyDeclaredAmount = res.data.results[0].futureDonationsDeclaredAmount;
+          this.futureGlobalPolicyDeclaredAmount =
+              res.data.results[0].futureDonationsDeclaredAmount
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
           this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
@@ -78,7 +80,7 @@ export class GgcSummaryComponent implements OnInit {
 
     // Post New Future Policy Data API call
       public addFuturePolicy(): void {
-        this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
+        // this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount.toString().replace(',', '');
         const data = {
             futureNewPolicyDeclaredAmount : this.futureNewPolicyDeclaredAmount,
         };
@@ -90,9 +92,11 @@ export class GgcSummaryComponent implements OnInit {
             this.summaryGridData = res.data.results[0].donations80GGTransactionList;
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
-            this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(
+            this.futureNewPolicyDeclaredAmount =
               res.data.results[0].futureDonationsDeclaredAmount
-            ); this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
+              this.futureGlobalPolicyDeclaredAmount =
+              res.data.results[0].futureDonationsDeclaredAmount
+ this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
             this.benefitAvailableOnDeclaredAmount = res.data.results[0].benefitAvailableOnDeclaredAmount;
             this.benefitAvailableOnActualAmount = res.data.results[0].benefitAvailableOnActualAmount;
@@ -103,10 +107,16 @@ export class GgcSummaryComponent implements OnInit {
       }
 
   // On Change Future New Policy Declared Amount with formate
+
     onChangeFutureNewPolicyDeclaredAmount() {
-      this.futureNewPolicyDeclaredAmount = this.numberFormat.transform(this.futureNewPolicyDeclaredAmount);
+      this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+      if (this.futureNewPolicyDeclaredAmount > 0) {
       this.addFuturePolicy();
+    }else if(this.futureNewPolicyDeclaredAmount <0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
     }
+
+  }
 
     jumpToMasterPage(policyNo: string) {
       this.tabIndex = 1;
@@ -117,5 +127,19 @@ export class GgcSummaryComponent implements OnInit {
       this.policyNumber.emit(data);
     }
 
+    keyPressedSpaceNotAllow(event: any) {
+      console.log('HI ');
+      const pattern = /[0-9\+\-\ ]/;
+      let inputChar = String.fromCharCode(event.key);
+
+      if (!pattern.test(inputChar)) {
+        // this.futureNewPolicyDeclaredAmount = 0;
+        this.tempFlag = true;
+        // invalid character, prevent input
+        event.preventDefault();
+      } else {
+        this.tempFlag = false;
+      }
+    }
 
 }

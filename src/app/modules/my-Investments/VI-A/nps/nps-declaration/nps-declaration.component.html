@@ -82,7 +82,7 @@
               <tr>
                 <th rowspan="2" class="wd-4">
                   <label class="custom-control custom-checkbox checkbox-center" tooltip="Select All">
-                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="isDisabled"
+                    <input type="checkbox" class="custom-control-input" [ngModel]="isCheckAll" [disabled]="canEdit && isDisabled"
                       name="select" value="isCheckAll{{ j }}" (change)="checkUncheckAll(item, j)" />
                     <span class="custom-control-label"></span>
                   </label>
@@ -185,7 +185,7 @@
                 </td>
                 <td>
                   <div class="custom_icon_badge">
-                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}"
+                    <input type="text" id="declaredAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="declaredAmount{{ summary.investmentGroup1TransactionId }}" [(ngModel)]="summary.declaredAmount"
                       class="form-control align-right" (change)="onDeclaredAmountChange(summary, i, j)"
                       [disabled]="initialArrayIndex[j] > i" />
@@ -206,7 +206,7 @@
                     " class="form-control" bsDatepicker />
                 </td>
                 <td>
-                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}"
+                  <input type="text" id="actualAmount{{ summary.investmentGroup1TransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
                     name="actualAmount{{ summary.investmentGroup1TransactionId }}" [disabled]="initialArrayIndex[j] > i"
                     [(ngModel)]="summary.actualAmount" (change)="onActualAmountChange(summary, i, j)"
                     class="form-control align-right" />
@@ -235,7 +235,7 @@
                   </span>
                 </td>
               </tr>
-              <tr *ngIf="!isDisabled">
+              <tr *ngIf="!isDisabled && canEdit">
                 <td *ngIf="previousEmployeeList?.length" colspan="12"
                   class="align-right font700 font-16 text-light-green cursor-pointer">
                   <i class="fa fa-plus-circle font-20" tooltip="Add" (click)="addRowInList(declarationService, j)"></i>
@@ -409,9 +409,14 @@
                     </td>
                     <td>
                       <span>
-                        <input type="text" class="form-control align-right" (change)="changeReceiptAmountFormat()"
-                          [(ngModel)]="receiptAmount" />
-                      </span>
+
+                      <input
+                      type="text" onkeypress="return /[0-9]/i.test(event.key)"
+                      class="form-control align-right"
+                      (blur)="changeReceiptAmountFormat()"
+                      [(ngModel)]="receiptAmount"
+                    />
+                    </span>
                     </td>
                     <td>
                       <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
@@ -432,7 +437,7 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled">
+  <div class="row mt-10" *ngIf="transactionDetail?.length && !isDisabled && canEdit">
     <div class="col-12">
       <div class="float-right mb-15">
         <button type="button" (click)="
@@ -534,7 +539,7 @@
                       {{ documentSummary.receiptAmount | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td>
+                  <!-- <td>
                     <div class="custom_Label_badge">
                       <button
                         class="btn bg-color-lightgray text-000"
@@ -548,29 +553,39 @@
                         documentSummary.documentDetailList.length
                       }}</span>
                     </div>
+                  </td> -->
+                  <td>
+                    <div class="custom_Label_badge">
+                      <button
+                        class="btn bg-color-lightgray text-000"
+                        (click)="docViewer(template3, documentSummary.documentDetailList)"
+
+                      >
+                        Documents
+                      </button>
+                      <span class="Label_badge">{{
+                        documentSummary.documentDetailList.length
+                      }}</span>
+                    </div>
                   </td>
                   <td>
-                    <i
+
+                    <i *ngIf="canEdit"
                       class="fa fa-eye font-16 text-blue cursor-pointer"
-                      tooltip="View"
-                    ></i
-                    >&nbsp;&nbsp;
-                    <i
-                      class="fa fa-download font-16 text-blue cursor-pointer"
-                      tooltip="Download"
+                      (click)="
+                      editViewTransaction(
+                          template2,
+                          documentSummary.proofSubmissionId
+                        );
+                        viewDocumentDetail = false
+                      "
+                      tooltip="view"
                     ></i>
-                    <div *ngFor="let doc of urlArray" hidden>
-                      <iframe
-                        style="height: 100vh; width: 100%; display: block"
-                        [src]="doc.blobURI"
-                        provider="google"
-                      ></iframe>
-                    </div>
                     &nbsp;&nbsp;
                     <i
                       class="fa fa-edit font-16 text-dark-green cursor-pointer"
                       (click)="
-                        declarationEditUpload(
+                      editViewTransaction(
                           template2,
                           documentSummary.proofSubmissionId
                         );
@@ -1110,7 +1125,7 @@
     <button
       type="button"
       tooltip="View Document"
-      (click)="modalRef.hide(); docViewer(template3)"
+      (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
       <b><i class="fa fa-eye"></i></b> View

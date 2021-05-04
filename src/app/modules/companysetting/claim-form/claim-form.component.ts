@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../core/services/alert-service.service';
-@Component({
+@Component( {
   selector: 'app-claim-form',
   templateUrl: './claim-form.component.html',
   styleUrls: ['./claim-form.component.scss']
-})
+} )
 export class ClaimFormComponent implements OnInit {
   public claimForm: FormGroup;
   public claimGridDataList: Array<any> = [];
@@ -59,10 +59,10 @@ export class ClaimFormComponent implements OnInit {
 
   //................. Submit claim form.................
   submitClaimMaster() {
-    window.scrollTo(0, 0);
-    if (this.claimTempId > 0) {
+    window.scrollTo( 0, 0 );
+    if ( this.claimTempId > 0 ) {
       this.submitted = true;
-      if (this.claimForm.invalid) {
+      if ( this.claimForm.invalid ) {
         return;
       }
       let isAllSelectField = this.claimGridDataList.every(obj => obj.enable == false);
@@ -91,7 +91,7 @@ export class ClaimFormComponent implements OnInit {
       
     } else {
       this.submitted = true;
-      if (this.claimForm.invalid) {
+      if ( this.claimForm.invalid ) {
         return;
       }
       let isAllSelectField = this.claimGridDataList.every(obj => obj.enable == false);
@@ -114,8 +114,8 @@ export class ClaimFormComponent implements OnInit {
     }
   }
   // ....................Active remark disabled....................
-  activeRemark(event) {
-    if (event == false) {
+  activeRemark( event ) {
+    if ( event == false ) {
       this.claimForm.controls.remark.enable();
     } else {
       this.claimForm.controls.remark.disable();
@@ -124,36 +124,36 @@ export class ClaimFormComponent implements OnInit {
 
   //....................... Get all fields list for selected checkbox list...................
   getAllFields() {
-    this.claimService.getClaimFields().subscribe((res) => {
-      console.log(res);
+    this.claimService.getClaimFields().subscribe( ( res ) => {
+      console.log( res );
       // const nature = { nature: "List" }
       // const returnClaimData = Object.assign(res.data.results[0], nature);
       this.claimGridDataList = res.data.results;
-      console.log(" this.claimGridDataList", this.claimGridDataList)
-    })
+      console.log( " this.claimGridDataList", this.claimGridDataList )
+    } )
   }
   //....................... View and Edit post list for selected checkbox list...................
-  getClaimTemplateViewById(claimTempId) {
-    window.scrollTo(0, 0);
-    this.claimService.getClaimTemplateViewById(claimTempId).subscribe((res) => {
-      console.log(res);
+  getClaimTemplateViewById( claimTempId ) {
+    window.scrollTo( 0, 0 );
+    this.claimService.getClaimTemplateViewById( claimTempId ).subscribe( ( res ) => {
+      console.log( res );
       let claimTemplateList = res.data.results[0];
-      console.log(claimTemplateList);
-      this.claimForm.patchValue(claimTemplateList);
+      console.log( claimTemplateList );
+      this.claimForm.patchValue( claimTemplateList );
       this.claimForm.disable();
-    //  this.claimGridDataList = [];
+      //  this.claimGridDataList = [];
       this.claimGridDataList = res.data.results[0].claimTemplateDetailsResponseDTO;
       this.isView = true;
       console.log("this.claimGridDataList", this.claimGridDataList)
 
-    })
+    } )
 
   }
-  getClaimTemplateEditById(claimTempId) {
+  getClaimTemplateEditById( claimTempId ) {
     this.claimTempId = claimTempId;
-    window.scrollTo(0, 0);
-    this.claimService.getClaimTemplateViewById(claimTempId).subscribe((response) => {
-      console.log(response);
+    window.scrollTo( 0, 0 );
+    this.claimService.getClaimTemplateViewById( claimTempId ).subscribe( ( response ) => {
+      console.log( response );
       let claimTemplateList = response.data.results[0];
       console.log(claimTemplateList);
       this.claimForm.patchValue(claimTemplateList);
@@ -177,12 +177,12 @@ export class ClaimFormComponent implements OnInit {
           active: response.data.results[0].claimTemplateDetailsResponseDTO[i].active,
           // active: 1,
         };
-        let s = this.claimGridDataList.findIndex(o=>o.fieldName == response.data.results[0].claimTemplateDetailsResponseDTO[i].fieldName);
-       this.claimGridDataList[s]=myobj;
+        let s = this.claimGridDataList.findIndex( o => o.fieldName == response.data.results[0].claimTemplateDetailsResponseDTO[i].fieldName );
+        this.claimGridDataList[s] = myobj;
         // this.registersList.splice(s,1);
         // this.registersList.push(myobj);
       }
-    })
+    } )
 
   }
 
@@ -192,11 +192,11 @@ export class ClaimFormComponent implements OnInit {
   //.........................Get all claim template list .................
 
   getClaimTemplatesList() {
-    this.claimService.getClaimTemplateList().subscribe((res) => {
-      console.log(res);
+    this.claimService.getClaimTemplateList().subscribe( ( res ) => {
+      console.log( res );
       this.templateUserIdList = res.data.results;
-      console.log("191", this.templateUserIdList);
-    })
+      console.log( "191", this.templateUserIdList );
+    } )
   }
 
   // ...........................Select table list data ......................
@@ -240,9 +240,9 @@ export class ClaimFormComponent implements OnInit {
   }
 
   // .................... Change Event Pass Value............
-  mindatoryChangeEvt(index, changeValue, fieldName) {
-    console.log(index, changeValue, fieldName);
-    if (changeValue == "") {
+  mindatoryChangeEvt( index, changeValue, fieldName ) {
+    console.log( index, changeValue, fieldName );
+    if ( changeValue == "" ) {
       let falseValue = "false";
       let indexData = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == fieldName);
       this.claimGridDataList[indexData].mandatory = JSON.parse(falseValue.toLowerCase());
@@ -264,9 +264,9 @@ export class ClaimFormComponent implements OnInit {
 
 
   // ................Dropdown List Values.................
-  getDropdownListvalue(dropList, dropdownListid) {
-    this.dropdownListData.push(dropList);
-    console.log("dropdownListData", this.dropdownListData);
+  getDropdownListvalue( dropList, dropdownListid ) {
+    this.dropdownListData.push( dropList );
+    console.log( "dropdownListData", this.dropdownListData );
     this.dropListModel = '';
     let indexField = this.claimGridDataList.findIndex(getIndex => getIndex.fieldName == dropdownListid)
     this.claimGridDataList[indexField].dropDownValues = this.dropdownListData;
@@ -289,17 +289,17 @@ export class ClaimFormComponent implements OnInit {
     this.isEdit = false;
     this.claimForm.enable();
     this.claimForm.controls.remark.disable();
-    
+
   }
   // ....................Popup box section...................
 
-  modalDropdownList(template: TemplateRef<any>, srno: any, fieldName: string) {
+  modalDropdownList( template: TemplateRef<any>, srno: any, fieldName: string ) {
     this.modalRef = this.modalService.show(
       template,
-      Object.assign({}, { class: 'gray modal-md' })
+      Object.assign( {}, { class: 'gray modal-md' } )
     );
     this.dropdownListid = fieldName;
-    console.log(this.dropdownListid);
+    console.log( this.dropdownListid );
   }
 
 

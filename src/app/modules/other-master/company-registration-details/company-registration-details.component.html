@@ -61,7 +61,7 @@
                         <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                         <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="dateOfIncorporation"
                           (bsValueChange)="onBsValueChangeDateOfIncorporation()" data-provide="datepicker"
-                          data-date-autoclose="true" class="form-control" [maxDate]="today"
+                          data-date-autoclose="true" class="form-control" [maxDate]="today" placement="center"
                           [ngClass]="{'is-invalid' : form.get('dateOfIncorporation').status == 'INVALID'}"
                           placeholder="Date of Incorporation" bsDatepicker>
                       </div>

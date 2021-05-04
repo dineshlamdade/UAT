@@ -12,7 +12,7 @@ import { EventEmitterService } from './../../../employee-master-services/event-e
 import { DomSanitizer } from '@angular/platform-browser';
 import { SharedInformationService } from '../../../employee-master-services/shared-service/shared-information.service';
 import { DatePipe } from '@angular/common';
-
+//import {SelectDropDownModule} from '@angular/NewsModule'
 
 export interface NominationElement {
   familyMemberInfoId: any;
@@ -100,6 +100,7 @@ export class NominationDetailsComponent implements OnInit {
   cityForm: FormGroup;
   nominationDataSource: Array<any> = [];
   esicDataSource: Array<any> = [];
+  source :Array<any>=[];
 
   constructor(private FamilyInformationService: FamilyInformationService,
     private BankInformationService: BankInformationService,
@@ -120,7 +121,7 @@ export class NominationDetailsComponent implements OnInit {
     this.FamilyInformationService.getAllESICLocation().subscribe(res => {
 
       this.ESICLocationLIST = res.data.results[0];
-
+//console.log('esiclocationList',this.ESICLocationLIST);
       this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
       // this.ESICLocationLIST.forEach(city1 =>{
       //   this.ESICLocationCity.push(city1.district);
@@ -161,6 +162,7 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   getNomination() {
+    this.FamilyMemberList=[];
     this.FamilyInformationService.getFamilyGridSummary(this.employeeMasterId).subscribe((res: any) => {
       
       // if (!this.dataSource) {
@@ -180,6 +182,7 @@ export class NominationDetailsComponent implements OnInit {
             'personalAccidentInsurancePercentage': 0,
             'mediclaimInsurancePercentage': 0
           }
+         
           this.FamilyMemberList.push(obj);
         }
 
@@ -317,6 +320,7 @@ export class NominationDetailsComponent implements OnInit {
         this.nominationDataSource = this.FamilyMemberList;
       }
       // if (!this.ESICDataSource) {
+        this.ESICMemberList=[];
       res.data.results[0].familyDetailsSummaryBeans.forEach(element => {
         
         if (element.status == 1) {
@@ -412,6 +416,7 @@ export class NominationDetailsComponent implements OnInit {
   filterCity(state, ESIC) {
     
     let cities = [];
+   // console.log(this.ESICLocationLIST);
     this.ESICLocationLIST['esicdispensaryDB'].forEach(city => {
       if (ESIC.state == city.state) {
         cities.push(city.district);
@@ -710,6 +715,7 @@ export class NominationDetailsComponent implements OnInit {
   filterStates(event, ESIC) {
     //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
     let filtered: any[] = [];
+    console.log(ESIC);
     let query = event.query;
     for (let i = 0; i < this.states.length; i++) {
       let state = this.states[i];
@@ -718,6 +724,7 @@ export class NominationDetailsComponent implements OnInit {
       }
     }
     ESIC.stateList = filtered;
+
   }
 
   filterCities(event, ESIC) {
@@ -732,6 +739,7 @@ export class NominationDetailsComponent implements OnInit {
       }
     }
     this.filteredCities = filtered;
+    console.log(this.filterCities);
   }
 
   filterDispensaryList(event, ESIC) {
@@ -749,7 +757,27 @@ export class NominationDetailsComponent implements OnInit {
   }
 
   resetNomination() {
-    this.getNomination();
+    this.source=[];
+   this.nominationDataSource.forEach(element => {
+    {
+      const obj = {
+        'familyMemberInfoId': element.familyMemberInfoId,
+        'familyMemberName': element.familyMemberName,
+        'isActive': element.status,
+        'pfPercentage': 0,
+        'epsPercentage': 0,
+        'gratuityPercentage': 0,
+        'salaryPercentage': 0,
+        'superAnnuationPercentage': 0,
+        'lifeInsurancePercentage': 0,
+        'esicPercentage': 0,
+        'personalAccidentInsurancePercentage': 0,
+        'mediclaimInsurancePercentage': 0
+      }
+     this.source.push(obj);
+    }   
+   })
+   this.nominationDataSource= this.source;
   }
 
   esicPercentageValidation(esicPercentage) {

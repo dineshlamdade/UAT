@@ -1,438 +1,497 @@
-<form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm" method="post" novalidate>
+<form class="card" role="form" (ngSubmit)="addMaster(form,formDirective)" [formGroup]="form" #formDirective="ngForm"
+  method="post" novalidate>
   <div class="tabview-contents">
-     <div class="row">
+    <div class="row">
       <div class="col-sm-6 col-md-3">
+        <!-- onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" -->
         <label class="form-label">Institution</label>
-        <input type="text" formControlName="institution" class="form-control"
+        <input type="text" formControlName="institution" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" class="form-control"
            placeholder="Enter Institution"
-           [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }"  >
+          [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
-           <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
+          <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
         </div>
-     </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label">Account No.</label>
-           <input type="text" formControlName="accountNumber" class="form-control"
-              placeholder="Enter Account No.."
-              [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }"  >
-           <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.accountNumber.errors.required">Account No is mandatory</div>
-           </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Account No.</label>
+        <input type="text" formControlName="accountNumber" class="form-control"
+          onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" placeholder="Enter Account No.."
+          [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
+        <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
+          <div *ngIf="masterForm.accountNumber.errors.required">Account No is mandatory</div>
         </div>
-        <div class="col-sm-6 col-md-3">
-           <label class="form-label">Account Holder Name</label>
-           <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
-                formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
-                [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
-              <option *ngFor="let familyMember of familyMemberName"
-                [value]="familyMember.value">
-                {{familyMember.label}}
-              </option>
-           </select>
-           <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
-              <div *ngIf="masterForm.accountHolderName.errors.required">Account Holder Name is mandatory</div>
-           </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Account Holder Name</label>
+        <select name="Policy_Holder_Name" id="accountHolderName" class="form-control custom-select"
+          formControlName="accountHolderName" (change)='OnSelectionfamilyMemberGroup()'
+          [ngClass]="{ 'is-invalid': submitted && masterForm.accountHolderName.errors }">
+          <option *ngFor="let familyMember of familyMemberName" [value]="familyMember.value">
+            {{familyMember.label}}
+          </option>
+        </select>
+        <div *ngIf="submitted && masterForm.accountHolderName.errors" class="invalid-feedback">
+          <div *ngIf="masterForm.accountHolderName.errors.required">Account Holder Name is mandatory</div>
         </div>
-        <div class="col-sm-6 col-md-3">
-          <label class="form-label">Relationship</label>
-          <input type="text" formControlName="relationship" class="form-control" disabled
-             [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
-          <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
-             <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
-          </div>
-       </div>
-       <div class="col-sm-6 col-md-3 mt-10">
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <label class="form-label">Relationship</label>
+        <input type="text" formControlName="relationship" class="form-control" disabled
+          [ngClass]="{ 'is-invalid': submitted && masterForm.relationship.errors }">
+        <div *ngIf="submitted && masterForm.relationship.errors" class="invalid-feedback">
+          <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3 mt-10">
         <label class="form-label">Type</label>
-        <input type="text" formControlName="accountType" class="form-control"
-           disabled
-           [ngClass]="{ 'is-invalid': submitted && masterForm.accountType.errors }"  >
+        <input type="text" formControlName="accountType" class="form-control" disabled
+          [ngClass]="{ 'is-invalid': submitted && masterForm.accountType.errors }">
         <!-- <div *ngIf="submitted && masterForm.type.errors" class="invalid-feedback">
            <div *ngIf="masterForm.type.errors.required">Type is mandatory</div>
         </div> -->
-     </div>
-     <div class="col-sm-6 col-md-3 mt-10">
-          <label class="form-label">PRAN</label>
-          <input type="text" formControlName="pran" class="form-control"
-             disabled [ngClass]="{ 'is-invalid': submitted && masterForm.pran.errors }"  >
-          <div *ngIf="submitted && masterForm.pran.errors" class="invalid-feedback">
-             <div *ngIf="masterForm.pran.errors.required">PRAN is mandatory</div>
-          </div>
-       </div>
-
-        <div class="col-sm-6 col-md-3 mt-10">
-           <label class="form-label">Policy Start Date</label>
-           <div class="form-group">
-              <div class="input-group">
-                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                 </div>
-                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate"
-                  data-provide="datepicker" data-date-autoclose="true" class="form-control"
-                  (bsValueChange)="setPolicyEndDate()" placeholder="Policy Start Date" bsDatepicker
-                  [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }"
-                  [maxDate]="today">
-                 <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
-                    <div *ngIf="masterForm.policyStartDate.errors.required">Policy Start Date is mandatory</div>
-                 </div>
-              </div>
-           </div>
-        </div>
-        <div class="col-sm-6 col-md-3 mt-10">
-           <label class="form-label">Policy End Date</label>
-           <div class="form-group">
-              <div class="input-group">
-                 <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                 </div>
-                 <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate" data-provide="datepicker"
-                    data-date-autoclose="true" class="form-control" (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()"
-                    [minDate]="policyMinDate" placeholder="Policy End Date" bsDatepicker
-                    [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
-                 <div *ngIf="submitted && masterForm.policyEndDate.errors" class="invalid-feedback">
-                    <div *ngIf="masterForm.policyEndDate.errors.required">Policy End Date is mandatory</div>
-                 </div>
-              </div>
-           </div>
-        </div>
-     </div>
-     <div class="row mt-25">
-        <div class="col-12">
-           <fieldset>
-              <legend>Payment Details</legend>
-              <div class="row">
-                 <div class="col-sm-6 col-md-3">
-                    <label class="form-label">Frequency of Payment</label>
-                    <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
-                        formControlName="frequencyOfPayment" class="form-control custom-select"
-                        [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
-                      <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
-                        [value]="frequencyOfPayment.value">
-                        {{frequencyOfPayment.label}}
-                      </option>
-                    </select>
-                    <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is mandatory</div>
-                    </div>
-                 </div>
-                 <div class="col-sm-6 col-md-3">
-                    <label class="form-label">Premium Amount</label>
-                    <input type="text" formControlName="premiumAmount" class="form-control align-right" (change)='calculateAnnualAmount()'
-                      name="Premium Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }">
-                    <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
-                    </div>
-                 </div>
-                 <div class="col-sm-6 col-md-3">
-                    <label class="form-label">Annual Amount</label>
-                    <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" formControlName="annualAmount"
-                      class="form-control align-right" name="Annual Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }">
-                    <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
-                       <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
-                    </div>
-                 </div>
-                 <div class="col-sm-6 col-md-3">
-                    <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
-                    <div class="custom-controls-stacked ml-15 mt-10">
-                       <label class="custom-control custom-radio custom-control-inline">
-                       <input formControlName="ecs" type="radio"
-                          class="custom-control-input" name="ecs" value=1 checked>
-                       <span class="custom-control-label">Yes</span>
-                       </label>
-                       <label class="custom-control custom-radio custom-control-inline">
-                       <input formControlName="ecs" type="radio"
-                          class="custom-control-input" name="ecs" value=0>
-                       <span class="custom-control-label">No</span>
-                       </label>
-                    </div>
-                 </div>
-              </div>
-              <div class="row mt-4 mb-10">
-                 <div class="col-sm-6 col-md-3">
-                    <label class="form-label">From Date</label>
-                    <div class="form-group">
-                       <div class="input-group">
-                          <div class="input-group-prepend">
-                             <span class="input-group-text"><i
-                                class="fa fa-calendar"></i></span>
-                          </div>
-                          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker"
-                            data-date-autoclose="true" class="form-control" (bsValueChange)="setPaymentDetailToDate()"
-                            [minDate]="minFormDate"
-                            [maxDate]="maxFromDate" placeholder="From Date" bsDatepicker
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
-                          <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
-                             <div *ngIf="masterForm.fromDate.errors.required">From Date is mandatory</div>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-                 <div class="col-sm-6 col-md-3">
-                    <label class="form-label">To Date</label>
-                    <div class="form-group">
-                       <div class="input-group">
-                          <div class="input-group-prepend">
-                             <span class="input-group-text"><i
-                                class="fa fa-calendar"></i></span>
-                          </div>
-                          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
-                            [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate" data-provide="datepicker"
-                            data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker
-                            [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }">
-                          <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
-                             <div *ngIf="masterForm.toDate.errors.required">To Date is mandatory</div>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-              <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
-                 <div class="col-12 col-md-12 col-sm-12">
-                    <div class="table-responsive Custom_Table ">
-                       <table class="table table-striped table-bordered table-hover m-b-0">
-                          <thead class="thead-dark">
-                             <tr>
-                                <th scope="col" class="wd-9">Sr No.</th>
-                                <th scope="col" class="wd-14">Start Date</th>
-                                <th scope="col" class="wd-14">End Date</th>
-                                <th scope="col" class="wd-20">Frequency</th>
-                                <th scope="col" class="wd-19">Premium Amount</th>
-                                <th scope="col" class="wd-14">Annual Amount</th>
-                                <th scope="col" class="wd-10" tooltip="Electronic Clearing Service">ECS</th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                             <tr *ngFor="let summary of paymentDetailGridData; let i = index">
-                                <td class="wd-9">
-                                   <span tooltip="{{i+1}}">
-                                   {{i+1}}
-                                   </span>
-                                </td>
-                                <td class="wd-14">
-                                   <span tooltip="{{summary.fromDate| date :'dd-MMM-yyyy'}}">
-                                   {{summary.fromDate| date :"dd-MMM-yyyy"}}
-                                   </span>
-                                </td>
-                                <td class="wd-14">
-                                   <span tooltip="{{summary.toDate| date :'dd-MMM-yyyy'}}">
-                                   {{summary.toDate| date :"dd-MMM-yyyy"}}
-                                   </span>
-                                </td>
-                                <td class="wd-20">
-                                   <span tooltip="{{summary.frequencyOfPayment}}">
-                                   {{summary.frequencyOfPayment=='Halfyearly'?'Half-Yearly':summary.frequencyOfPayment}}
-                                   </span>
-                                </td>
-                                <td class="wd-19 align-right">
-                                   <span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">
-                                   {{summary.premiumAmount | number:'1.2-2'}}
-                                   </span>
-                                </td>
-                                <td class="wd-14 align-right">
-                                   <span tooltip=" {{summary.annualAmount | number:'1.2-2'}}">
-                                   {{summary.annualAmount | number:'1.2-2'}}
-                                   </span>
-                                </td>
-                                <td class="wd-10">
-                                   <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
-                                   {{summary.ecs==1?'Yes':'No'}}
-                                   </span>
-                                </td>
-                             </tr>
-                             <tr *ngIf="!paymentDetailGridData?.length">
-                                <td colspan="7">
-                                   <span class="font-14 font500 align-center text-red">No
-                                   Data Available</span>
-                                </td>
-                             </tr>
-                          </tbody>
-                       </table>
-                    </div>
-                 </div>
-              </div>
-           </fieldset>
-        </div>
-     </div>
-     <div class="row mt-30">
-        <div class="col-12">
-           <div class="card">
-              <div class="mb-10 row">
-                 <div class="col-md-6">
-                    <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
-                 </div>
-                 <div class="col-md-6">
-                    <span class="font-bold text-link float-right"></span>
-                 </div>
-              </div>
-              <div class="row">
-                 <div class="col-md-9">
-                    <div class="table-responsive Custom_Table">
-                       <table class="table table-striped table-hover table-bordered m-b-0">
-                          <thead class="thead-dark">
-                             <tr>
-                                <th scope="col" class="font700 wd-8">Sr No.</th>
-                                <th scope="col" class="font700 wd-40">Document Name</th>
-                                <th scope="col" class="font700 wd-40">Attachment</th>
-                                <th scope="col" class="font700 wd-12">Action</th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                             <tr>
-                                <th scope="row"><span tooltip="1">1</span></th>
-                                <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement</td>
-                                <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
-                                   class="fa fa-paperclip"
-                                   aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
-                                <td>
-                                   <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
-                                    data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                                </td>
-                             </tr>
-                          </tbody>
-                       </table>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
-     </div>
-     <!-- <div class="row mt-25">
-        <div class="col-md-3">
-           <label class="custom-control custom-checkbox custom-control-inline pl-45">
-           <input formControlName="active" type="checkbox" class="custom-control-input"
-              name="example-inline-checkbox1" value="option1" checked
-              (change)="deactivateRemark()">
-           <span class="custom-control-label">Active </span>
-           </label>
-        </div>
-        <div class="col-md-3" *ngIf="hideRemarkDiv">
-           <label class="form-label pl-10">Remark</label>
-           <textarea formControlName="remark" [ngClass]="{'form-submitted': formDirective.submitted}" class="form-control ml-10" rows="1"></textarea>
-        </div>
-     </div> -->
-     <div class="row mt-15">
-      <div class="col-12">
-         <div class="float-right mb-15">
-          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
-            <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-        <button type="button"  (click)="resetView()"
-          class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
-          <i class="fa fa-floppy-o"></i></b> Reset</button>
-         </div>
       </div>
-   </div>
-     <div class="row mt-20">
-      <div class="col-12">
-         <div class="card">
-            <div class="mb-0">
-               <h3 class="font-14 text-purple font-bold">Summary</h3>
+      <div class="col-sm-6 col-md-3 mt-10">
+        <label class="form-label">PRAN</label>
+        <input type="text" formControlName="pran" class="form-control" disabled
+          [ngClass]="{ 'is-invalid': submitted && masterForm.pran.errors }">
+        <div *ngIf="submitted && masterForm.pran.errors" class="invalid-feedback">
+          <div *ngIf="masterForm.pran.errors.required">PRAN is mandatory</div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-3 mt-10">
+        <label class="form-label">Policy Start Date</label>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
             </div>
-            <div class="">
-               <div class="table-responsive Custom_Table">
-                <table class="table table-striped table-hover table-bordered m-b-0">
+            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate"
+              data-provide="datepicker" data-date-autoclose="true" class="form-control"
+              (bsValueChange)="setPolicyEndDate()" placeholder="Policy Start Date" bsDatepicker
+              [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }" [maxDate]="today">
+            <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
+              <div *ngIf="masterForm.policyStartDate.errors.required">Policy Start Date is mandatory</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3 mt-10">
+        <label class="form-label">Policy End Date</label>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+            </div>
+            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate"
+              data-provide="datepicker" data-date-autoclose="true" class="form-control"
+              (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()" [minDate]="policyMinDate"
+              placeholder="Policy End Date" bsDatepicker
+              [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
+            <div *ngIf="submitted && masterForm.policyEndDate.errors" class="invalid-feedback">
+              <div *ngIf="masterForm.policyEndDate.errors.required">Policy End Date is mandatory</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-25">
+      <div class="col-12">
+        <fieldset>
+          <legend>Payment Details</legend>
+          <div class="row">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Frequency Of Payment</label>
+              <select name="Frequency_of_Payment" id="FrequencyofPayment" (change)='calculateAnnualAmount()'
+                formControlName="frequencyOfPayment" class="form-control custom-select"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }">
+                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
+                  {{frequencyOfPayment.label}}
+                </option>
+              </select>
+              <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency of Payment is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Premium Amount</label>
+              <p-inputNumber class="form-control align-right" formControlName="premiumAmount" name="Premium Amount"
+                (onBlur)="calculateAnnualAmount()"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN"
+                [minFractionDigits]="2"></p-inputNumber>
+                <!-- <p-inputNumber class="align-right" formControlName="premiumAmount" name="Premium Amount" (onBlur)="calculateAnnualAmount()" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN" [minFractionDigits]="2"></p-inputNumber> -->
+
+              <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Annual Amount</label>
+              <p-inputNumber  formControlName="annualAmount" name="Annual Amount"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }" mode="decimal" locale="en-IN"
+                [minFractionDigits]="2"></p-inputNumber>
+              <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-6 col-md-3">
+              <label class="form-label">Premium Amount</label>
+              <input type="text" formControlName="premiumAmount" class="form-control align-right"
+                onkeypress="return /[0-9a-zA-Z']/i.test(event.key)" (change)='calculateAnnualAmount()'
+                name="Premium Amount" [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }">
+              <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">Annual Amount</label>
+              <input type="text" [value]="form.get('annualAmount').value | number:'1.2-2'"
+                onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" formControlName="annualAmount"
+                class="form-control align-right" name="Annual Amount"
+                [ngClass]="{ 'is-invalid': submitted && masterForm.annualAmount.errors }">
+              <div *ngIf="submitted && masterForm.annualAmount.errors" class="invalid-feedback">
+                <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
+              </div>
+            </div> -->
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
+              <div class="custom-controls-stacked ml-15 mt-10">
+                <label class="custom-control custom-radio custom-control-inline">
+                  <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=1 checked>
+                  <span class="custom-control-label">Yes</span>
+                </label>
+                <label class="custom-control custom-radio custom-control-inline">
+                  <input formControlName="ecs" type="radio" class="custom-control-input" name="ecs" value=0>
+                  <span class="custom-control-label">No</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4 mb-10">
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">From Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control"
+                    (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate" [maxDate]="maxFromDate"
+                    placeholder="From Date" bsDatepicker
+                    [ngClass]="{ 'is-invalid': submitted && masterForm.fromDate.errors }">
+                  <div *ngIf="submitted && masterForm.fromDate.errors" class="invalid-feedback">
+                    <div *ngIf="masterForm.fromDate.errors.required">From Date is mandatory</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+              <label class="form-label">To Date</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                  </div>
+                  <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                    (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
+                    [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate"
+                    data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date"
+                    bsDatepicker [ngClass]="{ 'is-invalid': submitted && masterForm.toDate.errors }">
+                  <div *ngIf="submitted && masterForm.toDate.errors" class="invalid-feedback">
+                    <div *ngIf="masterForm.toDate.errors.required">To Date is mandatory</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-30" *ngIf="paymentDetailGridData?.length">
+            <div class="col-12 col-md-12 col-sm-12">
+              <div class="table-responsive Custom_Table ">
+                <table class="table table-striped table-bordered table-hover m-b-0">
                   <thead class="thead-dark">
-                      <tr>
-                          <th scope="col" class="wd-15">Institution</th>
-                          <th scope="col" class="wd-10">Account No..</th>
-                          <th scope="col" class="wd-10">Account Holder Name</th>
-                          <th scope="col" class="wd-10">Relationship</th>
-                          <th scope="col" class="wd-10">Policy Start Date</th>
-                          <th scope="col" class="wd-10">Policy End Date</th>
-                          <th scope="col" class="wd-10">Frequency</th>
-                          <th scope="col" class="wd-10">Premium Amount</th>
-                          <th scope="col" class="wd-10">Status</th>
-                          <th scope="col" class="wd-5">Action</th>
-                      </tr>
+                    <tr>
+                      <th scope="col" class="wd-9">Sr No.</th>
+                      <th scope="col" class="wd-14">Start Date</th>
+                      <th scope="col" class="wd-14">End Date</th>
+                      <th scope="col" class="wd-20">Frequency</th>
+                      <th scope="col" class="wd-19">Premium Amount</th>
+                      <th scope="col" class="wd-14">Annual Amount</th>
+                      <th scope="col" class="wd-10" tooltip="Electronic Clearing Service">ECS</th>
+                    </tr>
                   </thead>
                   <tbody>
-                      <tr *ngFor="let summary of masterGridData; let i = index">
-                          <td class="align-left wd-15"><span tooltip="{{summary.institution}}">{{summary.institution}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date :"dd-MMM-yyyy"}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date :"dd-MMM-yyyy"}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount | number:'1.2-2'}}</span>
-                          </td>
-                          <td class="wd-10"><span tooltip="Submitted">Submitted</span>
-                          </td>
-                          <td class="wd-5">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
-                          </td>
-                      </tr>
-                      <tr *ngIf="!masterGridData?.length">
-                          <td colspan="10">
-                              <span class="font-14 font500 align-center text-red">No Data
-                  Available</span>
-                          </td>
-                      </tr>
+                    <tr *ngFor="let summary of paymentDetailGridData; let i = index">
+                      <td class="wd-9">
+                        <span tooltip="{{i+1}}">
+                          {{i+1}}
+                        </span>
+                      </td>
+                      <td class="wd-14">
+                        <span tooltip="{{summary.fromDate| date :'dd-MMM-yyyy'}}">
+                          {{summary.fromDate| date :"dd-MMM-yyyy"}}
+                        </span>
+                      </td>
+                      <td class="wd-14">
+                        <span tooltip="{{summary.toDate| date :'dd-MMM-yyyy'}}">
+                          {{summary.toDate| date :"dd-MMM-yyyy"}}
+                        </span>
+                      </td>
+                      <td class="wd-20">
+                        <span tooltip="{{summary.frequencyOfPayment}}">
+                          {{summary.frequencyOfPayment=='Halfyearly'?'Half-Yearly':summary.frequencyOfPayment}}
+                        </span>
+                      </td>
+                      <td class="wd-19 align-right">
+                        <span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">
+                          {{summary.premiumAmount | number:'1.2-2'}}
+                        </span>
+                      </td>
+                      <td class="wd-14 align-right">
+                        <span tooltip=" {{summary.annualAmount | number:'1.2-2'}}">
+                          {{summary.annualAmount | number:'1.2-2'}}
+                        </span>
+                      </td>
+                      <td class="wd-10">
+                        <span tooltip="{{summary.ecs==1?'Yes':'No'}}">
+                          {{summary.ecs==1?'Yes':'No'}}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr *ngIf="!paymentDetailGridData?.length">
+                      <td colspan="7">
+                        <span class="font-14 font500 align-center text-red">No
+                          Data Available</span>
+                      </td>
+                    </tr>
                   </tbody>
-              </table>
-               </div>
+                </table>
+              </div>
             </div>
-         </div>
-      </div>
-   </div>
-  </div>
-  </form>
-  <ng-template #template>
-    <div class="modal-header">
-       <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-       <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
-          aria-hidden="true">×</span></button>
-    </div>
-    <div class="modal-body">
-       <div class="card">
-          <div class="card-body">
-             <div class="row clearfix">
-                <!-- <div class="col-md-12">
-                   <label class="form-label">Upload File here :</label>
-                </div> -->
-                <div class="col-md-12">
-                   <div class="fileuploadbox bg-color-lightgray">
-                      <label class="filelabel">
-                      <i class="fa fa-upload">
-                      </i>
-                      <span class="title">
-                      Choose file
-                      </span>
-                      <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);" accept=".jpg , .jpeg, .pdf , .png"
-                         id="FileInput" type="file" multiple/>
-                      </label>
-                   </div>
-                   <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
-                     Selected files
-                      <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
-                         <div class="text-ellipsis"><i class="fa fa-paperclip">
-                            </i>
-                            <span class="title">
-                            {{ item.name }}
-                            </span>
-                         </div>
-                         <div>
-                            <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
-                         </div>
-                      </label>
-                   </div>
-                </div>
-                <div class="col-md-12 mt-10">
-                   <label class="form-label">Remark</label>
-                </div>
-                <div class="col-md-12">
-                   <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-                </div>
-             </div>
           </div>
-       </div>
+        </fieldset>
+      </div>
     </div>
-    <div class="modal-footer">
-       <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    <div class="row mt-30">
+      <div class="col-12">
+        <div class="card">
+          <div class="mb-10 row">
+            <div class="col-md-6">
+              <h3 class="font-14 text-purple font-bold">Upload Documents </h3>
+              <div class="float-left" *ngIf="submitted && masterfilesArray.length == 0">
+                <label class="text-red mb-0">Please upload document</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <span class="font-bold text-link float-right"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-9">
+              <div class="table-responsive Custom_Table">
+                <table class="table table-striped table-hover table-bordered m-b-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col" class="font700 wd-8">Sr No.</th>
+                      <th scope="col" class="font700 wd-40">Document Name</th>
+                      <th scope="col" class="font700 wd-40">Attachment</th>
+                      <th scope="col" class="font700 wd-12">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row"><span tooltip="1">1</span></th>
+                      <td><span tooltip="Premium Receipt/ Premium Statement"></span>Premium Receipt/ Premium Statement
+                      </td>
+                      <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
+                            class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                        <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                          <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                            <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp;
+                            {{ doc.fileName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
+                          (click)="UploadModal(template)" data-toggle="modal"
+                          data-target="#UploadModal"></i>&nbsp;&nbsp;
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
- </ng-template>
+
+    <div class="row mt-15">
+      <div class="col-12">
+        <div class="float-right mb-15">
+          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            tooltip="Save"><b>
+              <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
+          <button type="button" (click)="resetView()"
+            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Reset</button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-12">
+        <div class="card">
+          <div class="mb-0">
+            <h3 class="font-14 text-purple font-bold">Summary</h3>
+          </div>
+          <div class="">
+            <div class="table-responsive Custom_Table">
+              <table class="table table-striped table-hover table-bordered m-b-0">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="wd-15">Institution</th>
+                    <th scope="col" class="wd-10">Account No..</th>
+                    <th scope="col" class="wd-10">Account Holder Name</th>
+                    <th scope="col" class="wd-10">Relationship</th>
+                    <th scope="col" class="wd-10">Policy Start Date</th>
+                    <th scope="col" class="wd-10">Policy End Date</th>
+                    <th scope="col" class="wd-10">Frequency</th>
+                    <th scope="col" class="wd-10">Premium Amount</th>
+                    <th scope="col" class="wd-10">Status</th>
+                    <th scope="col" class="wd-5">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let summary of masterGridData; let i = index">
+                    <td class="align-left wd-15"><span tooltip="{{summary.institution}}">{{summary.institution}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.accountNumber}}">{{summary.accountNumber}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.accountHolderName}}">{{summary.accountHolderName}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.relationship}}">{{summary.relationship}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyStartDate | date
+                        :"dd-MMM-yyyy"}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.policyEndDate}}">{{summary.policyEndDate| date
+                        :"dd-MMM-yyyy"}}</span>
+                    </td>
+                    <td class="wd-10"><span
+                        tooltip="{{summary.frequencyOfPayment}}">{{summary.frequencyOfPayment}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="{{summary.premiumAmount | number:'1.2-2'}}">{{summary.premiumAmount
+                        | number:'1.2-2'}}</span>
+                    </td>
+                    <td class="wd-10"><span tooltip="Submitted">Submitted</span>
+                    </td>
+                    <td class="wd-5">
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                        (click)="editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
+                    </td>
+                  </tr>
+                  <tr *ngIf="!masterGridData?.length">
+                    <td colspan="10">
+                      <span class="font-14 font500 align-center text-red">No Data
+                        Available</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+        aria-hidden="true">×</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="row clearfix">
+
+          <div class="col-md-12">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
+                <i class="fa fa-upload">
+                </i>
+                <span class="title">
+                  Choose file
+                </span>
+                <input class="FileUpload1" class="dropify" (change)="onMasterUpload($event);"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+              </label>
+            </div>
+            <div *ngIf="masterfilesArray.length > 0 " class="fileuploadbox">
+              Selected files
+              <label *ngFor="let item of masterfilesArray;  let index = index;" class="filelabeldisplay">
+                <div class="text-ellipsis"><i class="fa fa-paperclip">
+                  </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18" (click)="removeSelectedLicMasterDocument(index)"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="col-md-12 mt-10">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+  </div>
+</ng-template>
+
+<!-- For Doc Viewer  -->
+<ng-template #template3>
+  <div class="modal-header">
+    <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+          <i class="fa fa-angle-left text-white font-30 p-10"></i>
+        </button>
+      </div>
+      <div class="col-md-10">
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1">
+          <i class="fa fa-angle-right text-white font-30 p-10"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
+      Ok
+    </button>
+  </div>
+</ng-template>

@@ -107,4 +107,11 @@ export class FamilyInformationService {
       return res;
     }))
   }
+  getParentInfo(employeeMasterId){
+    return this.httpClient.get(environment.baseUrl8082+'employee-master/parentInfo/'+employeeMasterId,{headers:{'X-TenantId':'PaysquareDefault'}})
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+
 }

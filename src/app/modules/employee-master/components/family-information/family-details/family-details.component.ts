@@ -9,9 +9,11 @@ import { DatePipe } from '@angular/common';
 import { guardianDetailRequestDTO, familyAddressDetailRequestDTO, familyMemberInfoRequestDTO, FamilyInformation } from './../family-information.model';
 import { ContactInformationService } from './../../contact-information/contact-information.service';
 import { FamilyInformationService } from './../family-information.service';
+
 import { ConfirmationModalComponent } from './../../../shared modals/confirmation-modal/confirmation-modal.component';
 import { SharedInformationService } from './../../../employee-master-services/shared-service/shared-information.service';
 import { Router } from '@angular/router';
+import { timeStamp } from 'node:console';
 
 
 
@@ -107,7 +109,7 @@ export class FamilyDetailsComponent implements OnInit {
       companyMediclaimApplicable: [''],
       isDependant: [''],
       image: [''],
-      remark: [''],
+      remark: [{ value: null, disabled: true }],
       isActive: [{ value: null, disabled: true }],
       companyMediclaimToggle: ['', Validators.required],
       dependentOnEmployeeToggle: ['', Validators.required],
@@ -232,10 +234,13 @@ export class FamilyDetailsComponent implements OnInit {
       this.familyMemberInfoRequestDTO.isMemberActive = 1;
       this.FamilyDetailsInfoForm.get('remark').clearValidators();
       this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.controls['remark'].disable();
+
     } else {
       this.familyMemberInfoRequestDTO.isMemberActive = 0;
       this.FamilyDetailsInfoForm.get('remark').setValidators([Validators.required]);
       this.FamilyDetailsInfoForm.get('remark').updateValueAndValidity();
+      this.FamilyDetailsInfoForm.controls['remark'].enable();
     }
   }
 
@@ -329,6 +334,8 @@ export class FamilyDetailsComponent implements OnInit {
       this.IsActive = true;
       const isActive = this.FamilyDetailsInfoForm.get('isActive');
       isActive.disable();
+      if(this.IsActive==true)
+      {this.FamilyDetailsInfoForm.get('remark').disable}
     }, (error: any) => {
       this.CommonDataService.sweetalertError(error["error"]["status"]["messsage"]);
     })
@@ -591,7 +598,7 @@ export class FamilyDetailsComponent implements OnInit {
 
     let Address
     Address = this.getAddressCopyFromList.filter(element => {
-      
+
       let num: string
       if (copyAddress.value == 'Employee Local Address') {
         if (element.local) {
@@ -705,9 +712,11 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   editFamilyMember(family) {
+    window.scrollTo(0, 0);
     this.enableForm();
     this.FamilyInformationService.getFamilyDetailsInfo(family.familyMemberInfoId).subscribe(res => {
-
+      this.FamilyDetailsInfoForm.controls['dateOfBirth'].disable();
+      this.FamilyDetailsInfoForm.controls['ageBracket'].disable();
       this.updateFormFlag = true;
       this.FamilyDetailsInfoList = res.data.results[0].familyDetailsGetBean;
       this.familyMemberInfoRequestDTO = res.data.results[0].familyDetailsGetBean.familyMemberInfo;
@@ -732,8 +741,11 @@ export class FamilyDetailsComponent implements OnInit {
 
       if (this.familyMemberInfoRequestDTO.isMemberActive == 1) {
         this.IsActive = true;
+
+        this.activeSetBoolean(true);
       } else {
         this.IsActive = false;
+        this.activeSetBoolean(false);
       }
 
       this.familyAddressDetailRequestDTO = res.data.results[0].familyDetailsGetBean.familyAddressDetail;
@@ -1002,6 +1014,18 @@ export class FamilyDetailsComponent implements OnInit {
     }
   }
 
+  getParentName() {
+    this.familyMemberInfoRequestDTO.familyMemberName='';
+    if (this.familyMemberInfoRequestDTO.relation == 'Father' || this.familyMemberInfoRequestDTO.relation == 'Mother') {
+      this.FamilyInformationService.getParentInfo(this.employeeMasterId).subscribe(res => {
+        const parent = res.data.results[0];
+        const parentArray = parent[0].split(",");
+        if (this.familyMemberInfoRequestDTO.relation == 'Father') { this.familyMemberInfoRequestDTO.familyMemberName = parentArray[0]; }
+        if (this.familyMemberInfoRequestDTO.relation == 'Mother') { this.familyMemberInfoRequestDTO.familyMemberName = parentArray[1]; }
+      })
+    }
+  }
+
   validMobNo() {
 
     if (this.addressCountryCode && !this.addressPhoneNo) {
@@ -1055,7 +1079,7 @@ export class FamilyDetailsComponent implements OnInit {
   }
 
   validGuardianMobNo() {
-    
+
     if (this.guardianCountryCode && !this.guardianPhoneNo) {
       this.FamilyDetailsInfoForm.get('guardianMobileNumber').setValidators(Validators.compose([Validators.required, Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]));
       this.FamilyDetailsInfoForm.get('guardianMobileNumber').updateValueAndValidity();

@@ -31,7 +31,8 @@
               </td>
               <td class="wd-10"><i class="fa fa-edit font-16 text-dark-green cursor-pointer"
                   (click)="onEditSummary(summary.institution, summary.accountNumber)" tooltip="Edit"></i>&nbsp;&nbsp;
-                <i class="fa fa-eye font-16 text-blue cursor-pointer" tooltip="View"></i></td>
+                <i class="fa fa-eye font-16 text-blue cursor-pointer" 
+                (click)="onViewSummary(summary.institution, summary.accountNumber)" tooltip="View"></i></td>
             </tr>
             <tr *ngIf="!summaryGridData?.length">
               <td colspan="5">
@@ -58,10 +59,9 @@
                 <span class="Letterbadge">B</span>
               </td>
               <td>
-                  <p-inputNumber   class="form-control align-right" [(ngModel)]="futureNewPolicyDeclaredAmount"
-                  (onBlur) = "onChangeFutureNewPolicyDeclaredAmount()" mode="decimal"
-                  locale="en-IN" [minFractionDigits]="2" min="0"
-                 ></p-inputNumber>
+                <p-inputNumber  class="p-inputright" [(ngModel)]="futureNewPolicyDeclaredAmount" (focusout) = "onChangeFutureNewPolicyDeclaredAmount()"
+                (onBlur)="keyPressedSpaceNotAllow()"
+                mode="decimal" locale="en-IN" [minFractionDigits]="2" ></p-inputNumber>
               </td>
               <td></td>
               <td></td>

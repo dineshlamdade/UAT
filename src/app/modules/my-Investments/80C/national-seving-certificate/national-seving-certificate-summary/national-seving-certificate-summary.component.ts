@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AnyAaaaRecord } from 'node:dns';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
 import { MyInvestmentsService } from '../../../my-Investments.service';
@@ -7,10 +8,9 @@ import { NscService } from '../nsc.service';
 @Component({
   selector: 'app-national-seving-certificate-summary',
   templateUrl: './national-seving-certificate-summary.component.html',
-  styleUrls: ['./national-seving-certificate-summary.component.scss']
+  styleUrls: ['./national-seving-certificate-summary.component.scss'],
 })
 export class NationalSevingCertificateSummaryComponent implements OnInit {
-
   @Input() institution: string;
   @Input() accountNumber: string;
   @Output() myEvent = new EventEmitter<any>();
@@ -20,7 +20,6 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -29,10 +28,14 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  public futureNewPolicyDeclaredAmount: 0;
+  public futureGlobalPolicyDeclaredAmount : 0;
+  public tempFlag : boolean;
+
 
   constructor(
     private service: MyInvestmentsService,
-    private nscService : NscService,
+    private nscService: NscService,
     private numberFormat: NumberFormatPipe,
     private alertService: AlertServiceService
   ) {}
@@ -42,13 +45,18 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
     this.summaryPage();
   }
 
-  redirectToDeclarationActual(institution: string, accountNumber: string, mode: string) {
+  redirectToDeclarationActual(
+    institution: string,
+    accountNumber: string,
+    mode: string
+  ) {
     this.tabIndex = 2;
     const data = {
-      institution : institution,
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
-      canEdit: (mode == 'edit' ? true : false)};
+      institution: institution,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
+      canEdit: mode == 'edit' ? true : false,
+    };
     this.institution = institution;
     this.accountNumber = accountNumber;
     this.myEvent.emit(data);
@@ -57,12 +65,11 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
   jumpToMasterPage(accountNumber: string) {
     this.tabIndex = 1;
     const accountNo = {
-      accountNumber : accountNumber,
-      tabIndex : this.tabIndex,
+      accountNumber: accountNumber,
+      tabIndex: this.tabIndex,
     };
     this.accountNo.emit(accountNo);
   }
-
 
   // ---------------------Summary ----------------------
   // Summary get Call
@@ -72,6 +79,7 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -81,43 +89,47 @@ export class NationalSevingCertificateSummaryComponent implements OnInit {
 
   // Post New Future Policy Data API call
   public addFuturePolicy(): void {
-
     const data = {
       futureNewPolicyDeclaredAmount: this.futureNewPolicyDeclaredAmount,
     };
 
     //console.log('addFuturePolicy Data..', data);
-    this.nscService
-      .getNSCSummaryFuturePlan(data)
-      .subscribe((res) => {
-        //console.log('addFuturePolicy Res..', res);
-        this.summaryGridData = res.data.results[0].transactionDetailList;
-        this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
-        this.totalActualAmount = res.data.results[0].totalActualAmount;
-        this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
-        this.grandTotalDeclaredAmount =
-          res.data.results[0].grandTotalDeclaredAmount;
-        this.grandTotalActualAmount =
-          res.data.results[0].grandTotalActualAmount;
-        this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
-
-      });
-
+    this.nscService.getNSCSummaryFuturePlan(data).subscribe((res) => {
+      //console.log('addFuturePolicy Res..', res);
+      this.summaryGridData = res.data.results[0].transactionDetailList;
+      this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
+      this.totalActualAmount = res.data.results[0].totalActualAmount;
+      this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.grandTotalDeclaredAmount =
+        res.data.results[0].grandTotalDeclaredAmount;
+      this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
+      this.alertService.sweetalertMasterSuccess('Future Amount was saved', '');
+    });
   }
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+    if (this.futureNewPolicyDeclaredAmount > 0) {
     this.addFuturePolicy();
+  }else if(this.futureNewPolicyDeclaredAmount <0) {
+    this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+  }
   }
 
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
 
-  // // On onEditSummary
-  // onEditSummary1(institution: string, policyNo: string) {
-  //   this.tabIndex = 2;
-  //   this.institution = institution;
-  //   this.policyNo = policyNo;
-  //   console.log('institution::', institution);
-  //   console.log('policyNo::', policyNo);
-  // }
+    if (!pattern.test(inputChar)) {
+      this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+    }
+  }
 }
-

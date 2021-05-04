@@ -12,7 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+// import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CKEditorModule } from 'ckeditor4-angular';
+
 // import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoModule } from '@ngneat/transloco';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -44,7 +46,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
 import { TokenInterceptorService } from './modules/auth/token-interceptor/token-interceptor.service';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { EmployeeMasterModule } from './modules/employee-master/employee-master.module';
-  //accordion and accordion tab
+//accordion and accordion tab
 //accordion and accordion tab
 import { MenuItem } from 'primeng/api';
 import { LMSModule } from './modules/lms/lms.module';
@@ -56,17 +58,18 @@ import { AdminApprovalModule } from './modules/admin-approval/admin-approval.mod
 import { UploadexcelModule } from './modules/uploadexcel/uploadexcel.module';
 import { EmployeemasterlistpageModule } from './modules/employeemasterlistpage/employeemasterlistpage.module';
 import { PayrollInputsModule } from './modules/payroll-inputs/payroll-inputs.module';
-
-//////////////////////addaed by bharati////
-//import { payrollModule } from './modules/companysetting/payroll/payroll.module';
-
-//import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-//import { payrollComponent } from './modules/companysetting/payroll/payroll.component';
-
 import { ShortenStringPipe } from './core/utility/pipes/shorten-string.pipe';
 import { CompanySettingModule } from './modules/companysetting/companysetting.module';
-import { CompanySettingRoutingModule } from './modules/companysetting/companysetting.routing.module';
 import { LockModule } from './modules/lock/lock.module';
+
+
+
+
+
+/* import {SignaturePadModule} from 'angular2-signaturepad'; */
+
+/* import { SignaturePadModule } from './modules/@ng-plus/signature-pad'; */
+/* import { } from '@ng-plus/signature-pad' */
 
 
 
@@ -78,6 +81,9 @@ import { AccordionModule } from 'primeng/accordion';
 import { EmailSmsModule } from './modules/email-sms/email-sms.module';
 import { LoanMasterModule } from './modules/loan-master/loan-master.module';
 import { ReimbursementModule } from './modules/reimbursement/reimbursement.module';
+import { from } from 'rxjs';
+import { SignaturePadModule } from 'angular2-signaturepad';
+
 
 
 
@@ -86,20 +92,7 @@ import { ReimbursementModule } from './modules/reimbursement/reimbursement.modul
     AppComponent,
     ProfileComponent,
     ShortenStringPipe,
-
     SettingsComponent,
-
- 
-
-
-
-    //////////////////////////
-    // payrollComponent,
-    // HeadcreationComponent,
-    // AttributecreationComponent,
-    // AttributeselectionComponent,
-    // PayrollheadgroupcreationComponent,
-    ///////////////////////////////////////
   ],
 
   exports: [],
@@ -112,13 +105,11 @@ import { ReimbursementModule } from './modules/reimbursement/reimbursement.modul
     PayrollModule,
     QueryModule,
     LoanModule,
-
     CompanySettingModule,
     MyInvestmentsModule,
     PayrollInputsModule,
     /////////////////
     //  payrollModule,
-    CompanySettingModule,
     LockModule,
     ReimbursementModule,
     ////////////////////////////////
@@ -153,13 +144,14 @@ import { ReimbursementModule } from './modules/reimbursement/reimbursement.modul
     PrimeNGModule,
     AccordionModule,
     OtherMasterModule,
-	  AdminApprovalModule,
+    AdminApprovalModule,
     AdminApprovalModule,
     UploadexcelModule,
     EmployeemasterlistpageModule,
-
     EmailSmsModule,
     LoanMasterModule,
+    SignaturePadModule
+
   ],
 
   providers: [BsDatepickerModule,
@@ -177,7 +169,7 @@ import { ReimbursementModule } from './modules/reimbursement/reimbursement.modul
         prodMode: false,
       } as TranslocoConfig,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     ShortenStringPipe,
   ],
   // schemas: [

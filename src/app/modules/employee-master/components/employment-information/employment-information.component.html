@@ -11,7 +11,7 @@
                             <div class="emptabview">
                                 <input name="nav" type="radio" class="about-radio" id="summary"
                                     [checked]="tabIndex==0" />
-                                <div class="tabs emptabs about-page" *ngIf="EmpSummaryTab==true">
+                                <div class="tabs emptabs about-page" *ngIf="EmpSummaryTabRouter==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
@@ -25,12 +25,12 @@
 
                                 <input name="joining" type="radio" class="about-radio" id="joining"
                                     [checked]="tabIndex==1" />
-                                <div class="tabs emptabs about-page" *ngIf="joiningTab==true">
+                                <div class="tabs emptabs about-page" *ngIf="joiningTabRouter==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="joining" [class.disabled]="employementJoiningInfoId"
+                                <label class="nav" for="joining" [class.disabled]="joiningTab==false"
                                     (click)="joiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/joining-information']">
                                     <span>
@@ -40,12 +40,12 @@
 
                                 <input name="rejoining" type="radio" class="about-radio" id="rejoining"
                                     [checked]="tabIndex==2" />
-                                <div class="tabs emptabs about-page" *ngIf="reJoiningTab==true">
+                                <div class="tabs emptabs about-page" *ngIf="reJoiningTabRouter==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="rejoining" [class.disabled]="!rejoiningBoolean"
+                                <label class="nav" for="rejoining" [class.disabled]="!reJoiningTab"
                                     (click)="reJoiningTabValidation()"
                                     [routerLink]="['/employee-master/employment-information/re-joining-information']">
                                     <span>
@@ -55,12 +55,12 @@
 
                                 <input name="transfer" type="radio" class="about-radio" id="transfer"
                                     [checked]="tabIndex==3" />
-                                <div class="tabs emptabs about-page" *ngIf="transferTab==true">
+                                <div class="tabs emptabs about-page" *ngIf="transferTabRouter==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="transfer" (click)="transferTabValidation()"
+                                <label class="nav" for="transfer" (click)="transferTabValidation()" [class.disabled]="transferTab==false"
                                     [routerLink]="['/employee-master/employment-information/transfer-information']">
                                     <span>
                                         Transfer
@@ -68,12 +68,12 @@
                                 </label>
 
                                 <input name="exit" type="radio" class="about-radio" id="exit" [checked]="tabIndex==4" />
-                                <div class="tabs emptabs about-page" *ngIf="exitTab==true">
+                                <div class="tabs emptabs about-page" *ngIf="exitTabRouter==true">
                                     <div class="tabview-contents">
                                         <router-outlet></router-outlet>
                                     </div>
                                 </div>
-                                <label class="nav" for="exit" (click)="exitTabValidation()"
+                                <label class="nav" for="exit" (click)="exitTabValidation()" [class.disabled]="exitTab==false"
                                     [routerLink]="['/employee-master/employment-information/exit-information']">
                                     <span>
                                         Exit

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { EmailSmsService } from '../email-sms.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { EmailSmsService } from '../email-sms.service';
 export class EmailSmsComponent implements OnInit {
 
   emailSmsForm: FormGroup;
-  public Editor = ClassicEditor;
+  // public Editor = ClassicEditor;
 
   editorConfig = {
     toolbar: [
@@ -31,11 +31,11 @@ export class EmailSmsComponent implements OnInit {
 
 
   constructor(private emailService: EmailSmsService) {
-    this.keyword = [ 
+    this.keyword = [
       {
         'name':'employeeCode',
         'id': 1,
-        'description': 'Employee Code' 
+        'description': 'Employee Code'
     },
     {
         'name':'employeeFullName',
@@ -45,7 +45,7 @@ export class EmailSmsComponent implements OnInit {
     {
         'name':'employeeEmail',
         'id': 3,
-        'description': 'Employee Email' 
+        'description': 'Employee Email'
     },
     {
         'name':'employeeContact',
@@ -61,7 +61,7 @@ export class EmailSmsComponent implements OnInit {
         'name':'employeeLastName',
         'id': 6,
         'description': 'Employee Last Name'
-    },    
+    },
     {
         'name':'employee1',
         'id': 8,
@@ -89,7 +89,7 @@ export class EmailSmsComponent implements OnInit {
     }
     ]
 
-    
+
    this.keyword.forEach( element => {
     this.mappingData.push(
       [element.id.toString() , '[' + element.description +']' ]

@@ -4,7 +4,8 @@
     <div class="row">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Institution</label>
-        <input type="text" formControlName="institution" class="form-control" placeholder="Enter Institution"
+        <input type="text" formControlName="institution" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
+        placeholder="Enter Institution"
           [ngClass]="{ 'is-invalid': submitted && masterForm.institution.errors }">
         <div *ngIf="submitted && masterForm.institution.errors" class="invalid-feedback">
           <div *ngIf="masterForm.institution.errors.required">Institution is mandatory</div>
@@ -12,7 +13,8 @@
       </div>
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Account No.</label>
-        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z]/i.test(event.key)" class="form-control" placeholder="Enter Account No."
+        <input type="text" formControlName="accountNumber" onkeypress="return /[0-9a-zA-Z ]/i.test(event.key)"
+          class="form-control" placeholder="Enter Account No."
           [ngClass]="{ 'is-invalid': submitted && masterForm.accountNumber.errors }">
         <div *ngIf="submitted && masterForm.accountNumber.errors" class="invalid-feedback">
           <div *ngIf="masterForm.accountNumber.errors.required">Account No is mandatory</div>
@@ -40,7 +42,7 @@
           <div *ngIf="masterForm.relationship.errors.required">Relationship is mandatory</div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-3 mt-10">
+      <!-- <div class="col-sm-6 col-md-3 mt-10">
         <label class="form-label">Account Start Date</label>
         <div class="form-group">
           <div class="input-group">
@@ -57,7 +59,48 @@
           </div>
         </div>
       </div>
+    </div> -->
+    <div class="col-sm-6 col-md-3 mt-10">
+      <label class="form-label">Account Start Date</label>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          </div>
+          <!-- [maxDate]="today" -->
+          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyStartDate"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            (bsValueChange)="setPolicyEndDate()" placeholder="Account Start Date" bsDatepicker
+            [ngClass]="{ 'is-invalid': submitted && masterForm.policyStartDate.errors }">
+          <div *ngIf="submitted && masterForm.policyStartDate.errors" class="invalid-feedback">
+            <div *ngIf="masterForm.policyStartDate.errors.required">Account Start Date is mandatory</div>
+          </div>
+        </div>
+      </div>
     </div>
+  
+     
+     <div class="col-sm-6 col-md-3 mt-10">
+      <label class="form-label">Account End Date</label>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+          </div>
+          <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="policyEndDate"
+            data-provide="datepicker" data-date-autoclose="true" class="form-control"
+            (bsValueChange)="checkFinancialYearStartDateWithPolicyEnd()" [minDate]="policyToDate"
+            placeholder="Account End Date" bsDatepicker
+            [ngClass]="{ 'is-invalid': submitted && masterForm.policyEndDate.errors }">
+          <div *ngIf="submitted && masterForm.policyEndDate.errors" class="invalid-feedback">
+            <div *ngIf="masterForm.policyEndDate.errors.required">Account End Date is mandatory</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+    
+   
     <div class="row mt-25">
       <div class="col-12">
         <fieldset>
@@ -70,10 +113,9 @@
                 class="form-control custom-select"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.frequencyOfPayment.errors }" #FrequencyofPayment>
                 <option [ngValue]="null">Select</option>
-                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList"
-                [value]="frequencyOfPayment.value">
-                {{frequencyOfPayment.label}}
-              </option>
+                <option *ngFor="let frequencyOfPayment of frequencyOfPaymentList" [value]="frequencyOfPayment.value">
+                  {{frequencyOfPayment.label}}
+                </option>
               </select>
               <div *ngIf="submitted && masterForm.frequencyOfPayment.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.frequencyOfPayment.errors.required">Frequency Of Payment is mandatory</div>
@@ -84,7 +126,7 @@
               <p-inputNumber class="form-control align-right" formControlName="premiumAmount" name="Premium Amount"
                 (onBlur)="calculateAnnualAmount()"
                 [ngClass]="{ 'is-invalid': submitted && masterForm.premiumAmount.errors }" mode="decimal" locale="en-IN"
-                [minFractionDigits]="2"></p-inputNumber>
+                [minFractionDigits]="2"  min="0"></p-inputNumber>
               <div *ngIf="submitted && masterForm.premiumAmount.errors" class="invalid-feedback">
                 <div *ngIf="masterForm.premiumAmount.errors.required">Premium Amount is mandatory</div>
               </div>
@@ -98,7 +140,7 @@
                 <div *ngIf="masterForm.annualAmount.errors.required">Annual Amount is mandatory</div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
+            <div class="col-sm-6 col-md-3">
               <label class="form-label ml-15" tooltip="Electronic Clearing Service" placement="left">ECS ?</label>
               <div class="custom-controls-stacked ml-15 mt-10">
                 <label class="custom-control custom-radio custom-control-inline">
@@ -112,14 +154,15 @@
               </div>
             </div>
           </div>
-          <div class="row mt-4 mb-10" *ngIf="FrequencyofPayment.value !== 'As & When'">
+          <div class="row mt-4 mb-10">
             <div class="col-sm-6 col-md-3">
-              <label class="form-label">From Date</label>
-              <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                  </div>
+               <label class="form-label">From Date</label>
+               <div class="form-group">
+                  <div class="input-group">
+                     <div class="input-group-prepend">
+                        <span class="input-group-text"><i
+                           class="fa fa-calendar"></i></span>
+                     </div>
                   <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"
                     data-provide="datepicker" data-date-autoclose="true" class="form-control"
                     (bsValueChange)="setPaymentDetailToDate()" [minDate]="minFormDate" [maxDate]="maxFromDate"
@@ -131,13 +174,14 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-3" *ngIf="FrequencyofPayment.value !== 'As & When'">
+            <div class="col-sm-6 col-md-3">
               <label class="form-label">To Date</label>
               <div class="form-group">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                  </div>
+                 <div class="input-group">
+                    <div class="input-group-prepend">
+                       <span class="input-group-text"><i
+                          class="fa fa-calendar"></i></span>
+                    </div>
                   <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
                     (bsValueChange)="checkFinancialYearStartDateWithPaymentDetailToDate()"
                     [minDate]="paymentDetailMinDate" [maxDate]="maxFromDate" formControlName="toDate"
@@ -241,36 +285,24 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- <tr>
+                    <tr>
                       <th scope="row"><span tooltip="1">1</span></th>
                       <td><span tooltip="Premium Receipt/ Premium Statement"></span>PPF Receipt/Statement</td>
                       <td><span *ngFor="let item of masterfilesArray" class="text-orange" tooltip="{{item.name}},"><i
-                            class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span></td>
+                            class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                        <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
+                          <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
+                            <i class="fa fa-paperclip text-orange" (click)="docViewer(template3,i)"></i> &nbsp;
+                            {{ doc.fileName }}
+                          </div>
+                        </div>
+                      </td>
                       <td>
                         <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
                           (click)="UploadModal(template)" data-toggle="modal"
                           data-target="#UploadModal"></i>&nbsp;&nbsp;
                       </td>
-                    </tr> -->
-                    <tr>
-                      <th scope="row"><span tooltip="1">1</span></th>
-                      <td><span tooltip="Premium Receipt/ Premium Statement"></span>PPF Receipt/Statement</td>
-                      <td><span *ngFor ="let item of masterfilesArray"  class="text-orange" tooltip="{{item.name}},"><i
-                         class="fa fa-paperclip"
-                         aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                         <div class="col-md-12" *ngFor="let doc of urlArray; let i = index">
-                          <div class="labelbox" placement="top" tooltip="{{ doc.fileName }}">
-                            <i class="fa fa-paperclip text-orange"
-                            (click)="docViewer(template3,i)"></i> &nbsp;
-                            {{ doc.fileName }}
-                          </div>
-                        </div>
-                        </td>
-                      <td>
-                         <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(template)"
-                          data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
-                      </td>
-                   </tr>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -281,15 +313,16 @@
     </div>
     <div class="row mt-15">
       <div class="col-12">
-         <div class="float-right mb-15">
-            <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
+        <div class="float-right mb-15">
+          <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
+            tooltip="Save"><b>
               <i class="fa fa-floppy-o"></i></b> Save</button>&nbsp;
-              <button type="button"  (click)="resetView()"
-                class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
-                <i class="fa fa-floppy-o"></i></b> Reset</button>
-         </div>
+          <button type="button" (click)="resetView()"
+            class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
+              <i class="fa fa-floppy-o"></i></b> Reset</button>
+        </div>
       </div>
-   </div>
+    </div>
     <div class="row mt-20">
       <div class="col-12">
         <div class="card">
@@ -335,8 +368,8 @@
                     <td class="wd-10"><span tooltip="Submitted">Submitted</span>
                     </td>
                     <td class="wd-5">
-                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)=" editMaster(summary.accountNumber)"
-                        tooltip="Edit"></i> &nbsp;&nbsp;
+                      <i class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                        (click)=" editMaster(summary.accountNumber)" tooltip="Edit"></i> &nbsp;&nbsp;
                     </td>
                   </tr>
                   <tr *ngIf="!masterGridData?.length">
@@ -364,9 +397,6 @@
     <div class="card">
       <div class="card-body">
         <div class="row clearfix">
-          <!-- <div class="col-md-12">
-                   <label class="form-label">Upload File here :</label>
-                </div> -->
           <div class="col-md-12">
             <div class="fileuploadbox bg-color-lightgray">
               <label class="filelabel">
@@ -412,13 +442,7 @@
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-    <button
-      type="button"
-      (click)="modalRef.hide()"
-      class="close"
-      data-dismiss="modal"
-      aria-label="Close"
-    >
+    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -427,32 +451,18 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
-        <button
-          type="button"
-          class="btn active Next_Previous_Btn"
-          tooltip="Previous Document"
-          (click)="previousDocViewer()"
-          [disabled]="urlIndex == 0"
-        >
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
+          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
       </div>
       <div class="col-md-10">
-        <iframe
-          style="height: 100vh; width: 100%; display: block"
-          [src]="urlSafe"
-          provider="google"
-        ></iframe>
+        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
         <!-- <img src="https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg" alt="not fouund"> -->
       </div>
       <div class="col-md-1">
-        <button
-          type="button"
-          class="btn active Next_Previous_Btn"
-          tooltip="Next Document"
-          (click)="nextDocViewer()"
-          [disabled]="urlIndex == urlArray.length - 1"
-        >
+        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1">
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
       </div>

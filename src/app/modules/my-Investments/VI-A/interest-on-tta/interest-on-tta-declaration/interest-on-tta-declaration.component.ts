@@ -38,9 +38,9 @@ import { InterestOnTtaService } from '../interest-on-tta.service';
 })
 export class InterestOnTtaDeclarationComponent implements OnInit {
 
-  @Input() bankName: string;
+  @Input() public bankName: string;
   @Input() policyNo: string;
-  @Input() data: any;
+  @Input() public data: any;
 
   public modalRef: BsModalRef;
   public submitted = false;
@@ -118,6 +118,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public declarationService: DeclarationService;
   public displayUploadFile = false;
   public uploadedFiles: any[] = [];
+  public viewTransactionDetail = true;
   public viewDocumentDetail = true;
   public masterUploadFlag = true;
   public dateOfPaymentGlobal: Date;
@@ -166,6 +167,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public selectedMasterId: string;
+  public canEdit : boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -203,12 +205,15 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
     // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
+      this.canEdit = true;
     } else {
       console.log('in transaction::', this.data);
       const input = this.data;
       this.globalBank = input.bankName;
       this.getBankNameList();
       this.getTransactionFilterData(input.bankName);
+      this.isDisabled = false;
+      this.canEdit = input.canEdit;
     }
 
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
@@ -305,8 +310,8 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
       });
   }
     // --------- On bankName selection show all transactions list accordingly all banks--------
-      selectedTransactionBankName(bankMasterId: number) {
-        const selectedBank = this.transactionBankNameList.find(item => item.interestOnSavingsDeposit80TTMasterId == bankMasterId);
+      selectedTransactionBankName(bankName: any) {
+        const selectedBank = this.transactionBankNameList.find(item => item.interestOnSavingsDeposit80TTMasterId == bankName);
         this.globalBank = selectedBank.bankName;
         this.selectedMasterId = selectedBank.interestOnSavingsDeposit80TTMasterId;
         this.getTransactionFilterData(this.globalBank);
@@ -332,15 +337,26 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
           //   }
           // });
 
-    if (bankMasterId == 0) {
+    // if (bankName == 0) {
+    //   this.grandTabStatus = true;
+    //   this.isDisabled = true;
+    // } else {
+    //   this.grandTabStatus = false;
+    //   this.isDisabled = false;
+    // }
+
+    // this.resetAll();
+
+    if (bankName == 'All') {
       this.grandTabStatus = true;
       this.isDisabled = true;
     } else {
       this.grandTabStatus = false;
       this.isDisabled = false;
     }
-
     this.resetAll();
+    console.log('isdisabled: ', this.isDisabled);
+
   }
 
   // -------- On Policy selection show all transactions list accordingly all banks---------
@@ -1037,7 +1053,7 @@ export class InterestOnTtaDeclarationComponent implements OnInit {
   }
 
   // When Edit of Document Details
-  declarationEditUpload(
+  editViewTransaction(
     template2: TemplateRef<any>,
     proofSubmissionId: string
   ) {

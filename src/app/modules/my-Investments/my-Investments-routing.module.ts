@@ -51,7 +51,8 @@ import { CeaComponent } from './Other/Child Education Allowance/cea/cea.componen
 import { ChildeducationallowanceComponent } from './Other/Child Education Allowance/childeducationallowance/childeducationallowance.component';
 import { CeamasterComponent } from './Other/Child Education Allowance/ceamaster/ceamaster.component';
 import { ChamasterComponent } from './Other/Child Hostel Allowance(CHA)/childhostelallowance/chamaster/chamaster.component';
-
+import { OtherincomeComponent } from './Other/Other Income/otherincome/otherincome.component';
+import { EmployeeNPS80CCDComponent } from './Other/EmployeeNationalPensionScheme80CCD/employee-nps80-ccd/employee-nps80-ccd.component';
 
 const routes: Routes = [
 
@@ -132,6 +133,17 @@ const routes: Routes = [
                           component:  TaxAdjustmentsComponent,
                            data: { title: ':: DelziaHR ::  TaxAdjustments' },
                           },
+                          {
+                            path:   'Other-OtherIncome',
+                            component:  OtherincomeComponent,
+                             data: { title: ':: DelziaHR ::  OtherIncome' },
+                            },
+                            {
+                              path:   'Other-EmployeeNationalPensionScheme80CCD',
+                              component: EmployeeNPS80CCDComponent,
+                               data: { title: ':: DelziaHR ::  EmployeeNationalPensionScheme80CCD' },
+                              },  
+  
 
         {
           path:   '80C-TaxsavingMutualFund',

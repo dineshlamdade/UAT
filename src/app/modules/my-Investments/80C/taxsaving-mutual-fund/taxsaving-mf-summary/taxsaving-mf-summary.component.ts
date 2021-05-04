@@ -18,7 +18,8 @@ export class TaxsavingMfSummaryComponent implements OnInit {
    public tabIndex = 0;
    public totalDeclaredAmount: any;
    public totalActualAmount: any;
-   public futureNewPolicyDeclaredAmount: string;
+   public futureNewPolicyDeclaredAmount: 0
+   public futureGlobalPolicyDeclaredAmount: 0
    public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -27,6 +28,8 @@ export class TaxsavingMfSummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
+  public tempFlag: boolean;
+
 
   constructor(
     private service: MyInvestmentsService,
@@ -70,6 +73,7 @@ redirectToDeclarationActual(institution: string, accountNumber: string, mode: st
           this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
           this.totalActualAmount = res.data.results[0].totalActualAmount;
           this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+          this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
           this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
           this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
            console.log(res);
@@ -88,6 +92,7 @@ redirectToDeclarationActual(institution: string, accountNumber: string, mode: st
             this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
             this.totalActualAmount = res.data.results[0].totalActualAmount;
             this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+            this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
             this.grandTotalDeclaredAmount = res.data.results[0].grandTotalDeclaredAmount;
             this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
         });
@@ -98,17 +103,35 @@ redirectToDeclarationActual(institution: string, accountNumber: string, mode: st
   // On Change Future New Policy Declared Amount with formate
     onChangeFutureNewPolicyDeclaredAmount() {
       this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+      if (this.futureNewPolicyDeclaredAmount > 0) {
       this.addFuturePolicy();
+    }else if(this.futureNewPolicyDeclaredAmount <0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
     }
-
-
-  // On onEditSummary
-    onEditSummary1(institution: string, accountNumber: string) {
-      this.tabIndex = 2;
-      this.institution = institution;
-      this.accountNumber = accountNumber;
-      console.log('institution::', institution);
-      console.log('accountNumber::', accountNumber);
     }
+    keyPressedSpaceNotAllow(event: any) {
+      console.log('HI ');
+      const pattern = /[0-9\+\-\ ]/;
+      let inputChar = String.fromCharCode(event.key);
+    
+      if (!pattern.test(inputChar)) {
+        // this.futureNewPolicyDeclaredAmount = 0;
+        this.tempFlag = true;
+        // invalid character, prevent input
+        event.preventDefault();
+      } else {
+        this.tempFlag = false;
+      }
+    }
+  }
 
-}
+//   // On onEditSummary
+//     onEditSummary1(institution: string, accountNumber: string) {
+//       this.tabIndex = 2;
+//       this.institution = institution;
+//       this.accountNumber = accountNumber;
+//       console.log('institution::', institution);
+//       console.log('accountNumber::', accountNumber);
+//     }
+
+// }

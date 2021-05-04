@@ -10,12 +10,17 @@ import { PensionPlanService } from '../pension-plan.service';
   styleUrls: ['./ppsummary.component.scss'],
 })
 export class PpsummaryComponent implements OnInit {
+  @Input() institution: string;
+  @Input() accountNumber: string;
+  @Output() myEvent = new EventEmitter<any>();
+  @Output() accountNo = new EventEmitter<any>();
 
   public summaryGridData: Array<any> = [];
   public tabIndex = 0;
   public totalDeclaredAmount: any;
   public totalActualAmount: any;
-  public futureNewPolicyDeclaredAmount: string;
+  public futureNewPolicyDeclaredAmount: 0
+  public futureGlobalPolicyDeclaredAmount: 0
   public grandTotalDeclaredAmount: number;
   public grandTotalActualAmount: number;
   public grandDeclarationTotal: number;
@@ -24,10 +29,8 @@ export class PpsummaryComponent implements OnInit {
   public grandApprovedTotal: number;
   public grandTabStatus: boolean;
   public selectedInstitution: string;
-  @Input() institution: string;
-  @Input() accountNumber: string;
-  @Output() myEvent = new EventEmitter<any>();
-  @Output() accountNo = new EventEmitter<any>();
+  public tempFlag: boolean;
+
 
   constructor(
     private service: MyInvestmentsService,
@@ -61,21 +64,6 @@ export class PpsummaryComponent implements OnInit {
     this.accountNo.emit(accountNo);
   }
 
-
-  onEditSummary(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    const data = {
-      institution: institution,
-      policyNo: policyNo,
-      tabIndex: this.tabIndex,
-    };
-    this.institution = institution;
-    this.accountNumber = policyNo;
-    //console.log('institution::', institution);
-    //console.log('policyNo::', policyNo);
-    this.myEvent.emit(data);
-  }
-
   // ---------------------Summary ----------------------
   // Summary get Call
   summaryPage() {
@@ -84,6 +72,7 @@ export class PpsummaryComponent implements OnInit {
       this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
       this.totalActualAmount = res.data.results[0].totalActualAmount;
       this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+      this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
       this.grandTotalDeclaredAmount =
         res.data.results[0].grandTotalDeclaredAmount;
       this.grandTotalActualAmount = res.data.results[0].grandTotalActualAmount;
@@ -104,6 +93,7 @@ export class PpsummaryComponent implements OnInit {
         this.totalDeclaredAmount = res.data.results[0].totalDeclaredAmount;
         this.totalActualAmount = res.data.results[0].totalActualAmount;
         this.futureNewPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
+        this.futureGlobalPolicyDeclaredAmount = res.data.results[0].futureNewPolicyDeclaredAmount;
         this.grandTotalDeclaredAmount =
           res.data.results[0].grandTotalDeclaredAmount;
         this.grandTotalActualAmount =
@@ -115,18 +105,25 @@ export class PpsummaryComponent implements OnInit {
 
   // On Change Future New Policy Declared Amount with formate
   onChangeFutureNewPolicyDeclaredAmount() {
-    this.addFuturePolicy();
+    this.futureNewPolicyDeclaredAmount = this.futureNewPolicyDeclaredAmount;
+      if (this.futureNewPolicyDeclaredAmount > 0) {
+      this.addFuturePolicy();
+    }else if(this.futureNewPolicyDeclaredAmount <0) {
+      this.futureNewPolicyDeclaredAmount = this.futureGlobalPolicyDeclaredAmount;
+    }
   }
-
-
-
-
-  // On onEditSummary
-  onEditSummary1(institution: string, policyNo: string) {
-    this.tabIndex = 2;
-    this.institution = institution;
-    this.accountNumber = policyNo;
-    console.log('institution::', institution);
-    console.log('policyNo::', policyNo);
-  }
+  keyPressedSpaceNotAllow(event: any) {
+    console.log('HI ');
+    const pattern = /[0-9\+\-\ ]/;
+    let inputChar = String.fromCharCode(event.key);
+  
+    if (!pattern.test(inputChar)) {
+      // this.futureNewPolicyDeclaredAmount = 0;
+      this.tempFlag = true;
+      // invalid character, prevent input
+      event.preventDefault();
+    } else {
+      this.tempFlag = false;
+}
+}
 }

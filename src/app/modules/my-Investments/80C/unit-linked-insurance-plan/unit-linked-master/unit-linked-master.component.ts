@@ -1,22 +1,36 @@
 import { DatePipe, DOCUMENT } from '@angular/common';
-import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
-import { Component, HostListener, Inject, Input, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { MatDialog} from '@angular/material/dialog';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import {
+  Component,
+  HostListener,
+  Inject,
+  Input,
+  OnInit,
+  Optional,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { startOfYear } from 'date-fns';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertServiceService } from '../../../../../core/services/alert-service.service';
 import { NumberFormatPipe } from '../../../../../core/utility/pipes/NumberFormatPipe';
-import {FileService} from '../../../file.service';
+import { FileService } from '../../../file.service';
 import { MyInvestmentsService } from '../../../my-Investments.service';
 import { UnitLinkedInsurancePlanService } from '../unit-linked-insurance-plan.service';
-
 
 @Component({
   selector: 'app-unit-linked-master',
   templateUrl: './unit-linked-master.component.html',
-  styleUrls: ['./unit-linked-master.component.scss']
+  styleUrls: ['./unit-linked-master.component.scss'],
 })
 export class UnitLinkedMasterComponent implements OnInit {
   @Input() public accountNo: any;
@@ -101,7 +115,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private Service: MyInvestmentsService,
-    private unitLinkedInsurancePlanService : UnitLinkedInsurancePlanService,
+    private unitLinkedInsurancePlanService: UnitLinkedInsurancePlanService,
     private datePipe: DatePipe,
     private http: HttpClient,
     private fileService: FileService,
@@ -115,8 +129,14 @@ export class UnitLinkedMasterComponent implements OnInit {
     this.form = this.formBuilder.group({
       institution: new FormControl(null, Validators.required),
       accountNumber: new FormControl(null, Validators.required),
-      accountHolderName: new FormControl({ value : null, disabled : true}, Validators.required),
-      relationship: new FormControl({ value: null, disabled: true }, Validators.required),
+      accountHolderName: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
+      relationship: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       policyStartDate: new FormControl(null, Validators.required),
       policyEndDate: new FormControl(null, Validators.required),
       familyMemberInfoId: new FormControl(null, Validators.required),
@@ -124,13 +144,16 @@ export class UnitLinkedMasterComponent implements OnInit {
       remark: new FormControl(null),
       frequencyOfPayment: new FormControl(null, Validators.required),
       premiumAmount: new FormControl(null, Validators.required),
-      annualAmount: new FormControl( { value: null, disabled: true }, Validators.required),
+      annualAmount: new FormControl(
+        { value: null, disabled: true },
+        Validators.required
+      ),
       fromDate: new FormControl(null, Validators.required),
       toDate: new FormControl(null, Validators.required),
-      ecs: new FormControl(0),
+      ecs: new FormControl('0'),
       masterPaymentDetailId: new FormControl(0),
       investmentGroup2MasterId: new FormControl(0),
-      investmentGroup2MasterPaymentDetailId: new FormControl(0),
+      // investmentGroup2MasterPaymentDetailId: new FormControl(0),
       depositType: new FormControl('recurring'),
       proofSubmissionId: new FormControl(''),
     });
@@ -139,7 +162,8 @@ export class UnitLinkedMasterComponent implements OnInit {
       { label: 'Monthly', value: 'Monthly' },
       { label: 'Quarterly', value: 'Quarterly' },
       { label: 'Half-Yearly', value: 'Halfyearly' },
-      { label: 'Yearly', value: 'Yearly' },];
+      { label: 'Yearly', value: 'Yearly' },
+    ];
     this.masterPage();
     this.addNewRowId = 0;
     this.hideRemarkDiv = false;
@@ -203,10 +227,12 @@ export class UnitLinkedMasterComponent implements OnInit {
     });
 
     if (this.today.getMonth() + 1 <= 3) {
-      this.financialYear =this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
+      this.financialYear =
+        this.today.getFullYear() - 1 + '-' + this.today.getFullYear();
     } else {
       this.financialYear =
-        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);}
+        this.today.getFullYear() + '-' + (this.today.getFullYear() + 1);
+    }
 
     const splitYear = this.financialYear.split('-', 2);
 
@@ -215,7 +241,7 @@ export class UnitLinkedMasterComponent implements OnInit {
 
     if (this.accountNo != undefined || this.accountNo != null) {
       const input = this.accountNo;
-      this.editSummaryMaster(input.accountNumber);
+      this.editMaster(input.accountNumber);
       console.log('editMaster accountNumber', input.accountNumber);
     }
   }
@@ -225,7 +251,8 @@ export class UnitLinkedMasterComponent implements OnInit {
     return this.form.controls;
   }
 
-  // Policy End Date Validations with Policy Start Date
+ 
+  //-------------------- Policy End Date Validations with Policy Start Date ---------------
   setPolicyEndDate() {
     this.policyMinDate = this.form.value.policyStartDate;
     const policyStart = this.datePipe.transform(
@@ -247,7 +274,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     this.setPaymentDetailToDate();
   }
 
-  // Policy End Date Validations with Current Finanacial Year
+  //------------------ Policy End Date Validations with Current Finanacial Year -------------------
   checkFinancialYearStartDateWithPolicyEnd() {
     const policyEnd = this.datePipe.transform(
       this.form.get('policyEndDate').value,
@@ -259,8 +286,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     );
     if (policyEnd < financialYearStartDate) {
       this.alertService.sweetalertWarning(
-        'Policy End Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.policyEndDate.reset();
     } else {
@@ -271,7 +297,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Payment Detail From Date
+  //------------------- Payment Detail To Date Validations with Payment Detail From Date ----------------
   setPaymentDetailToDate() {
     this.paymentDetailMinDate = this.form.value.fromDate;
     const from = this.datePipe.transform(
@@ -287,7 +313,7 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  // Payment Detail To Date Validations with Current Finanacial Year
+  //-------------- Payment Detail To Date Validations with Current Finanacial Year ----------------
   checkFinancialYearStartDateWithPaymentDetailToDate() {
     const to = this.datePipe.transform(
       this.form.get('toDate').value,
@@ -298,9 +324,9 @@ export class UnitLinkedMasterComponent implements OnInit {
       'yyyy-MM-dd'
     );
     if (to < financialYearStartDate) {
+      //this.alertService.sweetalertWarning("To Date can't be earlier that start of the Current Financial Year");
       this.alertService.sweetalertWarning(
-        'To Date should be greater than or equal to Current Financial Year : ' +
-          this.financialYearStart
+        "Policy End Date can't be earlier that start of the Current Financial Year"
       );
       this.form.controls.toDate.reset();
     }
@@ -351,14 +377,10 @@ export class UnitLinkedMasterComponent implements OnInit {
       console.log('Post Office Data::', data);
 
       this.unitLinkedInsurancePlanService
-        .uploadMultipleULIPDepositMasterFiles(
-          this.masterfilesArray,
-          data
-        )
+        .uploadMultipleULIPDepositMasterFiles(this.masterfilesArray, data)
         .subscribe((res) => {
           console.log(res);
-          if (res)
-          {
+          if (res) {
             if (res.data.results.length > 0) {
               this.masterGridData = res.data.results;
               this.masterGridData.forEach((element) => {
@@ -388,7 +410,7 @@ export class UnitLinkedMasterComponent implements OnInit {
       formDirective.resetForm();
       this.form.reset();
       this.form.get('active').setValue(true);
-      this.form.get('ecs').setValue(0);
+      this.form.get('ecs').setValue('0');
       this.showUpdateButton = false;
       this.paymentDetailGridData = [];
       this.masterfilesArray = [];
@@ -434,7 +456,9 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   // Family relationship shown on Policyholder selection
   OnSelectionfamilyMemberGroup() {
-    const toSelect = this.familyMemberGroup.find((c) => c.familyMemberName === this.form.get('accountHolderName').value);
+    const toSelect = this.familyMemberGroup.find(
+      (c) => c.familyMemberName === this.form.get('accountHolderName').value
+    );
     this.form.get('familyMemberInfoId').setValue(toSelect.familyMemberInfoId);
     this.form.get('relationship').setValue(toSelect.relation);
   }
@@ -455,9 +479,9 @@ export class UnitLinkedMasterComponent implements OnInit {
     }
   }
 
-  //------------- On Master  from summary page as well as edit master page summary table Edit functionality --------------------
-  editSummaryMaster(accountNumber) {
-    //this.scrollToTop();
+  //  On Master  from summary page as well as edit master page summary table Edit functionality --------------------
+  editMaster(accountNumber) {
+    this.scrollToTop();
     this.unitLinkedInsurancePlanService.getULIPMaster().subscribe((res) => {
       console.log('masterGridData::', res);
       this.masterGridData = res.data.results;
@@ -484,25 +508,28 @@ export class UnitLinkedMasterComponent implements OnInit {
     });
   }
 
+  // findByPolicyNo Fuctionality
   findByPolicyNo(accountNumber, masterGridData) {
     return masterGridData.find((x) => x.accountNumber === accountNumber);
   }
 
-  // On Master Edit functionality
-  // editMaster(i: number) {
-  //   this.paymentDetailGridData = this.masterGridData[i].paymentDetails;
-  //   this.form.patchValue(this.masterGridData[i]);
-  //   this.Index = i;
-  //   this.showUpdateButton = true;
-  //   const formatedPremiumAmount =  this.masterGridData[i].premiumAmount;
-  //   this.isClear = true;
-  // }
+  // scrollToTop Fuctionality
+  public scrollToTop() {
+    (function smoothscroll() {
+      var currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 8);
+      }
+    })();
+  }
 
   // On Edit Cancel
   cancelEdit() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isClear = false;
@@ -527,7 +554,7 @@ export class UnitLinkedMasterComponent implements OnInit {
   resetView() {
     this.form.reset();
     this.form.get('active').setValue(true);
-    this.form.get('ecs').setValue(0);
+    this.form.get('ecs').setValue('0');
     this.showUpdateButton = false;
     this.paymentDetailGridData = [];
     this.isCancel = false;
@@ -541,41 +568,33 @@ export class UnitLinkedMasterComponent implements OnInit {
 
   //---------- For Doc Viewer -----------------------
   nextDocViewer() {
-
     this.urlIndex = this.urlIndex + 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
-    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //   this.urlArray[this.urlIndex]
-    // );
   }
 
   previousDocViewer() {
-
     this.urlIndex = this.urlIndex - 1;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
-    // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //   this.urlArray[this.urlIndex]
-    // );
   }
 
-  docViewer(template3: TemplateRef<any>,index:any) {
-    console.log("---in doc viewer--");
+  docViewer(template3: TemplateRef<any>, index: any) {
+    console.log('---in doc viewer--');
     this.urlIndex = index;
 
-    console.log("urlArray::", this.urlArray);
+    console.log('urlArray::', this.urlArray);
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-      this.urlArray[this.urlIndex].blobURI,
+      this.urlArray[this.urlIndex].blobURI
     );
     //this.urlSafe = "https://paysquare-images.s3.ap-south-1.amazonaws.com/download.jpg";
     //this.urlSafe
-    console.log("urlSafe::",  this.urlSafe);
+    console.log('urlSafe::', this.urlSafe);
     this.modalRef = this.modalService.show(
       template3,
-      Object.assign({}, { class: 'gray modal-xl' }),
+      Object.assign({}, { class: 'gray modal-xl' })
     );
   }
 }

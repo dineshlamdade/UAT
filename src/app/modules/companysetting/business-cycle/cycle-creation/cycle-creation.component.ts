@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { CompanySettingsService } from '../../company-settings.service';
-import { saveCycleCreation, UpdateflagCycleCreation } from '../../model/business-cycle-model';
+import { SaveCycleCreation, UpdateflagCycleCreation } from '../../model/business-cycle-model';
 import { AlertServiceService } from '../../../../core/services/alert-service.service';
 
 @Component( {
@@ -283,7 +283,7 @@ export class CycleCreationComponent implements OnInit {
 
 
 
-    const addCycleCreation: saveCycleCreation = Object.assign( {}, this.cycleCreationForm.value );
+    const addCycleCreation: SaveCycleCreation = Object.assign( {}, this.cycleCreationForm.value );
 
     console.log( 'add cycle creation', addCycleCreation );
 

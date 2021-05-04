@@ -24,9 +24,7 @@ import { DeclarationFormComponent } from './declaration-form/declaration-form.co
 const routes: Routes = [
 
   {
-    // path: '',
-    // children: [
-    //  {
+
     path: 'business-cycle',
     component: BusinessCycleComponent,
     data: { title: ':: Epic :: Company Settings ' }
@@ -42,7 +40,7 @@ const routes: Routes = [
     data: { title: ':: Epic :: Company Settings' }
   },
   {
-    path: 'attribute-selection',
+    path: 'attribute-group',
     component: AttributeSelectionComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
@@ -52,31 +50,6 @@ const routes: Routes = [
     data: { title: ':: Epic :: Company Settings' }
   },
 
-  // {
-  //     path: 'bc',
-  //     component: payrollComponent,
-  //     data: { title: ':: Epic :: Company Settings' }
-  //   },
-  //   {
-  //     path: 'headcreation',
-  //     component: HeadcreationComponent,
-  //     data: { title: ':: Epic :: Company Settings' }
-  //   },
-  //   {
-  //     path: 'attributecreation',
-  //     component: AttributecreationComponent,
-  //     data: { title: ':: Epic :: Company Settings' }
-  //   },
-  //   {
-  //     path: 'attributeselection',
-  //     component: AttributeselectionComponent,
-  //     data: { title: ':: Epic :: Company Settings' }
-  //   },
-  //   {
-  //     path: 'payrollheadgroupcreation',
-  //     component: PayrollheadgroupcreationComponent,
-  //     data: { title: ':: Epic :: Company Settings' }
-  //   },
   {
     path: 'Garnishment-Master',
     component: GarnishmentMasterComponent,
@@ -94,31 +67,6 @@ const routes: Routes = [
     component: RolePrivilegeComponent,
     data: { title: ':: Epic :: Company Settings' }
   },
-  // {
-  //   path: 'bc',
-  //   component: payrollComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'headcreation',
-  //   component: HeadcreationComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'attributecreation',
-  //   component: AttributecreationComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'attributeselection',
-  //   component: AttributeselectionComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
-  // {
-  //   path: 'payrollheadgroupcreation',
-  //   component: PayrollheadgroupcreationComponent,
-  //   data: { title: ':: Epic :: Company Settings' }
-  // },
   {
     path: 'reimbursement',
     component: ReimbursementMasterComponent,
@@ -144,12 +92,6 @@ const routes: Routes = [
     component: DeclarationFormComponent,
     data: { title: 'Declaration-Message :: Company Setting' }
   },
-
-  // ],
-
-
-  // { path: '', pathMatch: 'full', redirectTo: '/investment' },
-  //  },
 ];
 
 @NgModule( {

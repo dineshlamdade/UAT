@@ -46,10 +46,20 @@
                </td>
                <td>
                  <select class="form-control custom-select"  [(ngModel)]="element.handicappedDependentDetailMaster.familyMemberInfoId" [disabled]="element.transactionStatus == 'Submitted'">
-                   <option >Select</option>
+                   <!-- <option >Select</option>
                    <option *ngFor="let familyMember of familyMemberName"
                      [value]="familyMember.value">
-                     {{ familyMember.label }} </option>
+                     {{ familyMember.label }} </option> -->
+
+                     <option [ngValue]="0">Select </option>
+                     <option
+                       *ngFor="let familyMember of familyMemberName"
+                       [value]="familyMember.value"
+                       [selected]="
+                       familyMember.value == element.handicappedDependentDetailMaster.familyMemberInfoId">
+                       {{ familyMember.label }}
+                     </option>
+
                  </select>
                </td>
                <td>
@@ -277,19 +287,40 @@
              </td>
                <td *ngIf="previousEmployeeList?.length" >
                  <select class="form-control custom-select" disabled [(ngModel)]="summary.previousEmployerId">
-                   <option [ngValue]="0">Select</option>
+                   <!-- <option [ngValue]="0">Select</option>
                    <option *ngFor="let previousEmployee of previousEmployeeList"
                      [value]="previousEmployee.value">
                      {{ previousEmployee.label }}
+                   </option> -->
+
+                   <option [ngValue]="0">Select Previous Emp.</option>
+                   <option
+                     *ngFor="let previousEmployee of previousEmployeeList"
+                     [value]="previousEmployee.value"
+                     [selected]="
+                       previousEmployee.value == summary.previousEmployerId">
+                     {{ previousEmployee.label }}
                    </option>
+
                  </select>
                </td>
                <td>
                  <select class="form-control custom-select" disabled [(ngModel)]="summary.handicappedDependentDetailMaster.familyMemberInfoId">
-                   <option >Select</option>
+                   <!-- <option >Select</option>
                    <option *ngFor="let familyMember of familyMemberName"
                      [value]="familyMember.value">
-                     {{ familyMember.label }} </option>
+                     {{ familyMember.label }} </option> -->
+
+                     <option [ngValue]="0">Select </option>
+                     <option
+                       *ngFor="let familyMember of familyMemberName"
+                       [value]="familyMember.value"
+                       [selected]="
+                       familyMember.value == summary.handicappedDependentDetailMaster.familyMemberInfoId">
+                       {{ familyMember.label }}
+                     </option>>
+
+
                  </select>
               </td>
                <td>
@@ -564,17 +595,19 @@
                    >
                  </td>
                  <td>
-                   <div class="custom_Label_badge">
-                     <button
-                       class="btn bg-color-lightgray text-000"
-                       (click)="
-                         UploadedDocumentModal1(template1, documentIndex)
-                       "
-                     >
-                       Documents
-                     </button>
-                   </div>
-                 </td>
+                  <div class="custom_Label_badge">
+                    <button
+                      class="btn bg-color-lightgray text-000"
+                      (click)="docViewer(template3, documentSummary.documentDetailList)"
+
+                    >
+                      Documents
+                    </button>
+                    <!-- <span class="Label_badge">{{
+                      documentSummary.documentDetailList.length
+                    }}</span> -->
+                  </div>
+                </td>
                  <!-- <td>
                    <i
                      class="fa fa-eye font-16 text-blue cursor-pointer"
