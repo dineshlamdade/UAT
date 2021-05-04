@@ -250,7 +250,7 @@
                             (change)="updatePreviousEmpId($event, i, j)" [disabled]="
                        isDisabled || summary.transactionStatus === 'Submitted'
                      ">
-                            <option [ngValue]="0">Select</option>
+                          <option [ngValue]="null">Select</option>
                             <option *ngFor="let previousEmployee of previousEmployeeList"
                               [value]="previousEmployee.value" [selected]="
                         previousEmployee.value == summary.previousEmployerId
@@ -259,23 +259,27 @@
                             </option>
                           </select>
                         </td>
-                        <td>
-                          <select name="previousEmpParticular" class="form-control custom-select" [disabled]="
-                          isDisabled || summary.transactionStatus === 'Submitted'
-                        ">
-                            <!-- <option *ngFor="
-                        let previousEmpParticular of previousEmpParticularList
-                            " [value]="previousEmpParticular.value">
-                              {{ previousEmpParticular.label }}
-                            </option> -->
+                        <!-- <td>
+                          <select name="particulars" class="form-control custom-select" [disabled]="
+                          isDisabled || summary.transactionStatus === 'Submitted'">
                             [ngModel]="summary.particulars"
                             <option *ngFor="let particulars of previousEmpParticularList" [value]="particulars.value">
                               {{particulars.label}}
                             </option>
+                          </select>  [disabled]="summary.particulars"
+                        </td> -->
+                          <td>
+                            <select name="particulars" class="form-control custom-select"  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+                            [ngModel]="summary.particulars" (change)="OnParticularsChange($event, i, j)">
+                            <option [ngValue]="null">Select</option>
+                              <option *ngFor="let particulars of previousEmpParticularList"
+                              [value]="particulars.value">
+                              {{particulars.label}}
+                            </option>
+                            </select>
+                          </td>
 
 
-                          </select>
-                        </td>
                         <td>
                           <div class="custom_icon_badge">
                             <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
@@ -689,7 +693,7 @@
                         }}</span>
                     </div>
                   </td>
-                  <td>
+                  <!-- <td>
                     <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="
                       editViewTransaction(
                           template2,
@@ -708,6 +712,34 @@
                           );
                           viewTransactionDetail = true
                         " tooltip="Edit"></i>
+                  </td> -->
+                  <td>
+                    <i *ngIf="canEdit"
+                    class="fa fa-eye font-16 text-blue cursor-pointer"
+                    (click)="
+                    editViewTransaction(
+                        template2,
+                        documentSummary.proofSubmissionId
+                      );
+                      viewTransactionDetail = false
+                    "
+                    tooltip="view"
+                  ></i>
+
+
+
+                    &nbsp;&nbsp;
+                    <i *ngIf="canEdit"
+                      class="fa fa-edit font-16 text-dark-green cursor-pointer"
+                      (click)="
+                      editViewTransaction(
+                          template2,
+                          documentSummary.proofSubmissionId
+                        );
+                        viewTransactionDetail = true
+                      "
+                      tooltip="Edit"
+                    ></i>
                   </td>
                 </tr>
 
@@ -987,31 +1019,24 @@
                               </option>
                             </select>
                           </td>
-                          <td>
+                          <!-- <td>
                             <select name="previousEmpParticular" class="form-control custom-select" [disabled]="
-                          isDisabled || summary.transactionStatus === 'Submitted'
-                        ">
-                              <!-- <option *ngFor="
-                        let previousEmpParticular of previousEmpParticularList
-                            " [value]="previousEmpParticular.value">
-                              {{ previousEmpParticular.label }}
-                            </option> -->
+                          isDisabled || summary.transactionStatus === 'Submitted'">
                               [ngModel]="summary.particulars"
-                              <option *ngFor="let particulars of previousEmpParticularList" [value]="particulars.value">
-                                {{particulars.label}}
+                              <option *ngFor="let previousEmpParticular of previousEmpParticularList" [value]="previousEmpParticular.value">
+                                {{previousEmpParticular.label}}
                               </option>
-
-
                             </select>
-                          </td>
+                          </td> -->
                           <td>
-                            <div class="custom_icon_badge">
-                              <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
-                                name="actualAmount{{ summary.housePropertyTransactionId }}"
-                                [(ngModel)]="summary.actualAmount" class="form-control align-right"
-                                (change)="onActualAmountChangePre(summary, i, j)" [disabled]="initialArrayIndex[j] > i"
-                                [disabled]=" isDisabled ||  summary.transactionStatus === 'Submitted'" />
-                            </div>
+                            <select name="particulars" class="form-control custom-select"  [disabled]="isDisabled || summary.transactionStatus === 'Submitted'"
+                            [ngModel]="summary.particulars" (change)="OnParticularsChange($event, i, j)">
+                              <option [ngValue]="0">Select</option>
+                              <option *ngFor="let particulars of previousEmpParticularList"
+                              [value]="particulars.value">
+                              {{particulars.label}}
+                            </option>
+                            </select>
                           </td>
                           <td>
                             <input type="text" id="actualAmount{{ summary.housePropertyTransactionId }}"
@@ -1078,7 +1103,7 @@
       <hr />
     </div>
 
-    <hr />
+    <hr/>
     <div class="row" *ngIf="viewTransactionDetail">
       <div class="col-12">
         <h3 class="font-14 text-purple font-bold" id="UploadModalLabel">
@@ -1086,7 +1111,175 @@
         </h3>
       </div>
     </div>
+
+    <!-- <tbody>
+      <tr>
+        <th scope="row"><span tooltip="1">1</span></th>
+        <td>
+          <span tooltip="Bank Certificate"></span>Bank Certificate
+        </td>
+        <td>
+          <span *ngFor="let item of bankCertificate; let j = index" class="text-orange"
+            tooltip="{{ item.name }}">
+            <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp; {{ item.name }},
+          </span>
+        </td>
+
+        <td>
+          <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+              !enableFileUpload
+                ? sweetalertWarning(
+                    'Please select transaction to Upload Document'
+                  )
+                : UploadModal(template4)
+            "></i>&nbsp;&nbsp;
+        </td>
+      </tr>
+      <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
+        <th scope="row"><span tooltip="2">2</span></th>
+        <td>
+          <span tooltip="Rental Income Receipt"></span>Rental
+          Income Receipt
+        </td>
+        <td>
+          <span *ngFor="let item of rentalIncomeReceipt; let j = index" class="text-orange"
+            tooltip="{{ item.name }}">
+            <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp; {{ item.name }},
+          </span>
+        </td>
+
+        <td>
+          <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+              !enableFileUpload
+                ? sweetalertWarning(
+                    'Please select transaction to Upload Document'
+                  )
+                : UploadModalRental(template6)
+            "></i>&nbsp;&nbsp;
+        </td>
+      </tr>
+      <tr *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
+        <th scope="row"><span tooltip="3">3</span></th>
+        <td>
+          <span tooltip="Bank Certificate"></span>Municipal Tax
+          Receipt
+        </td>
+        <td>
+          <span *ngFor="let item of municipalTaxReceipt; let j = index" class="text-orange"
+            tooltip="{{ item.name }}">
+            <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp; {{ item.name }},
+          </span>
+        </td>
+        <td>
+          <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="
+              !enableFileUpload
+                ? sweetalertWarning(
+                    'Please select transaction to Upload Document'
+                  )
+                : UploadModalMuniciple(template7)
+            "></i>&nbsp;&nbsp;
+        </td>
+      </tr>
+    </tbody> -->
     <div class="row clearfix mt-10" *ngIf="viewTransactionDetail">
+      <div class="col-md-12">
+        <div class="row clearfix">
+          <div  class="col-md-3">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
+                <i class="fa fa-upload"> </i>
+                <span class="title"> Choose file </span>
+                <input class="FileUpload1" class="dropify" (change)="onUploadInEditCaseBank($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+              </label>
+            </div>
+            <div *ngIf="editBankCertificate?.length > 0" class="fileuploadbox">
+              Selected Files
+              <label *ngFor="let item of editBankCertificate; let index = index" class="filelabeldisplay">
+                <div class="text-ellipsis">
+                  <i class="fa fa-paperclip"> </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18" (click)="
+                        removeSelectedTransactionDocumentInEditCaseBank(index)
+                      "></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
+          <div class="col-md-3" *ngIf="editMunicipalTaxReceipt.length == 0">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
+                <i class="fa fa-upload"> </i>
+                <span class="title"> Choose file </span>
+                <input class="FileUpload1" class="dropify" (change)="onUploadInEditCaseMunciple($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+              </label>
+            </div>
+            <div *ngIf="editMunicipalTaxReceipt.length > 0" class="fileuploadbox">
+              Selected Files
+              <label *ngFor="let item of editMunicipalTaxReceipt; let index = index" class="filelabeldisplay">
+                <div class="text-ellipsis">
+                  <i class="fa fa-paperclip"> </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18" (click)="
+                        removeSelectedLicTransactionDocumentInEditCaseMuniciple(index)
+                      "></i>
+                </div>
+              </label>
+            </div>
+
+          </div>
+        </div>
+        <div  *ngIf="transactionDetail[0].housePropertyUsageTypeList[0].usageType !== 'selfOccupied'">
+          <div class="col-md-3" *ngIf="editRentalIncomeReceipt.length > 0">
+            <div class="fileuploadbox bg-color-lightgray">
+              <label class="filelabel">
+                <i class="fa fa-upload"> </i>
+                <span class="title"> Choose file </span>
+                <input class="FileUpload1" class="dropify" (change)="onUploadInEditCaseRental($event)"
+                  accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
+              </label>
+            </div>
+            <div *ngIf="editRentalIncomeReceipt.length > 0" class="fileuploadbox">
+              Selected Files
+              <label *ngFor="let item of editRentalIncomeReceipt; let index = index" class="filelabeldisplay">
+                <div class="text-ellipsis">
+                  <i class="fa fa-paperclip"> </i>
+                  <span class="title">
+                    {{ item.name }}
+                  </span>
+                </div>
+                <div>
+                  <i class="fa fa-times text-red font-18" (click)="
+                        removeSelectedLicTransactionDocumentInEditCaseRental(index)
+                      "></i>
+                </div>
+              </label>
+            </div>
+
+          </div>
+        </div>
+          <div class="col-md-12 mt-6">
+            <label class="form-label">Remark</label>
+          </div>
+          <div class="col-md-6">
+            <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="row clearfix mt-10" *ngIf="viewTransactionDetail">
       <div class="col-md-12">
         <div class="row clearfix">
           <div class="col-md-3">
@@ -1177,7 +1370,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <hr class="mt-20" />
     <div class="row mt-20">
       <div class="col-12">
@@ -1217,7 +1410,13 @@
 <ng-template #template3>
   <div class="modal-header">
     <h5 class="modal-title" id="jasdjgh">Document Viewer</h5>
-    <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close">
+    <button
+      type="button"
+      (click)="modalRef.hide()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
       <span aria-hidden="true">×</span>
     </button>
   </div>
@@ -1226,8 +1425,13 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
-        <button type="button" class="btn active Next_Previous_Btn" tooltip="Previous Document"
-          (click)="previousDocViewer()" [disabled]="urlIndex == 0">
+        <button
+          type="button"
+          class="btn active Next_Previous_Btn"
+          tooltip="Previous Document"
+          (click)="previousDocViewer()"
+          [disabled]="urlIndex == 0"
+        >
           <i class="fa fa-angle-left text-white font-30 p-10"></i>
         </button>
       </div>
@@ -1235,8 +1439,13 @@
         <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
       </div>
       <div class="col-md-1">
-        <button type="button" class="btn active Next_Previous_Btn" tooltip="Next Document" (click)="nextDocViewer()"
-          [disabled]="urlIndex == urlArray.length - 1">
+        <button
+          type="button"
+          class="btn active Next_Previous_Btn"
+          tooltip="Next Document"
+          (click)="nextDocViewer()"
+          [disabled]="urlIndex == urlArray.length - 1"
+        >
           <i class="fa fa-angle-right text-white font-30 p-10"></i>
         </button>
       </div>
@@ -1319,9 +1528,6 @@
     <div class="card">
       <div class="card-body">
         <div class="row clearfix">
-          <!-- <div class="col-md-12">
-           <label class="form-label">Upload File here :</label>
-        </div> -->
           <div class="col-md-12">
             <div class="fileuploadbox bg-color-lightgray">
               <label class="filelabel">
@@ -1357,7 +1563,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <!-- <button type="button" class="btn btn-primary">Save</button>  -->
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">
       Ok
     </button>
