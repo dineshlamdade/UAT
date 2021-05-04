@@ -3005,3 +3005,38 @@ legend {
 .border-bottom-gray {
     border-bottom: 2px solid gray!important;
 }
+
+.text-number-card {
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+    align-items: stretch!important;
+    flex-direction: row!important;
+    border: 0!important;
+    position: relative;
+    display: flex;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: .25rem;
+}
+
+.text-number-card-icon {
+    background-color: #309c3e;
+    color: #fff!important;
+    align-items: center!important;
+    justify-content: center!important;
+    display: flex!important;
+    border-top-left-radius: .25rem!important;
+    border-bottom-left-radius: .25rem!important;
+}
+
+.text-number-card-text {
+    background-color: #38b449!important;
+    padding-bottom: 1rem!important;
+    padding-top: 1rem!important;
+    border-bottom-right-radius: .25rem!important;
+    border-top-right-radius: .25rem!important;
+    text-align: center;
+    color: #fff!important;
+}
