@@ -1,25 +1,21 @@
-<form class="card" role="form" (ngSubmit)="addMaster(houseRentform,formDirective)" [formGroup]="houseRentform"
-   #formDirective="ngForm" method="post" novalidate>
-   <!-- <div class="tabview-contents"> -->
-   <br>
-   <fieldset>
-      <legend>House Details</legend>
-      <div formGroupName="houseRentMaster" [formGroup]="houseRentform" #formDirective_="ngForm">
-         <div class="row">
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">House Name</label>
-               <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
-               placeholder="Enter House Name"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.propertyName.errors }">
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.propertyName.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.propertyName.errors.required">House Name is mandatory</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label"><b> Address</b> (Copy From)</label>
-               <select name="Address_Copy_From" id="copyFrom" placeholder="Enter Address"
-                  (change)='onSelectAddressType($event)' formControlName="copyFrom" class="form-control custom-select"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.copyFrom.errors }" #CopyFrom>
+<form class="card" role="form" (ngSubmit)="addMaster(houseRentform,formDirective)" [formGroup]="houseRentform" #formDirective="ngForm" method="post" novalidate>
+    <!-- <div class="tabview-contents"> -->
+    <br>
+    <fieldset>
+        <legend>House Details</legend>
+        <div formGroupName="houseRentMaster" [formGroup]="houseRentform" #formDirective_="ngForm">
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">House Name</label>
+                    <input type="text" formControlName="propertyName" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter House Name" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.propertyName.errors }">
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.propertyName.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.propertyName.errors.required">House Name is mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label"><b> Address</b> (Copy From)</label>
+                    <select name="Address_Copy_From" id="copyFrom" placeholder="Enter Address" (change)='onSelectAddressType($event)' formControlName="copyFrom" class="form-control custom-select" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.copyFrom.errors }"
+                        #CopyFrom>
                   <option *ngFor="let addressType of employeeAddressType" [value]="addressType.value">
                      {{addressType.label}}
                   </option>
@@ -27,251 +23,224 @@
                      <div *ngIf="houseRentMaster.copyFrom.errors.required">Address is mandatory</div>
                   </div>
                </select>
-            </div>
+                </div>
 
-         </div>
-         <div class="row mt-20">
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">Addrsss 1</label>
-               <input type="text" formControlName="address1" class="form-control" 
-               onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Addrsss 1"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address1.errors }">
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address1.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.address1.errors.required">Addrsss 1 mandatory</div>
-               </div>
             </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">Addrsss 2</label>
-               <input type="text" formControlName="address2" class="form-control"onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
-               placeholder="Enter Addrsss 2"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address2.errors }">
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address2.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.address2.errors.required">Addrsss 2 mandatory</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">Addrsss 3</label>
-               <input type="text" formControlName="address3" class="form-control"  onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
-               placeholder=" Enter Addrsss 3"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address3.errors }">
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address3.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.address3.errors.required">Addrsss 3 mandatory</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">Country</label>
-               <select name="Address_Copy_From" id="country" placeholder="Country" formControlName="country"
-                  class="form-control custom-select"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.country.errors }" #country>
+            <div class="row mt-20">
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Addrsss 1</label>
+                    <input type="text" formControlName="address1" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder="Enter Addrsss 1" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address1.errors }">
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address1.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.address1.errors.required">Addrsss 1 mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Addrsss 2</label>
+                    <input type="text" formControlName="address2" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" placeholder="Enter Addrsss 2" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address2.errors }">
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address2.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.address2.errors.required">Addrsss 2 mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Addrsss 3</label>
+                    <input type="text" formControlName="address3" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" placeholder=" Enter Addrsss 3" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.address3.errors }">
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.address3.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.address3.errors.required">Addrsss 3 mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Country</label>
+                    <select name="Address_Copy_From" id="country" placeholder="Country" formControlName="country" class="form-control custom-select" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.country.errors }" #country>
                   <option *ngFor="let country of countriesList" [value]="country">
                      {{country}}
                   </option>
                </select>
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.country.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.country.errors.required">country mandatory</div>
-               </div>
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.country.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.country.errors.required">country mandatory</div>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class="row mt-20">
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">PIN</label>
-               <input name="pinCode" id="pinCode" placeholder="PIN" (change)='getPermanentAddressFromPIN()'
-                  formControlName="pinCode" minlength="6" maxlength="6" class="form-control custom-select"
-                  pattern="[0-9]{6}"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.pinCode.errors }" #pinCode>
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.pinCode.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.pinCode.errors.required">PIN is mandatory</div>
-               </div>
+            <div class="row mt-20">
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">PIN</label>
+                    <input name="pinCode" id="pinCode" placeholder="PIN" (change)='getPermanentAddressFromPIN()' formControlName="pinCode" minlength="6" maxlength="6" class="form-control custom-select" pattern="[0-9]{6}" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.pinCode.errors }"
+                        #pinCode>
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.pinCode.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.pinCode.errors.required">PIN is mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">State</label>
+                    <input type="text" formControlName="state" class="form-control" placeholder="State" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.state.errors }" disabled>
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.state.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.state.errors.required">State is mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">City</label>
+                    <input type="text" formControlName="city" class="form-control" placeholder="City" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.city.errors }" disabled>
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.city.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.city.errors.required">City Name is mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Town/Village</label>
+                    <input type="text" formControlName="village" class="form-control" placeholder="Town/Village" [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.village.errors }" disabled>
+                    <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.village.errors" class="invalid-feedback">
+                        <div *ngIf="houseRentMaster.village.errors.required">Town/Village Name is mandatory</div>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">State</label>
-               <input type="text" formControlName="state" class="form-control" placeholder="State"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.state.errors }" disabled>
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.state.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.state.errors.required">State is mandatory</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">City</label>
-               <input type="text" formControlName="city" class="form-control" placeholder="City"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.city.errors }" disabled>
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.city.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.city.errors.required">City Name is mandatory</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">Town/Village</label>
-               <input type="text" formControlName="village" class="form-control" placeholder="Town/Village"
-                  [ngClass]="{ 'is-invalid': houseDetailsRentsubmitted && houseRentMaster.village.errors }" disabled>
-               <div *ngIf="houseDetailsRentsubmitted && houseRentMaster.village.errors" class="invalid-feedback">
-                  <div *ngIf="houseRentMaster.village.errors.required">Town/Village Name is mandatory</div>
-               </div>
-            </div>
-         </div>
-         <div class="row mt-20">
-            <div class="col-sm-6 col-md-3">
-               <label class="custom-control custom-radio custom-control-inline" placeholder="Metro City">
+            <div class="row mt-20">
+                <div class="col-sm-6 col-md-3">
+                    <label class="custom-control custom-radio custom-control-inline" placeholder="Metro City">
                   <input formControlName="metroCity" type="radio" class="custom-control-input" name="metroCity"
                    [value]="true" checked  >
                   <span class="custom-control-label form-label">Metro City</span>
                </label>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="custom-control custom-radio custom-control-inline" placeholder="Non-Metro City">
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="custom-control custom-radio custom-control-inline" placeholder="Non-Metro City">
                   <input formControlName="metroCity" type="radio" class="custom-control-input" name="metroCity"
                   [value]="false">
                   <span class="custom-control-label form-label">Non-Metro City</span>
                </label>
+                </div>
             </div>
-         </div>
-      </div>
-   </fieldset>
-   <fieldset>
-      <legend>Landlord Details</legend>
-      <div formGroupName="landLordDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
-         <div class="row">
-            <div class="col-sm-6 col-md-2">
-               <label class="form-label">Landlord Name</label>
-               <input type="text" formControlName="name" placeholder="Landlord Name" class="form-control"
-               onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)"
-                  name="Premium Amount"
-                  [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.name.errors }">
-               <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.name.errors" class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.name.errors.required">Landlord Name</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-2">
-               <label class="form-label">Address</label>
-               <input type="text" formControlName="address" placeholder=" Enter Address" class="form-control"
-               onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)"
-                  name="Premium Amount"
-                  [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.address.errors }">
-               <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.address.errors" class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.address.errors.required">Address is mandatory</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-2">
-               <label class="custom-switch">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Landlord Details</legend>
+        <div formGroupName="landLordDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
+            <div class="row">
+                <div class="col-sm-6 col-md-2">
+                    <label class="form-label">Landlord Name</label>
+                    <input type="text" formControlName="name" placeholder="Landlord Name" class="form-control" onkeypress="return /[0-9a-zA-Z ' ]/i.test(event.key)" name="Premium Amount" [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.name.errors }">
+                    <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.name.errors" class="invalid-feedback">
+                        <div *ngIf="landLordDetailForm.name.errors.required">Landlord Name</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <label class="form-label">Address</label>
+                    <input type="text" formControlName="address" placeholder=" Enter Address" class="form-control" onkeypress="return /[0-9a-zA-Z ']/i.test(event.key)" name="Premium Amount" [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.address.errors }">
+                    <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.address.errors" class="invalid-feedback">
+                        <div *ngIf="landLordDetailForm.address.errors.required">Address is mandatory</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <label class="custom-switch">
                   <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
                   <!-- <span class="custom-switch-indicator"></span>&nbsp; -->
                   <span class="form-label">Landlord PAN</span>
                </label>
-               <input type="text" maxlength="12" minlength="10" formControlName="landLordPan"
-                  placeholder="Enter PAN " class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN"
-                  [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors }">
-               <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors" class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN Number is Mandatory</div>
-                  <div *ngIf="landLordDetailForm.landLordPan.errors?.pattern">Enter valid PAN Number</div>
-               </div>
+                    <input type="text" maxlength="12" minlength="10" formControlName="landLordPan" placeholder="Enter PAN " class="form-control" pattern="^[A-Za-z]{5}[0-9]{4}[A-Za-z]$" name="PAN" [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors }">
+                    <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.landLordPan.errors" class="invalid-feedback">
+                        <div *ngIf="landLordDetailForm.landLordPan.errors.required">PAN Number is Mandatory</div>
+                        <div *ngIf="landLordDetailForm.landLordPan.errors?.pattern">Enter valid PAN Number</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">% Share Of Total Rent</label>
+                    <input type="number" formControlName="percentageShareOfRent" placeholder="Enter Share Of Total Rent " min="0" max="100" class="form-control " [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors }">
+                    <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors" class="invalid-feedback">
+                        <div *ngIf="landLordDetailForm.percentageShareOfRent.errors.required">% Total Rent is Mandatory mandatory
+                        </div>
+                        <div *ngIf="landLordDetailForm.percentageShareOfRent.errors?.max">Max 100 is allowed</div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="custom-controls-stacked ml-15 mt-20">
+                        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add" (click)="addOwner()"><b>
+                  <i class="fa fa-plus"></i></b> Add</button>
+
+                        <!-- <button class="btn btn-primary btn-sm" type="button" (click)="addOwner()"><i class="fa fa-plus"
+                        aria-hidden="true"></i> Add</button> &nbsp;&nbsp;&nbsp; -->
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">% Share Of Total Rent</label>
-               <input type="number" formControlName="percentageShareOfRent" placeholder="Enter Share Of Total Rent "
-                  min="0" max="100" class="form-control "
-                  [ngClass]="{ 'is-invalid': landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors }">
-               <div *ngIf="landlordDetailsSubmitted && landLordDetailForm.percentageShareOfRent.errors"
-                  class="invalid-feedback">
-                  <div *ngIf="landLordDetailForm.percentageShareOfRent.errors.required">% Total Rent is Mandatory
-                     mandatory</div>
-                  <div *ngIf="landLordDetailForm.percentageShareOfRent.errors?.max">Max 100 is allowed</div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-2">
-               <div class="custom-controls-stacked ml-15 mt-20">
-                  <button class="btn btn-primary btn-sm" type="button" (click)="addOwner()"><i class="fa fa-plus"
-                        aria-hidden="true"></i> Add</button> &nbsp;&nbsp;&nbsp;
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="row mt-30">
-         <div class="col-12 col-md-12 col-sm-12">
-            <div class="table-responsive Custom_Table ">
-               <table class="table table-striped table-bordered table-hover m-b-0">
-                  <thead class="thead-dark">
-                     <tr>
-                        <th scope="col" class="wd-9">Name</th>
-                        <th scope="col" class="wd-20">Landlord PAN</th>
-                        <th scope="col" class="wd-14">% Share of Total Rent</th>
-                        <th scope="col" class="wd-14">Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr *ngFor="let loanDetail of landLordDetailTableList ;  let i = index">
-                        <td>
-                           <span>
+        </div>
+        <div class="row mt-30">
+            <div class="col-12 col-md-12 col-sm-12">
+                <div class="table-responsive Custom_Table ">
+                    <table class="table table-striped table-bordered table-hover m-b-0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="wd-9">Name</th>
+                                <th scope="col" class="wd-20">Landlord PAN</th>
+                                <th scope="col" class="wd-14">% Share of Total Rent</th>
+                                <th scope="col" class="wd-14">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let loanDetail of landLordDetailTableList ;  let i = index">
+                                <td>
+                                    <span>
                                    {{loanDetail.name}}
                            </span>
-                        </td>
-                        <td>
-                           <span>
+                                </td>
+                                <td>
+                                    <span>
                               {{loanDetail.landLordPan}}
                            </span>
-                        </td>
-                        <td>
-                           <span>
+                                </td>
+                                <td>
+                                    <span>
                               {{loanDetail.percentageShareOfRent}}
                            </span>
-                        </td>
-                        <td>
-                           <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLandlordDetails(i)"
-                              tooltip="Edit"></i> &nbsp;&nbsp;
+                                </td>
+                                <td>
+                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editLandlordDetails(i)" tooltip="Edit"></i> &nbsp;&nbsp;
 
-                        </td>
-                     </tr>
-                     <tr *ngIf="!landLordDetailTableList?.length">
-                        <td colspan="4">
-                           <span class="font-14 font500 align-center text-red">No
+                                </td>
+                            </tr>
+                            <tr *ngIf="!landLordDetailTableList?.length">
+                                <td colspan="4">
+                                    <span class="font-14 font500 align-center text-red">No
                               Data Available</span>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-         </div>
-      </div>
-   </fieldset>
-   <fieldset>
-      <legend>Agreement Details</legend>
-      <div formGroupName="agreementDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
-         <div class="row mt-4 mb-10">
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">Start Date</label>
-               <div class="form-group">
-                  <div class="input-group">
-                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                     </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate"                    
-                        data-provide="datepicker" data-date-autoclose="true" class="form-control" 
-                         placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()" 
-                          [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
-                          <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Agreement Details</legend>
+        <div formGroupName="agreementDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
+            <div class="row mt-4 mb-10">
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">Start Date</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Start Date" bsDatepicker (bsValueChange)="getAgreementFrom()" [ngClass]="{ 'is-invalid': agreementDetailssubmitted }">
+                            <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.fromDate.errors"class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.fromDate.errors.required">Start Date is mandatory</div>
                      </div> -->
-                     
-                  </div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">End Date</label>
-               <div class="form-group">
-                  <div class="input-group">
-                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                     </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" 
-                        data-provide="datepicker" data-date-autoclose="true" class="form-control"   [maxDate]="AgreementtoDate" 
-                         placeholder="End Date" bsDatepicker  (bsValueChange)="getAgreementRent2From()"  [minDate]="rentMinDate"
-                         [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
-                     <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors"
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">End Date</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" [maxDate]="AgreementtoDate" placeholder="End Date" bsDatepicker (bsValueChange)="getAgreementRent2From()"
+                                [minDate]="rentMinDate" [ngClass]="{ 'is-invalid': agreementDetailssubmitted}">
+                            <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.toDate.errors"
                         class="invalid-feedback">
                         <div *ngIf="houseAgreementMasterForm.toDate.errors.required">From Date is mandatory</div>
                      </div> -->
-                  </div>
-               </div>
-            </div>
-            <!-- <div class="col-sm-6 col-md-2 mt-4">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-6 col-md-2 mt-4">
 
                    <label class="custom-control custom-checkbox custom-control-inline pl-45">
                   <input formControlName="remark" type="checkbox" class="custom-control-input"
@@ -279,235 +248,218 @@
                   <span class="custom-control-label">Active</span>
                </label>
             </div> -->
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label pl-10">Remark</label>
-               <textarea formControlName="remark"  id="exampleFormControlTextarea2"  [ngClass]="{'form-submitted': formDirective.submitted}"
-                  class="form-control ml-10" rows="1"  placeholder="Remark"
-                  [ngClass]="{ 'is-invalid': agreementDetailssubmitted}"></textarea>
-               <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.remark.errors"
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label pl-10">Remark</label>
+                    <textarea formControlName="remark" id="exampleFormControlTextarea2" [ngClass]="{'form-submitted': formDirective.submitted}" class="form-control ml-10" rows="1" placeholder="Remark" [ngClass]="{ 'is-invalid': agreementDetailssubmitted}"></textarea>
+                    <!-- <div *ngIf="agreementDetailssubmitted && houseAgreementMasterForm.remark.errors"
                   class="invalid-feedback">
                   <div *ngIf="houseAgreementMasterForm.remark.errors.required">Remark is mandatory</div>
                </div> -->
+                </div>
             </div>
-         </div>
-      </div>
-      <div class="row mt-30">
-         <!-- {{loanDetailGridData?.length}} -->
-         <div class="col-12 col-md-12 col-sm-12">
-            <div class="table-responsive Custom_Table ">
-               <table class="table table-striped table-bordered table-hover m-b-0">
-                  <thead class="thead-dark">
-                     <tr>
-                        <th scope="col" class="wd-9">Start Date</th>
-                        <th scope="col" class="wd-14">End Date</th>
-                        <!--   <th scope="col" class="wd-14">Rent Agreement</th> -->
-                        <th scope="col" class="wd-20">Remark</th>
-                        <th scope="col" class="wd-14">Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr *ngFor="let loanDetail of agreementDetailsTableList ;  let i = index">
-                        <td class="align-right">
-                           <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'  }}">
-                              {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
-                           </span>
-                        </td>
-
-                        <td class="align-right">
-                           <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'  }}">
-                              {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
-                           </span>
-                        </td>
-                        <td> 
-                           <span>
-                              {{loanDetail.remark}}
-                           </span>
-                        </td>
-
-                        <td>
-                           <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editAgreementDetails(i)" tooltip="Edit"></i>&nbsp;&nbsp;
-                        </td>
-                     </tr>
-                     <tr *ngIf="!agreementDetailsTableList?.length">
-                        <td colspan="4">
-                           <span class="font-14 font500 align-center text-red">No
-                              Data Available</span>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
-      </div>
-   </fieldset>
-   <fieldset>
-      <legend>Rent Details</legend>
-      <div formGroupName="rentDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
-         <div class="row">
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">From Date</label>
-               <div class="form-group">
-                  <div class="input-group">
-                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                     </div>
-                     <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" 
-                       data-provide="datepicker"
-                        data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker  
-                        [minDate]="rentMinDate"                                
-                        [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.fromDate.errors }">
-                     <div *ngIf="rentDetailsSubmitted && landRentDetailForm.fromDate.errors" class="invalid-feedback">
-                        <div *ngIf="landRentDetailForm.fromDate.errors.required">From Date is mandatory</div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label">To Date</label>
-               <div class="form-group">
-                  <div class="input-group">
-                     <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                     </div>
-                     <input [bsConfig]="{ dateInputFormat:'DD-MMM-YYYY' }" formControlName="toDate" 
-                         data-provide="datepicker"
-                        data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker                     
-                        [maxDate]="rentMaxDate"  
-                     [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }"  >
-                     <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
-                        <div *ngIf="landRentDetailForm.toDate.errors.required">To Date is mandatory</div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-sm-6 col-md-3">
-               <label class="form-label align-left">Monthly Rent Amount</label>
-               <p-inputNumber class="p-inputright" formControlName="rentAmount" mode="decimal"  placeholder="Monthly Rent Amount "
-                  locale="en-IN" [minFractionDigits]="2"
-                  [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.rentAmount.errors }">
-               </p-inputNumber>
-               <div *ngIf="rentDetailsSubmitted && landRentDetailForm.rentAmount.errors" class="invalid-feedback">
-                  <div *ngIf="landRentDetailForm.rentAmount.errors.required">Rent Amount is mandatory</div>
-               </div>
-
-            </div>
-            <div class="col-sm-6 col-md-2">
-               <div class="custom-controls-stacked ml-15 mt-20">
-                  <button class="btn btn-primary btn-sm" type="button" (click)="addOwnerRent()"><i class="fa fa-plus"
-                  aria-hidden="true"></i> Add</button> &nbsp;&nbsp;&nbsp;
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="row mt-30">
-         <div class="col-12 col-md-12 col-sm-12">
-            <div class="table-responsive Custom_Table ">
-               <table class="table table-striped table-bordered table-hover m-b-0">
-                  <thead class="thead-dark">
-                     <tr>
-                        <th scope="col" class="wd-9">Form Date</th>
-                        <th scope="col" class="wd-14">To Date</th>
-                        <th scope="col" class="wd-13">Rent Amount</th>
-                        <th scope="col" class="wd-14">Action</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
-                     <tr *ngFor="let loanDetail of RentDetailTableList  ;  let i = index">
-                        <td>
-                           <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'}}">
-                              {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
-                           </span>
-                        </td>
-                        <td >
-                           <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'}}">
-                              {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
-                           </span>
-                        </td>
-                        <td>
-                           <span>
-                              {{loanDetail.rentAmount}}
-                           </span>
-                        </td>
-                        <td>
-                           <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editRentDetails(i)"
-                              tooltip="Edit"></i>&nbsp;&nbsp;
-                        </td>
-                     </tr>
-                     <tr *ngIf="!RentDetailTableList?.length">
-                        <td colspan="4">
-                           <span class="font-14 font500 align-center text-red">No
-                              Data Available</span>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
-      </div>
-   </fieldset>
-   <div class="row mt-30">
-      <div class="col-12">
-         <div class="card">
-            <div class="mb-10 row">
-               <div class="col-md-6">
-                  <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
-               </div>
-               <div class="col-md-6">
-                  <span class="font-bold text-link float-right"></span>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-9">
-                  <div class="table-responsive Custom_Table">
-                     <table class="table table-striped table-hover table-bordered m-b-0">
+        </div>
+        <div class="row mt-30">
+            <!-- {{loanDetailGridData?.length}} -->
+            <div class="col-12 col-md-12 col-sm-12">
+                <div class="table-responsive Custom_Table ">
+                    <table class="table table-striped table-bordered table-hover m-b-0">
                         <thead class="thead-dark">
-                           <tr>
-                              <th scope="col" class="font700 wd-8">Sr No.</th>
-                              <th scope="col" class="font700 wd-40">Document Name</th>
-                              <th scope="col" class="font700 wd-40">Attachment</th>
-                              <th scope="col" class="font700 wd-12">Action</th>
-                           </tr>
+                            <tr>
+                                <th scope="col" class="wd-9">Start Date</th>
+                                <th scope="col" class="wd-14">End Date</th>
+                                <!--   <th scope="col" class="wd-14">Rent Agreement</th> -->
+                                <th scope="col" class="wd-20">Remark</th>
+                                <th scope="col" class="wd-14">Action</th>
+                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <th scope="row"><span tooltip="1">1</span></th>
-                              <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td>
-                             
-                              <td><span *ngFor="let item of rentAgreementDocumentDetail" class="text-orange"
-                                    tooltip="{{item.name}},"><i class="fa fa-paperclip"
-                                       aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                              </td>
-                              <td>
-                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
-                                    (click)="UploadModal(rentAgreementIndex)" data-toggle="modal"
-                                    data-target="#UploadModal">
-                                 </i>&nbsp;&nbsp;
-                              </td>
-                           </tr>
-                           <tr>
-                              <th scope="row"><span tooltip="2">2</span></th>
-                              <td><span tooltip="Premium Receipt/ Premium Statement"></span>Declaration of Landlord PAN
-                              </td>
-                              <td><span *ngFor="let item of declarationOfLandlordDocumentDetail" class="text-orange"
-                                    tooltip="{{item.name}},"><i class="fa fa-paperclip"
-                                       aria-hidden="true"></i>&nbsp;{{item.name}},</span>
-                              </td>
-                              <td>
-                                 <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload"
-                                    (click)="UploadModal(declarationofLandlordPAN)" data-toggle="modal"
-                                    data-target="#UploadModal"></i>&nbsp;&nbsp;
-                              </td>
-                           </tr>
+                            <tr *ngFor="let loanDetail of agreementDetailsTableList ;  let i = index">
+                                <td class="align-right">
+                                    <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'  }}">
+                              {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
+                           </span>
+                                </td>
+
+                                <td class="align-right">
+                                    <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'  }}">
+                              {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
+                           </span>
+                                </td>
+                                <td>
+                                    <span>
+                              {{loanDetail.remark}}
+                           </span>
+                                </td>
+
+                                <td>
+                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editAgreementDetails(i)" tooltip="Edit"></i>&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr *ngIf="!agreementDetailsTableList?.length">
+                                <td colspan="4">
+                                    <span class="font-14 font500 align-center text-red">No
+                              Data Available</span>
+                                </td>
+                            </tr>
                         </tbody>
-                     </table>
-                  </div>
-               </div>
+                    </table>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-   <!-- <div class="row mt-25">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Rent Details</legend>
+        <div formGroupName="rentDetailList" [formGroup]="houseRentform" #formDirective_="ngForm">
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">From Date</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }" formControlName="fromDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="From Date" bsDatepicker [minDate]="rentMinDate" [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.fromDate.errors }">
+                            <div *ngIf="rentDetailsSubmitted && landRentDetailForm.fromDate.errors" class="invalid-feedback">
+                                <div *ngIf="landRentDetailForm.fromDate.errors.required">From Date is mandatory</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label">To Date</label>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <input [bsConfig]="{ dateInputFormat:'DD-MMM-YYYY' }" formControlName="toDate" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="To Date" bsDatepicker [maxDate]="rentMaxDate" [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.toDate.errors }">
+                            <div *ngIf="rentDetailsSubmitted && landRentDetailForm.toDate.errors" class="invalid-feedback">
+                                <div *ngIf="landRentDetailForm.toDate.errors.required">To Date is mandatory</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <label class="form-label align-left">Monthly Rent Amount</label>
+                    <p-inputNumber class="p-inputright" formControlName="rentAmount" mode="decimal" placeholder="Monthly Rent Amount " locale="en-IN" [minFractionDigits]="2" [ngClass]="{ 'is-invalid': rentDetailsSubmitted && landRentDetailForm.rentAmount.errors }">
+                    </p-inputNumber>
+                    <div *ngIf="rentDetailsSubmitted && landRentDetailForm.rentAmount.errors" class="invalid-feedback">
+                        <div *ngIf="landRentDetailForm.rentAmount.errors.required">Rent Amount is mandatory</div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6 col-md-2">
+                    <div class="custom-controls-stacked ml-15 mt-20">
+                        <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple mr-10" tooltip="Add" (click)="addOwnerRent()()"><b>
+                  <i class="fa fa-plus"></i></b> Add</button>
+                        <!-- <button class="btn btn-primary btn-sm" type="button" (click)="addOwnerRent()"><i class="fa fa-plus"
+                  aria-hidden="true"></i> Add</button> &nbsp;&nbsp;&nbsp; -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col-12 col-md-12 col-sm-12">
+                <div class="table-responsive Custom_Table ">
+                    <table class="table table-striped table-bordered table-hover m-b-0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="wd-9">Form Date</th>
+                                <th scope="col" class="wd-14">To Date</th>
+                                <th scope="col" class="wd-13">Rent Amount</th>
+                                <th scope="col" class="wd-14">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--   <tr *ngFor="let loanDetail of loanDetailGridData ;  let i = index"> -->
+                            <tr *ngFor="let loanDetail of RentDetailTableList  ;  let i = index">
+                                <td>
+                                    <span tooltip="{{loanDetail.fromDate | date :'dd-MMM-yyyy'}}">
+                              {{loanDetail.fromDate | date :"dd-MMM-yyyy"}}
+                           </span>
+                                </td>
+                                <td>
+                                    <span tooltip="{{loanDetail.toDate | date :'dd-MMM-yyyy'}}">
+                              {{loanDetail.toDate | date :"dd-MMM-yyyy"}}
+                           </span>
+                                </td>
+                                <td>
+                                    <span>
+                              {{loanDetail.rentAmount}}
+                           </span>
+                                </td>
+                                <td>
+                                    <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editRentDetails(i)" tooltip="Edit"></i>&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr *ngIf="!RentDetailTableList?.length">
+                                <td colspan="4">
+                                    <span class="font-14 font500 align-center text-red">No
+                              Data Available</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="row mt-30">
+        <div class="col-12">
+            <div class="card">
+                <div class="mb-10 row">
+                    <div class="col-md-6">
+                        <h3 class="font-14 text-purple font-bold">Upload Documents</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="font-bold text-link float-right"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="table-responsive Custom_Table">
+                            <table class="table table-striped table-hover table-bordered m-b-0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" class="font700 wd-8">Sr No.</th>
+                                        <th scope="col" class="font700 wd-40">Document Name</th>
+                                        <th scope="col" class="font700 wd-40">Attachment</th>
+                                        <th scope="col" class="font700 wd-12">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row"><span tooltip="1">1</span></th>
+                                        <td><span tooltip="Premium Receipt/ Premium Statement"></span>Rent Agreement</td>
+
+                                        <td><span *ngFor="let item of rentAgreementDocumentDetail" class="text-orange" tooltip="{{item.name}},"><i class="fa fa-paperclip"
+                                       aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(rentAgreementIndex)" data-toggle="modal" data-target="#UploadModal">
+                                 </i>&nbsp;&nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><span tooltip="2">2</span></th>
+                                        <td><span tooltip="Premium Receipt/ Premium Statement"></span>Declaration of Landlord PAN
+                                        </td>
+                                        <td><span *ngFor="let item of declarationOfLandlordDocumentDetail" class="text-orange" tooltip="{{item.name}},"><i class="fa fa-paperclip"
+                                       aria-hidden="true"></i>&nbsp;{{item.name}},</span>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-upload font-16 text-blue cursor-pointer" tooltip="Upload" (click)="UploadModal(declarationofLandlordPAN)" data-toggle="modal" data-target="#UploadModal"></i>&nbsp;&nbsp;
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row mt-25">
       <div class="col-md-3">
          <label class="custom-control custom-checkbox custom-control-inline pl-45">
          <input formControlName="active" type="checkbox" class="custom-control-input"
@@ -521,120 +473,111 @@
          <textarea formControlName="remark" [ngClass]="{'form-submitted': formDirective.submitted}" class="form-control ml-10" rows="1"></textarea>
       </div>
       </div> -->
-   <div class="row mt-15">
-      <div class="col-12">
-         <div class="float-right mb-15">
-            <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
-               tooltip="Save"><b>
+    <div class="row mt-15">
+        <div class="col-12">
+            <div class="float-right mb-15">
+                <button type="submit" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple" tooltip="Save"><b>
                   <i class="fa fa-floppy-o"></i></b> Save</button> &nbsp;
                 <!--   <button type="reset" onclick="resetForm()" class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"
                   tooltip="Reset"><b>
                      <i class="fa fa-floppy-o"></i></b> Reset</button> -->
-                     <button type="button"  (click)="resetView()"
-                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Cancel"><b>
-                     <i class="fa fa-floppy-o"></i></b> Reset</button>
-         </div>
-        
-      </div>
-   </div>
-   <div class="row mt-20">
-      <div class="col-12">
-         <div class="card">
-            <div class="mb-0">
-               <h3 class="font-14 text-purple font-bold">Summary</h3>
+                <button type="button" (click)="resetView()" class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left " tooltip="Reset"><b>
+                     <i class="fa fa-refresh"></i></b> Reset</button>
             </div>
-            <div class="">
-               <div class="table-responsive Custom_Table">
-                  <table class="table table-striped table-hover table-bordered m-b-0">
-                     <thead class="thead-dark">
-                        <tr>
-                           <th rowspan="2" class="wd-12 font700">Sr.No</th>
-                           <th rowspan="2" class="wd-25 font700">House Name</th>
-                           <th colspan="2" class="wd-30 font700">Agreement</th>
-                           <th colspan="2" class="wd-30 font700">Rent </th>
-                           <th rowspan="2" class="wd-10 font700">Rent Amount</th>
-                           <th rowspan="2" class="wd-10 font700">Action</th>
-                        </tr>
-                        <tr>
-                           <th>From Date</th>
-                           <th>To Date</th>
-                           <th>From Date</th>
-                           <th>To Date</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr *ngFor="let summary of masterGridData; let i = index">
-                           <td class="wd-2">
-                              <span tooltip="{{i+1}}">
+
+        </div>
+    </div>
+    <div class="row mt-20">
+        <div class="col-12">
+            <div class="card">
+                <div class="mb-0">
+                    <h3 class="font-14 text-purple font-bold">Summary</h3>
+                </div>
+                <div class="">
+                    <div class="table-responsive Custom_Table">
+                        <table class="table table-striped table-hover table-bordered m-b-0">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th rowspan="2" class="wd-12 font700">Sr.No</th>
+                                    <th rowspan="2" class="wd-25 font700">House Name</th>
+                                    <th colspan="2" class="wd-30 font700">Agreement</th>
+                                    <th colspan="2" class="wd-30 font700">Rent </th>
+                                    <th rowspan="2" class="wd-10 font700">Rent Amount</th>
+                                    <th rowspan="2" class="wd-10 font700">Action</th>
+                                </tr>
+                                <tr>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let summary of masterGridData; let i = index">
+                                    <td class="wd-2">
+                                        <span tooltip="{{i+1}}">
                                  {{i+1}}
                               </span>
-                           </td>
-                           <td>
-                              <span
-                                 tooltip="{{summary.houseRentMaster.propertyName}}">{{summary.houseRentMaster.propertyName}}</span>
-                           </td>
-                           <td>
-                              <span  *ngIf="summary.agreementDetailList?.length"
-                                 tooltip="{{ summary.agreementDetailList[0].fromDate | date :'dd-MMM-yyyy' }}">{{summary.agreementDetailList[0].fromDate
+                                    </td>
+                                    <td>
+                                        <span tooltip="{{summary.houseRentMaster.propertyName}}">{{summary.houseRentMaster.propertyName}}</span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="summary.agreementDetailList?.length" tooltip="{{ summary.agreementDetailList[0].fromDate | date :'dd-MMM-yyyy' }}">{{summary.agreementDetailList[0].fromDate
                                  | date :"dd-MMM-yyyy"}}</span>
-                           </td>
-                           <td>
-                              <span *ngIf="summary.agreementDetailList?.length"
-                                 tooltip="{{ summary.agreementDetailList[0].toDate | date :'dd-MMM-yyyy' }}">{{summary.agreementDetailList[0].toDate
+                                    </td>
+                                    <td>
+                                        <span *ngIf="summary.agreementDetailList?.length" tooltip="{{ summary.agreementDetailList[0].toDate | date :'dd-MMM-yyyy' }}">{{summary.agreementDetailList[0].toDate
                                  | date :"dd-MMM-yyyy"}}</span>
-                           </td>
-                           <td>
-                              <span *ngIf="summary.rentDetailList?.length"
-                                 tooltip="{{ summary.rentDetailList[0].fromDate | date :'dd-MMM-yyyy' }}">{{summary.rentDetailList[0].fromDate
+                                    </td>
+                                    <td>
+                                        <span *ngIf="summary.rentDetailList?.length" tooltip="{{ summary.rentDetailList[0].fromDate | date :'dd-MMM-yyyy' }}">{{summary.rentDetailList[0].fromDate
                                  | date :"dd-MMM-yyyy"}}</span>
-                           </td>
-                           <td>
-                              <span *ngIf="summary.rentDetailList?.length"
-                                 tooltip="{{ summary.rentDetailList[0].toDate | date :'dd-MMM-yyyy' }}">{{summary.rentDetailList[0].toDate
+                                    </td>
+                                    <td>
+                                        <span *ngIf="summary.rentDetailList?.length" tooltip="{{ summary.rentDetailList[0].toDate | date :'dd-MMM-yyyy' }}">{{summary.rentDetailList[0].toDate
                                  | date :"dd-MMM-yyyy"}}</span>
-                           </td>
-                           <td class="wd-10">
+                                    </td>
+                                    <td class="wd-10">
 
-                              <span *ngIf="summary.rentDetailList?.length"
-                                 tooltip="{{summary.rentDetailList[0].rentAmount}}">{{summary.rentDetailList[0].rentAmount}}</span>
-                           </td>
+                                        <span *ngIf="summary.rentDetailList?.length" tooltip="{{summary.rentDetailList[0].rentAmount}}">{{summary.rentDetailList[0].rentAmount}}</span>
+                                    </td>
 
-                           <td class="wd-5">
-                              <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editHouseRentMaster(i)" tooltip="Edit"></i>
-                              &nbsp;&nbsp;
-                             <!--  <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewHouseRentMaster(i)"   tooltip="View"></i> -->
-                           </td>
-                        </tr>
-                        <tr *ngIf="!masterGridData?.length">
-                           <td colspan="10">
-                              <span class="font-14 font500 align-center text-red">No Data
+                                    <td class="wd-5">
+                                        <i class="fa fa-edit font-16 text-dark-green cursor-pointer" (click)="editHouseRentMaster(i)" tooltip="Edit"></i> &nbsp;&nbsp;
+                                        <!--  <i class="fa fa-eye font-16 text-blue cursor-pointer" (click)="viewHouseRentMaster(i)"   tooltip="View"></i> -->
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!masterGridData?.length">
+                                    <td colspan="10">
+                                        <span class="font-14 font500 align-center text-red">No Data
                                  Available</span>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
+        </div>
+    </div>
 </form>
 <ng-template #declarationofLandlordPAN>
-   <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">×</span></button>
-   </div>
-   <div class="modal-body">
-      <div class="card">
-         <div class="card-body">
-            <div class="row clearfix">
-               <!-- <div class="col-md-12">
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <!-- <div class="col-md-12">
                      <label class="form-label">Upload File here :</label>
                      </div> -->
-               <div class="col-md-12">
-                  <div class="fileuploadbox bg-color-lightgray">
-                     <label class="filelabel">
+                    <div class="col-md-12">
+                        <div class="fileuploadbox bg-color-lightgray">
+                            <label class="filelabel">
                         <i class="fa fa-upload">
                         </i>
                         <span class="title">
@@ -644,11 +587,10 @@
                            (change)="onMasterUpload($event,'declarationOfLandlordDocument');"
                            accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
                      </label>
-                  </div>
-                  <div *ngIf="declarationOfLandlordDocumentDetail.length > 0 " class="fileuploadbox">
-                     Selected files
-                     <label *ngFor="let item of declarationOfLandlordDocumentDetail;  let index = index;"
-                        class="filelabeldisplay">
+                        </div>
+                        <div *ngIf="declarationOfLandlordDocumentDetail.length > 0 " class="fileuploadbox">
+                            Selected files
+                            <label *ngFor="let item of declarationOfLandlordDocumentDetail;  let index = index;" class="filelabeldisplay">
                         <div class="text-ellipsis"><i class="fa fa-paperclip">
                            </i>
                            <span class="title">
@@ -660,38 +602,38 @@
                               (click)="removeSelectedHouseRentDocument(index , 'declarationOfLandlordDocument')"></i>
                         </div>
                      </label>
-                  </div>
-               </div>
-               <div class="col-md-12 mt-10">
-                  <label class="form-label">Remark</label>
-               </div>
-               <div class="col-md-12">
-                  <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-               </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-10">
+                        <label class="form-label">Remark</label>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-   <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-   </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
 </ng-template>
 <ng-template #rentAgreementIndex>
-   <div class="modal-header">
-      <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
-      <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
+    <div class="modal-header">
+        <h5 class="modal-title" id="UploadModalLabel">Upload Document</h5>
+        <button type="button" (click)="modalRef.hide()" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">×</span></button>
-   </div>
-   <div class="modal-body">
-      <div class="card">
-         <div class="card-body">
-            <div class="row clearfix">
-               <!-- <div class="col-md-12">
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <div class="row clearfix">
+                    <!-- <div class="col-md-12">
                      <label class="form-label">Upload File here :</label>
                      </div> -->
-               <div class="col-md-12">
-                  <div class="fileuploadbox bg-color-lightgray">
-                     <label class="filelabel">
+                    <div class="col-md-12">
+                        <div class="fileuploadbox bg-color-lightgray">
+                            <label class="filelabel">
                         <i class="fa fa-upload">
                         </i>
                         <span class="title">
@@ -701,11 +643,10 @@
                            (change)="onMasterUpload($event,'rentAgreementDocument');"
                            accept=".jpg , .jpeg, .pdf , .png" id="FileInput" type="file" multiple />
                      </label>
-                  </div>
-                  <div *ngIf="rentAgreementDocumentDetail.length > 0 " class="fileuploadbox">
-                     Selected files
-                     <label *ngFor="let item of rentAgreementDocumentDetail;  let index = index;"
-                        class="filelabeldisplay">
+                        </div>
+                        <div *ngIf="rentAgreementDocumentDetail.length > 0 " class="fileuploadbox">
+                            Selected files
+                            <label *ngFor="let item of rentAgreementDocumentDetail;  let index = index;" class="filelabeldisplay">
                         <div class="text-ellipsis"><i class="fa fa-paperclip">
                            </i>
                            <span class="title">
@@ -717,19 +658,19 @@
                               (click)="removeSelectedHouseRentDocument(index , 'rentAgreementDocument')"></i>
                         </div>
                      </label>
-                  </div>
-               </div>
-               <div class="col-md-12 mt-10">
-                  <label class="form-label">Remark</label>
-               </div>
-               <div class="col-md-12">
-                  <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
-               </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-10">
+                        <label class="form-label">Remark</label>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea class="form-control" [(ngModel)]="documentRemark" rows="2"></textarea>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </div>
-   <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
-   </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Ok</button>
+    </div>
 </ng-template>

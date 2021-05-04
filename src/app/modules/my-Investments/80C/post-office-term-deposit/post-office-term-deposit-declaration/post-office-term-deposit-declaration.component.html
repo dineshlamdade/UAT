@@ -924,7 +924,7 @@
                         (change)="setActualAmoutInEditModal($event)"
                         class="form-control align-right"
                       />
-                     
+
                     </div>
                   </td>
                   <td>
@@ -958,7 +958,7 @@
 
                       class="form-control align-right"
                     />
-                 
+
                   </td>
                   <td>
                     <input
@@ -1001,7 +1001,7 @@
                       {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td> 
+                  <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
                       {{ grandActualTotalEditModal | number: "1.2-2" }}
@@ -1172,7 +1172,7 @@
                         class="custom-control-input"
                         [ngModel]="isCheckAll"
                         [disabled]="isDisabled"
-                        name="select"                     
+                        name="select"
                         (change)="checkUncheckAll()"
                       />
                       <span class="custom-control-label"></span>
@@ -1242,7 +1242,7 @@
                         enableCheckboxFlag = i
                       "
                       class="custom-control-input"
-                    
+
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -1259,7 +1259,7 @@
                         enableCheckboxFlag = i
                       "
                       class="custom-control-input"
-                    
+
                     />
                     <span class="custom-control-label"></span>
                   </label>
@@ -1344,10 +1344,10 @@
                         summary.dateOfPayment = $event.toLocaleDateString();
                         onChangeDateOfPaymentEditCase(summary, i)
                       "
-                     
+
                       class="form-control"
                       bsDatepicker
-                    />                    
+                    />
                   </td>
                   <td>
                     <input
@@ -1360,7 +1360,7 @@
                       [(ngModel)]="summary.actualAmount"
 
                       class="form-control align-right"
-                    
+
                     />
                     <!-- [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'" -->
                   </td>
@@ -1409,10 +1409,10 @@
                       {{ grandDeclarationTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-                  
+
                   <td class="bg-lightgray font-18 font700 align-right"></td>
-                 
-                  
+
+
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip="{{ grandActualTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
                       {{ grandActualTotalEditModal | number: "1.2-2" }}
@@ -1428,7 +1428,7 @@
                       {{ grandApprovedTotalEditModal | number: "1.2-2" }}
                     </span>
                   </td>
-                  
+
                   <!-- <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td> -->
                   <td class="bg-lightgray font-18 font700"></td>
@@ -1540,7 +1540,7 @@
     <button
       *ngIf="viewDocumentDetail"
       type="button"
-      tooltip="View Document" 
+      tooltip="View Document"
       (click)="modalRef.hide(); uploadUpdateTransaction()"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
