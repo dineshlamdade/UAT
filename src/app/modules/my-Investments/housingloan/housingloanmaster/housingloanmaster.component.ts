@@ -872,7 +872,9 @@ export class HousingloanmasterComponent implements OnInit {
       this.Index = -1;
       formDirective.resetForm();
       this.housingLoanForm.reset();
-
+      this.HPOwnerDetailForm.reset();
+      this.HPUsageDetailForm.reset();
+      this.housePropertyLoanDetailList.reset()
       this.showUpdateButton = false;
       this.loanDetailGridData = [];
       this.propertyIndex = [];
