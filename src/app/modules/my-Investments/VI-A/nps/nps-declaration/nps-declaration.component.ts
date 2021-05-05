@@ -635,6 +635,18 @@ export class NpsDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -1242,7 +1254,7 @@ export class NpsDeclarationComponent implements OnInit {
         this.initialArrayIndex = [];
 
         this.transactionDetail.forEach((element) => {
-          
+
           this.initialArrayIndex.push(element.groupTransactionList.length);
 
           element.groupTransactionList.forEach((innerElement) => {

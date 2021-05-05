@@ -870,7 +870,7 @@
                       type="text"
                       id="actualAmount{{ summary.investmentGroup1TransactionId }}"
                       name="actualAmount{{ summary.investmentGroup1TransactionId }}"
-                      [disabled]="!summary.additionalPayment"
+                      [disabled]="!summary.additionalPayment=='Approved'"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -916,7 +916,7 @@
                     *ngIf="previousEmployeeList?.length"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip=" {{ item.declarationTotal | number: '1.2-2' }}"

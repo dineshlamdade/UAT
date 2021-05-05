@@ -121,9 +121,8 @@
                     class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i)"
                     [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    "
-                  >
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option
                       *ngFor="let previousEmployee of previousEmployeeList"

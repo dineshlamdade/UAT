@@ -243,7 +243,8 @@ export class LicdeclarationComponent implements OnInit {
 
       this.dateOfJoining = new Date(res.data.results[0].joiningDate);
  console.log(this.dateOfJoining)
-      res.data.results.forEach((element) => {
+ res.data.results.forEach((element) => {
+        
         const obj = {
           label: element.name,
           value: element.previousEmployerId,
@@ -521,6 +522,19 @@ export class LicdeclarationComponent implements OnInit {
       this.enableFileUpload = false;
     }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -573,22 +587,31 @@ export class LicdeclarationComponent implements OnInit {
       i
     ].declaredAmount = formatedDeclaredAmount;
 
+
     this.declarationTotal = 0;
     // this.declaredAmount=0;
 
     this.transactionDetail[j].lictransactionList.forEach((element) => {
       // console.log(element.declaredAmount.toString().replace(',', ""));
       this.declarationTotal += Number(
-        element.declaredAmount.toString().replace(/,/g, ''),
+        element.declaredAmount.toString().replace(/,/g, '')
       );
       // console.log(this.declarationTotal);
       // this.declaredAmount+=Number(element.actualAmount.toString().replace(',', ""));
     });
 
-    this.grandDeclarationTotal = this.declarationTotal;
-    // this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
-  }
+    this.transactionDetail[j].declarationTotal = this.declarationTotal;
+    console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
+}
 
   // --------------- ON change of declared Amount Edit Modal-------------
   onDeclaredAmountChangeInEditCase(
@@ -725,6 +748,21 @@ export class LicdeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
+
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
@@ -795,6 +833,7 @@ export class LicdeclarationComponent implements OnInit {
     this.editTransactionUpload[j].actualTotal = this.actualTotal;
     console.log(this.editTransactionUpload[j].actualTotal);
   }
+
 
   // --------Add New ROw Function---------
   // addRowInList( summarynew: { previousEmployerName: any; declaredAmount: any;
@@ -1030,11 +1069,11 @@ export class LicdeclarationComponent implements OnInit {
     //   this.transactionDetail[0].lictransactionList.forEach(element => {
         // if (element.licTransactionId == transactionId[i]) {
           if(this.licDeclarationData.previousEmployerId == 0){
-            this.alertService.sweetalertError(
-              // 'Please make sure that you have selected previous employer for all selected lines',
-              'Please Select Previous Employer',
-            );
-            return false;
+            // this.alertService.sweetalertError(
+            //   // 'Please make sure that you have selected previous employer for all selected lines',
+            //   'Please Select Previous Employer',
+            // );
+            // return false;
           }
           if (this.licDeclarationData.dateOfPayment == null) {
             this.alertService.sweetalertError(
@@ -1137,7 +1176,7 @@ export class LicdeclarationComponent implements OnInit {
   changeReceiptAmountFormat() {
       // tslint:disable-next-line: variable-name
       let receiptAmount_: number;
-      let globalSelectedAmount_ : number;
+      let globalSelectedAmount_ : number; 
 
       receiptAmount_ = parseFloat(this.receiptAmount.replace(/,/g, ''));
       globalSelectedAmount_ = parseFloat(this.globalSelectedAmount.replace(/,/g, ''));
@@ -1501,10 +1540,10 @@ export class LicdeclarationComponent implements OnInit {
   }
 
 
-
 }
 
-class DeclarationService {
+
+ class DeclarationService {
   public licTransactionId = 0;
   public licMasterPaymentDetailsId: number;
   public previousEmployerId = 0;

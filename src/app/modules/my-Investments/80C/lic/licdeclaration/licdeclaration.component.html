@@ -231,8 +231,7 @@
                     name="Previous Employer Name"
                     class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i, j)"
-                    [disabled]="isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
-                    ">
+                    [disabled]="isDisabled || summary.transactionStatus === 'Submitted'" >
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option
                       *ngFor="let previousEmployee of previousEmployeeList"
@@ -961,7 +960,8 @@
                     <div class="custom_icon_badge">
                       <input
                         type="text"
-                        id="declaredAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                        id="declaredAmount{{ summary.licTransactionId }}" 
+                        onkeypress="return /[0-9 ]/i.test(event.key)"
                         name="declaredAmount{{ summary.licTransactionId }}"
                         [(ngModel)]="summary.declaredAmount"
                         class="form-control align-right"
@@ -990,9 +990,10 @@
                   <td>
                     <input
                       type="text"
-                      id="actualAmount{{ summary.licTransactionId }}" onkeypress="return /[0-9 ]/i.test(event.key)"
+                      id="actualAmount{{ summary.licTransactionId }}" 
+                      onkeypress="return /[0-9 ]/i.test(event.key)"
                       name="actualAmount{{ summary.licTransactionId }}"
-                      [disabled]="!summary.additionalPayment"
+                      [disabled]="!summary.additionalPayment=='Approved'"
                       [(ngModel)]="summary.actualAmount"
                       (change)="onActualAmountChangeInEditCase(summary, i, j)"
                       class="form-control align-right"
@@ -1038,7 +1039,7 @@
                     *ngIf="previousEmployeeList?.length"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td>
-                  <td class="bg-lightgray font-18 font700 align-right"></td>
+                  <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span
                       tooltip=" {{ item.declarationTotal | number: '1.2-2' }}"
@@ -1096,7 +1097,7 @@
               <tr>
                 <td class="bg-gray font-18 font700 wd-10">Grand Total</td>
                 <!-- <td class="bg-gray font-18 font700 align-right wd-4"></td> -->
-                <td class="bg-gray font-18 font700 wd-4"></td>
+                <!-- <td class="bg-gray font-18 font700 wd-4"></td> -->
                 <td class="bg-gray font-18 font700 align-right wd-11"></td>
                 <td class="bg-gray font-18 font700 align-right wd-9">
                   <span
@@ -1313,7 +1314,7 @@
       (click)="modalRef.hide(); docViewer(template3,urlArray)"
       class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left"
     >
-      <b><i class="fa fa-eye"></i></b> View13
+      <b><i class="fa fa-eye"></i></b> View
     </button>
     &nbsp;&nbsp;
     <button
@@ -1358,7 +1359,8 @@
         </button>
       </div>
       <div class="col-md-10">
-        <iframe style="height: 100vh; width: 100%; display: block" [src]="urlSafe" provider="google"></iframe>
+        <iframe style="height: 100vh; width: 100%; display: block" 
+        [src]="urlSafe" provider="google"></iframe>
       </div>
       <div class="col-md-1">
         <button

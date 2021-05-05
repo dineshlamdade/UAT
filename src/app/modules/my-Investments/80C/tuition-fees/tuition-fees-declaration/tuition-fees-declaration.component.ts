@@ -166,6 +166,8 @@ export class TuitionFeesDeclarationComponent implements OnInit {
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
   public tuitionFeesTransactionDetailList: Array<any> = [];
+  dateOfJoining: Date;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -644,6 +646,9 @@ export class TuitionFeesDeclarationComponent implements OnInit {
       if (!res.data.results[0]) {
         return;
       }
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+      console.log(this.dateOfJoining)
+      // console.log(res.data.results[0].joiningDate);
       res.data.results.forEach((element) => {
         const obj = {
           label: element.name,
@@ -860,6 +865,19 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     //   this.enableFileUpload = true;
     // }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -1031,6 +1049,19 @@ export class TuitionFeesDeclarationComponent implements OnInit {
     });
 
     this.grandActualTotal = this.actualTotal;
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);

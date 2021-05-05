@@ -88,8 +88,8 @@
                 <td *ngIf="previousEmployeeList?.length">
                   <select name="Previous Employer Name" class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i)" [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    ">
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                     <option [ngValue]="0">Select Previous Emp.</option>
                     <option *ngFor="let previousEmployee of previousEmployeeList" [value]="previousEmployee.value"
                       [selected]="
@@ -299,11 +299,12 @@
               </tr>
 
               <tr>
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
+                <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td> -->
+                
+                <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
                 <td class="bg-lightgray font-18 font700 align-left"></td>
-                <td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
+              <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
@@ -678,8 +679,9 @@
                 </tr>
 
                 <tr>
-                  <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-left">Total</td>
+                  <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                  
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                   </td>

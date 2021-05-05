@@ -120,7 +120,8 @@
                     class="form-control custom-select"
                     (change)="updatePreviousEmpId($event, i)"
                     [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                     "
                   >
                     <option [ngValue]="0">Select Previous Emp.</option>
@@ -433,19 +434,12 @@
 
 
               <tr>
-                <td *ngIf="previousEmployeeList?.length"
-                class="bg-lightgray font-18 font700 align-left"></td>
-                <td
-                  *ngIf="previousEmployeeList?.length"
-                  class="bg-lightgray font-18 font700 align-left"
-                >Total</td>
-
-
-                <td
-                  *ngIf="!previousEmployeeList?.length"
-                  class="bg-lightgray font-18 font700 align-left"
-                >Total</td>
+                <!-- <td *ngIf="previousEmployeeList?.length"
+                class="bg-lightgray font-18 font700 align-left"></td> -->
+                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
+<td *ngIf="!previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left">Total</td>
                 <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-left"></td>
+                <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right">
@@ -472,7 +466,7 @@
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
                 <td class="bg-lightgray font-18 font700"></td>
-                <td class="bg-lightgray font-18 font700"></td>
+                <!-- <td class="bg-lightgray font-18 font700"></td> -->
               </tr>
 
             </tbody>
@@ -1162,7 +1156,7 @@
             <table class="table table-striped table-hover table-bordered m-b-0">
               <thead class="thead-dark" *ngIf="previousEmployeeList?.length">
                 <tr>
-                  <th rowspan="2" class="wd-4">
+                  <!-- <th rowspan="2" class="wd-4">
                     <label
                       class="custom-control custom-checkbox checkbox-center"
                       tooltip="Select All"
@@ -1177,11 +1171,11 @@
                       />
                       <span class="custom-control-label"></span>
                     </label>
-                  </th>
+                  </th> -->
 
-                  <th rowspan="2" class="wd-10 font700">
+                  <!-- <th rowspan="2" class="wd-10 font700">
                     Previous Employer Name
-                  </th>
+                  </th> -->
                   <th rowspan="2" class="wd-10 font700">
                     <span tooltip="Electronic Clearing Service">Institution</span>
                   </th>
@@ -1264,7 +1258,7 @@
                     <span class="custom-control-label"></span>
                   </label>
                 </td> -->
-                  <td *ngIf="previousEmployeeList?.length">
+                  <!-- <td *ngIf="previousEmployeeList?.length">
                     <select
                       name="Previous Employer Name"
                       class="form-control custom-select"
@@ -1284,15 +1278,14 @@
                         {{ previousEmployee.label }}
                       </option>
                     </select>
-                  </td>
+                  </td> -->
                   <td>
                     <input
                       type="text"
                       class="form-control"
                       [ngModel]="summary.institution"
-                      [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    "
+                      [disabled]="summary.institution"
+
                     />
                     <!-- [disabled]="summary.institution" -->
                   </td>
@@ -1303,9 +1296,8 @@
                         class="form-control"
                         onkeypress="return /[0-9 ]/i.test(event.key)"
                         [ngModel]="summary.accountNumber"
-                        [disabled]="
-                        isDisabled || summary.transactionStatus === 'Submitted'
-                      "
+                        [disabled]="summary.accountNumber"
+
                       />
                       <!-- [disabled]="summary.accountNumber" -->
                     </div>
@@ -1324,30 +1316,28 @@
                         [(ngModel)]="summary.declaredAmount"
                         (change)="setActualAmoutInEditModal($event)"
                         class="form-control align-right"
-                        [disabled]="
-                        isDisabled || summary.transactionStatus === 'Submitted'
-                      "
+                        [disabled]=" isDisabled || summary.transactionStatus === 'Submitted'"
                       />
                       <!-- [disabled]=" summary.transactionStatus === 'Submitted'" -->
                     </div>
                   </td>
                   <td>
                     <input
-                      type="text"
-                      [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
-                      [minDate]="financialYearStartDate"
-                      [maxDate]="financialYearEndDate"
-                      [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
-                      data-provide="datepicker"
-                      data-date-autoclose="true"
-                      (ngModelChange)="
-                        summary.dateOfPayment = $event.toLocaleDateString();
-                        onChangeDateOfPaymentEditCase(summary, i)
-                      "
-                     
-                      class="form-control"
-                      bsDatepicker
-                    />                    
+                    type="text"
+                    [ngModel]="summary.dateOfPayment | date: 'dd-MMM-yyyy'"
+                    
+                    [maxDate]="today"
+                    [bsConfig]="{ dateInputFormat: 'DD-MMM-YYYY' }"
+                    data-provide="datepicker"
+                    data-date-autoclose="true"
+                    (ngModelChange)="
+                      summary.dateOfPayment = $event.toLocaleDateString();
+                      onChangeDateOfPayment(summary, i)
+                    "
+                   
+                    class="form-control"
+                    bsDatepicker
+                  />
                   </td>
                   <td>
                     <input
@@ -1402,7 +1392,16 @@
                     *ngIf="previousEmployeeList?.length"
                     class="bg-lightgray font-18 font700 align-right"
                   ></td> -->
-                  <td class="bg-lightgray font-18 font700 align-left">Total</td>
+                  <td
+                  *ngIf="previousEmployeeList?.length"
+                  class="bg-lightgray font-18 font700 align-right"
+                >Total</td>
+                <td
+                  *ngIf="!previousEmployeeList?.length"
+                  class="bg-lightgray font-18 font700 align-right"
+                >Total</td>
+                <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-"></td>
+                  <td class="bg-lightgray font-18 font700 align-right"></td> -->
                   <td class="bg-lightgray font-18 font700 align-right"></td>
                   <td class="bg-lightgray font-18 font700 align-right">
                     <span tooltip=" {{ grandDeclarationTotalEditModal | number: '1.2-2' }}" class="padding-right-12">
@@ -1429,11 +1428,11 @@
                     </span>
                   </td>
                   
-                  <!-- <td class="bg-lightgray font-18 font700"></td>
-                  <td class="bg-lightgray font-18 font700"></td> -->
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
                   <td class="bg-lightgray font-18 font700"></td>
+                  <!-- <td class="bg-lightgray font-18 font700"></td> -->
+                  <!-- <td class="bg-lightgray font-18 font700"></td> -->
                 </tr>
               </tbody>
             </table>

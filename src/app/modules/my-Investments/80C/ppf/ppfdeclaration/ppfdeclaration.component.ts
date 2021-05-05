@@ -155,6 +155,7 @@ export class PPFDeclarationComponent implements OnInit {
 
   public globalAddRowIndex: number;
   public globalSelectedAmount: string;
+  dateOfJoining: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -188,7 +189,7 @@ export class PPFDeclarationComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    console.log('data::', this.data);
+    // console.log('data::', this.data);
     if (this.data === undefined || this.data === null) {
       this.declarationPage();
       this.canEdit = true;
@@ -211,6 +212,25 @@ export class PPFDeclarationComponent implements OnInit {
     this.deactiveCopytoActualDate();
 
     // Get API call for All previous employee Names
+
+    this.Service.getpreviousEmployeName().subscribe((res) => {
+      console.log('previousEmployeeList::', res);
+      if (!res.data.results[0]) {
+        return;
+      }
+      console.log(res.data.results[0].joiningDate);
+
+      this.dateOfJoining = new Date(res.data.results[0].joiningDate);
+ console.log(this.dateOfJoining)
+      res.data.results.forEach((element) => {
+        const obj = {
+          label: element.name,
+          value: element.previousEmployerId,
+        };
+        this.previousEmployeeList.push(obj);
+      });
+    });
+
     // this.Service.getpreviousEmployeName().subscribe((res) => {
     //   console.log('previousEmployeeList::', res);
     //   if (!res.data.results[0]) {
@@ -489,6 +509,19 @@ export class PPFDeclarationComponent implements OnInit {
       this.enableFileUpload = true;
     }
     console.log(this.uploadGridData);
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
     console.log(this.uploadGridData.length);
   }
 
@@ -554,8 +587,66 @@ export class PPFDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].declarationTotal = this.declarationTotal;
-    // console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
-  }
+    console.log( "DeclarATION total==>>" + this.transactionDetail[j].declarationTotal);
+    this.declarationTotal = 0;
+    this.transactionDetail.forEach((element) => {
+
+      // console.log(element.declaredAmount.toString().replace(',', ""));
+      this.declarationTotal += Number(
+        element.declarationTotal.toString().replace(/,/g, '')
+    );
+  });
+      this.grandDeclarationTotal = this.declarationTotal;
+}
+
+ // --------------- ON change of declared Amount Edit Modal-------------
+ onDeclaredAmountChangeInEditCase(
+  summary: {
+    previousEmployerName: any;
+    declaredAmount: number;
+    dateOfPayment: Date;
+    actualAmount: any;
+    dueDate: Date;
+  },
+  i: number,
+  j: number,
+) {
+  this.declarationService = new DeclarationService(summary);
+  console.log(
+    'onDeclaredAmountChangeInEditCase Amount change::' +
+      summary.declaredAmount,
+  );
+
+  this.editTransactionUpload[j].lictransactionList[
+    i
+  ].declaredAmount = this.declarationService.declaredAmount;
+  const formatedDeclaredAmount = this.numberFormat.transform(
+    this.editTransactionUpload[j].lictransactionList[i].declaredAmount,
+  );
+  console.log(`formatedDeclaredAmount::`, formatedDeclaredAmount);
+
+  this.editTransactionUpload[j].lictransactionList[
+    i
+  ].declaredAmount = formatedDeclaredAmount;
+
+  this.declarationTotal = 0;
+
+  this.editTransactionUpload[j].lictransactionList.forEach((element) => {
+    console.log(
+      'declaredAmount::',
+      element.declaredAmount.toString().replace(/,/g, ''),
+    );
+    this.declarationTotal += Number(
+      element.declaredAmount.toString().replace(/,/g, ''),
+    );
+    // console.log(this.declarationTotal);
+  });
+
+  this.editTransactionUpload[j].declarationTotal = this.declarationTotal;
+  console.log(
+    'DeclarATION total==>>' + this.editTransactionUpload[j].declarationTotal,
+  );
+}
 
   // ------------ ON change of DueDate in line----------
   onDueDateChange(
@@ -623,9 +714,89 @@ export class PPFDeclarationComponent implements OnInit {
     });
 
     this.transactionDetail[j].actualTotal = this.actualTotal;
+
+    this.actualTotal = 0;
+    this.transactionDetail.forEach((element) => {
+      // console.log(element.actualAmount.toString().replace(',', ""));
+      this.actualTotal += Number(
+        element.actualTotal.toString().replace(/,/g, '')
+      );
+      // console.log("Actual Total")(this.actualTotal);
+     console.log("Actual Total::" , this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.grandActualTotal = this.actualTotal;
+    console.log(this.grandActualTotal);
+
     // this.transactionDetail[j].actualAmount = this.actualAmount;
     // console.log(this.transactionDetail[j]);
     // console.log(this.actualTotal);
+  }
+
+  onActualAmountChangeInEditCase(
+    summary: {
+      previousEmployerName: any;
+      declaredAmount: number;
+      dateOfPayment: Date;
+      actualAmount: number;
+      dueDate: Date;
+    },
+    i: number,
+    j: number,
+  ) {
+    this.declarationService = new DeclarationService(summary);
+    console.log(
+      'onActualAmountChangeInEditCaseActual Amount change::',
+      summary,
+    );
+
+    this.editTransactionUpload[j].lictransactionList[
+      i
+    ].actualAmount = this.declarationService.actualAmount;
+    console.log(
+      'Actual Amount changed::',
+      this.editTransactionUpload[j].lictransactionList[i].actualAmount,
+    );
+
+    const formatedActualAmount = this.numberFormat.transform(
+      this.editTransactionUpload[j].lictransactionList[i].actualAmount,
+    );
+    console.log(`formatedActualAmount::`, formatedActualAmount);
+
+    this.editTransactionUpload[j].lictransactionList[
+      i
+    ].actualAmount = formatedActualAmount;
+
+    if (
+      this.editTransactionUpload[j].lictransactionList[i].actualAmount !==
+        Number(0) ||
+      this.editTransactionUpload[j].lictransactionList[i].actualAmount !== null
+    ) {
+      console.log(
+        `in if::`,
+        this.editTransactionUpload[j].lictransactionList[i].actualAmount,
+      );
+    } else {
+      console.log(
+        `in else::`,
+        this.editTransactionUpload[j].lictransactionList[i].actualAmount,
+      );
+    }
+
+    this.actualTotal = 0;
+    this.actualAmount = 0;
+    this.editTransactionUpload[j].lictransactionList.forEach((element) => {
+      console.log(element.actualAmount.toString().replace(/,/g, ''));
+      this.actualTotal += Number(
+        element.actualAmount.toString().replace(/,/g, ''),
+      );
+      console.log(this.actualTotal);
+      // this.actualAmount += Number(element.actualAmount.toString().replace(',', ""));
+    });
+
+    this.editTransactionUpload[j].actualTotal = this.actualTotal;
+    console.log(this.editTransactionUpload[j].actualTotal);
   }
 
   // --------Add New ROw Function---------
@@ -1033,7 +1204,9 @@ export class PPFDeclarationComponent implements OnInit {
     );
   }
 
-  docViewer(template3: TemplateRef<any>) {
+  docViewer(template3: TemplateRef<any>, documentDetailList: any) {
+    console.log("documentDetailList::", documentDetailList)
+    this.urlArray = documentDetailList;
     this.urlIndex = 0;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.urlArray[this.urlIndex].blobURI

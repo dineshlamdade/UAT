@@ -190,9 +190,8 @@
                   class="form-control custom-select"
                   (change)="updatePreviousEmpId($event, i)"
                   [disabled]="
-                      isDisabled || summary.transactionStatus === 'Submitted'
-                    "
-                >
+                      isDisabled || summary.transactionStatus === 'Submitted' || dateOfJoining < summary.dueDate
+                      ">
                   <option [ngValue]="0">Select</option>
                   <option
                     *ngFor="let previousEmployee of previousEmployeeList"
@@ -1138,7 +1137,7 @@
                   *ngIf="!previousEmployeeList?.length"
                   class="bg-lightgray font-18 font700 align-right"
                 >Total</td>
-                <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td>
+                <!-- <td *ngIf="previousEmployeeList?.length" class="bg-lightgray font-18 font700 align-right"></td> -->
                 <!-- <td class="bg-lightgray font-18 font700 align-right"></td> -->
                 <td class="bg-lightgray font-18 font700 align-right"></td>
                 <td class="bg-lightgray font-18 font700 align-right">
