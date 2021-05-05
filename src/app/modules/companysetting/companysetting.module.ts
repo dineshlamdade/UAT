@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -47,6 +47,7 @@ import { SharedlayoutModule } from '../sharedlayout/sharedlayout.module';
 import { AttributeSelectionComponent } from './attribute-selection/attribute-selection.component';
 import { HeadCreationComponent } from './head-creation/head-creation.component';
 import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation/payroll-head-group-creation.component';
+import { ReimbursementMasterComponent } from './reimbursement-master/reimbursement-master.component';
 
 
 
@@ -59,7 +60,8 @@ import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation
     AttributeCreationComponent,
     BusinessYearComponent,
     CycleDefinitionComponent,
-    CycleCreationComponent
+    CycleCreationComponent,
+    ReimbursementMasterComponent
   ],
   imports: [
 
@@ -103,6 +105,7 @@ import { PayrollHeadGroupCreationComponent } from './payroll-head-group-creation
   ],
 
   providers: [DatePipe, NumberFormatPipe],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 
 } )
 export class CompanySettingModule { }

@@ -8,7 +8,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="tabview tabview_fixed_deposit">
-                                <input name="nav" type="radio" class="about-radio" id="summary" checked (click)="summeryTab()"/>
+                                <input name="nav" type="radio" class="about-radio" id="summary" checked
+                                    (click)="summeryTab()" />
                                 <div class="tabs about-page">
                                     <div class="card">
                                         <div class="card-body">
@@ -32,7 +33,8 @@
                                                 <div class="col-md-12">
                                                 </div>
                                                 <div class="col-md-12 bg-color-light_gray p-10 m-0">
-                                                    <label style="display: inline-grid;" class="form-label mb-0  mt-2 float-left">Selected Employee
+                                                    <label style="display: inline-grid;"
+                                                        class="form-label mb-0  mt-2 float-left">Selected Records
                                                         &nbsp;<span
                                                             class="text-dark-green font-14 font-bold">({{selectedEmpData.length}})</span></label>
                                                     <div class="float-right d-flex justify-content-end">
@@ -46,7 +48,8 @@
                                                                 </div>
                                                                 <input data-provide="datepicker"
                                                                     data-date-autoclose="true" class="form-control"
-                                                                    placeholder="Date" bsDatepicker [(ngModel)]="fromDate">
+                                                                    placeholder="Date" bsDatepicker
+                                                                    [(ngModel)]="fromDate">
                                                             </div>
                                                         </div>
                                                         <span class="font700 font-12 mt-2 ">To</span>
@@ -59,24 +62,28 @@
                                                                 </div>
                                                                 <input data-provide="datepicker"
                                                                     data-date-autoclose="true" class="form-control"
-                                                                    placeholder="Date" bsDatepicker [(ngModel)]="toDate">
+                                                                    placeholder="Date" bsDatepicker
+                                                                    [(ngModel)]="toDate">
                                                             </div>
                                                         </div>
-                                                        <button type="button" tooltip="Date wise Attendance" (click)="AttendanceSummaryDatewiseRecordsUI()"
+                                                        <button type="button" tooltip="Date wise Attendance"
+                                                            (click)="AttendanceSummaryDatewiseRecordsUI()"
                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10">
-                                                            <b><i class="fa fa-file"></i></b> 
+                                                            <b><i class="fa fa-file"></i></b>
                                                             Date wise Attendance
                                                         </button>
                                                         <button type="button" tooltip="Upload Attendance"
                                                             class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left mr-10"><b><i
                                                                     class="fa fa-upload"></i></b> Upload Attendance
                                                         </button>
-                                                        <button type="button" tooltip="Filter"
+                                                        <!-- <button type="button" tooltip="Filter"
                                                             class="bg-teal-400 btn btn-sm mr-10"
                                                             (click)="display=true"><b><i class="fa fa-filter"></i></b>
-                                                        </button>
-                                                       <a tooltip="Download" style="cursor: pointer" (click)="exportAsXLSX()"><i class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
-                                                            aria-hidden="true"></i></a>
+                                                        </button> -->
+                                                        <a tooltip="Download" style="cursor: pointer"
+                                                            (click)="exportAsXLSX()"><i
+                                                                class="fa fa-file-excel-o font-18 text-dark-green pt-10  mr-10"
+                                                                aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 m-0 p-0">
@@ -91,8 +98,7 @@
                                                                         class="custom-control custom-checkbox checkbox-center"
                                                                         tooltip="Select All">
                                                                         <input (click)="selectAll($event.target)"
-                                                                             type="checkbox"
-                                                                            class="custom-control-input"
+                                                                            type="checkbox" class="custom-control-input"
                                                                             name="select" /> <span
                                                                             class="custom-control-label"></span>
                                                                     </label>
@@ -253,8 +259,10 @@
                                                                 <td class="text-center"> <label
                                                                         class="custom-control custom-checkbox checkbox-center"
                                                                         tooltip="Select">
-                                                                        <input type="checkbox" [checked]="selectedAllFlag"
-                                                                        (change)="isSelected($event.target,summarydata)" value="{{summarydata.employeeMasterId}}"
+                                                                        <input type="checkbox"
+                                                                            [checked]="selectedAllFlag"
+                                                                            (change)="isSelected($event.target,summarydata)"
+                                                                            value="{{summarydata.employeeMasterId}}"
                                                                             class="custom-control-input"
                                                                             name="select" /> <span
                                                                             class="custom-control-label"></span>
@@ -272,7 +280,8 @@
                                                                 <td class="bg-color-light_gray"><label
                                                                         class="mb-0">{{summarydata.cycle}} </label></td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.totalDaysInCycle}} </label>
+                                                                        class="mb-0">{{summarydata.totalDaysInCycle}}
+                                                                    </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label
                                                                         class="mb-0">{{summarydata.weeklyOff}} </label>
@@ -288,7 +297,8 @@
                                                                         class="mb-0">{{summarydata.adjustment}} </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label
-                                                                        class="mb-0">{{summarydata.presentDays}} </label>
+                                                                        class="mb-0">{{summarydata.presentDays}}
+                                                                    </label>
                                                                 </td>
                                                                 <td class="bg-color-light_gray"><label
                                                                         class="mb-0">{{summarydata.paidDays}} </label>
@@ -301,7 +311,7 @@
                                                                     class="font-14 font500 text-center text-red">
                                                                     <span>No Data
                                                                         Available</span>
-                                                                        
+
                                                                 </td>
                                                             </tr>
                                                         </ng-template>
@@ -314,51 +324,55 @@
                                 <label class="nav" for="summary">
                                     <span> Summary </span>
                                 </label>
-                                <input name="nav" type="radio" class="about-radio" id="Attendance" (click)="attendaceTabClick()" [disabled]="selectedEmpData.length == 0"/>
+                                
+                                <input name="nav" type="radio" class="about-radio" id="Attendance"
+                                    (click)="attendaceTabClick()" [disabled]="selectedEmpData.length == 0"/>
+                                    <!-- [disabled]="selectedEmpData.length == 0" -->
                                 <div class="tabs about-page">
+                                    <form [formGroup]="attendanceForm">
                                     <div class="card mt-20">
                                         <div class="card-body card-box-border">
                                             <div class="row mt-10">
                                                 <div class="col-md-12">
                                                     <div class="box-line-border radius-10 p-2 mt-3">
-                                                        <div class="row">
-                                                            <div class="col-md-2">
+                                                        <div class="row" *ngIf="employeeFinDetailsData">
+                                                            <div class="col-md-2" *ngIf="empData">
                                                                 <label class="form-label mt-1 mb-0">Employee No. &
                                                                     Name</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    0001 - Sneha Suryawanshi</label>
+                                                                    {{employeeFinDetailsData.employeeCode}} - {{employeeFinDetailsData.fullName}}</label>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label class="form-label mt-1 mb-0">Date of
                                                                     Joining</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    21-jan-2016
+                                                                    {{employeeFinDetailsData.joiningDate}}
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label
                                                                     class="form-label mt-1 mb-0">Establishment</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    Pune
+                                                                    {{employeeFinDetailsData.establishment}}
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label class="form-label mt-1 mb-0">Employee
                                                                     Type</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    Worker
+                                                                    {{employeeFinDetailsData.employeeType}}
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-1">
                                                                 <label class="form-label mt-1 mb-0">Grade</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    G1
+                                                                    {{employeeFinDetailsData.grade}}
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label class="form-label mt-1 mb-0">Designation</label>
                                                                 <label class="font-12 text-ellipsis mt-1 mb-0">
-                                                                    UI/UX Developer
+                                                                    {{employeeFinDetailsData.designation}}
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-1">
@@ -374,21 +388,24 @@
                                             <div class="row mt-15">
                                                 <div class="col-md-1">
                                                     <label class="form-label">Business Year </label>
-                                                    <select name="BusinessYear" class="form-control custom-select">
-                                                        <option value="2020"> 2020 </option>
-                                                        <option value="2021"> 2021</option>
+                                                    <select name="BusinessYear" class="form-control custom-select" formControlName="businessYear">
+                                                        <option value="">Select Business Year</option>
+                                                        <option *ngFor="let bussYear of getAllActiveBussinessYearData">{{bussYear.businessYear}}</option>
+                                                        <!-- <option value="2021"> 2021</option> -->
                                                     </select>
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label class="form-label">Cycle</label>
-                                                    <select name="Cycle" class="form-control custom-select">
-                                                        <option value="Cycle1"> Cycle1 </option>
-                                                        <option value="Cycle2"> Cycle2</option>
+                                                    <select name="Cycle" class="form-control custom-select" (change)="getFrequencyByCycle($event.target.value)" formControlName="cycle">
+                                                        <option value="" [selected]="currentCycle == '' ">Select Cycle</option>
+                                                        <option value="{{cycle.id}}"  *ngFor="let cycle of businessCycleDefinitionData"> {{cycle.cycleName}} </option>
+                                                        <!-- [selected]="currentCycle == cycle.id" -->
+                                                        <!-- <option value="Cycle2"> Cycle2</option> -->
                                                     </select>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <label class="form-label">Frequency</label>
-                                                    <input type="text" class="form-control" disabled>
+                                                    <input  type="text" class="form-control" [value]="frequencyArray  ? frequencyArray.name : '' " disabled formControlName="frequency"> 
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label class="form-label">Start Date</label>
@@ -401,7 +418,7 @@
                                                             </div>
                                                             <input data-provide="datepicker" data-date-autoclose="true"
                                                                 class="form-control" placeholder="Date" bsDatepicker
-                                                                disabled value="{{startDate}}">
+                                                                disabled value="{{effectiveFromDate}}" formControlName="effectiveFromDate">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -416,23 +433,27 @@
                                                             </div>
                                                             <input data-provide="datepicker" data-date-autoclose="true"
                                                                 class="form-control" placeholder="Date" bsDatepicker
-                                                                disabled value="{{fromDate}}">
+                                                                disabled value="{{effectiveToDate}}" formControlName="effectiveToDate">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2" >
                                                     <label class="form-label">Payroll Area</label>
-                                                    <select name="PA" class="form-control custom-select">
-                                                        <option value="PA_01"> PA_01 </option>
-                                                        <option value="PA_02"> PA_02</option>
+                                                    <select name="PA" class="form-control custom-select" (change)="getSelectedPayrollArea($event.target.value)"
+                                                     formControlName="payrollArea">
+                                                        <option value=""> Select Payroll Area </option>
+                                                        <option value="{{payrollAssignedData.payrollAreaId}}" *ngIf="payrollAssignedData"> {{payrollAssignedData.payrollAreaCode}} </option>
+                                                        <!-- <option value="1"> PA_01</option> -->
                                                     </select>
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2" *ngIf="selectedEmpData[index]">
                                                     <label class="form-label">Current Cycle</label>
-                                                    <input type="text" class="form-control" disabled>
+                                                    <input  value="{{selectedEmpData[index].cycle}}" type="text" class="form-control" disabled>
+                                                   
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-spacearound mt-15" *ngIf="attendanceInputGetTotalAPIRecordsUIData">
+                                            <div class="d-flex justify-content-spacearound mt-15"
+                                                *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green ">
                                                         <div class="card-body text-light detailedcard">
@@ -444,7 +465,8 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.weeklyOff}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.weeklyOff}}
+                                                            </h3>
                                                             <span>Weekly Off</span>
                                                         </div>
                                                     </div>
@@ -460,7 +482,8 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidLeaves}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidLeaves}}
+                                                            </h3>
                                                             <span>Leave</span>
                                                         </div>
                                                     </div>
@@ -468,7 +491,8 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.leaveWithoutPay}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.leaveWithoutPay}}
+                                                            </h3>
                                                             <span>Leave Without Pay</span>
                                                         </div>
                                                     </div>
@@ -476,7 +500,8 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.presentDay}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.presentDay}}
+                                                            </h3>
                                                             <span>Present Days</span>
                                                         </div>
                                                     </div>
@@ -484,7 +509,8 @@
                                                 <div class="wd-150">
                                                     <div class="card text-center btn-bg-green">
                                                         <div class="card-body text-light detailedcard">
-                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays}}</h3>
+                                                            <h3>{{attendanceInputGetTotalAPIRecordsUIData.paidDays}}
+                                                            </h3>
                                                             <span>Payable Days</span>
                                                         </div>
                                                     </div>
@@ -492,60 +518,75 @@
                                             </div>
                                             <div class="row mt-10">
                                                 <div class="col-md-6">
-                                                    <div class="card dottedbordercard">
+                                                    <div class="card dottedbordercard"
+                                                        *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                         <div class="row m-0">
                                                             <div
                                                                 class="col-md-12 text-center font700 font16 p-1 border-bottom-cyan">
-                                                                Paid days of Feb 2021
+                                                                Paid days of
+                                                                {{selectedEmpData[index].cycle}}
                                                             </div>
                                                             <div
-                                                                class="col-md-6 p-1 text-center border-right-cyan d-flex align-items-center justify-content-spacearound">
-                                                                <label class="mb-0 font500">Feb-2021</label>
-                                                                <h3 class="mb-0">20</h3>
+                                                                class="col-md-4 p-1 text-center border-right-cyan d-flex align-items-center justify-content-spacearound">
+                                                                <label
+                                                                    class="mb-0 font500">Processed in {{selectedEmpData[index].cycle}}</label>&nbsp;&nbsp;
+                                                                <h3 class="mb-0">
+                                                                     {{attendanceInputGetTotalAPIRecordsUIData.presentDay}}
+                                                                </h3>
                                                             </div>
                                                             <div
-                                                                class="col-md-6 p-1 text-center d-flex align-items-center justify-content-spacearound">
-                                                                <label class="mb-0 font500">Arrears </label>
-                                                                <h3 class="mb-0">-1</h3>
+                                                                class="col-md-4 p-1 text-center border-right-cyan d-flex align-items-center justify-content-spacearound">
+                                                                <label class="mb-0 font500"> Processed in Arrears </label>
+                                                                <h3 class="mb-0">
+                                                                      {{attendanceInputGetTotalAPIRecordsUIData.futureArrears}}
+                                                                </h3>
+                                                            </div>
+
+                                                            <div
+                                                                class="col-md-4 p-1 text-center d-flex align-items-center justify-content-spacearound">
+                                                                <label class="mb-0 font500">Total </label>
+                                                                <h3 class="mb-0">
+                                                                    {{attendanceInputGetTotalAPIRecordsUIData.presentDay + attendanceInputGetTotalAPIRecordsUIData.futureArrears}} 
+                                                                </h3>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="card dottedbordercard">
-                                                        <div class="row m-0">
+                                                        <div class="row m-0" *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                             <div
                                                                 class="col-md-12 text-center font700 font16 p-1 border-bottom-cyan">
-                                                                Arrears days Paid in Feb 2021
+                                                                Arrears days Paid in {{selectedEmpData[index].cycle}}
                                                             </div>
                                                             <div
                                                                 class="col-md-12 p-1 text-center d-flex align-items-center justify-content-center">
                                                                 <label class="mb-0"></label>
-                                                                <h3 class="mb-0">20</h3>
+                                                                <h3 class="mb-0">{{attendanceInputGetTotalAPIRecordsUIData.previousArrears}} </h3>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="bordered-tab_container">
+                                            <div class="bordered-tab_container" *ngIf="attendanceInputGetTotalAPIRecordsUIData">
                                                 <input id="tab1" class="border-tab-input" type="radio" name="tabs"
-                                                    checked>
-                                                <label class="border-tab-label" for="tab1"><i
-                                                        class="fa fa-calendar"></i><span>Processed in Feb
-                                                        2021</span><span class="count-badge">20</span></label>
-                                                <input id="tab2" class="border-tab-input" type="radio" name="tabs">
+                                                    checked (click)="presentCycleTab()">
+                                                <label class="border-tab-label" for="tab1"
+                                                    ><i
+                                                        class="fa fa-calendar"></i><span>
+                                                            {{selectedEmpData[index].cycle}} days processed in same cycle</span><span class="count-badge">{{attendanceInputAPIRecordsUIData.length}}</span></label>
+                                                <input id="tab2" class="border-tab-input" type="radio" name="tabs" (click)="futureCycleTab()">
                                                 <label class="border-tab-label" for="tab2"><i
-                                                        class="fa fa-arrow-circle-o-left"></i><span>Processed in Future
-                                                        cycles</span><span class="count-badge">20</span></label>
-                                                <input id="tab3" class="border-tab-input" type="radio" name="tabs">
+                                                        class="fa fa-arrow-circle-o-left"></i><span>{{selectedEmpData[index].cycle}} days processed in future cycles</span><span class="count-badge">{{attendanceInputGetAPIFuturecyclesData.length}}</span></label>
+                                                <input id="tab3" class="border-tab-input" type="radio" name="tabs" (click)="previousCycleTab()">
                                                 <label class="border-tab-label" for="tab3"><i
-                                                        class="fa fa-arrow-circle-o-right"></i><span>Processed for
-                                                        Previous cycles</span><span
-                                                        class="count-badge">20</span></label>
+                                                        class="fa fa-arrow-circle-o-right"></i><span>Processed in {{selectedEmpData[index].cycle}} for
+                                                        previous cycles</span><span
+                                                        class="count-badge">{{attendanceInputGetAPIPreviouscycleData.length}}</span></label>
                                                 <section id="content1" class="bordered-tab-content">
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
-                                                            <p-table [value]="users1">
+                                                            <p-table [value]="attendanceInputAPIRecordsUIData">
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
                                                                         <th class="wd-10">
@@ -712,85 +753,102 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-user1
+                                                                <ng-template pTemplate="body" let-presentCycle
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
                                                                         <td class="bg-color-light_gray">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
-                                                                                        class="form-lable mb-0">{{user1.date}}</label>
+                                                                                        class="form-lable mb-0">{{presentCycle.date | date: 'dd-MMM-yyyy'}}</label>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.days}}</label>
+                                                                                class="form-lable mb-0">{{getDays(presentCycle.date)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.payrollarea}}</label>
+                                                                                class="form-lable mb-0">{{presentCycle.payrollAreaCode}}</label>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
-                                                                                    class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                <select name="weeklyOff"
+                                                                                    class="form-control custom-select attendance_dropdown" 
+                                                                                    (change)="getCurrentWeeklyOff($event.target.value, presentCycle)">
+                                                                                    <option value="0.0" [selected]="presentCycle.weeklyOff == '0.0'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="presentCycle.weeklyOff == '0.5'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="presentCycle.weeklyOff == '1.0'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="presentCycle.weeklyOff == '1.0'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="presentCycle.weeklyOff == '1.0'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
-                                                                                    class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                <select name="holiday" class="form-control custom-select attendance_dropdown" 
+                                                                                    (change)="getCurrentHoliday($event.target.value,presentCycle)">
+                                                                                    <option value="0.00" [selected]="presentCycle.holiday == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="presentCycle.holiday == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="presentCycle.holiday == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="presentCycle.holiday == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="presentCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
-                                                                                    class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                <select name="paidLeaves"
+                                                                                    class="form-control custom-select attendance_dropdown" 
+                                                                                    (change)="getCurrentPaidLeaves($event.target.value,presentCycle)">
+                                                                                    
+                                                                                    <option value="0.00" [selected]="presentCycle.paidLeaves == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="presentCycle.paidLeaves == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="presentCycle.paidLeaves == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="presentCycle.paidLeaves == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="presentCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select>
-                                                                            </div>
+                                                                            </div>  
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
-                                                                                    class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                <select name="leaveWithoutPay"
+                                                                                    class="form-control custom-select attendance_dropdown" 
+                                                                                    (change)="getCurrentLeaveWithoutPay($event.target.value,presentCycle)">
+                                                                                    <option value="0.0" [selected]="presentCycle.leaveWithoutPay == '0.0'"> 0.0</option>
+                                                                                    <option value="0.25" [selected]="presentCycle.leaveWithoutPay == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="presentCycle.leaveWithoutPay == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="presentCycle.leaveWithoutPay == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="presentCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label class="form-lable mb-0 d-flex">
-                                                                                <p-inputMask mask="99:99"
-                                                                                    [(ngModel)]="mytime"
+                                                                                <input
+                                                                                    [value]="attendanceForm.controls.payrollArea.value == '1' ? 1 : presentCycle.presentDay"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput mr-1">
-                                                                                </p-inputMask>
-                                                                                <p-inputMask mask="99:99"
-                                                                                    [(ngModel)]="mytime"
+                                                                                    class="timeinput mr-1"  [disabled]="attendanceForm.controls.payrollArea.value == '1'" >
+                                                                                
+                                                                                <input
+                                                                                [value]="attendanceForm.controls.payrollArea.value == '1' ? 1 : presentCycle.presentDay"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput"></p-inputMask>
+                                                                                    class="timeinput mr-1" [disabled]="attendanceForm.controls.payrollArea.value == '1'">
+                                                                                
+                                                                                <!-- <p-inputMask mask="99:99"
+                                                                                value="{{user1.presentDay}}"
+                                                                                    placeholder="00:00"
+                                                                                    class="timeinput"></p-inputMask> -->
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.payableday}}</label>
+                                                                                class="form-lable mb-0">{{presentCycle.paidDays}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
-                                                                                class="form-lable mb-0">{{user1.pretainingcycle}}</label>
+                                                                                class="form-lable mb-0">{{presentCycle.pertainingCycle}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.processingcycle}}</label>
+                                                                                class="form-lable mb-0">{{presentCycle.processingCycle}}</label>
                                                                         </td>
                                                                     </tr>
                                                                 </ng-template>
@@ -810,11 +868,12 @@
                                                         <div class="col-md-12">
                                                             <div class="float-right">
                                                                 <button type="submit" tooltip="Save & Next"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled 
+                                                                    btn-labeled-left ripple" (click)="attendanceForNextEmp()"><b>
                                                                         <i class="fa fa-floppy-o"></i></b> Save &
                                                                     Next</button>
                                                                 <button type="button" tooltip="Next"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
+                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10" (click)="AttendanceInput()"><b><i
                                                                             class="fa fa-floppy-o"
                                                                             aria-hidden="true"></i></b>Save</button>
                                                                 <button type="button" tooltip="Next"
@@ -836,7 +895,7 @@
                                                 <section id="content2" class="tab-content">
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
-                                                            <p-table [value]="users1">
+                                                            <p-table [value]="attendanceInputGetAPIFuturecyclesData">
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
                                                                         <th class="wd-10">
@@ -1003,85 +1062,105 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-user1
+                                                                <ng-template pTemplate="body" let-futureCycle
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
                                                                         <td class="bg-color-light_gray">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
-                                                                                        class="form-lable mb-0">{{user1.date}}</label>
+                                                                                        class="form-lable mb-0">{{futureCycle.date}}</label>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.days}}</label>
+                                                                                class="form-lable mb-0">{{getDays(futureCycle.date)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.payrollarea}}</label>
+                                                                                class="form-lable mb-0">{{futureCycle.payrollAreaCode}}</label>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getFutureWeeklyOff($event.target.value, futureCycle)">
+                                                                                    <option value="0.00" [selected]="futureCycle.weeklyOff == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="futureCycle.weeklyOff == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="futureCycle.weeklyOff == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="futureCycle.weeklyOff == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="futureCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getFutureHoliday($event.target.value, futureCycle)">
+                                                                                  
+                                                                                    <option value="0.00" [selected]="futureCycle.holiday == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="futureCycle.holiday == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="futureCycle.holiday == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="futureCycle.holiday == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="futureCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getFuturePaidLeaves($event.target.value, futureCycle)">
+                                                                                  
+                                                                                    <option value="0.00" [selected]="futureCycle.paidLeaves == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="futureCycle.paidLeaves == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="futureCycle.paidLeaves == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="futureCycle.paidLeaves == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="futureCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getFutureLeaveWithoutPay($event.target.value, futureCycle)">
+                                                                                 
+                                                                                    <option value="0.00" [selected]="futureCycle.leaveWithoutPay == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="futureCycle.leaveWithoutPay == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="futureCycle.leaveWithoutPay == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="futureCycle.leaveWithoutPay == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="futureCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label class="form-lable mb-0 d-flex">
-                                                                                <p-inputMask mask="99:99"
-                                                                                    [(ngModel)]="mytime"
+                                                                                <input
+                                                                                    value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1">
-                                                                                </p-inputMask>
-                                                                                <p-inputMask mask="99:99"
-                                                                                    [(ngModel)]="mytime"
+                                                                                
+                                                                                <input
+                                                                                    value="{{futureCycle.presentDay}}"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput"></p-inputMask>
+                                                                                    class="timeinput mr-1">
+                                                                                
+                                                                                <!-- <p-inputMask mask="99:99"
+                                                                                value="{{user1.presentDay}}"
+                                                                                    placeholder="00:00"
+                                                                                    class="timeinput"></p-inputMask> -->
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.payableday}}</label>
+                                                                                class="form-lable mb-0">{{futureCycle.paidDays}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
-                                                                                class="form-lable mb-0">{{user1.pretainingcycle}}</label>
+                                                                                class="form-lable mb-0">{{futureCycle.pertainingCycle}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.processingcycle}}</label>
+                                                                                class="form-lable mb-0">{{futureCycle.processingCycle}}</label>
                                                                         </td>
                                                                     </tr>
                                                                 </ng-template>
@@ -1100,14 +1179,14 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next"
+                                                                <button type="submit" tooltip="Save & Next" (click)="attendanceForNextEmp()"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
                                                                         <i class="fa fa-floppy-o"></i></b> Save &
                                                                     Next</button>
                                                                 <button type="button" tooltip="Next"
                                                                     class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
                                                                             class="fa fa-floppy-o"
-                                                                            aria-hidden="true"></i></b>Save</button>
+                                                                            aria-hidden="true" (click)="AttendanceInput()"></i></b>Save</button>
                                                                 <button type="button" tooltip="Next"
                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                                             class="fa fa-angle-double-left"
@@ -1127,7 +1206,7 @@
                                                 <section id="content3" class="tab-content">
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
-                                                            <p-table [value]="users1">
+                                                            <p-table [value]="attendanceInputGetAPIPreviouscycleData">
                                                                 <ng-template pTemplate="header">
                                                                     <tr>
                                                                         <th class="wd-10">
@@ -1294,85 +1373,106 @@
                                                                         </th>
                                                                     </tr>
                                                                 </ng-template>
-                                                                <ng-template pTemplate="body" let-user1
+                                                                <ng-template pTemplate="body" let-previousCycle
                                                                     class="tablebodyscroll">
                                                                     <tr class="p-selectable-row">
                                                                         <td class="bg-color-light_gray">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="input-group">
                                                                                     <label
-                                                                                        class="form-lable mb-0">{{user1.date}}</label>
+                                                                                        class="form-lable mb-0">{{previousCycle.date}}</label>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.days}}</label>
+                                                                                class="form-lable mb-0">{{getDays(previousCycle.date)}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.payrollarea}}</label>
+                                                                                class="form-lable mb-0">{{previousCycle.payrollAreaCode}}</label>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="weeklyOff"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getPreviousWeeklyOff($event.target.value, previousCycle)">
+                                                                                   
+                                                                                    <option value="0.00" [selected]="previousCycle.weeklyOff == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="previousCycle.weeklyOff == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="previousCycle.weeklyOff == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="previousCycle.weeklyOff == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="previousCycle.weeklyOff == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="holiday"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getPreviousHoliday($event.target.value, previousCycle)">
+                                                                                 
+                                                                                    <option value="0.00" [selected]="previousCycle.holiday == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="previousCycle.holiday == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="previousCycle.holiday == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="previousCycle.holiday == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="previousCycle.holiday == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="paidLeaves"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getPreviousPaidLeaves($event.target.value, previousCycle)">
+                                                                                   
+                                                                                    <option value="0.00" [selected]="previousCycle.paidLeaves == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="previousCycle.paidLeaves == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="previousCycle.paidLeaves == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="previousCycle.paidLeaves == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="previousCycle.paidLeaves == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex">
-                                                                                <select name="Gender"
+                                                                                <select name="leaveWithoutPay"
                                                                                     class="form-control custom-select attendance_dropdown"
-                                                                                    [(ngModel)]="user1.WO">
-                                                                                    <option value="0.5"> 0.5 </option>
-                                                                                    <option value="1"> 1</option>
+                                                                                    (change)="getPreviousLeaveWithoutPay($event.target.value, previousCycle)">
+                                                                                  
+                                                                                    <option value="0.00" [selected]="previousCycle.leaveWithoutPay == '0.00'"> 0.00</option>
+                                                                                    <option value="0.25" [selected]="previousCycle.leaveWithoutPay == '0.25'"> 0.25</option>
+                                                                                    <option value="0.50" [selected]="previousCycle.leaveWithoutPay == '0.50'"> 0.50</option>
+                                                                                    <option value="0.75" [selected]="previousCycle.leaveWithoutPay == '0.75'"> 0.75</option>
+                                                                                    <option value="1.00" [selected]="previousCycle.leaveWithoutPay == '1.00'"> 1.00</option>
                                                                                 </select>
                                                                             </div>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label class="form-lable mb-0 d-flex">
-                                                                                <p-inputMask mask="99:99"
-                                                                                    [(ngModel)]="mytime"
+                                                                                <input
+                                                                                    value="{{previousCycle.presentDay}}"
                                                                                     placeholder="00:00"
                                                                                     class="timeinput mr-1">
-                                                                                </p-inputMask>
-                                                                                <p-inputMask mask="99:99"
-                                                                                    [(ngModel)]="mytime"
+                                                                                
+                                                                                <input
+                                                                                    value="{{previousCycle.presentDay}}"
                                                                                     placeholder="00:00"
-                                                                                    class="timeinput"></p-inputMask>
+                                                                                    class="timeinput mr-1">
+                                                                                
+                                                                                <!-- <p-inputMask mask="99:99"
+                                                                                value="{{user1.presentDay}}"
+                                                                                    placeholder="00:00"
+                                                                                    class="timeinput"></p-inputMask> -->
                                                                             </label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.payableday}}</label>
+                                                                                class="form-lable mb-0">{{previousCycle.paidDays}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray">
                                                                             <label
-                                                                                class="form-lable mb-0">{{user1.pretainingcycle}}</label>
+                                                                                class="form-lable mb-0">{{previousCycle.pertainingCycle}}</label>
                                                                         </td>
                                                                         <td class="bg-color-light_gray"><label
-                                                                                class="form-lable mb-0">{{user1.processingcycle}}</label>
+                                                                                class="form-lable mb-0">{{previousCycle.processingCycle}}</label>
                                                                         </td>
                                                                     </tr>
                                                                 </ng-template>
@@ -1391,14 +1491,14 @@
                                                     <div class="row mt-20">
                                                         <div class="col-md-12">
                                                             <div class="float-right">
-                                                                <button type="submit" tooltip="Save & Next"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
-                                                                        <i class="fa fa-floppy-o"></i></b> Save &
-                                                                    Next</button>
-                                                                <button type="button" tooltip="Next"
-                                                                    class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
-                                                                            class="fa fa-floppy-o"
-                                                                            aria-hidden="true"></i></b>Save</button>
+                                                                <button type="submit" tooltip="Save & Next" (click)="attendanceForNextEmp()"
+                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ripple"><b>
+                                                                    <i class="fa fa-floppy-o"></i></b> Save &
+                                                                Next</button>
+                                                            <button type="button" tooltip="Next"
+                                                                class="custom_button custom_btn btn-bg-green btn-labeled btn-labeled-left ml-10"><b><i
+                                                                        class="fa fa-floppy-o"
+                                                                        aria-hidden="true" (click)="AttendanceInput()"></i></b>Save</button>
                                                                 <button type="button" tooltip="Next"
                                                                     class="custom_button custom_btn bg-teal-400 btn-labeled btn-labeled-left ml-10"><b><i
                                                                             class="fa fa-angle-double-left"
@@ -1418,6 +1518,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </form>
                                 </div>
                                 <label class="nav" for="Attendance">
                                     <span> Attendance </span>

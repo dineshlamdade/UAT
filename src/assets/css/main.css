@@ -8291,7 +8291,7 @@ a:hover {
 }
 
 .custom-select {
-    border-color: #999
+    border-color: #E8E9E9
 }
 
 .input-group-text {
@@ -9044,15 +9044,15 @@ a:hover {
 
 .metismenu ul a {
     color: #4D5052;
-    font-size: 14px;
-    padding: 5px 15px 5px 30px;
+    font-size: 12px;
+    padding: 5px 15px 5px 18px;
     position: relative
 }
 
 .metismenu ul a::before {
     font-size: 14px;
-    font-family: 'feather' !important;
-    content: "\e999";
+    /* font-family: 'feather' !important;
+    content: "\e999"; */
     position: absolute;
     left: 1px
 }
@@ -9066,7 +9066,7 @@ a:hover {
 }
 
 .metismenu ul ul a {
-    padding: 10px 15px 10px 70px
+    padding: 10px 15px 10px 45px
 }
 
 .metismenu ul.collapse a:hover,
@@ -9174,7 +9174,7 @@ a:hover {
     overflow-y: auto;
     position: fixed;
     top: 0;
-    padding: 20px 15px 20px 75px
+    padding: 20px 15px 20px 55px
 }
 
 @media screen and (max-width: 1200px) {
