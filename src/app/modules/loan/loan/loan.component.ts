@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -8,7 +8,9 @@ import { ExcelService } from '../../uploadexcel/uploadexcelhome/excel.service';
 import { LoanService } from '../loan.service';
 import jspdf from 'jspdf';
 import * as _html2canvas from "html2canvas";
+import { Router } from '@angular/router';
 const html2canvas: any = _html2canvas;
+
 
 @Component({
   selector: 'app-loan',
@@ -19,17 +21,21 @@ export class LoanComponent implements OnInit {
   LoanForm: FormGroup;
   public modalRef: BsModalRef;
   excelData: any[];
-  summaryData: any;
-
+  summaryData: any=[];
+  loandata: any = '';
+  searchText:string;
   editflag: boolean = false;
+
   constructor(public formBuilder : FormBuilder,
     private modalService: BsModalService, public loanservice:LoanService,public toster : ToastrService ,
-    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,) {
+    private datePipe: DatePipe,private excelservice: ExcelService, public sanitizer: DomSanitizer,private router: Router) {
     this.LoanForm = this.formBuilder.group({
+
+      // "searchText": new FormControl(''),
+
     })
 
    }
-
   ngOnInit(): void {
     this.getAllData();
   }
@@ -37,20 +43,7 @@ export class LoanComponent implements OnInit {
   {
 
   }
-   editQuery(loan)
-  {
-    this.editflag = true;
-    // this.AddLoanForm.enable();
-    // this.AddLoanForm.patchValue(loan);
-    // this.isVisible =true;
-    // this.isShown = false;
-  }
-  viewQuery(loan)
-  {
-    this.editflag = false;
-  //  this.AddLoanForm.patchValue(loan);
-  //  this.AddLoanForm.disable();
-  }
+
   disbursementRequest(template1: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template1,
@@ -108,4 +101,36 @@ this.loanservice.getAll().subscribe(res =>
   })
 }
 
+navigateToAdd(){
+  localStorage.removeItem('EditLoanData');
+  localStorage.removeItem('ViweLoanData');
+  this.router.navigate(['/loan/add-new-loan']);
+}
+
+editLoanAppForm(summary)
+{
+  localStorage.clear();
+  localStorage.setItem('EditLoanData',JSON.stringify(summary))
+  this.router.navigate(['/loan/add-new-loan']);
+  this.editflag = true;
+
+
+}
+viewLoanAppForm(summary)
+{
+  localStorage.clear();
+  localStorage.setItem('ViweLoanData',JSON.stringify(summary))
+  this.router.navigate(['/loan/add-new-loan']);
+  this.editflag = false;
+
+
+}
+deleteLoanForm()
+{
+
+}
+downloadSchedule()
+{
+
+}
 }

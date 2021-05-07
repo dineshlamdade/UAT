@@ -24,40 +24,41 @@
           </div>
           <br><br>
           <div class="buttons float-right">
-            <button class="btn btn-success" [routerLink]="['/loan/add-new-loan']" ><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp; Add new Loan</button>
+            <button class="btn btn-success" (click)="navigateToAdd()" ><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp; Add new Loan</button>
             <button type="button" class="btn btn-info" (click)="disbursementRequest(template1)"><i class="fa fa-money" aria-hidden="true"></i>&nbsp;Disbursement Request</button>
             <button type="button" class="btn btn-success"(click)="adhocRepayment(template2)"><i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp;Adhoc Repayment</button>
             <button type="button" class="btn btn-danger" (click)="rescheduleRequest(template3)"><i class="fa fa-clock-o" aria-hidden="true"></i>&nbsp;Reschedule Request</button>
             <button type="button" class="btn btn-secondary"(click)="settlementRequest(template4)"><i class="fa fa-cogs" aria-hidden="true"></i>&nbsp;Settlement Request</button>
             <!-- <button type="button" class="btn btn-light"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button> -->
-            <input type="text"  style="width: 15%; margin-right: 5px; margin-bottom: 15px;" placeholder="Search">
-            <button type="button" class="btn btn-info"><i class="fa fa-filter" aria-hidden="true"></i>Filter</button>
+            <!-- <button type="button" class="btn btn-info"><i class="fa fa-filter" aria-hidden="true"></i>Filter</button> -->
+            <input class="form-control-sm" type="text" name="search" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" autocomplete="off"
+            placeholder=" &#61442; Search" >
 
           </div>
-              <div class=" table-sm table-responsive Custom_Table  "  id="contentToConvert">
+              <div class="table-responsive Custom_Table"  id="contentToConvert">
                   <table
                       class="table table-striped table-hover table-bordered m-b-0">
                       <thead class="thead-dark">
                           <tr>
-                              <th >Select</th>
-                              <th >Application No.</th>
-                              <th >Application Date</th>
-                              <th >Type</th>
-                              <th >Description</th>
-                              <th >Repayment Type</th>
-                              <th >Loan Amount</th>
-                              <th >Disbursed Amount</th>
-                              <th >No. Of Installments</th>
-                              <th >Interest Rate</th>
-                              <th>Installment Amount</th>
-                              <th>Balance Loan</th>
-                              <th>End Date </th>
-                              <th>Status</th>
-                              <th>Action</th>
+                              <th class="wd-0">Select</th>
+                              <th class="wd-0">Application No.</th>
+                              <th class="wd-10">Application Date</th>
+                              <th class="wd-10">Type</th>
+                              <th class="wd-10">Description</th>
+                              <th class="wd-10">Repayment Type</th>
+                              <th class="wd-10">Loan Amount</th>
+                              <!-- <th >Disbursed Amount</th> -->
+                              <th class="wd-0">Remaining Installment</th>
+                              <th class="wd-0">Interest Rate</th>
+                              <th class="wd-10">Installment Amount</th>
+                              <th class="wd-10">Balance Loan</th>
+                              <th class="wd-10">End Date </th>
+                              <th class="wd-10">Status</th>
+                              <th class="wd-10" style="text-align: center!important">Action</th>
                           </tr>
                       </thead>
                       <tbody>
-                          <tr class="align" *ngFor="let summary of summaryData">
+                          <tr class="align" *ngFor="let summary of summaryData | filter:searchText"  >
 
                               <td style="text-align: center!important;"><input type="checkbox"></td>
                               <td >{{summary.loanApplicationNumber}}</td>
@@ -66,19 +67,23 @@
                               <td >{{summary.loanType}}</td>
                               <td >{{summary.repaymentType}}</td>
                               <td >{{summary.loanAmount |number:'1.2-2'}} </td>
-                              <td >{{summary.disbursedAmount |number:'1.2-2'}} </td>
+                              <!-- <td >{{summary.disbursedAmount |number:'1.2-2'}} </td> -->
                               <td >{{summary.noOfInstallment}} </td>
                               <td >{{summary.interestRate}}%</td>
                               <td >{{summary.installmentAmount |number:'1.2-2'}}</td>
                               <td >{{summary.balanceLoan |number:'1.2-2'}}</td>
                               <td >{{summary.endDate | date :"dd-MMM-yyyy"}}</td>
                               <td >{{summary.status}}</td>
-                              <td >
-                                <!-- <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="editQuery(loan)"></i>
-                                <i class="fa fa-eye" aria-hidden="true" (click)="viewQuery(lon)"></i> -->
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                              <td style="text-align: center!important;">
+                                <i style="padding: 5px; " class="fa fa-pencil-square-o" aria-hidden="true"
+                                (click)="editLoanAppForm(summary)" tooltip="Edit"></i>
+                                <i style="padding: 5px; color: darkcyan;" class="fa fa-eye" aria-hidden="true"
+                                (click)="viewLoanAppForm(summary)"></i>
+                                <i style="padding: 5px;" class="fa fa-trash" aria-hidden="true"
+                                (click)="deleteLoanForm()"></i>
+                                <i style="padding: 5px;" class="fa fa-download" aria-hidden="true"
+                                (click)="downloadSchedule()"></i>
+                                <i style="padding: 5px;" class="fa fa-clock-o" aria-hidden="true"></i>
                               </td>
 
                           </tr>

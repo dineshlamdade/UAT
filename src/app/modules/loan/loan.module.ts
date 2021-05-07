@@ -10,6 +10,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { EmiCalculatorComponent } from './loan/emi-calculator/emi-calculator.component';
 import { ChartsModule } from 'ng2-charts';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [LoanComponent, AddNewLoanComponent,EmiCalculatorComponent],
@@ -22,6 +23,7 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
     ChartsModule,
     NgxSliderModule,
     FormsModule,
+    Ng2SearchPipeModule
 
   ],
   providers: [ExcelService],

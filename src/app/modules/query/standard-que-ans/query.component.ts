@@ -3,13 +3,17 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 // import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { ToastrService } from 'ngx-toastr';
+import { MessageService, TreeDragDropService, TreeNode } from 'primeng/api';
+import { NodeService } from '../nodeservice.service';
 import { QueryService } from '../query.service';
-
 
 @Component({
   selector: 'app-query',
   templateUrl: './query.component.html',
-  styleUrls: ['./query.component.scss']
+  styleUrls: ['./query.component.scss'],
+  providers: [TreeDragDropService,MessageService],
+
+
 })
 export class QueryComponent implements OnInit {
 
@@ -24,13 +28,24 @@ export class QueryComponent implements OnInit {
   p: number = 1;
   moduleListData: any;
   keyword:any = [];
+  data11 :any =[];
   fieldMap: any;
+
   mappingData: any = [];
 
+   files1: TreeNode[];
 
-  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService)
+    files2: TreeNode[];
+
+    files3: TreeNode[];
+
+    files4: TreeNode[];
+  allKeywords: any;
+  isVisiblee:boolean=false;
+
+  constructor(public formBuilder : FormBuilder ,public queryService :QueryService ,public toster : ToastrService,
+    private nodeService: NodeService,)
   {
-
     this.queryForm = this.formBuilder.group({
       // "createdBy": new FormControl(''),
       // "updatedBy": new FormControl(''),
@@ -42,70 +57,80 @@ export class QueryComponent implements OnInit {
       "moduleId": new FormControl(null,[Validators.required]),
       "questionSubject": new FormControl(null,[Validators.required]),
       "questionDescription": new FormControl(null),
-      "answerSubject": new FormControl(null,[Validators.required]),
+      "answerSubject": new FormControl(''),
       "answerDescription": new FormControl(null),
       "remark": new FormControl(null),
       "active": new FormControl(true,[Validators.required]),
 
     });
+{
+  this.keyword=
+  [
+    {
+      "label": "Employee",
+      "data": "Documents Folder",
 
-    this.keyword = [
+      "children": [{
+              "label": "Employee Code",
+              "data": "Work Folder",
+          },
+          {
+              "label": "Employee Name",
+              "data": "Home Folder",
+          },
+          {
+            "label": "Employee Email",
+            "data": "Home Folder",
+        }, {
+          "label": "Employee Phone No",
+          "data": "Home Folder",
+      },
       {
-        'name':'<<Employee Code>>',
-        'id': 1,
-        'description': 'Employee Code'
-    },
-    {
-        'name':'<<Employee Full Name>>',
-        'id': 2,
-        'description': 'Employee Full Name'
-    },
-    {
-        'name':'<<Employee Email>>',
-        'id': 3,
-        'description': 'Employee Email'
-    },
-    {
-        'name':'<<Employee Contact>>',
-        'id': 4,
-        'description': 'Employee Contact'
-    },
-    {
-        'name':'<<Employee Gender>>',
-        'id': 5,
-        'description': 'Employee Gender'
-    },
-    {
-        'name':'<<Employee Grade>>',
-        'id': 6,
-        'description': 'Employee Grade'
-    },
-    {
-      'name':'<<Employee Company>>',
-      'id': 7,
-      'description': 'Employee Company'
+        "label": "Employee Gender",
+        "data": "Home Folder",
+
+    }, {
+      "label": "Employee Grade",
+      "data": "Home Folder",
+
+
+  }
+        ]
   },
   {
-    'name':'<<Date>>',
-    'id': 8,
-    'description': 'Date'
-},
+      "label": "Company",
+      "data": "Pictures Folder",
 
-    ]
+      "children": [
+          {"label": "barcelona.jpg", "icon": "pi pi-image", "data": "Barcelona Photo"},
+          {"label": "primeui.png", "icon": "pi pi-image", "data": "PrimeUI Logo"}]
+  },
+  {
+      "label": "Date",
+      "data": "Movies Folder",
 
-    this.keyword.forEach( element => {
-      this.mappingData.push(
-        [element.id.toString() , '[' + element.description +']' ]
-      )
-    })
+      "children": [{
+              "label": "Al Pacino",
+              "data": "Pacino Movies",
+              "children": [{"label": "Scarface", "icon": "pi pi-video", "data": "Scarface Movie"}]
+          },
+          {
+              "label": "Robert De Niro",
+              "data": "De Niro Movies",
+              "children": [{"label": "Goodfellas", "icon": "pi pi-video", "data": "Goodfellas Movie"}]
+          }]
+  }
 
-    this.fieldMap = new Map<string, string>(this.mappingData);
+  ]
+}
 
   }
   ngOnInit(): void {
     this.getModuleName();
     this.getAllData();
-    // this.queryForm.controls['code'].setValue(true);
+    this.getStandardKeywords();
+    // this.nodeService.getFiles().then(files => this.files1 = files);
+    // this.nodeService.getFiles().then(files => this.files2 = files);
 
   }
   get f(){
@@ -157,9 +182,12 @@ export class QueryComponent implements OnInit {
   }
   viewQuery(query)
   {
-    this.editflag = false;
+   this.editflag = false;
    this.queryForm.patchValue(query);
    this.queryForm.disable();
+   this.isVisiblee =true;
+   this.isVisible = false;
+   this.isShown =false;
   }
   reset(){
     this.queryForm.enable();
@@ -177,6 +205,16 @@ getModuleName()
   this.queryService.getModuleName().subscribe(res => {
     this.moduleListData = res.data.results;
 
+  })
+}
+getStandardKeywords(){
+  this.queryService.getStandardKeywords().subscribe(res =>{
+    this.allKeywords = res.data.results[0];
+    // this.displayName = this.allKeywords.displayName;
+    console.log("************", this.allKeywords );
+    // this.allKeywords.forEach(element => {
+
+    // });
   })
 }
 changeEvent($event) {
